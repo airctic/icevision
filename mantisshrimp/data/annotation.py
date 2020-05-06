@@ -17,17 +17,28 @@ class RLE:
     w: int
 
 # Cell
-class Polygon(UserList): pass
+@dataclass
+class Polygon:
+    pnts: List[List[int]]
+#     h: int
+#     w: int
+    def to_mask(self, h, w):
+        erle = mask_utils.frPyObjects(list(self.pnts), h, w)
+        mask = mask_utils.decode(erle).sum(axis=-1) # Sum is for unconnected polygons
+        assert mask.max() == 1, 'Probable overlap in polygons'
+        return mask
 
 # Cell
 class BBox(UserList):
-    def __init__(self, x, y, w, h):
-        super().__init__([x,y,w,h])
-        self.area = w*h
+    def __init__(self, pnts):
+        super().__init__(pnts)
+        if pnts:
+            x,y,w,h = pnts
+            self.area = w*h
     @classmethod
-    def xywh(cls, x, y, w, h): return cls(x,y,w,h)
+    def xywh(cls, x, y, w, h): return cls([x,y,w,h])
     @classmethod
-    def xyxy(cls, xl, yu, xr, yb): return cls(xl,yu,xr-xl,yb-yu)
+    def xyxy(cls, xl, yu, xr, yb): return cls([xl,yu,xr-xl,yb-yu])
 
 # Cell
 @dataclass
@@ -35,6 +46,8 @@ class ImageInfo:
     # TODO: Can add width and height
     iid: int
     fp: Union[str, Path]
+    h: int
+    w: int
 
     def __post_init__(self): self.fp = Path(self.fp)
 
@@ -81,9 +94,12 @@ class ImageParser:
 
     def iid(self, o): raise NotImplementedError
     def file_path(self, o): raise NotImplementedError
+    def height(self, o): raise NotImplementedError
+    def width(self, o): raise NotImplementedError
 
     def parse(self):
-        return [ImageInfo(iid=self.iid(o), fp=self.file_path(o)) for o in tqdm(self)]
+        return [ImageInfo(iid=self.iid(o), fp=self.file_path(o), h=self.height(o), w=self.width(o))
+                for o in tqdm(self)]
 
 # Cell
 class AnnotationParser:
@@ -143,6 +159,8 @@ class DataParser:
 class COCOImageParser(ImageParser):
     def iid(self, o): return o['id']
     def file_path(self, o): return self.source/o['file_name']
+    def height(self, o): return o['height']
+    def width(self, o): return o['width']
 
 # Cell
 class COCOAnnotationParser(AnnotationParser):
@@ -153,7 +171,7 @@ class COCOAnnotationParser(AnnotationParser):
     def seg(self, o):
         seg = o['segmentation']
         if o['iscrowd']: return RLE(counts=seg['counts'],h=seg['size'][0],w=seg['size'][1])
-        else:            return Polygon(seg)
+        else: return Polygon(seg)
 
 # Cell
 class COCOParser(DataParser):
@@ -163,12 +181,11 @@ class COCOParser(DataParser):
 # Cell
 from matplotlib import patches
 from matplotlib.collections import PatchCollection
-from pycocotools import mask as maskUtils
 
 # Cell
-def show_record(record, id2cat=None, draw_bbox=False, fontsize=18, ax=None):
+def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None):
     'From github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/coco.py#L233'
-    im = open_img(record.iinfo.fp)
+    im = im if notnone(im) else open_img(record.iinfo.fp)
     ax = show_img(im, ax=ax)
     ax.set_autoscale_on(False)
     polygons = []
@@ -176,30 +193,32 @@ def show_record(record, id2cat=None, draw_bbox=False, fontsize=18, ax=None):
     for ann in record.annot:
         c = (np.random.random((1, 3))*0.6+0.4).tolist()[0]
         # Assert both seg and masks are not present, or unify view
-        if ann.seg:
+        if ann.seg is not None:
             if isinstance(ann.seg, Polygon):
-                for seg in ann.seg:
+                for seg in ann.seg.pnts:
                     poly = np.array(seg).reshape((int(len(seg)/2), 2))
                     polygons.append(patches.Polygon(poly))
                     color.append(c)
             elif isinstance(ann.seg, RLE):
                 width,height,_ = im.shape
                 if isinstance(ann.seg.counts, list):
-                    rle = maskUtils.frPyObjects([ann.seg.counts], height, width)
+                    rle = mask_utils.frPyObjects([ann.seg.counts], height, width)
                 else:
                     raise NotImplementedError
     #                 rle = [ann['segmentation']]
-                m = maskUtils.decode(rle)
-                img = np.ones( (m.shape[0], m.shape[1], 3) )
-                if ann.iscrowd == 1:
-                    color_mask = np.array([2.0,166.0,101.0])/255
-                if ann.iscrowd == 0:
-                    raise NotImplementedError
+                m = mask_utils.decode(rle)
+                if ann.iscrowd == 1: color_mask = np.array([2.0,166.0,101.0])/255
+                if ann.iscrowd == 0: raise NotImplementedError # TODO: I'm not sure how to handle this case
     #                 color_mask = np.random.random((1, 3)).tolist()[0]
+            elif isinstance(ann.seg, np.ndarray):
+                m = ann.seg
+                color_mask = np.array([2.0,166.0,101.0])/255
+            else: raise ValueError(f'Not supported type: {type(seg)}')
+            if isinstance(ann.seg, RLE) or isinstance(ann.seg, np.ndarray):
+                img = np.ones( (m.shape[0], m.shape[1], 3) )
                 for i in range(3):
                     img[:,:,i] = color_mask[i]
                 ax.imshow(np.dstack( (img, m*0.5) ))
-        else: raise ValueError(f'Not supported type: {type(seg)}')
         if ann.kpts and type(ann['keypoints']) == list:
             raise NotImplementedError
             # turn skeleton into zero-based index
@@ -214,7 +233,7 @@ def show_record(record, id2cat=None, draw_bbox=False, fontsize=18, ax=None):
     #                     ax.plot(x[v>0], y[v>0],'o',markersize=8, markerfacecolor=c, markeredgecolor='k',markeredgewidth=2)
     #                     ax.plot(x[v>1], y[v>1],'o',markersize=8, markerfacecolor=c, markeredgecolor=c, markeredgewidth=2)
 
-        if draw_bbox:
+        if bbox:
             [bx, by, bw, bh] = ann.bbox
             poly = [[bx, by], [bx, by+bh], [bx+bw, by+bh], [bx+bw, by]]
             np_poly = np.array(poly).reshape((4,2))

@@ -3,6 +3,7 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"notnone": "00_core.ipynb",
+         "lmap": "00_core.ipynb",
          "get_files": "00_core.ipynb",
          "get_image_files": "00_core.ipynb",
          "image_extensions": "00_core.ipynb",

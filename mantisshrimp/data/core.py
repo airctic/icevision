@@ -15,7 +15,7 @@ def open_img(fn):
 def show_img(im, ax=None, **kwargs):
     if ax is None: fig,ax = plt.subplots(**kwargs)
     ax.set_axis_off()
-    ax.imshow(im)
+    ax.imshow(im.squeeze())
     return ax
 
 # Cell
