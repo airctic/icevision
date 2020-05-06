@@ -29,16 +29,22 @@ class Polygon:
         return mask
 
 # Cell
+@dataclass
 class BBox(UserList):
-    def __init__(self, pnts):
-        super().__init__(pnts)
-        if pnts:
-            x,y,w,h = pnts
-            self.area = w*h
+    pnts: List[int]
+    def __post_init__(self):
+        if self.pnts:
+            xl,yu,xr,yb = self.pnts
+            self.x,self.y,self.h,self.w = xl,yu,(yb-yu),(xr-xl)
+            self.area = self.h*self.w
+    @property
+    def xyxy(self): return self.pnts
+    @property
+    def xywh(self): return [self.x,self.y,self.w,self.h]
     @classmethod
-    def xywh(cls, x, y, w, h): return cls([x,y,w,h])
+    def from_xywh(cls, x, y, w, h): return cls([x,y,x+w,y+h])
     @classmethod
-    def xyxy(cls, xl, yu, xr, yb): return cls([xl,yu,xr-xl,yb-yu])
+    def from_xyxy(cls, xl, yu, xr, yb): return cls([xl,yu,xr,yb])
 
 # Cell
 @dataclass
@@ -166,7 +172,7 @@ class COCOImageParser(ImageParser):
 class COCOAnnotationParser(AnnotationParser):
     def iid(self, o):  return o['image_id']
     def oid(self, o): return o['category_id']
-    def bbox(self, o): return BBox.xywh(*o['bbox'])
+    def bbox(self, o): return BBox.from_xywh(*o['bbox'])
     def iscrowd(self, o): return o['iscrowd']
     def seg(self, o):
         seg = o['segmentation']
@@ -183,10 +189,10 @@ from matplotlib import patches
 from matplotlib.collections import PatchCollection
 
 # Cell
-def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None):
+def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None, **kwargs):
     'From github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/coco.py#L233'
     im = im if notnone(im) else open_img(record.iinfo.fp)
-    ax = show_img(im, ax=ax)
+    ax = show_img(im, ax=ax, **kwargs)
     ax.set_autoscale_on(False)
     polygons = []
     color = []
@@ -212,7 +218,7 @@ def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None):
     #                 color_mask = np.random.random((1, 3)).tolist()[0]
             elif isinstance(ann.seg, np.ndarray):
                 m = ann.seg
-                color_mask = np.array([2.0,166.0,101.0])/255
+                color_mask = np.random.random(3)
             else: raise ValueError(f'Not supported type: {type(seg)}')
             if isinstance(ann.seg, RLE) or isinstance(ann.seg, np.ndarray):
                 img = np.ones( (m.shape[0], m.shape[1], 3) )
@@ -234,7 +240,7 @@ def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None):
     #                     ax.plot(x[v>1], y[v>1],'o',markersize=8, markerfacecolor=c, markeredgecolor=c, markeredgewidth=2)
 
         if bbox:
-            [bx, by, bw, bh] = ann.bbox
+            [bx, by, bw, bh] = ann.bbox.xywh
             poly = [[bx, by], [bx, by+bh], [bx+bw, by+bh], [bx+bw, by]]
             np_poly = np.array(poly).reshape((4,2))
             polygons.append(patches.Polygon(np_poly))
