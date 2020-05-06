@@ -19,6 +19,6 @@ def show_img(im, ax=None, **kwargs):
     return ax
 
 # Cell
-def grid(f, ims):
-    fig,axs = plt.subplots(ncols=len(ims))
-    for fn,ax in zip(ims,axs): f(fn, ax)
+def grid(f, ims, **kwargs):
+    fig,axs = plt.subplots(ncols=len(ims), **kwargs)
+    for fn,ax in zip(ims,axs): f(fn, ax=ax)
