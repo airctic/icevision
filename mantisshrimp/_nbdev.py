@@ -2,9 +2,31 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"notnone": "00_core.ipynb",
+         "get_files": "00_core.ipynb",
+         "get_image_files": "00_core.ipynb",
+         "image_extensions": "00_core.ipynb",
+         "open_img": "02_data.core.ipynb",
+         "show_img": "02_data.core.ipynb",
+         "grid": "02_data.core.ipynb",
+         "RLE": "04_data.annotations.ipynb",
+         "Polygon": "04_data.annotations.ipynb",
+         "BBox": "04_data.annotations.ipynb",
+         "ImageInfo": "04_data.annotations.ipynb",
+         "Instance": "04_data.annotations.ipynb",
+         "Annotation": "04_data.annotations.ipynb",
+         "Record": "04_data.annotations.ipynb",
+         "AnnotationParser": "04_data.annotations.ipynb",
+         "ImageParser": "04_data.annotations.ipynb",
+         "DataParser": "04_data.annotations.ipynb",
+         "COCOImageParser": "04_data.annotations.ipynb",
+         "COCOAnnotationParser": "04_data.annotations.ipynb",
+         "COCOParser": "04_data.annotations.ipynb",
+         "show_record": "04_data.annotations.ipynb"}
 
-modules = []
+modules = ["core.py",
+           "data/core.py",
+           "data/annotation.py"]
 
 doc_url = "https://lgvaz.github.io/mantisshrimp/"
 
