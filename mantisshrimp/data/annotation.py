@@ -15,26 +15,34 @@ from .core import *
 @dataclass
 class Mask:
     data: np.ndarray
+    def __post_init__(self): self.data = self.data.astype(np.uint8)
     def __len__(self): return len(self.data)
     def __getitem__(self, i): return type(self)(self.data[i])
+
+    def to_tensor(self): return tensor(self.data, dtype=torch.uint8)
+    def to_mask(self, h, w): return self
     @property
     def shape(self): return self.data.shape
+
+    @classmethod
+    def from_segs(cls, segs, h, w): return cls(np.stack([o.to_mask(h, w).data for o in segs]))
 
 # Cell
 @dataclass
 class RLE:
     counts: List[int]
-    h: int
-    w: int
+    def to_mask(self, h, w):
+        erle = mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
+        mask = mask_utils.decode(erle).sum(axis=-1) # Sum is for unconnected polygons
+        assert mask.max() == 1, 'Probable overlap in polygons'
+        return Mask(mask)
 
 # Cell
 @dataclass
 class Polygon:
     pnts: List[List[int]]
-#     h: int
-#     w: int
     def to_mask(self, h, w):
-        erle = mask_utils.frPyObjects(list(self.pnts), h, w)
+        erle = mask_utils.frPyObjects(self.pnts, h, w)
         mask = mask_utils.decode(erle).sum(axis=-1) # Sum is for unconnected polygons
         assert mask.max() == 1, 'Probable overlap in polygons'
         return Mask(mask)
@@ -56,6 +64,8 @@ class BBox:
     def from_xywh(cls, x, y, w, h): return cls([x,y,x+w,y+h])
     @classmethod
     def from_xyxy(cls, xl, yu, xr, yb): return cls([xl,yu,xr,yb])
+
+    def to_tensor(self): return tensor(self.xyxy, dtype=torch.float)
 
 # Cell
 @dataclass
@@ -104,10 +114,27 @@ class Record:
     iinfo: ImageInfo
     annot: Annotation
 
-    @delegates(Annotation.__init__)
-    def new(self, **kwargs):
-        annot = replace(self.annot, **kwargs)
-        return replace(self, annot=annot)
+    def new(self, *, iinfo=None, annot=None):
+        iinfo = replace(self.iinfo, **(iinfo or {}))
+        annot = replace(self.annot, **(annot or {}))
+        return replace(self, iinfo=iinfo, annot=annot)
+
+    def to_rcnn_target(self):
+        r = {
+            'image_id': self.iinfo.iid,
+            'labels': tensor(self.annot.oids),
+            'boxes': torch.stack([o.to_tensor() for o in self.annot.bboxes]),
+        #     'keypoints': self.annot.kpts.to_tensor(), # TODO
+            'area': tensor([o.area for o in self.annot.bboxes]),
+            'iscrowd': tensor(self.annot.iscrowds, dtype=torch.uint8),
+        }
+        segs = self.annot.segs
+        if notnone(segs):
+            if isinstance(segs, Mask): m = segs
+            elif isinstance(segs, list): m = Mask.from_segs(segs, self.iinfo.h, self.iinfo.w)
+            else: raise ValueError(f'Type for masks {type(masks)} not supported')
+            r['masks'] = m.to_tensor()
+        return r
 
 # Cell
 class ImageParser:
@@ -194,7 +221,7 @@ class COCOAnnotationParser(AnnotationParser):
     def iscrowd(self, o): return o['iscrowd']
     def seg(self, o):
         seg = o['segmentation']
-        if o['iscrowd']: return RLE(counts=seg['counts'],h=seg['size'][0],w=seg['size'][1])
+        if o['iscrowd']: return RLE(seg['counts'])
         else: return Polygon(seg)
 
 # Cell
@@ -224,13 +251,14 @@ def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None, 
                     polygons.append(patches.Polygon(poly))
                     color.append(c)
             elif isinstance(ann.seg, RLE):
-                width,height,_ = im.shape
+                height,width,_ = im.shape
                 if isinstance(ann.seg.counts, list):
-                    rle = mask_utils.frPyObjects([ann.seg.counts], height, width)
+#                     rle = mask_utils.frPyObjects([ann.seg.counts], height, width)
+                    m = ann.seg.to_mask(height, width).data
                 else:
                     raise NotImplementedError
     #                 rle = [ann['segmentation']]
-                m = mask_utils.decode(rle)
+#                 m = mask_utils.decode(rle)
                 if ann.iscrowd == 1: color_mask = np.array([2.0,166.0,101.0])/255
                 if ann.iscrowd == 0: raise NotImplementedError # TODO: I'm not sure how to handle this case
     #                 color_mask = np.random.random((1, 3)).tolist()[0]

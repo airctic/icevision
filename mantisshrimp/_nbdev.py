@@ -24,11 +24,13 @@ index = {"notnone": "00_core.ipynb",
          "COCOImageParser": "04_data.annotations.ipynb",
          "COCOAnnotationParser": "04_data.annotations.ipynb",
          "COCOParser": "04_data.annotations.ipynb",
-         "show_record": "04_data.annotations.ipynb"}
+         "show_record": "04_data.annotations.ipynb",
+         "AlbumentationTransformer": "06_transforms.ipynb"}
 
 modules = ["core.py",
            "data/core.py",
-           "data/annotation.py"]
+           "data/annotation.py",
+           "transforms.py"]
 
 doc_url = "https://lgvaz.github.io/mantisshrimp/"
 
