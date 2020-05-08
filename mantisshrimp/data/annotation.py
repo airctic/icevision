@@ -88,6 +88,7 @@ class Instance:
     iscrowd: int=None
 
 # Cell
+# TODO: Better way to handle empty oids, bboxes, kpts, segs etcs
 @dataclass
 class Annotation:
     iid: int
@@ -98,8 +99,10 @@ class Annotation:
     iscrowds: List[int]=None
 
     def __post_init__(self):
-        # TODO: assert lenghts
-        assert len(self.bboxes)==len(self.segs)
+        insts = [self.oids,self.bboxes,self.segs,self.kpts,self.iscrowds]
+        lens = [len(o) for o in insts if notnone(o)]
+        if not allequal(lens): raise ValueError(f'All annotations should have the same size: {lens}')
+#         assert len(self.bboxes)==len(self.segs)
     def __getitem__(self, i):
         # TODO: Can be refactored?
         bbox = self.bboxes[i] if notnone(self.bboxes) else None
@@ -121,7 +124,7 @@ class Record:
 
     def to_rcnn_target(self):
         r = {
-            'image_id': self.iinfo.iid,
+            'image_id': tensor(self.iinfo.iid, dtype=torch.int64),
             'labels': tensor(self.annot.oids),
             'boxes': torch.stack([o.to_tensor() for o in self.annot.bboxes]),
         #     'keypoints': self.annot.kpts.to_tensor(), # TODO
@@ -142,14 +145,19 @@ class ImageParser:
     def __iter__(self): yield from self.data
     def __len__(self): return len(self.data)
 
+    def prepare(self, o): pass
     def iid(self, o): raise NotImplementedError
     def file_path(self, o): raise NotImplementedError
     def height(self, o): raise NotImplementedError
     def width(self, o): raise NotImplementedError
 
     def parse(self):
-        return [ImageInfo(iid=self.iid(o), fp=self.file_path(o), h=self.height(o), w=self.width(o))
-                for o in tqdm(self)]
+        xs = []
+        for o in tqdm(self):
+            self.prepare(o)
+            xs.append(ImageInfo(iid=self.iid(o), fp=self.file_path(o),
+                                h=self.height(o), w=self.width(o)))
+        return xs
 
 # Cell
 class AnnotationParser:
@@ -157,6 +165,7 @@ class AnnotationParser:
     def __iter__(self): yield from self.data
     def __len__(self): return len(self.data)
     # Methods to override
+    def prepare(self, o): pass
     def bbox(self, o): pass
     def iid(self, o): pass
     def seg(self, o): pass
@@ -171,17 +180,18 @@ class AnnotationParser:
         oids = defaultdict(list)
         iscrowds = defaultdict(list)
         for o in tqdm(self):
+            self.prepare(o)
             iid = self.iid(o)
             bbox = self.bbox(o)
             seg = self.seg(o)
             oid = self.oid(o)
             iscrowd = self.iscrowd(o)
-            if oid is not None: oids[iid].append(oid)
-            if bbox is not None: bboxes[iid].append(bbox)
-            if seg is not None: segs[iid].append(seg)
-            if iscrowd is not None: iscrowds[iid].append(iscrowd)
+            if oid is not None: oids[iid].extend(L(oid))
+            if bbox is not None: bboxes[iid].extend(L(bbox))
+            if seg is not None: segs[iid].extend(L(seg))
+            if iscrowd is not None: iscrowds[iid].extend(L(iscrowd))
             iids.add(iid)
-        # TODO: Handle nones
+        for d in [bboxes,segs,oids,iscrowds]: d.default_factory = lambda: None
         return [Annotation(i, oids[i], bboxes=bboxes[i], segs=segs[i], iscrowds=iscrowds[i]) for i in iids]
 
 # Cell
