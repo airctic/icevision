@@ -4,10 +4,11 @@ __all__ = ['Dataset', 'zip_collate', 'RCNNDataloader']
 
 # Cell
 from ..imports import *
+from ..transforms import EmptyTransformer
 
 # Cell
 class Dataset:
-    def __init__(self, records, tfms): self.records,self.tfms = records,tfms
+    def __init__(self, records, tfms=None): self.records,self.tfms = records,tfms or EmptyTransformer()
     def __len__(self): return len(self.records)
     def __getitem__(self, i):
         im,rec = self.tfms(self.records[i])
