@@ -3,15 +3,14 @@
 __all__ = ['AlbumentationTransformer']
 
 # Cell
-import albumentations as A
 from .imports import *
 from .core import *
 from .data.all import *
 
 # Cell
 class AlbumentationTransformer:
-    bbox_params=A.BboxParams(format='pascal_voc', label_fields=['oids'])
     def __init__(self, tfms):
+        self.bbox_params=A.BboxParams(format='pascal_voc', label_fields=['oids'])
         self.tfms = A.Compose(tfms, bbox_params=self.bbox_params)
 
     def __call__(self, record): return self.apply(record)
@@ -20,7 +19,7 @@ class AlbumentationTransformer:
         d = self.tfms(
             image = open_img(record.iinfo.fp),
             bboxes = [o.xyxy for o in record.annot.bboxes],
-            masks = [o.to_mask(record.iinfo.h, record.iinfo.w).data for o in record.annot.segs],
+            masks = Mask.from_segs(record.annot.segs, record.iinfo.h, record.iinfo.w).data,
             oids = record.annot.oids,
             keypoints = record.annot.kpts,
         )
