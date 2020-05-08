@@ -28,12 +28,16 @@ index = {"notnone": "00_core.ipynb",
          "COCOParser": "04_data.annotations.ipynb",
          "show_record": "04_data.annotations.ipynb",
          "AlbumentationTransformer": "06_transforms.ipynb",
+         "Dataset": "07_data.load.ipynb",
+         "zip_collate": "07_data.load.ipynb",
+         "RCNNDataloader": "07_data.load.ipynb",
          "MaskRCNNModel": "08_models.ipynb"}
 
 modules = ["core.py",
            "data/core.py",
            "data/annotation.py",
            "transforms.py",
+           "data/load.py",
            "models.py"]
 
 doc_url = "https://lgvaz.github.io/mantisshrimp/"
