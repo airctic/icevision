@@ -123,9 +123,9 @@ class Annotation:
 #         if not allequal(lens): raise ValueError(f'All annotations should have the same size: {lens}')
 #         assert len(self.bboxes)==len(self.segs)
     def __getitem__(self, i):
-        # TODO: Can be refactored?
+        # TODO: Needs to be refactored?
         bbox = self.bboxes[i] if notnone(self.bboxes) else None
-        seg = self.segs[i] if notnone(self.segs) else None
+        seg = self.segs[i] if (notnone(self.segs) and len(self.segs)>i) else None # Single mask file can contain multiple masks
         kpts = self.kpts[i] if notnone(self.kpts) else None
         iscrowd = self.iscrowds[i] if notnone(self.iscrowds) else None
         return Instance(oid=self.oids[i],bbox=bbox,seg=seg,kpts=None,iscrowd=iscrowd) #kpts None
