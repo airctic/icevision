@@ -187,11 +187,14 @@ class ImageParser:
     def split(self, o): return random_split()
 
     def parse(self):
-        xs = []
+        xs,iids = [],[]
         for o in tqdm(self):
             self.prepare(o)
-            xs.append(ImageInfo(iid=self.iid(o), fp=self.file_path(o), split=self.split(o),
-                                h=self.height(o), w=self.width(o)))
+            iid = self.iid(o)
+            if iid not in iids:
+                iids.append(iid)
+                xs.append(ImageInfo(iid=self.iid(o), fp=self.file_path(o), split=self.split(o),
+                                    h=self.height(o), w=self.width(o)))
         return xs
 
 # Cell

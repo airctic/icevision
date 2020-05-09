@@ -36,14 +36,20 @@ index = {"notnone": "00_core.ipynb",
          "Dataset": "07_data.load.ipynb",
          "zip_collate": "07_data.load.ipynb",
          "RCNNDataloader": "07_data.load.ipynb",
-         "MaskRCNNModel": "08_models.ipynb"}
+         "RCNNModel": "08_models.ipynb",
+         "MaskRCNNModel": "08_models.ipynb",
+         "FastRCNNModel": "08_models.ipynb",
+         "records2coco": "11_evaluation.coco.ipynb",
+         "coco_api_from_records": "11_evaluation.coco.ipynb",
+         "COCOEvaluator": "11_evaluation.coco.ipynb"}
 
 modules = ["core.py",
            "data/core.py",
            "data/annotation.py",
            "transforms.py",
            "data/load.py",
-           "models.py"]
+           "models.py",
+           "evaluation/coco.py"]
 
 doc_url = "https://lgvaz.github.io/mantisshrimp/"
 

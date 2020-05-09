@@ -1,6 +1,7 @@
 import cv2,json,torch,torchvision
 import pytorch_lightning as pl
 
+from enum import Enum
 from tqdm.auto import tqdm
 from pycocotools import mask as mask_utils
 from typing import *

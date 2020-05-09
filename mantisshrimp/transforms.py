@@ -25,13 +25,13 @@ class AlbumentationTransformer(Transformer):
         self.bbox_params=A.BboxParams(format='pascal_voc', label_fields=['oids'])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
-    def apply(self, record):
+    def apply(self, r):
         d = self.tfms(
-            image = open_img(record.iinfo.fp),
-            bboxes = [o.xyxy for o in record.annot.bboxes],
-            masks = Mask.from_segs(record.annot.segs, record.iinfo.h, record.iinfo.w).data,
-            oids = record.annot.oids,
-            keypoints = record.annot.kpts,
+            image=open_img(r.iinfo.fp),
+            oids=r.annot.oids,
+            bboxes=[o.xyxy for o in r.annot.bboxes] if notnone(r.annot.bboxes) else None,
+            masks=Mask.from_segs(r.annot.segs,r.iinfo.h,r.iinfo.w).data if notnone(r.annot.segs) else None,
+            keypoints=r.annot.kpts if notnone(r.annot.kpts) else None,
         )
         # TODO: Don't use dicts
         h,w,_ = d['image'].shape
@@ -42,4 +42,4 @@ class AlbumentationTransformer(Transformer):
             segs=Mask(np.stack(d['masks'])) if notnone(d['masks']) else None,
         #     kpts=res['keypoints'] # TODO
         )
-        return d['image'], record.new(iinfo=iinfo, annot=annot)
+        return d['image'], r.new(iinfo=iinfo, annot=annot)
