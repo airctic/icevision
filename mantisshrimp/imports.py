@@ -4,6 +4,7 @@ import pytorch_lightning as pl
 from enum import Enum
 from tqdm.auto import tqdm
 from pycocotools import mask as mask_utils
+from contextlib import contextmanager
 from typing import *
 
 from torch import tensor

@@ -2,7 +2,7 @@
 
 __all__ = ['Mask', 'MaskFile', 'RLE', 'Polygon', 'BBox', 'ImageInfo', 'Instance', 'Annotation', 'Record', 'DataSplit',
            'random_split', 'ImageParser', 'AnnotationParser', 'DataParser', 'COCOImageParser', 'COCOAnnotationParser',
-           'COCOParser', 'show_record']
+           'COCOParser', 'draw_label', 'bbox_polygon', 'draw_mask', 'show_annot', 'show_record']
 
 # Cell
 from collections import UserList
@@ -34,7 +34,7 @@ class Mask:
             if isinstance(o, (RLE, Polygon)): masks.append(m[None])
             elif isinstance(o, MaskFile): masks.append(m)
             else: raise ValueError(f'Segmented type {type(o)} not supported')
-        return cls(np.concatenate([o.to_mask(h, w).data for o in segs]))
+        return cls(np.concatenate(masks))
 
 # Cell
 @dataclass
@@ -132,6 +132,10 @@ class Annotation:
         iscrowd = self.iscrowds[i] if notnone(self.iscrowds) else None
         return Instance(oid=self.oids[i],bbox=bbox,seg=seg,kpts=None,iscrowd=iscrowd) #kpts None
 
+    def get_mask(self, h, w):
+#         return [Mask.from_segs([o],h,w) for o in self.segs]
+        return Mask.from_segs(self.segs,h,w) if notnone(self.segs) else None
+
 # Cell
 @dataclass
 class Record:
@@ -219,6 +223,7 @@ class AnnotationParser:
         iscrowds = defaultdict(list)
         for o in tqdm(self):
             self.prepare(o)
+            # TODO: Refactor with python 3.8 walrus syntax
             iid = self.iid(o)
             bbox = self.bbox(o)
             seg = self.seg(o)
@@ -285,76 +290,48 @@ from matplotlib import patches
 from matplotlib.collections import PatchCollection
 
 # Cell
-def show_record(record, im=None, id2cat=None, bbox=False, fontsize=18, ax=None, **kwargs):
-    'From github.com/cocodataset/cocoapi/blob/master/PythonAPI/pycocotools/coco.py#L233'
-    im = im if notnone(im) else open_img(record.iinfo.fp)
-    height,width,_ = im.shape
-    ax = show_img(im, ax=ax, **kwargs)
-    ax.set_autoscale_on(False)
-    polygons = []
-    color = []
-    for ann in record.annot:
-        c = (np.random.random((1, 3))*0.6+0.4).tolist()[0]
-        # Assert both seg and masks are not present, or unify view
-        if ann.seg is not None:
-            if isinstance(ann.seg, Polygon):
-                for seg in ann.seg.pnts:
-                    poly = np.array(seg).reshape((int(len(seg)/2), 2))
-                    polygons.append(patches.Polygon(poly))
-                    color.append(c)
-            elif isinstance(ann.seg, RLE):
-                if isinstance(ann.seg.counts, list):
-#                     rle = mask_utils.frPyObjects([ann.seg.counts], height, width)
-                    m = ann.seg.to_mask(height, width).data
-                else:
-                    raise NotImplementedError
-    #                 rle = [ann['segmentation']]
-#                 m = mask_utils.decode(rle)
-                if ann.iscrowd == 1: color_mask = np.array([2.0,166.0,101.0])/255
-                if ann.iscrowd == 0: raise NotImplementedError # TODO: I'm not sure how to handle this case
-    #                 color_mask = np.random.random((1, 3)).tolist()[0]
-            elif isinstance(ann.seg, MaskFile):
-                masks = ann.seg.to_mask(height, width).data
-                color_masks = np.random.random((masks.shape[0], 3))
-                imgs = np.ones((*masks.shape, 3))
-                for img,m,color_mask in zip(imgs,masks,color_masks):
-                    for i in range(3):
-                        img[:,:,i] = color_mask[i]
-                    ax.imshow(np.dstack((img, m*0.5)))
-            elif isinstance(ann.seg, Mask):
-                m = ann.seg.data
-                color_mask = np.random.random(3)
-            else: raise ValueError(f'Not supported type: {type(ann.seg)}')
-            if isinstance(ann.seg, RLE) or isinstance(ann.seg, Mask):
-                img = np.ones( (m.shape[0], m.shape[1], 3) )
-                for i in range(3):
-                    img[:,:,i] = color_mask[i]
-                ax.imshow(np.dstack( (img, m*0.5) ))
-        if ann.kpts and type(ann['keypoints']) == list:
-            raise NotImplementedError
-            # turn skeleton into zero-based index
-    #                     sks = np.array(self.loadCats(ann['category_id'])[0]['skeleton'])-1
-    #                     kp = np.array(ann['keypoints'])
-    #                     x = kp[0::3]
-    #                     y = kp[1::3]
-    #                     v = kp[2::3]
-    #                     for sk in sks:
-    #                         if np.all(v[sk]>0):
-    #                             plt.plot(x[sk],y[sk], linewidth=3, color=c)
-    #                     ax.plot(x[v>0], y[v>0],'o',markersize=8, markerfacecolor=c, markeredgecolor='k',markeredgewidth=2)
-    #                     ax.plot(x[v>1], y[v>1],'o',markersize=8, markerfacecolor=c, markeredgecolor=c, markeredgewidth=2)
+def draw_label(ax, x, y, name, color, fontsize=18):
+    ax.text(x+1, y-2, name, fontsize=fontsize, color='white', va='bottom',
+            bbox=dict(facecolor=color, edgecolor=color, pad=2, alpha=.9))
 
-        if bbox:
-            [bx, by, bw, bh] = ann.bbox.xywh
-            poly = [[bx, by], [bx, by+bh], [bx+bw, by+bh], [bx+bw, by]]
-            np_poly = np.array(poly).reshape((4,2))
-            polygons.append(patches.Polygon(np_poly))
-            color.append(c)
-            name = ann.oid if id2cat is None else id2cat[ann.oid]
-            ax.text(bx+1, by-2, name, fontsize=fontsize, color='white', va='bottom',
-                    bbox=dict(facecolor=c, edgecolor=c, pad=2, alpha=.9))
+# Cell
+def bbox_polygon(bbox):
+    bx, by, bw, bh = bbox.xywh
+    poly = np.array([[bx,by], [bx,by+bh], [bx+bw,by+bh], [bx+bw,by]])
+    return patches.Polygon(poly)
 
-    p = PatchCollection(polygons, facecolor=color, linewidths=0, alpha=0.4)
+# Cell
+def draw_mask(ax, mask, color):
+    color_mask = np.ones((*mask.shape,3)) * color
+    ax.imshow(np.dstack((color_mask,mask.data*.5)))
+    ax.contour(mask.data, colors=[color_mask[0,0,:]], alpha=.4)
+
+# Cell
+def show_annot(im, labels=None, bboxes=None, masks=None, ax=None, figsize=None):
+    # Sample colors at the end
+    ax = show_img(im, ax=ax, figsize=figsize or (10,10))
+    polygons,colors = [],[]
+    for label,bbox,mask in itertools.zip_longest(*[ifnone(o,[]) for o in [labels,bboxes,masks]]):
+        color = (np.random.random(3)*0.6+0.4)
+        colors.append(color)
+        if notnone(bbox): polygons.append(bbox_polygon(bbox))
+        if notnone(mask): draw_mask(ax, mask, color)
+        if notnone(label):
+            if notnone(bbox): x,y = bbox.x,bbox.y
+            elif notnone(mask): y,x = np.unravel_index(mask.data.argmax(), mask.data.shape)
+            else: raise ValueError('Can only display labels if bboxes are given')
+            draw_label(ax, x=x, y=y, name=label, color=color)
+
+    p = PatchCollection(polygons, facecolor=colors, linewidths=0, alpha=0.3)
     ax.add_collection(p)
-    p = PatchCollection(polygons, facecolor='none', edgecolors=color, linewidths=2)
+    p = PatchCollection(polygons, facecolor='none', edgecolors=colors, linewidths=2)
     ax.add_collection(p)
+
+# Cell
+def show_record(r, label=True, bbox=True, mask=True, ax=None):
+    im = open_img(r.iinfo.fp)
+    h,w,_ = im.shape
+    return show_annot(im, ax=ax,
+                      labels=r.annot.oids if label else None,
+                      bboxes=r.annot.bboxes if bbox else None,
+                      masks=r.annot.get_mask(h,w) if mask else None)
