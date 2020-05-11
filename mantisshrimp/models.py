@@ -24,18 +24,18 @@ class RCNNModel(LightningModule):
         loss = sum(losses.values())
         return {'loss': loss, 'log': {'avg_loss': loss, **losses}}
 
-    def validation_step(self, b, b_idx):
-        xb,yb = b
-        with torch.no_grad(): preds = self(xb)
-        preds = [{k:v.to(torch.device('cpu')) for k,v in p.items()} for p in preds]
-        res = {y["image_id"].item():pred for y,pred in zip(yb, preds)}
-        self.coco_evaluator.update(res)
+#     def validation_step(self, b, b_idx):
+#         xb,yb = b
+#         with torch.no_grad(): preds = self(xb)
+#         preds = [{k:v.to(torch.device('cpu')) for k,v in p.items()} for p in preds]
+#         res = {y["image_id"].item():pred for y,pred in zip(yb, preds)}
+#         self.coco_evaluator.update(res)
 
-    def validation_epoch_end(self, outs):
-        self.coco_evaluator.synchronize_between_processes()
-        self.coco_evaluator.accumulate()
-        self.coco_evaluator.summarize()
-        return {}
+#     def validation_epoch_end(self, outs):
+#         self.coco_evaluator.synchronize_between_processes()
+#         self.coco_evaluator.accumulate()
+#         self.coco_evaluator.summarize()
+#         return {}
 
 
     def configure_optimizers(self):
@@ -72,10 +72,18 @@ def predict(self:RCNNModel, ims=None, rs=None):
     return ims, self(xs)
 
 # Cell
-def show_pred(im, pred, ax=None):
+@patch
+def predict(self:MaskRCNNModel, ims=None, rs=None, mask_thresh=.5):
+    ims,preds = super(MaskRCNNModel, self).predict(ims=ims, rs=rs)
+    for pred in preds: pred['masks'] = (pred['masks']>.5).long().squeeze()
+    return ims, preds
+
+# Cell
+def show_pred(im, pred, mask_thresh=.5, ax=None):
     # TODO: Implement mask and keypoint
     bboxes = [BBox.from_xyxy(*o) for o in pred['boxes']]
-    return show_annot(im, bboxes=bboxes, ax=ax)
+    masks = Mask(to_np(pred['masks']))
+    return show_annot(im, bboxes=bboxes, masks=masks, ax=ax)
 
 # Cell
 def show_preds(ims, preds):
