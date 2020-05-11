@@ -319,7 +319,7 @@ def show_annot(im, labels=None, bboxes=None, masks=None, ax=None, figsize=None):
         if notnone(label):
             if notnone(bbox): x,y = bbox.x,bbox.y
             elif notnone(mask): y,x = np.unravel_index(mask.data.argmax(), mask.data.shape)
-            else: raise ValueError('Can only display labels if bboxes are given')
+            else: raise ValueError('Can only display labels if bboxes or masks are given')
             draw_label(ax, x=x, y=y, name=label, color=color)
 
     p = PatchCollection(polygons, facecolor=colors, linewidths=0, alpha=0.3)
