@@ -50,10 +50,10 @@ index = {"notnone": "00_core.ipynb",
          "RCNNModel.predict": "08_models.ipynb",
          "show_pred": "08_models.ipynb",
          "show_preds": "08_models.ipynb",
-         "Metric": "11_evaluation.coco.ipynb",
-         "records2coco": "11_evaluation.coco.ipynb",
-         "coco_api_from_records": "11_evaluation.coco.ipynb",
-         "COCOMetric": "11_evaluation.coco.ipynb"}
+         "Metric": "11_metrics.core.ipynb",
+         "records2coco": "11_metrics.core.ipynb",
+         "coco_api_from_records": "11_metrics.core.ipynb",
+         "COCOMetric": "11_metrics.core.ipynb"}
 
 modules = ["core.py",
            "data/core.py",
@@ -61,7 +61,7 @@ modules = ["core.py",
            "transforms.py",
            "data/load.py",
            "models.py",
-           "evaluation/coco.py"]
+           "metrics/core.py"]
 
 doc_url = "https://lgvaz.github.io/mantisshrimp/"
 
