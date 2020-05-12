@@ -10,9 +10,12 @@ from .data.all import *
 # Cell
 # TODO: How to properly inject coco_evaluator? A callback/metric?
 class RCNNModel(LightningModule):
-    def __init__(self, n_class):
+    # TODO: coco_eval_fn temporary
+    def __init__(self, n_class, coco_eval_fn):
         super().__init__()
         self.m = self.create_model(n_class)
+        self.coco_fn = coco_eval_fn
+        self.coco_evaluator = self.coco_fn(self)
 
     def create_model(self, n_class, h=256): raise NotImplementedError
 
@@ -24,18 +27,19 @@ class RCNNModel(LightningModule):
         loss = sum(losses.values())
         return {'loss': loss, 'log': {'avg_loss': loss, **losses}}
 
-#     def validation_step(self, b, b_idx):
-#         xb,yb = b
-#         with torch.no_grad(): preds = self(xb)
-#         preds = [{k:v.to(torch.device('cpu')) for k,v in p.items()} for p in preds]
-#         res = {y["image_id"].item():pred for y,pred in zip(yb, preds)}
-#         self.coco_evaluator.update(res)
+    def validation_step(self, b, b_idx):
+        xb,yb = b
+        with torch.no_grad(): preds = self(xb)
+        preds = [{k:v.to(torch.device('cpu')) for k,v in p.items()} for p in preds]
+        res = {y["image_id"].item():pred for y,pred in zip(yb, preds)}
+        self.coco_evaluator.update(res)
 
-#     def validation_epoch_end(self, outs):
-#         self.coco_evaluator.synchronize_between_processes()
-#         self.coco_evaluator.accumulate()
-#         self.coco_evaluator.summarize()
-#         return {}
+    def validation_epoch_end(self, outs):
+        self.coco_evaluator.synchronize_between_processes()
+        self.coco_evaluator.accumulate()
+        self.coco_evaluator.summarize()
+        self.coco_evaluator = self.coco_fn(self)
+        return {}
 
 
     def configure_optimizers(self):
@@ -72,17 +76,11 @@ def predict(self:RCNNModel, ims=None, rs=None):
     return ims, self(xs)
 
 # Cell
-@patch
-def predict(self:MaskRCNNModel, ims=None, rs=None, mask_thresh=.5):
-    ims,preds = super(MaskRCNNModel, self).predict(ims=ims, rs=rs)
-    for pred in preds: pred['masks'] = (pred['masks']>.5).long().squeeze()
-    return ims, preds
-
-# Cell
 def show_pred(im, pred, mask_thresh=.5, ax=None):
     # TODO: Implement mask and keypoint
-    bboxes = [BBox.from_xyxy(*o) for o in pred['boxes']]
-    masks = Mask(to_np(pred['masks']))
+    bboxes,masks,kpts = None,None,None
+    if 'boxes' in pred: bboxes = [BBox.from_xyxy(*o) for o in pred['boxes']]
+    if 'masks' in pred: masks = Mask(to_np((pred['masks']>.5).long().squeeze()))
     return show_annot(im, bboxes=bboxes, masks=masks, ax=ax)
 
 # Cell

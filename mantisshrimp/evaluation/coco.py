@@ -5,6 +5,7 @@ __all__ = ['records2coco', 'coco_api_from_records', 'COCOEvaluator']
 # Cell
 from ..imports import *
 from ..core import *
+from ..models import *
 from .coco_eval import CocoEvaluator
 from pycocotools.coco import COCO
 
@@ -25,7 +26,7 @@ def records2coco(records, id2cat):
             annots['id'].append(i) # TODO: Careful with ids! when over all dataset
             annots['image_id'].append(r.iinfo.iid)
             annots['category_id'].append(annot.oid)
-            annots['bbox'].append(annot.bbox.pnts)
+            annots['bbox'].append(annot.bbox.xywh)
             annots['area'].append(annot.bbox.area)
             # TODO: for other types of masks
             if notnone(annot.seg): annots['segmentation'].extend(annot.seg.to_erle(r.iinfo.h, r.iinfo.w))
@@ -49,10 +50,11 @@ def _get_iou_types(model):
     if isinstance(model, torch.nn.parallel.DistributedDataParallel):
         model_without_ddp = model.module
     iou_types = ["bbox"]
-    if isinstance(model_without_ddp, torchvision.models.detection.MaskRCNN):
+    if isinstance(model_without_ddp, MaskRCNNModel):
         iou_types.append("segm")
     if isinstance(model_without_ddp, torchvision.models.detection.KeypointRCNN):
-        iou_types.append("keypoints")
+        raise NotImplementedError
+#         iou_types.append("keypoints")
     return iou_types
 
 # Cell
