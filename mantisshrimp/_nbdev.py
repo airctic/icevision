@@ -50,9 +50,10 @@ index = {"notnone": "00_core.ipynb",
          "RCNNModel.predict": "08_models.ipynb",
          "show_pred": "08_models.ipynb",
          "show_preds": "08_models.ipynb",
+         "Metric": "11_evaluation.coco.ipynb",
          "records2coco": "11_evaluation.coco.ipynb",
          "coco_api_from_records": "11_evaluation.coco.ipynb",
-         "COCOEvaluator": "11_evaluation.coco.ipynb"}
+         "COCOMetric": "11_evaluation.coco.ipynb"}
 
 modules = ["core.py",
            "data/core.py",

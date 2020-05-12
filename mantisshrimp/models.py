@@ -11,36 +11,37 @@ from .data.all import *
 # TODO: How to properly inject coco_evaluator? A callback/metric?
 class RCNNModel(LightningModule):
     # TODO: coco_eval_fn temporary
-    def __init__(self, n_class, coco_eval_fn):
+    def __init__(self, n_class, metrics=None):
         super().__init__()
         self.m = self.create_model(n_class)
-        self.coco_fn = coco_eval_fn
-        self.coco_evaluator = self.coco_fn(self)
+        self.metrics = metrics or []
+        for metric in self.metrics: metric.register_model(self)
 
     def create_model(self, n_class, h=256): raise NotImplementedError
 
     def forward(self, x): return self.m(x)
 
     def training_step(self, b, b_idx):
-        x,y = b
-        losses = self.m(x,list(y))
+        xb,yb = b
+        losses = self.m(xb,list(yb))
         loss = sum(losses.values())
         return {'loss': loss, 'log': {'avg_loss': loss, **losses}}
 
     def validation_step(self, b, b_idx):
         xb,yb = b
         with torch.no_grad(): preds = self(xb)
-        preds = [{k:v.to(torch.device('cpu')) for k,v in p.items()} for p in preds]
-        res = {y["image_id"].item():pred for y,pred in zip(yb, preds)}
-        self.coco_evaluator.update(res)
+        res = {}
+        for metric in self.metrics:
+            o = metric.step(xb, yb, preds)
+            if notnone(o): res.update(o)
+        return res
 
     def validation_epoch_end(self, outs):
-        self.coco_evaluator.synchronize_between_processes()
-        self.coco_evaluator.accumulate()
-        self.coco_evaluator.summarize()
-        self.coco_evaluator = self.coco_fn(self)
-        return {}
-
+        res = {}
+        for metric in self.metrics:
+            o = metric.end(outs)
+            if notnone(o): res.update(o)
+        return res
 
     def configure_optimizers(self):
         params = [p for p in self.parameters() if p.requires_grad]
