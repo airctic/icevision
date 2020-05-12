@@ -22,6 +22,9 @@ class Mask:
 
     def to_tensor(self): return tensor(self.data, dtype=torch.uint8)
     def to_mask(self, h, w): return self
+    def to_erle(self, h, w):
+        return mask_utils.encode(np.asfortranarray(self.data.transpose(1,2,0)))
+
     @property
     def shape(self): return self.data.shape
 
@@ -46,26 +49,30 @@ class MaskFile:
         obj_ids = np.unique(mask)[1:]
         masks = mask==obj_ids[:, None, None]
         return Mask(masks)
+    def to_erle(self, h, w): return self.to_mask(h,w).to_erle(h,w)
 
 # Cell
 @dataclass
 class RLE:
     counts: List[int]
     def to_mask(self, h, w):
-        erle = mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
-        mask = mask_utils.decode(erle).sum(axis=-1) # Sum is for unconnected polygons
+        erle = self.to_erle(h=h, w=w)
+        mask = mask_utils.decode(erle).sum(axis=-1)
         assert mask.max() == 1, 'Probable overlap in polygons'
         return Mask(mask)
+    def to_erle(self, h, w):
+        return mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
 
 # Cell
 @dataclass
 class Polygon:
     pnts: List[List[int]]
     def to_mask(self, h, w):
-        erle = mask_utils.frPyObjects(self.pnts, h, w)
+        erle = self.to_erle(h=h, w=w)
         mask = mask_utils.decode(erle).sum(axis=-1) # Sum is for unconnected polygons
         assert mask.max() == 1, 'Probable overlap in polygons'
         return Mask(mask)
+    def to_erle(self, h, w): return mask_utils.frPyObjects(self.pnts, h, w)
 
 # Cell
 @dataclass
@@ -238,14 +245,16 @@ class AnnotationParser:
         return [Annotation(i, oids[i], bboxes=bboxes[i], segs=segs[i], iscrowds=iscrowds[i]) for i in iids]
 
 # Cell
+@funcs_kwargs
 class DataParser:
-    def __init__(self, data, source): self.data,self.source=data,source
-    def get_img_parser(self, o, source): raise NotImplementedError
-    def get_annot_parser(self, o, source): raise NotImpletedError
+    _methods = 'img_parser annot_parser'.split()
+    def __init__(self, data, source, **kwargs): self.data,self.source=data,source
+    def img_parser(self, o, source): raise NotImplementedError
+    def annot_parser(self, o, source): raise NotImplementedError
 
     def parse(self):
-        imgs = L(self.get_img_parser(self.data, self.source).parse())
-        annots = L(self.get_annot_parser(self.data, self.source).parse())
+        imgs = L(self.img_parser(self.data, self.source).parse())
+        annots = L(self.annot_parser(self.data, self.source).parse())
         # Remove imgs that don't have annotations
         img_iids = set(imgs.attrgot('iid'))
         valid_iids = set(annots.attrgot('iid'))
@@ -282,8 +291,8 @@ class COCOAnnotationParser(AnnotationParser):
 
 # Cell
 class COCOParser(DataParser):
-    def get_img_parser(self, o, source): return COCOImageParser(o['images'], source)
-    def get_annot_parser(self, o, source): return COCOAnnotationParser(o['annotations'], source)
+    def img_parser(self, o, source): return COCOImageParser(o['images'], source)
+    def annot_parser(self, o, source): return COCOAnnotationParser(o['annotations'], source)
 
 # Cell
 from matplotlib import patches

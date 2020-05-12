@@ -84,5 +84,6 @@ def show_pred(im, pred, mask_thresh=.5, ax=None):
     return show_annot(im, bboxes=bboxes, masks=masks, ax=ax)
 
 # Cell
-def show_preds(ims, preds):
-    return grid2([partial(show_pred,im=im,pred=pred) for im,pred in zip(ims,preds)])
+def show_preds(ims, preds, mask_thresh=.5):
+    return grid2([partial(show_pred,im=im,pred=pred,mask_thresh=mask_thresh)
+                  for im,pred in zip(ims,preds)])
