@@ -6,7 +6,10 @@ This file will become your README and also the index of your documentation.
 
 ## Install
 
-`pip install your_project_name`
+```python
+!pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+!pip install mantisshrimp
+```
 
 ## How to use
 

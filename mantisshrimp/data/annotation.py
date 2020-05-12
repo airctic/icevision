@@ -56,12 +56,24 @@ class MaskFile:
 class RLE:
     counts: List[int]
     def to_mask(self, h, w):
-        erle = self.to_erle(h=h, w=w)
-        mask = mask_utils.decode(erle).sum(axis=-1)
-        assert mask.max() == 1, 'Probable overlap in polygons'
+        'From https://www.kaggle.com/julienbeaulieu/imaterialist-detectron2'
+        mask = np.full(h*w, 0, dtype=np.uint8)
+        for i, start_pixel in enumerate(self.counts[::2]):
+            mask[start_pixel: start_pixel+self.counts[2*i+1]] = 1
+        mask = mask.reshape((h, w), order='F')
         return Mask(mask)
+    # TODO: DEPRECATED
+#     def to_mask(self, h, w):
+#         erle = self.to_erle(h=h, w=w)
+#         mask = mask_utils.decode(erle).sum(axis=-1)
+#         assert mask.max() == 1, 'Probable overlap in polygons'
+#         return Mask(mask)
     def to_erle(self, h, w):
         return mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
+    @classmethod
+    def from_string(cls, s, sep=' '):
+        return cls(lmap(int, s.split(sep)))
+
 
 # Cell
 @dataclass
@@ -83,6 +95,7 @@ class BBox:
             xl,yu,xr,yb = self.pnts
             self.x,self.y,self.h,self.w = xl,yu,(yb-yu),(xr-xl)
             self.area = self.h*self.w
+
     @property
     def xyxy(self): return self.pnts
     @property
@@ -93,6 +106,29 @@ class BBox:
     def from_xyxy(cls, xl, yu, xr, yb): return cls([xl,yu,xr,yb])
 
     def to_tensor(self): return tensor(self.xyxy, dtype=torch.float)
+
+    @classmethod
+    def from_rle(cls, rle, h, w):
+        a = np.array(rle.counts, dtype=np.uint)
+        a = a.reshape((-1, 2))  # an array of (start, length) pairs
+        a[:,0] -= 1  # `start` is 1-indexed
+        y0 = a[:,0] % h
+        y1 = y0 + a[:,1]
+        if np.any(y1 > h):
+            # got `y` overrun, meaning that there are a pixels in mask on 0 and shape[0] position
+            y0 = 0
+            y1 = h
+        else:
+            y0 = np.min(y0)
+            y1 = np.max(y1)
+        x0 = a[:,0] // h
+        x1 = (a[:,0] + a[:,1]) // h
+        x0 = np.min(x0)
+        x1 = np.max(x1)
+        if x1 > w:
+            # just went out of the image dimensions
+            raise ValueError(f"invalid RLE or image dimensions: x1={x1} > shape[1]={w}")
+        return cls.from_xyxy(x0, y0, x1, y1)
 
 # Cell
 @dataclass
