@@ -40,7 +40,7 @@ class Mask:
         return cls(np.concatenate(masks))
 
 # Cell
-@dataclass(frozen=True)
+@dataclass
 class MaskFile:
     fp: Union[str, Path]
     def __post_init__(self): self.fp = Path(self.fp)
@@ -311,9 +311,9 @@ class AnnotationParser:
             iid = self.idmap[self.iid(o)]
             bbox = self.bbox(o)
             seg = self.seg(o)
-            oid = self.oid(o)
+            oid = [self.catmap.id2i[id] for id in L(self.oid(o))]
             iscrowd = self.iscrowd(o)
-            if oid is not None: oids[iid].extend(L(oid))
+            if oid is not None: oids[iid].extend(oid)
             if bbox is not None: bboxes[iid].extend(L(bbox))
             if seg is not None: segs[iid].extend(L(seg))
             if iscrowd is not None: iscrowds[iid].extend(L(iscrowd))
@@ -360,7 +360,7 @@ class COCOImageParser(ImageParser):
 # Cell
 class COCOAnnotationParser(AnnotationParser):
     def iid(self, o):  return o['image_id']
-    def oid(self, o): return self.catmap.id2i[o['category_id']]
+    def oid(self, o): return o['category_id']
     def bbox(self, o): return BBox.from_xywh(*o['bbox'])
     def iscrowd(self, o): return o['iscrowd']
     def seg(self, o):

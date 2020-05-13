@@ -22,7 +22,7 @@ class Metric:
 
 # Cell
 def records2coco(records, catmap):
-    cats = [{'id':o.id, 'name':o.name} for o in catmap.cats if notnone(o.id)]
+    cats = [{'id':i, 'name':o.name} for i,o in catmap.i2o.items()]
     annots = defaultdict(list)
     iinfos = []
     i = 0
