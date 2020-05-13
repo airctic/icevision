@@ -81,7 +81,7 @@ def show_pred(im, pred, mask_thresh=.5, ax=None):
     # TODO: Implement mask and keypoint
     bboxes,masks,kpts = None,None,None
     if 'boxes' in pred: bboxes = [BBox.from_xyxy(*o) for o in pred['boxes']]
-    if 'masks' in pred: masks = Mask(to_np((pred['masks']>.5).long().squeeze()))
+    if 'masks' in pred: masks = Mask(to_np((pred['masks']>.5).long()[:,0,:,:]))
     return show_annot(im, bboxes=bboxes, masks=masks, ax=ax)
 
 # Cell
