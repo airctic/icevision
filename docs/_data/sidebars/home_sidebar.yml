@@ -10,8 +10,29 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: module name here
+      title: Core
       url: /core
+    - output: web,pdf
+      title: Data core
+      url: /data.core
+    - output: web,pdf
+      title: Data annotation
+      url: /data.annotations
+    - output: web,pdf
+      title: Transform
+      url: /transforms
+    - output: web,pdf
+      title: Data load
+      url: /data.load
+    - output: web,pdf
+      title: Models
+      url: /models
+    - output: web,pdf
+      title: Metrics
+      url: /metrics.core
+    - output: web,pdf
+      title: Title
+      url: /Untitled1
     output: web
     title: mantisshrimp
   output: web

@@ -1,8 +1,10 @@
-# Project name here
-> Summary description here.
+# MantisShrimp
+> Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application.
 
 
-This file will become your README and also the index of your documentation.
+MantisShrimp is in very early development, all contributions are welcome!
+
+Be sure to check the `issues` board =)
 
 ## Install
 
@@ -13,15 +15,4 @@ This file will become your README and also the index of your documentation.
 
 ## How to use
 
-Fill me in please! Don't forget code examples:
-
-```
-1+1
-```
-
-
-
-
-    2
-
-
+Check the `examples` folder for a ton of usage cases. It should be very easy to get started.

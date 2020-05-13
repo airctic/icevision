@@ -1,6 +1,13 @@
 {
   "mantisshrimp": {
     "Overview": "/",
-    "module name here": "/core"
+    "Core": "/core",
+    "Data core": "/data.core",
+    "Data annotation": "/data.annotations",
+    "Transform": "/transforms",
+    "Data load": "/data.load",
+    "Models": "/models",
+    "Metrics": "/metrics.core",
+    "Title": "/Untitled1"
   }
 }

@@ -5,7 +5,8 @@ __all__ = ['Transformer', 'EmptyTransformer', 'AlbumentationTransformer']
 # Cell
 from .imports import *
 from .core import *
-from .data.all import *
+from .data.core import *
+from .data.annotation import *
 
 # Cell
 class Transformer:
