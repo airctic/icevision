@@ -3,6 +3,7 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"notnone": "00_core.ipynb",
+         "last": "00_core.ipynb",
          "lmap": "00_core.ipynb",
          "allequal": "00_core.ipynb",
          "np_local_seed": "00_core.ipynb",
@@ -29,6 +30,7 @@ index = {"notnone": "00_core.ipynb",
          "Record": "04_data.annotations.ipynb",
          "DataSplit": "04_data.annotations.ipynb",
          "random_split": "04_data.annotations.ipynb",
+         "IDMap": "04_data.annotations.ipynb",
          "ImageParser": "04_data.annotations.ipynb",
          "AnnotationParser": "04_data.annotations.ipynb",
          "DataParser": "04_data.annotations.ipynb",

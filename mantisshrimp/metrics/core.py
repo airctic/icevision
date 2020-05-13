@@ -21,8 +21,8 @@ class Metric:
         raise RuntimeError('Register a model with `register_model` before using the metric')
 
 # Cell
-def records2coco(records, id2cat):
-    cats = [{'id':k, 'name':v} for k,v in id2cat.items()]
+def records2coco(records, catmap):
+    cats = [{'id':o.id, 'name':o.name} for o in catmap.cats if notnone(o.id)]
     annots = defaultdict(list)
     iinfos = []
     i = 0
@@ -49,9 +49,9 @@ def records2coco(records, id2cat):
     return {'images': iinfos, 'annotations': annots, 'categories': cats}
 
 # Cell
-def coco_api_from_records(records, id2cat):
+def coco_api_from_records(records, catmap):
     coco_ds = COCO()
-    coco_ds.dataset = records2coco(records, id2cat)
+    coco_ds.dataset = records2coco(records, catmap)
     coco_ds.createIndex()
     return coco_ds
 
@@ -70,9 +70,9 @@ def _get_iou_types(model):
 
 # Cell
 class COCOMetric(Metric):
-    def __init__(self, records, id2cat):
+    def __init__(self, records, catmap):
         super().__init__()
-        self._coco_ds = coco_api_from_records(records, id2cat)
+        self._coco_ds = coco_api_from_records(records, catmap)
 
     def register_model(self, model):
         super().register_model(model)
