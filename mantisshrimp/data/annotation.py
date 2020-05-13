@@ -40,7 +40,7 @@ class Mask:
         return cls(np.concatenate(masks))
 
 # Cell
-@dataclass
+@dataclass(frozen=True)
 class MaskFile:
     fp: Union[str, Path]
     def __post_init__(self): self.fp = Path(self.fp)
@@ -52,31 +52,54 @@ class MaskFile:
     def to_erle(self, h, w): return self.to_mask(h,w).to_erle(h,w)
 
 # Cell
-@dataclass
+@dataclass(frozen=True)
 class RLE:
     counts: List[int]
     def to_mask(self, h, w):
         'From https://www.kaggle.com/julienbeaulieu/imaterialist-detectron2'
         mask = np.full(h*w, 0, dtype=np.uint8)
         for i, start_pixel in enumerate(self.counts[::2]):
-            mask[start_pixel: start_pixel+self.counts[2*i+1]] = 1
+            mask[start_pixel:start_pixel+self.counts[2*i+1]] = 1
         mask = mask.reshape((h, w), order='F')
         return Mask(mask)
-    # TODO: DEPRECATED
 #     def to_mask(self, h, w):
 #         erle = self.to_erle(h=h, w=w)
 #         mask = mask_utils.decode(erle).sum(axis=-1)
-#         assert mask.max() == 1, 'Probable overlap in polygons'
+#         assert mask.max() == 1, 'Probable inconsistency in counts'
 #         return Mask(mask)
     def to_erle(self, h, w):
+        raise NotImplementedError('Convert counts to coco style')
         return mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
     @classmethod
     def from_string(cls, s, sep=' '):
         return cls(lmap(int, s.split(sep)))
-
+#     @classmethod
+#     def from_kaggle(cls, counts):
+#         'Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)'
+#         if len(counts)%2 != 0: raise ValueError('Counts must be divisible by 2')
+#         total = 0
+#         coco_counts = []
+#         for i,n in zip(counts[::2], counts[1::2]):
+#             coco_counts.append(i-1-total) # 0s
+#             coco_counts.append(n) # 1s
+#             total = i+n-1
+#         return cls(coco_counts)
+    @classmethod
+    def from_kaggle(cls, counts):
+        'Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)'
+        if len(counts)%2 != 0: raise ValueError('Counts must be divisible by 2')
+        return cls(counts)
+    @classmethod
+    def from_coco(cls, counts):
+        'Described [here](https://stackoverflow.com/a/49547872/6772672)'
+        kaggle_counts,total = [],0
+        for zrs,ons in zip(counts[::2], counts[1::2]):
+            kaggle_counts.extend([zrs+total+1, ons])
+            total += zrs+ons
+        return cls.from_kaggle(kaggle_counts)
 
 # Cell
-@dataclass
+@dataclass(frozen=True)
 class Polygon:
     pnts: List[List[int]]
     def to_mask(self, h, w):
@@ -246,7 +269,7 @@ class ImageParser:
 
 # Cell
 class AnnotationParser:
-    def __init__(self, data, source): self.data,self.source = data,source
+    def __init__(self, data, source, catmap): self.data,self.source,self.catmap = data,source,catmap
     def __iter__(self): yield from self.data
     def __len__(self): return len(self.data)
     # Methods to override
@@ -284,13 +307,13 @@ class AnnotationParser:
 @funcs_kwargs
 class DataParser:
     _methods = 'img_parser annot_parser'.split()
-    def __init__(self, data, source, **kwargs): self.data,self.source=data,source
+    def __init__(self, data, source, catmap, **kwargs): self.data,self.source,self.catmap=data,source,catmap
     def img_parser(self, o, source): raise NotImplementedError
     def annot_parser(self, o, source): raise NotImplementedError
 
     def parse(self):
         imgs = L(self.img_parser(self.data, self.source).parse())
-        annots = L(self.annot_parser(self.data, self.source).parse())
+        annots = L(self.annot_parser(self.data, self.source, self.catmap).parse())
         # Remove imgs that don't have annotations
         img_iids = set(imgs.attrgot('iid'))
         valid_iids = set(annots.attrgot('iid'))
@@ -322,13 +345,13 @@ class COCOAnnotationParser(AnnotationParser):
     def iscrowd(self, o): return o['iscrowd']
     def seg(self, o):
         seg = o['segmentation']
-        if o['iscrowd']: return RLE(seg['counts'])
+        if o['iscrowd']: return RLE.from_coco(seg['counts'])
         else: return Polygon(seg)
 
 # Cell
 class COCOParser(DataParser):
     def img_parser(self, o, source): return COCOImageParser(o['images'], source)
-    def annot_parser(self, o, source): return COCOAnnotationParser(o['annotations'], source)
+    def annot_parser(self, o, source, catmat): return COCOAnnotationParser(o['annotations'], source, catmap)
 
 # Cell
 from matplotlib import patches
@@ -348,8 +371,8 @@ def bbox_polygon(bbox):
 # Cell
 def draw_mask(ax, mask, color):
     color_mask = np.ones((*mask.shape,3)) * color
-    ax.imshow(np.dstack((color_mask,mask.data*.5)))
-    ax.contour(mask.data, colors=[color_mask[0,0,:]], alpha=.4)
+    ax.imshow(np.dstack((color_mask,mask*.5)))
+    ax.contour(mask, colors=[color_mask[0,0,:]], alpha=.4)
 
 # Cell
 def show_annot(im, labels=None, bboxes=None, masks=None, ax=None, figsize=None):
@@ -360,7 +383,7 @@ def show_annot(im, labels=None, bboxes=None, masks=None, ax=None, figsize=None):
         color = (np.random.random(3)*0.6+0.4)
         colors.append(color)
         if notnone(bbox): polygons.append(bbox_polygon(bbox))
-        if notnone(mask): draw_mask(ax, mask, color)
+        if notnone(mask): draw_mask(ax, mask.data.copy(), color)
         if notnone(label):
             if notnone(bbox): x,y = bbox.x,bbox.y
             elif notnone(mask): y,x = np.unravel_index(mask.data.argmax(), mask.data.shape)
