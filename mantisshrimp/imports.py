@@ -10,8 +10,9 @@ from typing import *
 from torch import tensor, Tensor
 from torch.utils.data import DataLoader
 from torchvision.transforms.functional import to_tensor as im2tensor
-from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
-from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
+from torchvision.models.detection.faster_rcnn import FasterRCNN,FastRCNNPredictor,fasterrcnn_resnet50_fpn
+from torchvision.models.detection.mask_rcnn import MaskRCNN,MaskRCNNPredictor,maskrcnn_resnet50_fpn
+from torchvision.models.detection.keypoint_rcnn import KeypointRCNN,KeypointRCNNPredictor,keypointrcnn_resnet50_fpn
 from pytorch_lightning import LightningModule, Trainer
 
 from fastcore.imports import *

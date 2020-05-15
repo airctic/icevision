@@ -20,7 +20,7 @@ class AlbuTfm(Tfm):
         self.bbox_params=A.BboxParams(format='pascal_voc', label_fields=['labels'])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
-    def apply(self, img, labels, bboxes, masks, **kwargs):
+    def apply(self, img, labels, bboxes=None, masks=None, **kwargs):
         d = self.tfms(image=img, labels=labels,
                       masks=masks.data if masks else None,
                       bboxes=lmap(lambda o: o.xyxy, bboxes))

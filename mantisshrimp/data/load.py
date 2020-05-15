@@ -71,7 +71,7 @@ def item2tensor(item):
         'masks':    ifnotnone(item.masks, lambda o: tensor(o.data, dtype=torch.uint8)),
         # TODO: Keypoints
     }
-    return x, y
+    return x, cleandict(y)
 
 # Cell
 def rcnn_collate(items):
