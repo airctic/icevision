@@ -1,4 +1,4 @@
-import cv2,json,torch,torchvision
+import cv2,json,torch,torchvision,dataclasses
 import pytorch_lightning as pl
 
 from enum import Enum
@@ -7,7 +7,7 @@ from pycocotools import mask as mask_utils
 from contextlib import contextmanager
 from typing import *
 
-from torch import tensor
+from torch import tensor, Tensor
 from torch.utils.data import DataLoader
 from torchvision.transforms.functional import to_tensor as im2tensor
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor

@@ -374,6 +374,17 @@ class COCOParser(DataParser):
     def annot_parser(self, o, source, **kwargs): return COCOAnnotationParser(o['annotations'], source, **kwargs)
 
 # Cell
+def _sample_records():
+    source = Path('samples')
+    annot_json = json.load((source/'annotations.json').open())
+    cats = [Category(o['id'], o['name']) for o in annot_json['categories']]
+    catmap = CategoryMap(cats)
+    parser = COCOParser(annot_json, 'samples/images', catmap)
+    with np_local_seed(42): rtrain,rvalid = parser.parse()
+    return catmap, rtrain, rvalid
+test_utils.sample_records = _sample_records
+
+# Cell
 from matplotlib import patches
 from matplotlib.collections import PatchCollection
 
