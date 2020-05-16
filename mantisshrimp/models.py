@@ -22,19 +22,23 @@ class RCNN(LightningModule):
 
     def validation_step(self, b, b_idx):
         xb,yb = b
-        with torch.no_grad(): preds = self(xb)
+        with torch.no_grad(): losses,preds = self(xb,list(yb))
+        loss = sum(losses.values()).item()
+        losses = {f'val_{k}':v.item() for k,v in losses.items()}
         res = {}
         for metric in self.metrics:
             o = metric.step(xb, yb, preds)
-            if notnone(o): res.update(o)
+            if notnone(o): raise NotImplementedError # How to update res?
+        res.update({'val_loss': loss, **losses})
         return res
 
     def validation_epoch_end(self, outs):
         res = {}
         for metric in self.metrics:
             o = metric.end(outs)
-            if notnone(o): res.update(o)
-        res.update({'val_loss': 0})
+            if notnone(o): raise NotImplementedError # How to update res?
+        out = {k:np.mean(v) for k,v in mergeds(outs).items()}
+        res.update({'val_loss': out['val_loss'], 'log': out})
         return res
 
     def configure_optimizers(self):
