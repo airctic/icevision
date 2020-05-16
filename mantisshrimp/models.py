@@ -34,6 +34,7 @@ class RCNN(LightningModule):
         for metric in self.metrics:
             o = metric.end(outs)
             if notnone(o): res.update(o)
+        res.update({'val_loss': 0})
         return res
 
     def configure_optimizers(self):

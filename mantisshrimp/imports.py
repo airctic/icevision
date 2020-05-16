@@ -1,5 +1,7 @@
 import cv2,json,torch,torchvision,dataclasses
 import pytorch_lightning as pl
+import torch.optim.lr_scheduler as lr_scheduler
+import pytorch_lightning.loggers as loggers
 
 from enum import Enum
 from tqdm.auto import tqdm
@@ -14,6 +16,8 @@ from torchvision.models.detection.faster_rcnn import FasterRCNN,FastRCNNPredicto
 from torchvision.models.detection.mask_rcnn import MaskRCNN,MaskRCNNPredictor,maskrcnn_resnet50_fpn
 from torchvision.models.detection.keypoint_rcnn import KeypointRCNN,KeypointRCNNPredictor,keypointrcnn_resnet50_fpn
 from pytorch_lightning import LightningModule, Trainer
+
+from pytorch_lightning.callbacks import LearningRateLogger
 
 from fastcore.imports import *
 from fastcore.test import *
