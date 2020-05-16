@@ -140,3 +140,4 @@ checklink/cookies.txt
 .gitconfig
 
 lightning_logs/
+examples/wandb
