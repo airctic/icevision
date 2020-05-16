@@ -24,8 +24,8 @@ class RCNN(LightningModule):
     def validation_step(self, b, b_idx):
         xb,yb = b
         with torch.no_grad():
-            losses,preds = self(xb,list(yb))
-            preds = self(xb)
+            self.train(); losses = self(xb,list(yb))
+            self.eval();  preds = self(xb)
         loss = sum(losses.values())
         losses = {f'valid/{k}':v for k,v in losses.items()}
         res = {}
