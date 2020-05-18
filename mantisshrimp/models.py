@@ -60,7 +60,7 @@ class RCNN(LightningModule):
 
     def get_lrs(self, lr):
         if isinstance(lr, numbers.Number): return [lr]*len(self.pgs)
-        elif isinstance(lr, slice): return np.linspace(lr.start, lr.stop, len(self.pgs))
+        elif isinstance(lr, slice): return np.linspace(lr.start, lr.stop, len(self.pgs)).tolist()
         else: raise ValueError(f'lr type {type(lr)} not supported, use a number or a slice')
 
 # Cell

@@ -35,3 +35,9 @@ class Learner:
         self.m.configure_optimizers = self._configure_optimizers(0, None)
         gpus = ifnone(gpus, self.gpus)
         return Trainer(gpus=gpus, **kwargs).lr_find(self.m, self.train_dl, self.valid_dl)
+
+# Cell
+@patch
+def show_results(self:Learner, k=5):
+    rs = random.choices(self.valid_dl.dataset.records, k=k)
+    show_preds(*self.m.predict(rs=rs))
