@@ -15,8 +15,8 @@ class Learner:
         self.gpus = get_all_available_gpus()
 
     @delegates(Trainer.__init__)
-    def fit(self, max_epochs, lr, lr_sched=None, gpus=None, callbacks=None, **kwargs):
-        self.m.configure_optimizers = self._configure_optimizers(lr, lr_sched)
+    def fit(self, max_epochs, lr, lr_sched_fn=None, gpus=None, callbacks=None, **kwargs):
+        self.m.prepare_optimizers(self.opt_fn, lr, sched_fn=lr_sched_fn)
         gpus = ifnone(gpus, self.gpus)
         cbs = L(LearningRateLogger()) + L(callbacks)
         trainer = Trainer(max_epochs=max_epochs, logger=self.logger, callbacks=cbs,  gpus=gpus, **kwargs)
@@ -24,20 +24,14 @@ class Learner:
 
     @delegates(Trainer.__init__)
     def fit_one_cycle(self, max_epochs, lr_max, pct_start=.25, **kwargs):
-        def lr_sched(opt):
-            sched = OneCycleLR(opt, lr_max, len(self.train_dl)*max_epochs, pct_start=pct_start)
+        def lr_sched_fn(opt):
+            lrs = self.m.get_lrs(lr_max)
+            sched = OneCycleLR(opt, lrs, len(self.train_dl)*max_epochs, pct_start=pct_start)
             return {'scheduler':sched, 'interval':'step'}
-        return self.fit(max_epochs=max_epochs, lr=lr_max, lr_sched=lr_sched, **kwargs)
+        return self.fit(max_epochs=max_epochs, lr=lr_max, lr_sched_fn=lr_sched_fn, **kwargs)
 
     @delegates(Trainer.__init__)
     def lr_find(self, gpus=None, **kwargs):
         self.m.configure_optimizers = self._configure_optimizers(0, None)
         gpus = ifnone(gpus, self.gpus)
         return Trainer(gpus=gpus, **kwargs).lr_find(self.m, self.train_dl, self.valid_dl)
-
-    def _configure_optimizers(self, lr, sched_fn=None):
-        opt = self.opt_fn(params(self.m), lr)
-        def _inner(self):
-            if notnone(sched_fn): return [opt], [sched_fn(opt)]
-            return opt
-        return MethodType(_inner, self.m)

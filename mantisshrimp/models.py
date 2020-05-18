@@ -9,10 +9,12 @@ from .data.all import *
 
 # Cell
 class RCNN(LightningModule):
-    def __init__(self, metrics=None):
+    def __init__(self, model_splitter=None, metrics=None):
         super().__init__()
         self.metrics = metrics or []
         for metric in self.metrics: metric.register_model(self)
+        self._create_model()
+        self.pgs = self._get_pgs()
 
     def training_step(self, b, b_idx):
         xb,yb = b
@@ -44,32 +46,65 @@ class RCNN(LightningModule):
         res.update({'val_loss': log['valid/loss'], 'log': log})
         return res
 
-    def configure_optimizers(self):
-        params = [p for p in self.parameters() if p.requires_grad]
-        opt = torch.optim.Adam(params)
-        return [opt]
+    # TODO: Add error "First need to call prepare optimizer"
+    def configure_optimizers(self): return [self.opt], [self.sched]
+    def prepare_optimizers(self, opt_func, lr, sched_fn):
+        self.opt = opt_func(self.get_ps(lr), self.get_lrs(lr)[0])
+        self.sched = sched_fn(self.opt)
+
+    # TODO: how to be sure all parameters got assigned a lr?
+    # already safe because of the check on _rcnn_pgs?
+    def get_ps(self, lr):
+        lrs = self.get_lrs(lr)
+        return [{'params':params(pg), 'lr':lr} for pg,lr in zipsafe(self.pgs,lrs)]
+
+    def get_lrs(self, lr):
+        if isinstance(lr, numbers.Number): return [lr]*len(self.pgs)
+        elif isinstance(lr, slice): return np.linspace(lr.start, lr.stop, len(self.pgs))
+        else: raise ValueError(f'lr type {type(lr)} not supported, use a number or a slice')
+
+# Cell
+def _rcnn_pgs(m):
+    body = m.backbone.body
+    pgs  = []
+    pgs += [nn.Sequential(body.conv1, body.bn1)]
+    pgs += [getattr(body,l) for l in list(body) if l.startswith('layer')]
+    pgs += [m.backbone.fpn, m.rpn, m.roi_heads]
+    if len(params(nn.Sequential(*pgs))) != len(params(m)):
+        raise RuntimeError('Malformed model parameters groups, you probably need to use a custom model_splitter')
+    return pgs
 
 # Cell
 class MantisMaskRCNN(RCNN):
     @delegates(MaskRCNN.__init__)
     def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
+        store_attr(self, 'n_class,h,pretrained,kwargs')
         super().__init__(metrics=metrics)
-        self.m = maskrcnn_resnet50_fpn(pretrained=pretrained, **kwargs)
-        in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
-        in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
-        self.m.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask, h, n_class)
+
     def forward(self, images, targets=None): return self.m(images, targets)
+
+    def _create_model(self):
+        self.m = maskrcnn_resnet50_fpn(pretrained=self.pretrained, **self.kwargs)
+        in_features = self.m.roi_heads.box_predictor.cls_score.in_features
+        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
+        in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
+        self.m.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask, self.h, self.n_class)
+    def _get_pgs(self): return _rcnn_pgs(self.m)
 
 # Cell
 class MantisFasterRCNN(RCNN):
     @delegates(FasterRCNN.__init__)
     def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
+        store_attr(self, 'n_class,h,pretrained,kwargs')
         super().__init__(metrics=metrics)
+
+    def forward(self, images, targets=None): return self.m(images, targets)
+
+    def _create_model(self):
         self.m = fasterrcnn_resnet50_fpn(pretrained=pretrained, **kwargs)
         in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
-    def forward(self, images, targets=None): return self.m(images, targets)
+        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
+    def _get_pgs(self): return _rcnn_pgs(self.m)
 
 # Cell
 @patch
