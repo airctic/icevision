@@ -4,7 +4,7 @@
 
 Built on top of [pytorch-lightining](https://github.com/PyTorchLightning/pytorch-lightning), `MantisShrimp` is an object detection framework focused on application  
 
-Mantissrhimp provides a `DataParser` interface that simplifies the time consuming task of getting the data ready for the model, a `Tfm` interface that makes it real easy to add any transforms library to the data pipeline, and a mid and a high level interface for training the model.
+Mantisshrimp provides a `DataParser` interface that simplifies the time consuming task of getting the data ready for the model, a `Tfm` interface that makes it real easy to add any transforms library to the data pipeline, and a mid and a high level interface for training the model.
 
 ## Install
 
