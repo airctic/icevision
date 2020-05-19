@@ -23,6 +23,13 @@ Often the step of getting our data into a standard format is the most difficult 
 
 Mantisshrimp provides an easy `Parser` interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest
 
+But before all, let's get the path to our dataset and read the CSV file using `pandas`.
+
+```python
+source = Path('/home/lgvaz/.data/wheat')
+df = pd.read_csv(source/'train.csv')
+```
+
 There are two types of parsers we have to define:
 * `InfoParser`: Parses metadata information about our images, like the image `id`, `file_path`, `height` and `width`
 * `AnnotationParser`: Parses our annotations, like bounding boxes, masks and keypoints
@@ -43,11 +50,6 @@ class WheatAnnotationParser(AnnotationParser):
     def oid(self, o): return 0
     def bbox(self, o): return BBox.from_xywh(*np.fromstring(o.bbox[1:-1], sep=','))
     def __iter__(self): yield from df.itertuples()
-```
-
-```python
-source = Path('/home/lgvaz/.data/wheat')
-df = pd.read_csv(source/'train.csv')
 ```
 
 Define a `CategoryMap`, each `Category` receives an object id and it's name
@@ -99,7 +101,7 @@ grid2([partial(show_item, o, label=False) for o in items])
 ```
 
 
-![png](docs/images/output_24_0.png)
+![png](docs/images/output_25_0.png)
 
 
 ### Step 3 (optional): Metrics
@@ -180,5 +182,5 @@ show_preds(ims, preds)
 ```
 
 
-![png](docs/images/output_48_0.png)
+![png](docs/images/output_49_0.png)
 
