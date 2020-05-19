@@ -1,5 +1,5 @@
 # MantisShrimp
-> Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application.
+> Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application
 
 
 MantisShrimp is in very early development, all contributions are welcome!
@@ -23,7 +23,7 @@ Often the step of getting our data into a standard format is the most difficult 
 
 Mantisshrimp provides an easy `Parser` interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest
 
-But before all, let's get the path to our dataset and read the CSV file using `pandas`.
+But before all, let's get the path to our dataset and read the CSV file using `pandas`
 
 ```python
 source = Path('/home/lgvaz/.data/wheat')
@@ -112,26 +112,24 @@ Let's use the same evaluation metric that COCO uses
 metrics = [COCOMetric(valid_rs, catmap)]
 ```
 
-Since our problem only contain bounding boxes, we're going to use the `FasterRCNN` model
-
 ### Step 3: Model and Training
 
 Mantisshrimp provides a high and a mid level interface for training. One is not better than the other, they instead serve different purposes:
 * High level interface: For quick prototyping in a jupyter notebook like environment
-* Mid level interface: For more reproducible experiments. Great for writing experiments that can be launched in terminal with different hyperparameters.
+* Mid level interface: For more reproducible experiments. Great for writing experiments that can be launched in terminal with different hyperparameters
 
 #### High level interface (Learner)
 
-The `Learner` interface is inspired (and very similar) to the [fastai](https://github.com/fastai/fastai2) `Learner`. It aims to provide a very productive experience for prototyping in a jupyter notebook like environment.  
-It comes bundled with additional functionallity, like inbuilt learning rate schedulers and differential learning rates for training unfreezed models.
+The `Learner` interface is inspired (and very similar) to the [fastai](https://github.com/fastai/fastai2) `Learner`. It aims to provide a very productive experience for prototyping in a jupyter notebook like environment  
+It comes bundled with additional functionallity, like inbuilt learning rate schedulers and differential learning rates for training unfreezed models
 
-First of all, let's create our model
+Since our problem only contain bounding boxes, we're going to use the `FasterRCNN` model
 
 ```python
 model = MantisFasterRCNN(len(catmap), metrics=metrics)
 ```
 
-The `Learner` receives an argument called `opt_fn`, it will call this function passing the model parameters and it expects to receive back a torch `Optimizer`. We are going to use `partial` to pass any additional paramters to our `SGD` optimizer.
+The `Learner` receives an argument called `opt_fn`, it will call this function passing the model parameters and it expects to receive back a torch `Optimizer`. We are going to use `partial` to pass any additional paramters to our `SGD` optimizer
 
 ```python
 opt_fn = partial(SGD, momentum=.9, weight_decay=5e-4)
@@ -141,7 +139,7 @@ opt_fn = partial(SGD, momentum=.9, weight_decay=5e-4)
 learn = Learner(model, train_dl, valid_dl, opt_fn)
 ```
 
-`fit_one_cycle` will train adjusting the learning rate acording with the [1cycle learning rate policy](https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.OneCycleLR).
+`fit_one_cycle` will train adjusting the learning rate acording with the [1cycle learning rate policy](https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.OneCycleLR)
 
 ```python
 learn.fit_one_cycle(5, 1e-3)
@@ -150,7 +148,7 @@ learn.fit_one_cycle(5, 1e-3)
 #### Mid level interface (Lightning Trainer)
 
 This is almost pure Lightning, go crazy!  
-For simplicity, let's just define a model that uses `SGD` and the 1cycle policy like before.
+For simplicity, let's just define a model that uses `SGD` and the 1cycle policy like before
 
 ```python
 class WheatModel(MantisFasterRCNN):
@@ -182,5 +180,5 @@ show_preds(ims, preds)
 ```
 
 
-![png](docs/images/output_49_0.png)
+![png](docs/images/output_48_0.png)
 

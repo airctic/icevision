@@ -5,8 +5,8 @@ title: MantisShrimp
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application."
-description: "Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application."
+summary: "Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application"
+description: "Built on top of <a href='https://github.com/PyTorchLightning/pytorch-lightning'>pytorch-lightining</a>, `MantisShrimp` is an object detection framework focused on application"
 ---
 <!--
 
@@ -79,7 +79,7 @@ description: "Built on top of <a href='https://github.com/PyTorchLightning/pytor
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>But before all, let's get the path to our dataset and read the CSV file using <code>pandas</code>.</p>
+<p>But before all, let's get the path to our dataset and read the CSV file using <code>pandas</code></p>
 
 </div>
 </div>
@@ -380,13 +380,6 @@ By default it returns two lists of <code>Records</code> with a 0.8/0.2 <code>tra
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since our problem only contain bounding boxes, we're going to use the <code>FasterRCNN</code> model</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Step-3:-Model-and-Training">Step 3: Model and Training<a class="anchor-link" href="#Step-3:-Model-and-Training"> </a></h3>
 </div>
 </div>
@@ -396,7 +389,7 @@ By default it returns two lists of <code>Records</code> with a 0.8/0.2 <code>tra
 <p>Mantisshrimp provides a high and a mid level interface for training. One is not better than the other, they instead serve different purposes:</p>
 <ul>
 <li>High level interface: For quick prototyping in a jupyter notebook like environment</li>
-<li>Mid level interface: For more reproducible experiments. Great for writing experiments that can be launched in terminal with different hyperparameters.</li>
+<li>Mid level interface: For more reproducible experiments. Great for writing experiments that can be launched in terminal with different hyperparameters</li>
 </ul>
 
 </div>
@@ -410,15 +403,15 @@ By default it returns two lists of <code>Records</code> with a 0.8/0.2 <code>tra
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a> interface is inspired (and very similar) to the <a href="https://github.com/fastai/fastai2">fastai</a> <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a>. It aims to provide a very productive experience for prototyping in a jupyter notebook like environment.<br>
-It comes bundled with additional functionallity, like inbuilt learning rate schedulers and differential learning rates for training unfreezed models.</p>
+<p>The <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a> interface is inspired (and very similar) to the <a href="https://github.com/fastai/fastai2">fastai</a> <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a>. It aims to provide a very productive experience for prototyping in a jupyter notebook like environment<br>
+It comes bundled with additional functionallity, like inbuilt learning rate schedulers and differential learning rates for training unfreezed models</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>First of all, let's create our model</p>
+<p>Since our problem only contain bounding boxes, we're going to use the <code>FasterRCNN</code> model</p>
 
 </div>
 </div>
@@ -442,7 +435,7 @@ It comes bundled with additional functionallity, like inbuilt learning rate sche
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a> receives an argument called <code>opt_fn</code>, it will call this function passing the model parameters and it expects to receive back a torch <code>Optimizer</code>. We are going to use <code>partial</code> to pass any additional paramters to our <code>SGD</code> optimizer.</p>
+<p>The <a href="/mantisshrimp/learner#Learner"><code>Learner</code></a> receives an argument called <code>opt_fn</code>, it will call this function passing the model parameters and it expects to receive back a torch <code>Optimizer</code>. We are going to use <code>partial</code> to pass any additional paramters to our <code>SGD</code> optimizer</p>
 
 </div>
 </div>
@@ -483,7 +476,7 @@ It comes bundled with additional functionallity, like inbuilt learning rate sche
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>fit_one_cycle</code> will train adjusting the learning rate acording with the <a href="https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.OneCycleLR">1cycle learning rate policy</a>.</p>
+<p><code>fit_one_cycle</code> will train adjusting the learning rate acording with the <a href="https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.OneCycleLR">1cycle learning rate policy</a></p>
 
 </div>
 </div>
@@ -514,7 +507,7 @@ It comes bundled with additional functionallity, like inbuilt learning rate sche
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is almost pure Lightning, go crazy!<br>
-For simplicity, let's just define a model that uses <code>SGD</code> and the 1cycle policy like before.</p>
+For simplicity, let's just define a model that uses <code>SGD</code> and the 1cycle policy like before</p>
 
 </div>
 </div>
