@@ -58,15 +58,21 @@ description: "Built on top of <a href='https://github.com/PyTorchLightning/pytor
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Instead of going over abstract features, let's see how to use the library with a practical example. We're going to be using the <a href="https://www.kaggle.com/c/global-wheat-detection/overview/eccv-2020">wheat</a> dataset, where we are tasked to find the bounding boxes locations of wheat heads in the image.</p>
+<p>Instead of going over abstract features, let's see how to use the library with a practical example. We're going to be using the <a href="https://www.kaggle.com/c/global-wheat-detection/overview/eccv-2020">wheat</a> dataset, where we are tasked to find the bounding boxes locations of wheat heads in the image</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Often the step of getting our data into a standard format is the most difficult one. Almost all datasets comes in their unique own format, and writing custom code to handle each one of them can be very time consuming.</p>
-<p>Mantisshrimp provides an easy <code>Parser</code> interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest.</p>
+<h3 id="Step-1:-Data-parsers">Step 1: Data parsers<a class="anchor-link" href="#Step-1:-Data-parsers"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Often the step of getting our data into a standard format is the most difficult one. Almost all datasets comes in their unique own format, and writing custom code to handle each one of them can be very time consuming</p>
+<p>Mantisshrimp provides an easy <code>Parser</code> interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest</p>
 
 </div>
 </div>
@@ -75,16 +81,10 @@ description: "Built on top of <a href='https://github.com/PyTorchLightning/pytor
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>There are two types of parsers we have to define:</p>
 <ul>
-<li><code>InfoParser</code>: Parses metadata information about our images, like the image <code>id</code>, <code>file_path</code>, <code>height</code> and <code>width</code>.</li>
-<li><a href="/mantisshrimp/data.annotations#AnnotationParser"><code>AnnotationParser</code></a>: Parses our annotations, like bounding boxes, masks and keypoints.</li>
+<li><code>InfoParser</code>: Parses metadata information about our images, like the image <code>id</code>, <code>file_path</code>, <code>height</code> and <code>width</code></li>
+<li><a href="/mantisshrimp/data.annotations#AnnotationParser"><code>AnnotationParser</code></a>: Parses our annotations, like bounding boxes, masks and keypoints</li>
 </ul>
 
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Step-1:-Data-parsers">Step 1: Data parsers<a class="anchor-link" href="#Step-1:-Data-parsers"> </a></h3>
 </div>
 </div>
 </div>
@@ -195,7 +195,7 @@ description: "Built on top of <a href='https://github.com/PyTorchLightning/pytor
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>.parse</code> method will run the parser over all data points, grouping all images that share the same <code>id</code>.<br>
+<p>The <code>.parse</code> method will run the parser over all data points, grouping all images that share the same <code>id</code><br>
 By default it returns two lists of <code>Records</code> with a 0.8/0.2 <code>train/validation</code> split</p>
 
 </div>

@@ -15,17 +15,17 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git
 
 ## Quick start
 
-Instead of going over abstract features, let's see how to use the library with a practical example. We're going to be using the [wheat](https://www.kaggle.com/c/global-wheat-detection/overview/eccv-2020) dataset, where we are tasked to find the bounding boxes locations of wheat heads in the image.
-
-Often the step of getting our data into a standard format is the most difficult one. Almost all datasets comes in their unique own format, and writing custom code to handle each one of them can be very time consuming.
-
-Mantisshrimp provides an easy `Parser` interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest.
-
-There are two types of parsers we have to define:
-* `InfoParser`: Parses metadata information about our images, like the image `id`, `file_path`, `height` and `width`.
-* `AnnotationParser`: Parses our annotations, like bounding boxes, masks and keypoints.
+Instead of going over abstract features, let's see how to use the library with a practical example. We're going to be using the [wheat](https://www.kaggle.com/c/global-wheat-detection/overview/eccv-2020) dataset, where we are tasked to find the bounding boxes locations of wheat heads in the image
 
 ### Step 1: Data parsers
+
+Often the step of getting our data into a standard format is the most difficult one. Almost all datasets comes in their unique own format, and writing custom code to handle each one of them can be very time consuming
+
+Mantisshrimp provides an easy `Parser` interface for handling that, the main idea is that you only have to define how to parse a single sample and the library takes care of the rest
+
+There are two types of parsers we have to define:
+* `InfoParser`: Parses metadata information about our images, like the image `id`, `file_path`, `height` and `width`
+* `AnnotationParser`: Parses our annotations, like bounding boxes, masks and keypoints
 
 ```python
 # TODO: Rename ImageParser to InfoParser
@@ -62,7 +62,7 @@ parser = DataParser(df, source, catmap=catmap,
                     annot_parser=WheatAnnotationParser)
 ```
 
-The `.parse` method will run the parser over all data points, grouping all images that share the same `id`.  
+The `.parse` method will run the parser over all data points, grouping all images that share the same `id`  
 By default it returns two lists of `Records` with a 0.8/0.2 `train/validation` split
 
 ```python
