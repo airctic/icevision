@@ -60,15 +60,26 @@ def _sample_dsets():
 test_utils.sample_dsets = _sample_dsets
 
 # Cell
+_fake_box = [0,1,2,3]
+
+# Cell
+def _iid2tensor(iid): return tensor(iid, dtype=torch.int64)
+def _labels2tensor(labels): return tensor(labels or [0], dtype=torch.int64)
+def _iscrowds2tensor(vs): return tensor(vs or [0], dtype=torch.uint8)
+def _bboxes2tensor(bxs): return tensor([o.xyxy for o in bxs] or [_fake_box], dtype=torch.float)
+def _areas2tensor(bxs): return tensor([o.area for o in bxs] or [4])
+def _masks2tensor(masks): return tensor(masks.data, dtype=torch.uint8)
+
+# Cell
 def item2tensor(item):
     x = im2tensor(item.img)
     y = {
         'image_id': tensor(item.iid, dtype=torch.int64),
-        'labels':   tensor(item.labels, dtype=torch.int64),
-        'iscrowd':  tensor(item.iscrowds, dtype=torch.uint8),
-        'boxes':    ifnotnone(item.bboxes, lambda bx: tensor([o.xyxy for o in bx], dtype=torch.float)),
-        'area':     ifnotnone(item.bboxes, lambda bx: tensor([o.area for o in bx])),
-        'masks':    ifnotnone(item.masks, lambda o: tensor(o.data, dtype=torch.uint8)),
+        'labels':   _labels2tensor(item.labels),
+        'iscrowd':  _iscrowds2tensor(item.iscrowds),
+        'boxes':    ifnotnone(item.bboxes, _bboxes2tensor),
+        'area':     ifnotnone(item.bboxes, _areas2tensor),
+        'masks':    ifnotnone(item.masks, _masks2tensor),
         # TODO: Keypoints
     }
     return x, cleandict(y)
