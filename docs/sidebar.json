@@ -2,12 +2,15 @@
   "mantisshrimp": {
     "Overview": "/",
     "Core": "/core",
+    "Lightning core": "/lightning_core",
+    "Layers": "/layers",
     "Data core": "/data.core",
     "Data annotation": "/data.annotations",
-    "Transform": "/transforms",
     "Data load": "/data.load",
+    "Transform": "/transforms",
     "Models": "/models",
+    "Learner": "/learner",
     "Metrics": "/metrics.core",
-    "Title": "/Untitled1"
+    "Title": "/data_refactor"
   }
 }

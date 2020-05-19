@@ -47,10 +47,12 @@ class RCNN(LightningModule):
         return res
 
     # TODO: Add error "First need to call prepare optimizer"
-    def configure_optimizers(self): return [self.opt], [self.sched]
-    def prepare_optimizers(self, opt_func, lr, sched_fn):
+    def configure_optimizers(self):
+        if self.sched is None: return self.opt
+        return [self.opt], [self.sched]
+    def prepare_optimizers(self, opt_func, lr, sched_fn=None):
         self.opt = opt_func(self.get_ps(lr), self.get_lrs(lr)[0])
-        self.sched = sched_fn(self.opt)
+        self.sched = sched_fn(self.opt) if sched_fn is not None else None
 
     # TODO: how to be sure all parameters got assigned a lr?
     # already safe because of the check on _rcnn_pgs?
@@ -101,7 +103,7 @@ class MantisFasterRCNN(RCNN):
     def forward(self, images, targets=None): return self.m(images, targets)
 
     def _create_model(self):
-        self.m = fasterrcnn_resnet50_fpn(pretrained=pretrained, **kwargs)
+        self.m = fasterrcnn_resnet50_fpn(pretrained=self.pretrained, **self.kwargs)
         in_features = self.m.roi_heads.box_predictor.cls_score.in_features
         self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
     def _get_pgs(self): return _rcnn_pgs(self.m)

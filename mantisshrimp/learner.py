@@ -9,16 +9,17 @@ from .models import *
 
 # Cell
 class Learner:
-    def __init__(self, m, train_dl, valid_dl, opt_fn, logger=None):
+    def __init__(self, m, train_dl, valid_dl, opt_fn, logger=None, cbs=None):
         store_attr(self, 'm,train_dl,valid_dl,opt_fn')
         self.logger = logger or True
         self.gpus = get_all_available_gpus()
+        self.cbs = L(cbs)
 
     @delegates(Trainer.__init__)
     def fit(self, max_epochs, lr, lr_sched_fn=None, gpus=None, callbacks=None, **kwargs):
         self.m.prepare_optimizers(self.opt_fn, lr, sched_fn=lr_sched_fn)
         gpus = ifnone(gpus, self.gpus)
-        cbs = L(LearningRateLogger()) + L(callbacks)
+        cbs = self.cbs + L(LearningRateLogger()) + L(callbacks)
         trainer = Trainer(max_epochs=max_epochs, logger=self.logger, callbacks=cbs,  gpus=gpus, **kwargs)
         trainer.fit(self.m, self.train_dl, self.valid_dl)
 
@@ -32,7 +33,7 @@ class Learner:
 
     @delegates(Trainer.__init__)
     def lr_find(self, gpus=None, **kwargs):
-        self.m.configure_optimizers = self._configure_optimizers(0, None)
+        self.m.prepare_optimizers(self.opt_fn, 0)
         gpus = ifnone(gpus, self.gpus)
         return Trainer(gpus=gpus, **kwargs).lr_find(self.m, self.train_dl, self.valid_dl)
 
