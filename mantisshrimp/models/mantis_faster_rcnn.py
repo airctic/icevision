@@ -17,4 +17,4 @@ class MantisFasterRCNN(MantisRCNN):
         in_features = self.m.roi_heads.box_predictor.cls_score.in_features
         self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
 
-    def _get_pgs(self): return rcnn_param_groups(self.m)
+    def _get_param_groups(self): return rcnn_param_groups(self.m)

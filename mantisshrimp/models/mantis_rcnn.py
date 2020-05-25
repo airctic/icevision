@@ -10,7 +10,10 @@ class MantisRCNN(LightningModule):
         self.metrics = metrics or []
         for metric in self.metrics: metric.register_model(self)
         self._create_model()
-        self.pgs = self._get_pgs()
+        self.param_groups = self._get_param_groups()
+
+    def _create_model(self): raise NotImplementedError
+    def _get_param_groups(self): raise NotImplementedError
 
     def predict(self, ims=None, rs=None):
         if bool(ims) == bool(rs): raise ValueError('You should either pass ims or rs')
@@ -64,12 +67,12 @@ class MantisRCNN(LightningModule):
     # already safe because of the check on _rcnn_pgs?
     def get_ps(self, lr):
         lrs = self.get_lrs(lr)
-        return [{'params': params(pg), 'lr': lr} for pg, lr in zipsafe(self.pgs, lrs)]
+        return [{'params': params(pg), 'lr': lr} for pg, lr in zipsafe(self.param_groups, lrs)]
 
     def get_lrs(self, lr):
         if isinstance(lr, numbers.Number):
-            return [lr] * len(self.pgs)
+            return [lr] * len(self.param_groups)
         elif isinstance(lr, slice):
-            return np.linspace(lr.start, lr.stop, len(self.pgs)).tolist()
+            return np.linspace(lr.start, lr.stop, len(self.param_groups)).tolist()
         else:
             raise ValueError(f'lr type {type(lr)} not supported, use a number or a slice')

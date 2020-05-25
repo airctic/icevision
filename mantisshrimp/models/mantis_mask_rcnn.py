@@ -19,4 +19,4 @@ class MantisMaskRCNN(MantisRCNN):
         in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
         self.m.roi_heads.mask_predictor = MaskRCNNPredictor(in_features_mask, self.h, self.n_class)
 
-    def _get_pgs(self): return rcnn_param_groups(self.m)
+    def _get_param_groups(self): return rcnn_param_groups(self.m)
