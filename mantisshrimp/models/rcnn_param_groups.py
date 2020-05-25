@@ -1,14 +1,16 @@
-__all__ = ['rcnn_param_groups']
+__all__ = ["split_rcnn_model"]
 
 from ..imports import *
 from ..utils import *
 
-def rcnn_param_groups(m):
+
+def split_rcnn_model(m):
     body = m.backbone.body
-    pgs  = []
+    pgs = []
     pgs += [nn.Sequential(body.conv1, body.bn1)]
-    pgs += [getattr(body,l) for l in list(body) if l.startswith('layer')]
+    pgs += [getattr(body, l) for l in list(body) if l.startswith("layer")]
     pgs += [m.backbone.fpn, m.rpn, m.roi_heads]
     if len(params(nn.Sequential(*pgs))) != len(params(m)):
-        raise RuntimeError('Malformed model parameters groups, you probably need to use a custom model_splitter')
+        raise RuntimeError("Malformed model parameters groups, you probably need to use a custom model_splitter")
     return pgs
+
