@@ -53,8 +53,9 @@ grid2([partial(show_item, o, label=False) for o in items], show=True)
 
 metrics = [COCOMetric(valid_rs, catmap)]
 
+from mantisshrimp.all import *
 model = MantisFasterRCNN(2)
-model.prepare_optimizers(SGD, 1e-3)
+model.prepare_optimizer(SGD, slice(1e-5, 1e-3))
 
 from mantisshrimp.models.utils import *
 

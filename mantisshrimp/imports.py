@@ -5,6 +5,7 @@ import pytorch_lightning as pl
 import torch.optim.lr_scheduler as lr_scheduler
 import pytorch_lightning.loggers as loggers
 
+from abc import ABC, abstractmethod, abstractproperty, abstractclassmethod, abstractstaticmethod
 from collections import defaultdict, OrderedDict
 from enum import Enum
 from tqdm.auto import tqdm
