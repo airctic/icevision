@@ -1,12 +1,14 @@
-__all__ = ['ParametersSplitsModuleMixin']
+__all__ = ["ParametersSplitsModuleMixin"]
 
 from ..imports import *
 from .utils import *
 
+
 class ParametersSplitsModuleMixin(LightningModule, ABC):
     # TODO: Implement default splitter
     @abstractmethod
-    def model_splits(self): pass
+    def model_splits(self):
+        pass
 
     def params_splits(self, only_trainable=False):
         """ Get parameters from model splits

@@ -1,4 +1,4 @@
-__all__ = ['filter_params', 'unfreeze', 'freeze']
+__all__ = ["filter_params", "unfreeze", "freeze"]
 
 from ..imports import *
 
@@ -6,7 +6,9 @@ from ..imports import *
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
 
 
-def filter_params(module: nn.Module, bn: bool = True, only_trainable=False) -> Generator:
+def filter_params(
+    module: nn.Module, bn: bool = True, only_trainable=False
+) -> Generator:
     """Yields the trainable parameters of a given module.
 
     Args:
@@ -24,7 +26,9 @@ def filter_params(module: nn.Module, bn: bool = True, only_trainable=False) -> G
                     yield param
     else:
         for child in children:
-            for param in filter_params(module=child, bn=bn, only_trainable=only_trainable):
+            for param in filter_params(
+                module=child, bn=bn, only_trainable=only_trainable
+            ):
                 yield param
 
 
@@ -36,4 +40,3 @@ def unfreeze(params):
 def freeze(params):
     for p in params:
         p.requires_grad = False
-

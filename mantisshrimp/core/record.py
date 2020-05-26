@@ -1,9 +1,10 @@
-__all__ = ['ImageInfo', 'Instance', 'Annotation', 'Record']
+__all__ = ["ImageInfo", "Instance", "Annotation", "Record"]
 
 from ..imports import *
 from ..utils import *
 from ..core import *
 from dataclasses import replace, dataclass
+
 
 @dataclass(frozen=True)
 class ImageInfo:
@@ -13,15 +14,18 @@ class ImageInfo:
     w: int
     split: int = 0
 
-    def __post_init__(self): super().__setattr__('filepath', self.filepath)
+    def __post_init__(self):
+        super().__setattr__("filepath", self.filepath)
+
 
 @dataclass
 class Instance:
     label: int
-    bbox: BBox=None
-    mask: Union[Polygon, RLE, MaskFile, MaskArray]=None
-    kpts: List=None # TODO
-    iscrowd: int=None
+    bbox: BBox = None
+    mask: Union[Polygon, RLE, MaskFile, MaskArray] = None
+    kpts: List = None  # TODO
+    iscrowd: int = None
+
 
 @dataclass
 class Annotation:
@@ -38,10 +42,13 @@ class Annotation:
         mask = self.masks[i] if (notnone(self.masks) and len(self.masks) > i) else None
         kpts = ifnotnone(self.kpts, itemgetter(i))
         iscrowd = ifnotnone(self.iscrowds, itemgetter(i))
-        return Instance(label=self.labels[i], bbox=bbox, mask=mask, kpts=None, iscrowd=iscrowd)  # kpts None
+        return Instance(
+            label=self.labels[i], bbox=bbox, mask=mask, kpts=None, iscrowd=iscrowd
+        )  # kpts None
 
     def get_mask(self, h, w):
         return MaskArray.from_masks(self.masks, h, w) if notnone(self.masks) else None
+
 
 @dataclass
 class Record:
@@ -52,4 +59,3 @@ class Record:
         info = replace(self.info, **(info or {}))
         annot = replace(self.annot, **(annot or {}))
         return replace(self, info=info, annot=annot)
-

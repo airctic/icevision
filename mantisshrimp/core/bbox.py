@@ -1,6 +1,7 @@
-__all__ = ['BBox']
+__all__ = ["BBox"]
 
 from ..imports import *
+
 
 @dataclass
 class BBox:
@@ -12,15 +13,25 @@ class BBox:
             self.x, self.y, self.h, self.w = xl, yu, (yb - yu), (xr - xl)
             self.area = self.h * self.w
 
-    def to_tensor(self): return tensor(self.xyxy, dtype=torch.float)
+    def to_tensor(self):
+        return tensor(self.xyxy, dtype=torch.float)
+
     @property
-    def xyxy(self): return self.pnts
+    def xyxy(self):
+        return self.pnts
+
     @property
-    def xywh(self): return [self.x, self.y, self.w, self.h]
+    def xywh(self):
+        return [self.x, self.y, self.w, self.h]
+
     @classmethod
-    def from_xywh(cls, x, y, w, h): return cls([x, y, x + w, y + h])
+    def from_xywh(cls, x, y, w, h):
+        return cls([x, y, x + w, y + h])
+
     @classmethod
-    def from_xyxy(cls, xl, yu, xr, yb): return cls([xl, yu, xr, yb])
+    def from_xyxy(cls, xl, yu, xr, yb):
+        return cls([xl, yu, xr, yb])
+
     @classmethod
     def from_rle(cls, rle, h, w):
         a = np.array(rle.counts, dtype=int)
@@ -43,4 +54,3 @@ class BBox:
             # just went out of the image dimensions
             raise ValueError(f"invalid RLE or image dimensions: x1={x1} > shape[1]={w}")
         return cls.from_xyxy(x0, y0, x1, y1)
-

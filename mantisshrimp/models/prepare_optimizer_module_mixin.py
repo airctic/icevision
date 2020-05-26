@@ -1,14 +1,15 @@
-__all__ = ['PrepareOptimizerModuleMixin']
+__all__ = ["PrepareOptimizerModuleMixin"]
 
 from ..imports import *
 from .utils import *
 from .parameters_splits_module_mixin import ParametersSplitsModuleMixin
 
+
 class PrepareOptimizerModuleMixin(ParametersSplitsModuleMixin, LightningModule, ABC):
     # TODO: Implement a default splitter
     def configure_optimizers(self):
         if self.opt is None:
-            raise RuntimeError('You probably need to call `prepare_optimizers`')
+            raise RuntimeError("You probably need to call `prepare_optimizers`")
         if self.sched is None:
             return self.opt
         return [self.opt], [self.sched]
@@ -21,7 +22,10 @@ class PrepareOptimizerModuleMixin(ParametersSplitsModuleMixin, LightningModule, 
     # already safe because of the check on _rcnn_pgs?
     def get_optimizer_param_groups(self, lr):
         lrs = self.get_lrs(lr)
-        return [{"params": params, "lr": lr} for params, lr in zip(self.trainable_params_splits(), lrs)]
+        return [
+            {"params": params, "lr": lr}
+            for params, lr in zip(self.trainable_params_splits(), lrs)
+        ]
 
     def get_lrs(self, lr):
         n_splits = len(list(self.trainable_params_splits()))
@@ -30,4 +34,6 @@ class PrepareOptimizerModuleMixin(ParametersSplitsModuleMixin, LightningModule, 
         elif isinstance(lr, slice):
             return np.linspace(lr.start, lr.stop, n_splits).tolist()
         else:
-            raise ValueError(f"lr type {type(lr)} not supported, use a number or a slice")
+            raise ValueError(
+                f"lr type {type(lr)} not supported, use a number or a slice"
+            )

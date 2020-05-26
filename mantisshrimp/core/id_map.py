@@ -1,6 +1,7 @@
-__all__ = ['IDMap']
+__all__ = ["IDMap"]
 
 from ..imports import *
+
 
 class IDMap:
     def __init__(self, imageids=None):
