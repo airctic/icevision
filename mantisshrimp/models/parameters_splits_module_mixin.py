@@ -23,3 +23,10 @@ class ParametersSplitsModuleMixin(LightningModule, ABC):
             If a parameter group does not have trainable params, it does not get added
         """
         return self.params_splits(only_trainable=True)
+
+    def freeze_to(self, n: int = None):
+        """ Freezes model until certain layer
+        """
+        unfreeze(self.parameters())
+        for params in list(self.params_splits())[:n]:
+            freeze(params)
