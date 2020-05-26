@@ -2,12 +2,10 @@ __all__ = ['PrepareOptimizerModuleMixin']
 
 from ..imports import *
 from .utils import *
+from .parameters_splits_module_mixin import ParametersSplitsModuleMixin
 
-class PrepareOptimizerModuleMixin(LightningModule, ABC):
+class PrepareOptimizerModuleMixin(ParametersSplitsModuleMixin, LightningModule, ABC):
     # TODO: Implement a default splitter
-    @abstractmethod
-    def model_splits(self): pass
-
     def configure_optimizers(self):
         if self.opt is None:
             raise RuntimeError('You probably need to call `prepare_optimizers`')
@@ -33,12 +31,3 @@ class PrepareOptimizerModuleMixin(LightningModule, ABC):
             return np.linspace(lr.start, lr.stop, n_splits).tolist()
         else:
             raise ValueError(f"lr type {type(lr)} not supported, use a number or a slice")
-
-    def trainable_params_splits(self):
-        """ Get trainable parameters from parameter groups
-            If a parameter group does not have trainable params, it does not get added
-        """
-        for split in self.model_splits():
-            params = list(filter_params(split, only_trainable=True))
-            if params:
-                yield params
