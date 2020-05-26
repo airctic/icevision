@@ -21,8 +21,9 @@ def grid(f, ims, figsize=None, **kwargs):
     for fn,ax in zip(ims,axs): f(fn, ax=ax)
     plt.tight_layout()
 
-def grid2(fs, figsize=None, **kwargs):
+def grid2(fs, figsize=None, show=False, **kwargs):
     figsize = figsize or [7*len(fs)]*2
     fig,axs = plt.subplots(nrows=len(fs), figsize=figsize, **kwargs)
     for f,ax in zip(fs,axs): f(ax=ax)
     plt.tight_layout()
+    if show: plt.show()
