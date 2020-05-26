@@ -10,12 +10,10 @@ class MultiCycleLR(OneCycleLR):
 
 class Learner:
     def __init__(self, m, train_dl, valid_dl, opt_fn, logger=None, cbs=None):
-        self.m, self.train_dl, self.valid_dl, self.opt_fn = (
-            m,
-            train_dl,
-            valid_dl,
-            opt_fn,
-        )
+        self.m = m
+        self.train_dl = train_dl
+        self.valid_dl = valid_dl
+        self.opt_fn = opt_fn
         self.logger = logger or True
         self.gpus = get_all_available_gpus()
         self.cbs = L(cbs)

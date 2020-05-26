@@ -1,6 +1,6 @@
-from ..imports import *
-
 __all__ = ["open_img", "show_img", "grid", "grid2"]
+
+from ..imports import *
 
 
 def open_img(fn, gray=False):
