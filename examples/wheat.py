@@ -54,13 +54,18 @@ grid2([partial(show_item, o, label=False) for o in items], show=True)
 metrics = [COCOMetric(valid_rs, catmap)]
 
 from mantisshrimp.all import *
+from mantisshrimp.models.utils import *
+
 model = MantisFasterRCNN(2)
 model.prepare_optimizer(SGD, slice(1e-5, 1e-3))
+params_groups = list(model.params_splits())
+trainable_params_groups = list(model.trainable_params_splits())
+for ps in params_groups: unfreeze(ps)
+len(trainable_params_groups)
+
 
 from mantisshrimp.models.utils import *
 
-adfdf
-model.model_splits
 len(list(model.trainable_params_splits()))
 
 # Get trainable parameters from parameter groups
