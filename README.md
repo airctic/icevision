@@ -4,6 +4,7 @@
 [![CI testing](https://github.com/lgvaz/mantisshrimp/workflows/CI%20testing/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3A%22CI+testing%22)
 [![codecov](https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/lgvaz/mantisshrimp)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE)
 
 ---
 Built on top of [pytorch-lightining](https://github.com/PyTorchLightning/pytorch-lightning), `MantisShrimp` is an object detection framework focused on application  
