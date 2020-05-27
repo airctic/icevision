@@ -2,6 +2,7 @@
 > MantisShrimp is in very early development, all contributions are welcome! Be sure to check the `issues` board =)
 
 [![CI testing](https://github.com/lgvaz/mantisshrimp/workflows/CI%20testing/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3A%22CI+testing%22)
+[![codecov](https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/lgvaz/mantisshrimp)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ---
