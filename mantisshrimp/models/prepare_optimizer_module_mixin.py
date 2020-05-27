@@ -8,11 +8,12 @@ from .parameters_splits_module_mixin import ParametersSplitsModuleMixin
 class PrepareOptimizerModuleMixin(ParametersSplitsModuleMixin, LightningModule, ABC):
     # TODO: Implement a default splitter
     def configure_optimizers(self):
-        if self.opt is None:
+        try:
+            if self.sched is None:
+                return self.opt
+            return [self.opt], [self.sched]
+        except AttributeError:
             raise RuntimeError("You probably need to call `prepare_optimizers`")
-        if self.sched is None:
-            return self.opt
-        return [self.opt], [self.sched]
 
     def prepare_optimizer(self, opt_func, lr: Union[float, slice], sched_fn=None):
         self.opt = opt_func(self.get_optimizer_param_groups(lr), self.get_lrs(lr)[0])
