@@ -35,8 +35,15 @@ class WheatAnnotationParser(AnnotationParser):
     def __iter__(self):
         yield from df.itertuples()
 
+
 catmap = CategoryMap([Category(0, "wheat")])
-parser = DataParser(df, source, catmap=catmap, info_parser=WheatInfoParser, annotation_parser=WheatAnnotationParser)
+parser = DataParser(
+    df,
+    source,
+    catmap=catmap,
+    info_parser=WheatInfoParser,
+    annotation_parser=WheatAnnotationParser,
+)
 
 train_rs, valid_rs = parser.parse()
 
@@ -45,26 +52,25 @@ tfm = AlbuTransform([A.Flip(p=0.8), A.ShiftScaleRotate(p=0.8, scale_limit=(0, 0.
 train_ds = Dataset(train_rs, tfm)
 valid_ds = Dataset(valid_rs)
 
-train_dl = RCNNDataLoader(train_ds, batch_size=4, num_workers=8)
-valid_dl = RCNNDataLoader(valid_ds, batch_size=4, num_workers=8)
+train_dl = RCNNDataLoader(train_ds, batch_size=2, num_workers=2)
+valid_dl = RCNNDataLoader(valid_ds, batch_size=2, num_workers=2)
 
 items = [train_ds[0] for _ in range(2)]
 grid2([partial(show_item, o, label=False) for o in items], show=True)
 
 metrics = [COCOMetric(valid_rs, catmap)]
 
-from mantisshrimp.all import *
-from mantisshrimp.models.utils import *
-
 model = MantisFasterRCNN(2)
 model.prepare_optimizer(SGD, slice(1e-5, 1e-3))
+
+model.unfreeze()
+model.freeze()
+
 params_groups = list(model.params_splits())
 trainable_params_groups = list(model.trainable_params_splits())
-for ps in params_groups: unfreeze(ps)
+for ps in params_groups:
+    unfreeze(ps)
 len(trainable_params_groups)
-
-
-from mantisshrimp.models.utils import *
 
 len(list(model.trainable_params_splits()))
 
@@ -73,8 +79,8 @@ len(list(model.trainable_params_splits()))
 params = []
 for pg in model.model_splits:
     ps = list(filter_params(pg, only_trainable=True))
-    if ps: params.append(ps)
-
+    if ps:
+        params.append(ps)
 
 
 a = list(filter_params(model.model_splits[0], only_trainable=True))
@@ -114,4 +120,3 @@ class WheatModel(MantisFasterRCNN):
         opt = SGD(params(self), lr=1e-3, momentum=0.9, weight_decay=5e-4)
         sched = OneCycleLR(opt, max_lr=1e-3, total_steps=len(train_dl), pct_start=0.3)
         return [opt], [{"scheduler": sched, "interval": "step"}]
-

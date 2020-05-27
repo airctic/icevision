@@ -33,7 +33,8 @@ def sample_data_parser():
 
 def sample_records():
     with np_local_seed(42):
-        return sample_data_parser().parse(show_pbar=False)
+        parser = sample_data_parser()
+        return parser.parse(show_pbar=False)
 
 
 def sample_datasets():
@@ -44,5 +45,5 @@ def sample_datasets():
 def sample_rcnn_dataloaders():
     train_ds, valid_ds = sample_datasets()
     train_dl = RCNNDataLoader(train_ds, batch_size=2, shuffle=False, drop_last=False)
-    valid_dl = RCNNDataLoader(valid_ds, batch_size=4, shuffle=False, drop_last=False)
+    valid_dl = RCNNDataLoader(valid_ds, batch_size=2, shuffle=False, drop_last=False)
     return train_dl, valid_dl
