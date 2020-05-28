@@ -10,8 +10,11 @@ __all__ = [
 
 from mantisshrimp.all import *
 
-source = Path(__file__).absolute().parent.parent.parent / "samples"
-annots_dict = json.loads((source / "annotations.json").read())
+try:
+    source = Path(__file__).absolute().parent.parent.parent / "samples"
+    annots_dict = json.loads((source / "annotations.json").read())
+except FileNotFoundError:
+    pass
 
 
 def sample_category_parser():
