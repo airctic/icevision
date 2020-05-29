@@ -5,7 +5,7 @@ from .utils import *
 
 
 class ParametersSplitsModuleMixin(LightningModule, ABC):
-    # TODO: Implement default splitter
+    # TODO: Implement default splitter (just return a list of layers)
     @abstractmethod
     def model_splits(self):
         pass
@@ -30,3 +30,18 @@ class ParametersSplitsModuleMixin(LightningModule, ABC):
         unfreeze(self.parameters())
         for params in list(self.params_splits())[:n]:
             freeze(params)
+
+    def get_optimizer_param_groups(self, lr):
+        lrs = self.get_lrs(lr)
+        return [
+            {"params": params, "lr": lr}
+            for params, lr in zip(self.params_splits(), lrs)
+        ]
+
+    def get_lrs(self, lr):
+        n_splits = len(list(self.params_splits()))
+        if isinstance(lr, numbers.Number):
+            return [lr] * n_splits
+        if isinstance(lr, (tuple, list)):
+            assert len(lr) == len(list(self.params_splits()))
+            return lr
