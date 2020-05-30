@@ -58,7 +58,7 @@ class WheatModel(MantisFasterRCNN):
             self.freeze_to(-1)
             self.replace_sched(self.n_freeze_epochs, self.freeze_lrs)
 
-        if self.current_epoch == self.n_freeze_epochs - 1:
+        if self.current_epoch == self.n_freeze_epochs:
             self.freeze_to(0)
             self.replace_sched(self.n_unfreeze_epochs, self.unfreeze_lrs)
 
