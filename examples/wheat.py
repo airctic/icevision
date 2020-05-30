@@ -1,4 +1,5 @@
-from mantisshrimp.all import *
+from mantisshrimp.imports import *
+from mantisshrimp import *
 import pandas as pd, albumentations as A
 
 source = Path("/home/lgvaz/.data/wheat")
@@ -36,6 +37,42 @@ class WheatAnnotationParser(AnnotationParser):
         yield from df.itertuples()
 
 
+class WheatModel(MantisFasterRCNN):
+    def __init__(
+        self, n_freeze_epochs, n_unfreeze_epochs, freeze_lrs, unfreeze_lrs, **kwargs
+    ):
+        self.n_freeze_epochs = n_freeze_epochs
+        self.n_unfreeze_epochs = n_unfreeze_epochs
+        self.freeze_lrs = freeze_lrs
+        self.unfreeze_lrs = unfreeze_lrs
+        super().__init__(**kwargs)
+
+    def configure_optimizers(self):
+        param_groups = self.get_optimizer_param_groups()
+        opt = SGD(param_groups, momentum=0.9)
+        sched = OneCycleLR(opt, 1e-3, 10)
+        return [opt], [sched]
+
+    def on_epoch_start(self):
+        if self.current_epoch == 0:
+            self.freeze_to(-1)
+            self.replace_sched(self.n_freeze_epochs, self.freeze_lrs)
+
+        if self.current_epoch == self.n_freeze_epochs - 1:
+            self.freeze_to(0)
+            self.replace_sched(self.n_unfreeze_epochs, self.unfreeze_lrs)
+
+    def replace_sched(self, n_epochs, lrs):
+        total_steps = len(self.train_dataloader()) * n_epochs
+        opt = self.trainer.optimizers[0]
+        sched = OneCycleLR(opt, lrs, total_steps)
+        sched = {"scheduler": sched, "interval": "step"}
+        scheds = self.trainer.configure_schedulers([sched])
+        # Replace scheduler
+        self.trainer.lr_schedulers = scheds
+        lr_logger.on_train_start(self.trainer, self)
+
+
 catmap = CategoryMap([Category(0, "wheat")])
 parser = DataParser(
     df,
@@ -52,71 +89,28 @@ tfm = AlbuTransform([A.Flip(p=0.8), A.ShiftScaleRotate(p=0.8, scale_limit=(0, 0.
 train_ds = Dataset(train_rs, tfm)
 valid_ds = Dataset(valid_rs)
 
-train_dl = RCNNDataLoader(train_ds, batch_size=2, num_workers=2)
-valid_dl = RCNNDataLoader(valid_ds, batch_size=2, num_workers=2)
+train_dl = RCNNDataLoader(train_ds, batch_size=4, num_workers=8)
+valid_dl = RCNNDataLoader(valid_ds, batch_size=4, num_workers=8)
 
 items = [train_ds[0] for _ in range(2)]
 grid2([partial(show_item, o, label=False) for o in items], show=True)
 
+# Cannot do, we don't know the model before hand
+# n_param_groups = len(list(model.params_splits()))
+n_param_groups = 8
+freeze_lrs = [1e-3] * n_param_groups
+unfreeze_lrs = np.linspace(5e-6, 5e-4, n_param_groups).tolist()
+
 metrics = [COCOMetric(valid_rs, catmap)]
+model = WheatModel(
+    n_freeze_epochs=1,
+    n_unfreeze_epochs=3,
+    freeze_lrs=freeze_lrs,
+    unfreeze_lrs=unfreeze_lrs,
+    n_class=2,
+    # metrics=metrics,
+)
 
-model = MantisFasterRCNN(2)
-model.prepare_optimizer(SGD, slice(1e-5, 1e-3))
-
-model.unfreeze()
-model.freeze()
-
-params_groups = list(model.params_splits())
-trainable_params_groups = list(model.trainable_params_splits())
-for ps in params_groups:
-    unfreeze(ps)
-len(trainable_params_groups)
-
-len(list(model.trainable_params_splits()))
-
-# Get trainable parameters from parameter groups
-# If a parameter group does not have trainable params, it does not get added
-params = []
-for pg in model.model_splits:
-    ps = list(filter_params(pg, only_trainable=True))
-    if ps:
-        params.append(ps)
-
-
-a = list(filter_params(model.model_splits[0], only_trainable=True))
-a
-
-unfreeze(filter_params(model))
-freeze(model.parameters())
-
-for group in model.model_splits[:2]:
-    freeze(filter_params(group))
-
-model.get_lrs(slice(1e-5, 1e-3))
-
-# list((model.param_groups[-1][0]).parameters())[0].requires_grad
-list((model.model_splits[-1].box_head.fc6).parameters())[0].requires_grad
-model.model_splits[-1]
-
-params = list(filter_params(model, only_trainable=False))
-len(params)
-params
-
-unfreeze(params for params in model.model_splits[:None])
-len(model.model_splits[:None])
-model.model_splits[0]
-len(model.model_splits)
-
-trainer = Trainer(max_epochs=1, gpus=1)
+lr_logger = LearningRateLogger()
+trainer = Trainer(max_epochs=4, gpus=1, weights_summary=None, callbacks=[lr_logger])
 trainer.fit(model, train_dl, valid_dl)
-
-rs = random.choices(valid_rs, k=2)
-ims, preds = model.predict(rs=rs)
-show_preds(ims, preds)
-
-
-class WheatModel(MantisFasterRCNN):
-    def configure_optimizers(self):
-        opt = SGD(params(self), lr=1e-3, momentum=0.9, weight_decay=5e-4)
-        sched = OneCycleLR(opt, max_lr=1e-3, total_steps=len(train_dl), pct_start=0.3)
-        return [opt], [{"scheduler": sched, "interval": "step"}]
