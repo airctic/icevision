@@ -2,6 +2,7 @@ __all__ = ["MantisRCNN"]
 
 from ..imports import *
 from ..utils import *
+from ..core import *
 from .mantis_module import *
 
 

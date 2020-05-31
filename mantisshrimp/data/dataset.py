@@ -1,11 +1,13 @@
 __all__ = ["Dataset"]
 
+from ..imports import *
 from ..utils import *
 from ..core import *
+from ..transforms import *
 
 
 class Dataset:
-    def __init__(self, records, tfm=None):
+    def __init__(self, records: List[Record], tfm: Transform = None):
         self.records, self.tfm = records, tfm
 
     def __len__(self):
