@@ -1,0 +1,21 @@
+name: Check Formatting
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    # Runs black formatting
+    - name: Black Code Formatter
+      uses: lgeiger/black-action@v1.0.1
+      with:
+          args: ". --check"
