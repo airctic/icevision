@@ -6,6 +6,8 @@ from ..imports import *
 @dataclass
 class BBox:
     pnts: List[int]
+    img_w: int = None
+    img_h: int = None
 
     def __post_init__(self):
         if self.pnts:
@@ -24,13 +26,30 @@ class BBox:
     def xywh(self):
         return [self.x, self.y, self.w, self.h]
 
+    @property
+    def relative_xcycwh(self):
+        scale = np.array([self.img_w, self.img_h, self.img_w, self.img_h])
+        x, y, w, h = self.xywh / scale
+        xc = x + 0.5 * w
+        yc = y + 0.5 * h
+        return [xc, yc, w, h]
+
     @classmethod
     def from_xywh(cls, x, y, w, h):
         return cls([x, y, x + w, y + h])
 
     @classmethod
-    def from_xyxy(cls, xl, yu, xr, yb):
-        return cls([xl, yu, xr, yb])
+    def from_xyxy(cls, xl, yu, xr, yb, img_w=None, img_h=None):
+        return cls([xl, yu, xr, yb], img_w=img_w, img_h=img_h)
+
+    @classmethod
+    def from_relative_xcycwh(cls, xc, yc, bw, bh, img_w, img_h):
+        # subtracting 0.5 goes from center to left/upper edge, adding goes to right/bottom
+        pnts = [(xc - 0.5 * bw), (yc - 0.5 * bh), (xc + 0.5 * bw), (yc + 0.5 * bh)]
+        # convert from relative to absolute coordinates
+        scale = np.array([img_w, img_h, img_w, img_h])
+        xl, yu, xr, yb = np.around(pnts * scale).astype(int).tolist()
+        return cls.from_xyxy(xl, yu, xr, yb, img_w=img_w, img_h=img_h)
 
     @classmethod
     def from_rle(cls, rle, h, w):
