@@ -13,19 +13,32 @@ class AlbuTransform(Transform):
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
-    def apply(self, img, labels, bboxes=None, masks=None, iscrowds=None, **kwargs):
+    def apply(
+        self,
+        img: np.ndarray,
+        labels=None,
+        bboxes: BBox = None,
+        masks: MaskArray = None,
+        iscrowds: List[int] = None,
+        **kwargs
+    ):
         # Substitue labels with list of idxs, so we can also filter out iscrowd in case any bbox is removed
         # TODO: Same should be done if a mask is completely removed from the image (if bbox is not given)
-        d = self.tfms(
-            image=img,
-            labels=list(range_of(labels)),
-            masks=masks.data if masks else None,
-            bboxes=lmap(lambda o: o.xyxy, bboxes),
-        )
-        return {
-            "img": d["image"],
-            "labels": [labels[i] for i in d["labels"]],
-            "bboxes": lmap(lambda o: BBox.from_xyxy(*o), d["bboxes"]),
-            "masks": ifnotnone(d["masks"], lambda o: MaskArray(np.stack(o))),
-            "iscrowds": lmap(iscrowds.__getitem__, d["labels"]),
-        }
+        params = {"image": img}
+        params["labels"] = list(range_of(labels)) if labels is not None else []
+        params["bboxes"] = [bbox.xyxy for bbox in bboxes] if bboxes is not None else []
+        if masks is not None:
+            params["masks"] = masks.data
+
+        d = self.tfms(**params)
+
+        out = {"img": d["image"]}
+        if labels is not None:
+            out["labels"] = [labels[i] for i in d["labels"]]
+        if bboxes is not None:
+            out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
+        if masks is not None:
+            out["masks"] = MaskArray(np.stack(d["masks"]))
+        if iscrowds is not None:
+            out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
+        return out
