@@ -11,6 +11,8 @@ __all__ = [
     "zipsafe",
     "np_local_seed",
     "pbar",
+    "imagenet_stats",
+    "denormalize",
 ]
 
 
@@ -64,3 +66,10 @@ def np_local_seed(seed):
         yield
     finally:
         np.random.set_state(state)
+
+
+imagenet_stats = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+
+
+def denormalize(img, mean, std, max_pixel_value=255):
+    return np.around((img * std + mean) * max_pixel_value).astype(np.uint8)
