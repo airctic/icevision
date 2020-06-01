@@ -4,6 +4,7 @@ from ..imports import *
 from ..utils import *
 from ..core import *
 from .mantis_module import *
+from ..data import *
 
 
 class MantisRCNN(MantisModule, ABC):
@@ -53,3 +54,7 @@ class MantisRCNN(MantisModule, ABC):
         log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
         res.update({"val_loss": log["valid/loss"], "log": log})
         return res
+
+    @staticmethod
+    def dataloader(**kwargs) -> DataLoader:
+        return RCNNDataLoader(**kwargs)
