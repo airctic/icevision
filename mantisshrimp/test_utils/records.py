@@ -47,6 +47,10 @@ def sample_datasets():
 
 def sample_rcnn_dataloaders():
     train_ds, valid_ds = sample_datasets()
-    train_dl = RCNNDataLoader(train_ds, batch_size=2, shuffle=False, drop_last=False)
-    valid_dl = RCNNDataLoader(valid_ds, batch_size=2, shuffle=False, drop_last=False)
+    train_dl = MantisMaskRCNN.dataloader(
+        dataset=train_ds, batch_size=2, shuffle=False, drop_last=False
+    )
+    valid_dl = MantisMaskRCNN.dataloader(
+        dataset=valid_ds, batch_size=2, shuffle=False, drop_last=False
+    )
     return train_dl, valid_dl

@@ -1,7 +1,7 @@
 __all__ = ["split_rcnn_model"]
 
-from ..imports import *
-from ..utils import *
+from ...imports import *
+from ...utils import *
 
 
 def split_rcnn_model(m):

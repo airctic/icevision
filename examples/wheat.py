@@ -89,8 +89,8 @@ tfm = AlbuTransform([A.Flip(p=0.8), A.ShiftScaleRotate(p=0.8, scale_limit=(0, 0.
 train_ds = Dataset(train_rs, tfm)
 valid_ds = Dataset(valid_rs)
 
-train_dl = RCNNDataLoader(train_ds, batch_size=4, num_workers=8)
-valid_dl = RCNNDataLoader(valid_ds, batch_size=4, num_workers=8)
+# train_dl = RCNNDataLoader(train_ds, batch_size=4, num_workers=8)
+# valid_dl = RCNNDataLoader(valid_ds, batch_size=4, num_workers=8)
 
 items = [train_ds[0] for _ in range(2)]
 grid2([partial(show_item, o, label=False) for o in items], show=True)
@@ -110,6 +110,9 @@ model = WheatModel(
     n_class=2,
     # metrics=metrics,
 )
+
+train_dl = model.dataloader(dataset=train_ds, batch_size=4, num_workers=8)
+valid_dl = model.dataloader(dataset=valid_ds, batch_size=4, num_workers=8)
 
 lr_logger = LearningRateLogger()
 trainer = Trainer(max_epochs=4, gpus=1, weights_summary=None, callbacks=[lr_logger])

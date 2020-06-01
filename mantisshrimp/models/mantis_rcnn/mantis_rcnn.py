@@ -1,9 +1,9 @@
 __all__ = ["MantisRCNN"]
 
-from ..imports import *
-from ..utils import *
-from ..core import *
-from .mantis_module import *
+from ...imports import *
+from ...utils import *
+from ...core import *
+from ..mantis_module import *
 
 
 class MantisRCNN(MantisModule, ABC):
@@ -53,3 +53,16 @@ class MantisRCNN(MantisModule, ABC):
         log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
         res.update({"val_loss": log["valid/loss"], "log": log})
         return res
+
+    @classmethod
+    def dataloader(cls, **kwargs) -> DataLoader:
+        def collate_fn(items):
+            ts = [cls.item2training_sample(o) for o in items]
+            return list(zip(*ts))
+
+        return DataLoader(collate_fn=collate_fn, **kwargs)
+
+    @staticmethod
+    @abstractmethod
+    def item2training_sample(item: Item):
+        raise NotImplementedError

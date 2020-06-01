@@ -14,3 +14,6 @@ class SimpleModel(MantisModule):
 
     def forward(self, x):
         return self.model(x)
+
+    def dataloader(cls, **kwargs) -> DataLoader:
+        return DataLoader(**kwargs)

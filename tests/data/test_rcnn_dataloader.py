@@ -1,14 +1,15 @@
 from mantisshrimp import *
 from mantisshrimp.imports import first, torch, tensor, Tensor
-from mantisshrimp.data.rcnn_dataloader import _fake_box
+
+_fake_box = [0, 1, 2, 3]
 
 
 def test_item2rcnn_training_sample(item):
-    x, y = item2rcnn_training_sample(item)
+    x, y = MantisMaskRCNN.item2training_sample(item)
     assert x.dtype == torch.float32
     assert x.shape == (3, 427, 640)
     assert isinstance(y, dict)
-    assert list(y.keys()) == ["image_id", "labels", "iscrowd", "boxes", "area", "masks"]
+    assert set(y.keys()) == {"image_id", "labels", "iscrowd", "boxes", "area", "masks"}
     assert y["image_id"].dtype == torch.int64
     assert y["labels"].dtype == torch.int64
     assert y["labels"].shape == (16,)
@@ -29,7 +30,7 @@ def test_item2rcnn_training_sample(item):
 
 def test_item2rcnn_training_sample_empty(item):
     item = item.replace(bboxes=[], labels=[], iscrowds=[])
-    x, y = item2rcnn_training_sample(item)
+    x, y = MantisMaskRCNN.item2training_sample(item)
     assert (y["boxes"] == tensor([_fake_box], dtype=torch.float)).all()
     assert y["labels"] == tensor([0])
     assert y["iscrowd"] == tensor([0])
