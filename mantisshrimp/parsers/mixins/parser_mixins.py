@@ -3,9 +3,14 @@ __all__ = [
     "FilepathParserMixin",
     "SizeParserMixin",
     "SplitParserMixin",
+    "LabelParserMixin",
+    "BBoxParserMixin",
+    "MaskParserMixin",
+    "IsCrowdParserMixin",
 ]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 
 
 class ParserMixin(ABC):
@@ -58,10 +63,43 @@ class SplitParserMixin(ParserMixin):
         pass
 
 
-# testing
-# class Test(FilepathParserMixin, ImageidParserMixin):
-#     def filepath(self, o) -> Union[str, Path]:
-#         return "path"
-#
-#     def imageid(self, o) -> int:
-#         return 42
+## Annotation parsers ##
+class LabelParserMixin(ParserMixin):
+    def collect_parse_funcs(self, funcs=None):
+        funcs = super().collect_parse_funcs(funcs)
+        return {"label": self.label, **funcs}
+
+    # TODO: implement return type
+    @abstractmethod
+    def label(self, o):
+        pass
+
+
+class BBoxParserMixin(ParserMixin):
+    def collect_parse_funcs(self, funcs=None):
+        funcs = super().collect_parse_funcs(funcs)
+        return {"bbox": self.bbox, **funcs}
+
+    @abstractmethod
+    def bbox(self, o) -> BBox:
+        pass
+
+
+class MaskParserMixin(ParserMixin):
+    def collect_parse_funcs(self, funcs=None):
+        funcs = super().collect_parse_funcs(funcs)
+        return {"mask": self.mask, **funcs}
+
+    @abstractmethod
+    def mask(self, o) -> MaskArray:
+        pass
+
+
+class IsCrowdParserMixin(ParserMixin):
+    def collect_parse_funcs(self, funcs=None):
+        funcs = super().collect_parse_funcs(funcs)
+        return {"iscrowd": self.iscrowd, **funcs}
+
+    @abstractmethod
+    def iscrowd(self, o) -> bool:
+        pass
