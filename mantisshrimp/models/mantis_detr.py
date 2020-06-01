@@ -41,3 +41,6 @@ class MantisDetr(MantisModule):
             check_hash=True,
         )
         self.model.load_state_dict(state_dict)
+
+    def dataloader(cls, **kwargs) -> DataLoader:
+        pass

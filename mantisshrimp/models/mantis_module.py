@@ -5,4 +5,8 @@ from .parameters_splits_module_mixin import *
 
 
 class MantisModule(ParametersSplitsModuleMixin, LightningModule, ABC):
-    pass
+    @classmethod
+    @abstractmethod
+    def dataloader(cls, **kwargs) -> DataLoader:
+        """ Returns the specific dataloader for this class
+        """
