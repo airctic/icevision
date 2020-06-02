@@ -8,11 +8,15 @@ from .mixins import *
 
 class ImageInfoParser(Parser, ABC):
     def parse(self, show_pbar: bool = True):
-        records = []
+        parse_funcs = self.collect_parse_funcs()
+        get_imageid = parse_funcs.pop("imageid")
+        records = {}
         for sample in pbar(self, show_pbar):
             self.prepare(sample)
-            out = {name: func(sample) for name, func in self.parse_funcs.items()}
-            records.append(out)
+            imageid = get_imageid(sample)
+            records[imageid] = {
+                name: func(sample) for name, func in parse_funcs.items()
+            }
         return records
 
 
