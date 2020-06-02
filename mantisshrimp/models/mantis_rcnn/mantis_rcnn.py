@@ -56,13 +56,12 @@ class MantisRCNN(MantisModule, ABC):
 
     @classmethod
     def dataloader(cls, **kwargs) -> DataLoader:
-        def collate_fn(items):
-            ts = [cls.item2training_sample(o) for o in items]
+        def collate_fn(data):
+            ts = [cls.build_training_sample(**o) for o in data]
             return list(zip(*ts))
 
         return DataLoader(collate_fn=collate_fn, **kwargs)
 
     @staticmethod
-    @abstractmethod
-    def item2training_sample(item: Item):
+    def build_training_sample(self, *args, **kwargs):
         raise NotImplementedError
