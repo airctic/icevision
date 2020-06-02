@@ -1,24 +1,34 @@
 __all__ = ["CategoryParser"]
 
-from ..imports import *
-from ..utils import *
-from ..core import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
+from mantisshrimp.core import *
+from mantisshrimp.parsers.parser import *
 
 
-class CategoryParser:
+class CategoryParser(Parser, ABC):
     def __init__(self, data):
+        super().__init__()
         self.data = data
 
     def __iter__(self):
         yield from self.data
 
-    def id(self, o):
-        raise NotImplementedError
+    def __len__(self):
+        return len(self.data)
 
+    @abstractmethod
+    def id(self, o):
+        pass
+
+    @abstractmethod
     def name(self, o):
-        raise NotImplementedError
+        pass
 
     def parse(self, show_pbar=True):
         return CategoryMap(
-            [Category(self.id(o), self.name(o)) for o in pbar(self, show=show_pbar)]
+            [
+                Category(self.id(sample), self.name(sample))
+                for sample in pbar(self, show=show_pbar)
+            ]
         )
