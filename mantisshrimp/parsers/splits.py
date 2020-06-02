@@ -1,6 +1,7 @@
-__all__ = ["DataSplit", "random_split", "random_split2"]
+__all__ = ["DataSplit", "random_split", "RandomSplitter"]
 
-from ..imports import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 
 
 class DataSplit:
@@ -15,12 +16,16 @@ def random_split(p=None, splits=None):
     return np.random.choice(splits, p=p)
 
 
-def random_split2(ids, p):
-    # calculate split indexes
-    p = np.array(p) * len(ids)  # convert percentage to absolute
-    p = np.ceil(p).astype(int)  # round up, so each split has at least one example
-    p[p.argmax()] -= sum(p) - len(ids)  # removes excess from split with most items
-    p = np.cumsum(p)
+def RandomSplitter(probs, seed=None):
+    def _inner(ids):
+        # calculate split indexes
+        p = np.array(probs) * len(ids)  # convert percentage to absolute
+        p = np.ceil(p).astype(int)  # round up, so each split has at least one example
+        p[p.argmax()] -= sum(p) - len(ids)  # removes excess from split with most items
+        p = np.cumsum(p)
 
-    shuffled = np.random.permutation(list(ids))
-    return np.split(shuffled, p.tolist())[:-1]  # last element is always empty
+        with np_local_seed(seed):
+            shuffled = np.random.permutation(list(ids))
+        return np.split(shuffled, p.tolist())[:-1]  # last element is always empty
+
+    return _inner
