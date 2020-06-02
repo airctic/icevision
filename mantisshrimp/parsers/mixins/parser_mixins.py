@@ -2,7 +2,6 @@ __all__ = [
     "ImageidParserMixin",
     "FilepathParserMixin",
     "SizeParserMixin",
-    "SplitParserMixin",
     "LabelParserMixin",
     "BBoxParserMixin",
     "MaskParserMixin",
@@ -50,16 +49,6 @@ class SizeParserMixin(ParserMixin):
 
     @abstractmethod
     def width(self, o) -> int:
-        pass
-
-
-class SplitParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
-        return {"split": self.split, **funcs}
-
-    @abstractmethod
-    def split(self, o) -> int:
         pass
 
 

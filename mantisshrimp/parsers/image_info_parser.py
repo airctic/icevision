@@ -14,18 +14,11 @@ class ImageInfoParser(Parser, ABC):
         for sample in pbar(self, show_pbar):
             self.prepare(sample)
             imageid = get_imageid(sample)
-            records[imageid] = {
-                name: func(sample) for name, func in parse_funcs.items()
-            }
+            records[imageid] = {name: fn(sample) for name, fn in parse_funcs.items()}
         return records
 
 
 class DefaultImageInfoParser(
-    ImageInfoParser,
-    ImageidParserMixin,
-    FilepathParserMixin,
-    SizeParserMixin,
-    SplitParserMixin,
-    ABC,
+    ImageInfoParser, ImageidParserMixin, FilepathParserMixin, SizeParserMixin, ABC,
 ):
     pass

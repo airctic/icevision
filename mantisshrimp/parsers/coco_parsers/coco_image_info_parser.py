@@ -27,6 +27,3 @@ class COCOImageInfoParser(DefaultImageInfoParser):
 
     def width(self, o) -> int:
         return o["width"]
-
-    def split(self, o) -> int:
-        return 0
