@@ -8,19 +8,21 @@ class Transform(ABC):
     def __init__(self, tfms):
         self.tfms = tfms
 
-    def __call__(self, item: Item):
-        tfmed = self.apply(**item.asdict())
-        return item.replace(**tfmed)
+    def __call__(self, data: dict):
+        data = data.copy()
+        tfmed = self.apply(**data)
+        data.update(tfmed)
+        return data
 
     @abstractmethod
     def apply(
         self,
         img: np.ndarray,
         imageid: int,
-        labels: List[int],
-        iscrowds: List[int],
-        bboxes: List[BBox],
-        masks: MaskArray,
+        label: List[int],
+        iscrowd: List[int],
+        bbox: List[BBox],
+        mask: MaskArray,
     ):
         """ Apply the transform
         Returns:
