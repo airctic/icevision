@@ -8,3 +8,4 @@ from .mixins import *
 from .image_info_parser import *
 from .coco_parsers import *
 from .annotation_parser2 import *
+from .combined_parser import *
