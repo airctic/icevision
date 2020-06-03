@@ -3,6 +3,7 @@ __all__ = ["Parser"]
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from .mixins import *
+from .splits import *
 
 
 class Parser(ImageidParserMixin, ABC):
@@ -17,7 +18,7 @@ class Parser(ImageidParserMixin, ABC):
     def __len__(self):
         pass
 
-    def parse(self, show_pbar: bool = True):
+    def parse_dicted(self, show_pbar: bool = True) -> Dict[int, dict]:
         info_parse_funcs = self.collect_info_parse_funcs()
         annotation_parse_funcs = self.collect_annotation_parse_funcs()
         get_imageid = info_parse_funcs.pop("imageid")
@@ -32,3 +33,10 @@ class Parser(ImageidParserMixin, ABC):
                 # TODO: Assume everything is returned in a list
                 records[imageid][name].append(func(sample))
         return dict(records)
+
+    def parse(
+        self, data_splitter: DataSplitter, show_pbar: bool = True
+    ) -> List[List[dict]]:
+        records = self.parse_dicted(show_pbar=show_pbar)
+        splits = data_splitter(records.keys())
+        return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
