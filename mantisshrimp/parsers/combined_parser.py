@@ -1,23 +1,29 @@
 __all__ = ["CombinedParser"]
 
+from mantisshrimp.imports import *
+from mantisshrimp.parsers.parser import *
 
-class CombinedParser:
-    def __init__(self, image_info_parser, annotation_parser):
-        self.image_info_parser = image_info_parser
-        self.annotation_parser = annotation_parser
+
+class CombinedParser(ParserInterface):
+    def __init__(self, parsers: List[Parser]):
+        self.parsers = parsers
 
     def parse(self, data_splitter, show_pbar: bool = True):
-        infos = self.image_info_parser.parse_dicted(show_pbar=show_pbar)
-        annotations = self.annotation_parser.parse_dicted(show_pbar=show_pbar)
-        infos_ids = set(infos.keys())
-        annotations_ids = set(annotations.keys())
-        # removes ids that are not included in both
-        valid_ids = infos_ids.intersection(annotations_ids)
-        excluded = infos_ids.union(annotations_ids) - valid_ids
+        parsers_records = [o.parse_dicted(show_pbar=show_pbar) for o in self.parsers]
+        ids = [set(o.keys()) for o in parsers_records]
+        valid_ids = set.intersection(*ids)
+        excluded = set.union(*ids) - valid_ids
         print(f"Removed {excluded}")
-        # combine image_info with annotations and separate splits
         splits = data_splitter(valid_ids)
-        return [
-            [{"imageid": id, **infos[id], **annotations[id]} for id in ids]
-            for ids in splits
-        ]
+
+        # TODO: Confusing names
+        # combine keys for all parsers
+        split_records = []
+        for ids in splits:
+            current_records = []
+            for id in ids:
+                record = {"imageid": id}
+                for records in parsers_records:
+                    record.update(records[id])
+                current_records.append(record)
+            split_records.append(current_records)
