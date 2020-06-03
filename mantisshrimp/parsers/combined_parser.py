@@ -7,8 +7,8 @@ class CombinedParser:
         self.annotation_parser = annotation_parser
 
     def parse(self, data_splitter, show_pbar: bool = True):
-        infos = self.image_info_parser.parse(show_pbar=show_pbar)
-        annotations = self.annotation_parser.parse(show_pbar=show_pbar)
+        infos = self.image_info_parser.parse_dicted(show_pbar=show_pbar)
+        annotations = self.annotation_parser.parse_dicted(show_pbar=show_pbar)
         infos_ids = set(infos.keys())
         annotations_ids = set(annotations.keys())
         # removes ids that are not included in both
