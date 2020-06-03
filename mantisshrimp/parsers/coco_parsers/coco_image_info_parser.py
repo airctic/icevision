@@ -1,10 +1,10 @@
 __all__ = ["COCOImageInfoParser"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.parsers.image_info_parser import DefaultImageInfoParser
+from mantisshrimp.parsers.defaults import *
 
 
-class COCOImageInfoParser(DefaultImageInfoParser):
+class COCOImageInfoParser(ImageInfoParser):
     def __init__(self, infos, img_dir):
         super().__init__()
         self.infos = infos
