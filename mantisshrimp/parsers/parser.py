@@ -1,4 +1,4 @@
-__all__ = ["Parser"]
+__all__ = ["ParserInterface", "Parser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -6,7 +6,15 @@ from .mixins import *
 from .splits import *
 
 
-class Parser(ImageidParserMixin, ABC):
+class ParserInterface(ABC):
+    @abstractmethod
+    def parse(
+        self, data_splitter: DataSplitter, show_pbar: bool = True
+    ) -> List[List[dict]]:
+        pass
+
+
+class Parser(ImageidParserMixin, ParserInterface, ABC):
     def prepare(self, o):
         pass
 
