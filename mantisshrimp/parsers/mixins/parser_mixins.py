@@ -13,14 +13,16 @@ from mantisshrimp.core import *
 
 
 class ParserMixin(ABC):
-    @abstractmethod
-    def collect_parse_funcs(self, funcs=None):
+    def collect_annotation_parse_funcs(self, funcs=None):
+        return funcs or {}
+
+    def collect_info_parse_funcs(self, funcs=None):
         return funcs or {}
 
 
 class ImageidParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_info_parse_funcs(self, funcs=None):
+        funcs = super().collect_info_parse_funcs(funcs)
         return {"imageid": self.imageid, **funcs}
 
     @abstractmethod
@@ -29,8 +31,8 @@ class ImageidParserMixin(ParserMixin):
 
 
 class FilepathParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_info_parse_funcs(self, funcs=None):
+        funcs = super().collect_info_parse_funcs(funcs)
         return {"filepath": self.filepath, **funcs}
 
     @abstractmethod
@@ -39,8 +41,8 @@ class FilepathParserMixin(ParserMixin):
 
 
 class SizeParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_info_parse_funcs(self, funcs=None):
+        funcs = super().collect_info_parse_funcs(funcs)
         return {"height": self.height, "width": self.width, **funcs}
 
     @abstractmethod
@@ -54,8 +56,8 @@ class SizeParserMixin(ParserMixin):
 
 ## Annotation parsers ##
 class LabelParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_annotation_parse_funcs(self, funcs=None):
+        funcs = super().collect_annotation_parse_funcs(funcs)
         return {"label": self.label, **funcs}
 
     # TODO: implement return type
@@ -65,8 +67,8 @@ class LabelParserMixin(ParserMixin):
 
 
 class BBoxParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_annotation_parse_funcs(self, funcs=None):
+        funcs = super().collect_annotation_parse_funcs(funcs)
         return {"bbox": self.bbox, **funcs}
 
     @abstractmethod
@@ -75,8 +77,8 @@ class BBoxParserMixin(ParserMixin):
 
 
 class MaskParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_annotation_parse_funcs(self, funcs=None):
+        funcs = super().collect_annotation_parse_funcs(funcs)
         return {"mask": self.mask, **funcs}
 
     @abstractmethod
@@ -85,8 +87,8 @@ class MaskParserMixin(ParserMixin):
 
 
 class IsCrowdParserMixin(ParserMixin):
-    def collect_parse_funcs(self, funcs=None):
-        funcs = super().collect_parse_funcs(funcs)
+    def collect_annotation_parse_funcs(self, funcs=None):
+        funcs = super().collect_annotation_parse_funcs(funcs)
         return {"iscrowd": self.iscrowd, **funcs}
 
     @abstractmethod

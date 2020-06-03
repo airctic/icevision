@@ -1,16 +1,12 @@
 __all__ = ["COCOAnnotationParser2"]
 
 from mantisshrimp.core import *
-from mantisshrimp.parsers.annotation_parser2 import *
+from mantisshrimp.parsers.parser import *
 from mantisshrimp.parsers.mixins import *
 
 
 class COCOAnnotationParser2(
-    AnnotationParser2,
-    LabelParserMixin,
-    BBoxParserMixin,
-    MaskParserMixin,
-    IsCrowdParserMixin,
+    Parser, LabelParserMixin, BBoxParserMixin, MaskParserMixin, IsCrowdParserMixin,
 ):
     def __init__(self, annotations: list):
         self.annotations = annotations
