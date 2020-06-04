@@ -26,7 +26,7 @@ def sample_info_parser():
 
 
 def sample_annotation_parser():
-    catmap = sample_category_parser().parse(show_pbar=False)
+    catmap = sample_category_parser().parse_dicted(show_pbar=False)
     return COCOAnnotationParser(annots_dict["annotations"], source / "images", catmap)
 
 

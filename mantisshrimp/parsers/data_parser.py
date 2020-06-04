@@ -21,13 +21,13 @@ class DataParser:
         raise NotImplementedError
 
     def parse(self, show_pbar=True):
-        catmap = self.catmap or self.category_parser(self.data).parse(show_pbar)
+        catmap = self.catmap or self.category_parser(self.data).parse_dicted(show_pbar)
         info_parser = self.info_parser(self.data, self.source)
         annotation_parser = self.annotation_parser(
             self.data, self.source, catmap=catmap, idmap=info_parser.idmap
         )
-        imgs = L(info_parser.parse(show_pbar))
-        annots = L(annotation_parser.parse(show_pbar))
+        imgs = L(info_parser.parse_dicted(show_pbar))
+        annots = L(annotation_parser.parse_dicted(show_pbar))
         # Remove imgs that don't have annotations
         img_iids = set(imgs.attrgot("imageid"))
         valid_iids = set(annots.attrgot("imageid"))

@@ -16,7 +16,7 @@ def test_image_info():
 def test_info_parser():
     parser = test_utils.sample_info_parser()
     with np_local_seed(42):
-        infos = parser.parse(show_pbar=False)
+        infos = parser.parse_dicted(show_pbar=False)
     assert len(infos) == 6
     assert infos[0] == ImageInfo(
         0, filepath=source / "000000128372.jpg", h=427, w=640, split=0
@@ -26,7 +26,7 @@ def test_info_parser():
 def test_category_parser():
     catparser = test_utils.sample_category_parser()
     with np_local_seed(42):
-        catmap = catparser.parse(show_pbar=False)
+        catmap = catparser.parse_dicted(show_pbar=False)
     assert catmap.cats[0].name == "background"
     assert len(catmap) == 81
     assert catmap.cats[2] == Category(2, "bicycle")
@@ -36,7 +36,7 @@ def test_category_parser():
 def test_coco_annotation_parser():
     annotparser = test_utils.sample_annotation_parser()
     with np_local_seed(42):
-        annots = annotparser.parse(show_pbar=False)
+        annots = annotparser.parse_dicted(show_pbar=False)
     annot = annots[0]
     assert len(annots) == 5
     assert annot.imageid == 0
@@ -46,7 +46,7 @@ def test_coco_annotation_parser():
 def test_coco_parser():
     parser = test_utils.sample_data_parser()
     with np_local_seed(42):
-        train_rs, valid_rs = parser.parse(show_pbar=False)
+        train_rs, valid_rs = parser.parse_dicted(show_pbar=False)
     r = train_rs[0]
     assert len(train_rs) + len(valid_rs) == 5
     assert (r.info.h, r.info.w) == (427, 640)
@@ -59,6 +59,6 @@ def test_show_record(monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     parser = test_utils.sample_data_parser()
     with np_local_seed(42):
-        train_rs, valid_rs = parser.parse(show_pbar=False)
+        train_rs, valid_rs = parser.parse_dicted(show_pbar=False)
     r = train_rs[0]
     show_record(r)
