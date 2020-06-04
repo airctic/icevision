@@ -5,7 +5,7 @@ from mantisshrimp.parsers.parser import *
 
 
 class CombinedParser(ParserInterface):
-    def __init__(self, parsers: List[Parser]):
+    def __init__(self, *parsers: List[Parser]):
         self.parsers = parsers
 
     def parse(self, data_splitter, show_pbar: bool = True):
@@ -27,3 +27,4 @@ class CombinedParser(ParserInterface):
                     record.update(records[id])
                 current_records.append(record)
             split_records.append(current_records)
+        return split_records
