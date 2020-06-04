@@ -43,8 +43,9 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
         return dict(records)
 
     def parse(
-        self, data_splitter: DataSplitter, show_pbar: bool = True
+        self, data_splitter: DataSplitter = None, show_pbar: bool = True
     ) -> List[List[dict]]:
+        data_splitter = data_splitter or SingleSplitSplitter()
         records = self.parse_dicted(show_pbar=show_pbar)
         splits = data_splitter(records.keys())
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]

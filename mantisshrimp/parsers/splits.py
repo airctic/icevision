@@ -1,4 +1,10 @@
-__all__ = ["DataSplit", "random_split", "DataSplitter", "RandomSplitter"]
+__all__ = [
+    "DataSplit",
+    "random_split",
+    "DataSplitter",
+    "SingleSplitSplitter",
+    "RandomSplitter",
+]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -23,6 +29,11 @@ class DataSplitter(ABC):
     @abstractmethod
     def split(self, ids):
         pass
+
+
+class SingleSplitSplitter(DataSplitter):
+    def split(self, ids):
+        return [ids]
 
 
 class RandomSplitter(DataSplitter):

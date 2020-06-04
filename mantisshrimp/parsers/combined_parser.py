@@ -2,13 +2,15 @@ __all__ = ["CombinedParser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.parsers.parser import *
+from mantisshrimp.parsers.splits import *
 
 
 class CombinedParser(ParserInterface):
     def __init__(self, *parsers: List[Parser]):
         self.parsers = parsers
 
-    def parse(self, data_splitter, show_pbar: bool = True):
+    def parse(self, data_splitter=None, show_pbar: bool = True):
+        data_splitter = data_splitter or SingleSplitSplitter()
         parsers_records = [o.parse_dicted(show_pbar=show_pbar) for o in self.parsers]
         ids = [set(o.keys()) for o in parsers_records]
         valid_ids = set.intersection(*ids)
