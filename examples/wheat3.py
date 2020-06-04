@@ -35,29 +35,55 @@ class WheatParser(ImageInfoParser, FasterRCNNParser):
         return BBox.from_xywh(*np.fromstring(o.bbox[1:-1], sep=","))
 
 
-source = Path("/home/lgvaz/.data/wheat")
-df = pd.read_csv(source / "train.csv")
-
-parser = WheatParser(df, source / "train")
-data_splitter = RandomSplitter([0.8, 0.2])
-train_rs, valid_rs = parser.parse(data_splitter)
-
-tfm = AlbuTransform([A.Flip()])
-train_ds = Dataset(train_rs, tfm)
-valid_ds = Dataset(valid_rs)
-
-
 class WheatModel(MantisFasterRCNN):
+    def __init__(
+        self,
+        n_class: int,
+        parser: Parser,
+        batch_size: int,
+        train_tfm: Transform = None,
+        valid_tfm: Transform = None,
+        num_workers=0,
+        **kwargs,
+    ):
+        super().__init__(n_class, **kwargs)
+        self.parser = parser
+        self.batch_size = batch_size
+        self.train_tfm = train_tfm
+        self.valid_tfm = valid_tfm
+        self.num_workers = num_workers
+
     def configure_optimizers(self):
         opt = SGD(self.parameters(), 1e-3, momentum=0.9)
         return opt
 
+    def prepare_data(self) -> None:
+        data_splitter = RandomSplitter([0.8, 0.2])
+        train_rs, valid_rs = self.parser.parse(data_splitter)
+        self.train_ds = Dataset(train_rs, self.train_tfm)
+        self.valid_ds = Dataset(valid_rs, self.valid_tfm)
 
-model = WheatModel(2)
+    def train_dataloader(self) -> DataLoader:
+        return self.dataloader(
+            self.train_ds,
+            batch_size=self.batch_size,
+            shuffle=True,
+            num_workers=self.num_workers,
+        )
 
-train_dl = model.dataloader(dataset=train_ds, batch_size=4, shuffle=True, num_workers=8)
-valid_dl = model.dataloader(dataset=valid_ds, batch_size=4, num_workers=8)
+    def val_dataloader(self) -> Union[DataLoader, List[DataLoader]]:
+        return self.dataloader(
+            self.valid_ds, batch_size=self.batch_size, num_workers=self.num_workers
+        )
+
+
+source = Path("/home/lgvaz/.data/wheat")
+df = pd.read_csv(source / "train.csv")
+parser = WheatParser(df, source / "train")
+train_tfm = AlbuTransform([A.Flip()])
+
+model = WheatModel(2, parser, train_tfm=train_tfm, batch_size=4, num_workers=8)
+
 
 trainer = Trainer(max_epochs=1, gpus=1)
-
-trainer.fit(model, train_dl, valid_dl)
+trainer.fit(model)
