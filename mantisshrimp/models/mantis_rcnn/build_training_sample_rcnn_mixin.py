@@ -11,7 +11,6 @@ class BuildTrainingSampleFasterRCNNMixin(ABC):
         img: np.ndarray,
         label: List[int],
         bbox: List[BBox],
-        iscrowd: List[bool],
         **kwargs,
     ):
         x = im2tensor(img)
@@ -21,7 +20,6 @@ class BuildTrainingSampleFasterRCNNMixin(ABC):
             "labels": tensor(label or [0], dtype=torch.int64),
             "boxes": tensor([o.xyxy for o in bbox] or [_fake_box], dtype=torch.float),
             "area": tensor([o.area for o in bbox] or [4]),
-            "iscrowd": tensor(iscrowd or [0], dtype=torch.uint8),
         }
         return x, y
 
