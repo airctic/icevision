@@ -25,7 +25,7 @@ class CategoryParser(Parser, ABC):
     def name(self, o):
         pass
 
-    def parse(self, show_pbar=True):
+    def parse_dicted(self, show_pbar=True):
         return CategoryMap(
             [
                 Category(self.id(sample), self.name(sample))

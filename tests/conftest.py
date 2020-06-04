@@ -6,5 +6,5 @@ from mantisshrimp import *
 def item():
     parser = test_utils.sample_data_parser()
     with np_local_seed(42):
-        train_rs, valid_rs = parser.parse(show_pbar=False)
+        train_rs, valid_rs = parser.parse_dicted(show_pbar=False)
     return Item.from_record(train_rs[0])
