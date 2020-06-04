@@ -14,13 +14,14 @@ def test_simple_transform(records):
     ds = Dataset(records)
     tfm_ds = Dataset(records, tfm=tfm)
 
-    item, tfmed = ds[0], tfm_ds[0]
-    assert (tfmed.img == item.img[:, ::-1, :]).all()
+    sample, tfmed = ds[0], tfm_ds[0]
+    assert (tfmed["img"] == sample["img"][:, ::-1, :]).all()
 
 
 def test_crop_transform(records):
     tfm = AlbuTransform([A.CenterCrop(100, 100, p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
-    assert len(tfmed.bboxes) == 2
-    assert len(tfmed.iscrowds) == 2
+    print(tfmed["filepath"])
+    assert len(tfmed["bbox"]) == 1
+    assert len(tfmed["iscrowd"]) == 1
