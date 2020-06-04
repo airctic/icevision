@@ -54,12 +54,12 @@ class MantisRCNN(MantisModule, ABC):
         res.update({"val_loss": log["valid/loss"], "log": log})
         return res
 
-    def dataloader(self, **kwargs) -> DataLoader:
+    def dataloader(self, dataset, **kwargs) -> DataLoader:
         def collate_fn(data):
             ts = [self.build_training_sample(**o) for o in data]
             return list(zip(*ts))
 
-        return DataLoader(collate_fn=collate_fn, **kwargs)
+        return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
 
     def build_training_sample(self, *args, **kwargs):
         raise NotImplementedError
