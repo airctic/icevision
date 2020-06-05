@@ -3,9 +3,19 @@ __all__ = ["MaskArray", "MaskFile", "RLE", "Polygon"]
 from ..imports import *
 from ..utils import *
 
-# TODO: Base class for Mask
+
+class Mask(ABC):
+    @abstractmethod
+    def to_mask(self, h, w) -> "MaskArray":
+        pass
+
+    @abstractmethod
+    def to_erle(self, h, w):
+        pass
+
+
 @dataclass
-class MaskArray:
+class MaskArray(Mask):
     data: np.ndarray
 
     def __post_init__(self):
@@ -46,7 +56,7 @@ class MaskArray:
 
 
 @dataclass
-class MaskFile:
+class MaskFile(Mask):
     filepath: Union[str, Path]
 
     def __post_init__(self):
@@ -63,7 +73,7 @@ class MaskFile:
 
 
 @dataclass(frozen=True)
-class RLE:
+class RLE(Mask):
     counts: List[int]
 
     def to_mask(self, h, w):
@@ -100,7 +110,7 @@ class RLE:
 
 
 @dataclass(frozen=True)
-class Polygon:
+class Polygon(Mask):
     points: List[List[int]]
 
     def to_mask(self, h, w):

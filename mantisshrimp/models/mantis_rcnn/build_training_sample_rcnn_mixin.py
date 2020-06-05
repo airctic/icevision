@@ -39,4 +39,5 @@ class BuildTrainingSampleMaskRCNNMixin(BuildTrainingSampleFasterRCNNMixin, ABC):
             imageid=imageid, img=img, label=label, bbox=bbox, iscrowd=iscrowd
         )
         y["masks"] = tensor(mask.data, dtype=torch.uint8)
+        y["iscrowd"] = tensor(iscrowd or [0], dtype=torch.uint8)
         return x, y
