@@ -44,11 +44,8 @@ def test_category_parser():
     assert catmap.id2i[42] == 38
 
 
-def test_coco_parser():
-    parser = test_utils.sample_combined_parser()
-    records = parser.parse()[0]
+def test_coco_parser(records):
     r = records[2]
-
     assert len(records) == 5
     assert (r["height"], r["width"]) == (427, 640)
     assert r["imageid"] == 128372
