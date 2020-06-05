@@ -5,7 +5,6 @@ from .data_preparer import *
 from .data import *
 from .transforms import *
 from .models import *
-from .learner import *
 from .metrics import *
 from .visualize import *
 
