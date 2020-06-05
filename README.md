@@ -21,6 +21,6 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git
 
 ## Quick start
 
-Check [this](./examples/wheat.py) tutorial notebook for a quick introduction.  
+Check [this](./examples/wheat.py) tutorial file for a quick introduction.  
 
 Be sure to also check other examples in the `examples/` folder.
