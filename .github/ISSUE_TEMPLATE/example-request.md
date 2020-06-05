@@ -2,7 +2,7 @@
 name: Example request
 about: 'Suggest a new usage example '
 title: ''
-labels: documentation, help wanted, good first issue, example request
+labels: documentation, example request, good first issue, help wanted
 assignees: ''
 
 ---
@@ -16,3 +16,7 @@ FasterRCNN, MaskRCNN, Detr, ...
 
 **Is this example for a specific dataset?**
 It should be an open dataset, please provide the link.
+
+---
+**Don't remove**
+Main issue for examples: #39
