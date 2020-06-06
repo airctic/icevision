@@ -4,7 +4,7 @@ MantisShrimp
    MantisShrimp is in very early development, all contributions are
    welcome! Be sure to check the ``issues`` board =)
 
-|CI testing| |codecov| |Black| |License|
+|CI testing| |docs| |codecov| |black| |license|
 
 --------------
 
@@ -33,7 +33,9 @@ Be sure to also check other examples in the ``examples/`` folder.
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3A%22CI+testing%22
 .. |codecov| image:: https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/lgvaz/mantisshrimp
-.. |Black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
-.. |License| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+.. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
    :target: https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE
+.. |docs| image:: https://github.com/lgvaz/mantisshrimp/workflows/Build%20docs/badge.svg
+   :target: https://lgvaz.github.io/mantisshrimp/index.html
