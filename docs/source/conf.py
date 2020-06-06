@@ -59,3 +59,5 @@ html_static_path = ["_static"]
 
 # Add type of source files
 source_suffix = [".rst", ".md", ".ipynb"]
+
+nbsphinx_execute = "never"
