@@ -62,7 +62,7 @@ class LabelParserMixin(ParserMixin):
 
     # TODO: implement return type
     @abstractmethod
-    def label(self, o):
+    def label(self, o) -> int:
         pass
 
 
