@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: docker://pandoc/core:2.9
+    - uses: r-lib/actions/setup-pandoc@v1
     # Example of using a custom build-command.
     - uses: ammaraskar/sphinx-action@master
       with:
