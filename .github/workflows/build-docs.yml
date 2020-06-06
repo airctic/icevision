@@ -12,18 +12,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: lgvaz/sphinx-action@master
+    - uses: ammaraskar/sphinx-action@master
       with:
+        pre-build-command: "apt-get update -y && apt-get install -y pandoc"
         build-command: "sphinx-build -b html source build"
         docs-folder: "docs/"
-    - name: Debugging with tmate
-      uses: mxschmitt/action-tmate@v2
     # Publish built docs to gh-pages branch.
     # ===============================
     - name: Commit documentation changes
       run: |
         git clone https://github.com/lgvaz/mantisshrimp.git --branch gh-pages --single-branch gh-pages
-        cp -r docs/build/html/* gh-pages/
+        cp -r docs/build/* gh-pages/
         cd gh-pages
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
