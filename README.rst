@@ -30,7 +30,7 @@ Be sure to also check other examples in the ``examples/`` folder.
 .. _this: https://github.com/lgvaz/mantisshrimp/blob/master/examples/wheat.py
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
-   :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3A%22CI+testing%22
+   :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
 .. |codecov| image:: https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/lgvaz/mantisshrimp
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
