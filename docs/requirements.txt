@@ -1,5 +1,4 @@
 sphinx
-pandoc
 recommonmark
 nbsphinx
 nbsphinx-link
