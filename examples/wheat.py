@@ -4,7 +4,7 @@ import pandas as pd
 import albumentations as A
 
 
-class WheatParser(ImageInfoParser, FasterRCNNParser):
+class WheatParser(DefaultImageInfoParser, FasterRCNNParser):
     def __init__(self, df, source):
         self.df = df
         self.source = source

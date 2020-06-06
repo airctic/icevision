@@ -1,11 +1,11 @@
-__all__ = ["ImageInfoParser", "FasterRCNNParser", "MaskRCNNParser"]
+__all__ = ["DefaultImageInfoParser", "FasterRCNNParser", "MaskRCNNParser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.parsers.parser import *
 from mantisshrimp.parsers.mixins import *
 
 
-class ImageInfoParser(
+class DefaultImageInfoParser(
     Parser, FilepathParserMixin, SizeParserMixin, ABC,
 ):
     pass
