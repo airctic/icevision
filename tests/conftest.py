@@ -8,7 +8,7 @@ def records():
     return parser.parse()[0]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def record(records):
     return records[2].copy()
 
