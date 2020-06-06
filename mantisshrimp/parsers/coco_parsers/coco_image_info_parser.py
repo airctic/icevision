@@ -4,7 +4,7 @@ from mantisshrimp.imports import *
 from mantisshrimp.parsers.defaults import *
 
 
-class COCOImageInfoParser(ImageInfoParser):
+class COCOImageInfoParser(DefaultImageInfoParser):
     def __init__(self, infos, img_dir):
         super().__init__()
         self.infos = infos
