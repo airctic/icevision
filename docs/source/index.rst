@@ -3,16 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to mantisshrimp's documentation!
-========================================
+MANTISSHRIMP DOCUMENTATION
+==========================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    readme_link
-   nbtest
-
+   example_nbtest_link
 
 
 Indices and tables

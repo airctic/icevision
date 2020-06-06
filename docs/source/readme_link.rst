@@ -1,4 +1,4 @@
-Readme Link
-===========
+README
+======
 
 .. include:: ../../README.rst
