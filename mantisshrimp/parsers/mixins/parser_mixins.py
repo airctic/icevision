@@ -60,10 +60,15 @@ class LabelParserMixin(ParserMixin):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"label": self.label, **funcs}
 
-    # TODO: implement return type
     @abstractmethod
     def label(self, o) -> int:
-        pass
+        """
+        Returns the label for the receive sample.
+
+        .. important:
+        If you are using a RCNN model, remember to return 0 for background
+        and background only.
+        """
 
 
 class BBoxParserMixin(ParserMixin):
