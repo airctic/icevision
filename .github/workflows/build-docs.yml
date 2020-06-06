@@ -16,11 +16,6 @@ jobs:
       with:
         build-command: "sphinx-build -b html source build"
         docs-folder: "docs/"
-    # Create an artifact of the html output.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: DocumentationHTML
-        path: docs/build/html/
     # Publish built docs to gh-pages branch.
     # ===============================
     - name: Commit documentation changes
