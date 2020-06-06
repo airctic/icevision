@@ -15,5 +15,4 @@ def record(records):
 
 @pytest.fixture(scope="module")
 def data_sample(record):
-    data_preparer = DefaultDataPreparer()
-    return data_preparer(record)
+    return default_prepare_record(record)
