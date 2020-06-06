@@ -10,7 +10,7 @@ Welcome to mantisshrimp's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   README
+   readme_link
    nbtest
 
 
