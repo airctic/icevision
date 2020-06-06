@@ -11,7 +11,13 @@ MANTISSHRIMP DOCUMENTATION
    :caption: Contents:
 
    readme_link
-   example_nbtest_link
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Examples:
+   :glob:
+
+   examples/*
 
 
 Indices and tables
