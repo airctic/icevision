@@ -12,13 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: r-lib/actions/setup-pandoc@v1
-    - name: Install dependencies
-      run: |
-        sudo apt-get install -y pandoc
-    - name: Debugging with tmate
-      uses: mxschmitt/action-tmate@v2
-    - uses: ammaraskar/sphinx-action@master
+    - uses: lgvaz/sphinx-action@master
       with:
         build-command: "sphinx-build -b html source build"
         docs-folder: "docs/"
