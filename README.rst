@@ -4,7 +4,7 @@ MantisShrimp
    MantisShrimp is in very early development, all contributions are
    welcome! Be sure to check the ``issues`` board =)
 
-|CI testing| |docs| |codecov| |black| |license|
+|tests| |docs| |codecov| |black| |license|
 
 --------------
 
@@ -29,7 +29,7 @@ Be sure to also check other examples in the ``examples/`` folder.
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
 .. _this: https://github.com/lgvaz/mantisshrimp/blob/master/examples/wheat.py
 
-.. |CI testing| image:: https://github.com/lgvaz/mantisshrimp/workflows/CI%20testing/badge.svg?event=push
+.. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3A%22CI+testing%22
 .. |codecov| image:: https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/lgvaz/mantisshrimp
@@ -37,5 +37,5 @@ Be sure to also check other examples in the ``examples/`` folder.
    :target: https://github.com/psf/black
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
    :target: https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE
-.. |docs| image:: https://github.com/lgvaz/mantisshrimp/workflows/Build%20docs/badge.svg
+.. |docs| image:: https://github.com/lgvaz/mantisshrimp/workflows/docs/badge.svg
    :target: https://lgvaz.github.io/mantisshrimp/index.html
