@@ -23,7 +23,7 @@ def show_annotation(
         if label is not None:
             if bbox is not None:
                 x, y = bbox.x, bbox.y
-            if mask is not None:
+            elif mask is not None:
                 y, x = np.unravel_index(mask.data.argmax(), mask.data.shape)
             else:
                 raise ValueError("Can only display labels if bboxes or masks are given")
