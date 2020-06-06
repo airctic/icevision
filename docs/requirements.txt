@@ -2,3 +2,4 @@ sphinx
 recommonmark
 nbsphinx
 nbsphinx-link
+sphinx_rtd_theme
