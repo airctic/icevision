@@ -16,6 +16,8 @@ jobs:
       with:
         build-command: "sphinx-build -b html source build"
         docs-folder: "docs/"
+    - name: Debugging with tmate
+      uses: mxschmitt/action-tmate@v2
     # Publish built docs to gh-pages branch.
     # ===============================
     - name: Commit documentation changes
