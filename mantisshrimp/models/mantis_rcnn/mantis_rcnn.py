@@ -54,9 +54,10 @@ class MantisRCNN(MantisModule, ABC):
         res.update({"val_loss": log["valid/loss"], "log": log})
         return res
 
-    def dataloader(self, dataset, **kwargs) -> DataLoader:
+    @classmethod
+    def dataloader(cls, dataset, **kwargs) -> DataLoader:
         def collate_fn(data):
-            ts = [self.build_training_sample(**o) for o in data]
+            ts = [cls.build_training_sample(**o) for o in data]
             return list(zip(*ts))
 
         return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
