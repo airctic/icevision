@@ -1,5 +1,5 @@
 MantisShrimp
-============
+==========
 
    MantisShrimp is in very early development, all contributions are
    welcome! Be sure to check the ``issues`` board =)
