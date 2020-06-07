@@ -1,3 +1,4 @@
+ipython
 sphinx
 recommonmark
 nbsphinx
