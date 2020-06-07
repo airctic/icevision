@@ -1,12 +1,13 @@
 __all__ = ["MantisMaskRCNN"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
-from mantisshrimp.models.mantis_rcnn.build_training_sample_rcnn_mixin import *
+from mantisshrimp.models.mantis_rcnn.mantis_faster_rcnn import *
 
 
-class MantisMaskRCNN(BuildTrainingSampleMaskRCNNMixin, MantisRCNN):
+class MantisMaskRCNN(MantisRCNN):
     @delegates(MaskRCNN.__init__)
     def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
         super().__init__(metrics=metrics)
@@ -24,3 +25,20 @@ class MantisMaskRCNN(BuildTrainingSampleMaskRCNNMixin, MantisRCNN):
 
     def model_splits(self):
         return split_rcnn_model(self.m)
+
+    @staticmethod
+    def build_training_sample(
+        imageid: int,
+        img: np.ndarray,
+        label: List[int],
+        bbox: List[BBox],
+        iscrowd: List[bool],
+        mask: MaskArray,
+        **kwargs,
+    ):
+        x, y = MantisFasterRCNN.build_training_sample(
+            imageid=imageid, img=img, label=label, bbox=bbox, iscrowd=iscrowd
+        )
+        y["masks"] = tensor(mask.data, dtype=torch.uint8)
+        y["iscrowd"] = tensor(iscrowd or [0], dtype=torch.uint8)
+        return x, y
