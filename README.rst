@@ -9,7 +9,7 @@ MantisShrimp
 --------------
 
 Built on top of `pytorch-lightining`_, ``MantisShrimp`` is an object
-detection framework focused on application
+detection framework focused on application.
 
 Install
 -------
