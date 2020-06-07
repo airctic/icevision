@@ -1,12 +1,12 @@
 __all__ = ["MantisFasterRCNN"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
-from mantisshrimp.models.mantis_rcnn.build_training_sample_rcnn_mixin import *
 
 
-class MantisFasterRCNN(BuildTrainingSampleFasterRCNNMixin, MantisRCNN):
+class MantisFasterRCNN(MantisRCNN):
     @delegates(FasterRCNN.__init__)
     def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
         super().__init__(metrics=metrics)
@@ -20,3 +20,17 @@ class MantisFasterRCNN(BuildTrainingSampleFasterRCNNMixin, MantisRCNN):
 
     def model_splits(self):
         return split_rcnn_model(self.m)
+
+    @staticmethod
+    def build_training_sample(
+        imageid: int, img: np.ndarray, label: List[int], bbox: List[BBox], **kwargs,
+    ):
+        x = im2tensor(img)
+        _fake_box = [0, 1, 2, 3]
+        y = {
+            "image_id": tensor(imageid, dtype=torch.int64),
+            "labels": tensor(label or [0], dtype=torch.int64),
+            "boxes": tensor([o.xyxy for o in bbox] or [_fake_box], dtype=torch.float),
+            "area": tensor([o.area for o in bbox] or [4]),
+        }
+        return x, y

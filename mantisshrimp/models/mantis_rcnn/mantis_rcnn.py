@@ -61,5 +61,9 @@ class MantisRCNN(MantisModule, ABC):
 
         return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
 
+    @staticmethod
+    @abstractmethod
     def build_training_sample(self, *args, **kwargs):
-        raise NotImplementedError
+        """
+        Converts a record to a format understood by the model.
+        """
