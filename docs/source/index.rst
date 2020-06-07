@@ -11,6 +11,7 @@ MANTISSHRIMP DOCUMENTATION
    :caption: Contents:
 
    readme_link
+   test_file
 
 .. toctree::
    :maxdepth: 1
