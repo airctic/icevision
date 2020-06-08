@@ -2,16 +2,15 @@ __all__ = ["DetrDataset"]
 
 from mantisshrimp.imports import *
 from mantisshrimp import *
+from PIL import Image
 
 
-class DetrDataset:
-    def __init__(self, dataset: Dataset):
-        self.dataset = dataset
-
+class DetrDataset(Dataset):
     def __getitem__(self, i):
-        record = self.dataset[i]
-        h, w = record["img"].shape[:-1]
+        record = self.prepare_record(self.records[i])
+        x = Image.fromarray(record["img"])
         y = {}
+        w, h = x.size
         # image information
         y["image_id"] = tensor(record["imageid"], dtype=torch.int64)
         y["size"] = tensor([h, w], dtype=torch.int64)
@@ -19,9 +18,13 @@ class DetrDataset:
         # annotations
         y["labels"] = tensor(record["label"], dtype=torch.int64)
         y["area"] = tensor([o.area for o in record["bbox"]], dtype=torch.float32)
-        y["masks"] = tensor(record["mask"].data, dtype=torch.bool)
-        y["iscrowd"] = tensor(record["iscrowd"], dtype=torch.int64)
-        # TODO: double check we are using the correct coordinates
-        bboxes = [o.relative_xcycwh(img_width=w, img_height=h) for o in record["bbox"]]
+        if "masks" in record:
+            y["masks"] = tensor(record["mask"].data, dtype=torch.bool)
+        if "iscrowd" in record:
+            y["iscrowd"] = tensor(record["iscrowd"], dtype=torch.int64)
+        bboxes = [o.xyxy for o in record["bbox"]]
         y["boxes"] = tensor(bboxes, dtype=torch.float32)
-        return y
+        # Apply transforms
+        if self.tfm is not None:
+            x, y = self.tfm(x, y)
+        return x, y
