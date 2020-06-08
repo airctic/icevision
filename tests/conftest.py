@@ -10,10 +10,9 @@ def records():
 
 @pytest.fixture(scope="module")
 def record(records):
-    return records[2]
+    return records[2].copy()
 
 
 @pytest.fixture(scope="module")
 def data_sample(record):
-    data_preparer = DefaultDataPreparer()
-    return data_preparer(record)
+    return default_prepare_record(record)

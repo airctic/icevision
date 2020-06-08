@@ -22,10 +22,6 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
     def __iter__(self):
         pass
 
-    @abstractmethod
-    def __len__(self):
-        pass
-
     def parse_dicted(self, show_pbar: bool = True) -> Dict[int, dict]:
         info_parse_funcs = self.collect_info_parse_funcs()
         annotation_parse_funcs = self.collect_annotation_parse_funcs()

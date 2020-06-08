@@ -1,22 +1,17 @@
 __all__ = ["Dataset"]
 
 from ..imports import *
-from ..utils import *
-from ..core import *
 from ..transforms import *
-from mantisshrimp.data_preparer import *
+from .prepare_record import *
 
 
 class Dataset:
     def __init__(
-        self,
-        records: List[dict],
-        tfm: Transform = None,
-        data_preparer: DataPreparer = None,
+        self, records: List[dict], tfm: Transform = None, prepare_record=None,
     ):
         self.records = records
         self.tfm = tfm
-        self.data_preparer = data_preparer or DefaultDataPreparer()
+        self.prepare_record = prepare_record or default_prepare_record
 
     def __len__(self):
         return len(self.records)
@@ -25,7 +20,7 @@ class Dataset:
         return self._getitem(i=i)
 
     def _getitem(self, i):
-        data = self.data_preparer(self.records[i])
+        data = self.prepare_record(self.records[i])
         if self.tfm is not None:
             data = self.tfm(data)
         return data
