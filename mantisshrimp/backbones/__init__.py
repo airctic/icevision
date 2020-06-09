@@ -1,1 +1,1 @@
-from .torchvision_bacbones import *
+from .torchvision_backbones import *
