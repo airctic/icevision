@@ -23,7 +23,7 @@ jobs:
       run: |
         git clone https://github.com/lgvaz/mantisshrimp.git --branch master --single-branch master
         cp -r docs/build/* master/
-        cd gh-pages
+        cd master
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
