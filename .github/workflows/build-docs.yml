@@ -22,7 +22,7 @@ jobs:
     - name: Commit documentation changes
       run: |
         git clone https://github.com/lgvaz/mantisshrimp.git --branch gh-pages --single-branch gh-pages
-        rm -r docs/build
+        rm -r _images _sources _static
         cp -r docs/build/* gh-pages/
         cd gh-pages
         git config --local user.email "action@github.com"
