@@ -35,5 +35,6 @@ jobs:
       with:
         branch: gh-pages
         directory: master
+        force: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
     # ===============================
