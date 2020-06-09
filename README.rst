@@ -27,7 +27,7 @@ Check `this`_ tutorial file for a quick introduction.
 Be sure to also check other examples in the ``examples/`` folder.
 
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
-.. _this: https://lgvaz.github.io/mantisshrimp/examples/wheat.html
+.. _this: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
