@@ -3,6 +3,7 @@ __all__ = ["create_torchvision_backbone"]
 
 from ..imports import *
 
+
 def create_torchvision_backbone(backbone: str, is_pretrained: bool):
     # These creates models from torchvision directly, it uses imagent pretrained_weights
     if backbone == "mobile_net":
