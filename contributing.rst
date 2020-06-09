@@ -28,7 +28,7 @@ This is the working directory where you will make changes:
 
 .. code:: bash
     
-    $ pip install -r requirments.txt
+    $ pip install -r requirements.txt
 
 4. Set the upstream to sync with this repo. This will keep you in sync with mantisshrimp easily. 
 
