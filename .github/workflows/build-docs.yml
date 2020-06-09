@@ -21,9 +21,9 @@ jobs:
     # ===============================
     - name: Commit documentation changes
       run: |
-        git clone https://github.com/lgvaz/mantisshrimp.git --branch gh-pages --single-branch gh-pages
-        cp -r docs/build/* gh-pages/
-        cd gh-pages
+        git clone https://github.com/lgvaz/mantisshrimp.git --branch master --single-branch master
+        cp -r docs/build/* master/
+        cd master
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
@@ -34,6 +34,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         branch: gh-pages
-        directory: gh-pages
+        directory: master
+        force: true
         github_token: ${{ secrets.GITHUB_TOKEN }}
     # ===============================

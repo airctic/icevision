@@ -11,13 +11,14 @@ MANTISSHRIMP DOCUMENTATION
    :caption: Contents:
 
    readme_link
+   contrib_guide_link
 
 .. toctree::
    :maxdepth: 1
-   :caption: Examples:
+   :caption: Tutorials:
    :glob:
 
-   examples/*
+   tutorials/*
 
 
 Indices and tables
