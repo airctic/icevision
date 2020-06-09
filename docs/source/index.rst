@@ -14,10 +14,10 @@ MANTISSHRIMP DOCUMENTATION
 
 .. toctree::
    :maxdepth: 1
-   :caption: Examples:
+   :caption: Tutorials:
    :glob:
 
-   examples/*
+   tutorials/*
 
 
 Indices and tables
