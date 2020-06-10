@@ -1,13 +1,11 @@
 __all__ = ["COCOAnnotationParser2"]
 
 from mantisshrimp.core import *
-from mantisshrimp.parsers.parser import *
+from mantisshrimp.parsers.defaults import *
 from mantisshrimp.parsers.mixins import *
 
 
-class COCOAnnotationParser2(
-    Parser, LabelParserMixin, BBoxParserMixin, MaskParserMixin, IsCrowdParserMixin,
-):
+class COCOAnnotationParser2(MaskRCNNParser, AreaParserMixin, IsCrowdParserMixin):
     def __init__(self, annotations: list):
         self.annotations = annotations
 
@@ -25,6 +23,9 @@ class COCOAnnotationParser2(
 
     def bbox(self, o) -> BBox:
         return BBox.from_xywh(*o["bbox"])
+
+    def area(self, o) -> float:
+        return o["area"]
 
     def mask(self, o) -> MaskArray:
         seg = o["segmentation"]
