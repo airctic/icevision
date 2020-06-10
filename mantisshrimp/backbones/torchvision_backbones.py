@@ -1,7 +1,7 @@
 # This imports the torchivsion defined backbones
 __all__ = ["create_torchvision_backbone"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 
 
 def create_torchvision_backbone(backbone: str, pretrained: bool):
@@ -16,13 +16,13 @@ def create_torchvision_backbone(backbone: str, pretrained: bool):
     elif backbone == "vgg_11":
         vgg_net = torchvision.models.vgg11(pretrained=pretrained)
         ft_backbone = vgg_net.features
-        ft_bakbone.out_channels = 512
+        ft_backbone.out_channels = 512
         return ft_backbone
 
     elif backbone == "vgg_13":
         vgg_net = torchvision.models.vgg13(pretrained=pretrained)
         ft_backbone = vgg_net.features
-        ft_bakbone.out_channels = 512
+        ft_backbone.out_channels = 512
         return ft_backbone
 
     elif backbone == "vgg_16":
