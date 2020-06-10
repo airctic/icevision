@@ -2,6 +2,7 @@ from mantisshrimp.backbones import *
 import pytest
 import torch
 
+
 def test_torchvision_backbones():
     supported_backbones = [
         "mobile_net",
