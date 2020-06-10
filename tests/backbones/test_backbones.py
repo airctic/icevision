@@ -1,6 +1,6 @@
 from mantisshrimp.backbones import *
-from mantisshrimp.imports import *
-
+import pytest
+import torch
 
 def test_torchvision_backbones():
     supported_backbones = [
