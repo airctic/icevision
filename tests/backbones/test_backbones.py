@@ -1,4 +1,5 @@
 from mantisshrimp.backbones import *
+from mantisshrimp.imports import *
 
 
 def test_torchvision_backbones():
