@@ -33,25 +33,26 @@ class MantisFasterRCNN(MantisRCNN):
             self.m.roi_heads.box_predictor = FastRCNNPredictor(
                 in_features, self.n_class
             )
+
+        elif self.backbone == "hub":
+            # We need to integrate pytorch hub backbones here.
+            pass
+
+        elif self.backbone == "custom":
+            # User would need to write their own backbone.
+            pass
+
         else:
             # Creates the custom backbone model trained on ImageNet.
             try:
                 self.base_model = create_torchvision_backbone(
-                    backbone=self.backbone, is_pretrained=pretrained
+                    backbone=self.backbone, pretrained=pretrained
                 )
-                self.ft_anchor_generator = AnchorGenerator(
-                    sizes=((32, 64, 128)), aspect_ratios=((0.5, 1.0, 2.0))
-                )
-                self.ft_mean = [0.485, 0.456, 0.406]  # imagenet mean and std
-                self.ft_std = [0.229, 0.224, 0.225]
                 self.m = FasterRCNN(
-                    backbone=self.base_model,
-                    num_classes=self.n_class,
-                    image_mean=self.ft_mean,
-                    image_std=self.ft_std,
+                    backbone=self.base_model, num_classes=self.n_class, **kwargs,
                 )
             except NotImplementedError:
-                print("Invalid Backbone")
+                raise ("Invalid Backbone")
 
     def forward(self, images, targets=None):
         return self.m(images, targets)
