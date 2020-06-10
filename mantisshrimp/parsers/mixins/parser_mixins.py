@@ -4,6 +4,7 @@ __all__ = [
     "SizeParserMixin",
     "LabelParserMixin",
     "BBoxParserMixin",
+    "AreaParserMixin",
     "MaskParserMixin",
     "IsCrowdParserMixin",
 ]
@@ -87,8 +88,19 @@ class MaskParserMixin(ParserMixin):
         return {"mask": self.mask, **funcs}
 
     @abstractmethod
-    def mask(self, o) -> MaskArray:
+    def mask(self, o) -> Mask:
         pass
+
+
+class AreaParserMixin(ParserMixin):
+    def collect_annotation_parse_funcs(self, funcs=None):
+        funcs = super().collect_annotation_parse_funcs(funcs)
+        return {"area": self.area, **funcs}
+
+    @abstractmethod
+    def area(self, o) -> float:
+        """ Returns area of the segmentation
+        """
 
 
 class IsCrowdParserMixin(ParserMixin):

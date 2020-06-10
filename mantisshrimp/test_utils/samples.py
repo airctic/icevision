@@ -1,4 +1,5 @@
 __all__ = [
+    "annotations_dict",
     "sample_image_info_parser",
     "sample_annotation_parser",
     "sample_combined_parser",
@@ -14,7 +15,7 @@ try:
     source = Path(mantisshrimp.__file__).parent.parent / "samples"
     annotations_dict = json.loads((source / "annotations.json").read())
 except FileNotFoundError:
-    pass
+    annotations_dict = None
 
 
 def sample_image_info_parser():
