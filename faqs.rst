@@ -25,9 +25,9 @@ Yes, you can do both.
 How does it make object detection tasks faster ?
 -------------------------------------------------------------------------
 
-Mantisshrimp provides datasets and parsers which make it easier to feed into object detection models.
+Mantisshrimp provides parsers which make it very easy to feed custom datasets into object detection models.
 
-Also it has support for `albumentations`_ and torchvision transforms for image augmentation.
+It works with any transform library with minimal setup, we currently support `albumentations`_ out of the box.
 
 It provides multiple models implemented so you can directly experiment with them, fine tune as well as train from scratch.
 
@@ -36,7 +36,7 @@ With  `pytorch-lightining`_ under the hood you can train on multiple GPUs, TPUs 
 How do I use Mantisshrimp ?
 ---------------------------
 
-Check out our tutorials, where it shows you how to perform end to end object detection task.
+Check out our `tutorials`_, where it shows you how to perform end to end object detection task.
 
 How do I Contribute ?
 ---------------------
@@ -52,3 +52,4 @@ Please check our `docs`_ , they would provide you a detailed guide to use Mantis
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
 .. _contributing guide: https://github.com/lgvaz/mantisshrimp/blob/master/contributing.rst
 .. _docs: https://lgvaz.github.io/mantisshrimp/
+.. _tutorials: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
