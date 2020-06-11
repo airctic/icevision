@@ -30,9 +30,18 @@ Contributing
 ------------
 Check our `contributing guide`_.
 
+FAQs and Feature Requests
+--------------------------
+
+Please check our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
+
+We will be happy to answer
+
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
 .. _this: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
+.. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
+.. _issue: https://github.com/lgvaz/mantisshrimp/issues/
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
