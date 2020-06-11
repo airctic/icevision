@@ -84,7 +84,7 @@ def test_fastercnn():
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
         model.eval()
-        print("Testing backbone = {}".format(backone_))
+        print("Testing backbone = {}".format(backbone_))
         pred = model(image)
         assert isinstance(pred, list)
 
