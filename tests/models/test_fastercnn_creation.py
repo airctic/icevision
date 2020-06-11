@@ -19,10 +19,6 @@ def get_image():
     tensor_img = torch.unsqueeze(tensor_img, 0)
     return tensor_img
 
-
-image = get_image()
-
-
 def test_fastercnn():
     # We need to instantiate with all possible combinations
     # Taken directly from mantis_faster_rcnn
@@ -68,6 +64,7 @@ def test_fastercnn():
     )
     assert isinstance(model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN)
     model.eval()
+    image = get_image()
     pred = model(image)
     assert isinstance(pred, list)
 
