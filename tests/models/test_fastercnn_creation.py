@@ -14,7 +14,7 @@ def get_image():
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     img = np.array(Image.open(requests.get(url, stream=True).raw))
     # Get a big size image for these big resnets
-    img = cv2.resize(img, (1024, 720))
+    img = cv2.resize(img, (2048, 2048))
     tensor_img = im2tensor(img)
     tensor_img = torch.unsqueeze(tensor_img, 0)
     return tensor_img
@@ -30,12 +30,12 @@ def test_fastercnn():
         "resnet18",
         "resnet34",
         "resnet50",
-        "resnet101",
-        "resnet152",
-        "resnext50_32x4d",
-        "resnext101_32x8d",
-        "wide_resnet50_2",
-        "wide_resnet101_2",
+        # "resnet101",
+        # "resnet152",
+        # "resnext50_32x4d",
+        # "resnext101_32x8d",
+        # "wide_resnet50_2",
+        # "wide_resnet101_2",
     ]
 
     # The remaining we need to add the layer extraction in torchvision backbones.
@@ -102,6 +102,7 @@ def test_fastercnn():
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
         model.eval()
+        print("Testing backbone = {}".format(backbone_))
         pred = model(image)
         assert isinstance(pred, list)
 
