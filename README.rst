@@ -32,7 +32,7 @@ Check our `contributing guide`_.
 
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
 .. _this: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
-.. _contributing guide: https://github.com/lgvaz/mantisshrimp/blob/master/contributing.rst
+.. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
