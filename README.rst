@@ -30,7 +30,8 @@ Contributing
 ------------
 Check our `contributing guide`_.
 
-FAQs and Feature Requests: -
+FAQs and Feature Requests
+--------------------------
 
 Please check our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
 
