@@ -19,10 +19,7 @@ def test_mask_rcnn_dataloader(records):
     assert (
         y["labels"] == tensor([6, 1, 1, 1, 1, 1, 1, 1, 31, 31, 1, 3, 31, 1, 31, 31])
     ).all()
-    assert (
-        y["iscrowd"] == tensor([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-    ).all()
     assert (y["boxes"][0] == tensor([0.0000, 73.8900, 416.4400, 379.0200])).all()
     assert y["masks"].shape == (16, 427, 640)
     assert not (y["masks"] == 0).all()
-    assert allequal(lmap(len, [y["labels"], y["iscrowd"], y["boxes"], y["masks"]]))
+    assert allequal(lmap(len, [y["labels"], y["boxes"], y["masks"]]))
