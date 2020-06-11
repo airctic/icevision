@@ -15,7 +15,7 @@ def test_torchvision_backbones():
         "resnet50",
         "resnet101",
         "resnet152",
-        "resnext10132x8d",
+        "resnext101_32x8d",
     ]
     pretrained_status = [True, False]
 
