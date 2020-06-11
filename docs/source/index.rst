@@ -12,6 +12,7 @@ MANTISSHRIMP DOCUMENTATION
 
    readme_link
    contrib_guide_link
+   faqs
 
 .. toctree::
    :maxdepth: 1
