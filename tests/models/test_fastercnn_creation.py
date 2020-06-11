@@ -7,7 +7,6 @@ import requests
 from PIL import Image
 
 
-
 def get_image():
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     img = np.array(Image.open(requests.get(url, stream=True).raw))
