@@ -5,12 +5,16 @@ from torchvision.transforms.functional import to_tensor as im2tensor
 import torch
 import requests
 import numpy as np
+import cv2
 from PIL import Image
 
 
 def get_image():
+    # Get a big image because of these big CNNs
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     img = np.array(Image.open(requests.get(url, stream=True).raw))
+    # Get a big size image for these big resnets
+    img = cv2.resize(img, (1024, 720))
     tensor_img = im2tensor(img)
     tensor_img = torch.unsqueeze(tensor_img, 0)
     return tensor_img
@@ -80,6 +84,7 @@ def test_fastercnn():
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
         model.eval()
+        print("Testing backbone = {}".format(backone_))
         pred = model(image)
         assert isinstance(pred, list)
 
