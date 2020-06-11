@@ -32,13 +32,11 @@ class MantisMaskRCNN(MantisRCNN):
         img: np.ndarray,
         label: List[int],
         bbox: List[BBox],
-        iscrowd: List[bool],
         mask: MaskArray,
         **kwargs,
     ):
         x, y = MantisFasterRCNN.build_training_sample(
-            imageid=imageid, img=img, label=label, bbox=bbox, iscrowd=iscrowd
+            imageid=imageid, img=img, label=label, bbox=bbox,
         )
         y["masks"] = tensor(mask.data, dtype=torch.uint8)
-        y["iscrowd"] = tensor(iscrowd or [0], dtype=torch.uint8)
         return x, y
