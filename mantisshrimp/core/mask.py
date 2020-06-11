@@ -93,6 +93,9 @@ class RLE(Mask):
             zeros = start - total - 1
             coco_counts.extend([zeros, ones])
             total = start + ones - 1
+        # don't include last count if it's zero
+        if coco_counts[-1] == 0:
+            coco_counts = coco_counts[:-1]
         return coco_counts
 
     def to_erle(self, h, w):
@@ -116,7 +119,7 @@ class RLE(Mask):
         """
         # when counts is odd, round it with 0 ones at the end
         if len(counts) % 2 != 0:
-            counts.append(0)
+            counts = counts + [0]
 
         kaggle_counts, total = [], 0
         for zeros, ones in zip(counts[::2], counts[1::2]):
