@@ -1,12 +1,13 @@
 import pytest
 import mantisshrimp
 from mantisshrimp.models.mantis_rcnn import *
+from torchvision.transforms.functional import to_tensor as im2tensor
 import torch
 import requests
 from PIL import Image
 
 
-@pytest.fixture
+
 def get_image():
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     img = np.array(Image.open(requests.get(url, stream=True).raw))
