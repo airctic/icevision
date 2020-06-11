@@ -1,4 +1,5 @@
 import pytest
+import mantisshrimp
 from mantisshrimp.models.mantis_rcnn import *
 import torch
 

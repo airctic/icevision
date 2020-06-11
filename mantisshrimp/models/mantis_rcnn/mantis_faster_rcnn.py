@@ -20,21 +20,16 @@ class MantisFasterRCNN(MantisRCNN):
     fpn: If True it can use one of the fpn supported backbones else it will create Faster RCNN without FPN with fpn unsupported backbones.
     metrics: Specific metrics for the model
     """
+
     @delegates(FasterRCNN.__init__)
     def __init__(
-        self,
-        n_class,
-        backbone=None,
-        pretrained=True,
-        fpn=True,
-        metrics=None,
-        **kwargs,
+        self, n_class, backbone=None, pretrained=True, fpn=True, metrics=None, **kwargs,
     ):
         super().__init__(metrics=metrics)
         self.n_class = n_class
         self.backbone = backbone
         self.pretrained = pretrained
-        self.fpn = fpn 
+        self.fpn = fpn
 
         self.supported_resnet_fpn_models = [
             "resnet18",
@@ -138,4 +133,3 @@ class MantisFasterRCNN(MantisRCNN):
             "area": tensor([o.area for o in bbox] or [4]),
         }
         return x, y
-        
