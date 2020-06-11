@@ -8,11 +8,22 @@ from mantisshrimp.backbones import *
 
 
 class MantisFasterRCNN(MantisRCNN):
+    """
+    Creates a flexible Faster RCNN implementation based on torchvision library.
+    Args: 
+    n_class : number of classes. Do not have class_id "0" it is reserved as background. n_class = number of classes to label + 1 for background.
+    backbone: If none creates a default resnet50_fpn model trained on MS COCO 2017
+    Supported backones are: "resnet18", "resnet34","resnet50", "resnet101", "resnet152", "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2",
+    as resnets with fpn backbones.
+    Without fpn backbones supported are: "resnet18", "resnet34", "resnet50","resnet101", "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19",
+    pretrained: Creates a pretrained backbone with imagenet weights.
+    fpn: If True it can use one of the fpn supported backbones else it will create Faster RCNN without FPN with fpn unsupported backbones.
+    metrics: Specific metrics for the model
+    """
     @delegates(FasterRCNN.__init__)
     def __init__(
         self,
         n_class,
-        h=256,
         backbone=None,
         pretrained=True,
         fpn=True,
@@ -20,15 +31,12 @@ class MantisFasterRCNN(MantisRCNN):
         **kwargs,
     ):
         super().__init__(metrics=metrics)
-        self.n_class, self.h, self.backbone, self.pretrained, self.fpn = (
-            n_class,
-            h,
-            backbone,
-            pretrained,
-            fpn,
-        )
+        self.n_class = n_class
+        self.backbone = backbone
+        self.pretrained = pretrained
+        self.fpn = fpn 
 
-        supported_resnet_models = [
+        self.supported_resnet_fpn_models = [
             "resnet18",
             "resnet34",
             "resnet50",
@@ -40,11 +48,28 @@ class MantisFasterRCNN(MantisRCNN):
             "wide_resnet101_2",
         ]
 
+        self.supported_non_fpn_models = [
+            "resnet18",
+            "resnet34",
+            "resnet50",
+            "resnet101",
+            "resnet152",
+            # "resnext50_32x4d",
+            "resnext101_32x8d",
+            # "wide_resnet50_2",
+            # "wide_resnet101_2",
+            "mobilenet",
+            "vgg11",
+            "vgg13",
+            "vgg16",
+            "vgg19",
+        ]
+
         if self.backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
             self.m = fasterrcnn_resnet50_fpn(
                 pretrained=self.pretrained,
-                num_classes=self.n_classes,
+                num_classes=self.n_class,
                 pretrained_backbone=True,
                 **kwargs,
             )
@@ -59,11 +84,12 @@ class MantisFasterRCNN(MantisRCNN):
                 # Creates a torchvision resnet model with fpn added
                 # Will need to add support for other models with fpn as well
                 # Passing pretrained True will initiate backbone which was trained on ImageNet
-                if self.backbone in supported_resnet_models:
-                    self.m = resnet_fpn_backbone(
+                if self.backbone in self.supported_resnet_fpn_models:
+                    # It returns BackboneWithFPN model
+                    backbone = resnet_fpn_backbone(
                         backbone_name=self.backbone, pretrained=self.pretrained
                     )
-                    self.m = FasterRCNN(self.backbone, self.n_class, **kwargs)
+                    self.m = FasterRCNN(backbone, self.n_class, **kwargs)
                 else:
                     raise NotImplementedError(
                         "FPN for non resnets is not supported yet"
@@ -71,19 +97,24 @@ class MantisFasterRCNN(MantisRCNN):
 
             else:
                 # This does not create fpn backbone, it is supported for all models
-                self.base_model = create_torchvision_backbone(
-                    backbone=backbone, pretrained=self.pretrained
-                )
-                self.m = FasterRCNN(
-                    backbone=self.base_model, num_classes=self.n_class, **kwargs
-                )
+                if self.backbone in self.supported_non_fpn_models:
+                    backbone = create_torchvision_backbone(
+                        backbone=self.backbone, pretrained=self.pretrained
+                    )
+                    self.m = FasterRCNN(
+                        backbone=backbone, num_classes=self.n_class, **kwargs
+                    )
+                else:
+                    raise NotImplementedError(
+                        "Non FPN for this model is not supported yet"
+                    )
 
-        elif isinstance(self.backbone, torch.nn.modules.container.Sequential):
+        elif isinstance(self.backbone, torch.nn.Module):
             # Trying to create the backbone from CNN passed.
             try:
-                self.base_model = self.backbone
+                backbone = self.backbone
                 self.m = FasterRCNN(
-                    backbone=self.base_model, num_classes=self.n_class, **kwargs
+                    backbone=backbone, num_classes=self.n_class, **kwargs
                 )
             except Exception:
                 raise ("Could not parse your CNN as RCNN backbone")
@@ -107,3 +138,4 @@ class MantisFasterRCNN(MantisRCNN):
             "area": tensor([o.area for o in bbox] or [4]),
         }
         return x, y
+        

@@ -6,7 +6,7 @@ import torch
 def test_fastercnn():
     # We need to instantiate with all possible combinations
     # Taken directly from mantis_faster_rcnn
-    supported_resnet_models = [
+    supported_resnet_fpn_models = [
         "resnet18",
         "resnet34",
         "resnet50",
@@ -49,7 +49,7 @@ def test_fastercnn():
     assert isinstance(model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN)
 
     # Else try all the resnet models with fpns
-    for backbone_ in supported_resnet_models:
+    for backbone_ in supported_resnet_fpn_models:
         is_fpn = True
         model = MantisFasterRCNN(
             n_class=num_classes,
