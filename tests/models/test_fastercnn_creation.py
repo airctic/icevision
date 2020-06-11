@@ -2,6 +2,20 @@ import pytest
 import mantisshrimp
 from mantisshrimp.models.mantis_rcnn import *
 import torch
+import requests
+from PIL import Image
+
+
+@pytest.fixture
+def get_image():
+    url = "http://images.cocodataset.org/val2017/000000039769.jpg"
+    img = np.array(Image.open(requests.get(url, stream=True).raw))
+    tensor_img = im2tensor(img)
+    tensor_img = torch.unsqueeze(tensor_img, 0)
+    return tensor_img
+
+
+image = get_image()
 
 
 def test_fastercnn():
@@ -48,6 +62,9 @@ def test_fastercnn():
         n_class=num_classes, backbone=backbone_, pretrained=is_pretrained, fpn=is_fpn
     )
     assert isinstance(model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN)
+    model.eval()
+    pred = model(image)
+    assert isinstance(pred, list)
 
     # Else try all the resnet models with fpns
     for backbone_ in supported_resnet_fpn_models:
@@ -61,6 +78,9 @@ def test_fastercnn():
         assert isinstance(
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
+        model.eval()
+        pred = model(image)
+        assert isinstance(pred, list)
 
     # Now test instantiating for non fpn models
     is_fpn = False
@@ -75,6 +95,9 @@ def test_fastercnn():
         assert isinstance(
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
+        model.eval()
+        pred = model(image)
+        assert isinstance(pred, list)
 
     # Check for simple CNN that can be passed to make backbone
     # Will think of an example and add soon
