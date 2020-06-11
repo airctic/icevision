@@ -43,7 +43,7 @@ class MantisFasterRCNN(MantisRCNN):
         if self.backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
             self.m = fasterrcnn_resnet50_fpn(
-                pretrained=False,
+                pretrained=self.pretrained,
                 num_classes=self.n_classes,
                 pretrained_backbone=True,
                 **kwargs,
@@ -58,9 +58,10 @@ class MantisFasterRCNN(MantisRCNN):
             if self.fpn is True:
                 # Creates a torchvision resnet model with fpn added
                 # Will need to add support for other models with fpn as well
+                # Passing pretrained True will initiate backbone which was trained on ImageNet
                 if self.backbone in supported_resnet_models:
                     self.m = resnet_fpn_backbone(
-                        backbone_name=self.backbone, pretrained=False
+                        backbone_name=self.backbone, pretrained=self.pretrained
                     )
                     self.m = FasterRCNN(self.backbone, self.n_class, **kwargs)
                 else:
