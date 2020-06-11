@@ -42,6 +42,11 @@ def test_fastercnn():
     # I hope it is similar. But for now.
 
     supported_non_fpn_models = [
+        "mobilenet",
+        "vgg11",
+        "vgg13",
+        "vgg16",
+        "vgg19",
         "resnet18",
         "resnet34",
         "resnet50",
@@ -51,11 +56,6 @@ def test_fastercnn():
         # "resnext101_32x8d",
         # "wide_resnet50_2",
         # "wide_resnet101_2",
-        "mobilenet",
-        "vgg11",
-        "vgg13",
-        "vgg16",
-        "vgg19",
     ]
 
     # First check for none backbone
@@ -85,6 +85,7 @@ def test_fastercnn():
         )
         model.eval()
         print("Testing backbone = {}".format(backbone_))
+        image = get_image()
         pred = model(image)
         assert isinstance(pred, list)
 
@@ -103,6 +104,7 @@ def test_fastercnn():
         )
         model.eval()
         print("Testing backbone = {}".format(backbone_))
+        image = get_image()
         pred = model(image)
         assert isinstance(pred, list)
 
