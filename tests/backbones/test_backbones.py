@@ -5,17 +5,17 @@ import torch
 
 def test_torchvision_backbones():
     supported_backbones = [
-        "mobile_net",
-        "vgg_11",
-        "vgg_13",
-        "vgg_16",
-        "vgg_19",
-        "resnet_18",
-        "resnet_34",
-        "resnet_50",
-        "resnet_101",
-        "resnet_152",
-        "resnext101_32x8d",
+        "mobilenet",
+        "vgg11",
+        "vgg13",
+        "vgg16",
+        "vgg19",
+        "resnet18",
+        "resnet34",
+        "resnet50",
+        "resnet101",
+        "resnet152",
+        "resnext10132x8d",
     ]
     pretrained_status = [True, False]
 
