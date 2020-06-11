@@ -4,6 +4,7 @@ from mantisshrimp.models.mantis_rcnn import *
 from torchvision.transforms.functional import to_tensor as im2tensor
 import torch
 import requests
+import numpy as np
 from PIL import Image
 
 
