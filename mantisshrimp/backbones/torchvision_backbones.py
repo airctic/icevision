@@ -6,66 +6,66 @@ from mantisshrimp.imports import *
 
 def create_torchvision_backbone(backbone: str, pretrained: bool):
     # These creates models from torchvision directly, it uses imagent pretrained_weights
-    if backbone == "mobile_net":
+    if backbone == "mobilenet":
         mobile_net = torchvision.models.mobilenet_v2(pretrained=pretrained)
         # print(mobile_net.features) # From that I got the output channels for mobilenet
         ft_backbone = mobile_net.features
         ft_backbone.out_channels = 1280
         return ft_backbone
 
-    elif backbone == "vgg_11":
+    elif backbone == "vgg11":
         vgg_net = torchvision.models.vgg11(pretrained=pretrained)
         ft_backbone = vgg_net.features
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "vgg_13":
+    elif backbone == "vgg13":
         vgg_net = torchvision.models.vgg13(pretrained=pretrained)
         ft_backbone = vgg_net.features
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "vgg_16":
+    elif backbone == "vgg16":
         vgg_net = torchvision.models.vgg16(pretrained=pretrained)
         ft_backbone = vgg_net.features
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "vgg_19":
+    elif backbone == "vgg19":
         vgg_net = torchvision.models.vgg19(pretrained=pretrained)
         ft_backbone = vgg_net.features
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "resnet_18":
+    elif backbone == "resnet18":
         resnet_net = torchvision.models.resnet18(pretrained=pretrained)
         modules = list(resnet_net.children())[:-1]
         ft_backbone = nn.Sequential(*modules)
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "resnet_34":
+    elif backbone == "resnet34":
         resnet_net = torchvision.models.resnet34(pretrained=pretrained)
         modules = list(resnet_net.children())[:-1]
         ft_backbone = nn.Sequential(*modules)
         ft_backbone.out_channels = 512
         return ft_backbone
 
-    elif backbone == "resnet_50":
+    elif backbone == "resnet50":
         resnet_net = torchvision.models.resnet50(pretrained=pretrained)
         modules = list(resnet_net.children())[:-1]
         ft_backbone = nn.Sequential(*modules)
         ft_backbone.out_channels = 2048
         return ft_backbone
 
-    elif backbone == "resnet_101":
+    elif backbone == "resnet101":
         resnet_net = torchvision.models.resnet101(pretrained=pretrained)
         modules = list(resnet_net.children())[:-1]
         ft_backbone = nn.Sequential(*modules)
         ft_backbone.out_channels = 2048
         return ft_backbone
 
-    elif backbone == "resnet_152":
+    elif backbone == "resnet152":
         resnet_net = torchvision.models.resnet152(pretrained=pretrained)
         modules = list(resnet_net.children())[:-1]
         ft_backbone = nn.Sequential(*modules)
@@ -82,4 +82,4 @@ def create_torchvision_backbone(backbone: str, pretrained: bool):
 
     else:
         # print("Error Wrong unsupported Backbone")
-        raise NotImplementedError("No such backbone implemented in torchvision")
+        raise NotImplementedError("No such backbone implemented in mantisshrimp")
