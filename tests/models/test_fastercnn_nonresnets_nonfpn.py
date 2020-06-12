@@ -20,21 +20,9 @@ def get_image():
     return tensor_img
 
 
-def test_fastercnn():
+def test_fastercnn_nonresnets_nonfpn():
     # We need to instantiate with all possible combinations
     # Taken directly from mantis_faster_rcnn
-    supported_resnet_fpn_models = [
-        # "resnet18",  # Passing
-        # "resnet34",  # Passing
-        # "resnet50",  # Passing
-        # "resnet101",
-        # "resnet152",
-        # "resnext50_32x4d",
-        # "resnext101_32x8d",
-        # "wide_resnet50_2",
-        # "wide_resnet101_2",
-    ]
-
     # The remaining we need to add the layer extraction in torchvision backbones.
     # I hope it is similar. But for now.
 
@@ -55,23 +43,14 @@ def test_fastercnn():
         ## "wide_resnet101_2",
     ]
 
-    # First check for none backbone
-    backbone_ = None
-    is_pretrained = False
-    is_fpn = False
-    num_classes = 3
-    model = MantisFasterRCNN(
-        n_class=num_classes, backbone=backbone_, pretrained=is_pretrained, fpn=is_fpn
-    )
-    assert isinstance(model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN)
-    model.eval()
-    image = get_image()
-    pred = model(image)
-    assert isinstance(pred, list)
+    # The default one
 
-    # Else try all the resnet models with fpns
-    for backbone_ in supported_resnet_fpn_models:
-        is_fpn = True
+    backbone_ = None
+    # is_pretrained = False
+    is_fpn = True
+    num_classes = 3
+
+    for is_pretrained in [True, False]:
         model = MantisFasterRCNN(
             n_class=num_classes,
             backbone=backbone_,
@@ -82,29 +61,31 @@ def test_fastercnn():
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
         model.eval()
-        print("Testing backbone = {}".format(backbone_))
         image = get_image()
         pred = model(image)
         assert isinstance(pred, list)
 
+    # First check for none backbone
+    num_classes = 3
     # Now test instantiating for non fpn models
     is_fpn = False
     for backbone_ in supported_non_fpn_models:
-        is_fpn = False
-        model = MantisFasterRCNN(
-            n_class=num_classes,
-            backbone=backbone_,
-            pretrained=is_pretrained,
-            fpn=is_fpn,
-        )
-        assert isinstance(
-            model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
-        )
-        model.eval()
-        print("Testing backbone = {}".format(backbone_))
-        image = get_image()
-        pred = model(image)
-        assert isinstance(pred, list)
+        for is_pretrained in [True, False]:
+            is_fpn = False
+            model = MantisFasterRCNN(
+                n_class=num_classes,
+                backbone=backbone_,
+                pretrained=is_pretrained,
+                fpn=is_fpn,
+            )
+            assert isinstance(
+                model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
+            )
+            model.eval()
+            print("Testing backbone = {} {}".format(backbone_, is_pretrained))
+            image = get_image()
+            pred = model(image)
+            assert isinstance(pred, list)
 
     # Check for simple CNN that can be passed to make backbone
     # Will think of an example and add soon

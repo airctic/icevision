@@ -11,15 +11,15 @@ class MantisFasterRCNN(MantisRCNN):
     """
     Creates a flexible Faster RCNN implementation based on torchvision library.
     Args: 
-    n_class : number of classes. Do not have class_id "0" it is reserved as background. n_class = number of classes to label + 1 for background.
-    backbone: If none creates a default resnet50_fpn model trained on MS COCO 2017
+    n_class (int) : number of classes. Do not have class_id "0" it is reserved as background. n_class = number of classes to label + 1 for background.
+    backbone (str or torch.nn.Module): If none creates a default resnet50_fpn model trained on MS COCO 2017
     Supported backones are: "resnet18", "resnet34","resnet50", "resnet101", "resnet152", "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2",
     as resnets with fpn backbones.
     Without fpn backbones supported are: "resnet18", "resnet34", "resnet50","resnet101", "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19",
-    pretrained: Creates a pretrained backbone with imagenet weights.
-    fpn: If True it can use one of the fpn supported backbones else it will create Faster RCNN without FPN with fpn unsupported backbones.
+    pretrained (bool): Creates a pretrained backbone with imagenet weights.
+    fpn (bool): If True it can use one of the fpn supported backbones else it will create Faster RCNN without FPN with fpn unsupported backbones.
     metrics: Specific metrics for the model
-    out_channels: If defining a custom CNN as backbone, pass the output channels of laster layer
+    out_channels (int): If defining a custom CNN as backbone, pass the output channels of laster layer
     """
 
     @delegates(FasterRCNN.__init__)
