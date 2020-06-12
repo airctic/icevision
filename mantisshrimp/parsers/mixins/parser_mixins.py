@@ -62,7 +62,7 @@ class LabelParserMixin(ParserMixin):
         return {"label": self.label, **funcs}
 
     @abstractmethod
-    def label(self, o) -> int:
+    def label(self, o) -> List[int]:
         """
         Returns the label for the receive sample.
 
@@ -78,7 +78,7 @@ class BBoxParserMixin(ParserMixin):
         return {"bbox": self.bbox, **funcs}
 
     @abstractmethod
-    def bbox(self, o) -> BBox:
+    def bbox(self, o) -> List[BBox]:
         pass
 
 
@@ -88,7 +88,7 @@ class MaskParserMixin(ParserMixin):
         return {"mask": self.mask, **funcs}
 
     @abstractmethod
-    def mask(self, o) -> Mask:
+    def mask(self, o) -> List[Mask]:
         pass
 
 
@@ -98,7 +98,7 @@ class AreaParserMixin(ParserMixin):
         return {"area": self.area, **funcs}
 
     @abstractmethod
-    def area(self, o) -> float:
+    def area(self, o) -> List[float]:
         """ Returns area of the segmentation
         """
 
@@ -109,5 +109,5 @@ class IsCrowdParserMixin(ParserMixin):
         return {"iscrowd": self.iscrowd, **funcs}
 
     @abstractmethod
-    def iscrowd(self, o) -> bool:
+    def iscrowd(self, o) -> List[bool]:
         pass

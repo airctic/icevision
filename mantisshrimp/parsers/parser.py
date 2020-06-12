@@ -35,7 +35,7 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
                 records[imageid][name] = func(sample)
             for name, func in annotation_parse_funcs.items():
                 # TODO: Assume everything is returned in a list
-                records[imageid][name].append(func(sample))
+                records[imageid][name].extend(func(sample))
         return dict(records)
 
     def parse(
