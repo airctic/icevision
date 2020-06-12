@@ -28,11 +28,11 @@ def get_image():
 # Just pass a resnet18 as if user wrote it
 
 
-def test_custom_backbone():
-    backbone = torchvision.models.resnet18(pretrained=False)
-    model = MantisFasterRCNN(n_class=10, backbone=backbone, out_channels=512)
-    model.eval()
-    print("Testing custom backbone")
-    image = get_image()
-    pred = model(image)
-    assert isinstance(pred, list)
+# def test_custom_backbone():
+#     backbone = torchvision.models.resnet18(pretrained=False)
+#     model = MantisFasterRCNN(n_class=10, backbone=backbone, out_channels=512)
+#     model.eval()
+#     print("Testing custom backbone")
+#     image = get_image()
+#     pred = model(image)
+#     assert isinstance(pred, list)
