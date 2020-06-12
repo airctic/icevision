@@ -47,16 +47,12 @@ def test_fastercnn_nonresnets_nonfpn():
 
     backbone_ = None
     # is_pretrained = False
-    is_fpn = True
     num_classes = 3
 
+    ## DEFAULT CASE CHECK
+
     for is_pretrained in [True, False]:
-        model = MantisFasterRCNN(
-            n_class=num_classes,
-            backbone=backbone_,
-            pretrained=is_pretrained,
-            fpn=is_fpn,
-        )
+        model = MantisFasterRCNN(n_class=num_classes, backbone=None,)
         assert isinstance(
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
         )
@@ -72,12 +68,10 @@ def test_fastercnn_nonresnets_nonfpn():
     for backbone_ in supported_non_fpn_models:
         for is_pretrained in [True, False]:
             is_fpn = False
-            model = MantisFasterRCNN(
-                n_class=num_classes,
-                backbone=backbone_,
-                pretrained=is_pretrained,
-                fpn=is_fpn,
+            backbone = MantisFasterRCNN.get_backbone_by_name(
+                name=backbone_, fpn=is_fpn, pretrained=is_pretrained
             )
+            model = MantisFasterRCNN(n_class=num_classes, backbone=backbone,)
             assert isinstance(
                 model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
             )

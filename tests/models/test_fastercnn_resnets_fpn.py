@@ -29,12 +29,12 @@ def test_fastercnn():
         "resnet18",  # Passing
         "resnet34",  # Passing
         "resnet50",  # Passing
-        "resnet101",
-        "resnet152",
-        "resnext50_32x4d",
-        "resnext101_32x8d",
-        "wide_resnet50_2",
-        "wide_resnet101_2",
+        # "resnet101",
+        # "resnet152",
+        # "resnext50_32x4d",
+        # "resnext101_32x8d",
+        # "wide_resnet50_2",
+        # "wide_resnet101_2",
     ]
 
     # The remaining we need to add the layer extraction in torchvision backbones.
@@ -46,16 +46,14 @@ def test_fastercnn():
     # is_fpn = False
     num_classes = 3
 
-    # Else try all the resnet models with fpns
+    is_fpn = False
     for backbone_ in supported_resnet_fpn_models:
         for is_pretrained in [True, False]:
             is_fpn = True
-            model = MantisFasterRCNN(
-                n_class=num_classes,
-                backbone=backbone_,
-                pretrained=is_pretrained,
-                fpn=is_fpn,
+            backbone = MantisFasterRCNN.get_backbone_by_name(
+                name=backbone_, fpn=is_fpn, pretrained=is_pretrained
             )
+            model = MantisFasterRCNN(n_class=num_classes, backbone=backbone,)
             assert isinstance(
                 model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
             )
