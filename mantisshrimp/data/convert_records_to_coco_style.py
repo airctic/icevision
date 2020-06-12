@@ -6,6 +6,8 @@ from mantisshrimp import *
 
 
 def coco_api_from_records(records):
+    """ Create pycocotools COCO dataset from records
+    """
     coco_ds = COCO()
     coco_ds.dataset = convert_records_to_coco_style(records)
     coco_ds.createIndex()
