@@ -4,6 +4,8 @@ from mantisshrimp.imports import *
 from mantisshrimp import *
 from PIL import Image
 
+torchvision.datasets.CocoDetection
+
 
 class DetrDataset(Dataset):
     def __getitem__(self, i):

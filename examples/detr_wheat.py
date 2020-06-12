@@ -15,6 +15,9 @@ class WheatParser(DetrBBoxParser):
     def __len__(self):
         return len(self.df)
 
+    def prepare(self, o):
+        self.bbox = BBox.from_xywh(*np.fromstring(o.bbox[1:-1], sep=","))
+
     def imageid(self, o) -> int:
         return self.imageid_map[o.image_id]
 
@@ -31,7 +34,10 @@ class WheatParser(DetrBBoxParser):
         return 1
 
     def bbox(self, o) -> BBox:
-        return BBox.from_xywh(*np.fromstring(o.bbox[1:-1], sep=","))
+        return self.bbox
+
+    def area(self, o) -> float:
+        return self.bbox.area
 
     def iscrowd(self, o) -> bool:
         return 0
