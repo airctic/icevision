@@ -30,17 +30,17 @@ class WheatParser(DetrBBoxParser):
     def width(self, o) -> int:
         return o.width
 
-    def label(self, o) -> int:
-        return 1
+    def label(self, o) -> List[int]:
+        return [1]
 
-    def bbox(self, o) -> BBox:
-        return self.bbox
+    def bbox(self, o) -> List[BBox]:
+        return [self.bbox]
 
-    def area(self, o) -> float:
-        return self.bbox.area
+    def area(self, o) -> List[float]:
+        return [self.bbox.area]
 
-    def iscrowd(self, o) -> bool:
-        return 0
+    def iscrowd(self, o) -> List[bool]:
+        return [0]
 
 
 def get_datasets(args):
