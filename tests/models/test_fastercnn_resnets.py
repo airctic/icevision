@@ -107,8 +107,3 @@ def test_fastercnn():
         image = get_image()
         pred = model(image)
         assert isinstance(pred, list)
-
-    # Check for simple CNN that can be passed to make backbone
-    # Will think of an example and add soon
-
-    # Stuff to be added, running these models on a fake image data.
