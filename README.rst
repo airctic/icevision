@@ -15,7 +15,6 @@ Install
 
 .. code:: python
 
-   pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
    pip install -r requirements.txt
    pip install git+git://github.com/lgvaz/mantisshrimp.git
 
