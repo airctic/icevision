@@ -24,7 +24,14 @@ class MantisFasterRCNN(MantisRCNN):
 
     @delegates(FasterRCNN.__init__)
     def __init__(
-        self, n_class, backbone=None, pretrained=True, fpn=True, metrics=None, out_channels=None, **kwargs,
+        self,
+        n_class,
+        backbone=None,
+        pretrained=True,
+        fpn=True,
+        metrics=None,
+        out_channels=None,
+        **kwargs,
     ):
         super().__init__(metrics=metrics)
         self.n_class = n_class

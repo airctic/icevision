@@ -24,7 +24,9 @@ def get_image():
     tensor_img = torch.unsqueeze(tensor_img, 0)
     return tensor_img
 
+
 # Just pass a resnet18 as if user wrote it
+
 
 def test_custom_backbone():
     backbone = torchvision.models.resnet18(pretrained=False)
