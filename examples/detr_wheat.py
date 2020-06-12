@@ -62,7 +62,12 @@ if __name__ == "__main__":
     # adds new arguments to original args_parser
     args_parser = get_args_parser()
     args_parser.add_argument("--data_path", type=str)
+    args_parser.add_argument("--num_classes", type=int, default=None)
+    args_parser.add_argument("--fine_tune", action="store_true")
     args = args_parser.parse_args()
+
+    if args.fine_tune:
+        args.resume = detr_pretrained_checkpoint_base()
 
     train_dataset, valid_dataset = get_datasets(args)
     run_detr(args=args, dataset_train=train_dataset, dataset_val=valid_dataset)
