@@ -24,9 +24,9 @@ def test_fastercnn():
     # We need to instantiate with all possible combinations
     # Taken directly from mantis_faster_rcnn
     supported_resnet_fpn_models = [
-        "resnet18",
-        "resnet34",
-        "resnet50",
+        "resnet18",  # Passing
+        "resnet34",  # Passing
+        "resnet50",  # Passing
         # "resnet101",
         # "resnet152",
         # "resnext50_32x4d",
@@ -39,14 +39,14 @@ def test_fastercnn():
     # I hope it is similar. But for now.
 
     supported_non_fpn_models = [
-        "mobilenet",
-        "vgg11",
-        "vgg13",
-        "vgg16",
-        "vgg19",
-        "resnet18",
-        "resnet34",
-        "resnet50",
+        "mobilenet",  # Passing
+        "vgg11",  # Passing
+        "vgg13",  # Passing
+        "vgg16",  # Passing
+        "vgg19",  # Passing
+        "resnet18",  # Passing
+        "resnet34",  # Passing
+        "resnet50",  # Passing
         # "resnet101",
         # "resnet152",
         ## "resnext50_32x4d",

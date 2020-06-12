@@ -107,7 +107,9 @@ class MantisFasterRCNN(MantisRCNN):
         elif isinstance(self.backbone, torch.nn.Module):
             # Trying to create the backbone from CNN passed.
             try:
-                backbone = self.backbone
+                modules = list(self.backbone.children())
+                backbone = nn.Sequential(*modules)
+                backbone.out_channels = modules[-1].out_features
                 self.m = FasterRCNN(
                     backbone=backbone, num_classes=self.n_class, **kwargs
                 )
