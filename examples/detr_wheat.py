@@ -30,17 +30,17 @@ class WheatParser(DetrBBoxParser):
     def width(self, o) -> int:
         return o.width
 
-    def label(self, o) -> int:
-        return 1
+    def label(self, o) -> List[int]:
+        return [1]
 
-    def bbox(self, o) -> BBox:
-        return self.bbox
+    def bbox(self, o) -> List[BBox]:
+        return [self.bbox]
 
-    def area(self, o) -> float:
-        return self.bbox.area
+    def area(self, o) -> List[float]:
+        return [self.bbox.area]
 
-    def iscrowd(self, o) -> bool:
-        return 0
+    def iscrowd(self, o) -> List[bool]:
+        return [0]
 
 
 def get_datasets(args):
@@ -62,7 +62,12 @@ if __name__ == "__main__":
     # adds new arguments to original args_parser
     args_parser = get_args_parser()
     args_parser.add_argument("--data_path", type=str)
+    args_parser.add_argument("--num_classes", type=int, default=None)
+    args_parser.add_argument("--fine_tune", action="store_true")
     args = args_parser.parse_args()
+
+    if args.fine_tune:
+        args.resume = detr_pretrained_checkpoint_base()
 
     train_dataset, valid_dataset = get_datasets(args)
     run_detr(args=args, dataset_train=train_dataset, dataset_val=valid_dataset)
