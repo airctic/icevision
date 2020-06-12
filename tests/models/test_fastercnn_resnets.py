@@ -29,12 +29,12 @@ def test_fastercnn():
         "resnet18",  # Passing
         "resnet34",  # Passing
         "resnet50",  # Passing
-        # "resnet101",
-        # "resnet152",
-        # "resnext50_32x4d",
-        # "resnext101_32x8d",
-        # "wide_resnet50_2",
-        # "wide_resnet101_2",
+        "resnet101",
+        "resnet152",
+        "resnext50_32x4d",
+        "resnext101_32x8d",
+        "wide_resnet50_2",
+        "wide_resnet101_2",
     ]
 
     # The remaining we need to add the layer extraction in torchvision backbones.
@@ -49,10 +49,10 @@ def test_fastercnn():
         "resnet18",  # Passing
         "resnet34",  # Passing
         "resnet50",  # Passing
-        # "resnet101",
-        # "resnet152",
+        "resnet101",
+        "resnet152",
         ## "resnext50_32x4d",
-        # "resnext101_32x8d",
+        "resnext101_32x8d",
         ## "wide_resnet50_2",
         ## "wide_resnet101_2",
     ]
