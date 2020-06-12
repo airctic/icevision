@@ -45,7 +45,7 @@ def test_fastercnn_resnets_nonfpn():
     # Now test instantiating for non fpn models
     is_fpn = False
     for backbone_ in supported_non_fpn_models:
-        for is_pretrained in [True, False]:
+        for is_pretrained in [False]:
             is_fpn = False
             backbone = MantisFasterRCNN.get_backbone_by_name(
                 name=backbone_, fpn=is_fpn, pretrained=is_pretrained

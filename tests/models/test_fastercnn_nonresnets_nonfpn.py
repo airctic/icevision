@@ -51,7 +51,7 @@ def test_fastercnn_nonresnets_nonfpn():
 
     ## DEFAULT CASE CHECK
 
-    for is_pretrained in [True, False]:
+    for is_pretrained in [False]:
         model = MantisFasterRCNN(n_class=num_classes, backbone=None,)
         assert isinstance(
             model, mantisshrimp.models.mantis_faster_rcnn.MantisFasterRCNN
@@ -66,7 +66,7 @@ def test_fastercnn_nonresnets_nonfpn():
     # Now test instantiating for non fpn models
     is_fpn = False
     for backbone_ in supported_non_fpn_models:
-        for is_pretrained in [True, False]:
+        for is_pretrained in [False]:
             is_fpn = False
             backbone = MantisFasterRCNN.get_backbone_by_name(
                 name=backbone_, fpn=is_fpn, pretrained=is_pretrained
