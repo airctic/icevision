@@ -1,4 +1,4 @@
-__all__ = ["MaskArray", "MaskFile", "RLE", "Polygon"]
+__all__ = ["Mask", "MaskArray", "MaskFile", "RLE", "Polygon"]
 
 from ..imports import *
 from ..utils import *
@@ -79,14 +79,27 @@ class RLE(Mask):
     def to_mask(self, h, w):
         "From https://www.kaggle.com/julienbeaulieu/imaterialist-detectron2"
         mask = np.full(h * w, 0, dtype=np.uint8)
-        for i, start_pixel in enumerate(self.counts[::2]):
-            mask[start_pixel : start_pixel + self.counts[2 * i + 1]] = 1
+        for start, ones in zip(self.counts[::2], self.counts[1::2]):
+            # counting starts on one
+            start -= 1
+            if ones:
+                mask[start : start + ones] = 1
         mask = mask.reshape((h, w), order="F")
         return MaskArray(mask)
 
+    def to_coco(self) -> List[int]:
+        coco_counts, total = [], 0
+        for start, ones in zip(self.counts[::2], self.counts[1::2]):
+            zeros = start - total - 1
+            coco_counts.extend([zeros, ones])
+            total = start + ones - 1
+        # don't include last count if it's zero
+        if coco_counts[-1] == 0:
+            coco_counts = coco_counts[:-1]
+        return coco_counts
+
     def to_erle(self, h, w):
-        raise NotImplementedError("Convert counts to coco style")
-        # return mask_utils.frPyObjects([{'counts':self.counts, 'size':[h,w]}], h, w)
+        return mask_utils.frPyObjects([{"counts": self.counts, "size": [h, w]}], h, w)
 
     @classmethod
     def from_string(cls, s, sep=" "):
@@ -94,18 +107,25 @@ class RLE(Mask):
 
     @classmethod
     def from_kaggle(cls, counts):
-        "Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)"
+        """Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)
+        """
         if len(counts) % 2 != 0:
             raise ValueError("Counts must be divisible by 2")
         return cls(counts)
 
     @classmethod
     def from_coco(cls, counts):
-        "Described [here](https://stackoverflow.com/a/49547872/6772672)"
+        """Described [here](https://stackoverflow.com/a/49547872/6772672)
+        """
+        # when counts is odd, round it with 0 ones at the end
+        if len(counts) % 2 != 0:
+            counts = counts + [0]
+
         kaggle_counts, total = [], 0
-        for zrs, ons in zip(counts[::2], counts[1::2]):
-            kaggle_counts.extend([zrs + total + 1, ons])
-            total += zrs + ons
+        for zeros, ones in zip(counts[::2], counts[1::2]):
+            start = zeros + total + 1
+            kaggle_counts.extend([start, ones])
+            total += zeros + ones
         return cls.from_kaggle(kaggle_counts)
 
 

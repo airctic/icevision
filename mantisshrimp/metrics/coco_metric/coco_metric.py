@@ -1,49 +1,11 @@
 __all__ = ["COCOMetric"]
 
-from ...imports import *
-from ...utils import *
-from ...models import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
+from mantisshrimp.models import *
+from mantisshrimp.data import *
 from .coco_eval import CocoEvaluator
 from ..metric import *
-from pycocotools.coco import COCO
-
-
-def records2coco(records, catmap):
-    cats = [{"id": i, "name": o.name} for i, o in catmap.i2o.items()]
-    annots = defaultdict(list)
-    infos = []
-    i = 0
-    for r in tqdm(records):
-        infos.append(
-            {
-                "id": r.info.imageid,
-                "file_name": r.info.filepath.name,
-                "width": r.info.w,
-                "height": r.info.h,
-            }
-        )
-        for annot in r.annot:
-            annots["id"].append(i)  # TODO: Careful with ids! when over all dataset
-            annots["image_id"].append(r.info.imageid)
-            annots["category_id"].append(annot.label)
-            annots["bbox"].append(annot.bbox.xywh)
-            annots["area"].append(annot.bbox.area)
-            # TODO: for other types of masks
-            if notnone(annot.mask):
-                annots["segmentation"].extend(annot.mask.to_erle(r.info.h, r.info.w))
-            annots["iscrowd"].append(annot.iscrowd)
-            # TODO: Keypoints
-            i += 1
-    assert allequal(lmap(len, annots.values())), "Mismatch lenght of elements"
-    annots = [{k: v[i] for k, v in annots.items()} for i in range_of(annots["id"])]
-    return {"images": infos, "annotations": annots, "categories": cats}
-
-
-def coco_api_from_records(records, catmap):
-    coco_ds = COCO()
-    coco_ds.dataset = records2coco(records, catmap)
-    coco_ds.createIndex()
-    return coco_ds
 
 
 def _get_iou_types(model):

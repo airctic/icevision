@@ -1,0 +1,3 @@
+[submodule "mantisshrimp/hub/detr/detr"]
+	path = mantisshrimp/hub/detr/detr
+	url = git@github.com:lgvaz/detr.git
