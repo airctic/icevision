@@ -19,17 +19,19 @@ class MantisFasterRCNN(MantisRCNN):
     pretrained: Creates a pretrained backbone with imagenet weights.
     fpn: If True it can use one of the fpn supported backbones else it will create Faster RCNN without FPN with fpn unsupported backbones.
     metrics: Specific metrics for the model
+    out_channels: If defining a custom CNN as backbone, pass the output channels of laster layer
     """
 
     @delegates(FasterRCNN.__init__)
     def __init__(
-        self, n_class, backbone=None, pretrained=True, fpn=True, metrics=None, **kwargs,
+        self, n_class, backbone=None, pretrained=True, fpn=True, metrics=None, out_channels=None, **kwargs,
     ):
         super().__init__(metrics=metrics)
         self.n_class = n_class
         self.backbone = backbone
         self.pretrained = pretrained
         self.fpn = fpn
+        self.out_channels = out_channels
 
         self.supported_resnet_fpn_models = [
             "resnet18",
@@ -107,9 +109,9 @@ class MantisFasterRCNN(MantisRCNN):
         elif isinstance(self.backbone, torch.nn.Module):
             # Trying to create the backbone from CNN passed.
             try:
-                modules = list(self.backbone.children())
+                modules = list(self.backbone.children())[:-1]
                 backbone = nn.Sequential(*modules)
-                backbone.out_channels = modules[-1].out_features
+                backbone.out_channels = self.out_channels
                 self.m = FasterRCNN(
                     backbone=backbone, num_classes=self.n_class, **kwargs
                 )
