@@ -79,8 +79,8 @@ Maintainers and other contributors will review your pull request.
 Please participate in the discussion and make the requested changes.
 When your pull request is approved, it will be merged into the upstream mantisshrimp repo.
 
-**Note: -**
-MantisShrimp has CI checking. It will automatically check your code for build as well.
+.. note::
+   MantisShrimp has CI checking. It will automatically check your code for build as well.
 
 
 .. _black: https://black.readthedocs.io/en/stable/
