@@ -13,27 +13,32 @@ def test_fastercnn_default_backbone(image):
     assert set(["boxes", "labels", "scores"]) == set(pred[0].keys())
 
 
+# @pytest.mark.skip(reason="exceeds 40 min limit on github CI")
 @pytest.mark.slow
 @pytest.mark.parametrize("pretrained", [False, True])
 @pytest.mark.parametrize(
-    "backbone",
+    "backbone, fpn",
     [
-        "mobilenet",
-        "vgg11",
-        "vgg13",
-        "vgg16",
-        "vgg19",
-        "resnet18",
-        "resnet34",
-        "resnet50",
-        "resnet101",
-        "resnet152",
-        "resnext101_32x8d",
+        ("mobilenet", False),
+        ("vgg11", False),
+        ("vgg13", False),
+        ("vgg16", False),
+        ("vgg19", False),
+        ("resnet18", False),
+        ("resnet34", False),
+        ("resnet50", False),
+        ("resnet18", True),
+        ("resnet34", True),
+        ("resnet50", True),
+        # these models are too big for github runners
+        # "resnet101",
+        # "resnet152",
+        # "resnext101_32x8d",
     ],
 )
-def test_faster_rcnn_backbones(image, backbone, pretrained):
+def test_faster_rcnn_nonfpn_backbones(image, backbone, fpn, pretrained):
     backbone = MantisFasterRCNN.get_backbone_by_name(
-        name=backbone, fpn=False, pretrained=pretrained
+        name=backbone, fpn=fpn, pretrained=pretrained
     )
     model = MantisFasterRCNN(n_class=3, backbone=backbone)
     model.eval()
