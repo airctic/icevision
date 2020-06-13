@@ -8,7 +8,6 @@ def create_torchvision_backbone(backbone: str, pretrained: bool):
     # These creates models from torchvision directly, it uses imagent pretrained_weights
     if backbone == "mobilenet":
         mobile_net = torchvision.models.mobilenet_v2(pretrained=pretrained)
-        # print(mobile_net.features) # From that I got the output channels for mobilenet
         ft_backbone = mobile_net.features
         ft_backbone.out_channels = 1280
         return ft_backbone
@@ -78,8 +77,6 @@ def create_torchvision_backbone(backbone: str, pretrained: bool):
         ft_backbone = nn.Sequential(*modules)
         ft_backbone.out_channels = 2048
         return ft_backbone
-        # print(ft_model)
 
     else:
-        # print("Error Wrong unsupported Backbone")
-        raise NotImplementedError("No such backbone implemented in mantisshrimp")
+        raise ValueError("No such backbone implemented in mantisshrimp")
