@@ -17,9 +17,6 @@ class Dataset:
         return len(self.records)
 
     def __getitem__(self, i):
-        return self._getitem(i=i)
-
-    def _getitem(self, i):
         data = self.prepare_record(self.records[i])
         if self.tfm is not None:
             data = self.tfm(data)
