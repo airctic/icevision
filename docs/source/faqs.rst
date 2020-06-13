@@ -50,6 +50,6 @@ Please check our `docs`_ , they would provide you a detailed guide to use Mantis
 
 .. _albumentations: https://github.com/albumentations-team/albumentations
 .. _pytorch-lightining: https://github.com/PyTorchLightning/pytorch-lightning
-.. _contributing guide: https://github.com/lgvaz/mantisshrimp/blob/master/contributing.rst
+.. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _docs: https://lgvaz.github.io/mantisshrimp/
 .. _tutorials: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
