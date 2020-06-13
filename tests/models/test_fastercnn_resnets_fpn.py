@@ -22,6 +22,7 @@ def get_image():
     return tensor_img
 
 
+@pytest.mark.skip
 def test_fastercnn():
     # We need to instantiate with all possible combinations
     # Taken directly from mantis_faster_rcnn

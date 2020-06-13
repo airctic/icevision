@@ -22,6 +22,7 @@ def get_image():
     return tensor_img
 
 
+@pytest.mark.skip
 def test_fastercnn_resnets_nonfpn():
     supported_non_fpn_models = [
         "resnet18",
