@@ -44,20 +44,3 @@ def test_faster_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
     assert set(preds.keys()) == set(
         ["loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg"]
     )
-
-
-#
-# from mantisshrimp import *
-#
-# backbone = MantisFasterRCNN.get_backbone_by_name("resnet18", True, True)
-# model = MantisFasterRCNN(n_class=91, backbone=backbone)
-#
-# records = test_utils.sample_records()[0]
-# record = records[0]
-# prepared_record = default_prepare_record(record)
-#
-#
-# preds = model(xb, list(yb))
-#
-# sample = model.build_training_sample(**prepared_record)
-# sample
