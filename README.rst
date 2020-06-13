@@ -13,6 +13,8 @@ MantisShrimp
 Install
 -------
 
+Install pytorch via your preferred way.
+
 .. code:: python
 
    pip install -r requirements.txt
