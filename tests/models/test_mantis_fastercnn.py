@@ -34,6 +34,8 @@ def batch():
         # "resnext101_32x8d",
     ],
 )
+
+@pytest.mark.skip
 def test_faster_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
     if backbone is not None:
         backbone = MantisFasterRCNN.get_backbone_by_name(
