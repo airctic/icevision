@@ -1,6 +1,6 @@
-import pytest, torch
+import pytest
+import torch
 from mantisshrimp import *
-
 
 @pytest.fixture(scope="session")
 def batch():

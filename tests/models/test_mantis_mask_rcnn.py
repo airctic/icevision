@@ -36,7 +36,7 @@ def batch():
         # "resnext101_32x8d",
     ],
 )
-def test_faster_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
+def test_mask_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
     if backbone is not None:
         backbone = MantisMaskRCNN.get_backbone_by_name(
             name=backbone, fpn=fpn, pretrained=pretrained
