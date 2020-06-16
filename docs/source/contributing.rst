@@ -106,7 +106,7 @@ For example:
     git push origin <enter-branch-name-same-as-before>
 
 It will automatically show up in the PR on the github page.
-If these are small changes they can be squashed together at the merge time and appear as a single commit in the repository.
+If these are small changes they can be squashed together by the reviewer at the merge time and appear as a single commit in the repository.
 
 B. Method 2: Using Git
 ----------------------
