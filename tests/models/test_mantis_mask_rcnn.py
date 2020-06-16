@@ -25,11 +25,11 @@ def batch():
         ("vgg16", False),
         ("vgg19", False),
         ("resnet18", False),
-        ("resnet34", False),
-        ("resnet50", False),
+        # ("resnet34", False),
+        # ("resnet50", False),
         ("resnet18", True),
-        ("resnet34", True),
-        ("resnet50", True),
+        # ("resnet34", True),
+        # ("resnet50", True),
         # these models are too big for github runners
         # "resnet101",
         # "resnet152",
@@ -45,7 +45,7 @@ def test_mask_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
     with torch.no_grad():
         preds = model.forward(*batch)
 
-    print(set(preds.keys()))
+    # print(set(preds.keys()))
     assert set(preds.keys()) == set(
-        ["loss_classifier", "loss_box_reg", "loss_objectness", "loss_rpn_box_reg"]
+        ['loss_mask', 'loss_box_reg', 'loss_rpn_box_reg', 'loss_objectness', 'loss_classifier']
     )
