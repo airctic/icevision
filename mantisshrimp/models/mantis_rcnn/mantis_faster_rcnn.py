@@ -23,9 +23,7 @@ class MantisFasterRCNN(MantisRCNN):
         self.backbone = backbone
         if backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
-            self.m = fasterrcnn_resnet50_fpn(
-                pretrained=True, num_classes=n_class, **kwargs,
-            )
+            self.m = fasterrcnn_resnet50_fpn(pretrained=True, **kwargs)
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
             self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
         else:
