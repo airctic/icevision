@@ -2,6 +2,7 @@ import pytest
 import torch
 from mantisshrimp import *
 
+
 @pytest.fixture(scope="session")
 def batch():
     dataset = test_utils.sample_dataset()

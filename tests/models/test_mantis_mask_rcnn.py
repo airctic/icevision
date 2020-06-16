@@ -47,5 +47,11 @@ def test_mask_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
 
     # print(set(preds.keys()))
     assert set(preds.keys()) == set(
-        ['loss_mask', 'loss_box_reg', 'loss_rpn_box_reg', 'loss_objectness', 'loss_classifier']
+        [
+            "loss_mask",
+            "loss_box_reg",
+            "loss_rpn_box_reg",
+            "loss_objectness",
+            "loss_classifier",
+        ]
     )
