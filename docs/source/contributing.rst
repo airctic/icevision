@@ -68,7 +68,7 @@ Step 5: Submitting a Pull Request
 A. Method 1: Using GitHub CLI
 -----------------------------  
 
-Preliminary step (done only once): Install gh by following the instructions here -> https://cli.github.com/manual/installation
+Preliminary step (done only once): Install gh by following the instructions `here <https://cli.github.com/manual/installation>`_ .
 
 
 1. Create a pull request using GitHub CLI
