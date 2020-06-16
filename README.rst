@@ -13,7 +13,7 @@ MantisShrimp
 Hall of Fame
 ------------
 
-This library is only made possible because of these people, thank you ♥️ ♥️ ♥️ 
+This library is only made possible because of @all-contributors, thank you ♥️ ♥️ ♥️ 
 
 |image0|\ |image1|\ |image2|\ |image3|\ |image4|\ |image5|\ |image6|\ |image7|
 
