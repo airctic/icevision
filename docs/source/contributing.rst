@@ -123,9 +123,9 @@ After the push completes, a message may display a URL to automatically submit a 
 If not, go to the mantisshrimp main repo and GitHub will prompt you to create a pull request.
 
 2. Confirm PR was created:  
-
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 Ensure your pr is listed `here <https://github.com/lgvaz/mantisshrimp/pulls>`_
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 3. Updating a PR:  
 
