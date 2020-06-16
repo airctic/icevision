@@ -5,6 +5,7 @@ from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
 from mantisshrimp.models.mantis_rcnn.mantis_faster_rcnn import *
+from mantisshrimp.backbones import *
 
 
 class MantisMaskRCNN(MantisRCNN):
@@ -22,10 +23,12 @@ class MantisMaskRCNN(MantisRCNN):
                 pretrained=True, num_classes=n_class, **kwargs,
             )
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
+            
             self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
             in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
+            hidden_layer = 256
             self.m.roi_heads.mask_predictor = MaskRCNNPredictor(
-                in_features_mask, self.h, self.n_class
+                in_features_mask, hidden_layer, self.n_class
             )
 
         else:
