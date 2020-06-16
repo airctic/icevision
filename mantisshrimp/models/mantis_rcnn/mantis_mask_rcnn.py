@@ -9,16 +9,50 @@ from mantisshrimp.models.mantis_rcnn.mantis_faster_rcnn import *
 
 class MantisMaskRCNN(MantisRCNN):
     @delegates(MaskRCNN.__init__)
-    def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
+    def __init__(
+        self, n_class: int, backbone: nn.Module = None, metrics=None, **kwargs,
+    ):
         super().__init__(metrics=metrics)
-        self.n_class, self.h, self.pretrained = n_class, h, pretrained
-        self.m = maskrcnn_resnet50_fpn(pretrained=self.pretrained, **kwargs)
-        in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
-        in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
-        self.m.roi_heads.mask_predictor = MaskRCNNPredictor(
-            in_features_mask, self.h, self.n_class
-        )
+        self.n_class = n_class
+        self.backbone = backbone
+
+        if backbone is None:
+            # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
+            self.m = maskrcnn_resnet50_fpn(
+                pretrained=True, num_classes=n_class, **kwargs,
+            )
+            in_features = self.m.roi_heads.box_predictor.cls_score.in_features
+            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
+            in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
+            self.m.roi_heads.mask_predictor = MaskRCNNPredictor(
+                in_features_mask, self.h, self.n_class
+            )
+
+        else:
+            self.m = MaskRCNN(backbone, num_classes=n_class, **kwargs)
+
+    @staticmethod
+    def get_backbone_by_name(
+        name: str, fpn: bool = True, pretrained: bool = True
+    ) -> nn.Module:
+        """
+        Args:
+            backbone (str): If none creates a default resnet50_fpn model trained on MS COCO 2017
+                Supported backones are: "resnet18", "resnet34","resnet50", "resnet101", "resnet152",
+                 "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2", as resnets with fpn backbones.
+                Without fpn backbones supported are: "resnet18", "resnet34", "resnet50","resnet101",
+                 "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19",
+            pretrained (bool): Creates a pretrained backbone with imagenet weights.
+        """
+        # Giving string as a backbone, which is either supported resnet or backbone
+        if fpn:
+            # Creates a torchvision resnet model with fpn added
+            # It returns BackboneWithFPN model
+            backbone = resnet_fpn_backbone(name, pretrained=pretrained)
+        else:
+            # This does not create fpn backbone, it is supported for all models
+            backbone = create_torchvision_backbone(name, pretrained=pretrained)
+        return backbone
 
     def forward(self, images, targets=None):
         return self.m(images, targets)
