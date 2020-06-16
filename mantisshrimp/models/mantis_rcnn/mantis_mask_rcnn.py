@@ -23,7 +23,7 @@ class MantisMaskRCNN(MantisRCNN):
                 pretrained=True, num_classes=n_class, **kwargs,
             )
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-            
+
             self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
             in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
             hidden_layer = 256
