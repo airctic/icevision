@@ -127,7 +127,15 @@ If not, go to the mantisshrimp main repo and GitHub will prompt you to create a 
 Ensure your pr is listed `here <https://github.com/lgvaz/mantisshrimp/pulls>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3. Updating a PR : TODO
+3. Updating a PR:  
+
+Same as before, normally push changes to your branch and the PR will get automatically updated.
+
+.. code:: bash
+
+    git commit -m "updated the feature"
+    git push origin <enter-branch-name-same-as-before>
+ 
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Reviewing Your PR
