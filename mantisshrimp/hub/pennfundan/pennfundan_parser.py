@@ -1,3 +1,5 @@
+__all__ = ["PennFundanParser"]
+
 from mantisshrimp.imports import *
 from mantisshrimp import *
 
@@ -45,11 +47,11 @@ class PennFundanParser(DefaultImageInfoParser, MaskRCNNParser):
     def filepath(self, o) -> Union[str, Path]:
         return self._filepath
 
-    def height(self, o) -> int:
-        return self._size[1]
-
     def width(self, o) -> int:
         return self._size[0]
+
+    def height(self, o) -> int:
+        return self._size[1]
 
     def label(self, o) -> List[int]:
         return [1] * self._num_objects
@@ -62,15 +64,3 @@ class PennFundanParser(DefaultImageInfoParser, MaskRCNNParser):
 
     def bbox(self, o) -> List[BBox]:
         return self._bboxes
-
-
-source = Path("/Users/lgvaz/.data/PennFudanPed/")
-parser = PennFundanParser(source)
-
-splitter = RandomSplitter([0.8, 0.2])
-
-train_records, valid_records = parser.parse(splitter)
-parser.filenames
-
-len(train_records)
-len(valid_records)

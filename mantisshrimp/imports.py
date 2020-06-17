@@ -1,4 +1,4 @@
-import cv2, json, torch, torchvision, dataclasses
+import cv2, json, torch, torchvision, dataclasses, zipfile
 
 import torch.nn as nn
 import pytorch_lightning as pl
