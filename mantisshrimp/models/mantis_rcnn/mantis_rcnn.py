@@ -61,7 +61,7 @@ class MantisRCNN(MantisModule, ABC):
             return list(zip(*ts))
 
         return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
-    
+
     @staticmethod
     def get_backbone_by_name(
         name: str, fpn: bool = True, pretrained: bool = True
