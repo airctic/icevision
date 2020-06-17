@@ -1,10 +1,10 @@
 __all__ = ["MantisRCNN"]
 
-from ...imports import *
+from mantisshrimp.imports import *
 from ...utils import *
-from ...core import *
+from mantisshrimp.core import *
 from ..mantis_module import *
-
+from mantisshrimp.backbones import *
 
 class MantisRCNN(MantisModule, ABC):
     def __init__(self, metrics=None):
