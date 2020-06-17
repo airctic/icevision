@@ -4,9 +4,7 @@ from mantisshrimp import *
 
 def test_mask_rcnn_dataloader(records):
     dataset = Dataset(records)
-    dl = MantisMaskRCNN(num_classes=2, backbone=None).dataloader(
-        dataset, batch_size=3
-    )
+    dl = MantisMaskRCNN(num_classes=2, backbone=None).dataloader(dataset, batch_size=3)
     xb, yb = first(dl)
     assert len(xb) == 3
     assert len(yb) == 3
