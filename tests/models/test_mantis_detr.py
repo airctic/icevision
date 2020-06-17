@@ -7,6 +7,7 @@ from PIL import Image
 
 
 @pytest.mark.slow
+@pytest.mark.skip
 def test_detr_result():
     model = MantisDetr().eval()
     tfm = AlbuTransform([A.SmallestMaxSize(800), A.Normalize(*imagenet_stats)])
