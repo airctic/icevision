@@ -19,16 +19,12 @@ class MantisMaskRCNN(MantisRCNN):
 
         if backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
-            self.m = maskrcnn_resnet50_fpn(
-                pretrained=True, num_classes=num_classes, **kwargs,
-            )
+            self.m = maskrcnn_resnet50_fpn(pretrained=True, **kwargs)
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-
             self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
             in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
-            hidden_layer = 256
             self.m.roi_heads.mask_predictor = MaskRCNNPredictor(
-                in_features_mask, hidden_layer, num_classes
+                in_channels=in_features_mask, dim_reduced=256, num_classes=num_classes
             )
 
         else:
@@ -54,3 +50,4 @@ class MantisMaskRCNN(MantisRCNN):
         )
         y["masks"] = tensor(mask.data, dtype=torch.uint8)
         return x, y
+
