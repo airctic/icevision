@@ -50,4 +50,3 @@ class MantisMaskRCNN(MantisRCNN):
         )
         y["masks"] = tensor(mask.data, dtype=torch.uint8)
         return x, y
-
