@@ -16,20 +16,20 @@ class MantisFasterRCNN(MantisRCNN):
 
     @delegates(FasterRCNN.__init__)
     def __init__(
-        self, n_class: int, backbone: nn.Module = None, metrics=None, **kwargs,
+        self, num_classes: int, backbone: nn.Module = None, metrics=None, **kwargs,
     ):
         super().__init__(metrics=metrics)
-        self.n_class = n_class
+        self.num_classes = num_classes
         self.backbone = backbone
         if backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
             self.m = fasterrcnn_resnet50_fpn(
-                pretrained=False, num_classes=n_class, **kwargs,
+                pretrained=False, num_classes=num_classes, **kwargs,
             )
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
+            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
         else:
-            self.m = FasterRCNN(backbone, num_classes=n_class, **kwargs)
+            self.m = FasterRCNN(backbone, num_classes=num_classes, **kwargs)
 
     def forward(self, images, targets=None):
         return self.m(images, targets)

@@ -43,7 +43,7 @@ def test_mask_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
         backbone = MantisMaskRCNN.get_backbone_by_name(
             name=backbone, fpn=fpn, pretrained=pretrained
         )
-    model = MantisMaskRCNN(n_class=91, backbone=backbone)
+    model = MantisMaskRCNN(num_classes=91, backbone=backbone)
     with torch.no_grad():
         preds = model.forward(*batch)
 
