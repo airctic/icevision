@@ -40,7 +40,7 @@ def test_faster_rcnn_nonfpn_backbones(batch, backbone, fpn, pretrained):
         backbone = MantisFasterRCNN.get_backbone_by_name(
             name=backbone, fpn=fpn, pretrained=pretrained
         )
-    model = MantisFasterRCNN(n_class=91, backbone=backbone)
+    model = MantisFasterRCNN(num_classes=91, backbone=backbone)
     with torch.no_grad():
         preds = model.forward(*batch)
     assert set(preds.keys()) == set(

@@ -6,6 +6,7 @@ from mantisshrimp.core import *
 from ..mantis_module import *
 from mantisshrimp.backbones import *
 
+
 class MantisRCNN(MantisModule, ABC):
     def __init__(self, metrics=None):
         super().__init__()
