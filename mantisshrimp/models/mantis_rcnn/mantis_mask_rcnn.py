@@ -11,28 +11,25 @@ from mantisshrimp.backbones import *
 class MantisMaskRCNN(MantisRCNN):
     @delegates(MaskRCNN.__init__)
     def __init__(
-        self, n_class: int, backbone: nn.Module = None, metrics=None, **kwargs,
+        self, num_classes: int, backbone: nn.Module = None, metrics=None, **kwargs,
     ):
         super().__init__(metrics=metrics)
-        self.n_class = n_class
+        self.num_classes = num_classes
         self.backbone = backbone
 
         if backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
-            self.m = maskrcnn_resnet50_fpn(
-                pretrained=True, num_classes=n_class, **kwargs,
-            )
+            self.m = maskrcnn_resnet50_fpn(pretrained=True, **kwargs,)
             in_features = self.m.roi_heads.box_predictor.cls_score.in_features
 
-            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, n_class)
+            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
             in_features_mask = self.m.roi_heads.mask_predictor.conv5_mask.in_channels
-            hidden_layer = 256
             self.m.roi_heads.mask_predictor = MaskRCNNPredictor(
-                in_features_mask, hidden_layer, self.n_class
+                in_features_mask, self.num_classes
             )
 
         else:
-            self.m = MaskRCNN(backbone, num_classes=n_class, **kwargs)
+            self.m = MaskRCNN(backbone, num_classes=num_classes, **kwargs)
 
     @staticmethod
     def get_backbone_by_name(
