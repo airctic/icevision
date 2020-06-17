@@ -7,7 +7,7 @@ from mantisshrimp import *
 def get_pennfundan_data(force_download=False):
     url = "https://www.cis.upenn.edu/~jshi/ped_html/PennFudanPed.zip"
     # setup file names
-    save_dir = get_data_dir() / "pennfundan"
+    save_dir = get_data_dir() / "PennFudanPed"
     save_dir.mkdir(exist_ok=True)
     zip_file = save_dir / "pennfundan.zip"
     # download and extract data
@@ -20,5 +20,6 @@ def get_pennfundan_data(force_download=False):
         files_dir = save_dir / "PennFudanPed"
         for file in files_dir.ls():
             shutil.move(str(file), save_dir)
+        shutil.rmtree(files_dir)
 
     return save_dir
