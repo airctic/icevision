@@ -61,6 +61,29 @@ class MantisRCNN(MantisModule, ABC):
             return list(zip(*ts))
 
         return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
+    
+    @staticmethod
+    def get_backbone_by_name(
+        name: str, fpn: bool = True, pretrained: bool = True
+    ) -> nn.Module:
+        """
+        Args:
+            backbone (str): If none creates a default resnet50_fpn model trained on MS COCO 2017
+                Supported backones are: "resnet18", "resnet34","resnet50", "resnet101", "resnet152",
+                 "resnext50_32x4d", "resnext101_32x8d", "wide_resnet50_2", "wide_resnet101_2", as resnets with fpn backbones.
+                Without fpn backbones supported are: "resnet18", "resnet34", "resnet50","resnet101",
+                 "resnet152", "resnext101_32x8d", "mobilenet", "vgg11", "vgg13", "vgg16", "vgg19",
+            pretrained (bool): Creates a pretrained backbone with imagenet weights.
+        """
+        # Giving string as a backbone, which is either supported resnet or backbone
+        if fpn:
+            # Creates a torchvision resnet model with fpn added
+            # It returns BackboneWithFPN model
+            backbone = resnet_fpn_backbone(name, pretrained=pretrained)
+        else:
+            # This does not create fpn backbone, it is supported for all models
+            backbone = create_torchvision_backbone(name, pretrained=pretrained)
+        return backbone
 
     @staticmethod
     @abstractmethod
