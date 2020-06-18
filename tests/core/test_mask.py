@@ -1,4 +1,5 @@
 import pytest
+import numpy as np
 from mantisshrimp.core import *
 
 
@@ -25,3 +26,11 @@ def test_rle_to_mask(simple_counts):
     mask = rle.to_mask(17, 1)
     expected = [1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     assert mask.data.reshape(-1).tolist() == expected
+
+
+def test_mask_array_to_coco_rle():
+    mask = MaskArray(np.array([[[0, 0, 1, 1, 1, 0, 1]]]))
+    assert mask.to_coco_rle(h=1, w=7) == [{"counts": [2, 3, 1, 1], "size": (1, 7)}]
+
+    mask = MaskArray(np.array([[[1, 1, 1, 1, 1, 1, 0]]]))
+    assert mask.to_coco_rle(h=1, w=7) == [{"counts": [0, 6, 1], "size": (1, 7)}]

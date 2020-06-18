@@ -36,6 +36,21 @@ class MaskArray(Mask):
     def to_erle(self, h, w):
         return mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
 
+    def to_coco_rle(self, h, w) -> List[dict]:
+        """ From https://stackoverflow.com/a/49547872/6772672
+        """
+        assert self.data.shape[1:] == (h, w)
+        rles = []
+        for mask in self.data:
+            counts = []
+            flat = itertools.groupby(mask.ravel(order="F"))
+            for i, (value, elements) in enumerate(flat):
+                if i == 0 and value == 1:
+                    counts.append(0)
+                counts.append(len(list(elements)))
+            rles.append({"counts": counts, "size": (h, w)})
+        return rles
+
     @property
     def shape(self):
         return self.data.shape
@@ -67,6 +82,9 @@ class MaskFile(Mask):
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
         return MaskArray(masks)
+
+    def to_coco_rle(self, h, w) -> List[dict]:
+        return self.to_mask(h=h, w=w).to_coco_rle(h=h, w=w)
 
     def to_erle(self, h, w):
         return self.to_mask(h, w).to_erle(h, w)
