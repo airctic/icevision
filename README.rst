@@ -39,10 +39,10 @@ Install
 
 Install pytorch via your preferred way.
 
-.. code:: python
+.. code:: bash
 
-   pip install -r requirements.txt
    pip install git+git://github.com/lgvaz/mantisshrimp.git
+   pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 Quick start
 -----------
