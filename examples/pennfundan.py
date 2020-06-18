@@ -1,6 +1,7 @@
 from mantisshrimp import *
 from mantisshrimp.imports import *
 from mantisshrimp.hub.pennfundan import *
+import albumentations as A
 
 source = get_pennfundan_data()
 parser = PennFundanParser(source)
@@ -8,11 +9,12 @@ parser = PennFundanParser(source)
 splitter = RandomSplitter([0.8, 0.2])
 train_records, valid_records = parser.parse(splitter)
 
+train_transform = AlbuTransform([A.HorizontalFlip()])
 train_dataset = Dataset(train_records)
 valid_dataset = Dataset(valid_records)
 
-train_dataloader = MantisMaskRCNN.dataloader(train_dataset)
-valid_dataloader = MantisMaskRCNN.dataloader(valid_dataset)
+train_dataloader = MantisMaskRCNN.dataloader(train_dataset, batch_size=2)
+valid_dataloader = MantisMaskRCNN.dataloader(valid_dataset, batch_size=2)
 
 
 class PersonModel(MantisMaskRCNN):
@@ -23,9 +25,6 @@ class PersonModel(MantisMaskRCNN):
 
 model = PersonModel(2)
 
-trainer = Trainer(max_epochs=1)
+trainer = Trainer(max_epochs=3, gpus=1)
 
 trainer.fit(model, train_dataloader, valid_dataloader)
-
-len(train_records)
-len(valid_records)
