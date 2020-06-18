@@ -44,6 +44,9 @@ def convert_records_to_coco_style(records):
         if "area" in record:
             for area in record["area"]:
                 annotations_dict["area"].append(area)
+        else:
+            for bbox in record["bbox"]:
+                annotations_dict["area"].append(bbox.area)
 
         if "mask" in record:
             for mask in record["mask"]:
@@ -55,6 +58,9 @@ def convert_records_to_coco_style(records):
                         "size": [record["height"], record["width"]],
                     }
                     annotations_dict["segmentation"].append(coco_rle)
+                elif isinstance(mask, MaskFile):
+                    rles = mask.to_coco_rle(record["height"], record["width"])
+                    annotations_dict["segmentation"].extend(rles)
                 else:
                     msg = f"Mask type {type(mask)} unsupported, we only support RLE and Polygon"
                     raise ValueError(msg)
