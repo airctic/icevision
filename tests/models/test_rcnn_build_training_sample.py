@@ -23,7 +23,7 @@ def test_build_training_sample_maskrcnn(data_sample):
     assert y["masks"].shape == (16, 427, 640)
 
 
-def test_build_training_sample_maskrcnn(data_sample):
+def test_build_training_sample_fasterrcnn(data_sample):
     x, y = MantisFasterRCNN.build_training_sample(**data_sample)
     assert x.dtype == torch.float32
     assert x.shape == (3, 427, 640)

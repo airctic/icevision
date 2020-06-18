@@ -10,15 +10,39 @@ MantisShrimp
 
 ``MantisShrimp`` provides a unified data API for object detection that can be used with any library (it can even be injected in code that was not supposed to work as a library, take a look at ``hub/detr`` for an example).
 
+Hall of Fame
+------------
+
+This library is only made possible because of @all-contributors, thank you ♥️ ♥️ ♥️ 
+
+|image0|\ |image1|\ |image2|\ |image3|\ |image4|\ |image5|\ |image6|\ |image7|
+
+.. |image0| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/0
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/0
+.. |image1| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/1
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/1
+.. |image2| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/2
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/2
+.. |image3| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/3
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/3
+.. |image4| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/4
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/4
+.. |image5| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/5
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/5
+.. |image6| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/6
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/6
+.. |image7| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7
+   :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7
+
 Install
 -------
 
 Install pytorch via your preferred way.
 
-.. code:: python
+.. code:: bash
 
-   pip install -r requirements.txt
    pip install git+git://github.com/lgvaz/mantisshrimp.git
+   pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 Quick start
 -----------

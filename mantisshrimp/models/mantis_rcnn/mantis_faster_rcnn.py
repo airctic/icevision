@@ -4,16 +4,30 @@ from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
+from mantisshrimp.backbones import *
 
 
 class MantisFasterRCNN(MantisRCNN):
+    """
+    Creates a flexible Faster RCNN implementation based on torchvision library.
+    Args: 
+    n_class (int) : number of classes. Do not have class_id "0" it is reserved as background. n_class = number of classes to label + 1 for background.
+    """
+
     @delegates(FasterRCNN.__init__)
-    def __init__(self, n_class, h=256, pretrained=True, metrics=None, **kwargs):
+    def __init__(
+        self, num_classes: int, backbone: nn.Module = None, metrics=None, **kwargs,
+    ):
         super().__init__(metrics=metrics)
-        self.n_class, self.h, self.pretrained = n_class, h, pretrained
-        self.m = fasterrcnn_resnet50_fpn(pretrained=self.pretrained, **kwargs)
-        in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-        self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, self.n_class)
+        self.num_classes = num_classes
+        self.backbone = backbone
+        if backbone is None:
+            # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
+            self.m = fasterrcnn_resnet50_fpn(pretrained=True, **kwargs)
+            in_features = self.m.roi_heads.box_predictor.cls_score.in_features
+            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+        else:
+            self.m = FasterRCNN(backbone, num_classes=num_classes, **kwargs)
 
     def forward(self, images, targets=None):
         return self.m(images, targets)
@@ -26,7 +40,7 @@ class MantisFasterRCNN(MantisRCNN):
         imageid: int, img: np.ndarray, label: List[int], bbox: List[BBox], **kwargs,
     ):
         x = im2tensor(img)
-        # inject values when annotations are empty are disconsidered
+        # injected values when annotations are empty are disconsidered
         # because we mark label as 0 (background)
         _fake_box = [0, 1, 2, 3]
         y = {
