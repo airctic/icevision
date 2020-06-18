@@ -15,5 +15,5 @@ class FasterRCNNParser(Parser, LabelParserMixin, BBoxParserMixin, ABC):
     pass
 
 
-class MaskRCNNParser(FasterRCNNParser, MaskParserMixin, ABC):
+class MaskRCNNParser(FasterRCNNParser, MaskParserMixin, IsCrowdParserMixin, ABC):
     pass

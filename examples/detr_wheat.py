@@ -60,7 +60,7 @@ def get_datasets(args):
 
 if __name__ == "__main__":
     # adds new arguments to original args_parser
-    args_parser = get_args_parser()
+    args_parser = detr_args_parser()
     args_parser.add_argument("--data_path", type=str)
     args_parser.add_argument("--num_classes", type=int, default=None)
     args_parser.add_argument("--fine_tune", action="store_true")

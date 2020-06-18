@@ -34,11 +34,15 @@ class PennFundanParser(DefaultImageInfoParser, MaskRCNNParser):
                 mask_filename = re.findall(r'"(.+)"', line.split(":")[-1])[0]
                 self._mask_filepath = self.source.parent / mask_filename
 
-            elif line.startswith("Bounding Box"):
-                points_str = re.findall(r"(\d+,\s\d+)", line)
-                points_int = [int(point) for point in points_str.split(",")]
-                points_arr = np.array(points_int).flat
-                bbox = BBox.from_xyxy(*points_arr)
+            if line.startswith("Bounding box"):
+                # find bbox coordinates in line and covert to a list
+                point_pairs_str = re.findall(r"(\d+,\s\d+)", line)
+                points = []
+                for pairs in point_pairs_str:
+                    for point in pairs.split(","):
+                        points.append(int(point))
+
+                bbox = BBox.from_xyxy(*points)
                 self._bboxes.append(bbox)
 
     def imageid(self, o) -> int:
