@@ -19,13 +19,12 @@ RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-extra.txt
 RUN pip3 install .
 
-# For Pycoco Tools
-RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+# COPY Important files
 
-COPY Important files
 COPY mantisshrimp mantisshrimp
 COPY examples examples
 COPY samples samples
 COPY tutorials tutorials
+COPY tests tests
 
 # We need to expose port an run a dummy output with wsgi server
