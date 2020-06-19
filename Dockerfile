@@ -17,6 +17,7 @@ COPY requirements.txt  requirements.txt
 COPY requirements-extra.txt requirements-extra.txt
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-extra.txt
+RUN pip3 install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
 RUN pip3 install .
 
 # COPY Important files
