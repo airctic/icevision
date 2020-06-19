@@ -7,4 +7,3 @@ fastcore>=0.1.17
 opencv-python>=4.2.0
 pytorch-lightning>=0.7.6
 torchvision
-# git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
