@@ -1,13 +1,26 @@
 # Choose the base image from to take.
 # Using slim images is best practice
-FROM python:3.6-slim
+FROM ubuntu:18.04
 
 # Install dependencies
 # Do this first for caching
+RUN apt-get update
+RUN apt-get -y install gcc
+RUN apt-get install -y git
+RUN apt-get install -y python3.6
+RUN apt-get install -y python3-pip
+# RUN pip3 install git+git://github.com/lgvaz/mantisshrimp.git
+RUN git clone https://github.com/lgvaz/mantisshrimp.git
+WORKDIR "/mantisshrimp"
+
 COPY requirements.txt  requirements.txt
-RUN pip install git+git://github.com/lgvaz/mantisshrimp.git
-RUN pip install -r requirements.txt
-RUN pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+COPY requirements-extra.txt requirements-extra.txt
+RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements-extra.txt
+RUN pip3 .
+
+# For Pycoco Tools
+RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # COPY Important files
 COPY mantisshrimp mantisshrimp
