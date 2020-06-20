@@ -1,8 +1,13 @@
-from mantisshrimp.imports import *
 from fastai2.vision.all import *
 from fastai2.metrics import Metric as FastaiMetric
+from fastai2.data.load import DataLoader as FastaiDataLoader
+from mantisshrimp.imports import *
 from mantisshrimp import *
 from mantisshrimp.hub.pennfundan import *
+
+
+# TODO: auto convert datalaoder (just need to grab collate_fn)
+# TODO: auto convert metric
 
 
 class FastaiMetricAdapter(FastaiMetric):
@@ -32,36 +37,38 @@ train_records, valid_records = parser.parse(splitter)
 train_dataset = Dataset(train_records)
 valid_dataset = Dataset(valid_records)
 model = MantisMaskRCNN(num_classes=2)
+train_dataloader = model.dataloader(train_dataset, batch_size=2, num_workers=2)
+valid_dataloader = model.dataloader(valid_dataset, batch_size=2, num_workers=2)
 ###
-metric = COCOMetric(valid_records, bbox=True, mask=True)
-metric = FastaiMetricAdapter(metric)
-
-# DataLoaders
-class FastaiRCNNDataloader(TfmdDL):
-    def create_batch(self, b):
-        return (MantisMaskRCNN.collate_fn, zip_convert)[self.prebatched](b)
 
 
-train_dataloader = FastaiRCNNDataloader(train_dataset, bs=2, num_workers=0)
-valid_dataloader = FastaiRCNNDataloader(valid_dataset, bs=2, num_workers=0)
-dataloaders = DataLoaders(train_dataloader, valid_dataloader).to(torch.device("cuda"))
+def convert_dataloader_to_fastai(dataloader: DataLoader):
+    def raise_error_convert(data):
+        raise NotImplementedError
 
-batch = first(train_dataloader)
-# Leaner
-# def adapt_loss_to_fastai(learner):
-#     def _fastai_loss(preds, *yb):
-#         # TODO: first argument needs to be entire batch
-#         set_trace()
-#         return learner.model.loss(*yb, preds)
+    class FastaiDataLoaderWithCollate(FastaiDataLoader):
+        def create_batch(self, b):
+            return (dataloader.collate_fn, raise_error_convert)[self.prebatched](b)
 
+    # extract shuffle from the type of sampler used
+    if isinstance(dataloader.sampler, SequentialSampler):
+        shuffle = False
+    elif isinstance(dataloader.sampler, RandomSampler):
+        shuffle = True
+    else:
+        raise ValueError(
+            f"Sampler {type(dataloader.sampler)} not supported. Fastai only"
+            "supports RandomSampler or SequentialSampler"
+        )
 
-# def mock_loss(*args, **kwargs):
-#     return tensor(0.0)
-
-# class FastaiModelAdapterCallback(Callback):
-#     def after_loss(self):
-#         batch = (self.learn.xb, self.learn.yb)
-#         self.learn.loss = self.model.loss(batch, self.learn.pred)
+    return FastaiDataLoaderWithCollate(
+        dataset=dataloader.dataset,
+        bs=dataloader.batch_size,
+        num_workers=dataloader.num_workers,
+        drop_last=dataloader.drop_last,
+        shuffle=shuffle,
+        pin_memory=dataloader.pin_memory,
+    )
 
 
 class RCNNCallback(Callback):
@@ -85,33 +92,45 @@ class RCNNCallback(Callback):
             self.model.train()
 
 
-# def adapted_fastai_learner(dls, model, **kwargs):
-#     learn = Learner..
-#
-# def rcnn_learner():
-#     learn = adapted_fastai_learner(...)
+def rcnn_learner(dls: DataLoaders, model: MantisRCNN, cbs=None, **kwargs):
+    cbs = [RCNNCallback()] + L(cbs)
+
+    def model_splitter(model):
+        return model.params_splits()
+
+    learn = Learner(
+        dls=dataloaders,
+        model=model,
+        loss_func=model.loss,
+        cbs=cbs,
+        metrics=metrics,
+        splitter=model_splitter,
+    )
+
+    # HACK: patch AvgLoss (in original, find_bs gives errors)
+    class RCNNAvgLoss(AvgLoss):
+        def accumulate(self, learn):
+            bs = len(learn.yb)
+            self.total += to_detach(learn.loss.mean()) * bs
+            self.count += bs
+
+    recorder = [cb for cb in learn.cbs if isinstance(cb, Recorder)][0]
+    recorder.loss = RCNNAvgLoss()
+
+    return learn
 
 
-splitter = lambda model: model.params_splits()
+metric = COCOMetric(valid_records, bbox=True, mask=True)
+metric = FastaiMetricAdapter(metric)
 
-cbs = [RCNNCallback()]
-learn = Learner(
-    dls=dataloaders,
-    model=model,
-    loss_func=MantisMaskRCNN.loss,
-    cbs=cbs,
-    metrics=[metric],
-    splitter=splitter,
-)
-# patches
-class RCNNAvgLoss(AvgLoss):
-    def accumulate(self, learn):
-        bs = len(learn.yb)
-        self.total += to_detach(learn.loss.mean()) * bs
-        self.count += bs
+train_dataloader2 = convert_dataloader_to_fastai(train_dataloader)
+valid_dataloader2 = convert_dataloader_to_fastai(valid_dataloader)
+# TODO: Check if cuda is available, see how fastai does it
+dataloaders = DataLoaders(train_dataloader2, valid_dataloader2).to(torch.device("cuda"))
 
+learn = rcnn_learner(dls=dataloaders, model=model)
 
-recorder = [cb for cb in learn.cbs if isinstance(cb, Recorder)][0]
-recorder.loss = RCNNAvgLoss()
+learn.fit_one_cycle(3, lr=2e-4)
 
-learn.fit(3, lr=2e-4, cbs=[ShortEpochCallback(0.1, short_valid=False)])
+# TODO: add some tests
+# check that model_splits is freezing the correct layers
