@@ -1,5 +1,9 @@
 name: Build and Publish GPU Docker
-on: [push]
+on:
+  push:
+    branches:
+      - docker_deploy
+
 jobs:
   build:
     runs-on: ubuntu-latest
