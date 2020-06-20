@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Publish to Docker Repository
-      uses: lgvaz/mantisshrimp@master
+      uses: elgohr/Publish-Docker-Github-Action@master
       with:
         name: lgvaz/mantisshrimp
         username: ${{ secrets.DOCKER_USERNAME }}
