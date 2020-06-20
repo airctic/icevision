@@ -20,7 +20,7 @@ class MantisRCNN(MantisModule, ABC):
         """
 
     @staticmethod
-    def loss(batch, preds) -> Tensor:
+    def loss(preds, targs) -> Tensor:
         return sum(preds.values())
 
     def get_logs(self, batch, preds) -> dict:
@@ -89,7 +89,7 @@ class LightningRCNN:
         losses = {f"valid/{k}": v for k, v in losses.items()}
         res = {}
         for metric in self.metrics:
-            o = metric.step(self, xb, yb, preds)
+            o = metric.accumulate(self, xb, yb, preds)
             if notnone(o):
                 raise NotImplementedError  # How to update res?
         res.update({"valid/loss": loss, **losses})
@@ -98,7 +98,7 @@ class LightningRCNN:
     def validation_epoch_end(self, outs):
         res = {}
         for metric in self.metrics:
-            o = metric.end(self, outs)
+            o = metric.finalize(self, outs)
             if notnone(o):
                 raise NotImplementedError  # How to update res?
         log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}

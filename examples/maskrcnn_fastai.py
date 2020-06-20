@@ -1,7 +1,23 @@
 from mantisshrimp.imports import *
 from fastai2.vision.all import *
+from fastai2.metrics import Metric as FastaiMetric
 from mantisshrimp import *
 from mantisshrimp.hub.pennfundan import *
+
+
+class FastaiMetricAdapter(FastaiMetric):
+    def __init__(self, metric: Metric):
+        self.metric = metric
+
+    def reset(self):
+        self.metric.reset()
+
+    def accumulate(self, learn: Learner):
+        self.metric.accumulate(learn.xb, learn.yb, learn.pred)
+
+    @property
+    def value(self):
+        return self.metric.finalize()
 
 
 def zip_convert(t):
@@ -17,6 +33,8 @@ train_dataset = Dataset(train_records)
 valid_dataset = Dataset(valid_records)
 model = MantisMaskRCNN(num_classes=2)
 ###
+metric = COCOMetric(valid_records, bbox=True, mask=True)
+metric = FastaiMetricAdapter(metric)
 
 # DataLoaders
 class FastaiRCNNDataloader(TfmdDL):
@@ -29,7 +47,6 @@ valid_dataloader = FastaiRCNNDataloader(valid_dataset, bs=2)
 dataloaders = DataLoaders(train_dataloader, valid_dataloader).to(torch.device("cuda"))
 
 batch = first(train_dataloader)
-#%%
 # Leaner
 # def adapt_loss_to_fastai(learner):
 #     def _fastai_loss(preds, *yb):
@@ -38,14 +55,13 @@ batch = first(train_dataloader)
 #         return learner.model.loss(*yb, preds)
 
 
-def mock_loss(*args, **kwargs):
-    return tensor(0.0)
+# def mock_loss(*args, **kwargs):
+#     return tensor(0.0)
 
-
-class FastaiModelAdapterCallback(Callback):
-    def after_loss(self):
-        batch = (self.learn.xb, self.learn.yb)
-        self.learn.loss = self.model.loss(batch, self.learn.pred)
+# class FastaiModelAdapterCallback(Callback):
+#     def after_loss(self):
+#         batch = (self.learn.xb, self.learn.yb)
+#         self.learn.loss = self.model.loss(batch, self.learn.pred)
 
 
 class RCNNCallback(Callback):
@@ -55,31 +71,38 @@ class RCNNCallback(Callback):
         self.learn.yb = ()
 
     def after_pred(self):
-        self.learn.xb, self.learn.yb = self.learn.xb
+        self.learn.yb = [self.learn.xb[1]]
+        self.learn.xb = [self.learn.xb[0]]
 
-    def begin_validate(self):
+    def begin_validation(self):
         # put model in training mode so we can calculate losses for validation
         self.model.train()
 
+    def after_loss(self):
+        if not self.training:
+            self.model.eval()
+            self.learn.pred = self.model(*self.xb)
+            self.model.train()
 
-#%%
+
 # def adapted_fastai_learner(dls, model, **kwargs):
 #     learn = Learner..
 #
 # def rcnn_learner():
 #     learn = adapted_fastai_learner(...)
 
-#%%
 
-
-#%%
 splitter = lambda model: model.params_splits()
 
-cbs = [FastaiModelAdapterCallback(), RCNNCallback()]
+cbs = [RCNNCallback()]
 learn = Learner(
-    dls=dataloaders, model=model, loss_func=mock_loss, cbs=cbs, splitter=splitter,
+    dls=dataloaders,
+    model=model,
+    loss_func=MantisMaskRCNN.loss,
+    cbs=cbs,
+    metrics=[metric],
+    splitter=splitter,
 )
-#%%
 # patches
 class RCNNAvgLoss(AvgLoss):
     def accumulate(self, learn):
@@ -91,5 +114,4 @@ class RCNNAvgLoss(AvgLoss):
 recorder = [cb for cb in learn.cbs if isinstance(cb, Recorder)][0]
 recorder.loss = RCNNAvgLoss()
 
-#%%
-learn.fit(1, lr=2e-4, cbs=[ShortEpochCallback(0.2)])
+learn.fit(1, lr=2e-4, cbs=[])

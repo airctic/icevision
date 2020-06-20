@@ -1,25 +1,23 @@
 __all__ = ["Metric"]
 
-from ..utils import *
+from abc import ABC, abstractmethod
 
 
-class Metric:
+class Metric(ABC):
     def __init__(self):
         self._model = None
 
-    def step(self, xb, yb, preds):
-        raise NotImplementedError
+    @abstractmethod
+    def reset(self):
+        """ Resets metric internal state
+        """
 
-    def end(self, outs):
-        raise NotImplementedError
+    @abstractmethod
+    def accumulate(self, xb, yb, preds):
+        """ Accumulate stats for a single batch
+        """
 
-    def register_model(self, model):
-        self._model = model
-
-    @property
-    def model(self):
-        if notnone(self._model):
-            return self._model
-        raise RuntimeError(
-            "Register a model with `register_model` before using the metric"
-        )
+    @abstractmethod
+    def finalize(self) -> float:
+        """ Called at the end of the validation loop
+        """
