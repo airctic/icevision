@@ -15,6 +15,7 @@ WORKDIR "/mantisshrimp"
 
 COPY requirements.txt  requirements.txt
 COPY requirements-extra.txt requirements-extra.txt
+RUN pip3 install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements-extra.txt
 RUN pip3 .
