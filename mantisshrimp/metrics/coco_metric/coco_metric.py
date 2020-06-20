@@ -22,18 +22,16 @@ class COCOMetric(Metric):
             self.iou_types.append("keypoints")
 
     def reset(self):
-        print("##### RESET CALLED #####")
         self.coco_evaluator = CocoEvaluator(self._coco_ds, self.iou_types)
 
     def accumulate(self, xb, yb, preds):
-        print("##### ACCUMULATE #####")
         # TODO: Implement batch_to_cpu helper function
+        assert len(xb) == len(yb) == len(preds)
         preds = [{k: v.to(torch.device("cpu")) for k, v in p.items()} for p in preds]
         res = {y["image_id"].item(): pred for y, pred in zip(yb, preds)}
         self.coco_evaluator.update(res)
 
     def finalize(self) -> float:
-        print("##### FINALIZE #####")
         self.coco_evaluator.synchronize_between_processes()
         self.coco_evaluator.accumulate()
         self.coco_evaluator.summarize()

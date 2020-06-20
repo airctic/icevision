@@ -13,7 +13,7 @@ class FastaiMetricAdapter(FastaiMetric):
         self.metric.reset()
 
     def accumulate(self, learn: Learner):
-        self.metric.accumulate(learn.xb, learn.yb, learn.pred)
+        self.metric.accumulate(*learn.xb, *learn.yb, learn.pred)
 
     @property
     def value(self):
@@ -42,8 +42,8 @@ class FastaiRCNNDataloader(TfmdDL):
         return (MantisMaskRCNN.collate_fn, zip_convert)[self.prebatched](b)
 
 
-train_dataloader = FastaiRCNNDataloader(train_dataset, bs=2)
-valid_dataloader = FastaiRCNNDataloader(valid_dataset, bs=2)
+train_dataloader = FastaiRCNNDataloader(train_dataset, bs=2, num_workers=0)
+valid_dataloader = FastaiRCNNDataloader(valid_dataset, bs=2, num_workers=0)
 dataloaders = DataLoaders(train_dataloader, valid_dataloader).to(torch.device("cuda"))
 
 batch = first(train_dataloader)
@@ -74,7 +74,7 @@ class RCNNCallback(Callback):
         self.learn.yb = [self.learn.xb[1]]
         self.learn.xb = [self.learn.xb[0]]
 
-    def begin_validation(self):
+    def begin_validate(self):
         # put model in training mode so we can calculate losses for validation
         self.model.train()
 
@@ -114,4 +114,4 @@ class RCNNAvgLoss(AvgLoss):
 recorder = [cb for cb in learn.cbs if isinstance(cb, Recorder)][0]
 recorder.loss = RCNNAvgLoss()
 
-learn.fit(1, lr=2e-4, cbs=[])
+learn.fit(3, lr=2e-4, cbs=[ShortEpochCallback(0.1, short_valid=False)])
