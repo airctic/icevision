@@ -20,8 +20,7 @@ Why Mantishrimp
 - Helps both researchers and DL engineers in reproducing, replicating published models
 - Facilitates applying both existing and new models to standard datasets as well as custom datasets
 
-> **Note:**  
-> If you find this work useful, please let other people know by **staring** it. Thank you!
+.. note::  If you find this work useful, please let other people know by **staring** it. Thank you!
 
 Hall of Fame
 ------------
