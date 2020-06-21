@@ -8,7 +8,7 @@ MantisShrimp
 
 --------------
 
-image:: images/mantisshrimp-logo.png
+.. image:: images/mantisshrimp-logo.png
 
 Why Mantishrimp
 ---------------
