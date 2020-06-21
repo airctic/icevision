@@ -2,17 +2,11 @@ __all__ = ["RCNNCallback", "rcnn_learner"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.models import *
-from fastai2.vision.all import (
-    Callback,
-    DataLoaders,
-    Learner,
-    to_detach,
-    Recorder,
-    AvgLoss,
-)
+from mantisshrimp.engines.fastai.imports import *
+from mantisshrimp.engines.fastai.learner.adapted_fastai_learner import *
 
 
-class RCNNCallback(Callback):
+class RCNNCallback(fastai.Callback):
     def begin_batch(self):
         assert len(self.xb) == len(self.yb) == 1, "Only works for single input-output"
         self.learn.xb = (self.xb[0], self.yb[0])
@@ -33,29 +27,34 @@ class RCNNCallback(Callback):
             self.model.train()
 
 
-def rcnn_learner(dls: DataLoaders, model: MantisRCNN, cbs=None, **kwargs):
+def rcnn_learner(
+    dls: List[Union[DataLoader, fastai.DataLoader]],
+    model: MantisRCNN,
+    cbs=None,
+    **kwargs
+):
     cbs = [RCNNCallback()] + L(cbs)
 
     def model_splitter(model):
         return model.params_splits()
 
-    learn = Learner(
+    learn = adapted_fastai_learner(
         dls=dls,
         model=model,
-        loss_func=model.loss,
         cbs=cbs,
+        loss_func=model.loss,
         splitter=model_splitter,
         **kwargs,
     )
 
     # HACK: patch AvgLoss (in original, find_bs gives errors)
-    class RCNNAvgLoss(AvgLoss):
+    class RCNNAvgLoss(fastai.AvgLoss):
         def accumulate(self, learn):
             bs = len(learn.yb)
-            self.total += to_detach(learn.loss.mean()) * bs
+            self.total += fastai.to_detach(learn.loss.mean()) * bs
             self.count += bs
 
-    recorder = [cb for cb in learn.cbs if isinstance(cb, Recorder)][0]
+    recorder = [cb for cb in learn.cbs if isinstance(cb, fastai.Recorder)][0]
     recorder.loss = RCNNAvgLoss()
 
     return learn

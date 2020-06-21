@@ -1,18 +1,18 @@
-__all__ = ["FastaiMetric", "FastaiMetricAdapter"]
+__all__ = ["FastaiMetricAdapter"]
 
 from mantisshrimp.metrics import Metric
-from fastai2.metrics import Metric as FastaiMetric
+from mantisshrimp.engines.fastai.imports import *
 from fastai2.learner import Learner
 
 
-class FastaiMetricAdapter(FastaiMetric):
+class FastaiMetricAdapter(fastai.Metric):
     def __init__(self, metric: Metric):
         self.metric = metric
 
     def reset(self):
         self.metric.reset()
 
-    def accumulate(self, learn: Learner):
+    def accumulate(self, learn: fastai.Learner):
         self.metric.accumulate(*learn.xb, *learn.yb, learn.pred)
 
     @property

@@ -1,15 +1,15 @@
-__all__ = ['convert_dataloader_to_fastai']
+__all__ = ["convert_dataloader_to_fastai"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.engines.fastai.imports import *
 from torch.utils.data import SequentialSampler, RandomSampler
-from fastai2.data.load import DataLoader as FastaiDataLoader
 
 
 def convert_dataloader_to_fastai(dataloader: DataLoader):
     def raise_error_convert(data):
         raise NotImplementedError
 
-    class FastaiDataLoaderWithCollate(FastaiDataLoader):
+    class FastaiDataLoaderWithCollate(fastai.DataLoader):
         def create_batch(self, b):
             return (dataloader.collate_fn, raise_error_convert)[self.prebatched](b)
 

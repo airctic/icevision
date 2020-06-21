@@ -1,6 +1,3 @@
-from fastai2.vision.all import *
-from fastai2.metrics import Metric as FastaiMetric
-from fastai2.data.load import DataLoader as FastaiDataLoader
 from mantisshrimp.imports import *
 from mantisshrimp import *
 from mantisshrimp.hub.pennfundan import *
@@ -19,16 +16,20 @@ valid_dataloader = model.dataloader(valid_dataset, batch_size=2, num_workers=2)
 ###
 
 metric = COCOMetric(valid_records, bbox=True, mask=True)
-metric = FastaiMetricAdapter(metric)
+learn = rcnn_learner(
+    dls=[train_dataloader, valid_dataloader], model=model, metrics=[metric]
+)
 
-train_dataloader2 = convert_dataloader_to_fastai(train_dataloader)
-valid_dataloader2 = convert_dataloader_to_fastai(valid_dataloader)
-# TODO: Check if cuda is available, see how fastai does it
-dataloaders = DataLoaders(train_dataloader2, valid_dataloader2).to(torch.device("cuda"))
-
-learn = rcnn_learner(dls=dataloaders, model=model)
-
-learn.fit_one_cycle(3, lr=2e-4)
+learn.fine_tune(3, lr=2e-4)
 
 # TODO: add some tests
 # check that model_splits is freezing the correct layers
+learn.freeze()
+requires_grads = [param.requires_grad for param in learn.model.parameters()]
+assert not requires_grads[0]
+assert requires_grads[-1]
+
+learn.unfreeze()
+requires_grads = [param.requires_grad for param in learn.model.parameters()]
+assert requires_grads[0]
+assert requires_grads[-1]
