@@ -58,51 +58,54 @@ Install pytorch via your preferred way.
 Quick Example: How to train **Wheat Dataset**
 ---------------------------------------------
 
-.. code:: bash
+.. code:: python
 
-from mantisshrimp.imports import *
-from mantisshrimp import *
-import pandas as pd
-import albumentations as A
+   from mantisshrimp.imports import *
+   from mantisshrimp import *
+   import pandas as pd
+   import albumentations as A
 
-source = Path("/home/lgvaz/.data/wheat")
-df = pd.read_csv(source / "train.csv")
-df.head()
+   source = Path("/home/lgvaz/.data/wheat")
+   df = pd.read_csv(source / "train.csv")
+   df.head()
 
-# Custom parser
-data_splitter = RandomSplitter([.8, .2])
-parser = WheatParser(df, source / "train")
-train_rs, valid_rs = parser.parse(data_splitter)
+   # Custom parser
+   data_splitter = RandomSplitter([.8, .2])
+   parser = WheatParser(df, source / "train")
+   train_rs, valid_rs = parser.parse(data_splitter)
 
-# shows images with corresponding labels and boxes
-show_record(train_rs[0], label=False)
+   # shows images with corresponding labels and boxes
+   show_record(train_rs[0], label=False)
 
-# Transform: supporting albumentations transforms out of the box
-train_tfm = AlbuTransform([A.Flip()])
+   # Transform: supporting albumentations transforms out of the box
+   train_tfm = AlbuTransform([A.Flip()])
 
-# Create both training and validation datasets
-train_ds = Dataset(train_rs, train_tfm)
-valid_ds = Dataset(valid_rs)
+   # Create both training and validation datasets
+   train_ds = Dataset(train_rs, train_tfm)
+   valid_ds = Dataset(valid_rs)
 
-# Create both training and validation dataloaders
-train_dl = model.dataloader(train_ds, shuffle=True, batch_size=8, num_workers=2)
-valid_dl = model.dataloader(valid_ds, batch_size=8, num_workers=2)
+   # Create both training and validation dataloaders
+   train_dl = model.dataloader(train_ds, shuffle=True, batch_size=8, num_workers=2)
+   valid_dl = model.dataloader(valid_ds, batch_size=8, num_workers=2)
 
-# Use pre-trained backbone
-resnet_101_backbone = MantisFasterRCNN.get_backbone_by_name("resnet101", fpn=True, pretrained=True)
+   # Use pre-trained backbone
+   resnet_101_backbone = MantisFasterRCNN.get_backbone_by_name("resnet101", fpn=True, pretrained=True)
 
-# Create model
-model = WheatModel(n_class=2, backbone=resnet_101_backbone)
+   # Create model
+   model = WheatModel(n_class=2, backbone=resnet_101_backbone)
 
-# Train (fit) model
-trainer = Trainer(max_epochs=2, gpus=1)
+   # Train (fit) model
+   trainer = Trainer(max_epochs=2, gpus=1)
 
 
 Tutorials
 ^^^^^^^^^
-`Wheat`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**.
+`Wheat`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**
+
 `Wheat-Detr`_ : shows how to use a custom parser (WheatParser), and train the **Wheat dataset** using Detr
+
 `Penn-Fundan`_ : shows how to use the predefined COCO parser, and train the **Penn-Fundan dataset** using Detr
+
 
 Be sure to also check the other tutorials in the `tutorials`_ folder.
 
