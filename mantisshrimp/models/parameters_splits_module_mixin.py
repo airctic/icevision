@@ -5,9 +5,6 @@ from .utils import *
 
 
 class ParametersSplitsModuleMixin(LightningModule, ABC):
-    def model_splits(self):
-        return self.children()
-
     def params_splits(self, only_trainable=False):
         """ Get parameters from model splits
         """
