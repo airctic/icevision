@@ -124,7 +124,7 @@ We will be happy to answer.
 .. _Wheat: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
 .. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_wheat.html
 .. _Penn-Fundan: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_pennfundan.html
-.. _tutorials: https://lgvaz.github.io/mantisshrimp/tutorials
+.. _tutorials: tutorials/
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
