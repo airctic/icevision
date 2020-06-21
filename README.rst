@@ -20,6 +20,8 @@ Why Mantishrimp
 - Helps both researchers and DL engineers in reproducing, replicating published models
 - Facilitates applying both existing and new models to standard datasets as well as custom datasets
 
+> **Note:**  
+> If you find this work useful, please let other people know by **staring** it. Thank you!
 
 Hall of Fame
 ------------
@@ -96,6 +98,7 @@ Quick Example: How to train the **Wheat Dataset**
 
    # Train (fit) model
    trainer = Trainer(max_epochs=2, gpus=1)
+   trainer.fit(model, train_dl, valid_dl)
 
 
 Tutorials
