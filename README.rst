@@ -8,7 +8,7 @@ MantisShrimp
 
 --------------
 
-image:: https://github.com/lgvaz/mantisshrimp/images/mantisshrimp-logo.png
+image:: images/mantisshrimp-logo.png
 
 Why Mantishrimp
 ---------------
