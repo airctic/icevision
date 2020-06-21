@@ -8,7 +8,18 @@ MantisShrimp
 
 --------------
 
-``MantisShrimp`` provides a unified data API for object detection that can be used with any library (it can even be injected in code that was not supposed to work as a library, take a look at ``hub/detr`` for an example).
+image:: https://github.com/lgvaz/mantisshrimp/images/mantisshrimp-logo.png
+
+Why Mantishrimp
+---------------
+- Mantisshrimp: An object-detection library
+- Built on top of different libraries/framework such as Pytorch Lightning and Pytorch
+- Features a Unified Data API such: common Parsers (COCO, etc.),
+- User-defined Parsers (e.g. WheatParser)
+- Provides flexible model implementations using different backbones
+- Helps both researchers and DL engineers in reproducing, replicating published models
+- Facilitates applying both existing and new models to standard datasets as well as custom datasets
+
 
 Hall of Fame
 ------------
@@ -47,7 +58,10 @@ Install pytorch via your preferred way.
 Quick start
 -----------
 
-Check `this`_ tutorial file for a quick introduction.
+Examples: Notebooks
+-------------------
+`wheat`_ tutorial: shows how to create a custom parser (WheatParser), and train the **wheat dataset**.
+
 
 Be sure to also check all other tutorials in the ``tutorials/`` folder.
 
@@ -62,7 +76,7 @@ Please check our `FAQs`_ page. For Feature Requests and more questions raise a g
 
 We will be happy to answer.
 
-.. _this: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
+.. _wheat: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
