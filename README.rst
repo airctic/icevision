@@ -55,7 +55,7 @@ Install pytorch via your preferred way.
    pip install git+git://github.com/lgvaz/mantisshrimp.git
    pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
-Quick Example: How to train **Wheat Dataset**
+Quick Example: How to train the **Wheat Dataset**
 ---------------------------------------------
 
 .. code:: python
@@ -112,14 +112,14 @@ Be sure to also check the other tutorials in the `tutorials`_ folder.
 
 Contributing
 ------------
-Check our `contributing guide`_.
+Check out our `contributing guide`_.
 
 FAQs and Feature Requests
 --------------------------
 
-Please check our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
+Please check out our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
 
-We will be happy to answer.
+We will be happy to assist you.
 
 .. _Wheat: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
 .. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_wheat.html
