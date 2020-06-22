@@ -1,17 +1,24 @@
-__all__ = ["split_rcnn_model"]
+__all__ = ["check_all_model_params_in_groups", "resnet_fpn_backbone_param_groups"]
 
-from ...imports import *
-from ...utils import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 
 
-def split_rcnn_model(m):
-    body = m.backbone.body
-    pgs = []
-    pgs += [nn.Sequential(body.conv1, body.bn1)]
-    pgs += [getattr(body, l) for l in list(body) if l.startswith("layer")]
-    pgs += [m.backbone.fpn, m.rpn, m.roi_heads]
-    if len(params(nn.Sequential(*pgs))) != len(params(m)):
+def check_all_model_params_in_groups(model, param_groups):
+    num_model_params = len(list(model.parameters()))
+    num_param_groups_params = len(list(nn.Sequential(*param_groups).parameters()))
+    if num_model_params != num_param_groups_params:
         raise RuntimeError(
-            "Malformed model parameters groups, you probably need to use a custom model_splitter"
+            f"{num_model_params} params in model but only {num_param_groups_params} "
+            "in parameter group"
         )
-    return pgs
+
+
+def resnet_fpn_backbone_param_groups(model):
+    body = model.body
+    param_groups = []
+    param_groups += [nn.Sequential(body.conv1, body.bn1)]
+    param_groups += [getattr(body, l) for l in list(body) if l.startswith("layer")]
+    param_groups += [model.fpn]
+    check_all_model_params_in_groups(model, param_groups)
+    return param_groups
