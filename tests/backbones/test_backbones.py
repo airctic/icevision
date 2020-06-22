@@ -3,6 +3,7 @@ import pytest
 import torch
 
 
+@pytest.mark.slow
 def test_torchvision_backbones():
     supported_backbones = [
         "mobilenet",
