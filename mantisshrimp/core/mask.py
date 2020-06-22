@@ -1,7 +1,7 @@
 __all__ = ["Mask", "MaskArray", "MaskFile", "RLE", "Polygon"]
 
-from ..imports import *
-from ..utils import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 
 
 class Mask(ABC):

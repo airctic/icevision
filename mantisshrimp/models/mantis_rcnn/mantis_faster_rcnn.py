@@ -16,24 +16,37 @@ class MantisFasterRCNN(MantisRCNN):
 
     @delegates(FasterRCNN.__init__)
     def __init__(
-        self, num_classes: int, backbone: nn.Module = None, metrics=None, **kwargs,
+        self,
+        num_classes: int,
+        backbone: nn.Module = None,
+        param_groups: List[nn.Module] = None,
+        metrics=None,
+        **kwargs,
     ):
         super().__init__(metrics=metrics)
         self.num_classes = num_classes
         self.backbone = backbone
         if backbone is None:
             # Creates the default fasterrcnn as given in pytorch. Trained on COCO dataset
-            self.m = fasterrcnn_resnet50_fpn(pretrained=True, **kwargs)
-            in_features = self.m.roi_heads.box_predictor.cls_score.in_features
-            self.m.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+            self.model = fasterrcnn_resnet50_fpn(pretrained=True, **kwargs)
+            in_features = self.model.roi_heads.box_predictor.cls_score.in_features
+            self.model.roi_heads.box_predictor = FastRCNNPredictor(
+                in_features, num_classes
+            )
+            param_groups = resnet_fpn_backbone_param_groups(self.model.backbone)
         else:
-            self.m = FasterRCNN(backbone, num_classes=num_classes, **kwargs)
+            self.model = FasterRCNN(backbone, num_classes=num_classes, **kwargs)
+            param_groups = param_groups or [backbone]
+
+        self._param_groups = param_groups + [self.model.rpn, self.model.roi_heads]
+        check_all_model_params_in_groups(self.model, self._param_groups)
 
     def forward(self, images, targets=None):
-        return self.m(images, targets)
+        return self.model(images, targets)
 
-    def model_splits(self):
-        return split_rcnn_model(self.m)
+    @property
+    def param_groups(self):
+        return self._param_groups
 
     @staticmethod
     def build_training_sample(

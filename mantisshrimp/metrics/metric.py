@@ -1,6 +1,6 @@
 __all__ = ["Metric"]
 
-from ..utils import *
+from mantisshrimp.utils import *
 
 
 class Metric:

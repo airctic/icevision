@@ -13,7 +13,7 @@ import pycocotools.mask as mask_util
 
 from collections import defaultdict
 
-from .reference_utils import all_gather
+from mantisshrimp.metrics.coco_metric.reference_utils import all_gather
 
 
 class CocoEvaluator(object):

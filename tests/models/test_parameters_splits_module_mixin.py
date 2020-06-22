@@ -1,10 +1,24 @@
 import pytest
 from mantisshrimp import *
+from mantisshrimp.imports import nn, DataLoader
 
 
 @pytest.fixture
 def model():
-    return test_utils.SimpleModel()
+    class SimpleModel(MantisModule):
+        def __init__(self):
+            super().__init__()
+            self.l1 = nn.Linear(8, 6)
+            self.l2 = nn.Linear(6, 6)
+            self.l3 = nn.Linear(6, 2)
+
+        def forward(self, x):
+            return self.l3(self.l2(self.l1(x)))
+
+        def dataloader(cls, **kwargs) -> DataLoader:
+            return DataLoader(**kwargs)
+
+    return SimpleModel()
 
 
 def test_params_splits(model):

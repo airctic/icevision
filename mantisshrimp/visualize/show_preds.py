@@ -1,9 +1,9 @@
 __all__ = ["show_pred", "show_preds"]
 
-from ..imports import *
-from ..utils import *
-from ..core import *
-from .show_annotation import show_annotation
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
+from mantisshrimp.core import *
+from mantisshrimp.visualize.show_annotation import show_annotation
 
 
 def show_pred(im, pred, mask_thresh=0.5, ax=None):
