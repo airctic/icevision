@@ -38,16 +38,15 @@ class MantisFasterRCNN(MantisRCNN):
             self.model = FasterRCNN(backbone, num_classes=num_classes, **kwargs)
             param_groups = param_groups or [backbone]
 
-        self.param_groups = param_groups + [self.model.rpn, self.model.roi_heads]
-        check_all_model_params_in_groups(self.model, self.param_groups)
+        self._param_groups = param_groups + [self.model.rpn, self.model.roi_heads]
+        check_all_model_params_in_groups(self.model, self._param_groups)
 
     def forward(self, images, targets=None):
         return self.model(images, targets)
 
-    # TODO: backwards compatability
-    def model_splits(self):
-        print("model_splits deprecated")
-        return self.param_groups
+    @property
+    def param_groups(self):
+        return self._param_groups
 
     @staticmethod
     def build_training_sample(
