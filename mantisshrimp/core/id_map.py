@@ -1,6 +1,6 @@
 __all__ = ["IDMap"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 
 
 class IDMap:
