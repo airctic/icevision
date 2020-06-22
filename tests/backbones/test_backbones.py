@@ -3,9 +3,11 @@ import pytest
 import torch
 
 
-@pytest.mark.slow
-def test_torchvision_backbones():
-    supported_backbones = [
+@pytest.mark.skip
+@pytest.mark.parametrize("pretrained", [False, True])
+@pytest.mark.parametrize(
+    "backbone_name",
+    [
         "mobilenet",
         "vgg11",
         "vgg13",
@@ -17,12 +19,8 @@ def test_torchvision_backbones():
         "resnet101",
         "resnet152",
         "resnext101_32x8d",
-    ]
-    pretrained_status = [True, False]
-
-    for backbone in supported_backbones:
-        for is_pretrained in pretrained_status:
-            model = create_torchvision_backbone(
-                backbone=backbone, pretrained=is_pretrained
-            )
-            assert isinstance(model, torch.nn.modules.container.Sequential)
+    ],
+)
+def test_torchvision_backbones(backbone_name, pretrained):
+    model = create_torchvision_backbone(backbone=backbone_name, pretrained=pretrained)
+    assert isinstance(model, torch.nn.modules.container.Sequential)

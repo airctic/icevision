@@ -1,14 +1,18 @@
 __all__ = ["ParametersSplitsModuleMixin"]
 
-from ..imports import *
-from .utils import *
+from mantisshrimp.imports import *
+from mantisshrimp.models.utils import *
 
 
-class ParametersSplitsModuleMixin(LightningModule, ABC):
+class ParametersSplitsModuleMixin(nn.Module, ABC):
+    @property
+    def param_groups(self) -> Iterator[nn.Module]:
+        return self.children()
+
     def params_splits(self, only_trainable=False):
         """ Get parameters from model splits
         """
-        for split in self.model_splits():
+        for split in self.param_groups:
             params = list(filter_params(split, only_trainable=only_trainable))
             if params:
                 yield params
