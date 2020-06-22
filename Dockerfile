@@ -16,7 +16,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
          cmake \
          git \
          curl \
-         ca-certificates
+         ca-certificates \
+         libglib2.0-0 \
+         libsm6 \
+         libxext6 \
+         libxrender-dev
 
 # add non-root user
 RUN useradd --create-home --shell /bin/bash containeruser
