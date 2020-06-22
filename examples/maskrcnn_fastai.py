@@ -16,7 +16,7 @@ valid_dataloader = model.dataloader(valid_dataset, batch_size=2, num_workers=2)
 metric = COCOMetric(valid_records, bbox=True, mask=True)
 ###
 
-### Engine dependent ###
+### fastai ###
 learn = rcnn_learner(
     dls=[train_dataloader, valid_dataloader], model=model, metrics=[metric]
 )
@@ -24,14 +24,42 @@ learn = rcnn_learner(
 learn.fine_tune(3, lr=2e-4)
 ###
 
-# TODO: add some tests
-# check that model_splits is freezing the correct layers
-learn.freeze()
-requires_grads = [param.requires_grad for param in learn.model.parameters()]
-assert not requires_grads[0]
-assert requires_grads[-1]
+### lightning ###
+class LightModel(LightningModule):
+    def __init__(self, model: MantisRCNN):
+        super().__init__()
+        self.model = model
 
-learn.unfreeze()
-requires_grads = [param.requires_grad for param in learn.model.parameters()]
-assert requires_grads[0]
-assert requires_grads[-1]
+    def training_step(self, batch, batch_idx):
+        xb, yb = batch
+        preds = self(xb, yb)
+        loss = self.model.loss(preds, yb)
+        log = {"train/loss": loss}
+        return {"loss": loss, "log": log}
+
+    def validation_step(self, batch, batch_idx):
+        xb, yb = batch
+        with torch.no_grad():
+            self.train()
+            preds = self(xb, yb)
+            loss = self.model.loss(preds, yb)
+            self.eval()
+            # preds = self(xb)
+        return {"valid/loss": loss}
+
+    def validation_epoch_end(self, outs):
+        log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
+        return {"val_loss": log["valid/loss"], "log": log}
+
+    def forward(self, *args, **kwargs):
+        return self.model(*args, **kwargs)
+
+    def configure_optimizers(self):
+        opt = SGD(self.parameters(), 2e-4, momentum=0.9)
+        return opt
+
+
+light_model = LightModel(model)
+trainer = Trainer(max_epochs=3, gpus=1)
+trainer.fit(light_model, train_dataloader, valid_dataloader)
+###
