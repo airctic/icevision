@@ -1,2 +1,1 @@
-# from .records import *
-from .samples import *
+from mantisshrimp.test_utils.samples import *

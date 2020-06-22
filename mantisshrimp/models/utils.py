@@ -1,6 +1,6 @@
 __all__ = ["filter_params", "unfreeze", "freeze"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)

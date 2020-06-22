@@ -2,7 +2,8 @@ __all__ = ["convert_records_to_coco_style", "coco_api_from_records"]
 
 from pycocotools.coco import COCO
 from mantisshrimp.imports import *
-from mantisshrimp import *
+from mantisshrimp.utils import *
+from mantisshrimp.core import *
 
 
 def coco_api_from_records(records):

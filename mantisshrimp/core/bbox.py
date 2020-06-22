@@ -1,6 +1,6 @@
 __all__ = ["BBox"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 
 
 @dataclass

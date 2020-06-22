@@ -1,6 +1,6 @@
 __all__ = ["open_img", "show_img", "grid", "grid2"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 
 
 def open_img(fn, gray=False):

@@ -1,5 +1,3 @@
-from ..imports import *
-
 __all__ = [
     "notnone",
     "ifnotnone",
@@ -14,6 +12,8 @@ __all__ = [
     "imagenet_stats",
     "denormalize",
 ]
+
+from mantisshrimp.imports import *
 
 
 def notnone(x):

@@ -1,1 +1,1 @@
-from .parser_mixins import *
+from mantisshrimp.parsers.mixins.parser_mixins import *

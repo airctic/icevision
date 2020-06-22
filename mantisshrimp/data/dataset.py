@@ -1,8 +1,8 @@
 __all__ = ["Dataset"]
 
-from ..imports import *
-from ..transforms import *
-from .prepare_record import *
+from mantisshrimp.imports import *
+from mantisshrimp.transforms import *
+from mantisshrimp.data.prepare_record import *
 
 
 class Dataset:
