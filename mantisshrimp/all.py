@@ -1,2 +1,2 @@
-from .imports import *
+from mantisshrimp.imports import *
 from mantisshrimp import *

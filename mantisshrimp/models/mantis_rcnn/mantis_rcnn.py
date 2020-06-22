@@ -1,9 +1,8 @@
 __all__ = ["MantisRCNN"]
 
 from mantisshrimp.imports import *
-from ...utils import *
-from mantisshrimp.core import *
-from ..mantis_module import *
+from mantisshrimp.utils import *
+from mantisshrimp.models.mantis_module import *
 from mantisshrimp.backbones import *
 
 

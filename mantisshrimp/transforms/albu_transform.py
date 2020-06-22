@@ -1,9 +1,8 @@
 __all__ = ["AlbuTransform"]
 
-from ..imports import *
-from ..utils import *
-from ..core import *
-from .transform import *
+from mantisshrimp.imports import *
+from mantisshrimp.core import *
+from mantisshrimp.transforms.transform import *
 
 
 class AlbuTransform(Transform):

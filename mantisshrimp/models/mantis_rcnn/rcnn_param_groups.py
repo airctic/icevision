@@ -1,7 +1,6 @@
 __all__ = ["check_all_model_params_in_groups", "resnet_fpn_backbone_param_groups"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.utils import *
 
 
 def check_all_model_params_in_groups(model, param_groups):
