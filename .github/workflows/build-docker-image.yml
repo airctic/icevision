@@ -15,5 +15,4 @@ jobs:
         name: lgvaz/mantisshrimp
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        dockerfile: Dockerfile
         tags: "latest"
