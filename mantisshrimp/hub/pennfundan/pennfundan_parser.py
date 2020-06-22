@@ -12,6 +12,9 @@ class PennFundanParser(DefaultImageInfoParser, MaskRCNNParser):
     def __iter__(self):
         yield from self.filenames
 
+    def __len__(self):
+        return len(self.filenames)
+
     def prepare(self, o):
         self._imageid = getattr(self, "_imageid", 0) + 1
         self.lines = L(o.read().split("\n"))
