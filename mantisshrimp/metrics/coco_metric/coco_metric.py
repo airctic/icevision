@@ -1,8 +1,6 @@
 __all__ = ["COCOMetric"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.models import *
 from mantisshrimp.data import *
 from mantisshrimp.metrics.coco_metric.coco_eval import CocoEvaluator
 from mantisshrimp.metrics.metric import *
