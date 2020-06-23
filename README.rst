@@ -46,8 +46,19 @@ This library is only made possible because of @all-contributors, thank you â™¥ï¸
 .. |image7| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7
    :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7
 
-Install
--------
+Quick Start: Use Mantisshrimp Docker Container
+----------------------------------------------
+To jumpstart using mantisshrimp package without manually installing it and its dependencies, use our docker container!
+
+Please, follow the 3 steps:
+1. Install Docker by following the instructions shown here: https://docs.docker.com/engine/install/ (Only if Docker is not already installed)
+2. Run `docker pull mantisshrimp`, in your terminal
+3. Run `docker run -it mantisshrimp`, in your terminal  
+
+Enjoy!
+
+Manual Install
+--------------
 
 Install pytorch via your preferred way.
 
