@@ -52,7 +52,9 @@ To jumpstart using mantisshrimp package without manually installing it and its d
 
 Please, follow the 3 steps:
 1. Install Docker by following the instructions shown here: https://docs.docker.com/engine/install/ (Only if Docker is not already installed)
+
 2. Run `docker pull mantisshrimp`, in your terminal
+
 3. Run `docker run -it mantisshrimp`, in your terminal  
 
 Enjoy!
