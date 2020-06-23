@@ -8,7 +8,19 @@ MantisShrimp
 
 --------------
 
-``MantisShrimp`` provides a unified data API for object detection that can be used with any library (it can even be injected in code that was not supposed to work as a library, take a look at ``hub/detr`` for an example).
+.. image:: images/mantisshrimp-logo.png
+
+Why Mantishrimp
+---------------
+- Mantisshrimp: An object-detection library
+- Connects to different libraries/framework such as fastai, Pytorch Lightning, and Pytorch
+- Features a Unified Data API such: common Parsers (COCO, etc.),
+- Integrates community maintaned parsers for custom datasets shared on parsers hub
+- Provides flexible model implementations using different backbones
+- Helps both researchers and DL engineers in reproducing, replicating published models
+- Facilitates applying both existing and new models to standard datasets as well as custom datasets
+
+**Note:**  If you find this work useful, please let other people know by **staring** it. Thank you!
 
 Hall of Fame
 ------------
@@ -34,8 +46,22 @@ This library is only made possible because of @all-contributors, thank you â™¥ï¸
 .. |image7| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7
    :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7
 
-Install
--------
+Quick Start: Use Mantisshrimp Docker Container
+----------------------------------------------
+To jumpstart using mantisshrimp package without manually installing it and its dependencies, use our docker container!
+
+Please, follow the 3 steps:
+
+1. Install Docker by following the instructions shown here: https://docs.docker.com/engine/install/ (Only if Docker is not already installed)
+
+2. Run `docker pull mantisshrimp`, in your terminal
+
+3. Run `docker run -it mantisshrimp`, in your terminal  
+
+Enjoy!
+
+Manual Install
+--------------
 
 Install pytorch via your preferred way.
 
@@ -44,25 +70,77 @@ Install pytorch via your preferred way.
    pip install git+git://github.com/lgvaz/mantisshrimp.git
    pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
-Quick start
------------
+Quick Example: How to train the **Wheat Dataset**
+-------------------------------------------------
 
-Check `this`_ tutorial file for a quick introduction.
+.. code:: python
 
-Be sure to also check all other tutorials in the ``tutorials/`` folder.
+   from mantisshrimp.imports import *
+   from mantisshrimp import *
+   import pandas as pd
+   import albumentations as A
+
+   source = Path("/home/lgvaz/.data/wheat")
+   df = pd.read_csv(source / "train.csv")
+   df.head()
+
+   # Custom parser
+   data_splitter = RandomSplitter([.8, .2])
+   parser = WheatParser(df, source / "train")
+   train_rs, valid_rs = parser.parse(data_splitter)
+
+   # shows images with corresponding labels and boxes
+   show_record(train_rs[0], label=False)
+
+   # Transform: supporting albumentations transforms out of the box
+   train_tfm = AlbuTransform([A.Flip()])
+
+   # Create both training and validation datasets
+   train_ds = Dataset(train_rs, train_tfm)
+   valid_ds = Dataset(valid_rs)
+
+   # Create both training and validation dataloaders
+   train_dl = model.dataloader(train_ds, shuffle=True, batch_size=8, num_workers=2)
+   valid_dl = model.dataloader(valid_ds, batch_size=8, num_workers=2)
+
+   # Use pre-trained backbone
+   resnet_101_backbone = MantisFasterRCNN.get_backbone_by_name("resnet101", fpn=True, pretrained=True)
+
+   # Create model
+   model = WheatModel(n_class=2, backbone=resnet_101_backbone)
+
+   # Train (fit) model
+   trainer = Trainer(max_epochs=2, gpus=1)
+   trainer.fit(model, train_dl, valid_dl)
+
+
+Tutorials
+^^^^^^^^^
+`Wheat`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**
+
+`Wheat-Detr`_ : shows how to use a custom parser (WheatParser), and train the **Wheat dataset** using Detr
+
+`Penn-Fundan`_ : shows how to use the predefined COCO parser, and train the **Penn-Fundan dataset** using Detr
+
+
+Be sure to also check the other tutorials in the `tutorials`_ folder.
+
 
 Contributing
 ------------
-Check our `contributing guide`_.
+Check out our `contributing guide`_.
 
 FAQs and Feature Requests
 --------------------------
 
-Please check our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
+Please check out our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
 
-We will be happy to answer.
+We will be happy to assist you.
 
-.. _this: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
+.. _Wheat: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
+.. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_wheat.html
+.. _Penn-Fundan: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_pennfundan.html
+.. _tutorials: tutorials/
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
