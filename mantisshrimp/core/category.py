@@ -1,5 +1,5 @@
-from ..imports import *
-from ..utils import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 
 __all__ = ["Category", "CategoryMap"]
 

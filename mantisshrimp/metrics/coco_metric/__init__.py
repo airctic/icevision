@@ -1,1 +1,1 @@
-from .coco_metric import *
+from mantisshrimp.metrics.coco_metric.coco_metric import *

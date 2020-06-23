@@ -1,5 +1,10 @@
 import cv2, json, torch, torchvision, dataclasses, zipfile
 
+from fastcore.imports import *
+from fastcore.test import *
+from fastcore.foundation import *
+from fastcore.utils import *
+
 import pandas as pd
 import torch.nn as nn
 import pytorch_lightning as pl
@@ -55,8 +60,3 @@ from torchvision.models.detection.keypoint_rcnn import (
 from pytorch_lightning import LightningModule, Trainer
 from pytorch_lightning.trainer.distrib_parts import get_all_available_gpus
 from pytorch_lightning.callbacks import LearningRateLogger
-
-from fastcore.imports import *
-from fastcore.test import *
-from fastcore.foundation import *
-from fastcore.utils import *

@@ -2,8 +2,8 @@ __all__ = ["ParserInterface", "Parser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
-from .mixins import *
-from .splits import *
+from mantisshrimp.parsers.mixins import *
+from mantisshrimp.parsers.splits import *
 
 
 class ParserInterface(ABC):

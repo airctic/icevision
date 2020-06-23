@@ -1,10 +1,10 @@
 __all__ = ["MantisDetr"]
 
-from ..imports import *
-from ..utils import *
-from ..core import *
-from .mantis_module import *
-from .detr_demo import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
+from mantisshrimp.core import *
+from mantisshrimp.models.mantis_module import *
+from mantisshrimp.models.detr_demo import *
 
 
 class MantisDetr(MantisModule):

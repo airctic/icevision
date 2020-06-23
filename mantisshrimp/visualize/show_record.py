@@ -2,7 +2,7 @@ __all__ = ["show_record"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.data import *
-from .show_annotation import *
+from mantisshrimp.visualize.show_annotation import *
 
 
 def show_record(

@@ -1,6 +1,6 @@
 __all__ = ["DETRdemo"]
 
-from ..imports import *
+from mantisshrimp.imports import *
 from torchvision.models import resnet50
 
 

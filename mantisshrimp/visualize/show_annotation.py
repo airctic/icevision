@@ -1,8 +1,8 @@
 __all__ = ["show_annotation"]
 
-from ..imports import *
-from ..utils import *
-from .utils import *
+from mantisshrimp.imports import *
+from mantisshrimp.utils import *
+from mantisshrimp.visualize.utils import *
 from matplotlib.collections import PatchCollection
 
 
