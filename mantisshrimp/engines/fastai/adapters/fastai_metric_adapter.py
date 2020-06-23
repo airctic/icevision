@@ -2,7 +2,6 @@ __all__ = ["FastaiMetricAdapter"]
 
 from mantisshrimp.metrics import Metric
 from mantisshrimp.engines.fastai.imports import *
-from fastai2.learner import Learner
 
 
 class FastaiMetricAdapter(fastai.Metric):
@@ -18,3 +17,7 @@ class FastaiMetricAdapter(fastai.Metric):
     @property
     def value(self):
         return self.metric.finalize()
+
+    @property
+    def name(self) -> str:
+        return self.metric.name

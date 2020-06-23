@@ -25,10 +25,34 @@ learn.fine_tune(3, lr=2e-4)
 ###
 
 ### lightning ###
-class LightModel(LightningModule):
-    def __init__(self, model: MantisRCNN):
-        super().__init__()
+class LightningModelAdapter(LightningModule, ABC):
+    def __init__(self, metrics: List[Metric]):
+        self.metrics = metrics
+        self.reset_metrics()
+
+    def reset_metrics(self):
+        for metric in self.metrics:
+            metric.reset()
+
+    def accumulate_metrics(self, xb, yb, preds):
+        for metric in self.metrics:
+            metric.accumulate(xb, yb, preds)
+
+    def finalize_metrics(self) -> dict:
+        logs = {}
+        for metric in self.metrics:
+            value = metric.finalize()
+            logs[metric.name] = value
+        return logs
+
+
+class RCNNLightningAdapter(LightningModelAdapter, ABC):
+    def __init__(self, model: MantisRCNN, metrics: List[Metric]):
+        super().__init__(metrics=metrics)
         self.model = model
+
+    def forward(self, *args, **kwargs):
+        return self.model(*args, **kwargs)
 
     def training_step(self, batch, batch_idx):
         xb, yb = batch
@@ -44,16 +68,19 @@ class LightModel(LightningModule):
             preds = self(xb, yb)
             loss = self.model.loss(preds, yb)
             self.eval()
-            # preds = self(xb)
+            preds = self(xb)
+            self.accumulate_metrics(xb, yb, preds)
         return {"valid/loss": loss}
 
     def validation_epoch_end(self, outs):
-        log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
+        loss_log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
+        metrics_log = self.finalize_metrics()
+        log = {**loss_log, **metrics_log}
         return {"val_loss": log["valid/loss"], "log": log}
 
-    def forward(self, *args, **kwargs):
-        return self.model(*args, **kwargs)
 
+# TODO: Default support for metrics?
+class LightModel(RCNNLightningAdapter):
     def configure_optimizers(self):
         opt = SGD(self.parameters(), 2e-4, momentum=0.9)
         return opt

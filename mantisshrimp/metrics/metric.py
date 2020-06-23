@@ -21,3 +21,7 @@ class Metric(ABC):
     def finalize(self) -> float:
         """ Called at the end of the validation loop
         """
+
+    @property
+    def name(self) -> str:
+        return self.__class__.__name__
