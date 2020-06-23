@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: lgvaz/mantisshrimp@docker_deploy
+    - uses: actions/checkout@docker_deploy
     - name: Publish to Docker Repository
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
