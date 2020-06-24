@@ -66,6 +66,9 @@ def convert_records_to_coco_style(records):
                     msg = f"Mask type {type(mask)} unsupported, we only support RLE and Polygon"
                     raise ValueError(msg)
 
+        # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
+        if "iscrowd" not in record:
+            record["iscrowd"] = [0] * len(record["label"])
         for iscrowd in record["iscrowd"]:
             annotations_dict["iscrowd"].append(iscrowd)
 

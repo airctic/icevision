@@ -1,25 +1,22 @@
 __all__ = ["Metric"]
 
-from mantisshrimp.utils import *
+from mantisshrimp.imports import *
 
 
-class Metric:
+class Metric(ABC):
     def __init__(self):
         self._model = None
 
-    def step(self, xb, yb, preds):
-        raise NotImplementedError
+    @abstractmethod
+    def accumulate(self, xb, yb, preds):
+        """ Accumulate stats for a single batch
+        """
 
-    def end(self, outs):
-        raise NotImplementedError
-
-    def register_model(self, model):
-        self._model = model
+    @abstractmethod
+    def finalize(self) -> Dict[str, float]:
+        """ Called at the end of the validation loop
+        """
 
     @property
-    def model(self):
-        if notnone(self._model):
-            return self._model
-        raise RuntimeError(
-            "Register a model with `register_model` before using the metric"
-        )
+    def name(self) -> str:
+        return self.__class__.__name__
