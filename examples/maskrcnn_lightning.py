@@ -1,44 +1,33 @@
 from mantisshrimp.imports import *
 from mantisshrimp import *
 from mantisshrimp.hub.pennfundan import *
+from mantisshrimp.engines.lightning import *
 
-
-class LightningModelAdapter(LightningModule):
-    def __init__(self, model):
-        super().__init__()
-        self.model = model
-
-    def forward(self, *args, **kwargs):
-        return self.model(*args, **kwargs)
-
-    def training_step(self, batch, batch_idx):
-        preds = self.model(*batch)
-        loss = self.model.get_loss(batch, preds)
-        logs = self.model.get_logs(batch, preds)
-        logs = {f"train/{k}": v for k, v in logs.items()}
-        return {"loss": loss, "log": logs}
-
-
-# Unified setup
 source = get_pennfundan_data()
 parser = PennFundanParser(source)
+
 splitter = RandomSplitter([0.8, 0.2])
 train_records, valid_records = parser.parse(splitter)
-train_dataset = Dataset(train_records)
+
+train_transforms = AlbuTransform([A.Flip()])
+
+train_dataset = Dataset(train_records, train_records)
 valid_dataset = Dataset(valid_records)
+
 model = MantisMaskRCNN(num_classes=2)
-# Should also be unified eventually
-train_dataloader = MantisMaskRCNN.dataloader(train_dataset)
-valid_dataloader = MantisMaskRCNN.dataloader(valid_dataset)
+metric = COCOMetric(valid_records, bbox=True, mask=True)
 
-# Not unified
-class MyModel(LightningModelAdapter):
+train_dataloader = model.dataloader(train_dataset, batch_size=2, num_workers=2)
+valid_dataloader = model.dataloader(valid_dataset, batch_size=2, num_workers=2)
+
+
+class LightModel(RCNNLightningAdapter):
     def configure_optimizers(self):
-        return Adam(self.parameters())
+        opt = SGD(self.parameters(), 2e-4, momentum=0.9)
+        return opt
 
 
-model = MantisMaskRCNN(2)
-model = MyModel(model)
+light_model = LightModel(model, metrics=[metric])
 
-trainer = Trainer(max_epochs=2, gpus=1)
-trainer.fit(model, train_dataloader)
+trainer = Trainer(max_epochs=3, gpus=1)
+trainer.fit(light_model, train_dataloader, valid_dataloader)
