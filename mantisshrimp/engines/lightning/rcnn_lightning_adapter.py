@@ -1,4 +1,4 @@
-__all__ = ["RCNNLightningModel"]
+__all__ = ["RCNNLightningAdapter"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -7,7 +7,7 @@ from mantisshrimp.metrics import *
 from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
 
 
-class RCNNLightningModel(LightningModelAdapter, ABC):
+class RCNNLightningAdapter(LightningModelAdapter, ABC):
     def __init__(self, model: MantisRCNN, metrics: List[Metric]):
         super().__init__(metrics=metrics)
         self.model = model
