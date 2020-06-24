@@ -67,39 +67,3 @@ class MantisRCNN(MantisModule, ABC):
             # This does not create fpn backbone, it is supported for all models
             backbone = create_torchvision_backbone(name, pretrained=pretrained)
         return backbone
-
-
-class LightningRCNN:
-    def training_step(self, batch, batch_idx):
-        xb, yb = batch
-        losses = self(xb, list(yb))
-        loss = sum(losses.values())
-        log = {"train/loss": loss, **{f"train/{k}": v for k, v in losses.items()}}
-        return {"loss": loss, "log": log}
-
-    def validation_step(self, b, b_idx):
-        xb, yb = b
-        with torch.no_grad():
-            self.train()
-            losses = self(xb, list(yb))
-            self.eval()
-            preds = self(xb)
-        loss = sum(losses.values())
-        losses = {f"valid/{k}": v for k, v in losses.items()}
-        res = {}
-        for metric in self.metrics:
-            o = metric.accumulate(self, xb, yb, preds)
-            if notnone(o):
-                raise NotImplementedError  # How to update res?
-        res.update({"valid/loss": loss, **losses})
-        return res
-
-    def validation_epoch_end(self, outs):
-        res = {}
-        for metric in self.metrics:
-            o = metric.finalize(self, outs)
-            if notnone(o):
-                raise NotImplementedError  # How to update res?
-        log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
-        res.update({"val_loss": log["valid/loss"], "log": log})
-        return res

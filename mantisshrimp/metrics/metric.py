@@ -1,6 +1,6 @@
 __all__ = ["Metric"]
 
-from abc import ABC, abstractmethod
+from mantisshrimp.imports import *
 
 
 class Metric(ABC):
@@ -8,17 +8,12 @@ class Metric(ABC):
         self._model = None
 
     @abstractmethod
-    def reset(self):
-        """ Resets metric internal state
-        """
-
-    @abstractmethod
     def accumulate(self, xb, yb, preds):
         """ Accumulate stats for a single batch
         """
 
     @abstractmethod
-    def finalize(self) -> float:
+    def finalize(self) -> Dict[str, float]:
         """ Called at the end of the validation loop
         """
 

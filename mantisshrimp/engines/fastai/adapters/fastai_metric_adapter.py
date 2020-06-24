@@ -1,5 +1,6 @@
 __all__ = ["FastaiMetricAdapter"]
 
+from mantisshrimp.imports import *
 from mantisshrimp.metrics import Metric
 from mantisshrimp.engines.fastai.imports import *
 
@@ -9,13 +10,13 @@ class FastaiMetricAdapter(fastai.Metric):
         self.metric = metric
 
     def reset(self):
-        self.metric.reset()
+        pass
 
     def accumulate(self, learn: fastai.Learner):
         self.metric.accumulate(*learn.xb, *learn.yb, learn.pred)
 
     @property
-    def value(self):
+    def value(self) -> Dict[str, float]:
         return self.metric.finalize()
 
     @property
