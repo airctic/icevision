@@ -11,6 +11,21 @@ class MantisRCNN(MantisModule, ABC):
         super().__init__()
         self.metrics = metrics or []
 
+    @staticmethod
+    @abstractmethod
+    def build_training_sample(*args, **kwargs):
+        """
+        Converts a record to a format understood by the model.
+        """
+
+    @staticmethod
+    def loss(preds, targs) -> Tensor:
+        return sum(preds.values())
+
+    def get_logs(self, batch, preds) -> dict:
+        # losses are the logs
+        return preds
+
     def predict(self, ims=None, rs=None):
         if bool(ims) == bool(rs):
             raise ValueError("You should either pass ims or rs")
@@ -20,47 +35,15 @@ class MantisRCNN(MantisModule, ABC):
         self.eval()
         return ims, self(xs)
 
-    def training_step(self, b, b_idx):
-        xb, yb = b
-        losses = self(xb, list(yb))
-        loss = sum(losses.values())
-        log = {"train/loss": loss, **{f"train/{k}": v for k, v in losses.items()}}
-        return {"loss": loss, "log": log}
-
-    def validation_step(self, b, b_idx):
-        xb, yb = b
-        with torch.no_grad():
-            self.train()
-            losses = self(xb, list(yb))
-            self.eval()
-            preds = self(xb)
-        loss = sum(losses.values())
-        losses = {f"valid/{k}": v for k, v in losses.items()}
-        res = {}
-        for metric in self.metrics:
-            o = metric.step(self, xb, yb, preds)
-            if notnone(o):
-                raise NotImplementedError  # How to update res?
-        res.update({"valid/loss": loss, **losses})
-        return res
-
-    def validation_epoch_end(self, outs):
-        res = {}
-        for metric in self.metrics:
-            o = metric.end(self, outs)
-            if notnone(o):
-                raise NotImplementedError  # How to update res?
-        log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
-        res.update({"val_loss": log["valid/loss"], "log": log})
-        return res
+    @classmethod
+    def collate_fn(cls, data):
+        ts = [cls.build_training_sample(**o) for o in data]
+        xb, yb = zip(*ts)
+        return xb, list(yb)
 
     @classmethod
     def dataloader(cls, dataset, **kwargs) -> DataLoader:
-        def collate_fn(data):
-            ts = [cls.build_training_sample(**o) for o in data]
-            return list(zip(*ts))
-
-        return DataLoader(dataset=dataset, collate_fn=collate_fn, **kwargs)
+        return DataLoader(dataset=dataset, collate_fn=cls.collate_fn, **kwargs)
 
     @staticmethod
     def get_backbone_by_name(
@@ -84,10 +67,3 @@ class MantisRCNN(MantisModule, ABC):
             # This does not create fpn backbone, it is supported for all models
             backbone = create_torchvision_backbone(name, pretrained=pretrained)
         return backbone
-
-    @staticmethod
-    @abstractmethod
-    def build_training_sample(self, *args, **kwargs):
-        """
-        Converts a record to a format understood by the model.
-        """
