@@ -1,50 +1,43 @@
 __all__ = ["COCOMetric"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.models import *
 from mantisshrimp.data import *
 from mantisshrimp.metrics.coco_metric.coco_eval import CocoEvaluator
 from mantisshrimp.metrics.metric import *
 
 
-def _get_iou_types(model):
-    model_without_ddp = model
-    if isinstance(model, torch.nn.parallel.DistributedDataParallel):
-        model_without_ddp = model.module
-    iou_types = ["bbox"]
-    if isinstance(model_without_ddp, MantisMaskRCNN):
-        iou_types.append("segm")
-    #     if isinstance(model_without_ddp, KeypointRCNN):
-    #         iou_types.append("keypoints")
-    return iou_types
-
-
 class COCOMetric(Metric):
-    def __init__(self, records, catmap):
+    def __init__(self, records, bbox=True, mask=True, keypoint=False):
         super().__init__()
-        self._coco_ds = coco_api_from_records(records, catmap)
-        self._coco_evaluator = None
+        self._coco_ds = coco_api_from_records(records)
 
-    def step(self, model, xb, yb, preds):
+        self.iou_types = []
+        if bbox:
+            self.iou_types.append("bbox")
+        if mask:
+            self.iou_types.append("segm")
+        if keypoint:
+            self.iou_types.append("keypoints")
+
+        self.reset()
+
+    def reset(self):
+        self._coco_evaluator = CocoEvaluator(self._coco_ds, self.iou_types)
+
+    def accumulate(self, xb, yb, preds):
         # TODO: Implement batch_to_cpu helper function
-        self.model = model
+        assert len(xb) == len(yb) == len(preds)
         preds = [{k: v.to(torch.device("cpu")) for k, v in p.items()} for p in preds]
         res = {y["image_id"].item(): pred for y, pred in zip(yb, preds)}
-        self.coco_evaluator.update(res)
+        self._coco_evaluator.update(res)
 
-    def end(self, model, outs):
-        self.model = model
-        self.coco_evaluator.synchronize_between_processes()
-        self.coco_evaluator.accumulate()
-        self.coco_evaluator.summarize()
-        self._new_coco_evaluator()
-
-    @property
-    def coco_evaluator(self):
-        if self._coco_evaluator is None:
-            self._new_coco_evaluator()
-        return self._coco_evaluator
-
-    def _new_coco_evaluator(self):
-        self._coco_evaluator = CocoEvaluator(self._coco_ds, _get_iou_types(self.model))
+    def finalize(self) -> Dict[str, float]:
+        self._coco_evaluator.synchronize_between_processes()
+        self._coco_evaluator.accumulate()
+        self._coco_evaluator.summarize()
+        logs = {
+            f"{k}_ap": float(v.stats[0])
+            for k, v in self._coco_evaluator.coco_eval.items()
+        }
+        self.reset()
+        return logs

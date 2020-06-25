@@ -13,7 +13,7 @@ MantisShrimp
 The Problem We Are Solving
 --------------------------
 
-- Object dectection datasets come in different sizes and most impotantly have different annotations formats ranging from the stanndard formarts such COCO and ROC to more self-tailored formats
+- Object dectection datasets come in different sizes and most impotantly have different annotations formats ranging from the stanndard formarts such COCO and VOC to more self-tailored formats
 
 - When new object detection models are released with some source code, the latter is very often written in non-portable way: The source code is difficult to use for other datasets because of some hard-coded parts coupled with self developed tweaks
 
@@ -27,7 +27,7 @@ Mantisshrimp library provides some elegant solutions in those 2 fundamental comp
 
 Out of the box, we offer several annotation parsers that translates different annotation formats into a very flexibe parser:
 
-A. By default, we offer  differents standard format parsers such as COCO, ROC, and soon DataFrame,
+A. By default, we offer  differents standard format parsers such as COCO and ROC,
 
 B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over (check out the Kaggle `Wheat`_ parser),
  
@@ -43,8 +43,8 @@ B. Our library untie you from using a different DL if the SOTA model was publish
 C. As a bonus, our library even allows to experiment with another DL library. Our tutorials have several examples showing you how to train a given model using both fastai and Pytorch Lightning libraries side by side.
 
 
-Mantishrimp in nutshell
------------------------
+Why Mantishrimp
+---------------
 - Mantisshrimp: An object-detection library
 - Connects to different libraries/framework such as fastai, Pytorch Lightning, and Pytorch
 - Features a Unified Data API such: common Parsers (COCO, etc.),
