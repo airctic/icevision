@@ -27,7 +27,7 @@ class ImageidParserMixin(ParserMixin):
         return {"imageid": self.imageid, **funcs}
 
     @abstractmethod
-    def imageid(self, o) -> int:
+    def imageid(self, o) -> Hashable:
         pass
 
 
