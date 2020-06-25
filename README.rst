@@ -46,9 +46,9 @@ C. As a bonus, our library even allows to experiment with another DL library. Ou
 Mantishrimp in nutshell
 -----------------------
 - Mantisshrimp: An object-detection library
-- Built on top of different libraries/framework such as fastai, Pytorch Lightning and Pytorch
+- Connects to different libraries/framework such as fastai, Pytorch Lightning, and Pytorch
 - Features a Unified Data API such: common Parsers (COCO, etc.),
-- User-defined Parsers (e.g. WheatParser)
+- Integrates community maintaned parsers for custom datasets shared on parsers hub
 - Provides flexible model implementations using different backbones
 - Helps both researchers and DL engineers in reproducing, replicating published models
 - Facilitates applying both existing and new models to standard datasets as well as custom datasets
