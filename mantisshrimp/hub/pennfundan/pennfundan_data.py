@@ -11,7 +11,7 @@ def get_pennfundan_data(force_download=False):
     save_dir.mkdir(exist_ok=True)
     zip_file = save_dir / "pennfundan.zip"
     # download and extract data
-    if not zip_file.exists():
+    if not zip_file.exists() or force_download:
         download_url(url=url, save_path=zip_file)
         # extract file
         with zipfile.ZipFile(zip_file, "r") as f:
