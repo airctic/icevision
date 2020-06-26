@@ -14,11 +14,11 @@ def get_voc_data(force_download=False):
     if not tar_file.exists() or force_download:
         download_url(url=url, save_path=tar_file)
         # extract file
-        shutil.unpack_archive(tar_file, save_dir)
+        shutil.unpack_archive(str(tar_file), str(save_dir))
         # move extract files so they are placed at save_dir
         files_dir = save_dir / "VOCdevkit/VOC2012"
         for file in files_dir.ls():
-            shutil.move(str(file), save_dir)
-        shutil.rmtree(files_dir.parent)
+            shutil.move(str(file), str(save_dir))
+        shutil.rmtree(str(files_dir.parent))
 
     return save_dir
