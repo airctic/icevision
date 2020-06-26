@@ -4,6 +4,11 @@ from mantisshrimp.imports import *
 
 
 @pytest.fixture(scope="module")
+def samples_source():
+    return Path(__file__).absolute().parent.parent / "samples"
+
+
+@pytest.fixture(scope="module")
 def records():
     parser = test_utils.sample_combined_parser()
     return parser.parse()[0]

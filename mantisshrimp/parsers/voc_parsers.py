@@ -1,4 +1,4 @@
-__all__ = ["VOCAnnotationParser", "VOCMaskParser"]
+__all__ = ["VOC_CATEGORIES", "VOCAnnotationParser", "VOCMaskParser"]
 
 import xml.etree.ElementTree as ET
 from mantisshrimp.imports import *
@@ -9,14 +9,44 @@ from mantisshrimp.parsers.defaults import *
 from mantisshrimp.parsers.mixins import *
 
 
+VOC_CATEGORIES = [
+    "person",
+    "bird",
+    "cat",
+    "cow",
+    "dog",
+    "horse",
+    "sheep",
+    "aeroplane",
+    "bicycle",
+    "boat",
+    "bus",
+    "car",
+    "motorbike",
+    "train",
+    "bottle",
+    "chair",
+    "dining table",
+    "potted plant",
+    "sofa",
+    "tv/monitor",
+]
+
+
 class VOCAnnotationParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
-    def __init__(self, annotations_dir: Union[str, Path], images_dir: Union[str, Path]):
+    def __init__(
+        self,
+        annotations_dir: Union[str, Path],
+        images_dir: Union[str, Path],
+        categories: List[str],
+    ):
         self.images_dir = Path(images_dir)
 
         self.annotations_dir = Path(annotations_dir)
         self.annotation_files = get_files(self.annotations_dir, extensions=[".xml"])
 
-        self.label_map = IDMap()
+        self.categories = sorted(categories)
+        self.category2id = {cat: i + 1 for i, cat in enumerate(self.categories)}
 
     def __len__(self):
         return len(self.annotation_files)
@@ -37,14 +67,14 @@ class VOCAnnotationParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMi
         self._width = int(size.find("width").text)
         self._height = int(size.find("height").text)
 
+        def to_int(x):
+            return int(float(x))
+
         self._labels, self._bboxes = [], []
         for object in root.iter("object"):
             label = object.find("name").text
-            label_id = self.label_map[label]
+            label_id = self.category2id[label]
             self._labels.append(label_id)
-
-            def to_int(x):
-                return int(float(x))
 
             xml_bbox = object.find("bndbox")
             xmin = to_int(xml_bbox.find("xmin").text)
@@ -88,4 +118,4 @@ class VOCMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
         return str(Path(o).stem)
 
     def mask(self, o) -> List[Mask]:
-        return [MaskFile(o)]
+        return [VOCMaskFile(o)]

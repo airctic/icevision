@@ -1,7 +1,8 @@
-__all__ = ["Mask", "MaskArray", "MaskFile", "RLE", "Polygon"]
+__all__ = ["Mask", "MaskArray", "MaskFile", "VOCMaskFile", "RLE", "Polygon"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
+from PIL import Image
 
 
 class Mask(ABC):
@@ -88,6 +89,28 @@ class MaskFile(Mask):
 
     def to_erle(self, h, w):
         return self.to_mask(h, w).to_erle(h, w)
+
+
+@dataclass
+class VOCMaskFile(MaskFile):
+    """ Extension of `MaskFile` for VOC masks.
+    Removes the color pallete and optionally drops void pixels.
+
+    Args:
+          drop_void (bool): drops the void pixels, which should have the value 255.
+    """
+
+    drop_void: bool = True
+
+    def to_mask(self, h, w) -> MaskArray:
+        mask_arr = np.array(Image.open(self.filepath))
+        obj_ids = np.unique(mask_arr)[1:]
+        masks = mask_arr == obj_ids[:, None, None]
+
+        if self.drop_void:
+            masks = masks[:-1, ...]
+
+        return MaskArray(masks)
 
 
 @dataclass(frozen=True)
