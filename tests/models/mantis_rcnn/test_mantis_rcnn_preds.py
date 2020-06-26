@@ -61,6 +61,7 @@ def test_rcnn_simple_backbone(model_class, simple_backbone, batch, assert_model_
     assert_model_preds(model, batch)
 
 
+@pytest.mark.skip
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "model_class, batch, assert_model_preds",
@@ -72,6 +73,7 @@ def test_rcnn_default_backbone(model_class, batch, assert_model_preds):
     assert_model_preds(model, batch)
 
 
+@pytest.mark.skip
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "model_class, batch, assert_model_preds",
