@@ -38,7 +38,7 @@ C. We provide some intuitive tutorials that walk you through the steps of creati
 
 A. Mantisshrimp provides a universal adapter that allows you to hook up your dataset to the DL library of your choice (fastai, Pytorch Lightning and Pytorch), and train your model using a familiar API,
 
-B. Our library untie you from using a different DL if the SOTA model was published with a different DL library than yours,
+B. Our library allows you to choose one of the public implementations of a given model, plug it in mantisshrimp model adapter, and seamlessly train your model,
 
 C. As a bonus, our library even allows to experiment with another DL library. Our tutorials have several examples showing you how to train a given model using both fastai and Pytorch Lightning libraries side by side.
 
