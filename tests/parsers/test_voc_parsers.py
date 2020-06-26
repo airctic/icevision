@@ -72,6 +72,6 @@ def test_voc_combined_parser(source):
         "height": 375,
         "label": [1, 2],
         "bbox": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
-        "mask": [MaskFile(source / "SegmentationClass/2007_000063.png"),],
+        "mask": [MaskFile(source / "SegmentationClass/2007_000063.png")],
     }
     assert record == expected
