@@ -26,10 +26,10 @@ VOC_CATEGORIES = [
     "train",
     "bottle",
     "chair",
-    "dining table",
-    "potted plant",
+    "diningtable",
+    "pottedplant",
     "sofa",
-    "tv/monitor",
+    "tvmonitor",
 ]
 
 
