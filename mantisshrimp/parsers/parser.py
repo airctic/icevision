@@ -2,6 +2,7 @@ __all__ = ["ParserInterface", "Parser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
+from mantisshrimp.core import *
 from mantisshrimp.parsers.mixins import *
 from mantisshrimp.parsers.splits import *
 
@@ -22,26 +23,36 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
     def __iter__(self):
         pass
 
-    def parse_dicted(self, show_pbar: bool = True) -> Dict[int, dict]:
+    def parse_dicted(
+        self, show_pbar: bool = True, idmap: IDMap = None
+    ) -> Dict[int, dict]:
+        idmap = idmap or IDMap()
+
         info_parse_funcs = self.collect_info_parse_funcs()
         annotation_parse_funcs = self.collect_annotation_parse_funcs()
-        get_imageid = info_parse_funcs.pop("imageid")
-        records = defaultdict(lambda: {name: [] for name in annotation_parse_funcs})
 
+        get_imageid = info_parse_funcs.pop("imageid")
+
+        records = defaultdict(lambda: {name: [] for name in annotation_parse_funcs})
         for sample in pbar(self, show_pbar):
             self.prepare(sample)
-            imageid = get_imageid(sample)
+            imageid = idmap[get_imageid(sample)]
+
             for name, func in info_parse_funcs.items():
                 records[imageid][name] = func(sample)
+
             for name, func in annotation_parse_funcs.items():
-                # TODO: Assume everything is returned in a list
                 records[imageid][name].extend(func(sample))
+
         return dict(records)
 
     def parse(
-        self, data_splitter: DataSplitter = None, show_pbar: bool = True
+        self,
+        data_splitter: DataSplitter = None,
+        idmap: IDMap = None,
+        show_pbar: bool = True,
     ) -> List[List[dict]]:
         data_splitter = data_splitter or SingleSplitSplitter()
-        records = self.parse_dicted(show_pbar=show_pbar)
+        records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(records.keys())
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]

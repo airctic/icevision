@@ -9,12 +9,12 @@ def test_mask_rcnn_dataloader(records):
     assert len(xb) == 3
     assert len(yb) == 3
 
-    x = xb[2]
+    x = xb[0]
     assert x.shape == (3, 427, 640)
     assert isinstance(x, Tensor)
 
-    y = yb[2]
-    assert y["image_id"] == tensor(128372)
+    y = yb[0]
+    assert y["image_id"] == 0
     assert allequal([isinstance(o, Tensor) for o in y.values()])
     assert (
         y["labels"] == tensor([6, 1, 1, 1, 1, 1, 1, 1, 31, 31, 1, 3, 31, 1, 31, 31])

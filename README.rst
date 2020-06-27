@@ -10,6 +10,39 @@ MantisShrimp
 
 .. image:: images/mantisshrimp-logo.png
 
+The Problem We Are Solving
+--------------------------
+
+- Object dectection datasets come in different sizes and most impotantly have different annotations formats ranging from the stanndard formarts such COCO and VOC to more self-tailored formats
+
+- When new object detection models are released with some source code, the latter is very often written in non-portable way: The source code is difficult to use for other datasets because of some hard-coded parts coupled with self developed tweaks
+
+- Both researchers and DL coders have to deploy a lot of effort to use many SOTA models for their own use-cases and/or to craft an enhanced model based on those already published
+
+Our Solution
+------------
+Mantisshrimp library provides some elegant solutions in those 2 fundamental components:
+
+**1- A Unified Data API:** 
+
+Out of the box, we offer several annotation parsers that translates different annotation formats into a very flexibe parser:
+
+A. By default, we offer  differents standard format parsers such as COCO and ROC,
+
+B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over (check out the Kaggle `Wheat`_ parser),
+ 
+C. We provide some intuitive tutorials that walk you through the steps of creating your own parser. Please, consider sharing it with the whole community.
+
+
+**2- A Universal Adapter to different DL Libraries:**
+
+A. Mantisshrimp provides a universal adapter that allows you to hook up your dataset to the DL library of your choice (fastai, Pytorch Lightning and Pytorch), and train your model using a familiar API,
+
+B. Our library allows you to choose one of the public implementations of a given model, plug it in mantisshrimp model adapter, and seamlessly train your model,
+
+C. As a bonus, our library even allows to experiment with another DL library. Our tutorials have several examples showing you how to train a given model using both fastai and Pytorch Lightning libraries side by side.
+
+
 Why Mantishrimp
 ---------------
 - Mantisshrimp: An object-detection library

@@ -1,7 +1,13 @@
+import pytest
 from mantisshrimp import *
 from mantisshrimp.imports import first, torch, tensor, Tensor
 
 _fake_box = [0, 1, 2, 3]
+
+
+@pytest.fixture(scope="module")
+def data_sample(record):
+    return default_prepare_record(record)
 
 
 def test_build_training_sample_maskrcnn(data_sample):
@@ -11,6 +17,7 @@ def test_build_training_sample_maskrcnn(data_sample):
     assert isinstance(y, dict)
     assert set(y.keys()) == {"image_id", "labels", "boxes", "masks"}
     assert y["image_id"].dtype == torch.int64
+    assert y["image_id"] == 0
     assert y["labels"].dtype == torch.int64
     assert y["labels"].shape == (16,)
     assert (
@@ -30,6 +37,7 @@ def test_build_training_sample_fasterrcnn(data_sample):
     assert isinstance(y, dict)
     assert set(y.keys()) == {"image_id", "labels", "boxes"}
     assert y["image_id"].dtype == torch.int64
+    assert y["image_id"] == 0
     assert y["labels"].dtype == torch.int64
     assert y["labels"].shape == (16,)
     assert (

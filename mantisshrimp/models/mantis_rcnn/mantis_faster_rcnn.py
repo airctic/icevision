@@ -11,7 +11,8 @@ class MantisFasterRCNN(MantisRCNN):
     """
     Creates a flexible Faster RCNN implementation based on torchvision library.
     Args: 
-    n_class (int) : number of classes. Do not have class_id "0" it is reserved as background. n_class = number of classes to label + 1 for background.
+    n_class (int) : number of classes. Do not have class_id "0" it is reserved as background.
+                    n_class = number of classes to label + 1 for background.
     """
 
     @delegates(FasterRCNN.__init__)
