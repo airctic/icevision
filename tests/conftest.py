@@ -8,20 +8,20 @@ def samples_source():
     return Path(__file__).absolute().parent.parent / "samples"
 
 
+@pytest.fixture(scope="session")
+def coco_imageid_map():
+    return IDMap()
+
+
 @pytest.fixture(scope="module")
-def records():
+def records(coco_imageid_map):
     parser = test_utils.sample_combined_parser()
-    return parser.parse()[0]
+    return parser.parse(idmap=coco_imageid_map)[0]
 
 
 @pytest.fixture(scope="module")
 def record(records):
-    return records[2].copy()
-
-
-@pytest.fixture(scope="module")
-def data_sample(record):
-    return default_prepare_record(record)
+    return records[0].copy()
 
 
 @pytest.fixture()
