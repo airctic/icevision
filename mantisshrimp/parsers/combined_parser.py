@@ -1,6 +1,7 @@
 __all__ = ["CombinedParser"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.parsers.parser import *
 from mantisshrimp.parsers.splits import *
 
@@ -9,13 +10,19 @@ class CombinedParser(ParserInterface):
     def __init__(self, *parsers: List[Parser]):
         self.parsers = parsers
 
-    def parse(self, data_splitter=None, show_pbar: bool = True):
+    def parse(self, data_splitter=None, idmap: IDMap = None, show_pbar: bool = True):
         data_splitter = data_splitter or SingleSplitSplitter()
-        parsers_records = [o.parse_dicted(show_pbar=show_pbar) for o in self.parsers]
+        idmap = idmap or IDMap()
+
+        parsers_records = [
+            o.parse_dicted(idmap=idmap, show_pbar=show_pbar) for o in self.parsers
+        ]
+
         ids = [set(o.keys()) for o in parsers_records]
         valid_ids = set.intersection(*ids)
         excluded = set.union(*ids) - valid_ids
-        print(f"Removed {excluded}")
+        print(f"Removed {len(excluded)} files: {excluded}")
+
         splits = data_splitter(valid_ids)
 
         # TODO: Confusing names

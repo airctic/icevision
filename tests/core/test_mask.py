@@ -34,3 +34,11 @@ def test_mask_array_to_coco_rle():
 
     mask = MaskArray(np.array([[[1, 1, 1, 1, 1, 1, 0]]]))
     assert mask.to_coco_rle(h=1, w=7) == [{"counts": [0, 6, 1], "size": (1, 7)}]
+
+
+def test_voc_mask_file(samples_source):
+    mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
+    mask = VOCMaskFile(mask_filepath)
+
+    mask_arr = mask.to_mask(0, 0)
+    assert mask_arr.data.shape[0] == 2
