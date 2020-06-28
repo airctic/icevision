@@ -1,7 +1,7 @@
 __all__ = ["get_voc_data"]
 
 from mantisshrimp.imports import *
-from mantisshrimp import *
+from mantisshrimp.utils import *
 
 
 def get_voc_data(force_download=False):
