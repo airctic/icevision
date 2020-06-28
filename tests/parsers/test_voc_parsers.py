@@ -13,7 +13,7 @@ def voc_category2id():
 
 
 def test_voc_annotation_parser(samples_source, voc_category2id):
-    annotation_parser = VOCAnnotationParser(
+    annotation_parser = VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         categories=VOC_CATEGORIES,
@@ -46,26 +46,26 @@ def test_voc_annotation_parser(samples_source, voc_category2id):
 
 
 def test_voc_mask_parser(samples_source):
-    mask_parser = VOCMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
+    mask_parser = VocMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
     records = mask_parser.parse()[0]
 
     record = records[0]
     expected = {
         "imageid": 0,
         "mask": [
-            VOCMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png"),
+            VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png"),
         ],
     }
     assert record == expected
 
 
 def test_voc_combined_parser(samples_source, voc_category2id):
-    annotation_parser = VOCAnnotationParser(
+    annotation_parser = VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         categories=VOC_CATEGORIES,
     )
-    mask_parser = VOCMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
+    mask_parser = VocMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
 
     combined_parser = CombinedParser(annotation_parser, mask_parser)
     records = combined_parser.parse()[0]
@@ -80,6 +80,6 @@ def test_voc_combined_parser(samples_source, voc_category2id):
         "height": 375,
         "label": [voc_category2id[k] for k in ["dog", "chair"]],
         "bbox": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
-        "mask": [VOCMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png")],
+        "mask": [VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png")],
     }
     assert record == expected

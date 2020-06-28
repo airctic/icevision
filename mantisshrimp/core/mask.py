@@ -1,4 +1,4 @@
-__all__ = ["Mask", "MaskArray", "MaskFile", "VOCMaskFile", "RLE", "Polygon"]
+__all__ = ["Mask", "MaskArray", "MaskFile", "VocMaskFile", "RLE", "Polygon"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -92,7 +92,7 @@ class MaskFile(Mask):
 
 
 @dataclass
-class VOCMaskFile(MaskFile):
+class VocMaskFile(MaskFile):
     """ Extension of `MaskFile` for VOC masks.
     Removes the color pallete and optionally drops void pixels.
 
