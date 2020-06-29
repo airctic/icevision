@@ -45,22 +45,21 @@ from mantisshrimp.utils import *
 CATEGORIES = sorted({"dog", "cat"})
 
 
-def load():
+def load(force_download=False):
+    base_url = "http://www.robots.ox.ac.uk/~vgg/data/pets/data"
     save_dir = get_data_dir() / "pets"
     save_dir.mkdir(exist_ok=True)
 
-    url_images = "http://www.robots.ox.ac.uk/~vgg/data/pets/data/images.tar.gz"
-    images_tar_file = save_dir / "pets.tar.gz"
-    if not images_tar_file.exists():
-        download_url(url=url_images, save_path=images_tar_file)
-        shutil.unpack_archive(images_tar_file, save_dir)
+    url_images = os.path.join(base_url, "images.tar.gz")
+    images_tar_file = save_dir / "images.tar.gz"
+    if not images_tar_file.exists() or force_download:
+        download_url(url=url_images, save_path=str(images_tar_file))
+        shutil.unpack_archive(str(images_tar_file), str(save_dir))
 
-    url_annotations = (
-        "http://www.robots.ox.ac.uk/~vgg/data/pets/data/annotations.tar.gz"
-    )
+    url_annotations = os.path.join(base_url, "annotations.tar.gz")
     annotations_tar_file = save_dir / "annotations.tar.gz"
-    if not annotations_tar_file.exists():
-        download_url(url=url_annotations, save_path=annotations_tar_file)
-        shutil.unpack_archive(annotations_tar_file, save_dir)
+    if not annotations_tar_file.exists() or force_download:
+        download_url(url=url_annotations, save_path=str(annotations_tar_file))
+        shutil.unpack_archive(str(annotations_tar_file), str(save_dir))
 
     return save_dir
