@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-MANTISSHRIMP DOCUMENTATION
+Mantisshrimp Documentation
 ==========================
 
 .. toctree::
@@ -16,7 +16,21 @@ MANTISSHRIMP DOCUMENTATION
 
 .. toctree::
    :maxdepth: 1
-   :caption: Tutorials:
+   :caption: Mantisshrimp Models:
+   :glob:
+
+   tutorials/*
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Mantisshrimp Data:
+   :glob:
+
+   tutorials/*
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Mantisshrimp Hub:
    :glob:
 
    tutorials/*
