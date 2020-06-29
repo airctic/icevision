@@ -19,21 +19,21 @@ Mantisshrimp Documentation
    :caption: Mantisshrimp Models:
    :glob:
 
-   tutorials/mantisshrimp_models/*
+   tutorials/mantisshrimp_models/*.ipynb
 
 .. toctree::
    :maxdepth: 1
    :caption: Mantisshrimp Data:
    :glob:
 
-   tutorials/mantisshrimp_data/*
+   tutorials/mantisshrimp_data/*.ipynb
 
 .. toctree::
    :maxdepth: 1
    :caption: Mantisshrimp Hub:
    :glob:
 
-   tutorials/mantisshrimp_hub/*
+   tutorials/mantisshrimp_hub/*.ipynb
 
 
 Indices and tables
