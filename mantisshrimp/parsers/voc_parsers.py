@@ -1,4 +1,4 @@
-__all__ = ["VOC_CATEGORIES", "VOCAnnotationParser", "VOCMaskParser"]
+__all__ = ["VOC_CATEGORIES", "VocXmlParser", "VocMaskParser"]
 
 import xml.etree.ElementTree as ET
 from mantisshrimp.imports import *
@@ -9,7 +9,7 @@ from mantisshrimp.parsers.defaults import *
 from mantisshrimp.parsers.mixins import *
 
 
-VOC_CATEGORIES = [
+VOC_CATEGORIES = {
     "person",
     "bird",
     "cat",
@@ -30,10 +30,11 @@ VOC_CATEGORIES = [
     "pottedplant",
     "sofa",
     "tvmonitor",
-]
+}
+VOC_CATEGORIES = sorted(VOC_CATEGORIES)
 
 
-class VOCAnnotationParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
+class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -45,7 +46,7 @@ class VOCAnnotationParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMi
         self.annotations_dir = Path(annotations_dir)
         self.annotation_files = get_files(self.annotations_dir, extensions=[".xml"])
 
-        self.categories = sorted(categories)
+        self.categories = categories
         self.category2id = {cat: i + 1 for i, cat in enumerate(self.categories)}
 
     def __len__(self):
@@ -104,7 +105,7 @@ class VOCAnnotationParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMi
         return self._bboxes
 
 
-class VOCMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
+class VocMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
     def __init__(self, masks_dir: Union[str, Path]):
         self.mask_files = get_image_files(masks_dir)
 
@@ -114,8 +115,8 @@ class VOCMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
     def __iter__(self):
         yield from self.mask_files
 
-    def imageid(self, o) -> int:
+    def imageid(self, o) -> Hashable:
         return str(Path(o).stem)
 
     def mask(self, o) -> List[Mask]:
-        return [VOCMaskFile(o)]
+        return [VocMaskFile(o)]

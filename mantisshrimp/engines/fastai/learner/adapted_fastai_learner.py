@@ -9,7 +9,7 @@ from mantisshrimp.engines.fastai.adapters import *
 def adapted_fastai_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model,
-    metrics,
+    metrics=None,
     device=None,
     **kwargs,
 ):
@@ -29,6 +29,7 @@ def adapted_fastai_learner(
     fastai_dls = fastai.DataLoaders(*fastai_dls).to(device)
 
     # convert metrics to fastai
+    metrics = metrics or []
     fastai_metrics = [
         FastaiMetricAdapter(metric) if isinstance(metric, Metric) else metric
         for metric in metrics

@@ -7,7 +7,7 @@ from mantisshrimp.parsers.splits import *
 
 
 class CombinedParser(ParserInterface):
-    def __init__(self, *parsers: List[Parser]):
+    def __init__(self, *parsers: Parser):
         self.parsers = parsers
 
     def parse(self, data_splitter=None, idmap: IDMap = None, show_pbar: bool = True):
