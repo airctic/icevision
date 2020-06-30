@@ -2,7 +2,7 @@
 __all__ = ["create_torchvision_backbone"]
 
 from mantisshrimp.imports import *
-from create_backbones import *
+from mantisshrimp.backbones.create_backbones import *
 
 
 def create_torchvision_backbone(backbone: str, pretrained: bool):
