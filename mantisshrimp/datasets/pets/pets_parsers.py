@@ -7,7 +7,7 @@ from mantisshrimp.datasets.pets import CATEGORIES
 
 
 def parser(data_dir: Path, mask=False):
-    parser = VocXmlParser(
+    parser = PetsXmlParser(
         annotations_dir=data_dir / "annotations/xmls",
         images_dir=data_dir / "images",
         categories=CATEGORIES,
@@ -20,9 +20,10 @@ def parser(data_dir: Path, mask=False):
     return parser
 
 
-# TODO: Require change to get races
 class PetsXmlParser(VocXmlParser):
-    pass
+    def label(self, o) -> List[int]:
+        name = re.findall(r"^(.*)_\d+$", o.stem)[0]
+        return [self.category2id[name]]
 
 
 class PetsMaskParser(VocMaskParser):
