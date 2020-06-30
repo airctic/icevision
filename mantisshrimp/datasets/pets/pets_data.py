@@ -46,20 +46,18 @@ CATEGORIES = sorted({"dog", "cat"})
 
 
 def load(force_download=False):
-    base_url = "http://www.robots.ox.ac.uk/~vgg/data/pets/data"
+    base_url = Path("http://www.robots.ox.ac.uk/~vgg/data/pets/data")
     save_dir = get_data_dir() / "pets"
     save_dir.mkdir(exist_ok=True)
 
-    url_images = os.path.join(base_url, "images.tar.gz")
+    url_images = base_url / "images.tar.gz"
     images_tar_file = save_dir / "images.tar.gz"
     if not images_tar_file.exists() or force_download:
-        download_url(url=url_images, save_path=str(images_tar_file))
-        shutil.unpack_archive(str(images_tar_file), str(save_dir))
+        download_and_extract(url=url_images, save_path=images_tar_file)
 
-    url_annotations = os.path.join(base_url, "annotations.tar.gz")
+    url_annotations = base_url / "annotations.tar.gz"
     annotations_tar_file = save_dir / "annotations.tar.gz"
     if not annotations_tar_file.exists() or force_download:
-        download_url(url=url_annotations, save_path=str(annotations_tar_file))
-        shutil.unpack_archive(str(annotations_tar_file), str(save_dir))
+        download_and_extract(url=url_annotations, save_path=annotations_tar_file)
 
     return save_dir
