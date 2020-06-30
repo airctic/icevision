@@ -1,11 +1,10 @@
 __all__ = ["create_backbone_adaptive", "create_backbone_features"]
 
-
 from mantisshrimp.imports import *
 
 # Use this when you have Adaptive Pooling layer in End.
 # When Model.features is not applicable.
-def create_backbone_adaptive(model, out_channels : int = None):
+def create_backbone_adaptive(model, out_channels: int = None):
     # Out channels is optional can pass it if user knows it
     # print(list(model.children())[-1].in_features)
     modules_total = list(model.children())
@@ -21,12 +20,14 @@ def create_backbone_adaptive(model, out_channels : int = None):
 
     return ft_backbone
 
+
 # Use this when model.features function is available as in mobilenet and vgg
 # Again it is mandatory for out_channels here
 def create_backbone_features(model, out_channels: int):
     ft_backbone = model.features
     ft_backbone.out_channels = out_channels
     return ft_backbone
+
 
 # Use this when adaptive avg_pooling is not available or you want to pass custom CNN
 # This can work with adaptive case too. So it is a bit generic case.

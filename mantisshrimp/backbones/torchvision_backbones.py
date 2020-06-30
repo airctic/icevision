@@ -4,6 +4,7 @@ __all__ = ["create_torchvision_backbone"]
 from mantisshrimp.imports import *
 from create_backbones import *
 
+
 def create_torchvision_backbone(backbone: str, pretrained: bool):
     # These creates models from torchvision directly, it uses imagenet pretrained_weights
     if backbone == "mobilenet":
