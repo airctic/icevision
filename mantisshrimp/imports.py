@@ -4,6 +4,8 @@ from fastcore.imports import *
 from fastcore.foundation import *
 from fastcore.utils import *
 
+import timm
+
 import pandas as pd
 import torch.nn as nn
 import pytorch_lightning as pl

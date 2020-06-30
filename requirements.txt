@@ -6,3 +6,4 @@ fastcore>=0.1.17
 opencv-python>=4.2.0
 pytorch-lightning>=0.7.6
 torchvision==0.6.0
+timm
