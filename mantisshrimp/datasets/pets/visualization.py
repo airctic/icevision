@@ -1,13 +1,26 @@
+__all__ = ["plot_size_histogram"]
+
 from mantisshrimp.imports import *
 from mantisshrimp import *
 
 
-def plot_size_histogram(records: List[RecordType]):
-    height_sum = 0
-    width_sum = 0
+def plot_size_histogram(records: List[RecordType], show=True) -> List[plt.Axes]:
+    heights = []
+    widths = []
     for record in records:
-        height_sum += record["height"]
-        width_sum += record["width"]
+        heights.append(record["height"])
+        widths.append(record["width"])
 
-    height_mean = height_sum / len(records)
-    width_mean = width_sum / len(records)
+    fig, axs = plt.subplots(ncols=2)
+
+    def plot_hist(ax, values, title):
+        ax.hist(values, bins=30)
+        ax.set_title(title)
+
+    plot_hist(axs[0], heights, "heights")
+    plot_hist(axs[1], widths, "widths")
+
+    if show:
+        plt.show()
+
+    return axs
