@@ -1,4 +1,4 @@
-__all__ = ["ParserInterface", "Parser"]
+__all__ = ["RecordType", "ParserInterface", "Parser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -6,12 +6,14 @@ from mantisshrimp.core import *
 from mantisshrimp.parsers.mixins import *
 from mantisshrimp.parsers.splits import *
 
+RecordType = Dict[str, Any]
+
 
 class ParserInterface(ABC):
     @abstractmethod
     def parse(
         self, data_splitter: DataSplitter, show_pbar: bool = True
-    ) -> List[List[dict]]:
+    ) -> List[List[RecordType]]:
         pass
 
 
@@ -25,7 +27,7 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
 
     def parse_dicted(
         self, show_pbar: bool = True, idmap: IDMap = None
-    ) -> Dict[int, dict]:
+    ) -> Dict[int, RecordType]:
         idmap = idmap or IDMap()
 
         info_parse_funcs = self.collect_info_parse_funcs()
@@ -51,7 +53,7 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
         data_splitter: DataSplitter = None,
         idmap: IDMap = None,
         show_pbar: bool = True,
-    ) -> List[List[dict]]:
+    ) -> List[List[RecordType]]:
         data_splitter = data_splitter or SingleSplitSplitter()
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(records.keys())
