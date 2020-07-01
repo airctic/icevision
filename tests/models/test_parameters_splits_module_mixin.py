@@ -19,9 +19,7 @@ def model():
             return DataLoader(**kwargs)
 
         def load_state_dict(
-            self,
-            state_dict: Union[Dict[str, Tensor], OrderedDict[str, Tensor]],
-            strict: bool = True,
+            self, state_dict: Dict[str, Tensor], strict: bool = True,
         ):
             pass
 
