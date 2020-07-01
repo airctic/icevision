@@ -29,7 +29,7 @@ Out of the box, we offer several annotation parsers that translates different an
 
 A. By default, we offer  differents standard format parsers such as COCO and ROC,
 
-B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over (check out the Kaggle `Wheat`_ parser),
+B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over (check out the Kaggle `Quickstart`_ parser),
  
 C. We provide some intuitive tutorials that walk you through the steps of creating your own parser. Please, consider sharing it with the whole community.
 
