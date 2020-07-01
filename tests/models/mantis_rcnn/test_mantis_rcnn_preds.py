@@ -1,5 +1,6 @@
-import pytest, torch
+import pytest
 from mantisshrimp import *
+from mantisshrimp.imports import *
 
 
 @pytest.fixture(scope="module")
@@ -26,9 +27,11 @@ def batch(request):
 @pytest.fixture()
 def model_class(request):
     if request.param == "faster":
-        return MantisFasterRCNN
+        model_fn = MantisFasterRCNN
     if request.param == "mask":
-        return MantisMaskRCNN
+        model_fn = MantisMaskRCNN
+
+    return model_fn
 
 
 @pytest.fixture()
@@ -61,7 +64,6 @@ def test_rcnn_simple_backbone(model_class, simple_backbone, batch, assert_model_
     assert_model_preds(model, batch)
 
 
-@pytest.mark.skip
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "model_class, batch, assert_model_preds",
@@ -69,11 +71,10 @@ def test_rcnn_simple_backbone(model_class, simple_backbone, batch, assert_model_
     indirect=True,
 )
 def test_rcnn_default_backbone(model_class, batch, assert_model_preds):
-    model = model_class(num_classes=91)
+    model = model_class(num_classes=91, min_size=128, max_size=128)
     assert_model_preds(model, batch)
 
 
-@pytest.mark.skip
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "model_class, batch, assert_model_preds",
@@ -84,8 +85,8 @@ def test_rcnn_default_backbone(model_class, batch, assert_model_preds):
 @pytest.mark.parametrize(
     "backbone, fpn",
     [
-        # ("mobilenet", False),
-        # ("vgg11", False),
+        ("mobilenet", False),
+        ("vgg11", False),
         # ("vgg13", False),
         # ("vgg16", False),
         # ("vgg19", False),
@@ -107,5 +108,5 @@ def test_mask_rcnn_backbones(
     backbone = model_class.get_backbone_by_name(
         name=backbone, fpn=fpn, pretrained=pretrained
     )
-    model = model_class(num_classes=91, backbone=backbone)
+    model = model_class(num_classes=91, backbone=backbone, min_size=128, max_size=128)
     assert_model_preds(model, batch)
