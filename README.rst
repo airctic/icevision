@@ -149,7 +149,7 @@ Quick Example: How to train the **Wheat Dataset**
 
 Tutorials
 ^^^^^^^^^
-`Wheat`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**
+`Quickstart`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**
 
 `Wheat-Detr`_ : shows how to use a custom parser (WheatParser), and train the **Wheat dataset** using Detr
 
@@ -170,9 +170,9 @@ Please check out our `FAQs`_ page. For Feature Requests and more questions raise
 
 We will be happy to assist you.
 
-.. _Wheat: https://lgvaz.github.io/mantisshrimp/tutorials/wheat.html
-.. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_wheat.html
-.. _Penn-Fundan: https://lgvaz.github.io/mantisshrimp/tutorials/hub_detr_finetune_pennfundan.html
+.. _Quickstart: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_models/faster_rcnn_quickstart.html
+.. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_hub/hub_wheat_finetun.html
+.. _Penn-Fundan: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_hub/hub_detr_finetune_pennfundan.html
 .. _tutorials: tutorials/
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
