@@ -21,7 +21,7 @@ def show_img(im, ax=None, **kwargs):
 
 
 def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
-    figsize = figsize or [7 * len(fs)] * 2
+    figsize = figsize or (12 * len(fs) / ncols, 12)
     nrows = math.ceil(len(fs) / ncols)
 
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, **kwargs)
