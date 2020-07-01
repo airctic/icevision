@@ -61,9 +61,7 @@ class MantisMaskRCNN(MantisRCNN):
         )
 
     def load_state_dict(
-        self,
-        state_dict: Union[Dict[str, Tensor], OrderedDict[str, Tensor]],
-        strict: bool = True,
+        self, state_dict: Dict[str, Tensor], strict: bool = True,
     ):
         return self.model.load_state_dict(state_dict=state_dict, strict=strict)
 
