@@ -5,7 +5,7 @@ from mantisshrimp import *
 
 
 class DetrBBoxParser(
-    DefaultImageInfoParser, FasterRCNNParser, AreaParserMixin, IsCrowdParserMixin, ABC
+    DefaultImageInfoParser, FasterRCNNParser, AreasParserMixin, IsCrowdsParserMixin, ABC
 ):
     """
     This parser contain all the required fields for using Detr for bbox detection.

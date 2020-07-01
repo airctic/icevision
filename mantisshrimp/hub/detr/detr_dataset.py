@@ -18,13 +18,13 @@ class DetrDataset(Dataset):
         y["size"] = tensor([h, w], dtype=torch.int64)
         y["orig_size"] = tensor([record["height"], record["width"]], dtype=torch.int64)
         # annotations
-        y["labels"] = tensor(record["label"], dtype=torch.int64)
-        y["area"] = tensor([o.area for o in record["bbox"]], dtype=torch.float32)
+        y["labels"] = tensor(record["labels"], dtype=torch.int64)
+        y["area"] = tensor([o.area for o in record["bboxes"]], dtype=torch.float32)
         if "masks" in record:
-            y["masks"] = tensor(record["mask"].data, dtype=torch.bool)
-        if "iscrowd" in record:
-            y["iscrowd"] = tensor(record["iscrowd"], dtype=torch.int64)
-        bboxes = [o.xyxy for o in record["bbox"]]
+            y["masks"] = tensor(record["masks"].data, dtype=torch.bool)
+        if "iscrowds" in record:
+            y["iscrowd"] = tensor(record["iscrowds"], dtype=torch.int64)
+        bboxes = [o.xyxy for o in record["bboxes"]]
         y["boxes"] = tensor(bboxes, dtype=torch.float32)
         # Apply transforms
         if self.tfm is not None:

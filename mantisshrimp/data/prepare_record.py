@@ -16,9 +16,9 @@ def prepare_img(record):
 
 
 def prepare_mask(record):
-    if "mask" in record:
-        record["mask"] = MaskArray.from_masks(
-            record["mask"], record["height"], record["width"]
+    if "masks" in record:
+        record["masks"] = MaskArray.from_masks(
+            record["masks"], record["height"], record["width"]
         )
     return record
 

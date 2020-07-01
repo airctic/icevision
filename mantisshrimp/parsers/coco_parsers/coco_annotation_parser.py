@@ -6,7 +6,7 @@ from mantisshrimp.parsers.defaults import *
 from mantisshrimp.parsers.mixins import *
 
 
-class COCOAnnotationParser2(MaskRCNNParser, AreaParserMixin, IsCrowdParserMixin):
+class COCOAnnotationParser2(MaskRCNNParser, AreasParserMixin, IsCrowdsParserMixin):
     def __init__(self, annotations: list):
         self.annotations = annotations
 
@@ -19,21 +19,21 @@ class COCOAnnotationParser2(MaskRCNNParser, AreaParserMixin, IsCrowdParserMixin)
     def imageid(self, o) -> int:
         return o["image_id"]
 
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         return [o["category_id"]]
 
-    def bbox(self, o) -> List[BBox]:
+    def bboxes(self, o) -> List[BBox]:
         return [BBox.from_xywh(*o["bbox"])]
 
-    def area(self, o) -> List[float]:
+    def areas(self, o) -> List[float]:
         return [o["area"]]
 
-    def mask(self, o) -> List[MaskArray]:
+    def masks(self, o) -> List[MaskArray]:
         seg = o["segmentation"]
         if o["iscrowd"]:
             return [RLE.from_coco(seg["counts"])]
         else:
             return [Polygon(seg)]
 
-    def iscrowd(self, o) -> List[bool]:
+    def iscrowds(self, o) -> List[bool]:
         return [o["iscrowd"]]

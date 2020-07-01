@@ -60,14 +60,14 @@ class PennFundanParser(DefaultImageInfoParser, MaskRCNNParser):
     def height(self, o) -> int:
         return self._size[1]
 
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         return [1] * self._num_objects
 
-    def iscrowd(self, o) -> List[bool]:
+    def iscrowds(self, o) -> List[bool]:
         return [False] * self._num_objects
 
-    def mask(self, o) -> List[Mask]:
+    def masks(self, o) -> List[Mask]:
         return [MaskFile(self._mask_filepath)]
 
-    def bbox(self, o) -> List[BBox]:
+    def bboxes(self, o) -> List[BBox]:
         return self._bboxes

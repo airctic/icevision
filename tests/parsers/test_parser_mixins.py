@@ -7,10 +7,10 @@ def test_all_parser_mixins():
         ImageidParserMixin,
         FilepathParserMixin,
         SizeParserMixin,
-        LabelParserMixin,
-        BBoxParserMixin,
-        MaskParserMixin,
-        IsCrowdParserMixin,
+        LabelsParserMixin,
+        BBoxesParserMixin,
+        MasksParserMixin,
+        IsCrowdsParserMixin,
     ):
         def imageid(self, o) -> int:
             return 42
@@ -24,16 +24,16 @@ def test_all_parser_mixins():
         def width(self, o) -> int:
             return 480
 
-        def label(self, o):
+        def labels(self, o):
             return 0
 
-        def bbox(self, o) -> BBox:
+        def bboxes(self, o) -> BBox:
             return BBox.from_xyxy(1, 2, 3, 4)
 
-        def mask(self, o) -> MaskArray:
+        def masks(self, o) -> MaskArray:
             return MaskArray(np.array([]))
 
-        def iscrowd(self, o) -> bool:
+        def iscrowds(self, o) -> bool:
             return 0
 
     test = TestAllParserMixins()
@@ -44,10 +44,10 @@ def test_all_parser_mixins():
         "filepath": test.filepath,
     }
     annotation_parse_funcs = {
-        "label": test.label,
-        "bbox": test.bbox,
-        "mask": test.mask,
-        "iscrowd": test.iscrowd,
+        "labels": test.labels,
+        "bboxes": test.bboxes,
+        "masks": test.masks,
+        "iscrowds": test.iscrowds,
     }
     assert test.collect_info_parse_funcs() == info_parse_funcs
     assert test.collect_annotation_parse_funcs() == annotation_parse_funcs

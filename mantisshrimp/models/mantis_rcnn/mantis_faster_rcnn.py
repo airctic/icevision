@@ -89,7 +89,7 @@ class MantisFasterRCNN(MantisRCNN):
 
     @staticmethod
     def build_training_sample(
-        imageid: int, img: np.ndarray, label: List[int], bbox: List[BBox], **kwargs,
+        imageid: int, img: np.ndarray, labels: List[int], bboxes: List[BBox], **kwargs,
     ):
         x = im2tensor(img)
         # injected values when annotations are empty are disconsidered
@@ -97,7 +97,7 @@ class MantisFasterRCNN(MantisRCNN):
         _fake_box = [0, 1, 2, 3]
         y = {
             "image_id": tensor(imageid, dtype=torch.int64),
-            "labels": tensor(label or [0], dtype=torch.int64),
-            "boxes": tensor([o.xyxy for o in bbox] or [_fake_box], dtype=torch.float),
+            "labels": tensor(labels or [0], dtype=torch.int64),
+            "boxes": tensor([o.xyxy for o in bboxes] or [_fake_box], dtype=torch.float),
         }
         return x, y
