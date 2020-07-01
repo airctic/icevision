@@ -1,6 +1,6 @@
 import pytest
 from mantisshrimp import *
-from mantisshrimp.imports import nn, DataLoader
+from mantisshrimp.imports import *
 
 
 @pytest.fixture
@@ -17,6 +17,11 @@ def model():
 
         def dataloader(cls, **kwargs) -> DataLoader:
             return DataLoader(**kwargs)
+
+        def load_state_dict(
+            self, state_dict: Dict[str, Tensor], strict: bool = True,
+        ):
+            pass
 
     return SimpleModel()
 

@@ -36,7 +36,7 @@ class BBox:
         return cls([x, y, x + w, y + h])
 
     @classmethod
-    def from_xyxy(cls, xl, yu, xr, yb, img_w=None, img_h=None):
+    def from_xyxy(cls, xl, yu, xr, yb):
         return cls([xl, yu, xr, yb])
 
     @classmethod
