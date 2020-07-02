@@ -45,9 +45,47 @@ class MantisFasterRCNN(MantisRCNN):
     def forward(self, images, targets=None):
         return self.model(images, targets)
 
+    def predict(self, images: List[np.ndarray], detection_threshold: float = 0.5):
+        convert_raw_prediction = partial(
+            self.convert_raw_prediction, detection_threshold=detection_threshold,
+        )
+
+        return self._predict(
+            images=images, convert_raw_prediction=convert_raw_prediction
+        )
+
+    def load_state_dict(
+        self, state_dict: Dict[str, Tensor], strict: bool = True,
+    ):
+        return self.model.load_state_dict(state_dict=state_dict, strict=strict)
+
     @property
     def param_groups(self):
         return self._param_groups
+
+    @staticmethod
+    def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
+        above_threshold = raw_pred["scores"] >= detection_threshold
+
+        labels = raw_pred["labels"][above_threshold]
+        labels = labels.detach().cpu().numpy()
+
+        scores = raw_pred["scores"][above_threshold]
+        scores = scores.detach().cpu().numpy()
+
+        boxes = raw_pred["boxes"][above_threshold]
+        bboxes = []
+        for box_tensor in boxes:
+            xyxy = box_tensor.cpu().tolist()
+            bbox = BBox.from_xyxy(*xyxy)
+            bboxes.append(bbox)
+
+        return {
+            "labels": labels,
+            "scores": scores,
+            "bboxes": bboxes,
+            "above_threshold": above_threshold,
+        }
 
     @staticmethod
     def build_training_sample(
