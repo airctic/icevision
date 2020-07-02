@@ -6,6 +6,7 @@ from mantisshrimp.visualize.utils import *
 from matplotlib.collections import PatchCollection
 
 
+# TODO: rename im to img
 def show_annotation(
     im, labels=None, bboxes=None, masks=None, ax=None, figsize=None, show=False
 ):
