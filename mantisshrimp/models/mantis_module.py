@@ -6,13 +6,6 @@ from mantisshrimp.models.parameters_splits_module_mixin import *
 
 
 class MantisModule(DeviceModuleMixin, ParametersSplitsModuleMixin, nn.Module, ABC):
-    @abstractmethod
-    def load_state_dict(
-        self, state_dict: Dict[str, Tensor], strict: bool = True,
-    ):
-        """ Load weights
-        """
-
     @classmethod
     @abstractmethod
     def dataloader(cls, **kwargs) -> DataLoader:
