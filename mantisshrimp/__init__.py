@@ -7,4 +7,5 @@ from mantisshrimp.models import *
 from mantisshrimp.metrics import *
 from mantisshrimp.visualize import *
 
+import mantisshrimp.datasets as datasets
 import mantisshrimp.test_utils as test_utils
