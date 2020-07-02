@@ -54,11 +54,6 @@ class MantisFasterRCNN(MantisRCNN):
             images=images, convert_raw_prediction=convert_raw_prediction
         )
 
-    def load_state_dict(
-        self, state_dict: Dict[str, Tensor], strict: bool = True,
-    ):
-        return self.model.load_state_dict(state_dict=state_dict, strict=strict)
-
     @property
     def param_groups(self):
         return self._param_groups
