@@ -8,9 +8,9 @@ from matplotlib.collections import PatchCollection
 
 # TODO: rename im to img
 def show_annotation(
-    im, labels=None, bboxes=None, masks=None, ax=None, figsize=None, show=False
+    img, labels=None, bboxes=None, masks=None, ax=None, figsize=None, show=False
 ):
-    ax = show_img(im, ax=ax, figsize=figsize or (10, 10))
+    ax = show_img(img=img, ax=ax, figsize=figsize or (10, 10))
     polygons, colors = [], []
     for label, bbox, mask in itertools.zip_longest(
         *[o if o is not None else [] for o in [labels, bboxes, masks]]

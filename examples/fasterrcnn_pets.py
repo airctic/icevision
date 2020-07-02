@@ -25,7 +25,7 @@ valid_ds = Dataset(valid_records, tfm=valid_tfms)
 
 sample = train_ds[0]
 show_annotation(
-    im=sample["img"], labels=sample["label"], bboxes=sample["bbox"], show=True
+    img=sample["img"], labels=sample["label"], bboxes=sample["bbox"], show=True
 )
 
 # TODO: Rethink CATEGORIES, should they always be present in parser?

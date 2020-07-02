@@ -17,7 +17,7 @@ def show_record(
     data_preparer = prepare_record or default_prepare_record
     data = data_preparer(record)
     return show_annotation(
-        data["img"],
+        img=data["img"],
         labels=data["label"] if (label and "label" in record) else None,
         bboxes=data["bbox"] if (bbox and "bbox" in record) else None,
         masks=data["mask"] if (mask and "mask" in record) else None,

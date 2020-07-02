@@ -10,12 +10,12 @@ def open_img(fn, gray=False):
     return cv2.cvtColor(cv2.imread(str(fn)), color)
 
 
-def show_img(im, ax=None, **kwargs):
+def show_img(img, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots(**kwargs)
-    im = im.squeeze().copy()
-    cmap = "gray" if len(im.shape) == 2 else None
-    ax.imshow(im, cmap=cmap)
+    img = img.squeeze().copy()
+    cmap = "gray" if len(img.shape) == 2 else None
+    ax.imshow(img, cmap=cmap)
     ax.set_axis_off()
     return ax
 
