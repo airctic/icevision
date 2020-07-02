@@ -5,7 +5,6 @@ from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
 from mantisshrimp.models.mantis_rcnn.mantis_faster_rcnn import *
-from mantisshrimp.backbones import *
 
 
 class MantisMaskRCNN(MantisRCNN):
@@ -15,6 +14,7 @@ class MantisMaskRCNN(MantisRCNN):
         num_classes: int,
         backbone: nn.Module = None,
         param_groups: List[nn.Module] = None,
+        remove_internal_transforms: bool = True,
         **kwargs,
     ):
         super().__init__()
@@ -40,6 +40,9 @@ class MantisMaskRCNN(MantisRCNN):
 
         self._param_groups = param_groups + [self.model.rpn, self.model.roi_heads]
         check_all_model_params_in_groups(self.model, self.param_groups)
+
+        if remove_internal_transforms:
+            self._remove_transforms_from_model(self.model)
 
     def forward(self, images, targets=None):
         return self.model(images, targets)
