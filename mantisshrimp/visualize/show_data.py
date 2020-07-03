@@ -1,4 +1,4 @@
-__all__ = ["show_sample", "show_record"]
+__all__ = ["show_sample", "show_record", "show_pred"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.data import *
@@ -37,4 +37,28 @@ def show_record(
     sample = data_preparer(record)
     return show_sample(
         sample=sample, label=label, bbox=bbox, mask=mask, ax=ax, show=show
+    )
+
+
+def show_pred(
+    img: np.ndarray,
+    pred: dict,
+    denormalize_fn=None,
+    label=True,
+    bbox=True,
+    mask=True,
+    show=False,
+    ax: plt.Axes = None,
+):
+    sample = pred.copy()
+    sample["img"] = img
+
+    return show_sample(
+        sample=sample,
+        denormalize_fn=denormalize_fn,
+        label=label,
+        bbox=bbox,
+        mask=mask,
+        show=show,
+        ax=ax,
     )
