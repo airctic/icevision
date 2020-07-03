@@ -33,24 +33,24 @@ def convert_records_to_coco_style(records):
         images.append(image)
 
         # build annotations field
-        for label in record["label"]:
+        for label in record["labels"]:
             annotations_dict["image_id"].append(record["imageid"])
             annotations_dict["category_id"].append(label)
             categories_set.add(label)
 
-        if "bbox" in record:
-            for bbox in record["bbox"]:
+        if "bboxes" in record:
+            for bbox in record["bboxes"]:
                 annotations_dict["bbox"].append(bbox.xywh)
 
-        if "area" in record:
-            for area in record["area"]:
+        if "areas" in record:
+            for area in record["areas"]:
                 annotations_dict["area"].append(area)
         else:
-            for bbox in record["bbox"]:
-                annotations_dict["area"].append(bbox.area)
+            for bbox in record["bboxes"]:
+                annotations_dict["area"].append(bbox.areas)
 
-        if "mask" in record:
-            for mask in record["mask"]:
+        if "masks" in record:
+            for mask in record["masks"]:
                 if isinstance(mask, Polygon):
                     annotations_dict["segmentation"].append(mask.points)
                 elif isinstance(mask, RLE):
@@ -67,9 +67,9 @@ def convert_records_to_coco_style(records):
                     raise ValueError(msg)
 
         # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
-        if "iscrowd" not in record:
-            record["iscrowd"] = [0] * len(record["label"])
-        for iscrowd in record["iscrowd"]:
+        if "iscrowds" not in record:
+            record["iscrowds"] = [0] * len(record["labels"])
+        for iscrowd in record["iscrowds"]:
             annotations_dict["iscrowd"].append(iscrowd)
 
     if not allequal([len(o) for o in annotations_dict.values()]):
