@@ -11,6 +11,7 @@ __all__ = [
     "pbar",
     "imagenet_stats",
     "denormalize",
+    "denormalize_imagenet",
 ]
 
 from mantisshrimp.imports import *
@@ -73,3 +74,8 @@ imagenet_stats = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
 def denormalize(img, mean, std, max_pixel_value=255):
     return np.around((img * std + mean) * max_pixel_value).astype(np.uint8)
+
+
+def denormalize_imagenet(img):
+    mean, std = imagenet_stats
+    return denormalize(img=img, mean=mean, std=std)

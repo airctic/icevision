@@ -1,4 +1,4 @@
-__all__ = ["open_img", "show_img", "grid", "grid2"]
+__all__ = ["open_img", "show_img", "plot_grid"]
 
 from mantisshrimp.imports import *
 
@@ -10,29 +10,25 @@ def open_img(fn, gray=False):
     return cv2.cvtColor(cv2.imread(str(fn)), color)
 
 
-def show_img(im, ax=None, **kwargs):
+def show_img(img, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots(**kwargs)
-    im = im.squeeze().copy()
-    cmap = "gray" if len(im.shape) == 2 else None
-    ax.imshow(im, cmap=cmap)
+    img = img.squeeze().copy()
+    cmap = "gray" if len(img.shape) == 2 else None
+    ax.imshow(img, cmap=cmap)
     ax.set_axis_off()
     return ax
 
 
-def grid(f, ims, figsize=None, **kwargs):
-    figsize = figsize or [7 * len(ims)] * 2
-    fig, axs = plt.subplots(nrows=len(ims), figsize=figsize, **kwargs)
-    for fn, ax in zip(ims, axs):
-        f(fn, ax=ax)
-    plt.tight_layout()
+def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
+    figsize = figsize or (12 * len(fs) / ncols, 12)
+    nrows = math.ceil(len(fs) / ncols)
 
+    fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, **kwargs)
 
-def grid2(fs, figsize=None, show=False, **kwargs):
-    figsize = figsize or [7 * len(fs)] * 2
-    fig, axs = plt.subplots(nrows=len(fs), figsize=figsize, **kwargs)
-    for f, ax in zip(fs, axs):
+    for f, ax in zip(fs, axs.flatten()):
         f(ax=ax)
+
     plt.tight_layout()
     if show:
         plt.show()

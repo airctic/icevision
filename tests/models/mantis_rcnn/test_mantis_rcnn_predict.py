@@ -21,7 +21,7 @@ def pretrained_state_dict():
 
 def test_mantis_mask_rcnn_predict(sample_images, pretrained_state_dict):
     model = MantisMaskRCNN(91, min_size=128, max_size=128)
-    model.load_state_dict(pretrained_state_dict)
+    model.model.load_state_dict(pretrained_state_dict)
 
     preds = model.predict(sample_images)
 
