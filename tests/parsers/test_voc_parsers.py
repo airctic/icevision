@@ -28,8 +28,8 @@ def test_voc_annotation_parser(samples_source, voc_category2id):
         "filepath": samples_source / "voc/JPEGImages/2011_003353.jpg",
         "height": 500,
         "width": 375,
-        "label": [voc_category2id["person"]],
-        "bbox": [BBox.from_xyxy(130, 45, 375, 470)],
+        "labels": [voc_category2id["person"]],
+        "bboxes": [BBox.from_xyxy(130, 45, 375, 470)],
     }
     assert record == expected
 
@@ -39,8 +39,8 @@ def test_voc_annotation_parser(samples_source, voc_category2id):
         "filepath": samples_source / "voc/JPEGImages/2007_000063.jpg",
         "width": 500,
         "height": 375,
-        "label": [voc_category2id[k] for k in ["dog", "chair"]],
-        "bbox": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
+        "labels": [voc_category2id[k] for k in ["dog", "chair"]],
+        "bboxes": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
     }
     assert record == expected
 
@@ -52,7 +52,7 @@ def test_voc_mask_parser(samples_source):
     record = records[0]
     expected = {
         "imageid": 0,
-        "mask": [
+        "masks": [
             VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png"),
         ],
     }
@@ -78,8 +78,10 @@ def test_voc_combined_parser(samples_source, voc_category2id):
         "filepath": samples_source / "voc/JPEGImages/2007_000063.jpg",
         "width": 500,
         "height": 375,
-        "label": [voc_category2id[k] for k in ["dog", "chair"]],
-        "bbox": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
-        "mask": [VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png")],
+        "labels": [voc_category2id[k] for k in ["dog", "chair"]],
+        "bboxes": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
+        "masks": [
+            VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png")
+        ],
     }
     assert record == expected

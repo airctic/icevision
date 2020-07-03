@@ -16,9 +16,9 @@ def show_sample(
 ):
     return show_annotation(
         img=sample["img"] if denormalize_fn is None else denormalize_fn(sample["img"]),
-        labels=sample["label"] if (label and "label" in sample) else None,
-        bboxes=sample["bbox"] if (bbox and "bbox" in sample) else None,
-        masks=sample["mask"] if (mask and "mask" in sample) else None,
+        labels=sample["labels"] if (label and "labels" in sample) else None,
+        bboxes=sample["bboxes"] if (bbox and "bboxes" in sample) else None,
+        masks=sample["masks"] if (mask and "masks" in sample) else None,
         ax=ax,
         show=show,
     )

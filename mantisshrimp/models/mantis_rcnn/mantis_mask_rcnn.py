@@ -85,13 +85,13 @@ class MantisMaskRCNN(MantisRCNN):
     def build_training_sample(
         imageid: int,
         img: np.ndarray,
-        label: List[int],
-        bbox: List[BBox],
-        mask: MaskArray,
+        labels: List[int],
+        bboxes: List[BBox],
+        masks: MaskArray,
         **kwargs,
     ):
         x, y = MantisFasterRCNN.build_training_sample(
-            imageid=imageid, img=img, label=label, bbox=bbox,
+            imageid=imageid, img=img, labels=labels, bboxes=bboxes,
         )
-        y["masks"] = tensor(mask.data, dtype=torch.uint8)
+        y["masks"] = tensor(masks.data, dtype=torch.uint8)
         return x, y

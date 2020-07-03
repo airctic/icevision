@@ -24,8 +24,8 @@ def test_coco_annotation_parser():
     annotation = annotations[0]
     assert len(annotations) == 5
     assert annotation["imageid"] == 0
-    assert annotation["label"] == [4]
-    assert pytest.approx(annotation["bbox"][0].xyxy) == [
+    assert annotation["labels"] == [4]
+    assert pytest.approx(annotation["bboxes"][0].xyxy) == [
         175.14,
         175.68,
         496.2199,
@@ -49,5 +49,5 @@ def test_coco_parser(records):
     assert len(records) == 5
     assert (r["height"], r["width"]) == (427, 640)
     assert r["imageid"] == 0
-    assert r["bbox"][0].xywh == [0.0, 73.89, 416.44, 305.13]
+    assert r["bboxes"][0].xywh == [0.0, 73.89, 416.44, 305.13]
     assert r["filepath"] == source / "images/000000128372.jpg"

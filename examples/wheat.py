@@ -28,10 +28,10 @@ class WheatParser(DefaultImageInfoParser, FasterRCNNParser):
     def width(self, o) -> int:
         return o.width
 
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         return [1]
 
-    def bbox(self, o) -> List[BBox]:
+    def bboxes(self, o) -> List[BBox]:
         return [BBox.from_xywh(*np.fromstring(o.bbox[1:-1], sep=","))]
 
 
