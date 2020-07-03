@@ -57,26 +57,37 @@ class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
 
     def prepare(self, o):
         tree = ET.parse(str(o))
-        root = tree.getroot()
+        self._root = tree.getroot()
+        self._filename = self._root.find("filename").text
+        self._size = self._root.find("size")
 
-        filename = root.find("filename").text
-        self._filepath = self.images_dir / filename
+    def imageid(self, o) -> Hashable:
+        return str(Path(self._filename).stem)
 
-        self._imageid = str(Path(filename).stem)
+    def filepath(self, o) -> Union[str, Path]:
+        return self.images_dir / self._filename
 
-        size = root.find("size")
-        self._width = int(size.find("width").text)
-        self._height = int(size.find("height").text)
+    def height(self, o) -> int:
+        return int(self._size.find("height").text)
 
+    def width(self, o) -> int:
+        return int(self._size.find("width").text)
+
+    def label(self, o) -> List[int]:
+        labels = []
+        for object in self._root.iter("object"):
+            label = object.find("name").text
+            label_id = self.category2id[label]
+            labels.append(label_id)
+
+        return labels
+
+    def bbox(self, o) -> List[BBox]:
         def to_int(x):
             return int(float(x))
 
-        self._labels, self._bboxes = [], []
-        for object in root.iter("object"):
-            label = object.find("name").text
-            label_id = self.category2id[label]
-            self._labels.append(label_id)
-
+        bboxes = []
+        for object in self._root.iter("object"):
             xml_bbox = object.find("bndbox")
             xmin = to_int(xml_bbox.find("xmin").text)
             ymin = to_int(xml_bbox.find("ymin").text)
@@ -84,25 +95,9 @@ class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
             ymax = to_int(xml_bbox.find("ymax").text)
 
             bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
-            self._bboxes.append(bbox)
+            bboxes.append(bbox)
 
-    def imageid(self, o) -> Hashable:
-        return self._imageid
-
-    def filepath(self, o) -> Union[str, Path]:
-        return self._filepath
-
-    def height(self, o) -> int:
-        return self._height
-
-    def width(self, o) -> int:
-        return self._width
-
-    def label(self, o) -> List[int]:
-        return self._labels
-
-    def bbox(self, o) -> List[BBox]:
-        return self._bboxes
+        return bboxes
 
 
 class VocMaskParser(Parser, ImageidParserMixin, MaskParserMixin):

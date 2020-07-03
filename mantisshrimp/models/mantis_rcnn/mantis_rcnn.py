@@ -18,22 +18,18 @@ class MantisRCNN(MantisModule, ABC):
         Converts a record to a format understood by the model.
         """
 
+    def _predict(
+        self, images: List[np.ndarray], convert_raw_prediction,
+    ):
+        self.eval()
+        tensor_images = [im2tensor(img).to(self.device) for img in images]
+        raw_preds = self(tensor_images)
+
+        return [convert_raw_prediction(raw_pred) for raw_pred in raw_preds]
+
     @staticmethod
     def loss(preds, targs) -> Tensor:
         return sum(preds.values())
-
-    def get_logs(self, batch, preds) -> dict:
-        # losses are the logs
-        return preds
-
-    def predict(self, ims=None, rs=None):
-        if bool(ims) == bool(rs):
-            raise ValueError("You should either pass ims or rs")
-        if notnone(rs):
-            ims = [open_img(o.info.filepath) for o in rs]
-        xs = [im2tensor(o).to(model_device(self)) for o in ims]
-        self.eval()
-        return ims, self(xs)
 
     @classmethod
     def collate_fn(cls, data):

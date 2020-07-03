@@ -44,9 +44,42 @@ class MantisMaskRCNN(MantisRCNN):
     def forward(self, images, targets=None):
         return self.model(images, targets)
 
+    def predict(
+        self,
+        images: List[np.ndarray],
+        detection_threshold: float = 0.5,
+        mask_threshold: float = 0.5,
+    ):
+        convert_raw_prediction = partial(
+            self.convert_raw_prediction,
+            detection_threshold=detection_threshold,
+            mask_threshold=mask_threshold,
+        )
+
+        return self._predict(
+            images=images, convert_raw_prediction=convert_raw_prediction
+        )
+
     @property
     def param_groups(self):
         return self._param_groups
+
+    @staticmethod
+    def convert_raw_prediction(
+        raw_pred: dict, detection_threshold: float, mask_threshold: float
+    ):
+        preds = MantisFasterRCNN.convert_raw_prediction(
+            raw_pred=raw_pred, detection_threshold=detection_threshold
+        )
+
+        above_threshold = preds["above_threshold"]
+        masks_probs = raw_pred["masks"][above_threshold]
+        masks_probs = masks_probs.detach().cpu().numpy()
+        # convert probabilities to 0 or 1 based on mask_threshold
+        masks = masks_probs > mask_threshold
+        masks = MaskArray(masks.squeeze(1))
+
+        return {**preds, "masks": masks}
 
     @staticmethod
     def build_training_sample(

@@ -1,6 +1,6 @@
 import pytest
 from mantisshrimp import *
-from mantisshrimp.imports import nn, DataLoader
+from mantisshrimp.imports import *
 
 
 @pytest.fixture
