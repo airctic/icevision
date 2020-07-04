@@ -27,6 +27,16 @@ class MantisRCNN(MantisModule, ABC):
 
         return [convert_raw_prediction(raw_pred) for raw_pred in raw_preds]
 
+    def _remove_transforms_from_model(self, model: GeneralizedRCNN):
+        def noop_normalize(image):
+            return image
+
+        def noop_resize(image, target):
+            return image, target
+
+        model.transform.normalize = noop_normalize
+        model.transform.resize = noop_resize
+
     @staticmethod
     def loss(preds, targs) -> Tensor:
         return sum(preds.values())
