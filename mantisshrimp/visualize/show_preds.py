@@ -7,6 +7,19 @@ from mantisshrimp.visualize.show_annotation import show_annotation
 
 
 def show_pred(im, pred, mask_thresh=0.5, ax=None):
+    """ Gets bboxes and masks from prediction
+
+    This function returns a call to show_annotation function 
+    which plots a matplotlib plot
+
+    Args:
+        im (np.ndarray): The image on which prediction is to be made
+        pred (dict): Dictionary of predictions from model
+        mask_thresh (float): The mininum threshold for masks
+        ax (plt.Axes): Used to add axes to the figure
+    Returns:
+        function call: show_annotation function shows matplotlib plot
+    """
     # TODO: Implement keypoint
     bboxes, masks, kpts = None, None, None
     if "boxes" in pred:
