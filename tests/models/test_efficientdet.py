@@ -20,7 +20,7 @@ def build_train_sample(img: np.ndarray, labels: List[int], bboxes: List[BBox]):
 
 image, target = build_train_sample(img=img, labels=labels, bboxes=bboxes)
 
-assert torch.all(image == torch.ones((3, 4, 4), dtype=torch.float32)).all()
+assert torch.all(image == torch.ones((3, 4, 4), dtype=torch.float32))
 
 assert torch.all(target["cls"] == tensor([1, 2], dtype=torch.int64))
 assert torch.all(
