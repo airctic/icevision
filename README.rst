@@ -150,13 +150,15 @@ Contributing
 ------------
 Check out our `contributing guide`_.
 
-Feature Requests
-----------------
+Feature Requests and questions
+------------------------------
 
-For Feature Requests and more questions raise a github `issue`_.
+For Feature Requests and more questions raise a github `issue`_. We will be happy to assist you.  
 
-We will be happy to assist you.
+Be sure to check the `documentation`_.  
 
+
+.. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
 
