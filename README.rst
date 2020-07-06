@@ -29,7 +29,7 @@ Out of the box, we offer several annotation parsers that translates different an
 
 A. By default, we offer  differents standard format parsers such as COCO and ROC,
 
-B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over (check out the Kaggle `Quickstart`_ parser),
+B. We host a community curated parsers where community contributors publish their own parsers to be shared, and therefore save time and energy in creating similar parsers over and over,
  
 C. We provide some intuitive tutorials that walk you through the steps of creating your own parser. Please, consider sharing it with the whole community.
 
@@ -146,36 +146,20 @@ Quick Example: How to train the **Wheat Dataset**
    trainer = Trainer(max_epochs=2, gpus=1)
    trainer.fit(model, train_dl, valid_dl)
 
-
-Tutorials
-^^^^^^^^^
-`Quickstart`_ : shows how to create a custom parser (WheatParser), and train the **Wheat dataset**
-
-`Wheat-Detr`_ : shows how to use a custom parser (WheatParser), and train the **Wheat dataset** using Detr
-
-`Penn-Fundan`_ : shows how to use the predefined COCO parser, and train the **Penn-Fundan dataset** using Detr
-
-
-Be sure to also check the other tutorials in the `tutorials`_ folder.
-
-
 Contributing
 ------------
 Check out our `contributing guide`_.
 
-FAQs and Feature Requests
---------------------------
+Feature Requests and questions
+------------------------------
 
-Please check out our `FAQs`_ page. For Feature Requests and more questions raise a github `issue`_.
+For Feature Requests and more questions raise a github `issue`_. We will be happy to assist you.  
 
-We will be happy to assist you.
+Be sure to check the `documentation`_.  
 
-.. _Quickstart: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_models/faster_rcnn_quickstart.html
-.. _Wheat-Detr: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_hub/hub_wheat_finetun.html
-.. _Penn-Fundan: https://lgvaz.github.io/mantisshrimp/tutorials/mantisshrimp_hub/hub_detr_finetune_pennfundan.html
-.. _tutorials: tutorials/
+
+.. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
-.. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
