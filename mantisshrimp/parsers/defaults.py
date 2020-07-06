@@ -11,9 +11,9 @@ class DefaultImageInfoParser(
     pass
 
 
-class FasterRCNNParser(Parser, LabelParserMixin, BBoxParserMixin, ABC):
+class FasterRCNNParser(Parser, LabelsParserMixin, BBoxesParserMixin, ABC):
     pass
 
 
-class MaskRCNNParser(FasterRCNNParser, MaskParserMixin, IsCrowdParserMixin, ABC):
+class MaskRCNNParser(FasterRCNNParser, MasksParserMixin, IsCrowdsParserMixin, ABC):
     pass

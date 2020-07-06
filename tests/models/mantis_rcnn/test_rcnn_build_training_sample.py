@@ -48,8 +48,8 @@ def test_build_training_sample_fasterrcnn(data_sample):
 
 
 def test_rcnn_empty_training_sample(data_sample):
-    data_sample["bbox"] = []
-    data_sample["label"] = []
+    data_sample["bboxes"] = []
+    data_sample["labels"] = []
     x, y = MantisMaskRCNN.build_training_sample(**data_sample)
     assert (y["boxes"] == tensor([_fake_box], dtype=torch.float)).all()
     assert y["labels"] == tensor([0])

@@ -34,7 +34,7 @@ VOC_CATEGORIES = {
 VOC_CATEGORIES = sorted(VOC_CATEGORIES)
 
 
-class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
+class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -73,7 +73,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
     def width(self, o) -> int:
         return int(self._size.find("width").text)
 
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         labels = []
         for object in self._root.iter("object"):
             label = object.find("name").text
@@ -82,7 +82,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
 
         return labels
 
-    def bbox(self, o) -> List[BBox]:
+    def bboxes(self, o) -> List[BBox]:
         def to_int(x):
             return int(float(x))
 
@@ -100,7 +100,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelParserMixin, BBoxParserMixin):
         return bboxes
 
 
-class VocMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
+class VocMaskParser(Parser, ImageidParserMixin, MasksParserMixin):
     def __init__(self, masks_dir: Union[str, Path]):
         self.mask_files = get_image_files(masks_dir)
 
@@ -113,5 +113,5 @@ class VocMaskParser(Parser, ImageidParserMixin, MaskParserMixin):
     def imageid(self, o) -> Hashable:
         return str(Path(o).stem)
 
-    def mask(self, o) -> List[Mask]:
+    def masks(self, o) -> List[Mask]:
         return [VocMaskFile(o)]

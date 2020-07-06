@@ -1,4 +1,4 @@
-__all__ = ["show_sample", "show_record"]
+__all__ = ["show_sample", "show_record", "show_pred"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.data import *
@@ -16,9 +16,9 @@ def show_sample(
 ):
     return show_annotation(
         img=sample["img"] if denormalize_fn is None else denormalize_fn(sample["img"]),
-        labels=sample["label"] if (label and "label" in sample) else None,
-        bboxes=sample["bbox"] if (bbox and "bbox" in sample) else None,
-        masks=sample["mask"] if (mask and "mask" in sample) else None,
+        labels=sample["labels"] if (label and "labels" in sample) else None,
+        bboxes=sample["bboxes"] if (bbox and "bboxes" in sample) else None,
+        masks=sample["masks"] if (mask and "masks" in sample) else None,
         ax=ax,
         show=show,
     )
@@ -37,4 +37,28 @@ def show_record(
     sample = data_preparer(record)
     return show_sample(
         sample=sample, label=label, bbox=bbox, mask=mask, ax=ax, show=show
+    )
+
+
+def show_pred(
+    img: np.ndarray,
+    pred: dict,
+    denormalize_fn=None,
+    label=True,
+    bbox=True,
+    mask=True,
+    show=False,
+    ax: plt.Axes = None,
+):
+    sample = pred.copy()
+    sample["img"] = img
+
+    return show_sample(
+        sample=sample,
+        denormalize_fn=denormalize_fn,
+        label=label,
+        bbox=bbox,
+        mask=mask,
+        show=show,
+        ax=ax,
     )

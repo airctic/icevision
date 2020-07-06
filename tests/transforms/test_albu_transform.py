@@ -23,5 +23,5 @@ def test_crop_transform(records):
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     print(tfmed["filepath"])
-    assert len(tfmed["bbox"]) == 1
-    assert len(tfmed["iscrowd"]) == 1
+    assert len(tfmed["bboxes"]) == 1
+    assert len(tfmed["iscrowds"]) == 1
