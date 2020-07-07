@@ -1,9 +1,9 @@
-__all__ = ["CATEGORIES", "load"]
+__all__ = ["CLASSES", "load"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 
-CATEGORIES = {
+CLASSES = {
     "Abyssinian",
     "great_pyrenees",
     "Bombay",
@@ -42,7 +42,8 @@ CATEGORIES = {
     "basset_hound",
     "Sphynx",
 }
-CATEGORIES = sorted(CATEGORIES)
+CLASSES = sorted(CLASSES)
+CLASSES = ["background"] + CLASSES
 
 
 def load(force_download=False):

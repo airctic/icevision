@@ -8,15 +8,14 @@ from mantisshrimp import *
 
 @pytest.fixture()
 def voc_category2id():
-    categories = sorted(VOC_CATEGORIES)
-    return {cat: i + 1 for i, cat in enumerate(categories)}
+    return {cls: i for i, cls in enumerate(CLASSES)}
 
 
 def test_voc_annotation_parser(samples_source, voc_category2id):
     annotation_parser = VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
-        categories=VOC_CATEGORIES,
+        classes=CLASSES,
     )
     records = annotation_parser.parse()[0]
 
@@ -63,7 +62,7 @@ def test_voc_combined_parser(samples_source, voc_category2id):
     annotation_parser = VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
-        categories=VOC_CATEGORIES,
+        classes=CLASSES,
     )
     mask_parser = VocMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
 

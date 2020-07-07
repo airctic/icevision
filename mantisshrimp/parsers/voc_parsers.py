@@ -1,4 +1,4 @@
-__all__ = ["VOC_CATEGORIES", "VocXmlParser", "VocMaskParser"]
+__all__ = ["CLASSES", "VocXmlParser", "VocMaskParser"]
 
 import xml.etree.ElementTree as ET
 from mantisshrimp.imports import *
@@ -9,7 +9,8 @@ from mantisshrimp.parsers.defaults import *
 from mantisshrimp.parsers.mixins import *
 
 
-VOC_CATEGORIES = {
+# TODO: Move to datasets
+CLASSES = {
     "person",
     "bird",
     "cat",
@@ -31,7 +32,8 @@ VOC_CATEGORIES = {
     "sofa",
     "tvmonitor",
 }
-VOC_CATEGORIES = sorted(VOC_CATEGORIES)
+CLASSES = sorted(CLASSES)
+CLASSES = ["background"] + CLASSES
 
 
 class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin):
@@ -39,15 +41,15 @@ class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin)
         self,
         annotations_dir: Union[str, Path],
         images_dir: Union[str, Path],
-        categories: List[str],
+        classes: List[str],
     ):
         self.images_dir = Path(images_dir)
 
         self.annotations_dir = Path(annotations_dir)
         self.annotation_files = get_files(self.annotations_dir, extensions=[".xml"])
 
-        self.categories = categories
-        self.category2id = {cat: i + 1 for i, cat in enumerate(self.categories)}
+        self.classes = classes
+        self.class2id = {cls: i for i, cls in enumerate(classes)}
 
     def __len__(self):
         return len(self.annotation_files)
@@ -77,7 +79,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin)
         labels = []
         for object in self._root.iter("object"):
             label = object.find("name").text
-            label_id = self.category2id[label]
+            label_id = self.class2id[label]
             labels.append(label_id)
 
         return labels

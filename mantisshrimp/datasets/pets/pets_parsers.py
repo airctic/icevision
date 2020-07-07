@@ -3,14 +3,14 @@ __all__ = ["parser", "PetsXmlParser", "PetsMaskParser", "PetsMaskFile"]
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers import *
-from mantisshrimp.datasets.pets import CATEGORIES
+from mantisshrimp.datasets.pets import CLASSES
 
 
 def parser(data_dir: Path, mask=False):
     parser = PetsXmlParser(
         annotations_dir=data_dir / "annotations/xmls",
         images_dir=data_dir / "images",
-        categories=CATEGORIES,
+        classes=CLASSES,
     )
 
     if mask:
@@ -23,7 +23,7 @@ def parser(data_dir: Path, mask=False):
 class PetsXmlParser(VocXmlParser):
     def labels(self, o) -> List[int]:
         name = re.findall(r"^(.*)_\d+$", o.stem)[0]
-        class_id = self.category2id[name]
+        class_id = self.class2id[name]
 
         # there is an image with two cats (same breed)
         num_objs = len(self._root.findall("object"))
