@@ -3,6 +3,7 @@ __all__ = ["BBox"]
 from mantisshrimp.imports import *
 
 
+# TODO: Can pnts and be tuple? Same for properties like xyxy
 @dataclass
 class BBox:
     pnts: List[int]
@@ -19,6 +20,11 @@ class BBox:
     @property
     def xyxy(self):
         return self.pnts
+
+    @property
+    def yxyx(self):
+        xmin, ymin, xmax, ymax = self.xyxy
+        return [ymin, xmin, ymax, xmax]
 
     @property
     def xywh(self):
