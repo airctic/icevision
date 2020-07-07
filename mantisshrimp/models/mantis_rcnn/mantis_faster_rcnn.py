@@ -4,7 +4,6 @@ from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
 from mantisshrimp.models.mantis_rcnn.mantis_rcnn import *
-from mantisshrimp.backbones import *
 
 
 class MantisFasterRCNN(MantisRCNN):
@@ -22,6 +21,7 @@ class MantisFasterRCNN(MantisRCNN):
         backbone: nn.Module = None,
         param_groups: List[nn.Module] = None,
         metrics=None,
+        remove_internal_transforms=True,
         **kwargs,
     ):
         super().__init__(metrics=metrics)
@@ -41,6 +41,9 @@ class MantisFasterRCNN(MantisRCNN):
 
         self._param_groups = param_groups + [self.model.rpn, self.model.roi_heads]
         check_all_model_params_in_groups(self.model, self._param_groups)
+
+        if remove_internal_transforms:
+            self._remove_transforms_from_model(self.model)
 
     def forward(self, images, targets=None):
         return self.model(images, targets)
@@ -84,7 +87,7 @@ class MantisFasterRCNN(MantisRCNN):
 
     @staticmethod
     def build_training_sample(
-        imageid: int, img: np.ndarray, label: List[int], bbox: List[BBox], **kwargs,
+        imageid: int, img: np.ndarray, labels: List[int], bboxes: List[BBox], **kwargs,
     ):
         x = im2tensor(img)
         # injected values when annotations are empty are disconsidered
@@ -92,7 +95,7 @@ class MantisFasterRCNN(MantisRCNN):
         _fake_box = [0, 1, 2, 3]
         y = {
             "image_id": tensor(imageid, dtype=torch.int64),
-            "labels": tensor(label or [0], dtype=torch.int64),
-            "boxes": tensor([o.xyxy for o in bbox] or [_fake_box], dtype=torch.float),
+            "labels": tensor(labels or [0], dtype=torch.int64),
+            "boxes": tensor([o.xyxy for o in bboxes] or [_fake_box], dtype=torch.float),
         }
         return x, y

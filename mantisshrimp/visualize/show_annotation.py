@@ -9,7 +9,7 @@ from matplotlib.collections import PatchCollection
 # TODO: rename im to img
 def show_annotation(
     img, labels=None, bboxes=None, masks=None, ax=None, figsize=None, show=False
-):
+) -> None:
     ax = show_img(img=img, ax=ax, figsize=figsize or (10, 10))
     polygons, colors = [], []
     for label, bbox, mask in itertools.zip_longest(

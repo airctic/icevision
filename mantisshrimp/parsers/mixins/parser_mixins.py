@@ -2,11 +2,11 @@ __all__ = [
     "ImageidParserMixin",
     "FilepathParserMixin",
     "SizeParserMixin",
-    "LabelParserMixin",
-    "BBoxParserMixin",
-    "AreaParserMixin",
-    "MaskParserMixin",
-    "IsCrowdParserMixin",
+    "LabelsParserMixin",
+    "BBoxesParserMixin",
+    "AreasParserMixin",
+    "MasksParserMixin",
+    "IsCrowdsParserMixin",
 ]
 
 from mantisshrimp.imports import *
@@ -56,15 +56,15 @@ class SizeParserMixin(ParserMixin):
 
 
 ## Annotation parsers ##
-class LabelParserMixin(ParserMixin):
+class LabelsParserMixin(ParserMixin):
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"label": self.label, **funcs}
+        return {"labels": self.labels, **funcs}
 
     @abstractmethod
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         """
-        Returns the label for the receive sample.
+        Returns the labels for the receive sample.
 
         .. important:
         If you are using a RCNN model, remember to return 0 for background
@@ -72,42 +72,42 @@ class LabelParserMixin(ParserMixin):
         """
 
 
-class BBoxParserMixin(ParserMixin):
+class BBoxesParserMixin(ParserMixin):
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"bbox": self.bbox, **funcs}
+        return {"bboxes": self.bboxes, **funcs}
 
     @abstractmethod
-    def bbox(self, o) -> List[BBox]:
+    def bboxes(self, o) -> List[BBox]:
         pass
 
 
-class MaskParserMixin(ParserMixin):
+class MasksParserMixin(ParserMixin):
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"mask": self.mask, **funcs}
+        return {"masks": self.masks, **funcs}
 
     @abstractmethod
-    def mask(self, o) -> List[Mask]:
+    def masks(self, o) -> List[Mask]:
         pass
 
 
-class AreaParserMixin(ParserMixin):
+class AreasParserMixin(ParserMixin):
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"area": self.area, **funcs}
+        return {"areas": self.areas, **funcs}
 
     @abstractmethod
-    def area(self, o) -> List[float]:
-        """ Returns area of the segmentation
+    def areas(self, o) -> List[float]:
+        """ Returns areas of the segmentation
         """
 
 
-class IsCrowdParserMixin(ParserMixin):
+class IsCrowdsParserMixin(ParserMixin):
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"iscrowd": self.iscrowd, **funcs}
+        return {"iscrowds": self.iscrowds, **funcs}
 
     @abstractmethod
-    def iscrowd(self, o) -> List[bool]:
+    def iscrowds(self, o) -> List[bool]:
         pass

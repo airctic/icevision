@@ -21,7 +21,7 @@ def parser(data_dir: Path, mask=False):
 
 
 class PetsXmlParser(VocXmlParser):
-    def label(self, o) -> List[int]:
+    def labels(self, o) -> List[int]:
         name = re.findall(r"^(.*)_\d+$", o.stem)[0]
         class_id = self.category2id[name]
 
@@ -32,7 +32,7 @@ class PetsXmlParser(VocXmlParser):
 
 
 class PetsMaskParser(VocMaskParser):
-    def mask(self, o) -> List[Mask]:
+    def masks(self, o) -> List[Mask]:
         return [PetsMaskFile(o)]
 
 
