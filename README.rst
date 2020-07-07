@@ -96,12 +96,14 @@ Enjoy!
 Manual Install
 --------------
 
-Install pytorch via your preferred way.
+Install PyTorch as per your preference from `here`_.
 
 .. code:: bash
 
    pip install git+git://github.com/lgvaz/mantisshrimp.git
    pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+   
+Windows users might run into some issues with COCOAPI installation, to resolve them follow the `discussion here`_.
 
 Quick Example: How to train the **Wheat Dataset**
 -------------------------------------------------
@@ -161,6 +163,8 @@ Be sure to check the `documentation`_.
 .. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
+.. _`here`: https://pytorch.org/get-started/locally/#start-locally
+.. _`discussion here`: https://github.com/lgvaz/mantisshrimp/issues/98
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
@@ -172,4 +176,3 @@ Be sure to check the `documentation`_.
    :target: https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE
 .. |docs| image:: https://github.com/lgvaz/mantisshrimp/workflows/docs/badge.svg
    :target: https://lgvaz.github.io/mantisshrimp/index.html
-
