@@ -4,6 +4,7 @@ from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers import *
 from mantisshrimp.datasets.pets import CLASSES
+from mantisshrimp.datasets.voc import VocXmlParser, VocMaskParser
 
 
 def parser(data_dir: Path, mask=False):
