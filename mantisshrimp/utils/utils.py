@@ -9,8 +9,10 @@ __all__ = [
     "zipsafe",
     "np_local_seed",
     "pbar",
-    "imagenet_stats",
+    "IMAGENET_STATS",
+    "normalize",
     "denormalize",
+    "normalize_imagenet",
     "denormalize_imagenet",
 ]
 
@@ -69,13 +71,25 @@ def np_local_seed(seed):
         np.random.set_state(state)
 
 
-imagenet_stats = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+def normalize(img, mean, std, max_pixel_value=255):
+    img = img.astype(np.float32)
+    img /= max_pixel_value
+
+    return (img - mean) / std
 
 
 def denormalize(img, mean, std, max_pixel_value=255):
     return np.around((img * std + mean) * max_pixel_value).astype(np.uint8)
 
 
+IMAGENET_STATS = ([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+
+
 def denormalize_imagenet(img):
-    mean, std = imagenet_stats
+    mean, std = IMAGENET_STATS
     return denormalize(img=img, mean=mean, std=std)
+
+
+def normalize_imagenet(img):
+    mean, std = IMAGENET_STATS
+    return normalize(img=img, mean=mean, std=std)
