@@ -45,9 +45,9 @@ C. As a bonus, our library even allows to experiment with another DL library. Ou
 
 Why Mantishrimp
 ---------------
-- Mantisshrimp: An object-detection library
+- An agnostic object-detection library
 - Connects to different libraries/framework such as fastai, Pytorch Lightning, and Pytorch
-- Features a Unified Data API such: common Parsers (COCO, etc.),
+- Features a Unified Data API such: common Parsers (COCO, VOC, etc.)
 - Integrates community maintaned parsers for custom datasets shared on parsers hub
 - Provides flexible model implementations using different backbones
 - Helps both researchers and DL engineers in reproducing, replicating published models
@@ -93,15 +93,30 @@ Please, follow the 3 steps:
 
 Enjoy!
 
-Manual Install
---------------
+Installation on a Local Machine
+-------------------------------
 
-Install pytorch via your preferred way.
+Use the following command in order to create a conda environment called **mantis** (the name is set in the `environment.yml` file)
 
-.. code:: bash
+In Linux:
+^^^^^^^^^
+```
+conda env create -f environment.yml
+```
 
-   pip install git+git://github.com/lgvaz/mantisshrimp.git
-   pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
+In Windows:
+^^^^^^^^^^^
+```
+conda env create -f environment-windows.yml
+```
+
+Activate a conda environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To activate the newly created `mantis` virtual environment, we run the following command:
+```
+conda activate mantis
+```
+
 
 Quick Example: How to train the **Wheat Dataset**
 -------------------------------------------------

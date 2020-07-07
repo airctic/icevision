@@ -1,0 +1,26 @@
+name: mantis
+channels:
+- fastai
+- pytorch
+- defaults
+dependencies:
+- jupyter
+- pytorch>=1.3.0
+- torchvision>=0.5
+- matplotlib
+- pandas
+- requests
+- pyyaml
+- fastprogress>=0.1.22
+- pillow
+- python>=3.6
+- pip
+- scikit-learn
+- scipy
+- Cython
+- pip:
+    - fastai2
+- pip:
+    - git+https://github.com/lgvaz/mantisshrimp.git
+- pip:
+    - "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
