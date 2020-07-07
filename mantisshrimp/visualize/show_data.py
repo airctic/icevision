@@ -89,6 +89,7 @@ def show_records(
             bbox=bbox,
             mask=mask,
             prepare_record=prepare_record,
+            show=False,
         )
         for record in records
     ]
@@ -113,6 +114,7 @@ def show_samples(
             label=label,
             bbox=bbox,
             mask=mask,
+            show=False,
         )
         for sample in samples
     ]
@@ -145,6 +147,7 @@ def show_preds(
             label=label,
             bbox=bbox,
             mask=mask,
+            show=False,
         )
         for img, pred in zip(imgs, preds)
     ]
