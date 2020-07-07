@@ -2,7 +2,7 @@ from mantisshrimp.imports import *
 from mantisshrimp import *
 
 img = 255 * np.ones((4, 4, 3), dtype=np.uint8)
-bboxes = [BBox.from_xyxy(1, 1, 4, 4), BBox.from_xyxy(1, 1, 2, 2)]
+bboxes = [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
 labels = [1, 2]
 
 
@@ -12,7 +12,7 @@ def build_train_sample(img: np.ndarray, labels: List[int], bboxes: List[BBox]):
 
     y = {
         "cls": tensor(labels, dtype=torch.int64),
-        "boxes": tensor([bbox.xyxy for bbox in bboxes], dtype=torch.float64),
+        "boxes": tensor([bbox.yxyx for bbox in bboxes], dtype=torch.float64),
     }
 
     return x, y
@@ -24,7 +24,7 @@ assert torch.all(image == torch.ones((3, 4, 4), dtype=torch.float32))
 
 assert torch.all(target["cls"] == tensor([1, 2], dtype=torch.int64))
 assert torch.all(
-    target["boxes"] == tensor([[1, 1, 4, 4], [1, 1, 2, 2]], dtype=torch.float64)
+    target["boxes"] == tensor([[2, 1, 4, 3], [3, 4, 1, 2]], dtype=torch.float64)
 )
 
 ## Dataloader
