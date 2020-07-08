@@ -98,24 +98,45 @@ Installation on a Local Machine
 
 Use the following command in order to create a conda environment called **mantis** (the name is set in the `environment.yml` file)
 
-In Linux:
-^^^^^^^^^
-```
-conda env create -f environment.yml
-```
+.. code:: bash
 
-In Windows:
-^^^^^^^^^^^
-```
-conda env create -f environment-windows.yml
-```
+   conda env create -f environment.yml
 
-Activate a conda environment
+Install **pycoco** in Linux:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To activate the newly created `mantis` virtual environment, we run the following command:
-```
-conda activate mantis
-```
+
+.. code:: bash
+
+   pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
+   
+
+Install **pycoco** in Windows:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+`pycoco` cannot be installed using the command above (see `issue-185`_ in the cocoapi repository)
+
+.. code:: bash
+
+   pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
+   
+
+
+Activate `mantis` conda environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To activate the newly created `mantis` virtual environment, run the following command:
+
+.. code:: bash
+
+   conda activate mantis
+
+
+Update `mantis` conda environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To update `mantis` conda environment, all you need to do is update the content of your environment.yml file accordingly and then run the following command:
+
+.. code:: bash
+
+   conda env update -f environment.yml  --prune
+
 
 
 Quick Example: How to train the **Wheat Dataset**
@@ -192,6 +213,7 @@ We will be happy to assist you.
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _FAQs: https://lgvaz.github.io/mantisshrimp/faqs.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
+.. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests

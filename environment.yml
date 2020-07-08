@@ -22,5 +22,3 @@ dependencies:
     - fastai2
 - pip:
     - git+https://github.com/lgvaz/mantisshrimp.git
-- pip:
-    - "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
