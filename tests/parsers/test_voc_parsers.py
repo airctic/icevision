@@ -1,22 +1,17 @@
 import pytest
-from mantisshrimp.imports import *
 from mantisshrimp import *
-
-
-# source = Path("/Users/lgvaz/git/mantisshrimp/samples/voc")
 
 
 @pytest.fixture()
 def voc_category2id():
-    categories = sorted(VOC_CATEGORIES)
-    return {cat: i + 1 for i, cat in enumerate(categories)}
+    return {cls: i for i, cls in enumerate(datasets.voc.CLASSES)}
 
 
 def test_voc_annotation_parser(samples_source, voc_category2id):
-    annotation_parser = VocXmlParser(
+    annotation_parser = datasets.voc.VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
-        categories=VOC_CATEGORIES,
+        classes=datasets.voc.CLASSES,
     )
     records = annotation_parser.parse()[0]
 
@@ -46,7 +41,9 @@ def test_voc_annotation_parser(samples_source, voc_category2id):
 
 
 def test_voc_mask_parser(samples_source):
-    mask_parser = VocMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
+    mask_parser = datasets.voc.VocMaskParser(
+        masks_dir=samples_source / "voc/SegmentationClass"
+    )
     records = mask_parser.parse()[0]
 
     record = records[0]
@@ -60,12 +57,14 @@ def test_voc_mask_parser(samples_source):
 
 
 def test_voc_combined_parser(samples_source, voc_category2id):
-    annotation_parser = VocXmlParser(
+    annotation_parser = datasets.voc.VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
-        categories=VOC_CATEGORIES,
+        classes=datasets.voc.CLASSES,
     )
-    mask_parser = VocMaskParser(masks_dir=samples_source / "voc/SegmentationClass")
+    mask_parser = datasets.voc.VocMaskParser(
+        masks_dir=samples_source / "voc/SegmentationClass"
+    )
 
     combined_parser = CombinedParser(annotation_parser, mask_parser)
     records = combined_parser.parse()[0]

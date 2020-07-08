@@ -2,13 +2,21 @@ __all__ = ["show_annotation"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
+from mantisshrimp.core import *
 from mantisshrimp.visualize.utils import *
 from matplotlib.collections import PatchCollection
 
 
 # TODO: rename im to img
 def show_annotation(
-    img, labels=None, bboxes=None, masks=None, ax=None, figsize=None, show=False
+    img,
+    labels: List[int] = None,
+    bboxes: List[BBox] = None,
+    masks=None,
+    classes: List[str] = None,
+    ax: plt.axes = None,
+    figsize=None,
+    show=False,
 ) -> None:
     ax = show_img(img=img, ax=ax, figsize=figsize or (10, 10))
     polygons, colors = [], []
@@ -22,6 +30,9 @@ def show_annotation(
         if mask is not None:
             draw_mask(ax, mask.data.copy(), color)
         if label is not None:
+            if classes is not None:
+                label = classes[label]
+            # label position
             if bbox is not None:
                 x, y = bbox.x, bbox.y
             elif mask is not None:
