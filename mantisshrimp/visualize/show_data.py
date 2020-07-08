@@ -16,6 +16,7 @@ from mantisshrimp.visualize.show_annotation import *
 
 def show_sample(
     sample,
+    classes: Optional[List[str]] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -28,6 +29,7 @@ def show_sample(
         labels=sample["labels"] if (label and "labels" in sample) else None,
         bboxes=sample["bboxes"] if (bbox and "bboxes" in sample) else None,
         masks=sample["masks"] if (mask and "masks" in sample) else None,
+        classes=classes,
         ax=ax,
         show=show,
     )
@@ -35,6 +37,7 @@ def show_sample(
 
 def show_record(
     record: RecordType,
+    classes: Optional[List[str]] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -44,12 +47,21 @@ def show_record(
 ) -> None:
     data_preparer = prepare_record or default_prepare_record
     sample = data_preparer(record)
-    show_sample(sample=sample, label=label, bbox=bbox, mask=mask, ax=ax, show=show)
+    show_sample(
+        sample=sample,
+        label=label,
+        bbox=bbox,
+        mask=mask,
+        classes=classes,
+        ax=ax,
+        show=show,
+    )
 
 
 def show_pred(
     img: np.ndarray,
     pred: dict,
+    classes: Optional[List[str]] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
@@ -66,6 +78,7 @@ def show_pred(
         label=label,
         bbox=bbox,
         mask=mask,
+        classes=classes,
         show=show,
         ax=ax,
     )
@@ -73,6 +86,7 @@ def show_pred(
 
 def show_records(
     records: List[RecordType],
+    classes: Optional[List[str]] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -88,6 +102,7 @@ def show_records(
             label=label,
             bbox=bbox,
             mask=mask,
+            classes=classes,
             prepare_record=prepare_record,
             show=False,
         )
@@ -98,6 +113,7 @@ def show_records(
 
 def show_samples(
     samples: List[dict],
+    classes: Optional[List[str]] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -114,6 +130,7 @@ def show_samples(
             label=label,
             bbox=bbox,
             mask=mask,
+            classes=classes,
             show=False,
         )
         for sample in samples
@@ -124,6 +141,7 @@ def show_samples(
 def show_preds(
     imgs: np.ndarray,
     preds: dict,
+    classes: Optional[List[str]] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
@@ -143,6 +161,7 @@ def show_preds(
             show_pred,
             img=img,
             pred=pred,
+            classes=classes,
             denormalize_fn=denormalize_fn,
             label=label,
             bbox=bbox,
