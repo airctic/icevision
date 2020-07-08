@@ -4,5 +4,7 @@ tensorboard>=1.14
 pyyaml>=3.13
 fastcore>=0.1.17
 opencv-python>=4.2.0
-pytorch-lightning>=0.7.6
 torchvision==0.6.0
+albumentations>=0.4.5
+fastai2==0.0.17
+pytorch-lightning>=0.7.6
