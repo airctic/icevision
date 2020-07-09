@@ -85,11 +85,21 @@ To jumpstart using mantisshrimp package without manually installing it and its d
 
 Please, follow the 3 steps:
 
-1. Install Docker by following the instructions shown here: https://docs.docker.com/engine/install/ (Only if Docker is not already installed)
+1. Install Docker by following the instructions shown in `Docker website`_ (Only if Docker is not already installed)
 
-2. Run `docker pull mantisshrimp`, in your terminal
+2. In the terminal, pull the mantisshrimp docker image: 
 
-3. Run `docker run -it mantisshrimp`, in your terminal  
+.. code:: bash
+   
+   docker pull mantisshrimp
+
+
+3. In the terminal, run the mantisshrimp docker container:  
+
+.. code:: bash
+   
+   docker run -it mantisshrimp
+   
 
 Enjoy!
 
@@ -113,9 +123,11 @@ Installing albumentations package
    pip install albumentations
 
 Installing mantisshrimp package using its github repo
+
 .. code:: bash
 
    pip install git+git://github.com/lgvaz/mantisshrimp.git
+
 
 C- Local Installation using conda
 ---------------------------------
@@ -138,16 +150,16 @@ D- Common step: cocoapi Installation: for both pypi and conda installation
 --------------------------------------------------------------------------
 
 
-D.1- Installing **pycoco** in Linux:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D.1- Installing **cocoapi** in Linux:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash
 
    pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
    
 
-D.2- Installing **pycoco** in Windows:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+D.2- Installing **cocoapi** in Windows:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 `pycoco` cannot be installed using the command above (see `issue-185`_ in the cocoapi repository). We are using this workaround:
 
 .. code:: bash
@@ -261,8 +273,9 @@ Be sure to check the `documentation`_.
 .. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
-.. _`here`: https://pytorch.org/get-started/locally/#start-locally
+.. _here: https://pytorch.org/get-started/locally/#start-locally
 .. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
+.. _Docker website: https://docs.docker.com/engine/install/
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
