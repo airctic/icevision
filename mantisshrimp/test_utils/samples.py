@@ -23,7 +23,7 @@ def sample_image_info_parser():
 
 
 def sample_annotation_parser():
-    return COCOAnnotationParser2(annotations_dict["annotations"])
+    return COCOAnnotationParser(annotations_dict["annotations"])
 
 
 def sample_combined_parser():
