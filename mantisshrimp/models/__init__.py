@@ -5,3 +5,4 @@ from mantisshrimp.models.device_module_mixin import *
 from mantisshrimp.models.mantis_module import *
 from mantisshrimp.models.mantis_rcnn import *
 from mantisshrimp.models.mantis_detr import *
+from mantisshrimp.models.efficient_det import *
