@@ -18,30 +18,8 @@ def bboxes():
     return [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
 
 
-class EfficientDet:
-    @staticmethod
-    def build_train_sample(img: np.ndarray, labels: List[int], bboxes: List[BBox]):
-        x = im2tensor(img)
-
-        y = {
-            "cls": tensor(labels, dtype=torch.int64),
-            "boxes": tensor([bbox.yxyx for bbox in bboxes], dtype=torch.float64),
-        }
-
-        return x, y
-
-    @classmethod
-    def collate_fn(cls, samples):
-        train_samples = [cls.build_train_sample(**sample) for sample in samples]
-        return tuple(zip(*train_samples))
-
-    @classmethod
-    def dataloader(cls, dataset, **kwargs):
-        return DataLoader(dataset=dataset, collate_fn=cls.collate_fn, **kwargs)
-
-
 def test_efficient_det_build_train_sample(img, labels, bboxes):
-    image, target = EfficientDet.build_train_sample(
+    image, target = MantisEfficientDet.build_train_sample(
         img=img, labels=labels, bboxes=bboxes
     )
 
@@ -53,16 +31,42 @@ def test_efficient_det_build_train_sample(img, labels, bboxes):
     )
 
 
+def test_efficient_det_build_valid_sample(img, labels, bboxes):
+    image, target = MantisEfficientDet.build_valid_sample(
+        img=img, labels=labels, bboxes=bboxes
+    )
+
+    assert torch.all(image == torch.ones((3, 4, 4), dtype=torch.float32))
+
+    assert torch.all(target["cls"] == tensor([1, 2], dtype=torch.int64))
+    assert torch.all(
+        target["boxes"] == tensor([[2, 1, 4, 3], [3, 4, 1, 2]], dtype=torch.float64)
+    )
+    assert torch.all(target["img_scale"] == tensor([1.0, 1.0]))
+    assert torch.all(target["img_size"] == tensor([[4, 4], [4, 4]]))
+
+
 def test_efficient_det_dataloader(img, labels, bboxes):
     dataset = [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
 
-    dl = EfficientDet.dataloader(dataset, batch_size=2)
+    dl = MantisEfficientDet.dataloader(dataset, batch_size=2)
     xb, yb = first(dl)
 
-    assert len(xb) == len(yb) == 2
+    assert xb.shape == (2, 3, 4, 4)
 
-    for x in xb:
-        assert x.shape == (3, 4, 4)
-
+    assert len(yb) == 2
     for y in yb:
         assert set(y.keys()) == {"cls", "boxes"}
+
+
+def test_efficient_det_valid_dataloader(img, labels, bboxes):
+    dataset = [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
+
+    dl = MantisEfficientDet.valid_dataloader(dataset, batch_size=2)
+    xb, yb = first(dl)
+
+    assert xb.shape == (2, 3, 4, 4)
+
+    assert len(yb) == 2
+    for y in yb:
+        assert set(y.keys()) == {"cls", "boxes", "img_size", "img_scale"}
