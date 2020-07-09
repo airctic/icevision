@@ -242,7 +242,7 @@ Quick Example: How to train the **PETS Dataset**
           opt = SGD(self.parameters(), 2e-4, momentum=0.9)
           return opt
 
-   light_model = LightModel(model, metrics=metrics)
+   light_model = LightModel(model)
    trainer = Trainer(max_epochs=3, gpus=1)
    trainer.fit(light_model, train_dl, valid_dl)
 
