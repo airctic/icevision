@@ -23,7 +23,6 @@ class FridgeXmlParser(VocXmlParser):
         name = re.findall(r"^(.*)_\d+$", o.stem)[0]
         class_id = self.category2id[name]
 
-        # there is an image with two cats (same breed)
-        num_objs = len(self._root.findall("object"))
+        # num_obj is not necessary
 
-        return [class_id] * num_objs
+        return [class_id]
