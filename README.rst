@@ -45,9 +45,9 @@ C. As a bonus, our library even allows to experiment with another DL library. Ou
 
 Why Mantishrimp
 ---------------
-- Mantisshrimp: An object-detection library
+- An agnostic object-detection library
 - Connects to different libraries/framework such as fastai, Pytorch Lightning, and Pytorch
-- Features a Unified Data API such: common Parsers (COCO, etc.),
+- Features a Unified Data API such: common Parsers (COCO, VOC, etc.)
 - Integrates community maintaned parsers for custom datasets shared on parsers hub
 - Provides flexible model implementations using different backbones
 - Helps both researchers and DL engineers in reproducing, replicating published models
@@ -79,74 +79,184 @@ This library is only made possible because of @all-contributors, thank you â™¥ï¸
 .. |image7| image:: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7
    :target: https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7
 
-Quick Start: Use Mantisshrimp Docker Container
-----------------------------------------------
+A- Quick Start: Use Mantisshrimp Docker Container
+-------------------------------------------------
 To jumpstart using mantisshrimp package without manually installing it and its dependencies, use our docker container!
 
 Please, follow the 3 steps:
 
-1. Install Docker by following the instructions shown here: https://docs.docker.com/engine/install/ (Only if Docker is not already installed)
+1. Install Docker by following the instructions shown in `Docker website`_ (Only if Docker is not already installed)
 
-2. Run `docker pull mantisshrimp`, in your terminal
+2. In the terminal, pull the mantisshrimp docker image: 
 
-3. Run `docker run -it mantisshrimp`, in your terminal  
+.. code:: bash
+   
+   docker pull mantisshrimp
+
+
+3. In the terminal, run the mantisshrimp docker container:  
+
+.. code:: bash
+   
+   docker run -it mantisshrimp
+   
 
 Enjoy!
 
-Manual Install
---------------
+B- Local Installation using pypi
+--------------------------------
+Using pypi repository, you can install mantisshrimp and its dependencies:
 
 Install PyTorch as per your preference from `here`_.
+
+Installing fastai and/or Pytorch-Lightning packages
+
+.. code:: bash
+
+   pip install fastai2
+   pip install pytorch-lightning
+
+Installing albumentations package
+
+.. code:: bash
+
+   pip install albumentations
+
+Installing mantisshrimp package using its github repo
 
 .. code:: bash
 
    pip install git+git://github.com/lgvaz/mantisshrimp.git
-   pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
-   
-Windows users might run into some issues with COCOAPI installation, to resolve them follow the `discussion here`_.
 
-Quick Example: How to train the **Wheat Dataset**
+
+C- Local Installation using conda
+---------------------------------
+Use the following command in order to create a conda environment called **mantis** (the name is set in the `environment.yml` file)
+
+.. code:: bash
+
+   conda env create -f environment.yml
+
+Activating `mantis` conda environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To activate the newly created `mantis` virtual environment, run the following command:
+
+.. code:: bash
+
+   conda activate mantis
+
+
+D- Common step: cocoapi Installation: for both pypi and conda installation
+--------------------------------------------------------------------------
+
+
+D.1- Installing **cocoapi** in Linux:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+   pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
+   
+
+D.2- Installing **cocoapi** in Windows:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+`pycoco` cannot be installed using the command above (see `issue-185`_ in the cocoapi repository). We are using this workaround:
+
+.. code:: bash
+
+   pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
+   
+
+
+E- Updating `mantis` conda environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To update `mantis` conda environment, all you need to do is update the content of your environment.yml file accordingly and then run the following command:
+
+.. code:: bash
+
+   conda env update -f environment.yml  --prune
+
+
+
+Quick Example: How to train the **PETS Dataset**
 -------------------------------------------------
 
 .. code:: python
 
    from mantisshrimp.imports import *
    from mantisshrimp import *
-   import pandas as pd
    import albumentations as A
 
-   source = Path("/home/lgvaz/.data/wheat")
-   df = pd.read_csv(source / "train.csv")
-   df.head()
+   # Load the PETS dataset
+   path = datasets.pets.load()
 
-   # Custom parser
+   # split dataset lists
    data_splitter = RandomSplitter([.8, .2])
-   parser = WheatParser(df, source / "train")
+
+   # PETS parser: provided out-of-the-box
+   parser = datasets.pets.parser(path)
    train_rs, valid_rs = parser.parse(data_splitter)
 
+   # For convenience
+   CLASSES = datasets.pets.CLASSES
+
    # shows images with corresponding labels and boxes
-   show_record(train_rs[0], label=False)
+   records = train_records[:6]
+   show_records(records, ncols=3, classes=CLASSES)
+
+   # ImageNet stats
+   imagenet_mean, imagenet_std = IMAGENET_STATS
 
    # Transform: supporting albumentations transforms out of the box
-   train_tfm = AlbuTransform([A.Flip()])
+   # Transform for the train dataset
+   train_tfms = AlbuTransform(
+       [
+           A.LongestMaxSize(384),
+           A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
+           A.HorizontalFlip(),
+           A.ShiftScaleRotate(rotate_limit=20),
+           A.RGBShift(always_apply=True),
+           A.RandomBrightnessContrast(),
+           A.Blur(blur_limit=(1, 3)),
+           A.Normalize(mean=imagenet_mean, std=imagenet_std),
+       ]
+   )
+
+   # Transform for the validation dataset
+   valid_tfms = AlbuTransform(
+       [
+           A.LongestMaxSize(384),
+           A.Normalize(mean=imagenet_mean, std=imagenet_std),
+       ]
+   )   
 
    # Create both training and validation datasets
-   train_ds = Dataset(train_rs, train_tfm)
-   valid_ds = Dataset(valid_rs)
+   train_ds = Dataset(train_records, train_tfms)
+   valid_ds = Dataset(valid_records, valid_tfms)
 
    # Create both training and validation dataloaders
-   train_dl = model.dataloader(train_ds, shuffle=True, batch_size=8, num_workers=2)
-   valid_dl = model.dataloader(valid_ds, batch_size=8, num_workers=2)
-
-   # Use pre-trained backbone
-   resnet_101_backbone = MantisFasterRCNN.get_backbone_by_name("resnet101", fpn=True, pretrained=True)
+   train_dl = model.dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
+   valid_dl = model.dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 
    # Create model
-   model = WheatModel(n_class=2, backbone=resnet_101_backbone)
+   model = MantisFasterRCNN(num_classes= len(CLASSES))
 
-   # Train (fit) model
-   trainer = Trainer(max_epochs=2, gpus=1)
-   trainer.fit(model, train_dl, valid_dl)
+   # Training the model using fastai2
+   from mantisshrimp.engines.fastai import *
+   learn = rcnn_learner(dls=[train_dl, valid_dl], model=model)
+   learn.fine_tune(10, lr=1e-4)
+
+   # Training the model using Pytorch-Lightning
+   from mantisshrimp.engines.lightning import *
+   
+   class LightModel(RCNNLightningAdapter):
+      def configur1e_optimizers(self):
+          opt = SGD(self.parameters(), 2e-4, momentum=0.9)
+          return opt
+
+   light_model = LightModel(model)
+   trainer = Trainer(max_epochs=3, gpus=1)
+   trainer.fit(light_model, train_dl, valid_dl)
 
 Contributing
 ------------
@@ -163,8 +273,9 @@ Be sure to check the `documentation`_.
 .. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
 .. _contributing guide: https://lgvaz.github.io/mantisshrimp/contributing.html
 .. _issue: https://github.com/lgvaz/mantisshrimp/issues/
-.. _`here`: https://pytorch.org/get-started/locally/#start-locally
-.. _`discussion here`: https://github.com/lgvaz/mantisshrimp/issues/98
+.. _here: https://pytorch.org/get-started/locally/#start-locally
+.. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
+.. _Docker website: https://docs.docker.com/engine/install/
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests

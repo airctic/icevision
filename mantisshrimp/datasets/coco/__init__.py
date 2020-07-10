@@ -1,1 +1,1 @@
-from mantisshrimp.datasets.coco import *
+from mantisshrimp.datasets.coco.parsers import *
