@@ -30,11 +30,11 @@ data_splitter = RandomSplitter([.8, .2])
 # Parse the data into train and validation
 train_records, valid_records = parser.parse(data_splitter)
 
-# To geth number of classes
+# List of all available classes
 pet_classes = datasets.pets.CLASSES
 
 ```
-Note: - The datasets interface will always have at least two functions: load and parser and an attribute CLASSES
+Note: - The datasets interface will always have at least two functions: `load` and `parser` and an attribute `CLASSES`
 
 
 # Disclaimer
