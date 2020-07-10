@@ -250,7 +250,7 @@ Quick Example: How to train the **PETS Dataset**
    from mantisshrimp.engines.lightning import *
    
    class LightModel(RCNNLightningAdapter):
-      def configur1e_optimizers(self):
+      def configure_optimizers(self):
           opt = SGD(self.parameters(), 2e-4, momentum=0.9)
           return opt
 
