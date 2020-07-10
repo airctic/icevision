@@ -11,6 +11,7 @@ MANTISSHRIMP DOCUMENTATION
    :caption: Start Here
 
    readme_link
+   tutorials/getting_started
    tutorials/introduction_guide
    contributing
 
