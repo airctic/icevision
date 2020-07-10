@@ -1,6 +1,7 @@
 __all__ = ["adapted_fastai_learner"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 from mantisshrimp.metrics import *
 from mantisshrimp.engines.fastai.imports import *
 from mantisshrimp.engines.fastai.adapters import *
@@ -8,10 +9,11 @@ from mantisshrimp.engines.fastai.adapters import *
 
 def adapted_fastai_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
-    model,
+    model: nn.Module,
+    param_groups: List[List[nn.Parameter]] = None,
     metrics=None,
     device=None,
-    **kwargs,
+    **learner_kwargs,
 ):
     # convert dataloaders to fastai
     fastai_dls = []
@@ -35,4 +37,20 @@ def adapted_fastai_learner(
         for metric in metrics
     ]
 
-    return fastai.Learner(dls=fastai_dls, model=model, metrics=fastai_metrics, **kwargs)
+    # convert param_groups to fastai model_splitter
+    if param_groups is not None:
+        if learner_kwargs.get("splitter", False):
+            raise ValueError(
+                "You cannot specify both `param_groups` and `splitter`,"
+                " since they achieve the same functionality."
+            )
+
+        def model_splitter(model):
+            check_all_model_params_in_groups2(model, param_groups)
+            return param_groups
+
+        learner_kwargs["splitter"] = model_splitter
+
+    return fastai.Learner(
+        dls=fastai_dls, model=model, metrics=fastai_metrics, **learner_kwargs,
+    )
