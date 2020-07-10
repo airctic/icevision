@@ -258,6 +258,21 @@ Quick Example: How to train the **PETS Dataset**
    trainer = Trainer(max_epochs=3, gpus=1)
    trainer.fit(light_model, train_dl, valid_dl)
 
+Streamlit Demo
+--------------
+
+Simply run the following in your terminal. It should start a demo in your browser.
+It will show you one of our trained models as a pet detector !!
+
+.. code:: bash
+
+   streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
+
+`This`_ is the source code for the demo. 
+
+You can also use it as template when creating your own streamlit apps with mantisshrimp.
+
+
 Contributing
 ------------
 Check out our `contributing guide`_.
@@ -276,6 +291,7 @@ Be sure to check the `documentation`_.
 .. _here: https://pytorch.org/get-started/locally/#start-locally
 .. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
 .. _Docker website: https://docs.docker.com/engine/install/
+.. _This: https://github.com/oke-aditya/mantisshrimp_streamlit
 
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
