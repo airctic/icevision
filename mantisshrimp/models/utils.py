@@ -1,4 +1,10 @@
-__all__ = ["filter_params", "unfreeze", "freeze", "transform_collate"]
+__all__ = [
+    "filter_params",
+    "unfreeze",
+    "freeze",
+    "transform_collate",
+    "transform_dataloader",
+]
 
 from mantisshrimp.imports import *
 
@@ -50,3 +56,8 @@ def transform_collate(build_batch, batch_tfms=None):
         return build_batch(records)
 
     return collate_fn
+
+
+def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
+    collate_fn = transform_collate(build_batch=build_batch, batch_tfms=batch_tfms)
+    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)

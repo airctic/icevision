@@ -1,6 +1,7 @@
 import pytest
 from mantisshrimp.imports import *
-from mantisshrimp import *
+from mantisshrimp.core import *
+from mantisshrimp.models import efficient_det
 
 
 @pytest.fixture()
@@ -55,24 +56,24 @@ def _test_batch_valid(images, targets):
 
 
 def test_efficient_det_build_train_batch(records):
-    images, targets = models.efficient_det.build_train_batch(records)
+    images, targets = efficient_det.build_train_batch(records)
     _test_batch_train(images=images, targets=targets)
 
 
 def test_efficient_det_build_valid_batch(records):
-    images, targets = models.efficient_det.build_valid_batch(records)
+    images, targets = efficient_det.build_valid_batch(records)
     _test_batch_valid(images=images, targets=targets)
 
 
 def test_efficient_det_train_dataloader(records):
-    dl = models.efficient_det.train_dataloader(records, batch_size=2)
+    dl = efficient_det.train_dataloader(records, batch_size=2)
     xb, yb = first(dl)
 
     _test_batch_train(images=xb, targets=yb)
 
 
 def test_efficient_det_valid_dataloader(records):
-    dl = models.efficient_det.valid_dataloader(records, batch_size=2)
+    dl = efficient_det.valid_dataloader(records, batch_size=2)
     xb, yb = first(dl)
 
     _test_batch_valid(images=xb, targets=yb)
