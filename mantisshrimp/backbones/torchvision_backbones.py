@@ -4,6 +4,48 @@ __all__ = ["create_torchvision_backbone"]
 from mantisshrimp.imports import *
 
 
+def mobilenet_param_groups(model: nn.Module) -> List[nn.Parameter]:
+    return [list(model.parameters())]
+
+
+def mobilenet(pretrained: bool = True):
+    mobile_net = torchvision.models.mobilenet_v2(pretrained=pretrained)
+
+    ft_backbone = mobile_net.features
+    ft_backbone.out_channels = 1280
+    ft_backbone.param_groups = mobilenet_param_groups
+
+    return ft_backbone
+
+
+def vgg_param_groups(model: nn.Module) -> List[nn.Parameter]:
+    return [list(model.parameters())]
+
+
+def _vgg_features(model: nn.Module):
+    feats = model.features
+    feats.out_channels = 512
+    feats.param_groups = vgg_param_groups
+
+    return feats
+
+
+def vgg11(pretrained: bool = True):
+    return _vgg_features(model=torchvision.models.vgg11(pretrained=pretrained))
+
+
+def vgg13(pretrained: bool = True):
+    return _vgg_features(model=torchvision.models.vgg13(pretrained=pretrained))
+
+
+def vgg16(pretrained: bool = True):
+    return _vgg_features(model=torchvision.models.vgg16(pretrained=pretrained))
+
+
+def vgg19(pretrained: bool = True):
+    return _vgg_features(model=torchvision.models.vgg19(pretrained=pretrained))
+
+
 def create_torchvision_backbone(backbone: str, pretrained: bool):
     # These creates models from torchvision directly, it uses imagent pretrained_weights
     if backbone == "mobilenet":
