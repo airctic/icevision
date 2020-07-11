@@ -8,7 +8,7 @@ from mantisshrimp.engines.lightning.lightning_model_adapter import LightningMode
 
 
 class RCNNLightningAdapter(LightningModelAdapter, ABC):
-    def __init__(self, model: MantisRCNN, metrics: List[Metric]):
+    def __init__(self, model: MantisRCNN, metrics: List[Metric] = None):
         super().__init__(metrics=metrics)
         self.model = model
 

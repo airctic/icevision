@@ -3,37 +3,25 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Mantisshrimp Documentation
+MANTISSHRIMP DOCUMENTATION
 ==========================
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Start Here
 
    readme_link
+   tutorials/getting_started
+   tutorials/introduction_guide
    contributing
-   faqs
 
 .. toctree::
    :maxdepth: 1
-   :caption: Mantisshrimp Models:
-   :glob:
+   :caption: Tutorials
 
-   tutorials/mantisshrimp_models/*
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Mantisshrimp Data:
-   :glob:
-
-   tutorials/mantisshrimp_data/*
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Mantisshrimp Hub:
-   :glob:
-
-   tutorials/mantisshrimp_hub/*
+   tutorials/custom_parsers
+   tutorials/custom_backbones
+   tutorials/detr_showcase
 
 
 Indices and tables

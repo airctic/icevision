@@ -30,7 +30,7 @@ show_annotation(
 
 # TODO: Rethink CATEGORIES, should they always be present in parser?
 # Should call it CLASSES instead of CATEGORIES?
-model = MantisFasterRCNN(num_classes=len(pets.CATEGORIES))
+model = MantisFasterRCNN(num_classes=len(pets.CLASSES))
 
 train_dl = model.dataloader(train_ds, batch_size=2, shuffle=True)
 valid_dl = model.dataloader(valid_ds, batch_size=2)

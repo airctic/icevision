@@ -1,3 +1,4 @@
+from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 
 
@@ -32,3 +33,13 @@ def test_allequal():
 def test_mergeds():
     ds = [{"a": 2}, {"b": 3}, {"a": 1}, {"c": 0}, {"b": 5}, {"a": 3}]
     assert mergeds(ds) == {"a": [2, 1, 3], "b": [3, 5], "c": [0]}
+
+
+def normalize_denormalize():
+    img = np.linspace(0, 255, 4 * 2 * 3, dtype=np.uint8).reshape(4, 2, 3)
+    mean = img.mean() / 255
+    std = img.std() / 255
+
+    res = denormalize(normalize(img, mean=mean, std=std), mean=mean, std=std)
+    assert type(res) == type(img)
+    assert np.all(res == img)
