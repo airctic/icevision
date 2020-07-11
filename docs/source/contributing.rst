@@ -1,5 +1,5 @@
-Contributing to MantisShrimp
-############################
+Contribution Guide
+##################
 
 **Please, follow these steps**
 

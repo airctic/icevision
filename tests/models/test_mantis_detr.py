@@ -10,7 +10,7 @@ from PIL import Image
 @pytest.mark.skip
 def test_detr_result():
     model = MantisDetr().eval()
-    tfm = AlbuTransform([A.SmallestMaxSize(800), A.Normalize(*imagenet_stats)])
+    tfm = AlbuTransform([A.SmallestMaxSize(800), A.Normalize(*IMAGENET_STATS)])
     # get image
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
     img = np.array(Image.open(requests.get(url, stream=True).raw))
