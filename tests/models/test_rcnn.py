@@ -1,6 +1,7 @@
 import pytest
 from mantisshrimp.imports import *
-from mantisshrimp import *
+from mantisshrimp.core import *
+from mantisshrimp.models.rcnn import faster_rcnn
 
 
 @pytest.fixture()
@@ -21,12 +22,6 @@ def bboxes():
 @pytest.fixture()
 def records(img, labels, bboxes):
     return [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
-
-
-# labels = [1, 2]
-# bboxes = [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
-# img = 255 * np.ones((4, 4, 3), dtype=np.uint8)
-# records = [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
 
 
 def _test_batch(batch):
@@ -53,6 +48,14 @@ def _test_batch(batch):
         )
 
 
+def _test_infer_batch(batch):
+    assert len(batch) == 2
+
+    for x in batch:
+        assert x.shape == (3, 4, 4)
+        assert x.dtype == torch.float
+
+
 def test_faster_rcnn_build_train_batch(records):
     batch = faster_rcnn.build_train_batch(records)
     _test_batch(batch=batch)
@@ -61,3 +64,28 @@ def test_faster_rcnn_build_train_batch(records):
 def test_faster_rcnn_build_valid_batch(records):
     batch = faster_rcnn.build_valid_batch(records)
     _test_batch(batch=batch)
+
+
+def test_faster_rcnn_build_infer_batch(img):
+    images = [img] * 2
+    batch = faster_rcnn.build_infer_batch(images=images)
+    _test_infer_batch(batch)
+
+
+def test_faster_rcnn_dataloader(records):
+    dl = faster_rcnn.train_dataloader(records, batch_size=2)
+    batch = first(dl)
+    _test_batch(batch=batch)
+
+
+def test_faster_rcnn_valid_dataloader(records):
+    dl = faster_rcnn.valid_dataloader(records, batch_size=2)
+    batch = first(dl)
+    _test_batch(batch=batch)
+
+
+def test_faster_rcnn_infer_dataloader(img):
+    images = [img] * 2
+    dl = faster_rcnn.infer_dataloader(dataset=images, batch_size=2)
+    batch = first(dl)
+    _test_infer_batch(batch=batch)
