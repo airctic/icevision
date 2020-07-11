@@ -1,15 +1,20 @@
 __all__ = [
-    "build_train_batch",
-    "build_valid_batch",
-    "build_infer_batch",
     "train_dataloader",
     "valid_dataloader",
     "infer_dataloader",
+    "build_train_batch",
+    "build_valid_batch",
+    "build_infer_batch",
 ]
 
 from mantisshrimp.imports import *
 from mantisshrimp.parsers import *
 from mantisshrimp.models.utils import transform_dataloader
+from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import _build_train_sample
+from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import (
+    build_infer_batch,
+    infer_dataloader,
+)
 
 
 def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -30,24 +35,9 @@ def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
     )
 
 
-def infer_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    return transform_dataloader(
-        dataset=dataset,
-        build_batch=build_infer_batch,
-        batch_tfms=batch_tfms,
-        **dataloader_kwargs
-    )
-
-
-def _build_train_sample(
-    record: RecordType,
-) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-    image = im2tensor(record["img"])
-
-    target = {
-        "labels": tensor(record["labels"], dtype=torch.int64),
-        "boxes": tensor([bbox.xyxy for bbox in record["bboxes"]], dtype=torch.float),
-    }
+def _build_mask_train_sample(record: RecordType):
+    image, target = _build_train_sample(record=record)
+    target["masks"] = tensor(record["masks"].data, dtype=torch.uint8)
 
     return image, target
 
@@ -57,7 +47,7 @@ def build_train_batch(
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     images, targets = [], []
     for record in records:
-        image, target = _build_train_sample(record)
+        image, target = _build_mask_train_sample(record)
         images.append(image)
         targets.append(target)
 
@@ -66,9 +56,5 @@ def build_train_batch(
 
 def build_valid_batch(
     records: List[RecordType],
-) -> Tuple[List[torch.Tensor], Dict[str, torch.Tensor]]:
+) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     return build_train_batch(records=records)
-
-
-def build_infer_batch(images: List[np.ndarray]) -> List[torch.Tensor]:
-    return [im2tensor(image) for image in images]
