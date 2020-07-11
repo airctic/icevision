@@ -260,6 +260,12 @@ Quick Example: How to train the **PETS Dataset**
 
 Streamlit Demo
 --------------
+We provide a nice demo using `streamlit`_.
+If streamlit is not already install, run the following command, from the terminal to install it:
+
+.. code:: bash
+
+   pip install streamlit
 
 Simply run the following in your terminal. It should start a demo in your browser.
 It will show you one of our trained models as a pet detector !!
@@ -292,7 +298,7 @@ Be sure to check the `documentation`_.
 .. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
 .. _Docker website: https://docs.docker.com/engine/install/
 .. _This: https://github.com/oke-aditya/mantisshrimp_streamlit
-
+.. _streamlit: https://www.streamlit.io/
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
 .. |codecov| image:: https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg
