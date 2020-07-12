@@ -3,8 +3,22 @@ from mantisshrimp.utils import *
 from mantisshrimp.backbones import resnet_fpn
 
 
+def remove_transforms_from_model(model: GeneralizedRCNN):
+    def noop_normalize(image):
+        return image
+
+    def noop_resize(image, target):
+        return image, target
+
+    model.transform.normalize = noop_normalize
+    model.transform.resize = noop_resize
+
+
 def model(
-    num_classes: int, backbone: Optional[nn.Module] = None, **faster_rcnn_kwargs
+    num_classes: int,
+    backbone: Optional[nn.Module] = None,
+    remove_internal_transforms: bool = True,
+    **faster_rcnn_kwargs
 ) -> nn.Module:
     """ FasterRCNN model given by torchvision
 
@@ -37,5 +51,8 @@ def model(
         return _param_groups
 
     model.param_groups = MethodType(param_groups, model)
+
+    if remove_internal_transforms:
+        remove_transforms_from_model(model)
 
     return model
