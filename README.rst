@@ -195,7 +195,7 @@ Quick Example: How to train the **PETS Dataset**
 
    # PETS parser: provided out-of-the-box
    parser = datasets.pets.parser(path)
-   train_rs, valid_rs = parser.parse(data_splitter)
+   train_records, valid_records = parser.parse(data_splitter)
 
    # For convenience
    CLASSES = datasets.pets.CLASSES
