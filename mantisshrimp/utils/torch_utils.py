@@ -4,6 +4,7 @@ __all__ = [
     "model_device",
     "params",
     "check_all_model_params_in_groups2",
+    "model_device",
 ]
 
 from mantisshrimp.imports import *
@@ -36,3 +37,11 @@ def check_all_model_params_in_groups2(
             f"{num_params_expected} params in model but only {num_params} "
             "in parameter group"
         )
+
+
+def model_device(model: nn.Module):
+    """ Returns the device the first model parameter is stored.
+
+    Can be wrong if different parts of the model are in different devices.
+    """
+    return next(iter(model.parameters())).device

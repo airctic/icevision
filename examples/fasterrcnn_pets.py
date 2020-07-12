@@ -1,42 +1,73 @@
 from mantisshrimp.imports import *
 from mantisshrimp import *
-from mantisshrimp.datasets import pets
-from mantisshrimp.engines.fastai import *
+from mantisshrimp.models.rcnn import faster_rcnn
 import albumentations as A
 
-data_dir = pets.load()
-parser = pets.parser(data_dir)
+# Load the PETS dataset
+path = datasets.pets.load()
 
-splitter = RandomSplitter([0.8, 0.2])
-train_records, valid_records = parser.parse(splitter)
+# split dataset lists
+data_splitter = RandomSplitter([0.8, 0.2])
 
-all_records = train_records + valid_records
+# PETS parser: provided out-of-the-box
+parser = datasets.pets.parser(path)
+train_records, valid_records = parser.parse(data_splitter)
 
-show_record(train_records[0], show=True)
+# For convenience
+CLASSES = datasets.pets.CLASSES
 
-common_tfms = [A.LongestMaxSize(320)]
-aug_tfms = [A.HorizontalFlip()]
+# shows images with corresponding labels and boxes
+records = train_records[:6]
+# show_records(records, ncols=3, classes=CLASSES)
 
-train_tfms = AlbuTransform(aug_tfms + common_tfms)
-valid_tfms = AlbuTransform(common_tfms)
+# ImageNet stats
+imagenet_mean, imagenet_std = IMAGENET_STATS
 
-train_ds = Dataset(train_records, tfm=train_tfms)
-valid_ds = Dataset(valid_records, tfm=valid_tfms)
-
-sample = train_ds[0]
-show_annotation(
-    img=sample["img"], labels=sample["labels"], bboxes=sample["bboxes"], show=True
+# Transform: supporting albumentations transforms out of the box
+# Transform for the train dataset
+train_tfms = AlbuTransform(
+    [
+        A.LongestMaxSize(384),
+        A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
+        A.HorizontalFlip(),
+        A.ShiftScaleRotate(rotate_limit=20),
+        A.RGBShift(always_apply=True),
+        A.RandomBrightnessContrast(),
+        A.Blur(blur_limit=(1, 3)),
+        A.Normalize(mean=imagenet_mean, std=imagenet_std),
+    ]
 )
 
-# TODO: Rethink CATEGORIES, should they always be present in parser?
-# Should call it CLASSES instead of CATEGORIES?
-model = MantisFasterRCNN(num_classes=len(pets.CLASSES))
+# Transform for the validation dataset
+valid_tfms = AlbuTransform(
+    [A.LongestMaxSize(384), A.Normalize(mean=imagenet_mean, std=imagenet_std),]
+)
 
-train_dl = model.dataloader(train_ds, batch_size=2, shuffle=True)
-valid_dl = model.dataloader(valid_ds, batch_size=2)
+# Create both training and validation datasets
+train_ds = Dataset(train_records[:100], train_tfms)
+valid_ds = Dataset(valid_records[:100], valid_tfms)
 
-metrics = [COCOMetric(valid_records, bbox=True, mask=False)]
+# Create both training and validation dataloaders
+train_dl = faster_rcnn.train_dataloader(
+    train_ds, batch_size=4, num_workers=4, shuffle=True
+)
+valid_dl = faster_rcnn.valid_dataloader(
+    valid_ds, batch_size=4, num_workers=4, shuffle=False
+)
 
-learn = rcnn_learner(dls=[train_dl, valid_dl], model=model)
+# Create model
+backbone = faster_rcnn.resnet18(False)
+model = faster_rcnn.model(num_classes=len(CLASSES), backbone=backbone)
 
-learn.fit_one_cycle(1, 1e-3)
+# Training the model using fastai2 (be sure that fastai2 is installed)
+learn = faster_rcnn.fastai.learner(dls=[train_dl, valid_dl], model=model)
+
+learn.fine_tune(2, lr=1e-4)
+
+# For inference, create a dataloader with only the images, for simplicity
+# lets grab the images from the validation set
+model.cuda()
+images = [record["img"] for record in valid_ds]
+infer_dl = faster_rcnn.infer_dataloader(dataset=images, batch_size=2)
+
+preds = [faster_rcnn.predict(model=model, batch=batch) for batch in infer_dl]
