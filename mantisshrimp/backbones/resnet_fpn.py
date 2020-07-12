@@ -18,7 +18,7 @@ from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 
 def _resnet_fpn(name: str, pretrained: bool = True):
     model = resnet_fpn_backbone(backbone_name=name, pretrained=pretrained)
-    model.param_groups = param_groups
+    model.param_groups = MethodType(param_groups, model)
 
     return model
 
