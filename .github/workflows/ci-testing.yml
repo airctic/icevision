@@ -31,6 +31,7 @@ jobs:
         xargs -n 1 -L 1 pip install < requirements.txt
         pip install -r requirements-extra.txt
         pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
+        pip install -e .
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
