@@ -2,20 +2,7 @@
 __all__ = ["create_torchvision_backbone"]
 
 from mantisshrimp.imports import *
-
-
-def mobilenet_param_groups(model: nn.Module) -> List[nn.Parameter]:
-    return [list(model.parameters())]
-
-
-def mobilenet(pretrained: bool = True):
-    mobile_net = torchvision.models.mobilenet_v2(pretrained=pretrained)
-
-    ft_backbone = mobile_net.features
-    ft_backbone.out_channels = 1280
-    ft_backbone.param_groups = mobilenet_param_groups
-
-    return ft_backbone
+from mantisshrimp.utils import *
 
 
 def vgg_param_groups(model: nn.Module) -> List[nn.Parameter]:
