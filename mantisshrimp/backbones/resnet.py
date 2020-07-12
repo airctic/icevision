@@ -18,7 +18,7 @@ def _resnet_features(model: nn.Module, out_channels: int):
     features = nn.Sequential(OrderedDict(modules))
 
     features.out_channels = out_channels
-    features.param_groups = resnet_param_groups
+    features.param_groups = MethodType(resnet_param_groups, features)
 
     return features
 
