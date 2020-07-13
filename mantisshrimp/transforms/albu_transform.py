@@ -45,17 +45,19 @@ class AlbuTransform(Transform):
 
 def aug_tfms_train_albu(max_size=384, bbox_safe_crop=(320, 320, 0.3), rotate_limit=20, blur_limit=(1, 3), RGBShift_always=True, images_stats=IMAGENET_STATS):
     
+    bbox_sc_h, bbox_sc_w, bbox_sc_p = bbox_safe_crop
+    blur_limit_min, blur_limit_max = blur_limit
     images_mean, images_std = images_stats
 
     return AlbuTransform(
         [
             A.LongestMaxSize(max_size),
-            A.RandomSizedBBoxSafeCrop(*bbox_safe_crop),
+            A.RandomSizedBBoxSafeCrop(bbox_sc_h, bbox_sc_w, bbox_sc_p),
             A.HorizontalFlip(),
             A.ShiftScaleRotate(rotate_limit=rotate_limit),
             A.RGBShift(always_apply=RGBShift_always),
             A.RandomBrightnessContrast(),
-            A.Blur(blur_limit=*blur_limit),
+            A.Blur(blur_limit=(blur_limit_min, blur_limit_max)),
             A.Normalize(mean=images_mean, std=images_std),
         ]
     )
