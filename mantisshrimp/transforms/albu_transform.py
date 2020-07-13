@@ -1,4 +1,8 @@
-__all__ = ["AlbuTransform"]
+__all__ = [
+    "AlbuTransform",
+    "aug_tfms_train_albu",
+    "aug_tfms_valid_albu"
+]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
