@@ -39,23 +39,3 @@ from torch.optim.lr_scheduler import (
 )
 
 from torchvision.transforms.functional import to_tensor as im2tensor
-from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
-from torchvision.models.detection.faster_rcnn import (
-    FasterRCNN,
-    FastRCNNPredictor,
-    fasterrcnn_resnet50_fpn,
-)
-from torchvision.models.detection.mask_rcnn import (
-    MaskRCNN,
-    MaskRCNNPredictor,
-    maskrcnn_resnet50_fpn,
-)
-from torchvision.models.detection.keypoint_rcnn import (
-    KeypointRCNN,
-    KeypointRCNNPredictor,
-    keypointrcnn_resnet50_fpn,
-)
-
-from pytorch_lightning import LightningModule, Trainer
-from pytorch_lightning.trainer.distrib_parts import get_all_available_gpus
-from pytorch_lightning.callbacks import LearningRateLogger
