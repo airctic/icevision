@@ -5,7 +5,7 @@ from mantisshrimp.utils import *
 from mantisshrimp.models import *
 from mantisshrimp.metrics import *
 from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from mantisshrimp.models.rcnn.loss import loss as loss_fn
+from mantisshrimp.models.rcnn.loss_fn import loss_fn
 
 
 class ModelAdapter(LightningModelAdapter, ABC):

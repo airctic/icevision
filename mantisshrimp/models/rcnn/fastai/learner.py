@@ -2,7 +2,7 @@ __all__ = ["RCNNCallback", "learner"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.engines.fastai import *
-from mantisshrimp.models.rcnn.loss import loss
+from mantisshrimp.models.rcnn.loss_fn import loss_fn
 from mantisshrimp.models.rcnn.fastai.callbacks import *
 
 
@@ -21,7 +21,7 @@ def learner(
         dls=dls,
         model=model,
         cbs=cbs,
-        loss_func=loss,
+        loss_func=loss_fn,
         splitter=model_splitter,
         **kwargs,
     )
