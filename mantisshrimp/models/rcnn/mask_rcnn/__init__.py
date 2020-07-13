@@ -1,5 +1,5 @@
 import mantisshrimp.models.rcnn.backbones as backbones
-from mantisshrimp.models.rcnn.loss import *
+from mantisshrimp.models.rcnn.loss_fn import *
 
 from mantisshrimp.models.rcnn.mask_rcnn.dataloaders import *
 from mantisshrimp.models.rcnn.mask_rcnn.model import *
