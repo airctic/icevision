@@ -10,3 +10,6 @@ from mantisshrimp.utils.soft_dependencies import *
 
 if HAS_FASTAI:
     import mantisshrimp.models.rcnn.mask_rcnn.fastai
+
+if HAS_LIGHTNING:
+    import mantisshrimp.models.rcnn.mask_rcnn.lightning

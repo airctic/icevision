@@ -64,6 +64,18 @@ learn = faster_rcnn.fastai.learner(dls=[train_dl, valid_dl], model=model)
 
 learn.fine_tune(2, lr=1e-4)
 
+# Train model with ligtning
+class LightModel(faster_rcnn.lightning.ModelAdapter):
+    def configure_optimizers(self):
+        sgd = SGD(self.parameters(), lr=1e-4)
+        return sgd
+
+
+light_model = LightModel(model)
+trainer = pl.Trainer(max_epochs=2, gpus=1)
+trainer.fit(model=light_model, train_dataloader=train_dl, val_dataloaders=valid_dl)
+
+
 # For inference, create a dataloader with only the images, for simplicity
 # lets grab the images from the validation set
 model.cuda()
