@@ -1,4 +1,4 @@
-__all__ = ["predict"]
+__all__ = ["predict", "convert_raw_prediction"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *

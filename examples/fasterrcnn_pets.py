@@ -49,14 +49,14 @@ valid_ds = Dataset(valid_records[:100], valid_tfms)
 
 # Create both training and validation dataloaders
 train_dl = faster_rcnn.train_dataloader(
-    train_ds, batch_size=4, num_workers=4, shuffle=True
+    train_ds, batch_size=8, num_workers=4, shuffle=True
 )
 valid_dl = faster_rcnn.valid_dataloader(
-    valid_ds, batch_size=4, num_workers=4, shuffle=False
+    valid_ds, batch_size=8, num_workers=4, shuffle=False
 )
 
 # Create model
-backbone = faster_rcnn.resnet18(False)
+backbone = faster_rcnn.backbones.resnet34(False)
 model = faster_rcnn.model(num_classes=len(CLASSES), backbone=backbone)
 
 # Training the model using fastai2 (be sure that fastai2 is installed)
