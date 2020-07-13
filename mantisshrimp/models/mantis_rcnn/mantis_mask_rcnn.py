@@ -1,5 +1,9 @@
 __all__ = ["MantisMaskRCNN"]
 
+from torchvision.models.detection import maskrcnn_resnet50_fpn, MaskRCNN
+from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
+from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
+
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.models.mantis_rcnn.rcnn_param_groups import *
