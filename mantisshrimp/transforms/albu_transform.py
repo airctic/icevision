@@ -4,11 +4,11 @@ from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.transforms.transform import *
 
+import albumentations as A
+
 
 class AlbuTransform(Transform):
     def __init__(self, tfms):
-        import albumentations as A
-
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
@@ -41,3 +41,33 @@ class AlbuTransform(Transform):
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         return out
+
+
+def aug_tfms_train_albu(max_size=384, bbox_safe_crop=(320, 320, 0.3), rotate_limit=20, blur_limit=(1, 3), RGBShift_always=True, images_stats=IMAGENET_STATS):
+    
+    images_mean, images_std = images_stats
+
+    return AlbuTransform(
+        [
+            A.LongestMaxSize(max_size),
+            A.RandomSizedBBoxSafeCrop(*bbox_safe_crop),
+            A.HorizontalFlip(),
+            A.ShiftScaleRotate(rotate_limit=rotate_limit),
+            A.RGBShift(always_apply=RGBShift_always),
+            A.RandomBrightnessContrast(),
+            A.Blur(blur_limit=*blur_limit),
+            A.Normalize(mean=images_mean, std=images_std),
+        ]
+    )
+
+
+def aug_tfms_valid_albu(max_size=384, images_stats=IMAGENET_STATS):
+    
+    images_mean, images_std = images_stats
+
+    return AlbuTransform(
+        [
+            A.LongestMaxSize(max_size),
+            A.Normalize(mean=images_mean, std=images_std),
+        ]
+    )
