@@ -1,13 +1,18 @@
 import pytest
 from mantisshrimp.imports import *
 from mantisshrimp import *
+from mantisshrimp.models.rcnn import mask_rcnn
 
 
 @pytest.fixture
 def sample_images(samples_source):
     images_dir = samples_source / "images"
     images_files = get_image_files(images_dir)[-2:]
-    return [open_img(path) for path in images_files]
+
+    images = [open_img(path) for path in images_files]
+    images = [cv2.resize(image, (128, 128)) for image in images]
+
+    return images
 
 
 @pytest.fixture()
@@ -20,10 +25,11 @@ def pretrained_state_dict():
 
 
 def test_mantis_mask_rcnn_predict(sample_images, pretrained_state_dict):
-    model = MantisMaskRCNN(91, min_size=128, max_size=128)
-    model.model.load_state_dict(pretrained_state_dict)
+    model = mask_rcnn.model(num_classes=91)
+    model.load_state_dict(pretrained_state_dict)
 
-    preds = model.predict(sample_images)
+    batch = mask_rcnn.build_infer_batch(images=sample_images)
+    preds = mask_rcnn.predict(model=model, batch=batch)
 
     assert len(preds) == 2
 
