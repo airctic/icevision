@@ -55,29 +55,44 @@ config_aug_tfms_train_pets = {
     """ Configuration Objects for Albumentations Transforms uring train stage
 
     Each dictionary key corresponds to a particular Albumentations Transform
+    The conventions is the following:
+    "Snake Notation"              <---> "Camel Case Notation" 
+    "longest_max_size"            <---> LongestMaxSize
+    "random_sized_bbox_safe_crop" <---> RandomSizedBBoxSafeCrop
+
     Each dictionary value represents some valid arguments corresponding to a specific Albumentations Transform
- 
+    e.g: 
+    "random_sized_bbox_safe_crop" <---> RandomSizedBBoxSafeCrop ---> {"height": 320, "width": 320, "p": 0.3}
+
+    [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
     """
 
-    "max_size": 384,
-    "bbox_safe_crop": {"height": 320, "width": 320, "p": 0.3},
-    "flip": True,
-    "rotate_limit": {"rotate_limit": 20},
+    "longest_max_size": 384,
+    "random_sized_bbox_safe_crop": {"height": 320, "width": 320, "p": 0.3},
+    "horizontal_flip": True,
+    "shift_scale_rotate": {"rotate_limit": 20},
     "rgb_shift": {"always_apply": True, "p": 0.5},
     "brightness_contrast": {"brightness_limit": 0.2, "contrast_limit": 0.2},
     "blur": {"blur_limit": (1, 3)},
-    "images_stats": IMAGENET_STATS
+    "normalize": {"mean": IMAGENET_STATS[0], "std": IMAGENET_STATS[1]}
 }
 
 config_aug_tfms_valid_pets = {
     """ Configuration Objects for Albumentations Transforms applied during validation stage
 
     Each dictionary key corresponds to a particular Albumentations Transform
+    The conventions is the following:
+    "Snake Notation"              <---> "Camel Case Notation" 
+    "longest_max_size"            <---> LongestMaxSize
+    "random_sized_bbox_safe_crop" <---> RandomSizedBBoxSafeCrop
+
     Each dictionary value represents some valid arguments corresponding to a specific Albumentations Transform
+
+    [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
     """
     
-    "max_size": 384,
-    "images_stats": IMAGENET_STATS
+    "longest_max_size": 384,
+    "normalize": {"mean": IMAGENET_STATS[0], "std": IMAGENET_STATS[1]}
 }
 
 
@@ -96,22 +111,24 @@ def aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_train_pets):
         >>> valid_tfms = aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_valid_pets)
         >>> train_ds = Dataset(train_records, train_tfms)
         >>> valid_ds = Dataset(valid_records, valid_tfms)
+
+    [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
     """
     
     albu_array=[]
 
-    if "max_size" in config_aug_tfms: 
-      albu_array.append(A.LongestMaxSize(config_aug_tfms["max_size"]))
+    if "longest_max_size" in config_aug_tfms: 
+      albu_array.append(A.LongestMaxSize(config_aug_tfms["longest_max_size"]))
 
-    if "bbox_safe_crop" in config_aug_tfms: 
-      albu_array.append(A.RandomSizedBBoxSafeCrop(**config_aug_tfms["bbox_safe_crop"]))
+    if "random_sized_bbox_safe_crop" in config_aug_tfms: 
+      albu_array.append(A.RandomSizedBBoxSafeCrop(**config_aug_tfms["random_sized_bbox_safe_crop"]))
 
-    if "flip" in config_aug_tfms: 
-      flip = config_aug_tfms["flip"]
-      if flip: albu_array.append(A.HorizontalFlip())
+    if "horizontal_flip" in config_aug_tfms: 
+      horizontal_flip = config_aug_tfms["horizontal_flip"]
+      if horizontal_flip: albu_array.append(A.HorizontalFlip())
 
-    if "rotate_limit" in config_aug_tfms: 
-      albu_array.append(A.ShiftScaleRotate(**config_aug_tfms["rotate_limit"]))
+    if "shift_scale_rotate" in config_aug_tfms: 
+      albu_array.append(A.ShiftScaleRotate(**config_aug_tfms["shift_scale_rotate"]))
 
     if "rgb_shift" in config_aug_tfms:
       albu_array.append(A.RGBShift(**config_aug_tfms["rgb_shift"]))
@@ -122,9 +139,8 @@ def aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_train_pets):
     if "blur" in config_aug_tfms: 
       albu_array.append(A.Blur(**config_aug_tfms["blur"]))
 
-    if "images_stats" in config_aug_tfms:     
-      images_mean, images_std = config_aug_tfms["images_stats"]
-      albu_array.append(A.Normalize(mean=images_mean, std=images_std))
+    if "normalize" in config_aug_tfms:     
+      albu_array.append(A.Normalize(**config_aug_tfms["normalize"]))
 
     # return AlbuTransform  
     if albu_array:
