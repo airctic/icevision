@@ -4,7 +4,7 @@ from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.metrics import *
 from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from mantisshrimp.models.rcnn.loss_fn import loss_fn
+from mantisshrimp.models import efficientdet
 
 
 class ModelAdapter(LightningModelAdapter, ABC):
@@ -18,7 +18,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
     def training_step(self, batch, batch_idx):
         xb, yb = batch
         preds = self(xb, yb)
-        loss = loss_fn(preds, yb)
+        loss = efficientdet.loss_fn(preds, yb)
         log = {f"train/{k}": v for k, v in preds.items()}
         return {"loss": loss, "log": log}
 
@@ -27,7 +27,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
 
         with torch.no_grad():
             preds = self(xb, yb)
-            loss = loss_fn(preds, yb)
+            loss = efficientdet.loss_fn(preds, yb)
 
         self.accumulate_metrics(xb, yb, preds)
 
@@ -35,10 +35,11 @@ class ModelAdapter(LightningModelAdapter, ABC):
         return {"valid/loss": loss, "log": log}
 
     def validation_epoch_end(self, outs):
-        merged_logs = mergeds(outs)
-        set_trace()
-        avg_loss = torch.stack(merged_logs["valid/loss"]).mean()
-        avg_logs = {k: torch.stack(v).mean() for k, v in merged_logs["log"].items()}
+        merged_outs = mergeds(outs)
+        avg_loss = torch.stack(merged_outs["valid/loss"]).mean()
+
+        merged_logs = mergeds([out["log"] for out in outs])
+        avg_logs = {k: torch.stack(v).mean() for k, v in merged_logs.items()}
 
         metrics_log = self.finalize_metrics()
 
