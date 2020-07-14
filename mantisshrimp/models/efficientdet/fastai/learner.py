@@ -1,8 +1,8 @@
 __all__ = ["learner"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.models import efficient_det
-from mantisshrimp.models.efficient_det.fastai.callbacks import *
+from mantisshrimp.models import efficientdet
+from mantisshrimp.models.efficientdet.fastai.callbacks import *
 from mantisshrimp.engines.fastai import *
 
 
@@ -20,7 +20,7 @@ def learner(
         dls=dls,
         model=model,
         cbs=cbs,
-        loss_func=efficient_det.loss_fn,
+        loss_func=efficientdet.loss_fn,
         param_groups=param_groups,
         **learner_kwargs,
     )

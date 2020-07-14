@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp.models import efficient_det
+from mantisshrimp.models import efficientdet
 
 
 @pytest.mark.parametrize(
@@ -12,7 +12,7 @@ from mantisshrimp.models import efficient_det
     ],
 )
 def test_efficient_det_param_groups(model_name):
-    model = efficient_det.model(
+    model = efficientdet.model(
         model_name=model_name, num_classes=42, img_size=256, pretrained=False,
     )
 
