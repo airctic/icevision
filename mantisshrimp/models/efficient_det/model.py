@@ -2,7 +2,7 @@ __all__ = ["model"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
-from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain
+from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain, unwrap_bench
 from effdet.efficientdet import HeadNet
 
 
@@ -11,7 +11,7 @@ from effdet.efficientdet import HeadNet
 # net.load_state_dict(checkpoint)
 def model(
     model_name: str, num_classes: int, img_size: int, pretrained: bool = True
-) -> Tuple[nn.Module, List[List[nn.Parameter]]]:
+) -> nn.Module:
     """ Creates the model specific by model_name
 
     Args:
@@ -34,11 +34,20 @@ def model(
     )
 
     # TODO: Break down param groups for backbone
-    param_groups = [
-        list(net.backbone.parameters()),
-        list(net.fpn.parameters()),
-        [*list(net.class_net.parameters()), *list(net.box_net.parameters())],
-    ]
-    check_all_model_params_in_groups2(net, param_groups)
+    def param_groups_fn(model: nn.Module) -> List[List[nn.Parameter]]:
+        unwrapped = unwrap_bench(model)
 
-    return DetBenchTrain(net, config), param_groups
+        layers = [
+            unwrapped.backbone,
+            unwrapped.fpn,
+            nn.Sequential(unwrapped.class_net, unwrapped.box_net),
+        ]
+        param_groups = [list(layer.parameters()) for layer in layers]
+        check_all_model_params_in_groups2(model, param_groups)
+
+        return param_groups
+
+    model_bench = DetBenchTrain(net, config)
+    model_bench.param_groups = MethodType(param_groups_fn, model_bench)
+
+    return model_bench
