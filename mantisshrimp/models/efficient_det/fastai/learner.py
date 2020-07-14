@@ -20,7 +20,7 @@ def learner(
         dls=dls,
         model=model,
         cbs=cbs,
-        loss_func=efficient_det.loss,
+        loss_func=efficient_det.loss_fn,
         param_groups=param_groups,
         **learner_kwargs,
     )
