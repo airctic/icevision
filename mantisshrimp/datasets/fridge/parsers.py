@@ -11,7 +11,7 @@ def parser(data_dir: Path, mask=False):
     parser = FridgeXmlParser(
         annotations_dir=data_dir / "odFridgeObjects/annotations",
         images_dir=data_dir / "odFridgeObjects/images",
-        categories=CATEGORIES,
+        classes=CLASSES,
     )
 
     return parser
