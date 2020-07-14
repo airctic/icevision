@@ -6,4 +6,4 @@ def test_mobilenet_param_groups():
     param_groups = model.param_groups()
 
     assert len(param_groups) == 4
-    assert check_all_model_params_in_groups2(model, param_groups)
+    check_all_model_params_in_groups2(model, param_groups)
