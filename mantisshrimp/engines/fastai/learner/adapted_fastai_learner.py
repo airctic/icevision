@@ -13,6 +13,7 @@ def adapted_fastai_learner(
     model: nn.Module,
     metrics=None,
     device=None,
+    splitter=None,
     **learner_kwargs,
 ):
     # convert dataloaders to fastai
@@ -37,6 +38,22 @@ def adapted_fastai_learner(
         for metric in metrics
     ]
 
+    if splitter == None:
+        if hasattr(model, "param_groups"):
+
+            def splitter(model):
+                return model.param_groups()
+
+        else:
+            raise ValueError(
+                "If the parameter `splitter` is not specified, "
+                "the model should define a method called `param_groups`"
+            )
+
     return fastai.Learner(
-        dls=fastai_dls, model=model, metrics=fastai_metrics, **learner_kwargs,
+        dls=fastai_dls,
+        model=model,
+        metrics=fastai_metrics,
+        splitter=splitter,
+        **learner_kwargs,
     )
