@@ -48,59 +48,86 @@ class AlbuTransform(Transform):
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         return out
 
+
+# Pets Albumentations Transforms
+
 config_aug_tfms_train_pets = {
+    """ Configuration Objects for Albumentations Transforms uring train stage
+
+    Each dictionary key corresponds to a particular Albumentations Transform
+    Each dictionary value represents some valid arguments corresponding to a specific Albumentations Transform
+ 
+    """
+
     "max_size": 384,
-    "bbox_safe_crop": (320, 320, 0.3),
+    "bbox_safe_crop": {"height": 320, "width": 320, "p": 0.3},
     "flip": True,
-    "rotate_limit": 20,
-    "rgb_shift_always": True,
-    "rb_contrast": True,
-    "blur_limit": (1, 3),
+    "rotate_limit": {"rotate_limit": 20},
+    "rgb_shift": {"always_apply": True, "p": 0.5},
+    "brightness_contrast": {"brightness_limit": 0.2, "contrast_limit": 0.2},
+    "blur": {"blur_limit": (1, 3)},
     "images_stats": IMAGENET_STATS
 }
 
 config_aug_tfms_valid_pets = {
+    """ Configuration Objects for Albumentations Transforms applied during validation stage
+
+    Each dictionary key corresponds to a particular Albumentations Transform
+    Each dictionary value represents some valid arguments corresponding to a specific Albumentations Transform
+    """
+    
     "max_size": 384,
     "images_stats": IMAGENET_STATS
 }
 
+
 def aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_train_pets):
+    """ Composes a Pipeline of Albumentations Transforms
+
+    Args:
+        config_aug_tfms: A dictionary of dictionaries. Each dictionary represents some valid arguments corresponding to a specific Albumentations Transform
+
+    Returns:
+        AlbumentationsTransform: Pipeline of Albumentations Transforms
+    
+    
+    Examples::
+        >>> train_tfms = aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_train_pets)
+        >>> valid_tfms = aug_tfms_albumentations(config_aug_tfms=config_aug_tfms_valid_pets)
+        >>> train_ds = Dataset(train_records, train_tfms)
+        >>> valid_ds = Dataset(valid_records, valid_tfms)
+    """
+    
     albu_array=[]
 
     if "max_size" in config_aug_tfms: 
-      max_size = config_aug_tfms["max_size"]
-      albu_array.append(A.LongestMaxSize(max_size))
+      albu_array.append(A.LongestMaxSize(config_aug_tfms["max_size"]))
 
     if "bbox_safe_crop" in config_aug_tfms: 
-      bbox_sc_h, bbox_sc_w, bbox_sc_p = config_aug_tfms["bbox_safe_crop"]
-      A.RandomSizedBBoxSafeCrop(bbox_sc_h, bbox_sc_w, bbox_sc_p)
+      albu_array.append(A.RandomSizedBBoxSafeCrop(**config_aug_tfms["bbox_safe_crop"]))
 
     if "flip" in config_aug_tfms: 
       flip = config_aug_tfms["flip"]
       if flip: albu_array.append(A.HorizontalFlip())
 
     if "rotate_limit" in config_aug_tfms: 
-      rotate_limit = config_aug_tfms["rotate_limit"]
-      albu_array.append(A.ShiftScaleRotate(rotate_limit=rotate_limit))
+      albu_array.append(A.ShiftScaleRotate(**config_aug_tfms["rotate_limit"]))
 
-    if "rgb_shift_always" in config_aug_tfms: 
-      rgb_shift_always = config_aug_tfms["rgb_shift_always"]
-      albu_array.append(A.RGBShift(always_apply=rgb_shift_always))
+    if "rgb_shift" in config_aug_tfms:
+      albu_array.append(A.RGBShift(**config_aug_tfms["rgb_shift"]))
 
-    if "rb_contrast" in config_aug_tfms: 
-      rb_contrast = config_aug_tfms["rb_contrast"]
-      if rb_contrast: albu_array.append(A.RandomBrightnessContrast())
+    if "brightness_contrast" in config_aug_tfms: 
+      albu_array.append(A.RandomBrightnessContrast(**config_aug_tfms["brightness_contrast"]))
 
-    if "blur_limit" in config_aug_tfms: 
-      blur_limit_min, blur_limit_max = config_aug_tfms["blur_limit"]
-      albu_array.append(A.Blur(blur_limit=(blur_limit_min, blur_limit_max)))
+    if "blur" in config_aug_tfms: 
+      albu_array.append(A.Blur(**config_aug_tfms["blur"]))
 
     if "images_stats" in config_aug_tfms:     
       images_mean, images_std = config_aug_tfms["images_stats"]
       albu_array.append(A.Normalize(mean=images_mean, std=images_std))
-    
+
     # return AlbuTransform  
-    if not(albu_array):
+    if albu_array:
       return AlbuTransform(albu_array)
     else:
         return None
