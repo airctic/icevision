@@ -2,14 +2,13 @@ __all__ = ["ModelAdapter"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
-from mantisshrimp.models import *
 from mantisshrimp.metrics import *
 from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
 from mantisshrimp.models.rcnn.loss_fn import loss_fn
 
 
 class ModelAdapter(LightningModelAdapter, ABC):
-    def __init__(self, model: MantisRCNN, metrics: List[Metric] = None):
+    def __init__(self, model: nn.Module, metrics: List[Metric] = None):
         super().__init__(metrics=metrics)
         self.model = model
 
