@@ -18,7 +18,8 @@ def load(force_download=False):
     save_dir = get_data_dir() / "fridge"
     save_dir.mkdir(exist_ok=True)
 
-    if not save_dir.exists() or force_download:
-        download_and_extract(url=base_url, save_path=save_dir)
+    save_path = save_dir / "data.zip"
+    if not save_path.exists() or force_download:
+        download_and_extract(url=base_url, save_path=save_path)
 
     return save_dir
