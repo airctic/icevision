@@ -6,7 +6,7 @@ from mantisshrimp.imports import *
 from mantisshrimp.core import *
 
 
-def train_albumentations_tfms_pets ():
+def train_albumentations_tfms_pets():
     """ Composes a Pipeline of Albumentations Transforms for PETS dataset at the train stage
 
     Returns:
@@ -40,7 +40,7 @@ def train_albumentations_tfms_pets ():
     )
  
 
-def valid_albumentations_tfms_pets ():
+def valid_albumentations_tfms_pets():
     """ Composes a Pipeline of Albumentations Transforms for PETS dataset at the train stage
 
     Returns:
