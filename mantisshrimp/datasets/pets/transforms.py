@@ -1,5 +1,6 @@
 __all__ = [
-    "aug_tfms_albumentations_pets"
+    "train_albumentations_tfms_pets",
+    "valid_albumentations_tfms_pets"   
 ]
 
 from mantisshrimp.imports import *
