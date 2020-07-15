@@ -4,36 +4,29 @@ __all__ = [
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.transforms.albu_transform import *
-from mantisshrimp.utils.utils import *
-
-import albumentations as A
 
 
-
-def aug_tfms_albumentations_pets(train=True):
-    """ Composes a Pipeline of Albumentations Transforms for PETS dataset
-
-    Args:
-        train: flag to select transforms specific to either train or validation stage
+def train_albumentations_tfms_pets ():
+    """ Composes a Pipeline of Albumentations Transforms for PETS dataset at the train stage
 
     Returns:
         AlbumentationsTransform: Pipeline of Albumentations Transforms
     
     
     Examples::
-        >>> train_tfms = aug_tfms_albumentations_pets(train=True)
-        >>> valid_tfms = aug_tfms_albumentations_pets(train=false)
+        >>> train_tfms = train_albumentations_tfms_pets(train=True)
         >>> train_ds = Dataset(train_records, train_tfms)
-        >>> valid_ds = Dataset(valid_records, valid_tfms)
 
     [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
     """
+    from mantisshrimp.transforms.albu_transform import *
+    from mantisshrimp.utils.utils import *
+    import albumentations as A
 
     # ImageNet stats
     imagenet_mean, imagenet_std = IMAGENET_STATS
     
-    train_tfms = AlbuTransform(
+    return AlbuTransform(
         [
             A.LongestMaxSize(384),
             A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
@@ -45,15 +38,31 @@ def aug_tfms_albumentations_pets(train=True):
             A.Normalize(mean=imagenet_mean, std=imagenet_std)
         ]
     )
+ 
+
+def valid_albumentations_tfms_pets ():
+    """ Composes a Pipeline of Albumentations Transforms for PETS dataset at the train stage
+
+    Returns:
+        AlbumentationsTransform: Pipeline of Albumentations Transforms
     
-    valid_tfms = AlbuTransform(
+    
+    Examples::
+        >>> valid_tfms = aug_tfms_albumentations_pets(train=false)
+        >>> valid_ds = Dataset(valid_records, valid_tfms)
+
+    [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
+    """
+    from mantisshrimp.transforms.albu_transform import *
+    from mantisshrimp.utils.utils import *
+    import albumentations as A
+
+    # ImageNet stats
+    imagenet_mean, imagenet_std = IMAGENET_STATS
+    
+    return AlbuTransform(
         [
             A.LongestMaxSize(384),
             A.Normalize(mean=imagenet_mean, std=imagenet_std)
         ]
     )
-
-    if train:
-        return train_tfms
-    else:
-        return valid_tfms
