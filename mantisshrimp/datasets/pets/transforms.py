@@ -49,7 +49,7 @@ def valid_albumentations_tfms_pets():
     
     
     Examples::
-        >>> valid_tfms = aug_tfms_albumentations_pets(train=false)
+        >>> valid_tfms = valid_albumentations_tfms_pets(train=false)
         >>> valid_ds = Dataset(valid_records, valid_tfms)
 
     [[https://albumentations.readthedocs.io/en/latest/_modules/albumentations/augmentations/transforms.html/|Albumentations Transforms ]]
