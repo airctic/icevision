@@ -51,7 +51,7 @@ def rcnn_learner(
     class RCNNAvgLoss(fastai.AvgLoss):
         def accumulate(self, learn):
             bs = len(learn.yb)
-            self.total += fastai.to_detach(learn.loss_fn.mean()) * bs
+            self.total += fastai.to_detach(learn.loss_func.mean()) * bs
             self.count += bs
 
     recorder = [cb for cb in learn.cbs if isinstance(cb, fastai.Recorder)][0]
