@@ -23,9 +23,10 @@ def model(
 
     net = EfficientDet(config, pretrained_backbone=False)
     if pretrained:
-        weights_url = _weights_url[model_name]
+        if not config.url:
+            raise RuntimeError(f"No pretrained weights for {model_name}")
         state_dict = torch.hub.load_state_dict_from_url(
-            weights_url, map_location=torch.device("cpu")
+            config.url, map_location=torch.device("cpu")
         )
         net.load_state_dict(state_dict)
 
@@ -53,18 +54,3 @@ def model(
     model_bench.param_groups = MethodType(param_groups_fn, model_bench)
 
     return model_bench
-
-
-_weights_url = {
-    "tf_efficientdet_lite0": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_lite0-f5f303a9.pth",
-    "tf_efficientdet_d0": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d0-d92fd44f.pth",
-    "efficientdet_d0": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/efficientdet_d0-f3276ba8.pth",
-    "tf_efficientdet_d1": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d1-4c7ebaf2.pth",
-    "efficientdet_d1": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/efficientdet_d1-bb7e98fe.pth",
-    "tf_efficientdet_d2": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d2-cb4ce77d.pth",
-    "tf_efficientdet_d3": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d3-b0ea2cbc.pth",
-    "tf_efficientdet_d4": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d4-5b370b7a.pth",
-    "tf_efficientdet_d5": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d5-ef44aea8.pth",
-    "tf_efficientdet_d6": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d6-51cb0132.pth",
-    "tf_efficientdet_d7": "https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_d7_53-6d1d7a95.pth",
-}
