@@ -20,7 +20,6 @@ class ImgPadStack(BatchTransform):
         padded_imgs *= self.pad_value
         for record, padded_img in zip(records, padded_imgs):
             img = record["img"]
-            record["shape_before_img_pad_stack"] = img.shape
 
             xmax, ymax, zmax = img.shape
             padded_img[:xmax, :ymax, :zmax] = img

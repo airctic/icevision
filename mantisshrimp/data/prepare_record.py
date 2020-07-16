@@ -12,6 +12,7 @@ def prepare_copy(record):
 def prepare_img(record):
     if "filepath" in record:
         record["img"] = open_img(record["filepath"])
+        record["height"], record["width"], _ = record["img"].shape
     return record
 
 
