@@ -1,7 +1,4 @@
-__all__ = [
-    "train_albumentations_tfms_pets",
-    "valid_albumentations_tfms_pets"   
-]
+__all__ = ["train_albumentations_tfms_pets", "valid_albumentations_tfms_pets"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
@@ -26,7 +23,7 @@ def train_albumentations_tfms_pets():
 
     # ImageNet stats
     imagenet_mean, imagenet_std = IMAGENET_STATS
-    
+
     return AlbuTransform(
         [
             A.LongestMaxSize(384),
@@ -36,10 +33,10 @@ def train_albumentations_tfms_pets():
             A.RGBShift(always_apply=True),
             A.RandomBrightnessContrast(),
             A.Blur(blur_limit=(1, 3)),
-            A.Normalize(mean=imagenet_mean, std=imagenet_std)
+            A.Normalize(mean=imagenet_mean, std=imagenet_std),
         ]
     )
- 
+
 
 def valid_albumentations_tfms_pets():
     """ Composes a Pipeline of Albumentations Transforms for PETS dataset at the train stage
@@ -58,10 +55,7 @@ def valid_albumentations_tfms_pets():
 
     # ImageNet stats
     imagenet_mean, imagenet_std = IMAGENET_STATS
-    
+
     return AlbuTransform(
-        [
-            A.LongestMaxSize(384),
-            A.Normalize(mean=imagenet_mean, std=imagenet_std)
-        ]
+        [A.LongestMaxSize(384), A.Normalize(mean=imagenet_mean, std=imagenet_std)]
     )
