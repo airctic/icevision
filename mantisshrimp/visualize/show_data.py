@@ -140,7 +140,7 @@ def show_samples(
 
 def show_preds(
     imgs: np.ndarray,
-    preds: dict,
+    preds: List[dict],
     classes: Optional[List[str]] = None,
     denormalize_fn=None,
     label=True,

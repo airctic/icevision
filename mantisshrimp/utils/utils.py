@@ -75,6 +75,7 @@ def normalize(img, mean, std, max_pixel_value=255):
     img = img.astype(np.float32)
     img /= max_pixel_value
 
+    mean, std = map(np.float32, [mean, std])
     return (img - mean) / std
 
 
