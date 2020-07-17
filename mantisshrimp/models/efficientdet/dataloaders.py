@@ -20,6 +20,11 @@ def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
 
+def infer_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    collate_fn = partial(build_infer_batch, batch_tfms=batch_tfms)
+    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+
+
 def build_train_batch(records):
     images = []
     targets = {"bbox": [], "cls": []}
