@@ -11,7 +11,9 @@ def test_efficient_det_predict(fridge_img):
         "tf_efficientdet_lite0", num_classes=len(datasets.fridge.CLASSES), img_size=512
     )
     weights_url = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
-    state_dict = torch.hub.load_state_dict_from_url(weights_url)
+    state_dict = torch.hub.load_state_dict_from_url(
+        weights_url, map_location=torch.device("cpu")
+    )
     model.load_state_dict(state_dict)
 
     records = [{"img": img, "height": 512, "width": 512}]
