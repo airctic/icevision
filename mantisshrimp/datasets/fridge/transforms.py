@@ -26,7 +26,7 @@ def train_albumentations_tfms_fridge():
 
     return AlbuTransform(
         [
-            A.LongestMaxSize(384),
+            A.LongestMaxSize(256),
             A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
             A.HorizontalFlip(),
             A.ShiftScaleRotate(rotate_limit=20),
@@ -57,5 +57,5 @@ def valid_albumentations_tfms_fridge():
     imagenet_mean, imagenet_std = IMAGENET_STATS
 
     return AlbuTransform(
-        [A.LongestMaxSize(384), A.Normalize(mean=imagenet_mean, std=imagenet_std)]
+        [A.LongestMaxSize(256), A.Normalize(mean=imagenet_mean, std=imagenet_std)]
     )
