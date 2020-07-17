@@ -1,8 +1,10 @@
 __all__ = [
     "build_train_batch",
     "build_valid_batch",
+    "build_infer_batch",
     "train_dataloader",
     "valid_dataloader",
+    "infer_dataloader",
 ]
 
 from mantisshrimp.imports import *
@@ -16,6 +18,11 @@ def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
 
 def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     collate_fn = transform_collate(build_batch=build_valid_batch, batch_tfms=batch_tfms)
+    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+
+
+def infer_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    collate_fn = partial(build_infer_batch, batch_tfms=batch_tfms)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
 
@@ -44,3 +51,19 @@ def build_valid_batch(records):
     targets["img_size"] = tensor([images[0].shape[-2:]] * batch_size, dtype=torch.float)
 
     return images, targets
+
+
+def build_infer_batch(records, batch_tfms=None):
+    if batch_tfms is not None:
+        records = batch_tfms(records)
+
+    tensor_imgs, img_sizes = [], []
+    for record in records:
+        tensor_imgs.append(im2tensor(record["img"]))
+        img_sizes.append((record["height"], record["width"]))
+
+    tensor_imgs = torch.stack(tensor_imgs)
+    tensor_sizes = tensor(img_sizes, dtype=torch.float)
+    tensor_scales = tensor([1] * len(records), dtype=torch.float)
+
+    return tensor_imgs, tensor_scales, tensor_sizes

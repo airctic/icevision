@@ -1,6 +1,6 @@
 import pytest
+from mantisshrimp import *
 from mantisshrimp.imports import *
-from mantisshrimp.core import *
 from mantisshrimp.models import efficientdet
 
 
@@ -77,3 +77,22 @@ def test_efficient_det_valid_dataloader(records):
     xb, yb = first(dl)
 
     _test_batch_valid(images=xb, targets=yb)
+
+
+@pytest.mark.parametrize(
+    "batch_tfms", [None, batch_tfms.ImgPadStack(np.array(0, dtype=np.uint8))]
+)
+def test_efficient_det_build_infer_batch(img, batch_tfms):
+    records = [{"img": img, "height": 4, "width": 4}] * 2
+    batch = efficientdet.build_infer_batch(records, batch_tfms=batch_tfms)
+
+    tensor_img = torch.stack([im2tensor(img), im2tensor(img)])
+    img_sizes = tensor([(4, 4), (4, 4)], dtype=torch.float)
+    img_scales = tensor([1, 1], dtype=torch.float)
+    expected = [tensor_img, img_scales, img_sizes]
+
+    assert len(batch) == 3
+
+    assert torch.equal(batch[0], expected[0])
+    assert torch.equal(batch[1], expected[1])
+    assert torch.equal(batch[2], expected[2])

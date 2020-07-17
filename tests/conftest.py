@@ -34,3 +34,9 @@ def image():
     tensor_img = im2tensor(img)
     tensor_img = torch.unsqueeze(tensor_img, 0)
     return tensor_img
+
+
+@pytest.fixture()
+def fridge_img(samples_source):
+    filepath = samples_source / "fridge/images/10.jpg"
+    return open_img(filepath)

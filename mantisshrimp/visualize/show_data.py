@@ -16,7 +16,7 @@ from mantisshrimp.visualize.show_annotation import *
 
 def show_sample(
     sample,
-    classes: Optional[List[str]] = None,
+    classes: Optional[Sequence[str]] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -37,7 +37,7 @@ def show_sample(
 
 def show_record(
     record: RecordType,
-    classes: Optional[List[str]] = None,
+    classes: Optional[Sequence[str]] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -61,7 +61,7 @@ def show_record(
 def show_pred(
     img: np.ndarray,
     pred: dict,
-    classes: Optional[List[str]] = None,
+    classes: Optional[Sequence[str]] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
@@ -85,8 +85,8 @@ def show_pred(
 
 
 def show_records(
-    records: List[RecordType],
-    classes: Optional[List[str]] = None,
+    records: Sequence[RecordType],
+    classes: Optional[Sequence[str]] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -112,8 +112,8 @@ def show_records(
 
 
 def show_samples(
-    samples: List[dict],
-    classes: Optional[List[str]] = None,
+    samples: Sequence[dict],
+    classes: Optional[Sequence[str]] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -139,9 +139,9 @@ def show_samples(
 
 
 def show_preds(
-    imgs: np.ndarray,
-    preds: dict,
-    classes: Optional[List[str]] = None,
+    imgs: Sequence[np.ndarray],
+    preds: Sequence[dict],
+    classes: Optional[Sequence[str]] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
