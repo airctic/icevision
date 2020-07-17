@@ -13,9 +13,11 @@ def predict(
     detection_threshold: float = 0.5,
     device: Optional[torch.device] = None,
 ):
-    bench = DetBenchPredict(unwrap_bench(model), config=model.config).eval()
-    device = device or model_device(bench)
+    device = device or model_device(model)
     batch = [o.to(device) for o in batch]
+
+    bench = DetBenchPredict(unwrap_bench(model), config=model.config)
+    bench = bench.eval().to(device)
 
     raw_preds = bench(*batch)
     return [
