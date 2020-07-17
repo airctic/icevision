@@ -2,7 +2,6 @@ __all__ = [
     "filter_params",
     "unfreeze",
     "freeze",
-    "transform_collate",
     "transform_dataloader",
     "common_build_batch",
 ]
@@ -48,16 +47,6 @@ def unfreeze(params):
 def freeze(params):
     for p in params:
         p.requires_grad = False
-
-
-def transform_collate(build_batch, batch_tfms=None):
-    def collate_fn(records):
-        if batch_tfms is not None:
-            records = batch_tfms(records)
-
-        return build_batch(records)
-
-    return collate_fn
 
 
 def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
