@@ -1,9 +1,10 @@
 __all__ = [
     "build_train_batch",
     "build_valid_batch",
+    "build_infer_batch",
     "train_dataloader",
     "valid_dataloader",
-    "build_infer_batch",
+    "infer_dataloader",
 ]
 
 from mantisshrimp.imports import *
@@ -52,13 +53,7 @@ def build_valid_batch(records):
     return images, targets
 
 
-def build_infer_batch(images: List[np.ndarray], batch_tfms=None):
-    records = []
-    for img in images:
-        record = {"img": img}
-        record["height"], record["width"], _ = img.shape
-        records.append(record)
-
+def build_infer_batch(records, batch_tfms=None):
     if batch_tfms is not None:
         records = batch_tfms(records)
 
@@ -69,6 +64,6 @@ def build_infer_batch(images: List[np.ndarray], batch_tfms=None):
 
     tensor_imgs = torch.stack(tensor_imgs)
     tensor_sizes = tensor(img_sizes, dtype=torch.float)
-    tensor_scales = tensor([1] * len(images), dtype=torch.float)
+    tensor_scales = tensor([1] * len(records), dtype=torch.float)
 
     return tensor_imgs, tensor_scales, tensor_sizes
