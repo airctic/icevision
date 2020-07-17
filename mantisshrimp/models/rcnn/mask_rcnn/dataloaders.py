@@ -9,7 +9,7 @@ __all__ = [
 
 from mantisshrimp.imports import *
 from mantisshrimp.parsers import *
-from mantisshrimp.models.utils import transform_dataloader
+from mantisshrimp.models.utils import *
 from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import _build_train_sample
 from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import (
     build_infer_batch,
@@ -43,8 +43,10 @@ def _build_mask_train_sample(record: RecordType):
 
 
 def build_train_batch(
-    records: List[RecordType],
+    records: List[RecordType], batch_tfms=None
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
+    records = common_build_batch(records)
+
     images, targets = [], []
     for record in records:
         image, target = _build_mask_train_sample(record)
@@ -55,6 +57,6 @@ def build_train_batch(
 
 
 def build_valid_batch(
-    records: List[RecordType],
+    records: List[RecordType], batch_tfms=None
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     return build_train_batch(records=records)

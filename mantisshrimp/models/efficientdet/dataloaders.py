@@ -8,25 +8,39 @@ __all__ = [
 ]
 
 from mantisshrimp.imports import *
-from mantisshrimp.models.utils import transform_collate
+from mantisshrimp.models.utils import *
 
 
 def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    collate_fn = transform_collate(build_batch=build_train_batch, batch_tfms=batch_tfms)
-    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+    return transform_dataloader(
+        dataset=dataset,
+        build_batch=build_train_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
 
 
 def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    collate_fn = transform_collate(build_batch=build_valid_batch, batch_tfms=batch_tfms)
-    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+    return transform_dataloader(
+        dataset=dataset,
+        build_batch=build_valid_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
 
 
 def infer_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    collate_fn = partial(build_infer_batch, batch_tfms=batch_tfms)
-    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+    return transform_dataloader(
+        dataset=dataset,
+        build_batch=build_infer_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
 
 
-def build_train_batch(records):
+def build_train_batch(records, batch_tfms=None):
+    records = common_build_batch(records, batch_tfms=batch_tfms)
+
     images = []
     targets = {"bbox": [], "cls": []}
     for record in records:
@@ -43,7 +57,12 @@ def build_train_batch(records):
     return images, targets
 
 
-def build_valid_batch(records):
+def build_valid_batch(records, batch_tfms=None):
+    records = common_build_batch(records, batch_tfms=batch_tfms)
+
+    if batch_tfms is not None:
+        records = batch_tfms(records)
+
     images, targets = build_train_batch(records=records)
 
     batch_size = len(records)
@@ -54,8 +73,7 @@ def build_valid_batch(records):
 
 
 def build_infer_batch(records, batch_tfms=None):
-    if batch_tfms is not None:
-        records = batch_tfms(records)
+    records = common_build_batch(records, batch_tfms=batch_tfms)
 
     tensor_imgs, img_sizes = [], []
     for record in records:

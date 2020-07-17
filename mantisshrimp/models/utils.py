@@ -4,9 +4,11 @@ __all__ = [
     "freeze",
     "transform_collate",
     "transform_dataloader",
+    "common_build_batch",
 ]
 
 from mantisshrimp.imports import *
+from mantisshrimp.parsers import *
 
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
@@ -59,5 +61,12 @@ def transform_collate(build_batch, batch_tfms=None):
 
 
 def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
-    collate_fn = transform_collate(build_batch=build_batch, batch_tfms=batch_tfms)
+    collate_fn = partial(build_batch, batch_tfms=batch_tfms)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+
+
+def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
+    if batch_tfms is not None:
+        records = batch_tfms(records)
+
+    return records
