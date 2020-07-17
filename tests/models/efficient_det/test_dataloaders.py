@@ -83,7 +83,8 @@ def test_efficient_det_valid_dataloader(records):
     "batch_tfms", [None, batch_tfms.ImgPadStack(np.array(0, dtype=np.uint8))]
 )
 def test_efficient_det_build_infer_batch(img, batch_tfms):
-    batch = efficientdet.build_infer_batch([img, img], batch_tfms=batch_tfms)
+    records = [{"img": img, "height": 4, "width": 4}] * 2
+    batch = efficientdet.build_infer_batch(records, batch_tfms=batch_tfms)
 
     tensor_img = torch.stack([im2tensor(img), im2tensor(img)])
     img_sizes = tensor([(4, 4), (4, 4)], dtype=torch.float)

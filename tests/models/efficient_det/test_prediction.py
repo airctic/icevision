@@ -14,7 +14,8 @@ def test_efficient_det_predict(fridge_img):
     state_dict = torch.hub.load_state_dict_from_url(weights_url)
     model.load_state_dict(state_dict)
 
-    batch = efficientdet.build_infer_batch([img])
+    records = [{"img": img, "height": 512, "width": 512}]
+    batch = efficientdet.build_infer_batch(records)
     preds = efficientdet.predict(model=model, batch=batch)
 
     assert len(preds) == 1
