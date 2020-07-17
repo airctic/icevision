@@ -6,6 +6,8 @@ MantisShrimp
 
 |tests| |docs| |codecov| |black| |license|
 
+Be sure to check out our `documentation`_.  
+
 --------------
 
 .. image:: images/mantisshrimp-logo.png
@@ -185,7 +187,11 @@ Quick Example: How to train the **PETS Dataset**
 
    from mantisshrimp.imports import *
    from mantisshrimp import *
+   from mantisshrimp.models.rcnn import faster_rcnn
+   from mantisshrimp.datasets.pets.transforms import *
+   
    import albumentations as A
+   
 
    # Load the PETS dataset
    path = datasets.pets.load()
@@ -201,49 +207,22 @@ Quick Example: How to train the **PETS Dataset**
    CLASSES = datasets.pets.CLASSES
 
    # shows images with corresponding labels and boxes
-   records = train_records[:6]
-   show_records(records, ncols=3, classes=CLASSES)
+   show_records(train_records[:6], ncols=3, classes=CLASSES)
 
-   # ImageNet stats
-   imagenet_mean, imagenet_std = IMAGENET_STATS
-
-   # Transform: supporting albumentations transforms out of the box
-   # Transform for the train dataset
-   train_tfms = AlbuTransform(
-       [
-           A.LongestMaxSize(384),
-           A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
-           A.HorizontalFlip(),
-           A.ShiftScaleRotate(rotate_limit=20),
-           A.RGBShift(always_apply=True),
-           A.RandomBrightnessContrast(),
-           A.Blur(blur_limit=(1, 3)),
-           A.Normalize(mean=imagenet_mean, std=imagenet_std),
-       ]
-   )
-
-   # Transform for the validation dataset
-   valid_tfms = AlbuTransform(
-       [
-           A.LongestMaxSize(384),
-           A.Normalize(mean=imagenet_mean, std=imagenet_std),
-       ]
-   )   
-
-   # Create both training and validation datasets
-   train_ds = Dataset(train_records, train_tfms)
-   valid_ds = Dataset(valid_records, valid_tfms)
+   # Create both training and validation datasets - using Albumentations transforms out of the box
+   train_ds = Dataset(train_records, train_albumentations_tfms_pets() )
+   valid_ds = Dataset(valid_records, valid_albumentations_tfms_pets())
 
    # Create both training and validation dataloaders
-   train_dl = model.dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
-   valid_dl = model.dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
+   train_dl = faster_rcnn.train_dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
+   valid_dl = faster_rcnn.valid_dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 
    # Create model
-   model = MantisFasterRCNN(num_classes= len(CLASSES))
+   model = faster_rcnn.model(num_classes= len(CLASSES))
 
    # Training the model using fastai2
    from mantisshrimp.engines.fastai import *
-   learn = rcnn_learner(dls=[train_dl, valid_dl], model=model)
+   learn = faster_rcnn.fastai.learner(dls=[train_dl, valid_dl], model=model)
    learn.fine_tune(10, lr=1e-4)
 
    # Training the model using Pytorch-Lightning
@@ -287,8 +266,6 @@ Feature Requests and questions
 ------------------------------
 
 For Feature Requests and more questions raise a github `issue`_. We will be happy to assist you.  
-
-Be sure to check the `documentation`_.  
 
 
 .. _documentation: https://lgvaz.github.io/mantisshrimp/index.html
