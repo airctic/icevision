@@ -3,15 +3,14 @@ __all__ = ["parser", "PetsXmlParser", "PetsMaskParser", "PetsMaskFile"]
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers import *
-from mantisshrimp.datasets.pets import CLASSES
 from mantisshrimp.datasets.voc import VocXmlParser, VocMaskParser
 
 
-def parser(data_dir: Path, mask=False):
+def parser(data_dir: Path, class_map: ClassMap, mask=False):
     parser = PetsXmlParser(
         annotations_dir=data_dir / "annotations/xmls",
         images_dir=data_dir / "images",
-        classes=CLASSES,
+        classes=class_map,
     )
 
     if mask:

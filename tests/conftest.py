@@ -38,5 +38,5 @@ def image():
 
 @pytest.fixture()
 def fridge_img(samples_source):
-    filepath = samples_source / "fridge/images/10.jpg"
+    filepath = samples_source / "fridge/odFridgeObjects/images/10.jpg"
     return open_img(filepath)

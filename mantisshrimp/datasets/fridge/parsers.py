@@ -1,16 +1,16 @@
 __all__ = ["parser"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.parsers import *
-from mantisshrimp.datasets.fridge import CLASSES
 from mantisshrimp.datasets.voc import VocXmlParser
 
 
-def parser(data_dir: Path):
+def parser(data_dir: Path, class_map: ClassMap):
     parser = VocXmlParser(
         annotations_dir=data_dir / "odFridgeObjects/annotations",
         images_dir=data_dir / "odFridgeObjects/images",
-        classes=CLASSES,
+        class_map=class_map,
     )
 
     return parser

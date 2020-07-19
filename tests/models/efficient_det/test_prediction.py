@@ -6,9 +6,10 @@ from mantisshrimp.models import efficientdet
 def test_efficient_det_predict(fridge_img):
     img = cv2.resize(fridge_img, (512, 512))
     img = normalize_imagenet(img)
+    class_map = datasets.fridge.class_map()
 
     model = efficientdet.model(
-        "tf_efficientdet_lite0", num_classes=len(datasets.fridge.CLASSES), img_size=512
+        "tf_efficientdet_lite0", num_classes=len(class_map), img_size=512
     )
     weights_url = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
     state_dict = torch.hub.load_state_dict_from_url(

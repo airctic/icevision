@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- ClassMap: A class that handles the mapping between ids and names, with the optional insertion of the background class
+
 ### Changed
 
-### Added
+- `datasets.<name>.CLASSES` substituted by a function `datasets.<name>.class_map` that returns a `ClassMap`
+- `datasets.voc.VocXmlParser`, `show` methods: parameter `classes: Sequence[str]` substituted by `class_map: ClassMap`
+- `datasets.fridge.parser`, `datasets.pets.parser`: additional required parameter `class_map`
 
 ### Removed
 

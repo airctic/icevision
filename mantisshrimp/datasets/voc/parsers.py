@@ -14,15 +14,13 @@ class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin)
         self,
         annotations_dir: Union[str, Path],
         images_dir: Union[str, Path],
-        classes: List[str],
+        class_map: ClassMap,
     ):
         self.images_dir = Path(images_dir)
+        self.class_map = class_map
 
         self.annotations_dir = Path(annotations_dir)
         self.annotation_files = get_files(self.annotations_dir, extensions=[".xml"])
-
-        self.classes = classes
-        self.class2id = {cls: i for i, cls in enumerate(classes)}
 
     def __len__(self):
         return len(self.annotation_files)
@@ -52,7 +50,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin)
         labels = []
         for object in self._root.iter("object"):
             label = object.find("name").text
-            label_id = self.class2id[label]
+            label_id = self.class_map.get_name(label)
             labels.append(label_id)
 
         return labels

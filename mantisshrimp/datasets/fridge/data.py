@@ -1,16 +1,14 @@
-__all__ = ["CLASSES", "load"]
+__all__ = ["class_map", "load"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
+from mantisshrimp.core import *
 
-CLASSES = {
-    "milk_bottle",
-    "carton",
-    "can",
-    "water_bottle",
-}
-CLASSES = sorted(CLASSES)
-CLASSES = ["background"] + CLASSES
+_CLASSES = sorted({"milk_bottle", "carton", "can", "water_bottle"})
+
+
+def class_map(background: Optional[int] = 0) -> ClassMap:
+    return ClassMap(classes=_CLASSES, background=background)
 
 
 def load(force_download=False):
