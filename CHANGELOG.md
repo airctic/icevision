@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- ClassMap: A class that handles the mapping between ids and names, with the optional insertion of the background class
+- `ClassMap`: A class that handles the mapping between ids and names, with the optional insertion of the background class
 
 ### Changed
 
