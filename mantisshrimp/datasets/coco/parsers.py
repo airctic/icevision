@@ -1,9 +1,23 @@
-__all__ = ["COCOImageInfoParser", "COCOAnnotationParser"]
+__all__ = ["parser", "COCOImageInfoParser", "COCOAnnotationParser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.parsers.defaults import *
-from mantisshrimp.parsers.mixins import *
+from mantisshrimp.parsers import *
+
+
+def parser(
+    annotations_file: Union[str, Path], img_dir: Union[str, Path]
+) -> ParserInterface:
+    annotations_dict = json.loads(Path(annotations_file).read())
+
+    image_info_parser = COCOImageInfoParser(
+        infos=annotations_dict["images"], img_dir=img_dir
+    )
+    annotations_parser = COCOAnnotationParser(
+        annotations=annotations_dict["annotations"]
+    )
+
+    return CombinedParser(image_info_parser, annotations_parser)
 
 
 class COCOImageInfoParser(DefaultImageInfoParser):
