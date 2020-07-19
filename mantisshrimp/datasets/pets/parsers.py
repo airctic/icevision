@@ -10,7 +10,7 @@ def parser(data_dir: Path, class_map: ClassMap, mask=False):
     parser = PetsXmlParser(
         annotations_dir=data_dir / "annotations/xmls",
         images_dir=data_dir / "images",
-        classes=class_map,
+        class_map=class_map,
     )
 
     if mask:
@@ -23,7 +23,7 @@ def parser(data_dir: Path, class_map: ClassMap, mask=False):
 class PetsXmlParser(VocXmlParser):
     def labels(self, o) -> List[int]:
         name = re.findall(r"^(.*)_\d+$", o.stem)[0]
-        class_id = self.class2id[name]
+        class_id = self.class_map.get_name(name)
 
         # there is an image with two cats (same breed)
         num_objs = len(self._root.findall("object"))
