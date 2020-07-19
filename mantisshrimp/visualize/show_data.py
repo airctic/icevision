@@ -103,7 +103,7 @@ def show_records(
             label=label,
             bbox=bbox,
             mask=mask,
-            classes=class_map,
+            class_map=class_map,
             prepare_record=prepare_record,
             show=False,
         )
@@ -131,7 +131,7 @@ def show_samples(
             label=label,
             bbox=bbox,
             mask=mask,
-            classes=class_map,
+            class_map=class_map,
             show=False,
         )
         for sample in samples
@@ -162,7 +162,7 @@ def show_preds(
             show_pred,
             img=img,
             pred=pred,
-            classes=class_map,
+            class_map=class_map,
             denormalize_fn=denormalize_fn,
             label=label,
             bbox=bbox,
