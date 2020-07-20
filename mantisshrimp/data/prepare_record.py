@@ -15,6 +15,12 @@ def prepare_img(record):
     return record
 
 
+def prepare_img_size(record):
+    if "img" in record:
+        record["height"], record["width"], _ = record["img"].shape
+    return record
+
+
 def prepare_mask(record):
     if "masks" in record:
         record["masks"] = MaskArray.from_masks(
@@ -23,4 +29,6 @@ def prepare_mask(record):
     return record
 
 
-default_prepare_record = compose(prepare_copy, prepare_img, prepare_mask)
+default_prepare_record = compose(
+    prepare_copy, prepare_img, prepare_mask, prepare_img_size
+)

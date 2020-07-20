@@ -33,17 +33,6 @@ def test_coco_annotation_parser():
     ]
 
 
-@pytest.mark.skip
-def test_category_parser():
-    catparser = test_utils.sample_category_parser()
-    with np_local_seed(42):
-        catmap = catparser.parse_dicted(show_pbar=False)
-    assert catmap.cats[0].name == "background"
-    assert len(catmap) == 81
-    assert catmap.cats[2] == Category(2, "bicycle")
-    assert catmap.id2i[42] == 38
-
-
 def test_coco_parser(records):
     r = records[0]
     assert len(records) == 5

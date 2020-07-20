@@ -1,6 +1,13 @@
-__all__ = ["filter_params", "unfreeze", "freeze"]
+__all__ = [
+    "filter_params",
+    "unfreeze",
+    "freeze",
+    "transform_dataloader",
+    "common_build_batch",
+]
 
 from mantisshrimp.imports import *
+from mantisshrimp.parsers import *
 
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
@@ -40,3 +47,15 @@ def unfreeze(params):
 def freeze(params):
     for p in params:
         p.requires_grad = False
+
+
+def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
+    collate_fn = partial(build_batch, batch_tfms=batch_tfms)
+    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
+
+
+def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
+    if batch_tfms is not None:
+        records = batch_tfms(records)
+
+    return records

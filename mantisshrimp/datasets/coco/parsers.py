@@ -1,9 +1,23 @@
-__all__ = ["COCOImageInfoParser", "COCOAnnotationParser"]
+__all__ = ["parser", "COCOImageInfoParser", "COCOBBoxParser", "COCOAnnotationParser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.parsers.defaults import *
-from mantisshrimp.parsers.mixins import *
+from mantisshrimp.parsers import *
+
+
+def parser(
+    annotations_file: Union[str, Path], img_dir: Union[str, Path], mask: bool = True,
+) -> ParserInterface:
+    annotations_dict = json.loads(Path(annotations_file).read())
+
+    image_info_parser = COCOImageInfoParser(
+        infos=annotations_dict["images"], img_dir=img_dir
+    )
+
+    _parser_cls = COCOAnnotationParser if mask else COCOBBoxParser
+    annotations_parser = _parser_cls(annotations=annotations_dict["annotations"])
+
+    return CombinedParser(image_info_parser, annotations_parser)
 
 
 class COCOImageInfoParser(DefaultImageInfoParser):
@@ -31,7 +45,7 @@ class COCOImageInfoParser(DefaultImageInfoParser):
         return o["width"]
 
 
-class COCOAnnotationParser(MaskRCNNParser, AreasParserMixin, IsCrowdsParserMixin):
+class COCOBBoxParser(FasterRCNNParser, AreasParserMixin, IsCrowdsParserMixin):
     def __init__(self, annotations: list):
         self.annotations = annotations
 
@@ -53,12 +67,14 @@ class COCOAnnotationParser(MaskRCNNParser, AreasParserMixin, IsCrowdsParserMixin
     def areas(self, o) -> List[float]:
         return [o["area"]]
 
+    def iscrowds(self, o) -> List[bool]:
+        return [o["iscrowd"]]
+
+
+class COCOAnnotationParser(MaskRCNNParser, COCOBBoxParser):
     def masks(self, o) -> List[MaskArray]:
         seg = o["segmentation"]
         if o["iscrowd"]:
             return [RLE.from_coco(seg["counts"])]
         else:
             return [Polygon(seg)]
-
-    def iscrowds(self, o) -> List[bool]:
-        return [o["iscrowd"]]

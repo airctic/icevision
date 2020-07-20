@@ -32,6 +32,8 @@ class AlbuTransform(Transform):
         d = self.tfms(**params)
 
         out = {"img": d["image"]}
+        out["height"], out["width"], _ = out["img"].shape
+
         if labels is not None:
             out["labels"] = [labels[i] for i in d["labels"]]
         if bboxes is not None:

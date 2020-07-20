@@ -1,49 +1,54 @@
-__all__ = ["CLASSES", "load"]
+__all__ = ["class_map", "load"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.utils import *
 
-CLASSES = {
-    "Abyssinian",
-    "great_pyrenees",
-    "Bombay",
-    "Persian",
-    "samoyed",
-    "Maine_Coon",
-    "havanese",
-    "beagle",
-    "yorkshire_terrier",
-    "pomeranian",
-    "scottish_terrier",
-    "saint_bernard",
-    "Siamese",
-    "chihuahua",
-    "Birman",
-    "american_pit_bull_terrier",
-    "miniature_pinscher",
-    "japanese_chin",
-    "British_Shorthair",
-    "Bengal",
-    "Russian_Blue",
-    "newfoundland",
-    "wheaten_terrier",
-    "Ragdoll",
-    "leonberger",
-    "english_cocker_spaniel",
-    "english_setter",
-    "staffordshire_bull_terrier",
-    "german_shorthaired",
-    "Egyptian_Mau",
-    "boxer",
-    "shiba_inu",
-    "keeshond",
-    "pug",
-    "american_bulldog",
-    "basset_hound",
-    "Sphynx",
-}
-CLASSES = sorted(CLASSES)
-CLASSES = ["background"] + CLASSES
+_CLASSES = sorted(
+    {
+        "Abyssinian",
+        "great_pyrenees",
+        "Bombay",
+        "Persian",
+        "samoyed",
+        "Maine_Coon",
+        "havanese",
+        "beagle",
+        "yorkshire_terrier",
+        "pomeranian",
+        "scottish_terrier",
+        "saint_bernard",
+        "Siamese",
+        "chihuahua",
+        "Birman",
+        "american_pit_bull_terrier",
+        "miniature_pinscher",
+        "japanese_chin",
+        "British_Shorthair",
+        "Bengal",
+        "Russian_Blue",
+        "newfoundland",
+        "wheaten_terrier",
+        "Ragdoll",
+        "leonberger",
+        "english_cocker_spaniel",
+        "english_setter",
+        "staffordshire_bull_terrier",
+        "german_shorthaired",
+        "Egyptian_Mau",
+        "boxer",
+        "shiba_inu",
+        "keeshond",
+        "pug",
+        "american_bulldog",
+        "basset_hound",
+        "Sphynx",
+    }
+)
+
+
+def class_map(background: int = 0):
+    return ClassMap(classes=_CLASSES, background=background)
 
 
 def load(force_download=False):

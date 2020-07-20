@@ -26,6 +26,7 @@ def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
 
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, **kwargs)
 
+    axs = np.asarray(axs)
     for f, ax in zip(fs, axs.flatten()):
         f(ax=ax)
 

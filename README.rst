@@ -195,7 +195,7 @@ Quick Example: How to train the **PETS Dataset**
 
    # PETS parser: provided out-of-the-box
    parser = datasets.pets.parser(path)
-   train_rs, valid_rs = parser.parse(data_splitter)
+   train_records, valid_records = parser.parse(data_splitter)
 
    # For convenience
    CLASSES = datasets.pets.CLASSES
@@ -250,13 +250,34 @@ Quick Example: How to train the **PETS Dataset**
    from mantisshrimp.engines.lightning import *
    
    class LightModel(RCNNLightningAdapter):
-      def configur1e_optimizers(self):
+      def configure_optimizers(self):
           opt = SGD(self.parameters(), 2e-4, momentum=0.9)
           return opt
 
    light_model = LightModel(model)
    trainer = Trainer(max_epochs=3, gpus=1)
    trainer.fit(light_model, train_dl, valid_dl)
+
+Streamlit Demo
+--------------
+We provide a nice demo using `streamlit`_.
+If streamlit is not already install, run the following command, from the terminal to install it:
+
+.. code:: bash
+
+   pip install streamlit
+
+Simply run the following in your terminal. It should start a demo in your browser.
+It will show you one of our trained models as a pet detector !!
+
+.. code:: bash
+
+   streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
+
+`This`_ is the source code for the demo. 
+
+You can also use it as template when creating your own streamlit apps with mantisshrimp.
+
 
 Contributing
 ------------
@@ -276,7 +297,8 @@ Be sure to check the `documentation`_.
 .. _here: https://pytorch.org/get-started/locally/#start-locally
 .. _issue-185: https://github.com/cocodataset/cocoapi/issues/185
 .. _Docker website: https://docs.docker.com/engine/install/
-
+.. _This: https://github.com/oke-aditya/mantisshrimp_streamlit
+.. _streamlit: https://www.streamlit.io/
 .. |tests| image:: https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push
    :target: https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests
 .. |codecov| image:: https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg

@@ -1,5 +1,8 @@
 __all__ = ["MantisRCNN"]
 
+from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
+from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
+
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.models.mantis_module import *
@@ -71,5 +74,6 @@ class MantisRCNN(MantisModule, ABC):
             backbone = resnet_fpn_backbone(name, pretrained=pretrained)
         else:
             # This does not create fpn backbone, it is supported for all models
-            backbone = create_torchvision_backbone(name, pretrained=pretrained)
+            raise NotImplementedError
+            # backbone = create_torchvision_backbone(name, pretrained=pretrained)
         return backbone

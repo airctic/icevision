@@ -1,17 +1,20 @@
 __all__ = ["adapted_fastai_learner"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 from mantisshrimp.metrics import *
 from mantisshrimp.engines.fastai.imports import *
 from mantisshrimp.engines.fastai.adapters import *
 
 
+# TODO: param_groups fix for efficientdet
 def adapted_fastai_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
-    model,
+    model: nn.Module,
     metrics=None,
     device=None,
-    **kwargs,
+    splitter=None,
+    **learner_kwargs,
 ):
     # convert dataloaders to fastai
     fastai_dls = []
@@ -35,4 +38,22 @@ def adapted_fastai_learner(
         for metric in metrics
     ]
 
-    return fastai.Learner(dls=fastai_dls, model=model, metrics=fastai_metrics, **kwargs)
+    if splitter == None:
+        if hasattr(model, "param_groups"):
+
+            def splitter(model):
+                return model.param_groups()
+
+        else:
+            raise ValueError(
+                "If the parameter `splitter` is not specified, "
+                "the model should define a method called `param_groups`"
+            )
+
+    return fastai.Learner(
+        dls=fastai_dls,
+        model=model,
+        metrics=fastai_metrics,
+        splitter=splitter,
+        **learner_kwargs,
+    )

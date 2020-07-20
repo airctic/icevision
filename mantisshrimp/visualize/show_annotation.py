@@ -13,7 +13,7 @@ def show_annotation(
     labels: List[int] = None,
     bboxes: List[BBox] = None,
     masks=None,
-    classes: List[str] = None,
+    class_map: ClassMap = None,
     ax: plt.axes = None,
     figsize=None,
     show=False,
@@ -30,8 +30,8 @@ def show_annotation(
         if mask is not None:
             draw_mask(ax, mask.data.copy(), color)
         if label is not None:
-            if classes is not None:
-                label = classes[label]
+            if class_map is not None:
+                label = class_map.get_id(label)
             # label position
             if bbox is not None:
                 x, y = bbox.x, bbox.y

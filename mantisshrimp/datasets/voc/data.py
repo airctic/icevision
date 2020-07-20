@@ -1,32 +1,37 @@
-__all__ = ["CLASSES", "load"]
+__all__ = ["class_map", "load"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.core import *
 from mantisshrimp.utils import *
 
-CLASSES = {
-    "person",
-    "bird",
-    "cat",
-    "cow",
-    "dog",
-    "horse",
-    "sheep",
-    "aeroplane",
-    "bicycle",
-    "boat",
-    "bus",
-    "car",
-    "motorbike",
-    "train",
-    "bottle",
-    "chair",
-    "diningtable",
-    "pottedplant",
-    "sofa",
-    "tvmonitor",
-}
-CLASSES = sorted(CLASSES)
-CLASSES = ["background"] + CLASSES
+_CLASSES = sorted(
+    {
+        "person",
+        "bird",
+        "cat",
+        "cow",
+        "dog",
+        "horse",
+        "sheep",
+        "aeroplane",
+        "bicycle",
+        "boat",
+        "bus",
+        "car",
+        "motorbike",
+        "train",
+        "bottle",
+        "chair",
+        "diningtable",
+        "pottedplant",
+        "sofa",
+        "tvmonitor",
+    }
+)
+
+
+def class_map(background: int = 0):
+    return ClassMap(classes=_CLASSES, background=background)
 
 
 def load(force_download=False):
