@@ -9,6 +9,7 @@ __all__ = [
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
+from mantisshrimp.core import *
 from mantisshrimp.parsers import *
 from mantisshrimp.data import *
 from mantisshrimp.visualize.show_annotation import *
@@ -16,7 +17,7 @@ from mantisshrimp.visualize.show_annotation import *
 
 def show_sample(
     sample,
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -29,7 +30,7 @@ def show_sample(
         labels=sample["labels"] if (label and "labels" in sample) else None,
         bboxes=sample["bboxes"] if (bbox and "bboxes" in sample) else None,
         masks=sample["masks"] if (mask and "masks" in sample) else None,
-        classes=classes,
+        class_map=class_map,
         ax=ax,
         show=show,
     )
@@ -37,7 +38,7 @@ def show_sample(
 
 def show_record(
     record: RecordType,
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -52,7 +53,7 @@ def show_record(
         label=label,
         bbox=bbox,
         mask=mask,
-        classes=classes,
+        class_map=class_map,
         ax=ax,
         show=show,
     )
@@ -61,7 +62,7 @@ def show_record(
 def show_pred(
     img: np.ndarray,
     pred: dict,
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
@@ -78,7 +79,7 @@ def show_pred(
         label=label,
         bbox=bbox,
         mask=mask,
-        classes=classes,
+        class_map=class_map,
         show=show,
         ax=ax,
     )
@@ -86,7 +87,7 @@ def show_pred(
 
 def show_records(
     records: Sequence[RecordType],
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     label: bool = True,
     bbox: bool = True,
     mask: bool = True,
@@ -102,7 +103,7 @@ def show_records(
             label=label,
             bbox=bbox,
             mask=mask,
-            classes=classes,
+            class_map=class_map,
             prepare_record=prepare_record,
             show=False,
         )
@@ -113,7 +114,7 @@ def show_records(
 
 def show_samples(
     samples: Sequence[dict],
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = None,
     label=True,
     bbox=True,
@@ -130,7 +131,7 @@ def show_samples(
             label=label,
             bbox=bbox,
             mask=mask,
-            classes=classes,
+            class_map=class_map,
             show=False,
         )
         for sample in samples
@@ -141,7 +142,7 @@ def show_samples(
 def show_preds(
     imgs: Sequence[np.ndarray],
     preds: Sequence[dict],
-    classes: Optional[Sequence[str]] = None,
+    class_map: Optional[ClassMap] = None,
     denormalize_fn=None,
     label=True,
     bbox=True,
@@ -161,7 +162,7 @@ def show_preds(
             show_pred,
             img=img,
             pred=pred,
-            classes=classes,
+            class_map=class_map,
             denormalize_fn=denormalize_fn,
             label=label,
             bbox=bbox,
