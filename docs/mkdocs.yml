@@ -1,0 +1,26 @@
+site_name: Mantisshrimp Documentation
+theme:
+  name: "material"
+  palette:
+    primary: "blue"
+    accent: "blue"
+
+docs_dir: templates
+repo_url: https://github.com/lgvaz/mantisshrimp
+markdown_extensions:
+  - codehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+extra_javascript:
+  - https://unpkg.com/mermaid@8.4.4/dist/mermaid.min.js
+
+nav:
+  - Home: index.md
+  - Contributing: contributing.md

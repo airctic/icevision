@@ -1,0 +1,27 @@
+name: Build mkdocs
+
+on:
+  push:
+    branches:    
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip setuptools
+            pip install git+git://github.com/lgvaz/mantisshrimp.git
+            pip install -e .
+            pip install -r docs/requirements.txt
+      - name: Build the docs
+        run:  |
+          cd docs
+          mkdocs build  
