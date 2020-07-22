@@ -1,6 +1,7 @@
 import pytest, requests, PIL
 from mantisshrimp import *
 from mantisshrimp.imports import *
+from mantisshrimp.models.rcnn import faster_rcnn
 from mantisshrimp.models import efficientdet
 import albumentations as A
 
@@ -74,6 +75,12 @@ def fridge_efficientdet_model() -> nn.Module:
     return model
 
 
+@pytest.fixture()
+def fridge_faster_rcnn_model() -> nn.Module:
+    backbone = faster_rcnn.backbones.resnet_fpn.resnet18(pretrained=False)
+    return faster_rcnn.model(num_classes=5, backbone=backbone)
+
+
 @pytest.fixture(scope="session")
 def fridge_ds() -> Tuple[Dataset, Dataset]:
     IMG_SIZE = 512
@@ -97,5 +104,14 @@ def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
     train_dl = efficientdet.train_dataloader(train_ds, batch_size=2)
     valid_dl = efficientdet.valid_dataloader(valid_ds, batch_size=2)
+
+    return train_dl, valid_dl
+
+
+@pytest.fixture()
+def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+    train_ds, valid_ds = fridge_ds
+    train_dl = faster_rcnn.train_dataloader(train_ds, batch_size=2)
+    valid_dl = faster_rcnn.valid_dataloader(valid_ds, batch_size=2)
 
     return train_dl, valid_dl

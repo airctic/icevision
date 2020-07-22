@@ -53,7 +53,7 @@ def build_train_batch(
         images.append(image)
         targets.append(target)
 
-    return images, targets
+    return (images, targets), records
 
 
 def build_valid_batch(

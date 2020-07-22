@@ -1,4 +1,4 @@
-__all__ = ["predict", "convert_raw_prediction"]
+__all__ = ["predict", "convert_raw_prediction", "convert_raw_predictions"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -17,6 +17,12 @@ def predict(
     images = [img.to(device) for img in batch]
 
     raw_preds = model(images)
+    return convert_raw_predictions(
+        raw_preds=raw_preds, detection_threshold=detection_threshold
+    )
+
+
+def convert_raw_predictions(raw_preds, detection_threshold: float):
     return [
         convert_raw_prediction(raw_pred, detection_threshold=detection_threshold)
         for raw_pred in raw_preds
@@ -35,7 +41,7 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
     boxes = raw_pred["boxes"][above_threshold]
     bboxes = []
     for box_tensor in boxes:
-        xyxy = box_tensor.cpu().tolist()
+        xyxy = box_tensor.cpu().numpy()
         bbox = BBox.from_xyxy(*xyxy)
         bboxes.append(bbox)
 
