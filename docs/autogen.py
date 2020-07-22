@@ -91,6 +91,13 @@ def nb_to_md(dest_dir):
 
 def generate(dest_dir):
     template_dir = mantisshrimp_dir / 'docs' / 'templates'
+
+    # Create dest_dir if doesn't exist
+    if os.path.exists(dest_dir):
+        print("Removing sources folder:", dest_dir)
+        shutil.rmtree(dest_dir)
+        
+    os.makedirs(dest_dir)
     
     # doc_generator = keras_autodoc.DocumentationGenerator(
     #     PAGES,
@@ -115,6 +122,8 @@ def generate(dest_dir):
                     dest_dir / 'docker.md')
     shutil.copyfile(mantisshrimp_dir / 'INSTALL.md',
                     dest_dir / 'install.md')
+    shutil.copyfile(mantisshrimp_dir / 'README_MKDOCS.md',
+                    dest_dir / 'readme_mkdocs.md')
 
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir)/'images'

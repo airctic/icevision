@@ -1,6 +1,6 @@
 # Mantisshrimp Documentation
 
-The source for Mantisshrimp documentation is in this directory.
+The source for Mantisshrimp documentation is in the `docs/` folder.
 Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdocs.org).
 
 ## Building the documentation

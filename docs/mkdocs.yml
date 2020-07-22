@@ -37,4 +37,5 @@ nav:
     - Overview: getting_started.md
     - Custom Parser: custom_parser.md
   - Contributing Guide: contributing.md
+  - Generating Docs: readme_mkdocs.md
   - About: about.md
