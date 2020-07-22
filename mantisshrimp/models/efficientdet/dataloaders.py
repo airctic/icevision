@@ -54,22 +54,20 @@ def build_train_batch(records, batch_tfms=None):
         targets["bbox"].append(bboxes)
     images = torch.stack(images)
 
-    return images, targets
+    return (images, targets), records
 
 
 def build_valid_batch(records, batch_tfms=None):
-    records = common_build_batch(records, batch_tfms=batch_tfms)
+    (images, targets), records = build_train_batch(
+        records=records, batch_tfms=batch_tfms
+    )
 
-    if batch_tfms is not None:
-        records = batch_tfms(records)
+    img_sizes = [(r["height"], r["width"]) for r in records]
+    targets["img_size"] = tensor(img_sizes, dtype=torch.float)
 
-    images, targets = build_train_batch(records=records)
+    targets["img_scale"] = tensor([1] * len(records), dtype=torch.float)
 
-    batch_size = len(records)
-    targets["img_scale"] = tensor([1.0] * batch_size, dtype=torch.float)
-    targets["img_size"] = tensor([images[0].shape[-2:]] * batch_size, dtype=torch.float)
-
-    return images, targets
+    return (images, targets), records
 
 
 def build_infer_batch(records, batch_tfms=None):
@@ -84,4 +82,4 @@ def build_infer_batch(records, batch_tfms=None):
     tensor_sizes = tensor(img_sizes, dtype=torch.float)
     tensor_scales = tensor([1] * len(records), dtype=torch.float)
 
-    return tensor_imgs, tensor_scales, tensor_sizes
+    return (tensor_imgs, tensor_scales, tensor_sizes), records

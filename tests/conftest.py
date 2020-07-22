@@ -66,11 +66,7 @@ def fridge_efficientdet_records(samples_source):
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
-    model = efficientdet.model(
-        "tf_efficientdet_lite0",
-        num_classes=len(datasets.fridge.class_map()),
-        img_size=512,
-    )
+    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
 
     state_dict = torch.hub.load_state_dict_from_url(WEIGHTS_URL)
     model.load_state_dict(state_dict)
@@ -97,7 +93,7 @@ def fridge_ds() -> Tuple[Dataset, Dataset]:
 
 
 @pytest.fixture()
-def fridge_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
     train_dl = efficientdet.train_dataloader(train_ds, batch_size=2)
     valid_dl = efficientdet.valid_dataloader(valid_ds, batch_size=2)
