@@ -1,43 +1,50 @@
 __all__ = ["COCOMetric"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 from mantisshrimp.data import *
-from mantisshrimp.metrics.coco_metric.coco_eval import CocoEvaluator
 from mantisshrimp.metrics.metric import *
 
 
+class COCOMetricType(Enum):
+    bbox = "bbox"
+    mask = "segm"
+    keypoint = "keypoints"
+
+
 class COCOMetric(Metric):
-    def __init__(self, records, bbox=True, mask=True, keypoint=False):
-        super().__init__()
-        self._coco_ds = coco_api_from_records(records)
+    def __init__(
+        self,
+        metric_type: COCOMetricType = COCOMetricType.bbox,
+        print_summary: bool = False,
+    ):
+        self.metric_type = metric_type
+        self.print_summary = print_summary
+        self._records, self._preds = [], []
 
-        self.iou_types = []
-        if bbox:
-            self.iou_types.append("bbox")
-        if mask:
-            self.iou_types.append("segm")
-        if keypoint:
-            self.iou_types.append("keypoints")
+    def _reset(self):
+        self._records.clear()
+        self._preds.clear()
 
-        self.reset()
-
-    def reset(self):
-        self._coco_evaluator = CocoEvaluator(self._coco_ds, self.iou_types)
-
-    def accumulate(self, xb, yb, preds):
-        # TODO: Implement batch_to_cpu helper function
-        assert len(xb) == len(yb) == len(preds)
-        preds = [{k: v.to(torch.device("cpu")) for k, v in p.items()} for p in preds]
-        res = {y["image_id"].item(): pred for y, pred in zip(yb, preds)}
-        self._coco_evaluator.update(res)
+    def accumulate(self, records, preds):
+        self._records.extend(records)
+        self._preds.extend(preds)
 
     def finalize(self) -> Dict[str, float]:
-        self._coco_evaluator.synchronize_between_processes()
-        self._coco_evaluator.accumulate()
-        self._coco_evaluator.summarize()
-        logs = {
-            f"{k}_ap": float(v.stats[0])
-            for k, v in self._coco_evaluator.coco_eval.items()
-        }
-        self.reset()
+        with CaptureStdout():
+            coco_eval = create_coco_eval(
+                records=self._records,
+                preds=self._preds,
+                metric_type=self.metric_type.value,
+            )
+            coco_eval.evaluate()
+            coco_eval.accumulate()
+
+        with CaptureStdout(propagate_stdout=self.print_summary):
+            coco_eval.summarize()
+        # TODO: all results
+        mAP = coco_eval.stats[0]
+        logs = {"mAP": mAP}
+
+        self._reset()
         return logs

@@ -10,9 +10,9 @@ class LightningModelAdapter(pl.LightningModule, ABC):
         super().__init__()
         self.metrics = metrics or []
 
-    def accumulate_metrics(self, xb, yb, preds):
+    def accumulate_metrics(self, records, preds):
         for metric in self.metrics:
-            metric.accumulate(xb, yb, preds)
+            metric.accumulate(records=records, preds=preds)
 
     def finalize_metrics(self) -> dict:
         all_logs = {}

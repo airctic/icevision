@@ -1,6 +1,8 @@
 import pytest, requests, PIL
 from mantisshrimp import *
 from mantisshrimp.imports import *
+from mantisshrimp.models import efficientdet
+import albumentations as A
 
 
 @pytest.fixture(scope="module")
@@ -37,6 +39,67 @@ def image():
 
 
 @pytest.fixture()
-def fridge_img(samples_source):
+def fridge_efficientdet_records(samples_source):
+    IMG_SIZE = 512
     filepath = samples_source / "fridge/odFridgeObjects/images/10.jpg"
-    return open_img(filepath)
+
+    img = open_img(filepath)
+    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    img = normalize_imagenet(img)
+
+    labels = [2, 3]
+    bboxes = [BBox.from_xyxy(88, 78, 221, 337), BBox.from_xyxy(153, 289, 456, 376)]
+
+    record = {
+        "filepath": filepath,
+        "imageid": 10,
+        "img": img,
+        "height": IMG_SIZE,
+        "width": IMG_SIZE,
+        "labels": labels,
+        "bboxes": bboxes,
+    }
+
+    return [record]
+
+
+@pytest.fixture()
+def fridge_efficientdet_model() -> nn.Module:
+    WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
+    model = efficientdet.model(
+        "tf_efficientdet_lite0",
+        num_classes=len(datasets.fridge.class_map()),
+        img_size=512,
+    )
+
+    state_dict = torch.hub.load_state_dict_from_url(WEIGHTS_URL)
+    model.load_state_dict(state_dict)
+
+    return model
+
+
+@pytest.fixture(scope="session")
+def fridge_ds() -> Tuple[Dataset, Dataset]:
+    IMG_SIZE = 512
+    class_map = datasets.fridge.class_map()
+    data_dir = datasets.fridge.load()
+    parser = datasets.fridge.parser(data_dir, class_map)
+
+    data_splitter = RandomSplitter([0.8, 0.2])
+    train_records, valid_records = parser.parse(data_splitter)
+
+    tfms = AlbuTransform([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
+
+    train_ds = Dataset(train_records[:4], tfms)
+    valid_ds = Dataset(valid_records[:4], tfms)
+
+    return train_ds, valid_ds
+
+
+@pytest.fixture()
+def fridge_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+    train_ds, valid_ds = fridge_ds
+    train_dl = efficientdet.train_dataloader(train_ds, batch_size=2)
+    valid_dl = efficientdet.valid_dataloader(valid_ds, batch_size=2)
+
+    return train_dl, valid_dl
