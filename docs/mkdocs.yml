@@ -1,0 +1,40 @@
+site_name: Mantisshrimp
+theme:
+  favicon: '/images/favicon.png'
+  logo: '/images/logo_white.svg'
+  name: 'material'
+  palette:
+    scheme: default # default slate
+    primary: 'blue'
+    accent: 'blue'
+
+docs_dir: sources
+repo_url: https://github.com/lgvaz/Mantisshrimp
+site_url: https://lgvaz.github.io/mantisshrimp/
+edit_uri: ""
+site_description: 'Documentation for Mantisshrimp.'
+# google_analytics: ['UA-44322747-3', 'https://lgvaz.github.io/mantisshrimp/']
+markdown_extensions:
+  - codehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+
+extra_javascript:
+  - https://unpkg.com/mermaid@8.4.4/dist/mermaid.min.js
+
+nav:
+  - Home: index.md
+  - Installation: install.md
+  - Docker: docker.md
+  - Getting Started:
+    - Overview: getting_started.md
+    - Custom Parser: custom_parser.md
+  - Contributing Guide: contributing.md
+  - About: about.md
