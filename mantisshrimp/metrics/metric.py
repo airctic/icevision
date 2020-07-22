@@ -8,7 +8,7 @@ class Metric(ABC):
         self._model = None
 
     @abstractmethod
-    def accumulate(self, xb, yb, preds):
+    def accumulate(self, records, preds):
         """ Accumulate stats for a single batch
         """
 
