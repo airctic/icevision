@@ -69,7 +69,9 @@ def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
     model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
 
-    state_dict = torch.hub.load_state_dict_from_url(WEIGHTS_URL)
+    state_dict = torch.hub.load_state_dict_from_url(
+        WEIGHTS_URL, map_location=torch.device("cpu")
+    )
     model.load_state_dict(state_dict)
 
     return model
