@@ -1,4 +1,4 @@
-__all__ = ["ModelAdapter"]
+__all__ = ["RCNNModelAdapter"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
@@ -7,30 +7,41 @@ from mantisshrimp.engines.lightning.lightning_model_adapter import LightningMode
 from mantisshrimp.models.rcnn.loss_fn import loss_fn
 
 
-class ModelAdapter(LightningModelAdapter, ABC):
+class RCNNModelAdapter(LightningModelAdapter, ABC):
     def __init__(self, model: nn.Module, metrics: List[Metric] = None):
         super().__init__(metrics=metrics)
         self.model = model
+
+    @abstractmethod
+    def convert_raw_predictions(self, raw_preds):
+        """ Convert raw predictions from the model to library standard.
+        """
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
 
     def training_step(self, batch, batch_idx):
-        xb, yb = batch
+        (xb, yb), records = batch
         preds = self(xb, yb)
+
         loss = loss_fn(preds, yb)
         log = {"train/loss": loss}
+
         return {"loss": loss, "log": log}
 
     def validation_step(self, batch, batch_idx):
-        xb, yb = batch
+        (xb, yb), records = batch
+
         with torch.no_grad():
             self.train()
-            preds = self(xb, yb)
-            loss = loss_fn(preds, yb)
+            train_preds = self(xb, yb)
+            loss = loss_fn(train_preds, yb)
+
             self.eval()
-            preds = self(xb)
-            self.accumulate_metrics(xb, yb, preds)
+            raw_preds = self(xb)
+            preds = self.convert_raw_predictions(raw_preds=raw_preds)
+            self.accumulate_metrics(records=records, preds=preds)
+
         return {"valid/loss": loss}
 
     def validation_epoch_end(self, outs):

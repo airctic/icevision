@@ -26,7 +26,7 @@ def records(img, labels, bboxes):
 
 ### Faster RCNN ###
 def _test_common_rcnn_batch(batch):
-    images, targets = batch
+    (images, targets), records = batch
 
     assert isinstance(images, list)
     assert len(images) == 2
@@ -50,7 +50,7 @@ def _test_common_rcnn_batch(batch):
 def _test_faster_rcnn_batch(batch):
     _test_common_rcnn_batch(batch)
 
-    images, targets = batch
+    (images, targets), records = batch
     for target in targets:
         assert set(target) == {"labels", "boxes"}
 
@@ -111,7 +111,7 @@ def mask_records(img, labels, bboxes, masks):
 
 def _test_mask_rcnn_batch(batch):
     _test_common_rcnn_batch(batch=batch)
-    images, targets = batch
+    (images, targets), records = batch
 
     for target in targets:
         assert set(target.keys()) == {"labels", "boxes", "masks"}
