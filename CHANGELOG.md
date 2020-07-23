@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `datasets.fridge.parser`, `datasets.pets.parser`: additional required parameter `class_map`
 
 ### Removed
+- `MantisFasterRCNN`, `MantisMaskRCNN`
+- `MantisEfficientDet`
+- `CategoryMap`, `Category`
+- `MantisModule`
+
 
 ## Links  
 [Unreleased]: https://github.com/lgvaz/mantisshrimp/tree/master
