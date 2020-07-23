@@ -15,7 +15,7 @@ try:
     import pytorch_lightning as pl
 
     HAS_LIGHTNING = True
-except ImportError:
+except ImportError as e:
     if str(e) != "No module named 'pytorch_lightning'":
         raise e
 
