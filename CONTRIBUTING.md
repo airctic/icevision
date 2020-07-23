@@ -13,13 +13,13 @@ mantisshrimp repo.
 local machine. This is the working directory where you will make
 changes:
 
-``` {.sourceCode .bash}
+```bash
 $ git clone https://github.com/username/mantisshrimp.git
 ```
 
 3.  Install the requirments. You many use miniconda or conda as well.
 
-``` {.sourceCode .bash}
+```bash
 $ pip install -r requirements.txt
 ```
 
@@ -28,20 +28,20 @@ $ pip install -r requirements.txt
 1.  Set the upstream to sync with this repo. This will keep you in sync
     with mantisshrimp easily.
 
-``` {.sourceCode .bash}
+```bash
 $ git remote add upstream https://github.com/lgvaz/mantisshrimp.git
 ```
 
 2.  Updating your local repo: Pull the upstream (original) repo.
 
-``` {.sourceCode .bash}
+```bash
 $ git checkout master
 $ git pull upstream master
 ```
 
 ## Step 3: Creating a new branch
 
-``` {.sourceCode .bash}
+```bash
 $ git checkout -b feature-name
 $ git branch
  master 
@@ -53,7 +53,7 @@ $ git branch
 Edit files in your favorite editor, and format the code with
 [black](https://black.readthedocs.io/en/stable/)
 
-``` {.sourceCode .bash}
+```bash
 # View changes
 git status  # See which files have changed
 git diff    # See changes within files
@@ -73,7 +73,7 @@ instructions in [docs](https://cli.github.com/manual/installation) .
 
 #### 1. Create a pull request using GitHub CLI
 
-``` {.sourceCode .bash}
+```bash
 # Fill up the PR title and the body 
 gh pr create -B master -b "enter body of PR here" -t "enter title"
 ```
@@ -83,13 +83,13 @@ gh pr create -B master -b "enter body of PR here" -t "enter title"
 You can confirm that your PR has been created by running the following
 command, from the mantisshrimp folder:
 
-``` {.sourceCode .bash}
+```bash
 gh pr list 
 ```
 
 You can also check the status of your PR by running:
 
-``` {.sourceCode .bash}
+```bash
 gh pr status 
 ```
 
@@ -101,7 +101,7 @@ More detailed documentation can be found
 If you want to change your code after a PR has been created, you can do
 it by sending more commits to the same remote branch. For example:
 
-``` {.sourceCode .bash}
+```bash
 git commit -m "updated the feature"
 git push origin <enter-branch-name-same-as-before>
 ```
@@ -117,7 +117,7 @@ time and appear as a single commit in the repository.
 Upload your local branch to your remote GitHub repo
 (github.com/username/mantisshrimp)
 
-``` {.sourceCode .bash}
+```bash
 git push
 ```
 
@@ -136,7 +136,7 @@ Ensure your pr is listed
 Same as before, normally push changes to your branch and the PR will get
 automatically updated.
 
-``` {.sourceCode .bash}
+```bash
 git commit -m "updated the feature"
 git push origin <enter-branch-name-same-as-before>
 ```
