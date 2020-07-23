@@ -124,6 +124,8 @@ def generate(dest_dir):
                     dest_dir / 'install.md')
     shutil.copyfile(mantisshrimp_dir / 'README_MKDOCS.md',
                     dest_dir / 'readme_mkdocs.md')
+    shutil.copyfile(mantisshrimp_dir / 'CHANGING-THE-COLORS.md',
+                    dest_dir / 'changing-the-colors.md')    
 
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir)/'images'

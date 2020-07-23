@@ -38,4 +38,6 @@ nav:
     - Custom Parser: custom_parser.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
+  - Preferences:
+    - Changing the colors: changing-the-colors.md    
   - About: about.md
