@@ -1,12 +1,20 @@
 __all__ = ["RCNNCallback"]
 
+from mantisshrimp.imports import *
 from mantisshrimp.engines.fastai import *
+from mantisshrimp.models.rcnn import faster_rcnn
 
 
-class RCNNCallback(fastai.Callback):
+class RCNNCallback(fastai.Callback, ABC):
+    @abstractmethod
+    def convert_raw_predictions(self, raw_preds):
+        """ Convert raw predictions from the model to library standard.
+        """
+
     def begin_batch(self):
         assert len(self.xb) == len(self.yb) == 1, "Only works for single input-output"
-        self.learn.xb = (self.xb[0], self.yb[0])
+        self.learn.xb = self.xb[0]
+        self.learn.records = self.yb[0]
         self.learn.yb = ()
 
     def after_pred(self):
@@ -22,3 +30,6 @@ class RCNNCallback(fastai.Callback):
             self.model.eval()
             self.learn.pred = self.model(*self.xb)
             self.model.train()
+
+            preds = self.convert_raw_predictions(raw_preds=self.pred)
+            self.learn.converted_preds = preds

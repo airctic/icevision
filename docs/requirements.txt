@@ -1,6 +1,7 @@
-ipython
-sphinx
-recommonmark
-nbsphinx
-nbsphinx-link
-sphinx_rtd_theme
+keras-autodoc==0.5.1
+mkdocs
+mkdocs-material
+pygments
+jupyter
+pymdown-extensions
+Sphinx<3.1.0
