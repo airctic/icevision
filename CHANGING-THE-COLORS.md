@@ -1,20 +1,11 @@
 # Changing the colors
 
-As any good Material Design implementation, Material for MkDocs supports
-Google's original [color palette][1], which can be easily configured through 
-`mkdocs.yml`. Furthermore, colors can be customized with a few lines of CSS to
-fit your brand's identity by using [CSS variables][2].
+If you install the documentation on your local machine, you can pick the colors of your choice.
+The colors can be set from `mkdocs.yml` located in the `docs/` folder
 
-  [1]: http://www.materialui.co/colors
-  [2]: #custom-colors
+## Color scheme
 
-## Configuration
-
-### Color scheme
-
-[:octicons-file-code-24: Source][3] · :octicons-milestone-24: Default: `default`
-
-Material for MkDocs supports two _color schemes_: a light mode, which is just
+Our documenation supports two _color schemes_: a light mode, which is just
 called `default`, and a dark mode, which is called `slate`. The color scheme
 can be set from `mkdocs.yml`:
 
@@ -44,21 +35,8 @@ scheme:
   })
 </script>
 
-The _color scheme_ can also be set based on _user preference_, which makes use
-of the `prefers-color-scheme` media query, by setting the value in `mkdocs.yml`
-to `preference`:
 
-``` yaml
-theme:
-  palette:
-    scheme: preference
-```
-
-  [3]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/palette/_scheme.scss
-
-### Primary color
-
-[:octicons-file-code-24: Source][4] · :octicons-milestone-24: Default: `indigo`
+## Primary color
 
 The _primary color_ is used for the header, the sidebar, text links and several
 other components. In order to change the primary color, set the following value
@@ -109,11 +87,8 @@ color:
   })
 </script>
 
-  [4]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/palette/_primary.scss
 
-### Accent color
-
-[:octicons-file-code-24: Source][5] · :octicons-milestone-24: Default: `indigo`
+## Accent color
 
 The _accent color_ is used to denote elements that can be interacted with, e.g.
 hovered links, buttons and scrollbars. It can be changed in `mkdocs.yml` by
@@ -166,7 +141,6 @@ color:
   })
 </script>
 
-  [5]: https://github.com/squidfunk/mkdocs-material/blob/master/src/assets/stylesheets/palette/_accent.scss
 
 ---
 
