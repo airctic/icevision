@@ -1,6 +1,6 @@
-ipython
-sphinx
-recommonmark
-nbsphinx
-nbsphinx-link
-sphinx_rtd_theme
+mkdocs
+mkdocs-material
+pygments
+jupyter
+pymdown-extensions
+Sphinx
