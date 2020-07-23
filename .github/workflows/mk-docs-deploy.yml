@@ -1,4 +1,4 @@
-name: Build mkdocs
+name: Deploy mkdocs
 
 on:
   push:
@@ -23,6 +23,7 @@ jobs:
             pip install -r docs/requirements.txt
             cd docs
             python autogen.py
-      - name: Build the docs
+      - name: Deploy the docs
         run:  |
-          mkdocs build  
+          mkdocs build
+          mkdocs gh-deploy --force 
