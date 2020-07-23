@@ -1,4 +1,4 @@
-__all__ = ["RCNNCallback", "learner"]
+__all__ = ["RCNNCallback", "rcnn_learner"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.engines.fastai import *
@@ -6,14 +6,12 @@ from mantisshrimp.models.rcnn.loss_fn import loss_fn
 from mantisshrimp.models.rcnn.fastai.callbacks import *
 
 
-def learner(
+def rcnn_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
     **kwargs
 ):
-    cbs = [RCNNCallback()] + L(cbs)
-
     learn = adapted_fastai_learner(
         dls=dls, model=model, cbs=cbs, loss_func=loss_fn, **kwargs,
     )

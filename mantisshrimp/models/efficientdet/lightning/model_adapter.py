@@ -16,22 +16,25 @@ class ModelAdapter(LightningModelAdapter, ABC):
         return self.model(*args, **kwargs)
 
     def training_step(self, batch, batch_idx):
-        xb, yb = batch
+        (xb, yb), records = batch
         preds = self(xb, yb)
+
         loss = efficientdet.loss_fn(preds, yb)
         log = {f"train/{k}": v for k, v in preds.items()}
+
         return {"loss": loss, "log": log}
 
     def validation_step(self, batch, batch_idx):
-        xb, yb = batch
+        (xb, yb), records = batch
 
         with torch.no_grad():
-            preds = self(xb, yb)
-            loss = efficientdet.loss_fn(preds, yb)
+            raw_preds = self(xb, yb)
+            preds = efficientdet.convert_raw_predictions(raw_preds["detections"], 0)
+            loss = efficientdet.loss_fn(raw_preds, yb)
 
-        self.accumulate_metrics(xb, yb, preds)
+        self.accumulate_metrics(records, preds)
 
-        log = {f"valid/{k}": v for k, v in preds.items() if "loss" in k}
+        log = {f"valid/{k}": v for k, v in raw_preds.items() if "loss" in k}
         return {"valid/loss": loss, "log": log}
 
     def validation_epoch_end(self, outs):

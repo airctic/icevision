@@ -1,1 +1,1 @@
-from mantisshrimp.models.rcnn.lightning.model_adapter import *
+from mantisshrimp.models.rcnn.mask_rcnn.lightning.model_adapter import *
