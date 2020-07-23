@@ -86,9 +86,7 @@ def nb_to_py(nb_path, py_path):
     for cell in nb["cells"]:
         if cell["cell_type"] == "code":
             # Is it a shell cell?
-            if (cell["source"] and
-                    cell["source"][0] and
-                    cell["source"][0][0] == "!"):
+            if cell["source"] and cell["source"][0] and cell["source"][0][0] == "!":
                 # It's a shell cell
                 py += '"""shell\n'
                 py += "".join(cell["source"]) + "\n"
@@ -173,8 +171,8 @@ def py_to_nb(py_path, nb_path, fill_outputs=True):
     notebook["cells"] = cells
     if loc > MAX_LOC:
         raise ValueError(
-            'Found %d lines of code, but expected fewer than %d'
-            % (loc, MAX_LOC))
+            "Found %d lines of code, but expected fewer than %d" % (loc, MAX_LOC)
+        )
 
     f = open(nb_path, "w")
     f.write(json.dumps(notebook, indent=1, sort_keys=True))
@@ -219,14 +217,13 @@ def nb_to_md(nb_path, md_path, img_dir, working_dir=None):
     print("- md_dirname: ", md_dirname)
 
     # img_dir = os.path.abspath(img_dir)
-    img_dir = Path(md_dirname)/img_dir
+    img_dir = Path(md_dirname) / img_dir
     print("- img_dir: ", img_dir)
     nb_path = os.path.abspath(nb_path)
     nb_fname = str(nb_path).split("/")[-1]
 
     md_abspath = os.path.abspath(md_path)
     print("- md_abspath: ", md_abspath)
-
 
     del_working_dir = False
     if working_dir is None:
@@ -301,7 +298,7 @@ def validate(py):
         raise ValueError("Missing `Last modified:` field.")
     if not lines[5].startswith("Description: "):
         raise ValueError("Missing `Description:` field.")
-    description = lines[5][len("Description: "):]
+    description = lines[5][len("Description: ") :]
     if not description:
         raise ValueError("Missing `Description:` field content.")
     if not description[0] == description[0].upper():
@@ -318,8 +315,7 @@ def validate(py):
             )
     for i, line in enumerate(lines):
         if line.endswith(" "):
-            raise ValueError(
-                "Found trailing space on line %d; line: `%s`" % (i, line))
+            raise ValueError("Found trailing space on line %d; line: `%s`" % (i, line))
     # Validate style with black
     fpath = "/tmp/" + str(random.randint(1e6, 1e7)) + ".py"
     f = open(fpath, "w")
@@ -343,7 +339,7 @@ def _count_locs(lines):
     string_open = False
     for line in lines:
         line = line.strip()
-        if not line or line.startswith('#'):
+        if not line or line.startswith("#"):
             continue
         if not string_open:
             if not line.startswith('"""'):
@@ -411,7 +407,7 @@ def _get_next_script_element(py):
             elines.append(line)
 
     if etype == "markdown":
-        py = "\n".join(lines[i + 1:])
+        py = "\n".join(lines[i + 1 :])
     else:
         py = "\n".join(lines[i:])
     e = "\n".join(elines)
@@ -421,17 +417,17 @@ def _get_next_script_element(py):
 
 def _parse_header(header):
     lines = header.split("\n")
-    title = lines[0][len("Title: "):]
+    title = lines[0][len("Title: ") :]
     author_line = lines[1]
     if author_line.startswith("Authors"):
-        author = author_line[len("Authors: "):]
+        author = author_line[len("Authors: ") :]
         auth_field = "Authors"
     else:
-        author = author_line[len("Author: "):]
+        author = author_line[len("Author: ") :]
         auth_field = "Author"
-    date_created = lines[2][len("Date created: "):]
-    last_modified = lines[3][len("Last modified: "):]
-    description = lines[4][len("Description: "):]
+    date_created = lines[2][len("Date created: ") :]
+    last_modified = lines[3][len("Last modified: ") :]
+    description = lines[4][len("Description: ") :]
     return {
         "title": title,
         "author": author,
@@ -529,7 +525,7 @@ if __name__ == "__main__":
         raise ValueError(
             "Specify a command: either "
             "`nb2py source_filename.ipynb target_filename.py` or "
-            "`py2nb source_filename.py target_file name.ipynb or " 
+            "`py2nb source_filename.py target_file name.ipynb or "
             "`nb_to_md source_filename.py target_folder_name img_dir`"
         )
     if len(sys.argv) < 4:
