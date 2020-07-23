@@ -4,7 +4,7 @@
 # Mantisshrimp: Agnostic Object Detection Framework
 > We are both a welcoming and an open community. 
 > We warmly invite you to join us either as a user or a community contributor.
-> [Join our Slack](#community) and send us a message.
+> [Join our Slack](https://mantisshrimp-group.slack.com/) and send us a message.
 > We will be happy to hear from you.
 
 
