@@ -2,10 +2,10 @@
 <img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
 # Mantisshrimp: Agnostic Object Detection Framework
-    We are welcoming and open community. 
-    You are very welcome to join us either as a user or a community contributor.
-    [Join our Slack](#community) and send us a message to either Lucas or Farid.
-    We will be happy to hear from you.
+> We are both a welcoming and an open community. 
+> We warmly invite you to join us either as a user or a community contributor.
+> [Join our Slack](#community) and send us a message.
+> We will be happy to hear from you.
 
 
 [![tests](https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests)
