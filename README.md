@@ -83,7 +83,7 @@ C.  As a bonus, our library even allows to experiment with another DL
 
 ## Quick Example: How to train the **PETS Dataset**
 
-``` {.sourceCode .python}
+```python
 from mantisshrimp.imports import *
 from mantisshrimp import *
 import albumentations as A
@@ -166,7 +166,7 @@ We provide a nice demo using [streamlit](https://www.streamlit.io/). If
 streamlit is not already install, run the following command, from the
 terminal to install it:
 
-``` {.sourceCode .bash}
+```bash
 pip install streamlit
 ```
 
@@ -174,7 +174,7 @@ Simply run the following in your terminal. It should start a demo in
 your browser. It will show you one of our trained models as a pet
 detector !!
 
-``` {.sourceCode .bash}
+```bash
 streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
 ```
 
