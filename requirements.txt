@@ -4,4 +4,5 @@ pyyaml>=3.13
 tensorboard>=1.14
 opencv-python>=4.2.0
 pytorch-lightning>=0.7.6
+ipykernel
 fastai2>0.0.14
