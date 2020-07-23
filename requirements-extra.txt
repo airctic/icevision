@@ -1,6 +1,4 @@
 pandas>=1.0.0
 albumentations>=0.4.5
-fastai2
-pytorch-lightning
 git+https://github.com/rwightman/efficientdet-pytorch.git
 omegaconf
