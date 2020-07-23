@@ -21,9 +21,9 @@ jobs:
             pip install git+git://github.com/lgvaz/mantisshrimp.git
             pip install -e .
             pip install -r docs/requirements.txt
-            cd docs
-            python autogen.py
       - name: Deploy the docs
         run:  |
+          cd docs
+          python autogen.py
           mkdocs build
           mkdocs gh-deploy --force 
