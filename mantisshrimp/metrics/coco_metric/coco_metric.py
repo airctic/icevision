@@ -1,4 +1,4 @@
-__all__ = ["COCOMetric"]
+__all__ = ["COCOMetric", "COCOMetricType"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
