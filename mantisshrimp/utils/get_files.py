@@ -14,7 +14,14 @@ def _get_files(p, fs, extensions=None):
     return res
 
 
-def get_files(path, extensions=None, recurse=True, folders=None, followlinks=True):
+def get_files(
+    path,
+    extensions=None,
+    recurse=True,
+    folders=None,
+    followlinks=True,
+    sort: bool = True,
+):
     "Get all the files in `path` with optional `extensions`, optionally with `recurse`, only in `folders`, if specified. From fastai"
     path = Path(path)
     folders = L(folders)
@@ -35,7 +42,8 @@ def get_files(path, extensions=None, recurse=True, folders=None, followlinks=Tru
     else:
         f = [o.name for o in os.scandir(path) if o.is_file()]
         res = _get_files(path, f, extensions)
-    return L(res)
+
+    return L(sorted(res)) if sort else L(res)
 
 
 image_extensions = set(
