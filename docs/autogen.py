@@ -3,4 +3,4 @@
 # This PR will be closed without merging.
 
 if __name__ == "__main__":
-    print("Hello World")
+    print("Hello World from docs")
