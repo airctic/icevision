@@ -1,4 +1,3 @@
-import pytest
 from mantisshrimp import *
 
 
@@ -17,22 +16,22 @@ def test_voc_annotation_parser(samples_source):
     record = records[0]
     expected = {
         "imageid": 0,
-        "filepath": samples_source / "voc/JPEGImages/2011_003353.jpg",
-        "height": 500,
-        "width": 375,
-        "labels": [class_map.get_name("person")],
-        "bboxes": [BBox.from_xyxy(130, 45, 375, 470)],
+        "filepath": samples_source / "voc/JPEGImages/2007_000063.jpg",
+        "width": 500,
+        "height": 375,
+        "labels": [class_map.get_name(k) for k in ["dog", "chair"]],
+        "bboxes": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
     }
     assert record == expected
 
     record = records[1]
     expected = {
         "imageid": 1,
-        "filepath": samples_source / "voc/JPEGImages/2007_000063.jpg",
-        "width": 500,
-        "height": 375,
-        "labels": [class_map.get_name(k) for k in ["dog", "chair"]],
-        "bboxes": [BBox.from_xyxy(123, 115, 379, 275), BBox.from_xyxy(75, 1, 428, 375)],
+        "filepath": samples_source / "voc/JPEGImages/2011_003353.jpg",
+        "height": 500,
+        "width": 375,
+        "labels": [class_map.get_name("person")],
+        "bboxes": [BBox.from_xyxy(130, 45, 375, 470)],
     }
     assert record == expected
 
@@ -72,7 +71,7 @@ def test_voc_combined_parser(samples_source):
 
     record = records[0]
     expected = {
-        "imageid": 1,
+        "imageid": 0,
         "filepath": samples_source / "voc/JPEGImages/2007_000063.jpg",
         "width": 500,
         "height": 375,
