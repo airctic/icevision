@@ -1,6 +1,7 @@
+keras-autodoc==0.5.1
 mkdocs
 mkdocs-material
 pygments
 jupyter
 pymdown-extensions
-Sphinx
+Sphinx<3.1.0
