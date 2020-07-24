@@ -3,6 +3,7 @@ from pathlib import Path
 import shutil
 
 import keras_autodoc
+# from keras_autodoc.examples import copy_examples
 import tutobooks
 
 PAGES = {
@@ -33,6 +34,59 @@ PAGES = {
 ROOT = "https://lgvaz.github.io/mantisshrimp/"
 
 mantisshrimp_dir = Path(__file__).resolve().parents[1]
+
+
+# From keras_autodocs
+def copy_examples(examples_dir, destination_dir):
+    """Copy the examples directory in the documentation.
+
+    Prettify files by extracting the docstrings written in Markdown.
+    """
+    Path(destination_dir).mkdir(exist_ok=True)
+    for file in os.listdir(examples_dir):
+        if not file.endswith(".py"):
+            continue
+        module_path = os.path.join(examples_dir, file)
+        docstring, starting_line = get_module_docstring(module_path)
+        print("dostring", docstring)
+        print("starting_line", starting_line)
+        destination_file = os.path.join(destination_dir, file[:-2] + "md")
+        with open(destination_file, "w+", encoding="utf-8") as f_out, \
+                open(examples_dir / file, "r+", encoding="utf-8") as f_in:
+
+            if docstring:
+                f_out.write(docstring + "\n\n")
+
+            # skip docstring
+            for _ in range(starting_line+2):
+                next(f_in)
+
+            f_out.write("```python\n")
+            # next line might be empty.
+            line = next(f_in)
+            if line != "\n":
+                f_out.write(line)
+
+            # copy the rest of the file.
+            for line in f_in:
+                f_out.write(line)
+            f_out.write("\n```")
+
+
+def get_module_docstring(filepath):
+    """Extract the module docstring.
+
+    Also finds the line at which the docstring ends.
+    """
+    co = compile(open(filepath, encoding="utf-8").read(), filepath, "exec")
+    if co.co_consts and isinstance(co.co_consts[0], str):
+        docstring = co.co_consts[0]
+    else:
+        print("Could not get the docstring from " + filepath)
+        docstring = ""
+    return docstring, co.co_firstlineno
+
+# end
 
 
 def py_to_nb_md(dest_dir):
@@ -97,6 +151,26 @@ def nb_to_md(dest_dir):
         tutobooks.nb_to_md(nb_path, md_path, images_path)
 
 
+def examples_to_md(dest_dir):
+    examples_dir = mantisshrimp_dir / "examples"
+    print("Examples folder: ", examples_dir)
+
+    for file_path in os.listdir(examples_dir):
+        dir_path = examples_dir
+        file_name = file_path
+        nb_path = os.path.join(dir_path, file_path)
+        file_name_no_ext = os.path.splitext(file_name)[0]
+        ext = os.path.splitext(file_name)[1]
+
+        if ext != ".py":
+            continue
+
+        # md_path = os.path.join(dest_dir, 'tutorial', file_name_no_ext + '.md')
+        md_path = os.path.join(dest_dir, file_name_no_ext + ".md")
+
+        copy_examples(examples_dir, dest_dir / "examples")
+
+
 def generate(dest_dir):
     template_dir = mantisshrimp_dir / "docs" / "templates"
 
@@ -150,6 +224,10 @@ def generate(dest_dir):
 
     # Generate .md files form Jupyter Notebooks located in the /ipynb folder
     nb_to_md(dest_dir)
+
+    # Generate .md files form python files located in the /examples folder
+    examples_to_md(dest_dir)
+    
 
 
 if __name__ == "__main__":
