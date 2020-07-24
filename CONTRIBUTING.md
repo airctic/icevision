@@ -14,13 +14,13 @@ local machine. This is the working directory where you will make
 changes:
 
 ```bash
-$ git clone https://github.com/username/mantisshrimp.git
+git clone https://github.com/username/mantisshrimp.git
 ```
 
 3.  Install the requirments. You many use miniconda or conda as well.
 
 ```bash
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Step 2: Stay in Sync with the original (upstream) repo
@@ -29,21 +29,21 @@ $ pip install -r requirements.txt
     with mantisshrimp easily.
 
 ```bash
-$ git remote add upstream https://github.com/lgvaz/mantisshrimp.git
+git remote add upstream https://github.com/lgvaz/mantisshrimp.git
 ```
 
 2.  Updating your local repo: Pull the upstream (original) repo.
 
 ```bash
-$ git checkout master
-$ git pull upstream master
+git checkout master
+git pull upstream master
 ```
 
 ## Step 3: Creating a new branch
 
 ```bash
-$ git checkout -b feature-name
-$ git branch
+git checkout -b feature-name
+git branch
  master 
  * feature_name: 
 ```

@@ -36,6 +36,8 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
+  - Examples:
+    - Training using Fastai: examples/training_using_fastai.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:
