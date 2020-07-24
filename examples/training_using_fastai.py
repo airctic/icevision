@@ -14,7 +14,7 @@ from mantisshrimp.engines.fastai import *
 path = datasets.pets.load()
 
 # split dataset lists
-data_splitter = RandomSplitter([.8, .2])
+data_splitter = RandomSplitter([0.8, 0.2])
 
 # PETS parser: provided out-of-the-box
 parser = datasets.pets.parser(path)
@@ -27,7 +27,7 @@ CLASSES = datasets.pets.CLASSES
 show_records(train_records[:6], ncols=3, classes=CLASSES)
 
 # Create both training and validation datasets - using Albumentations transforms out of the box
-train_ds = Dataset(train_records, train_albumentations_tfms_pets() )
+train_ds = Dataset(train_records, train_albumentations_tfms_pets())
 valid_ds = Dataset(valid_records, valid_albumentations_tfms_pets())
 
 # Create both training and validation dataloaders
@@ -35,7 +35,7 @@ train_dl = model.dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True
 valid_dl = model.dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 
 # Create model
-model = faster_rcnn.model(num_classes= len(CLASSES))
+model = faster_rcnn.model(num_classes=len(CLASSES))
 
 # Training the model using fastai2
 learn = faster_rcnn.fastai.learner(dls=[train_dl, valid_dl], model=model)

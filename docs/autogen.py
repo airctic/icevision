@@ -3,6 +3,7 @@ from pathlib import Path
 import shutil
 
 import keras_autodoc
+
 # from keras_autodoc.examples import copy_examples
 import tutobooks
 
@@ -51,14 +52,15 @@ def copy_examples(examples_dir, destination_dir):
         print("dostring", docstring)
         print("starting_line", starting_line)
         destination_file = os.path.join(destination_dir, file[:-2] + "md")
-        with open(destination_file, "w+", encoding="utf-8") as f_out, \
-                open(examples_dir / file, "r+", encoding="utf-8") as f_in:
+        with open(destination_file, "w+", encoding="utf-8") as f_out, open(
+            examples_dir / file, "r+", encoding="utf-8"
+        ) as f_in:
 
             if docstring:
                 f_out.write(docstring + "\n\n")
 
             # skip docstring
-            for _ in range(starting_line+2):
+            for _ in range(starting_line + 2):
                 next(f_in)
 
             f_out.write("```python\n")
@@ -85,6 +87,7 @@ def get_module_docstring(filepath):
         print("Could not get the docstring from " + filepath)
         docstring = ""
     return docstring, co.co_firstlineno
+
 
 # end
 
@@ -227,7 +230,6 @@ def generate(dest_dir):
 
     # Generate .md files form python files located in the /examples folder
     examples_to_md(dest_dir)
-    
 
 
 if __name__ == "__main__":
