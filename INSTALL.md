@@ -8,20 +8,20 @@ Install PyTorch as per your preference from
 
 Installing fastai and/or Pytorch-Lightning packages
 
-``` {.sourceCode .bash}
+```bash
 pip install fastai2
 pip install pytorch-lightning
 ```
 
 Installing albumentations package
 
-``` {.sourceCode .bash}
+```bash
 pip install albumentations
 ```
 
 Installing mantisshrimp package using its github repo
 
-``` {.sourceCode .bash}
+```bash
 pip install git+git://github.com/lgvaz/mantisshrimp.git
 ```
 
@@ -30,7 +30,7 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git
 Use the following command in order to create a conda environment called
 **mantis** (the name is set in the environment.yml file)
 
-``` {.sourceCode .bash}
+```bash
 conda env create -f environment.yml
 ```
 
@@ -39,7 +39,7 @@ conda env create -f environment.yml
 To activate the newly created mantis virtual environment, run the
 following command:
 
-``` {.sourceCode .bash}
+```bash
 conda activate mantis
 ```
 
@@ -47,7 +47,7 @@ conda activate mantis
 
 #### C.1- Installing **cocoapi** in Linux:
 
-``` {.sourceCode .bash}
+```bash
 pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
 ```
 
@@ -57,7 +57,7 @@ pycoco cannot be installed using the command above (see
 [issue-185](https://github.com/cocodataset/cocoapi/issues/185) in the
 cocoapi repository). We are using this workaround:
 
-``` {.sourceCode .bash}
+```bash
 pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
 ```
 
@@ -67,8 +67,7 @@ To update mantis conda environment, all you need to do is update the
 content of your environment.yml file accordingly and then run the
 following command:
 
-``` {.sourceCode .bash}
+```bash
 conda env update -f environment.yml  --prune
 ```
 ```
-
