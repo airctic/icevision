@@ -77,8 +77,11 @@ def py_to_nb_md(dest_dir):
 
 
 def nb_to_md(dest_dir):
-    for file_path in os.listdir("ipynb/"):
-        dir_path = "ipynb"
+    notebooks_dir = mantisshrimp_dir / "notebooks"
+    print("Notebooks folder: ", notebooks_dir)
+
+    for file_path in os.listdir(notebooks_dir):
+        dir_path = notebooks_dir
         file_name = file_path
         nb_path = os.path.join(dir_path, file_path)
         file_name_no_ext = os.path.splitext(file_name)[0]
