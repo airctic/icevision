@@ -1,7 +1,7 @@
 site_name: Mantisshrimp
 theme:
   favicon: '/images/favicon.png'
-  logo: '/images/logo_small.svg'
+  logo: '/images/logo_small.png'
   name: 'material'
   palette:
     scheme: default # default slate
