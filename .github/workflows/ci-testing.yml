@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: tests
+name: CI Test
 
 on:
   push:
@@ -28,10 +28,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov
         pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
-        xargs -n 1 -L 1 pip install < requirements.txt
-        pip install -r requirements-extra.txt
-        pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
         pip install -e .
+        pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
