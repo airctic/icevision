@@ -47,7 +47,7 @@ min_python = cfg["min_python"]
 
 extras["pytorch-lightning"] = pl_req
 extras["fastai"] = fs_req
-extras["all"] = pl_req + fs_req
+extras["all"] = pl_req + fs_req + ["pytest"]
 
 setuptools.setup(
     name=cfg["lib_name"],
