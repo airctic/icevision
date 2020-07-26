@@ -1,4 +1,4 @@
-name: PyPI Release
+name: PyPi Release
 
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
 on:
