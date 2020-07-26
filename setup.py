@@ -37,9 +37,18 @@ py_versions = (
     "2.0 2.1 2.2 2.3 2.4 2.5 2.6 2.7 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8".split()
 )
 
+extras = {}
 requirements = cfg.get("requirements", "").split()
+pl_req = cfg.get("pytorch_lightning", "").split()
+fs_req = cfg.get("fastai").split()
+all_req = cfg.get("all").split()
+
 lic = licenses[cfg["license"]]
 min_python = cfg["min_python"]
+
+extras["pytorch-lightning"] = pl_req
+extras["fastai"] = fs_req
+extras["all"] = all_req
 
 setuptools.setup(
     name=cfg["lib_name"],
@@ -58,6 +67,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     install_requires=requirements,
+    extras_require=extras,
     dependency_links=cfg.get("dep_links", "").split(),
     python_requires=">=" + cfg["min_python"],
     long_description=open("README.md", encoding="utf-8", errors="ignore").read(),
