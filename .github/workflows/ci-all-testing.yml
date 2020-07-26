@@ -12,9 +12,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-2019, macOS-10.15]
         python-version: [3.6, 3.7, 3.8]
 
     steps:
