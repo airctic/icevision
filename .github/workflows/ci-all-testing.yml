@@ -26,7 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Setup Ubuntu
-      if: runner.os == 'ubuntu-latest'
+      if: runner.os == 'Linux'
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov
@@ -49,6 +49,7 @@ jobs:
       if: runner.os == 'macOS'
       run: |
         python -m pip install --upgrade pip  
+        pip install flake8 pytest pytest-cov
         pip install torch torchvision
         pip install -e .[all]
         pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
