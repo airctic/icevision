@@ -1,7 +1,7 @@
 site_name: Mantisshrimp
 theme:
-  favicon: '/images/favicon.png'
-  logo: '/images/logo_small.svg'
+  favicon: '../images/favicon.png'
+  logo: '../images/logo_small.svg'
   name: 'material'
   palette:
     scheme: default # default slate
@@ -36,6 +36,8 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
+  - Examples:
+    - Training using Fastai: examples/training_using_fastai.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:

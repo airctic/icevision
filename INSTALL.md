@@ -22,7 +22,7 @@ pip install albumentations
 Installing mantisshrimp package using its github repo
 
 ```bash
-pip install git+git://github.com/lgvaz/mantisshrimp.git
+pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 ```
 
 ## B- Local Installation using conda
