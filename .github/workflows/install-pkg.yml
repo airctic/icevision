@@ -50,8 +50,6 @@ jobs:
           python setup.py sdist
       - name: Install package
         run: |
-          pip install virtualenv
-          virtualenv vEnv ; source vEnv/bin/activate
           pip install dist/*
           cd .. & python -c "import mantisshrimp as ms; print(ms.__version__)"
           deactivate ; rm -rf vEnv
