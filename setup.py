@@ -52,6 +52,7 @@ extras["all"] = all_req
 
 setuptools.setup(
     name=cfg["lib_name"],
+    version=cfg["version"],
     license=lic[0],
     classifiers=[
         "Development Status :: " + statuses[int(cfg["status"])],
