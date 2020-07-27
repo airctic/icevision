@@ -54,6 +54,7 @@ jobs:
           pip install virtualenv
           virtualenv vEnv ; source vEnv/bin/activate
           pip install flake8 pytest pytest-cov
+          pip install Cython
           pip install torch==1.5.1+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
           pip install git+git://github.com/rwightman/efficientdet-pytorch.git
