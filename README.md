@@ -80,6 +80,85 @@ C.  As a bonus, our library even allows to experiment with another DL
 **Note:** If you find this work useful, please let other people know by
 **starring** it. Thank you!
 
+## Installation Methods
+
+There are three methods to install Mantisshrimp:
+<ul>
+  <li>Cocoapi installation for both pypi & conda</li>
+  <li>Local installation using pypi</li>
+  <li>Local installation using conda</li>
+</ul>
+
+### Cocoapi Installation: for both pypi and conda
+
+##### Installing **cocoapi** in Linux:
+
+```bash
+pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
+```
+
+##### Installing **cocoapi** in Windows:
+
+*Note: The Windows version is experimental.*
+
+Pycoco cannot be installed using the command above (see
+[issue-185](https://github.com/cocodataset/cocoapi/issues/185) in the
+cocoapi repository). We are using this workaround:
+
+```bash
+pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
+```
+
+### Local Installation using pypi
+
+Using pypi repository, you can install mantisshrimp and its
+dependencies:
+
+1. Install PyTorch as per your preference from
+[here](https://pytorch.org/get-started/locally/#start-locally).
+
+2. Installing fastai and/or Pytorch-Lightning packages
+
+```bash
+pip install fastai2
+pip install pytorch-lightning
+```
+
+3. Installing albumentations package
+
+```bash
+pip install albumentations
+```
+
+4. Installing mantisshrimp package using its github repo
+
+```bash
+pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
+```
+
+### Local Installation using conda
+
+1. Use the following command in order to create a conda environment called
+**mantis** (the name is set in the environment.yml file)
+
+```bash
+conda env create -f environment.yml
+```
+
+2. To activate the newly created mantis virtual environment, run the
+following command:
+
+```bash
+conda activate mantis
+```
+
+3. To update mantis conda environment, you must update the
+content of your environment.yml file accordingly and then run the
+following command:
+
+```bash
+conda env update -f environment.yml  --prune
+```
 
 ## Quick Example: How to train the **PETS Dataset**
 
