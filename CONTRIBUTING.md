@@ -154,3 +154,14 @@ mantisshrimp repo.
 >
 > MantisShrimp has CI checking. It will automatically check your code
 > for build as well.
+
+
+## Feature Requests and questions
+
+For Feature Requests and more questions raise a github
+[issue](https://github.com/lgvaz/mantisshrimp/issues/). We will be happy
+to assist you.
+
+Be sure to check the
+[documentation](https://lgvaz.github.io/mantisshrimp/index.html).
+
