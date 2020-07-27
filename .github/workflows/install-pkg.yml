@@ -23,7 +23,7 @@ jobs:
 
       - name: Create package
         run: |
-          python setup.py sdist
+          python setup.py sdist bdist_wheel
       - name: Check package
         run: |
           pip install twine==1.13.0
@@ -47,7 +47,7 @@ jobs:
 
       - name: Create package
         run: |
-          python setup.py sdist
+          python setup.py sdist bdist_wheel
       - name: Install package
         run: |
           pip install dist/*
