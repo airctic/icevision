@@ -4,11 +4,8 @@ from fastcore.imports import *
 from fastcore.foundation import *
 from fastcore.utils import *
 
-import pandas as pd
 import torch.nn as nn
-import pytorch_lightning as pl
 import torch.optim.lr_scheduler as lr_scheduler
-import pytorch_lightning.loggers as loggers
 import matplotlib.pyplot as plt
 
 from abc import (

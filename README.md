@@ -162,8 +162,9 @@ trainer.fit(light_model, train_dl, valid_dl)
 
 ## Streamlit Demo
 
-We provide a nice demo using [streamlit](https://www.streamlit.io/). If
-streamlit is not already install, run the following command, from the
+We provide a nice demo using [streamlit](https://www.streamlit.io/). 
+
+If streamlit is not already install, run the following command, from the
 terminal to install it:
 
 ```bash
@@ -172,17 +173,15 @@ pip install streamlit
 
 Simply run the following in your terminal. It should start a demo in
 your browser. It will show you one of our trained models as a pet
-detector !!
+detector!!
 
 ```bash
 streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
 ```
 
-[This](https://github.com/oke-aditya/mantisshrimp_streamlit) is the
-source code for the demo.
+You can find the source code of this demo [here](https://github.com/oke-aditya/mantisshrimp_streamlit).
 
-You can also use it as template when creating your own streamlit apps
-with mantisshrimp.
+You can also use it as a template when creating your own streamlit apps with mantisshrimp.
 
 
 ## Contributing
