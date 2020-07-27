@@ -23,12 +23,12 @@ jobs:
 
       - name: Create package
         run: |
-          python setup.py sdist bdist_wheel
+          python setup.py[all] sdist bdist_wheel
       - name: Check package
         run: |
           pip install twine==1.13.0
           twine check dist/*
-          python setup.py clean
+          python setup.py[all] clean
 
   pkg-install:
     runs-on: ${{ matrix.os }}
@@ -47,7 +47,7 @@ jobs:
 
       - name: Create package
         run: |
-          python setup.py sdist bdist_wheel
+          python setup.py[all] sdist bdist_wheel
       - name: Install package
         run: |
           python -m pip install --upgrade pip
