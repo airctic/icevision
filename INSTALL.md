@@ -47,7 +47,7 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 All we have to do is to follow these 3 simple steps by running the following commands:
 
 ```bash
-git clone https://github.com/lgvaz/mantisshrimp.git
+git clone --depth=1 https://github.com/lgvaz/mantisshrimp.git
 cd mantisshrimp
 pip install .[all]
 ```
