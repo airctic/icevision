@@ -1,8 +1,9 @@
-__all__ = ["predict", "convert_raw_predictions"]
+__all__ = ["predict", "predict_dl", "convert_raw_predictions"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
+from mantisshrimp.models.utils import _predict_dl
 from effdet import DetBenchTrain, DetBenchPredict, unwrap_bench
 
 
@@ -23,26 +24,27 @@ def predict(
     return convert_raw_predictions(raw_preds, detection_threshold=detection_threshold)
 
 
-def convert_raw_predictions(raw_preds: torch.Tensor, detection_threshold: float):
+def predict_dl(model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True):
+    return _predict_dl(
+        predict_fn=predict, model=model, infer_dl=infer_dl, show_pbar=show_pbar
+    )
+
+
+def convert_raw_predictions(
+    raw_preds: torch.Tensor, detection_threshold: float
+) -> List[dict]:
     dets = raw_preds.detach().cpu().numpy()
-    bs = len(dets)
-
-    batch_scores = dets[..., 4]
-    batch_labels = dets[..., 5]
-    batch_bboxes = dets[..., 0:4]
-
-    keep = batch_scores > detection_threshold
-
-    batch_scores = batch_scores[keep].reshape(bs, -1)
-    batch_labels = batch_labels[keep].reshape(bs, -1)
-    batch_bboxes = batch_bboxes[keep].reshape(bs, -1, 4)
-
     preds = []
-    for scores, labels, bboxes in zip(batch_scores, batch_labels, batch_bboxes):
+    for det in dets:
+        if detection_threshold > 0:
+            scores = det[:, 4]
+            keep = scores > detection_threshold
+            det = det[keep]
+
         pred = {
-            "scores": scores,
-            "labels": labels,
-            "bboxes": [BBox.from_xywh(*o) for o in bboxes],
+            "scores": det[:, 4],
+            "labels": det[:, 5].astype(int),
+            "bboxes": [BBox.from_xywh(*xywh) for xywh in det[:, :4]],
         }
         preds.append(pred)
 

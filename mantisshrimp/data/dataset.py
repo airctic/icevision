@@ -24,3 +24,13 @@ class Dataset:
 
     def __repr__(self):
         return f"<{self.__class__.__name__} with {len(self.records)} items>"
+
+    @classmethod
+    def from_images(cls, images: Sequence[np.array], tfm=None):
+        records = []
+        for image in images:
+            record = {"img": image}
+            record["height"], record["width"], _ = image.shape
+            records.append(record)
+
+        return cls(records=records, tfm=tfm)

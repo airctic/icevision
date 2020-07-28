@@ -2,9 +2,6 @@
 <img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
 # Mantisshrimp: Agnostic Object Detection Framework
-> We are both a welcoming and an open community. 
-> We warmly invite you to join us either as a user or a community contributor.
-> We will be happy to hear from you.
 
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
@@ -22,75 +19,8 @@
 
 ![image](images/mantisshrimp-logo.png)
 
-## The Problem We Are Solving
-
--   Object dectection datasets come in different sizes and most
-    impotantly have different annotations formats ranging from the
-    stanndard formarts such COCO and VOC to more self-tailored formats
--   When new object detection models are released with some source code,
-    the latter is very often written in non-portable way: The source
-    code is difficult to use for other datasets because of some
-    hard-coded parts coupled with self developed tweaks
--   Both researchers and DL coders have to deploy a lot of effort to use
-    many SOTA models for their own use-cases and/or to craft an enhanced
-    model based on those already published
-
-## Our Solution
-
-Mantisshrimp library provides some elegant solutions in those 2
-fundamental components:
-
-**1- A Unified Data API:**
-
-Out of the box, we offer several annotation parsers that translates
-different annotation formats into a very flexibe parser:
-
-A.  By default, we offer differents standard format parsers such as COCO
-    and ROC,
-B.  We host a community curated parsers where community contributors
-    publish their own parsers to be shared, and therefore save time and
-    energy in creating similar parsers over and over,
-C.  We provide some intuitive tutorials that walk you through the steps
-    of creating your own parser. Please, consider sharing it with the
-    whole community.
-
-**2- A Universal Adapter to different DL Libraries:**
-
-A.  Mantisshrimp provides a universal adapter that allows you to hook up
-    your dataset to the DL library of your choice (fastai, Pytorch
-    Lightning and Pytorch), and train your model using a familiar API,
-B.  Our library allows you to choose one of the public implementations
-    of a given model, plug it in mantisshrimp model adapter, and
-    seamlessly train your model,
-C.  As a bonus, our library even allows to experiment with another DL
-    library. Our tutorials have several examples showing you how to
-    train a given model using both fastai and Pytorch Lightning
-    libraries side by side.
-
-## Why Mantishrimp
-
--   An agnostic object-detection library
--   Connects to different libraries/framework such as fastai, Pytorch
-    Lightning, and Pytorch
--   Features a Unified Data API such: common Parsers (COCO, VOC, etc.)
--   Integrates community maintaned parsers for custom datasets shared on
-    parsers hub
--   Provides flexible model implementations using different backbones
--   Helps both researchers and DL engineers in reproducing, replicating
-    published models
--   Facilitates applying both existing and new models to standard
-    datasets as well as custom datasets
-
-
-
-## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training_using_fastai/)
-![image](images/mantis-readme.png)
-
-
-<!-- Not included in docs -->
-* * * * *
-# Installation
+<!-- Not included in docs - start -->
+## Installation
 
 
 ## A- Local Installation using pypi
@@ -200,3 +130,57 @@ following command:
 ```bash
 conda env update -f environment.yml  --prune
 ```
+<!-- Not included in docs - end -->
+
+
+## Quick Example: How to train the **PETS Dataset**
+[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training_using_fastai/)
+![image](images/mantis-readme.png)
+
+
+
+## The Problem We Are Solving
+
+-   Object dectection datasets come in different sizes and most
+    impotantly have different annotations formats ranging from the
+    stanndard formarts such COCO and VOC to more self-tailored formats
+-   When new object detection models are released with some source code,
+    the latter is very often written in non-portable way: The source
+    code is difficult to use for other datasets because of some
+    hard-coded parts coupled with self developed tweaks
+-   Both researchers and DL coders have to deploy a lot of effort to use
+    many SOTA models for their own use-cases and/or to craft an enhanced
+    model based on those already published
+
+## Our Solution
+
+Mantisshrimp library provides some elegant solutions in those 2
+fundamental components:
+
+**1- A Unified Data API:**
+
+Out of the box, we offer several annotation parsers that translates
+different annotation formats into a very flexibe parser:
+
+A.  By default, we offer differents standard format parsers such as COCO
+    and ROC,
+B.  We host a community curated parsers where community contributors
+    publish their own parsers to be shared, and therefore save time and
+    energy in creating similar parsers over and over,
+C.  We provide some intuitive tutorials that walk you through the steps
+    of creating your own parser. Please, consider sharing it with the
+    whole community.
+
+**2- A Universal Adapter to different DL Libraries:**
+
+A.  Mantisshrimp provides a universal adapter that allows you to hook up
+    your dataset to the DL library of your choice (fastai, Pytorch
+    Lightning and Pytorch), and train your model using a familiar API,
+B.  Our library allows you to choose one of the public implementations
+    of a given model, plug it in mantisshrimp model adapter, and
+    seamlessly train your model,
+C.  As a bonus, our library even allows to experiment with another DL
+    library. Our tutorials have several examples showing you how to
+    train a given model using both fastai and Pytorch Lightning
+    libraries side by side.
+

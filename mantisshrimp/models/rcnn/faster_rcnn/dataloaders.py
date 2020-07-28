@@ -72,6 +72,10 @@ def build_valid_batch(
     return build_train_batch(records=records, batch_tfms=batch_tfms)
 
 
-# TODO: Refactor to add batch_tfms and recieve records
-def build_infer_batch(images: List[np.ndarray], batch_tfms=None) -> List[torch.Tensor]:
-    return [im2tensor(image) for image in images]
+def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
+    samples = common_build_batch(dataset, batch_tfms=batch_tfms)
+
+    tensor_imgs = [im2tensor(sample["img"]) for sample in samples]
+    tensor_imgs = torch.stack(tensor_imgs)
+
+    return (tensor_imgs,), samples
