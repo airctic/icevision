@@ -79,4 +79,3 @@ def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
     tensor_imgs = torch.stack(tensor_imgs)
 
     return (tensor_imgs,), samples
-
