@@ -1,5 +1,11 @@
 # Contribution Guide
 
+!!! info "We value your contribution" 
+    We are both a welcoming and an open community. 
+    We warmly invite you to join us either as a user or a community contributor.
+    We will be happy to hear from you.
+
+
 **Please, follow these steps**
 
 ## Step 1: Forking and Installing MantisShrimp
