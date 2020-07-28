@@ -157,7 +157,7 @@ conda env update -f environment.yml  --prune
 Mantisshrimp library provides some elegant solutions in those 2
 fundamental components:
 
-**1- A Unified Data API:**
+**1- A Unified Data API**
 
 Out of the box, we offer several annotation parsers that translates
 different annotation formats into a very flexibe parser:
@@ -171,16 +171,16 @@ different annotation formats into a very flexibe parser:
   of creating your own parser. Please, consider sharing it with the
   whole community.
 
-**2- A Universal Adapter to different DL Libraries:**
+**2- A Universal Adapter to different DL Libraries**
 
-A.  Mantisshrimp provides a universal adapter that allows you to hook up
-    your dataset to the DL library of your choice (fastai, Pytorch
-    Lightning and Pytorch), and train your model using a familiar API,
-B.  Our library allows you to choose one of the public implementations
-    of a given model, plug it in mantisshrimp model adapter, and
-    seamlessly train your model,
-C.  As a bonus, our library even allows to experiment with another DL
-    library. Our tutorials have several examples showing you how to
-    train a given model using both fastai and Pytorch Lightning
-    libraries side by side.
+* Mantisshrimp provides a universal adapter that allows you to hook up
+  your dataset to the DL library of your choice (fastai, Pytorch
+  Lightning and Pytorch), and train your model using a familiar API.
+* Our library allows you to choose one of the public implementations
+  of a given model, plug it in mantisshrimp model adapter, and
+  seamlessly train your model.
+* As a bonus, our library even allows to experiment with another DL
+  library. Our tutorials have several examples showing you how to
+  train a given model using both fastai and Pytorch Lightning
+  libraries side by side.
 
