@@ -162,14 +162,14 @@ fundamental components:
 Out of the box, we offer several annotation parsers that translates
 different annotation formats into a very flexibe parser:
 
-A.  By default, we offer differents standard format parsers such as COCO
-    and ROC,
-B.  We host a community curated parsers where community contributors
-    publish their own parsers to be shared, and therefore save time and
-    energy in creating similar parsers over and over,
-C.  We provide some intuitive tutorials that walk you through the steps
-    of creating your own parser. Please, consider sharing it with the
-    whole community.
+* By default, we offer differents standard format parsers such as COCO
+  and ROC.
+* We host a community curated parsers where community contributors
+  publish their own parsers to be shared, and therefore save time and
+  energy in creating similar parsers over and over.
+* We provide some intuitive tutorials that walk you through the steps
+  of creating your own parser. Please, consider sharing it with the
+  whole community.
 
 **2- A Universal Adapter to different DL Libraries:**
 
