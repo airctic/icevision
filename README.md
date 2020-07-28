@@ -4,8 +4,12 @@
 # Mantisshrimp: Agnostic Object Detection Framework
 > We are both a welcoming and an open community. 
 > We warmly invite you to join us either as a user or a community contributor.
-> [Join our Slack](https://mantisshrimp-group.slack.com/) and send us a message.
 > We will be happy to hear from you.
+
+>**Note: "We Need Your Help"**
+    If you find this work useful, please let other people know by **starring** it,
+    and sharing it. 
+    Thank you!
 
 
 [![tests](https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests)
@@ -77,126 +81,122 @@ C.  As a bonus, our library even allows to experiment with another DL
 -   Facilitates applying both existing and new models to standard
     datasets as well as custom datasets
 
-**Note:** If you find this work useful, please let other people know by
-**starring** it. Thank you!
 
 
 ## Quick Example: How to train the **PETS Dataset**
+[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training_using_fastai/)
+![image](images/mantis-readme.png)
 
-```python
-from mantisshrimp.imports import *
-from mantisshrimp import *
-import albumentations as A
 
-# Load the PETS dataset
-path = datasets.pets.load()
+<!-- Not included in docs -->
+* * * * *
+# Installation
 
-# split dataset lists
-data_splitter = RandomSplitter([.8, .2])
 
-# PETS parser: provided out-of-the-box
-parser = datasets.pets.parser(path)
-train_records, valid_records = parser.parse(data_splitter)
+## A- Local Installation using pypi
 
-# For convenience
-CLASSES = datasets.pets.CLASSES
+There are 3 ways to install mantisshrimp and its dependencies using `pip install`. 
 
-# shows images with corresponding labels and boxes
-records = train_records[:6]
-show_records(records, ncols=3, classes=CLASSES)
+> **Note**: You can check out the following blog post: [3 ways to pip install a package ](https://ai-fast-track.github.io/blog/python/2020/03/17/how-to-pip-install-package.html) for more a detailed explantion on how to choose the most convenient option 
+for you. 
 
-# ImageNet stats
-imagenet_mean, imagenet_std = IMAGENET_STATS
 
-# Transform: supporting albumentations transforms out of the box
-# Transform for the train dataset
-train_tfms = AlbuTransform(
-    [
-        A.LongestMaxSize(384),
-        A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
-        A.HorizontalFlip(),
-        A.ShiftScaleRotate(rotate_limit=20),
-        A.RGBShift(always_apply=True),
-        A.RandomBrightnessContrast(),
-        A.Blur(blur_limit=(1, 3)),
-        A.Normalize(mean=imagenet_mean, std=imagenet_std),
-    ]
-)
-
-# Transform for the validation dataset
-valid_tfms = AlbuTransform(
-    [
-        A.LongestMaxSize(384),
-        A.Normalize(mean=imagenet_mean, std=imagenet_std),
-    ]
-)   
-
-# Create both training and validation datasets
-train_ds = Dataset(train_records, train_tfms)
-valid_ds = Dataset(valid_records, valid_tfms)
-
-# Create both training and validation dataloaders
-train_dl = model.dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
-valid_dl = model.dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
-
-# Create model
-model = MantisFasterRCNN(num_classes= len(CLASSES))
-
-# Training the model using fastai2
-from mantisshrimp.engines.fastai import *
-learn = rcnn_learner(dls=[train_dl, valid_dl], model=model)
-learn.fine_tune(10, lr=1e-4)
-
-# Training the model using Pytorch-Lightning
-from mantisshrimp.engines.lightning import *
-
-class LightModel(RCNNLightningAdapter):
-   def configure_optimizers(self):
-       opt = SGD(self.parameters(), 2e-4, momentum=0.9)
-       return opt
-
-light_model = LightModel(model)
-trainer = Trainer(max_epochs=3, gpus=1)
-trainer.fit(light_model, train_dl, valid_dl)
-```
-
-## Streamlit Demo
-
-We provide a nice demo using [streamlit](https://www.streamlit.io/). 
-
-If streamlit is not already install, run the following command, from the
-terminal to install it:
+### Option 1: Installing from pypi repository **[Coming Soon!]**
+ 
+#### All Packages
+To install mantisshrimp package and both Fastai and Pytorch-Lightning libraries, run the following command:
 
 ```bash
-pip install streamlit
+pip install mantisshrimp[all]
 ```
 
-Simply run the following in your terminal. It should start a demo in
-your browser. It will show you one of our trained models as a pet
-detector!!
+#### Mantisshrimp + Fastai
+To install mantisshrimp package and only the Fastai library, run the following command:
 
 ```bash
-streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
+pip install mantisshrimp[fastai]
 ```
 
-You can find the source code of this demo [here](https://github.com/oke-aditya/mantisshrimp_streamlit).
+#### Mantisshrimp + Pytorch-Lightning
+To install mantisshrimp package and only the Pytorch-Lightning library, run the following command:
 
-You can also use it as a template when creating your own streamlit apps with mantisshrimp.
+```bash
+pip install mantisshrimp[pytorch_lightning]
+```
+
+### Option 2: Installing a non-editable package from GitHub **[Already Available]**
+
+To install the mantisshrimp package from its GitHub repo, run the command here below. This option can be used in Google Colab,
+for example, where you might install the mantisshrimp latest version (from the `master` branch)
+
+```bash
+pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
+```
+
+### Option 3: Installing an editable package from GitHub **[Already Available]**
+> **Note:** This method is used by developers who are usually either:
+>
+> - actively contributing to `mantisshrimp` project by adding new features or fixing bugs, or 
+> - creating their own modules, and making sure that their source code stay in sync with the `mantisshrimp` latest version.
+
+All we have to do is to follow these 3 simple steps by running the following commands:
+
+```bash
+git clone --depth=1 https://github.com/lgvaz/mantisshrimp.git
+cd mantisshrimp
+pip install .[all]
+```
 
 
-## Contributing
+## B- Local Installation using conda
 
-You can follow the [Contributing Guide](/contributing/) to become a contributor.
+Use the following command in order to create a conda environment called
+**mantis** (the name is set in the environment.yml file)
 
-If you don't know where to start, please join our community on [Slack](https://mantisshrimp-group.slack.com) and ask us.
-We will help you get started!
+```bash
+conda env create -f environment.yml
+```
+
+### Activating mantis conda environment
+
+To activate the newly created mantis virtual environment, run the
+following command:
+
+```bash
+conda activate mantis
+```
+
+> **Note:**
+> Once you activate the conda environment, follow the steps described, here above, in order to `pip install` 
+> the mantisshrimp package and its dependencies: **A- Local Installation using pypi** 
 
 
-## Feature Requests and questions
 
-For Feature Requests and more questions raise a github
-[issue](https://github.com/lgvaz/mantisshrimp/issues/). We will be happy
-to assist you.
 
-Be sure to check the
-[documentation](https://lgvaz.github.io/mantisshrimp/index.html).
+### C- Common step: cocoapi Installation: for both pypi and conda installation
+
+#### C.1- Installing **cocoapi** in Linux:
+
+```bash
+pip install "git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI"
+```
+
+#### C.2- Installing **cocoapi** in Windows:
+
+pycoco cannot be installed using the command above (see
+[issue-185](https://github.com/cocodataset/cocoapi/issues/185) in the
+cocoapi repository). We are using this workaround:
+
+```bash
+pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
+```
+
+### D- Updating mantis conda environment
+
+To update mantis conda environment, all you need to do is update the
+content of your environment.yml file accordingly and then run the
+following command:
+
+```bash
+conda env update -f environment.yml  --prune
+```
