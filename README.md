@@ -88,7 +88,7 @@ C.  As a bonus, our library even allows to experiment with another DL
 ![image](images/mantis-readme.png)
 
 
-
+<!-- Not included in docs -->
 * * * * *
 <font size="6">**Installation**</font>
 
