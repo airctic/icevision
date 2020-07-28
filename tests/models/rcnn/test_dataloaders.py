@@ -1,6 +1,6 @@
 import pytest
 from mantisshrimp.imports import *
-from mantisshrimp.core import *
+from mantisshrimp import *
 from mantisshrimp.models.rcnn import faster_rcnn, mask_rcnn
 
 
@@ -22,6 +22,11 @@ def bboxes():
 @pytest.fixture()
 def records(img, labels, bboxes):
     return [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
+
+
+@pytest.fixture()
+def dataset(img):
+    return Dataset.from_images([img] * 2)
 
 
 ### Faster RCNN ###
@@ -56,6 +61,9 @@ def _test_faster_rcnn_batch(batch):
 
 
 def _test_infer_batch(batch):
+    assert len(batch) == 1
+
+    batch = batch[0]
     assert len(batch) == 2
 
     for x in batch:
@@ -73,9 +81,8 @@ def test_faster_rcnn_build_valid_batch(records):
     _test_faster_rcnn_batch(batch=batch)
 
 
-def test_faster_rcnn_build_infer_batch(img):
-    images = [img] * 2
-    batch = faster_rcnn.build_infer_batch(images=images)
+def test_faster_rcnn_build_infer_batch(dataset):
+    batch, samples = faster_rcnn.build_infer_batch(dataset)
     _test_infer_batch(batch)
 
 
@@ -91,10 +98,9 @@ def test_faster_rcnn_valid_dataloader(records):
     _test_faster_rcnn_batch(batch=batch)
 
 
-def test_faster_rcnn_infer_dataloader(img):
-    images = [img] * 2
-    dl = faster_rcnn.infer_dataloader(dataset=images, batch_size=2)
-    batch = first(dl)
+def test_faster_rcnn_infer_dataloader(dataset):
+    dl = faster_rcnn.infer_dataloader(dataset=dataset, batch_size=2)
+    batch, samples = first(dl)
     _test_infer_batch(batch=batch)
 
 
@@ -129,8 +135,8 @@ def test_mask_rcnn_build_valid_batch(mask_records):
     _test_mask_rcnn_batch(batch)
 
 
-def test_mask_rcnn_build_infer_batch(img):
-    test_faster_rcnn_infer_dataloader(img)
+def test_mask_rcnn_build_infer_batch(dataset):
+    test_faster_rcnn_infer_dataloader(dataset)
 
 
 def test_mask_rcnn_train_dataloader(mask_records):
@@ -145,5 +151,5 @@ def test_mask_rcnn_valid_dataloader(mask_records):
     _test_mask_rcnn_batch(batch=batch)
 
 
-def test_mask_rcnn_infer_dataloader(img):
-    test_faster_rcnn_infer_dataloader(img)
+def test_mask_rcnn_infer_dataloader(dataset):
+    test_faster_rcnn_infer_dataloader(dataset)

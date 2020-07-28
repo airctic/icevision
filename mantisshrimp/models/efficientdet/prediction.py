@@ -1,8 +1,9 @@
-__all__ = ["predict", "convert_raw_predictions"]
+__all__ = ["predict", "predict_dl", "convert_raw_predictions"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
+from mantisshrimp.models.utils import _predict_dl
 from effdet import DetBenchTrain, DetBenchPredict, unwrap_bench
 
 
@@ -23,6 +24,12 @@ def predict(
     return convert_raw_predictions(raw_preds, detection_threshold=detection_threshold)
 
 
+def predict_dl(model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True):
+    return _predict_dl(
+        predict_fn=predict, model=model, infer_dl=infer_dl, show_pbar=show_pbar
+    )
+
+
 def convert_raw_predictions(
     raw_preds: torch.Tensor, detection_threshold: float
 ) -> List[dict]:
@@ -36,7 +43,7 @@ def convert_raw_predictions(
 
         pred = {
             "scores": det[:, 4],
-            "labels": det[:, 5],
+            "labels": det[:, 5].astype(int),
             "bboxes": [BBox.from_xywh(*xywh) for xywh in det[:, :4]],
         }
         preds.append(pred)

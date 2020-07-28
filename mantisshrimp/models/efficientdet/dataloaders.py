@@ -70,16 +70,16 @@ def build_valid_batch(records, batch_tfms=None):
     return (images, targets), records
 
 
-def build_infer_batch(records, batch_tfms=None):
-    records = common_build_batch(records, batch_tfms=batch_tfms)
+def build_infer_batch(dataset, batch_tfms=None):
+    samples = common_build_batch(dataset, batch_tfms=batch_tfms)
 
     tensor_imgs, img_sizes = [], []
-    for record in records:
+    for record in samples:
         tensor_imgs.append(im2tensor(record["img"]))
         img_sizes.append((record["height"], record["width"]))
 
     tensor_imgs = torch.stack(tensor_imgs)
     tensor_sizes = tensor(img_sizes, dtype=torch.float)
-    tensor_scales = tensor([1] * len(records), dtype=torch.float)
+    tensor_scales = tensor([1] * len(samples), dtype=torch.float)
 
-    return (tensor_imgs, tensor_scales, tensor_sizes), records
+    return (tensor_imgs, tensor_scales, tensor_sizes), samples
