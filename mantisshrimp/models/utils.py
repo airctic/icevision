@@ -4,9 +4,11 @@ __all__ = [
     "freeze",
     "transform_dataloader",
     "common_build_batch",
+    "_predict_dl",
 ]
 
 from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 from mantisshrimp.parsers import *
 
 
@@ -59,3 +61,17 @@ def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
         records = batch_tfms(records)
 
     return records
+
+
+@torch.no_grad()
+def _predict_dl(
+    predict_fn, model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True
+):
+    all_preds, all_samples = [], []
+    for batch, samples in pbar(infer_dl, show=show_pbar):
+        preds = predict_fn(model=model, batch=batch)
+
+        all_samples.extend(samples)
+        all_preds.extend(preds)
+
+    return all_samples, all_preds

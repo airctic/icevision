@@ -1,24 +1,31 @@
-__all__ = ["predict", "convert_raw_prediction", "convert_raw_predictions"]
+__all__ = ["predict", "predict_dl", "convert_raw_prediction", "convert_raw_predictions"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
+from mantisshrimp.models.utils import _predict_dl
 
 
 @torch.no_grad()
 def predict(
     model: nn.Module,
-    batch: List[torch.Tensor],
+    batch: Sequence[torch.Tensor],
     detection_threshold: float = 0.5,
     device: Optional[torch.device] = None,
 ):
     model.eval()
     device = device or model_device(model)
-    images = [img.to(device) for img in batch]
+    batch = [o.to(device) for o in batch]
 
-    raw_preds = model(images)
+    raw_preds = model(*batch)
     return convert_raw_predictions(
         raw_preds=raw_preds, detection_threshold=detection_threshold
+    )
+
+
+def predict_dl(model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True):
+    return _predict_dl(
+        predict_fn=predict, model=model, infer_dl=infer_dl, show_pbar=show_pbar
     )
 
 
