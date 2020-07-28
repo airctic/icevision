@@ -1,10 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+
+- `batch, samples = <model_name>.build_infer_batch(dataset)`  
+- `preds = <model_name>.predict(model, batch)` 
+- `infer_dl = <model_name>.infer_dataloader(dataset)`
+- `samples, preds = predict_dl(model, infer_dl)`
+- `Dataset.from_images` Contructs a `Dataset` from a list of images (numpy arrays)
+
+### Changed
+
+- All `build_batch` method now returns `batch, samples`, the batch is always a tuple of inputs to the model
+
+## [0.0.0-pre-release]
 
 ### Added
 

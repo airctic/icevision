@@ -1,5 +1,11 @@
 # Contribution Guide
 
+!!! info "We value your contribution" 
+    We are both a welcoming and an open community. 
+    We warmly invite you to join us either as a user or a community contributor.
+    We will be happy to hear from you.
+
+
 **Please, follow these steps**
 
 ## Step 1: Forking and Installing MantisShrimp
@@ -154,3 +160,14 @@ mantisshrimp repo.
 >
 > MantisShrimp has CI checking. It will automatically check your code
 > for build as well.
+
+
+## Feature Requests and questions
+
+For Feature Requests and more questions raise a github
+[issue](https://github.com/lgvaz/mantisshrimp/issues/). We will be happy
+to assist you.
+
+Be sure to check the
+[documentation](https://lgvaz.github.io/mantisshrimp/index.html).
+
