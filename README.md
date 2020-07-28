@@ -90,7 +90,7 @@ C.  As a bonus, our library even allows to experiment with another DL
 
 <!-- Not included in docs -->
 * * * * *
-<font size="6">**Installation**</font>
+# Installation
 
 
 ## A- Local Installation using pypi
