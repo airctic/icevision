@@ -101,7 +101,7 @@ There are 3 ways to install mantisshrimp and its dependencies using `pip install
 for you. 
 
 
-### Option 1: Installing from pypi repository
+### Option 1: Installing from pypi repository **[Coming Soon!]**
  
 #### All Packages
 To install mantisshrimp package and both Fastai and Pytorch-Lightning libraries, run the following command:
@@ -124,7 +124,7 @@ To install mantisshrimp package and only the Pytorch-Lightning library, run the 
 pip install mantisshrimp[pytorch_lightning]
 ```
 
-### Option 2: Installing a non-editable package from GitHub 
+### Option 2: Installing a non-editable package from GitHub **[Already Available]**
 
 To install the mantisshrimp package from its GitHub repo, run the command here below. This option can be used in Google Colab,
 for example, where you might install the mantisshrimp latest version (from the `master` branch)
@@ -133,7 +133,7 @@ for example, where you might install the mantisshrimp latest version (from the `
 pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 ```
 
-### Option 3: Installing an editable package from GitHub 
+### Option 3: Installing an editable package from GitHub **[Already Available]**
 > **Note:** This method is used by developers who are usually either:
 >
 > - actively contributing to `mantisshrimp` project by adding new features or fixing bugs, or 
