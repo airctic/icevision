@@ -134,7 +134,7 @@ conda env update -f environment.yml  --prune
 
 
 ## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training_using_fastai/)
+[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training/)
 ![image](images/mantis-readme.png)
 
 
