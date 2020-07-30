@@ -10,7 +10,7 @@ def records():
 
 
 def test_simple_transform(records):
-    tfm = AlbuTransform([A.HorizontalFlip(p=1.0)])
+    tfm = AlbumentationTransforms([A.HorizontalFlip(p=1.0)])
     ds = Dataset(records)
     tfm_ds = Dataset(records, tfm=tfm)
 
@@ -19,7 +19,7 @@ def test_simple_transform(records):
 
 
 def test_crop_transform(records):
-    tfm = AlbuTransform([A.CenterCrop(100, 100, p=1.0)])
+    tfm = AlbumentationTransforms([A.CenterCrop(100, 100, p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     print(tfmed["filepath"])
