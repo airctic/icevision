@@ -23,6 +23,8 @@ jobs:
 
       - name: Create package
         run: |
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel
           python setup.py sdist bdist_wheel
       - name: Check package
         run: |
@@ -46,6 +48,8 @@ jobs:
 
       - name: Create package
         run: |
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel
           python setup.py sdist bdist_wheel
       - name: Install package
         run: |
