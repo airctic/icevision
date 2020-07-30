@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+- Renames `AlbuTransform` to `AlbumentationTransforms`
 - All `build_batch` method now returns `batch, samples`, the batch is always a tuple of inputs to the model
 
 ## [0.0.0-pre-release]
