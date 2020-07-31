@@ -13,11 +13,11 @@ train_records, valid_records = parser.parse(data_splitter)
 
 imagenet_mean, imagenet_std = IMAGENET_STATS
 
-valid_tfms = AlbuTransform(
+valid_tfms = AlbumentationTransforms(
     [A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize(mean=imagenet_mean, std=imagenet_std),]
 )
 
-train_tfms = AlbuTransform(
+train_tfms = AlbumentationTransforms(
     [
         A.Resize(IMG_SIZE, IMG_SIZE),
         # A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),

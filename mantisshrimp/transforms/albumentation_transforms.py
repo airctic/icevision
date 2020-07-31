@@ -1,11 +1,11 @@
-__all__ = ["AlbuTransform"]
+__all__ = ["AlbumentationTransforms"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.transforms.transform import *
 
 
-class AlbuTransform(Transform):
+class AlbumentationTransforms(Transform):
     def __init__(self, tfms):
         import albumentations as A
 

@@ -24,7 +24,7 @@ img = open_img(IMG_PATH)
 show_img(img)
 
 # The model was trained with normalized images, it's necessary to do the same in inference
-tfms = AlbuTransform([A.Normalize()])
+tfms = AlbumentationTransforms([A.Normalize()])
 
 # Whenever you have images in memory (numpy arrays) you can use `Dataset.from_images`
 infer_ds = Dataset.from_images([img], tfms)
