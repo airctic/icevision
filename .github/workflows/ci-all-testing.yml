@@ -30,7 +30,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov
-        pip install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+        pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
         pip install -e .[all]
         pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
         pip install git+git://github.com/rwightman/efficientdet-pytorch.git
