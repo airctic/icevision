@@ -1,0 +1,8 @@
+include CONTIBUTING.md
+include LICENSE
+include README.md
+include CHANGELOG.md
+include DOCKER.md
+include settings.ini
+
+recursive-exclude * __pycache__ 
