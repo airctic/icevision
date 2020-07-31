@@ -45,9 +45,11 @@ learn.fine_tune(10, lr=1e-4)
 # Train using pytorch-lightning
 import pytorch_lightning as pl
 
+
 class LightModel(faster_rcnn.lightning.ModelAdapter):
     def configure_optimizers(self):
         return SGD(self.parameters(), lr=1e-4)
+
 
 light_model = LightModel(model, metrics=metrics)
 
