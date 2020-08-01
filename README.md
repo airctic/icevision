@@ -9,11 +9,11 @@
     Thank you!
 
 
-[![tests](https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests)
-[![docs](https://github.com/lgvaz/mantisshrimp/workflows/docs/badge.svg)](https://lgvaz.github.io/mantisshrimp/index.html)
-[![codecov](https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/lgvaz/mantisshrimp)
+[![tests](https://github.com/airctic/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/airctic/mantisshrimp/actions?query=workflow%3Atests)
+[![docs](https://github.com/airctic/mantisshrimp/workflows/docs/badge.svg)](https://airctic.github.io/mantisshrimp/index.html)
+[![codecov](https://codecov.io/gh/airctic/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/mantisshrimp)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/mantisshrimp/blob/master/LICENSE)
 
 * * * * *
 
@@ -60,7 +60,7 @@ To install the mantisshrimp package from its GitHub repo, run the command here b
 for example, where you might install the mantisshrimp latest version (from the `master` branch)
 
 ```bash
-pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
+pip install git+git://github.com/airctic/mantisshrimp.git[all]
 ```
 
 ### Option 3: Installing an editable package from GitHub **[Already Available]**
@@ -72,7 +72,7 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 All we have to do is to follow these 3 simple steps by running the following commands:
 
 ```bash
-git clone --depth=1 https://github.com/lgvaz/mantisshrimp.git
+git clone --depth=1 https://github.com/airctic/mantisshrimp.git
 cd mantisshrimp
 pip install .[all]
 ```
@@ -134,7 +134,7 @@ conda env update -f environment.yml  --prune
 
 
 ## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training_using_fastai/)
+[**Source Code**](https://airctic.github.io/mantisshrimp/examples/training/)
 ![image](images/mantis-readme.png)
 
 
@@ -157,30 +157,30 @@ conda env update -f environment.yml  --prune
 Mantisshrimp library provides some elegant solutions in those 2
 fundamental components:
 
-**1- A Unified Data API:**
+**1- A Unified Data API**
 
 Out of the box, we offer several annotation parsers that translates
 different annotation formats into a very flexibe parser:
 
-A.  By default, we offer differents standard format parsers such as COCO
-    and ROC,
-B.  We host a community curated parsers where community contributors
-    publish their own parsers to be shared, and therefore save time and
-    energy in creating similar parsers over and over,
-C.  We provide some intuitive tutorials that walk you through the steps
-    of creating your own parser. Please, consider sharing it with the
-    whole community.
+* By default, we offer differents standard format parsers such as COCO
+  and ROC.
+* We host a community curated parsers where community contributors
+  publish their own parsers to be shared, and therefore save time and
+  energy in creating similar parsers over and over.
+* We provide some intuitive tutorials that walk you through the steps
+  of creating your own parser. Please, consider sharing it with the
+  whole community.
 
-**2- A Universal Adapter to different DL Libraries:**
+**2- A Universal Adapter to different DL Libraries**
 
-A.  Mantisshrimp provides a universal adapter that allows you to hook up
-    your dataset to the DL library of your choice (fastai, Pytorch
-    Lightning and Pytorch), and train your model using a familiar API,
-B.  Our library allows you to choose one of the public implementations
-    of a given model, plug it in mantisshrimp model adapter, and
-    seamlessly train your model,
-C.  As a bonus, our library even allows to experiment with another DL
-    library. Our tutorials have several examples showing you how to
-    train a given model using both fastai and Pytorch Lightning
-    libraries side by side.
+* Mantisshrimp provides a universal adapter that allows you to hook up
+  your dataset to the DL library of your choice (fastai, Pytorch
+  Lightning and Pytorch), and train your model using a familiar API.
+* Our library allows you to choose one of the public implementations
+  of a given model, plug it in mantisshrimp model adapter, and
+  seamlessly train your model.
+* As a bonus, our library even allows to experiment with another DL
+  library. Our tutorials have several examples showing you how to
+  train a given model using both fastai and Pytorch Lightning
+  libraries side by side.
 

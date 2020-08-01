@@ -2,7 +2,7 @@ __all__ = ["train_albumentations_tfms_pets", "valid_albumentations_tfms_pets"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.transforms.albu_transform import *
+from mantisshrimp.transforms import *
 from mantisshrimp.utils.utils import *
 
 
@@ -24,7 +24,7 @@ def train_albumentations_tfms_pets():
     # ImageNet stats
     imagenet_mean, imagenet_std = IMAGENET_STATS
 
-    return AlbuTransform(
+    return AlbumentationTransforms(
         [
             A.LongestMaxSize(384),
             A.RandomSizedBBoxSafeCrop(320, 320, p=0.3),
@@ -56,6 +56,6 @@ def valid_albumentations_tfms_pets():
     # ImageNet stats
     imagenet_mean, imagenet_std = IMAGENET_STATS
 
-    return AlbuTransform(
+    return AlbumentationTransforms(
         [A.LongestMaxSize(384), A.Normalize(mean=imagenet_mean, std=imagenet_std)]
     )
