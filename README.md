@@ -9,11 +9,11 @@
     Thank you!
 
 
-[![tests](https://github.com/lgvaz/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/lgvaz/mantisshrimp/actions?query=workflow%3Atests)
-[![docs](https://github.com/lgvaz/mantisshrimp/workflows/docs/badge.svg)](https://lgvaz.github.io/mantisshrimp/index.html)
-[![codecov](https://codecov.io/gh/lgvaz/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/lgvaz/mantisshrimp)
+[![tests](https://github.com/airctic/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/airctic/mantisshrimp/actions?query=workflow%3Atests)
+[![docs](https://github.com/airctic/mantisshrimp/workflows/docs/badge.svg)](https://airctic.github.io/mantisshrimp/index.html)
+[![codecov](https://codecov.io/gh/airctic/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/mantisshrimp)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/lgvaz/mantisshrimp/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/mantisshrimp/blob/master/LICENSE)
 
 * * * * *
 
@@ -60,7 +60,7 @@ To install the mantisshrimp package from its GitHub repo, run the command here b
 for example, where you might install the mantisshrimp latest version (from the `master` branch)
 
 ```bash
-pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
+pip install git+git://github.com/airctic/mantisshrimp.git[all]
 ```
 
 ### Option 3: Installing an editable package from GitHub **[Already Available]**
@@ -72,7 +72,7 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 All we have to do is to follow these 3 simple steps by running the following commands:
 
 ```bash
-git clone --depth=1 https://github.com/lgvaz/mantisshrimp.git
+git clone --depth=1 https://github.com/airctic/mantisshrimp.git
 cd mantisshrimp
 pip install .[all]
 ```
@@ -134,7 +134,7 @@ conda env update -f environment.yml  --prune
 
 
 ## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://lgvaz.github.io/mantisshrimp/examples/training/)
+[**Source Code**](https://airctic.github.io/mantisshrimp/examples/training/)
 ![image](images/mantis-readme.png)
 
 

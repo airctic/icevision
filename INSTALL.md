@@ -35,7 +35,7 @@ To install the mantisshrimp package from its GitHub repo, run the command here b
 for example, where you might install the mantisshrimp latest version (from the `master` branch)
 
 ```bash
-pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
+pip install git+git://github.com/airctic/mantisshrimp.git[all]
 ```
 
 ### Option 3: Installing an editable package from GitHub **[Already Available]**
@@ -47,7 +47,7 @@ pip install git+git://github.com/lgvaz/mantisshrimp.git[all]
 All we have to do is to follow these 3 simple steps by running the following commands:
 
 ```bash
-git clone --depth=1 https://github.com/lgvaz/mantisshrimp.git
+git clone --depth=1 https://github.com/airctic/mantisshrimp.git
 cd mantisshrimp
 pip install .[all]
 ```

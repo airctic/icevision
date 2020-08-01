@@ -32,7 +32,7 @@ PAGES = {
 # ]
 
 
-ROOT = "https://lgvaz.github.io/mantisshrimp/"
+ROOT = "https://airctic.github.io/mantisshrimp/"
 
 mantisshrimp_dir = Path(__file__).resolve().parents[1]
 
@@ -108,7 +108,7 @@ def py_to_nb_md(dest_dir):
 
         tutobooks.py_to_md(py_path, nb_path, md_path, "templates/img")
 
-        github_repo_dir = "lgvaz/mantisshrimp/blob/master/docs/"
+        github_repo_dir = "airctic/mantisshrimp/blob/master/docs/"
         with open(md_path, "r") as md_file:
             button_lines = [
                 ":material-link: "
@@ -186,7 +186,7 @@ def generate(dest_dir):
 
     # doc_generator = keras_autodoc.DocumentationGenerator(
     #     PAGES,
-    #     'https://github.com/lgvaz/mantisshrimp/blob/master',
+    #     'https://github.com/airctic/mantisshrimp/blob/master',
     #     template_dir,
     #     mantisshrimp_dir / 'examples',
     # )

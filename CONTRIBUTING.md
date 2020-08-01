@@ -35,7 +35,7 @@ pip install -r requirements.txt
     with mantisshrimp easily.
 
 ```bash
-git remote add upstream https://github.com/lgvaz/mantisshrimp.git
+git remote add upstream https://github.com/airctic/mantisshrimp.git
 ```
 
 2.  Updating your local repo: Pull the upstream (original) repo.
@@ -135,7 +135,7 @@ request.
 #### 2. Confirm PR was created:
 
 Ensure your pr is listed
-[here](https://github.com/lgvaz/mantisshrimp/pulls)
+[here](https://github.com/airctic/mantisshrimp/pulls)
 
 3.  Updating a PR:
 
@@ -165,9 +165,9 @@ mantisshrimp repo.
 ## Feature Requests and questions
 
 For Feature Requests and more questions raise a github
-[issue](https://github.com/lgvaz/mantisshrimp/issues/). We will be happy
+[issue](https://github.com/airctic/mantisshrimp/issues/). We will be happy
 to assist you.
 
 Be sure to check the
-[documentation](https://lgvaz.github.io/mantisshrimp/index.html).
+[documentation](https://airctic.github.io/mantisshrimp/index.html).
 

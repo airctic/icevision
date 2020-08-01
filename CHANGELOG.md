@@ -45,4 +45,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## Links  
-[Unreleased]: https://github.com/lgvaz/mantisshrimp/tree/master
+[Unreleased]: https://github.com/airctic/mantisshrimp/tree/master

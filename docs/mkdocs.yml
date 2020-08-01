@@ -7,11 +7,11 @@ theme:
     accent: 'blue'
 
 docs_dir: sources
-repo_url: https://github.com/lgvaz/Mantisshrimp
-site_url: https://lgvaz.github.io/mantisshrimp/
+repo_url: https://github.com/airctic/Mantisshrimp
+site_url: https://airctic.github.io/mantisshrimp/
 edit_uri: ""
 site_description: 'Documentation for Mantisshrimp.'
-# google_analytics: ['UA-44322747-3', 'https://lgvaz.github.io/mantisshrimp/']
+# google_analytics: ['UA-44322747-3', 'https://airctic.github.io/mantisshrimp/']
 markdown_extensions:
   - codehilite
   - pymdownx.superfences:

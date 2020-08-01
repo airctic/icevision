@@ -9,7 +9,7 @@
 
 !!! info "We Need Your Help" 
     If you find this work useful, please let other people know by **starring** it,
-    and sharing it on [GitHub](https://github.com/lgvaz/Mantisshrimp).
+    and sharing it on [GitHub](https://github.com/airctic/Mantisshrimp).
 
     Thank you
     
