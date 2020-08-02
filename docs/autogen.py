@@ -8,19 +8,23 @@ import keras_autodoc
 import tutobooks
 
 PAGES = {
-    "model_faster_rcnn.md": [
-        "mantisshrimp.MantisFasterRCNN",
-        "mantisshrimp.MantisFasterRCNN.predict",
-        "mantisshrimp.MantisFasterRCNN.param_groups",
-        "mantisshrimp.MantisFasterRCNN.convert_raw_prediction",
-        "mantisshrimp.MantisFasterRCNN.build_training_sample",
+    "faster_rcnn.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.model.model",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.train_dataloader",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.valid_dataloader",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.infer_dataloader",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_train_batch",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_valid_batch",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_infer_batch",
     ],
-    "model_mask_rcnn.md": [
-        "mantisshrimp.MantisMaskRCNN",
-        "mantisshrimp.MantisMaskRCNN.predict",
-        "mantisshrimp.MantisMaskRCNN.param_groups",
-        "mantisshrimp.MantisMaskRCNN.convert_raw_prediction",
-        "mantisshrimp.MantisMaskRCNN.build_training_sample",
+    "faster_rcnn_fastai.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.fastai.learner.learner",
+    ],
+    "faster_rcnn_lightning.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.lightning.model_adapter.ModelAdapter",
+    ],
+    "mask_rcnn.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.model.model",
     ],
 }
 
@@ -184,13 +188,13 @@ def generate(dest_dir):
 
     os.makedirs(dest_dir)
 
-    # doc_generator = keras_autodoc.DocumentationGenerator(
-    #     PAGES,
-    #     'https://github.com/airctic/mantisshrimp/blob/master',
-    #     template_dir,
-    #     mantisshrimp_dir / 'examples',
-    # )
-    # doc_generator.generate(dest_dir)
+    doc_generator = keras_autodoc.DocumentationGenerator(
+        pages=PAGES,
+        project_url='https://github.com/airctic/mantisshrimp/blob/master',
+        template_dir=template_dir,
+        examples_dir=mantisshrimp_dir / 'examples',
+    )
+    doc_generator.generate(dest_dir)
 
     # Auto generate the index.md file using the README.md file and the index.md file in templates folder
     readme = (mantisshrimp_dir / "README.md").read_text()

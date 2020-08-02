@@ -15,7 +15,7 @@ def adapted_fastai_learner(
     device=None,
     splitter=None,
     **learner_kwargs,
-):
+) -> fastai.Learner:
     # convert dataloaders to fastai
     fastai_dls = []
     for dl in dls:
