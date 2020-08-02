@@ -7,7 +7,7 @@ from mantisshrimp.models.rcnn.faster_rcnn.fastai.callbacks import *
 def learner(
     dls: Sequence[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
-    cbs: Optional[Sequence[fastai.Callback]]=None,
+    cbs: Optional[Sequence[fastai.Callback]] = None,
     **learner_kwargs
 ) -> fastai.Learner:
     """ Fastai `Learner` adapted for Faster RCNN.
