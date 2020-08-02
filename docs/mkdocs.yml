@@ -35,6 +35,8 @@ nav:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
     - Advanced Guide: advanced_guide.md
+  - Models:
+    - Faster RCNN: model_faster_rcnn.md
   - Examples:
     - Training: examples/training.md
     - Inference: examples/inference.md
