@@ -44,11 +44,13 @@ nav:
   - API Documentation:
     - Models:
       - Faster RCNN:
-        - Common: faster_rcnn.md
-        - Fastai: faster_rcnn_fastai.md
-        - Lightning: faster_rcnn_lightning.md
+        - common: faster_rcnn.md
+        - fastai: faster_rcnn_fastai.md
+        - lightning: faster_rcnn_lightning.md
       - Mask RCNN:
-        - Common: mask_rcnn.md
+        - common: mask_rcnn.md
+        - fastai: mask_rcnn_fastai.md
+        - lightning: mask_rcnn_lightning.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:

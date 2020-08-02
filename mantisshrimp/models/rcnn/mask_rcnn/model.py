@@ -14,7 +14,7 @@ def model(
     num_classes: int,
     backbone: Optional[nn.Module] = None,
     remove_internal_transforms: bool = True,
-    **faster_rcnn_kwargs
+    **mask_rcnn_kwargs
 ) -> nn.Module:
     """ MaskRCNN model implemented by torchvision.
 
@@ -24,14 +24,14 @@ def model(
         remove_internal_transforms: The torchvision model internally applies transforms
         like resizing and normalization, but we already do this at the `Dataset` level,
         so it's safe to remove those internal transforms.
-        **faster_rcnn_kwargs: Keyword arguments that internally are going to be passed to
+        **mask_rcnn_kwargs: Keyword arguments that internally are going to be passed to
         `torchvision.models.detection.mask_rcnn.MaskRCNN`.
 
     # Return
         A Pytorch `nn.Module`.
     """
     if backbone is None:
-        model = maskrcnn_resnet50_fpn(pretrained=True, **faster_rcnn_kwargs)
+        model = maskrcnn_resnet50_fpn(pretrained=True, **mask_rcnn_kwargs)
 
         in_features_box = model.roi_heads.box_predictor.cls_score.in_features
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features_box, num_classes)
@@ -43,7 +43,7 @@ def model(
 
         backbone_param_groups = resnet_fpn.param_groups(model.backbone)
     else:
-        model = MaskRCNN(backbone, num_classes=num_classes, **faster_rcnn_kwargs)
+        model = MaskRCNN(backbone, num_classes=num_classes, **mask_rcnn_kwargs)
         backbone_param_groups = backbone.param_groups()
 
     patch_param_groups(model=model, backbone_param_groups=backbone_param_groups)
