@@ -25,6 +25,18 @@ PAGES = {
     ],
     "mask_rcnn.md": [
         "mantisshrimp.models.rcnn.mask_rcnn.model.model",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.train_dataloader",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.valid_dataloader",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.infer_dataloader",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_train_batch",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
+    ],
+    "mask_rcnn_fastai.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.fastai.learner.learner",
+    ],
+    "mask_rcnn_lightning.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
 }
 
@@ -190,9 +202,9 @@ def generate(dest_dir):
 
     doc_generator = keras_autodoc.DocumentationGenerator(
         pages=PAGES,
-        project_url='https://github.com/airctic/mantisshrimp/blob/master',
+        project_url="https://github.com/airctic/mantisshrimp/blob/master",
         template_dir=template_dir,
-        examples_dir=mantisshrimp_dir / 'examples',
+        examples_dir=mantisshrimp_dir / "examples",
     )
     doc_generator.generate(dest_dir)
 
@@ -223,7 +235,9 @@ def generate(dest_dir):
         mantisshrimp_dir / "CHANGING-THE-COLORS.md", dest_dir / "changing-the-colors.md"
     )
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
-    shutil.copyfile(mantisshrimp_dir / "MODEL_FASTER_RCNN.md", dest_dir / "model_faster_rcnn.md")
+    shutil.copyfile(
+        mantisshrimp_dir / "MODEL_FASTER_RCNN.md", dest_dir / "model_faster_rcnn.md"
+    )
 
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir) / "images"
