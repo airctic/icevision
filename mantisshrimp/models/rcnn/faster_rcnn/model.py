@@ -15,14 +15,19 @@ def model(
     remove_internal_transforms: bool = True,
     **faster_rcnn_kwargs
 ) -> nn.Module:
-    """ FasterRCNN model given by torchvision
+    """ FasterRCNN model implemented by torchvision.
 
-    Args:
-        num_classes (int): Number of classes.
-        backbone (nn.Module): Backbone model to use. Defaults to a resnet50_fpn model.
+    # Arguments
+        num_classes: Number of classes.  
+        backbone: Backbone model to use. Defaults to a resnet50_fpn model.  
+        remove_internal_transforms: The torchvision model internally applies transforms
+        like resizing and normalization, but we already do this at the `Dataset` level,
+        so it's safe to remove those internal transforms.
+        **faster_rcnn_kwargs: Keyword arguments that internally are going to be passed to
+        `torchvision.models.detection.faster_rcnn.FastRCNN`.
 
-    Return:
-        nn.Module
+    # Returns
+        A Pytorch `nn.Module`.
     """
     if backbone is None:
         model = fasterrcnn_resnet50_fpn(pretrained=True, **faster_rcnn_kwargs)

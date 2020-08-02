@@ -35,10 +35,20 @@ nav:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
     - Advanced Guide: advanced_guide.md
+  - Models:
+    - Faster RCNN: model_faster_rcnn.md
   - Examples:
     - Training: examples/training.md
     - Inference: examples/inference.md
   - Deployment: deployment.md
+  - API Documentation:
+    - Models:
+      - Faster RCNN:
+        - Common: faster_rcnn.md
+        - Fastai: faster_rcnn_fastai.md
+        - Lightning: faster_rcnn_lightning.md
+      - Mask RCNN:
+        - Common: mask_rcnn.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:

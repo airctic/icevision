@@ -8,7 +8,7 @@ from mantisshrimp.models.rcnn.loss_fn import loss_fn
 
 
 class RCNNModelAdapter(LightningModelAdapter, ABC):
-    def __init__(self, model: nn.Module, metrics: List[Metric] = None):
+    def __init__(self, model: nn.Module, metrics: Sequence[Metric] = None):
         super().__init__(metrics=metrics)
         self.model = model
 
