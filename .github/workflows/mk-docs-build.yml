@@ -17,9 +17,11 @@ jobs:
       - name: Install dependencies
         run: |
             python -m pip install --upgrade pip setuptools
-            pip install git+git://github.com/airctic/mantisshrimp.git
-            pip install -e .
+            pip install torch==1.6.0+cpu torchvision==0.7.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+            pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
+            pip install git+git://github.com/rwightman/efficientdet-pytorch.git
             pip install -r docs/requirements.txt
+            pip install -e .[all]
       - name: Build the docs
         run:  |
           cd docs
