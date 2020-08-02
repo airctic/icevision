@@ -219,6 +219,7 @@ def generate(dest_dir):
         mantisshrimp_dir / "CHANGING-THE-COLORS.md", dest_dir / "changing-the-colors.md"
     )
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
+    shutil.copyfile(mantisshrimp_dir / "MODEL_FASTER_RCNN.md", dest_dir / "model_faster_rcnn.md")
 
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir) / "images"
