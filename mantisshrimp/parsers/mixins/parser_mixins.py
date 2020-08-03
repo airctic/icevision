@@ -22,6 +22,8 @@ class ParserMixin(ABC):
 
 
 class ImageidParserMixin(ParserMixin):
+    """Adds `imageid` method to parser"""
+
     def collect_info_parse_funcs(self, funcs=None):
         funcs = super().collect_info_parse_funcs(funcs)
         return {"imageid": self.imageid, **funcs}
@@ -32,6 +34,8 @@ class ImageidParserMixin(ParserMixin):
 
 
 class FilepathParserMixin(ParserMixin):
+    """Adds `filepath` method to parser"""
+
     def collect_info_parse_funcs(self, funcs=None):
         funcs = super().collect_info_parse_funcs(funcs)
         return {"filepath": self.filepath, **funcs}
@@ -42,6 +46,8 @@ class FilepathParserMixin(ParserMixin):
 
 
 class SizeParserMixin(ParserMixin):
+    """Adds `height` and `width` method to parser"""
+
     def collect_info_parse_funcs(self, funcs=None):
         funcs = super().collect_info_parse_funcs(funcs)
         return {"height": self.height, "width": self.width, **funcs}
@@ -55,24 +61,29 @@ class SizeParserMixin(ParserMixin):
         pass
 
 
-## Annotation parsers ##
+### Annotation parsers ###
+
+
 class LabelsParserMixin(ParserMixin):
+    """Adds `labels` method to parser"""
+
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"labels": self.labels, **funcs}
 
     @abstractmethod
     def labels(self, o) -> List[int]:
-        """
-        Returns the labels for the receive sample.
+        """Returns the labels for the receive sample.
 
-        .. important:
-        If you are using a RCNN model, remember to return 0 for background
-        and background only.
+        !!! danger "Important"
+        If you are using a RCNN/efficientdet model,
+        remember to return 0 for background.
         """
 
 
 class BBoxesParserMixin(ParserMixin):
+    """Adds `bboxes` method to parser"""
+
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"bboxes": self.bboxes, **funcs}
@@ -83,6 +94,8 @@ class BBoxesParserMixin(ParserMixin):
 
 
 class MasksParserMixin(ParserMixin):
+    """Adds `masks` method to parser"""
+
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"masks": self.masks, **funcs}
@@ -93,6 +106,8 @@ class MasksParserMixin(ParserMixin):
 
 
 class AreasParserMixin(ParserMixin):
+    """Adds `areas` method to parser"""
+
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"areas": self.areas, **funcs}
@@ -104,6 +119,8 @@ class AreasParserMixin(ParserMixin):
 
 
 class IsCrowdsParserMixin(ParserMixin):
+    """Adds `iscrowds` method to parser"""
+
     def collect_annotation_parse_funcs(self, funcs=None):
         funcs = super().collect_annotation_parse_funcs(funcs)
         return {"iscrowds": self.iscrowds, **funcs}
