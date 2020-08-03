@@ -8,6 +8,19 @@ import keras_autodoc
 import tutobooks
 
 PAGES = {
+    "parser.md": [
+        "mantisshrimp.parsers.Parser",
+        "mantisshrimp.parsers.FasterRCNNParser",
+        "mantisshrimp.parsers.MaskRCNNParser",
+        "mantisshrimp.parsers.mixins.ImageidParserMixin",
+        "mantisshrimp.parsers.mixins.FilepathParserMixin",
+        "mantisshrimp.parsers.mixins.SizeParserMixin",
+        "mantisshrimp.parsers.mixins.LabelsParserMixin",
+        "mantisshrimp.parsers.mixins.BBoxesParserMixin",
+        "mantisshrimp.parsers.mixins.MasksParserMixin",
+        "mantisshrimp.parsers.mixins.AreasParserMixin",
+        "mantisshrimp.parsers.mixins.IsCrowdsParserMixin",
+    ],
     "faster_rcnn.md": [
         "mantisshrimp.models.rcnn.faster_rcnn.model.model",
         "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.train_dataloader",

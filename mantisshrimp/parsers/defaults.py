@@ -8,12 +8,15 @@ from mantisshrimp.parsers.mixins import *
 class DefaultImageInfoParser(
     Parser, FilepathParserMixin, SizeParserMixin, ABC,
 ):
-    pass
+    """Bundles `Filepath` and `Size` mixins.
+    """
 
 
 class FasterRCNNParser(Parser, LabelsParserMixin, BBoxesParserMixin, ABC):
-    pass
+    """Parser with required mixins for Faster RCNN.
+    """
 
 
 class MaskRCNNParser(FasterRCNNParser, MasksParserMixin, IsCrowdsParserMixin, ABC):
-    pass
+    """Parser with required mixins for Mask RCNN.
+    """

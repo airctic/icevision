@@ -42,6 +42,7 @@ nav:
     - Inference: examples/inference.md
   - Deployment: deployment.md
   - API Documentation:
+    - Parser: parser.md
     - Models:
       - Faster RCNN:
         - common: faster_rcnn.md
