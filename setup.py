@@ -37,10 +37,15 @@ py_versions = (
     "2.0 2.1 2.2 2.3 2.4 2.5 2.6 2.7 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8".split()
 )
 
-requirements = cfg.get("requirements", "").split()
-pl_req = cfg.get("pytorch_lightning", "").split()
-fs_req = cfg.get("fastai").split()
-all_req = cfg.get("all").split()
+
+def parse_requirements(name):
+    return cfg[name].strip("\n").split("\n")
+
+
+requirements = parse_requirements("requirements")
+pl_req = parse_requirements("pytorch_lightning")
+fs_req = parse_requirements("fastai")
+all_req = parse_requirements("all")
 
 extras = {}
 extras["pytorch-lightning"] = pl_req
