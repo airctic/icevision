@@ -37,6 +37,7 @@ py_versions = (
     "2.0 2.1 2.2 2.3 2.4 2.5 2.6 2.7 3.0 3.1 3.2 3.3 3.4 3.5 3.6 3.7 3.8".split()
 )
 
+setup_requirements = cfg.get("setup_requirements").split()
 requirements = cfg.get("requirements", "").split()
 pl_req = cfg.get("pytorch_lightning", "").split()
 fs_req = cfg.get("fastai").split()
@@ -66,6 +67,7 @@ setuptools.setup(
     url=cfg["git_url"],
     packages=setuptools.find_packages(),
     include_package_data=True,
+    setup_requires=setup_requirements,
     install_requires=requirements,
     extras_require=extras,
     dependency_links=cfg.get("dep_links", "").split(),
