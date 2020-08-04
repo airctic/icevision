@@ -29,9 +29,9 @@ Then:
 !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
 ```
 
-For more installation options, check the our [docs](https://airctic.github.io/mantisshrimp/install/)
+For more installation options, check our [docs](https://airctic.github.io/mantisshrimp/install/).
 
-**Important:** We currently only support Linux/MacOS
+**Important:** We currently only support Linux/MacOS.
 <!-- Not included in docs - end -->
 
 
