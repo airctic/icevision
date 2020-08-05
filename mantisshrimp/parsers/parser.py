@@ -18,6 +18,21 @@ class ParserInterface(ABC):
 
 
 class Parser(ImageidParserMixin, ParserInterface, ABC):
+    """Base class for all parsers, implements the main parsing logic.
+
+    The actual fields to be parsed are defined by the mixins used when
+    defining a custom parser. The only required field for all parsers
+    is the `image_id`.
+
+    # Examples
+
+    Create a parser for image filepaths.
+    ```python
+    class FilepathParser(Parser, FilepathParserMixin):
+        # implement required abstract methods
+    ```
+    """
+
     def prepare(self, o):
         pass
 
