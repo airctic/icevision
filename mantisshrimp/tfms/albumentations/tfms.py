@@ -9,29 +9,33 @@ from mantisshrimp.tfms.transform import *
 def aug_tfms(
     size: Union[int, Tuple[int, int]],
     presize: Optional[Union[int, Tuple[int, int]]] = None,
-    crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
     horizontal_flip: Optional[A.HorizontalFlip] = A.HorizontalFlip(),
     shift_scale_rotate: Optional[A.ShiftScaleRotate] = A.ShiftScaleRotate(),
     rgb_shift: Optional[A.RGBShift] = A.RGBShift(),
     lightning: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
     blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),
+    crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
+    pad: Optional[A.DualTransform] = partial(
+        A.PadIfNeeded, border_mode=cv2.BORDER_CONSTANT
+    ),
 ) -> List[A.BasicTransform]:
+    height, width = (size, size) if isinstance(size, int) else size
+
     def resize(size):
         return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
-
-    def random_crop(size) -> A.DualTransform:
-        height, width = (size, size) if isinstance(size, int) else size
-        return crop_fn(height=height, width=width)
 
     tfms = []
     tfms += [resize(presize) if presize is not None else None]
     tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
-    # Resize as the last transforms to reduce the number of artifical artifacts created
+    # Resize as the last transforms to reduce the number of artificial artifacts created
     if crop_fn is not None:
-        random_crop_ = random_crop(size)
-        tfms += [A.OneOrOther(random_crop(size), resize(size), p=random_crop_.p)]
+        crop = crop_fn(height=height, width=width)
+        tfms += [A.OneOrOther(crop, resize(size), p=crop.p)]
     else:
         tfms += [resize(size)]
+    tfms += [pad(min_height=height, min_width=width) if pad is not None else None]
+
+    tfms = [tfm for tfm in tfms if tfm is not None]
 
     return tfms
 
