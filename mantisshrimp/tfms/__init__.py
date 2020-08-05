@@ -1,6 +1,6 @@
 from mantisshrimp.tfms.transform import *
 
-import mantisshrimp.tfms.batch_tfms
+import mantisshrimp.tfms.batch
 
 from mantisshrimp.utils.soft_dependencies import HAS_ALBUMENTATIONS
 

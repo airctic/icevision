@@ -18,7 +18,7 @@ def records():
 
 @pytest.mark.parametrize("pad_value", [0, (1, 2, 3)])
 def test_img_pad_stack(records, pad_value):
-    tfmed_records = batch_tfms.ImgPadStack(pad_value=pad_value)(records)
+    tfmed_records = tfms.batch.ImgPadStack(pad_value=pad_value)(records)
     imgs = np.asarray([record["img"] for record in tfmed_records])
 
     expected = np.ones((2, 3, 4, 3), dtype=np.float)
