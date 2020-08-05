@@ -1,14 +1,43 @@
-__all__ = ["AlbumentationTransforms"]
+__all__ = ["Adapter", "aug_tfms"]
 
+import albumentations as A
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.transforms.transform import *
+from mantisshrimp.tfms.transform import *
 
 
-class AlbumentationTransforms(Transform):
+def aug_tfms(
+    size: Union[int, Tuple[int, int]],
+    presize: Optional[Union[int, Tuple[int, int]]] = None,
+    crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
+    horizontal_flip: Optional[A.HorizontalFlip] = A.HorizontalFlip(),
+    shift_scale_rotate: Optional[A.ShiftScaleRotate] = A.ShiftScaleRotate(),
+    rgb_shift: Optional[A.RGBShift] = A.RGBShift(),
+    lightning: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
+    blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),
+) -> List[A.BasicTransform]:
+    def resize(size):
+        return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
+
+    def random_crop(size) -> A.DualTransform:
+        height, width = (size, size) if isinstance(size, int) else size
+        return crop_fn(height=height, width=width)
+
+    tfms = []
+    tfms += [resize(presize) if presize is not None else None]
+    tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
+    # Resize as the last transforms to reduce the number of artifical artifacts created
+    if crop_fn is not None:
+        random_crop_ = random_crop(size)
+        tfms += [A.OneOrOther(random_crop(size), resize(size), p=random_crop_.p)]
+    else:
+        tfms += [resize(size)]
+
+    return tfms
+
+
+class Adapter(Transform):
     def __init__(self, tfms):
-        import albumentations as A
-
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
