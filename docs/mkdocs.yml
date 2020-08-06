@@ -34,7 +34,6 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
-    - Advanced Guide: advanced_guide.md
   - Models:
     - Faster RCNN: model_faster_rcnn.md
   - Examples:
@@ -43,6 +42,8 @@ nav:
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
+    - Transforms:
+      - Albumentations: albumentations_tfms.md
     - Models:
       - Faster RCNN:
         - common: faster_rcnn.md
