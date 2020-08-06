@@ -34,11 +34,13 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
+    - EffecientDet: efficientdet_pets.md
   - Models:
     - Faster RCNN: model_faster_rcnn.md
   - Examples:
     - Training: examples/training.md
     - Inference: examples/inference.md
+    - EffecientDet: examples/effecientdet_pets_exp.md
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
