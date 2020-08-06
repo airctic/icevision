@@ -8,6 +8,7 @@ from mantisshrimp import *
 from mantisshrimp.models.rcnn import faster_rcnn
 import albumentations as A
 
+
 # Load the PETS dataset
 path = datasets.pets.load()
 
@@ -24,9 +25,12 @@ train_records, valid_records = parser.parse(data_splitter)
 # shows images with corresponding labels and boxes
 show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
 
-# Create both training and validation datasets - using Albumentations transforms out of the box
-train_ds = Dataset(train_records, datasets.pets.train_albumentations_tfms_pets())
-valid_ds = Dataset(valid_records, datasets.pets.valid_albumentations_tfms_pets())
+# Define transforms - using Albumentations transforms out of the box
+train_tfms = tfms.A.Adapter([*tfms.A.aug_tfms(size=384, presize=512), A.Normalize()])
+valid_tfms = tfms.A.Adapter([A.LongestMaxSize(384), A.Normalize()])
+# Create both training and validation datasets
+train_ds = Dataset(train_records, train_tfms)
+valid_ds = Dataset(valid_records, valid_tfms)
 
 # Create both training and validation dataloaders
 train_dl = faster_rcnn.train_dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)

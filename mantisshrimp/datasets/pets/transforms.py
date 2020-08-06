@@ -2,7 +2,7 @@ __all__ = ["train_albumentations_tfms_pets", "valid_albumentations_tfms_pets"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.transforms import *
+from mantisshrimp.tfms import *
 from mantisshrimp.utils.utils import *
 
 

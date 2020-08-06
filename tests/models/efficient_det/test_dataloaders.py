@@ -82,7 +82,7 @@ def test_efficient_det_valid_dataloader(records):
 
 
 @pytest.mark.parametrize(
-    "batch_tfms", [None, batch_tfms.ImgPadStack(np.array(0, dtype=np.uint8))]
+    "batch_tfms", [None, tfms.batch.ImgPadStack(np.array(0, dtype=np.uint8))]
 )
 def test_efficient_det_build_infer_batch(img, batch_tfms):
     records = [{"img": img, "height": 4, "width": 4}] * 2

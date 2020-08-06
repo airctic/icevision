@@ -43,6 +43,8 @@ nav:
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
+    - Transforms:
+      - Albumentations: albumentations_tfms.md
     - Models:
       - Faster RCNN:
         - common: faster_rcnn.md
