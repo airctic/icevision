@@ -2,7 +2,10 @@
 Example showing how to train the PETS dataset, showcasing [fastai2](https://github.com/fastai/fastai2) and [pytorch-lightning](https://github.com/PyTorchLightning/pytorch-lightning)
 """
 
+# Installing Mantisshrimp
+# !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
+# Imports
 from mantisshrimp.imports import *
 from mantisshrimp import *
 from mantisshrimp.models.rcnn import faster_rcnn

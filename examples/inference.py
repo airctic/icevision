@@ -1,9 +1,10 @@
 """
 How to use the inference API.
-
-This example downloads an image from an URL and uses a pretrained model on Pets.
 """
+# Installing Mantisshrimp
+# !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
+# Imports
 from mantisshrimp.imports import *
 from mantisshrimp import *
 from mantisshrimp.models.rcnn import faster_rcnn
