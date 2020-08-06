@@ -1,9 +1,23 @@
-__all__ = ["Adapter", "aug_tfms"]
+__all__ = ["Adapter", "aug_tfms", "resize_and_pad"]
 
 import albumentations as A
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
 from mantisshrimp.tfms.transform import *
+
+
+def _resize(size):
+    return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
+
+
+def resize_and_pad(
+    size: Union[int, Tuple[int, int]],
+    pad: A.DualTransform = partial(
+        A.PadIfNeeded, border_mode=cv2.BORDER_CONSTANT, value=[124, 116, 104]
+    ),
+):
+    height, width = (size, size) if isinstance(size, int) else size
+    return [_resize(size), pad(min_height=height, min_width=width)]
 
 
 def aug_tfms(
@@ -49,18 +63,15 @@ def aug_tfms(
 
     height, width = (size, size) if isinstance(size, int) else size
 
-    def resize(size):
-        return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
-
     tfms = []
-    tfms += [resize(presize) if presize is not None else None]
+    tfms += [_resize(presize) if presize is not None else None]
     tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
     # Resize as the last transforms to reduce the number of artificial artifacts created
     if crop_fn is not None:
         crop = crop_fn(height=height, width=width)
-        tfms += [A.OneOrOther(crop, resize(size), p=crop.p)]
+        tfms += [A.OneOrOther(crop, _resize(size), p=crop.p)]
     else:
-        tfms += [resize(size)]
+        tfms += [_resize(size)]
     tfms += [pad(min_height=height, min_width=width) if pad is not None else None]
 
     tfms = [tfm for tfm in tfms if tfm is not None]
