@@ -26,7 +26,7 @@ First follow the instructions for installing PyTorch [here](https://pytorch.org/
 
 Then:
 ```bash
-!pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
+pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
 ```
 
 For more installation options, check our [docs](https://airctic.github.io/mantisshrimp/install/).
