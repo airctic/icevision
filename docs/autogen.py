@@ -21,6 +21,10 @@ PAGES = {
         "mantisshrimp.parsers.mixins.AreasParserMixin",
         "mantisshrimp.parsers.mixins.IsCrowdsParserMixin",
     ],
+    "albumentations_tfms.md": [
+    #     "mantisshrimp.tfms.albumentations.aug_tfms",
+        "mantisshrimp.tfms.albumentations.Adapter",
+    ],
     "faster_rcnn.md": [
         "mantisshrimp.models.rcnn.faster_rcnn.model.model",
         "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.train_dataloader",

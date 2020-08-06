@@ -1,7 +1,7 @@
 __all__ = ["Dataset"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.transforms import *
+from mantisshrimp.tfms import *
 from mantisshrimp.data.prepare_record import *
 
 

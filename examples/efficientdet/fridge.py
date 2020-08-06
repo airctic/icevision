@@ -3,6 +3,7 @@ from mantisshrimp.imports import *
 from mantisshrimp.models import efficientdet
 import albumentations as A
 
+
 IMG_SIZE = 512
 class_map = datasets.fridge.class_map()
 data_dir = datasets.fridge.load()
@@ -54,12 +55,17 @@ learn.fine_tune(50, 1e-2, freeze_epochs=20)
 WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
 model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
 
-state_dict = torch.hub.load_state_dict_from_url(WEIGHTS_URL)
+state_dict = torch.hub.load_state_dict_from_url(
+    WEIGHTS_URL, map_location=torch.device("cpu")
+)
 model.load_state_dict(state_dict)
 model.cuda()
 
 
-samples = [valid_ds[i] for i in range(6)]
+samples = [valid_ds[i] for i in range(3)]
 batch, samples = efficientdet.build_infer_batch(samples)
 
 preds = efficientdet.predict(model, batch)
+
+imgs = [sample["img"] for sample in samples]
+show_preds(imgs=imgs, preds=preds)
