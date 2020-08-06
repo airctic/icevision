@@ -16,9 +16,37 @@ def aug_tfms(
     blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),
     crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
     pad: Optional[A.DualTransform] = partial(
-        A.PadIfNeeded, border_mode=cv2.BORDER_CONSTANT
+        A.PadIfNeeded, border_mode=cv2.BORDER_CONSTANT, value=[124, 116, 104]
     ),
 ) -> List[A.BasicTransform]:
+    """Collection of useful augmentation transforms.
+
+    # Arguments
+        size: The final size of the image. If an `int` is given, the maximum size of
+            the image is rescaled, maintaing aspect ratio. If a `tuple` is given,
+            the image is rescaled to have that exact size (height, width).
+        presizing: Rescale the image before applying other transfroms. If `None` this
+                transform is not applied. First introduced by fastai,this technique is
+                explained in their book in [this](https://github.com/fastai/fastbook/blob/master/05_pet_breeds.ipynb)
+                chapter (tip: search for "Presizing").
+        horizontal_flip: Flip around the y-axis. If `None` this transform is not applied.
+        shift_scale_rotate: Randomly shift, scale, and rotate. If `None` this transform
+                is not applied.
+        rgb_shift: Randomly shift values for each channel of RGB image. If `None` this
+                transform is not applied.
+        lightning: Randomly changes Brightness and Contrast. If `None` this transform
+                is not applied.
+        blur: Randomly blur the image. If `None` this transform is not applied.
+        crop_fn: Randomly crop the image. If `None` this transform is not applied.
+                Use `partial` to saturate other parameters of the class.
+        pad: Pad the image to `size`, squaring the image if `size` is an `int`.
+            If `None` this transform is not applied. Use `partial` to sature other
+            parameters of the class.
+
+    # Returns
+        A list of albumentations transforms.
+    """
+
     height, width = (size, size) if isinstance(size, int) else size
 
     def resize(size):
@@ -41,7 +69,13 @@ def aug_tfms(
 
 
 class Adapter(Transform):
-    def __init__(self, tfms):
+    """ Adapter that enables the use of albumentations transforms.
+
+    # Arguments
+        tfms: `Sequence` of albumentation transforms.
+    """
+
+    def __init__(self, tfms: Sequence[A.BasicTransform]):
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
         super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
 
