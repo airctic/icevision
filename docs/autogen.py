@@ -22,7 +22,7 @@ PAGES = {
         "mantisshrimp.parsers.mixins.IsCrowdsParserMixin",
     ],
     "albumentations_tfms.md": [
-    #     "mantisshrimp.tfms.albumentations.aug_tfms",
+        #     "mantisshrimp.tfms.albumentations.aug_tfms",
         "mantisshrimp.tfms.albumentations.Adapter",
     ],
     "faster_rcnn.md": [
@@ -253,7 +253,8 @@ def generate(dest_dir):
     )
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
     shutil.copyfile(
-        mantisshrimp_dir / "MODEL_FASTER_RCNN.md", dest_dir / "model_faster_rcnn.md"
+        mantisshrimp_dir / "mantisshrimp/models/rcnn/faster_rcnn/README.md",
+        dest_dir / "model_faster_rcnn.md",
     )
 
     # Copy images folder from the template folder to the destination folder

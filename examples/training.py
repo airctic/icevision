@@ -33,8 +33,12 @@ train_ds = Dataset(train_records, train_tfms)
 valid_ds = Dataset(valid_records, valid_tfms)
 
 # Create both training and validation dataloaders
-train_dl = faster_rcnn.train_dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
-valid_dl = faster_rcnn.valid_dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
+train_dl = faster_rcnn.train_dataloader(
+    train_ds, batch_size=16, num_workers=4, shuffle=True
+)
+valid_dl = faster_rcnn.valid_dataloader(
+    valid_ds, batch_size=16, num_workers=4, shuffle=False
+)
 
 # Create model
 model = faster_rcnn.model(num_classes=len(class_map))
@@ -43,7 +47,9 @@ model = faster_rcnn.model(num_classes=len(class_map))
 metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]
 
 # Train using fastai2
-learn = faster_rcnn.fastai.learner(dls=[train_dl, valid_dl], model=model, metrics=metrics)
+learn = faster_rcnn.fastai.learner(
+    dls=[train_dl, valid_dl], model=model, metrics=metrics
+)
 learn.fine_tune(10, lr=1e-4)
 
 # Train using pytorch-lightning
