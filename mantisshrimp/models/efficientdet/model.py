@@ -9,15 +9,21 @@ from effdet.efficientdet import HeadNet
 def model(
     model_name: str, num_classes: int, img_size: int, pretrained: bool = True
 ) -> nn.Module:
-    """ Creates the model specific by model_name
+    """ Creates the efficientdet model specified by `model_name`.
 
-    Args:
-        model_name (str): Specifies the model to create, available options are: TODO
-        num_classes (int): Number of classes of your dataset (including background)
-        pretrained (int): If True, use a pretrained backbone (on COCO)
+    The model implementation is by Ross Wightman, original repo
+    [here](https://github.com/rwightman/efficientdet-pytorch).
 
-    Returns:
-          nn.Module: The requested model
+    # Arguments
+        model_name: Specifies the model to create. For pretrained models, check
+            [this](https://github.com/rwightman/efficientdet-pytorch#models) table.
+        num_classes: Number of classes of your dataset (including background).
+        img_size: Image size that will be fed to the model. Must be squared and
+            divisible by 64.
+        pretrained: If True, use a pretrained backbone (on COCO).
+
+    # Returns
+        A PyTorch model.
     """
     config = get_efficientdet_config(model_name=model_name)
 

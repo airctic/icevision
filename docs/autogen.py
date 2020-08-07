@@ -55,6 +55,21 @@ PAGES = {
     "mask_rcnn_lightning.md": [
         "mantisshrimp.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
+    "efficientdet.md": [
+        "mantisshrimp.models.efficientdet.model.model",
+        "mantisshrimp.models.efficientdet.dataloaders.train_dataloader",
+        "mantisshrimp.models.efficientdet.dataloaders.valid_dataloader",
+        "mantisshrimp.models.efficientdet.dataloaders.infer_dataloader",
+        "mantisshrimp.models.efficientdet.dataloaders.build_train_batch",
+        "mantisshrimp.models.efficientdet.dataloaders.build_valid_batch",
+        "mantisshrimp.models.efficientdet.dataloaders.build_infer_batch",
+    ],
+    "efficientdet_fastai.md": [
+        "mantisshrimp.models.efficientdet.fastai.learner.learner",
+    ],
+    "efficientdet_lightning.md": [
+        "mantisshrimp.models.efficientdet.lightning.model_adapter.ModelAdapter",
+    ],
 }
 
 # aliases_needed = [
