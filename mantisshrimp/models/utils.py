@@ -65,11 +65,15 @@ def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
 
 @torch.no_grad()
 def _predict_dl(
-    predict_fn, model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True
+    predict_fn,
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    **predict_kwargs,
 ):
     all_preds, all_samples = [], []
     for batch, samples in pbar(infer_dl, show=show_pbar):
-        preds = predict_fn(model=model, batch=batch)
+        preds = predict_fn(model=model, batch=batch, **predict_kwargs)
 
         all_samples.extend(samples)
         all_preds.extend(preds)
