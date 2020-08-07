@@ -19,7 +19,7 @@ Faster R-CNN is built upon the knowledge of Fast RCNN which indeed built upon 
 ## Mantisshrimp Quick Example: How to train the **PETS Dataset**
 
 [**Source Code**](https://airctic.github.io/mantisshrimp/examples/training/)
-![image](images/mantis-readme.png)
+![image](https://airctic.github.io/mantisshrimp/images/mantis-readme.png)
 
 
 ## References
