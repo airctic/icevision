@@ -44,6 +44,7 @@ nav:
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
+    - Dataset: dataset.md
     - Transforms:
       - Albumentations: albumentations_tfms.md
     - Models:
@@ -59,6 +60,9 @@ nav:
         - common: efficientdet.md
         - fastai: efficientdet_fastai.md
         - lightning: efficientdet_lightning.md
+      # - Metrics:
+      #   - COCOMetric: coco_metric.md
+      - Data Splitters: data_splits.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:
