@@ -11,6 +11,7 @@ from mantisshrimp.utils import *
 class DataSplitter(ABC):
     """Base class for all data splitters.
     """
+
     def __call__(self, ids):
         return self.split(ids)
 
@@ -27,6 +28,7 @@ class DataSplitter(ABC):
 class SingleSplitSplitter(DataSplitter):
     """Return all items in a single group, without shuffling.
     """
+
     def split(self, ids):
         """Puts all `ids` in a single group.
 
@@ -45,7 +47,8 @@ class RandomSplitter(DataSplitter):
         seed: Internal seed used for shuffling the items. Define this if you need
             reproducible results.
     """
-    def __init__(self, probs:Sequence[int], seed:int=None):
+
+    def __init__(self, probs: Sequence[int], seed: int = None):
         self.probs = probs
         self.seed = seed
 
