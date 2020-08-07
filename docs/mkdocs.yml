@@ -55,6 +55,10 @@ nav:
         - common: mask_rcnn.md
         - fastai: mask_rcnn_fastai.md
         - lightning: mask_rcnn_lightning.md
+      - EfficientDet:
+        - common: efficientdet.md
+        - fastai: efficientdet_fastai.md
+        - lightning: efficientdet_lightning.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:
