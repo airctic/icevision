@@ -24,9 +24,15 @@ def predict(
     return convert_raw_predictions(raw_preds, detection_threshold=detection_threshold)
 
 
-def predict_dl(model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True):
+def predict_dl(
+    model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True, **predict_kwargs
+):
     return _predict_dl(
-        predict_fn=predict, model=model, infer_dl=infer_dl, show_pbar=show_pbar
+        predict_fn=predict,
+        model=model,
+        infer_dl=infer_dl,
+        show_pbar=show_pbar,
+        **predict_kwargs,
     )
 
 
