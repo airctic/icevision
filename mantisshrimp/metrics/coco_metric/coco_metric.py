@@ -7,12 +7,24 @@ from mantisshrimp.metrics.metric import *
 
 
 class COCOMetricType(Enum):
+    """Available options for `COCOMetric`.
+    """
+
     bbox = "bbox"
     mask = "segm"
     keypoint = "keypoints"
 
 
 class COCOMetric(Metric):
+    """Wrapper around [cocoapi evaluator](https://github.com/cocodataset/cocoapi)
+
+    Calculates average precision.
+
+    # Arguments
+        metric_type: Dependent on the task you're solving.
+        print_summary: If `True`, prints a table with statistics.
+    """
+
     def __init__(
         self,
         metric_type: COCOMetricType = COCOMetricType.bbox,

@@ -21,9 +21,22 @@ PAGES = {
         "mantisshrimp.parsers.mixins.AreasParserMixin",
         "mantisshrimp.parsers.mixins.IsCrowdsParserMixin",
     ],
+    "dataset.md": [
+        "mantisshrimp.data.dataset.Dataset",
+        "mantisshrimp.data.dataset.Dataset.from_images",
+    ],
     "albumentations_tfms.md": [
         #     "mantisshrimp.tfms.albumentations.aug_tfms",
         "mantisshrimp.tfms.albumentations.Adapter",
+    ],
+    # "coco_metric.md": [
+    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetric",
+    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetricType",
+    # ],
+    "data_splits.md": [
+        "mantisshrimp.parsers.splits.DataSplitter",
+        "mantisshrimp.parsers.splits.RandomSplitter",
+        "mantisshrimp.parsers.splits.SingleSplitSplitter",
     ],
     "faster_rcnn.md": [
         "mantisshrimp.models.rcnn.faster_rcnn.model.model",
