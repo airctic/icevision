@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `samples, preds = predict_dl(model, infer_dl)`
 - `Dataset.from_images` Contructs a `Dataset` from a list of images (numpy arrays)
 - `tfms.A.aug_tfms` for easy access to common augmentation transforms with albumentations
+- `tfms.A.resize_and_pad`, useful as a validation transform
 
 ### Changed
 
