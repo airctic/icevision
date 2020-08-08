@@ -5,10 +5,7 @@ How to use the inference API.
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
 # Imports
-from mantisshrimp.imports import *
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import faster_rcnn
-import albumentations as A
+from mantisshrimp.all import *
 
 # Maps from IDs to class names. `print(class_map)` for all available classes
 class_map = datasets.pets.class_map()
@@ -22,10 +19,10 @@ WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/pets.zip"
 # Download and open image, optionally show it
 download_url(IMAGE_URL, IMG_PATH)
 img = open_img(IMG_PATH)
-show_img(img)
+show_img(img, show=True)
 
 # The model was trained with normalized images, it's necessary to do the same in inference
-tfms = AlbumentationTransforms([A.Normalize()])
+tfms = tfms.A.Adapter([tfms.A.Normalize()])
 
 # Whenever you have images in memory (numpy arrays) you can use `Dataset.from_images`
 infer_ds = Dataset.from_images([img], tfms)
@@ -45,7 +42,6 @@ preds = faster_rcnn.predict(model=model, batch=batch)
 
 # If instead you want to predict in smaller batches, use `infer_dataloader`
 infer_dl = faster_rcnn.infer_dataloader(infer_ds, batch_size=1)
-samples, preds = faster_rcnn.predict_dl()
 samples, preds = faster_rcnn.predict_dl(model=model, infer_dl=infer_dl)
 
 # Show preds by grabbing the images from `samples`
