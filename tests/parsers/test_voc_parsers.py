@@ -64,7 +64,7 @@ def test_voc_combined_parser(samples_source):
         masks_dir=samples_source / "voc/SegmentationClass"
     )
 
-    combined_parser = CombinedParser(annotation_parser, mask_parser)
+    combined_parser = parsers.CombinedParser(annotation_parser, mask_parser)
     records = combined_parser.parse()[0]
 
     assert len(records) == 1
