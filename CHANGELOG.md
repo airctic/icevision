@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `tfms.A.resize_and_pad`, useful as a validation transform
 - `**predict_kwargs` to `predict_dl` signature
 - `from mantisshrimp.all import *` to import internal modules and external imports
+- `show` parameter to `show_img`
 
 ### Changed
 

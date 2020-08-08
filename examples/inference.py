@@ -19,7 +19,7 @@ WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/pets.zip"
 # Download and open image, optionally show it
 download_url(IMAGE_URL, IMG_PATH)
 img = open_img(IMG_PATH)
-show_img(img)
+show_img(img, show=True)
 
 # The model was trained with normalized images, it's necessary to do the same in inference
 tfms = tfms.A.Adapter([tfms.A.Normalize()])
