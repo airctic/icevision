@@ -45,7 +45,7 @@ class COCOImageInfoParser(DefaultImageInfoParser):
         return o["width"]
 
 
-class COCOBBoxParser(FasterRCNNParser, AreasParserMixin, IsCrowdsParserMixin):
+class COCOBBoxParser(FasterRCNNParser, AreasMixin, IsCrowdsMixin):
     def __init__(self, annotations: list):
         self.annotations = annotations
 

@@ -1,12 +1,12 @@
 __all__ = [
-    "ImageidParserMixin",
-    "FilepathParserMixin",
-    "SizeParserMixin",
-    "LabelsParserMixin",
-    "BBoxesParserMixin",
-    "AreasParserMixin",
-    "MasksParserMixin",
-    "IsCrowdsParserMixin",
+    "ImageidMixin",
+    "FilepathMixin",
+    "SizeMixin",
+    "LabelsMixin",
+    "BBoxesMixin",
+    "AreasMixin",
+    "MasksMixin",
+    "IsCrowdsMixin",
 ]
 
 from mantisshrimp.imports import *
@@ -21,7 +21,7 @@ class ParserMixin(ABC):
         return funcs or {}
 
 
-class ImageidParserMixin(ParserMixin):
+class ImageidMixin(ParserMixin):
     """Adds `imageid` method to parser"""
 
     def collect_info_parse_funcs(self, funcs=None):
@@ -33,7 +33,7 @@ class ImageidParserMixin(ParserMixin):
         pass
 
 
-class FilepathParserMixin(ParserMixin):
+class FilepathMixin(ParserMixin):
     """Adds `filepath` method to parser"""
 
     def collect_info_parse_funcs(self, funcs=None):
@@ -45,7 +45,7 @@ class FilepathParserMixin(ParserMixin):
         pass
 
 
-class SizeParserMixin(ParserMixin):
+class SizeMixin(ParserMixin):
     """Adds `height` and `width` method to parser"""
 
     def collect_info_parse_funcs(self, funcs=None):
@@ -64,7 +64,7 @@ class SizeParserMixin(ParserMixin):
 ### Annotation parsers ###
 
 
-class LabelsParserMixin(ParserMixin):
+class LabelsMixin(ParserMixin):
     """Adds `labels` method to parser"""
 
     def collect_annotation_parse_funcs(self, funcs=None):
@@ -81,7 +81,7 @@ class LabelsParserMixin(ParserMixin):
         """
 
 
-class BBoxesParserMixin(ParserMixin):
+class BBoxesMixin(ParserMixin):
     """Adds `bboxes` method to parser"""
 
     def collect_annotation_parse_funcs(self, funcs=None):
@@ -93,7 +93,7 @@ class BBoxesParserMixin(ParserMixin):
         pass
 
 
-class MasksParserMixin(ParserMixin):
+class MasksMixin(ParserMixin):
     """Adds `masks` method to parser"""
 
     def collect_annotation_parse_funcs(self, funcs=None):
@@ -105,7 +105,7 @@ class MasksParserMixin(ParserMixin):
         pass
 
 
-class AreasParserMixin(ParserMixin):
+class AreasMixin(ParserMixin):
     """Adds `areas` method to parser"""
 
     def collect_annotation_parse_funcs(self, funcs=None):
@@ -118,7 +118,7 @@ class AreasParserMixin(ParserMixin):
         """
 
 
-class IsCrowdsParserMixin(ParserMixin):
+class IsCrowdsMixin(ParserMixin):
     """Adds `iscrowds` method to parser"""
 
     def collect_annotation_parse_funcs(self, funcs=None):

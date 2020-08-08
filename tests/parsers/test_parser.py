@@ -11,7 +11,7 @@ def data():
     ]
 
 
-class SimpleParser(Parser, LabelsParserMixin, BBoxesParserMixin):
+class SimpleParser(Parser, LabelsMixin, BBoxesMixin):
     def __init__(self, data):
         self.data = data
 

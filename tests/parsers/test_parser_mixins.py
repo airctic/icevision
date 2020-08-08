@@ -4,13 +4,13 @@ from mantisshrimp.imports import Union, Path, np
 
 def test_all_parser_mixins():
     class TestAllParserMixins(
-        ImageidParserMixin,
-        FilepathParserMixin,
-        SizeParserMixin,
-        LabelsParserMixin,
-        BBoxesParserMixin,
-        MasksParserMixin,
-        IsCrowdsParserMixin,
+        ImageidMixin,
+        FilepathMixin,
+        SizeMixin,
+        LabelsMixin,
+        BBoxesMixin,
+        MasksMixin,
+        IsCrowdsMixin,
     ):
         def imageid(self, o) -> int:
             return 42

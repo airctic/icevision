@@ -16,9 +16,7 @@ def voc(
     mask: bool = False,
 ):
     parser = VocXmlParser(
-        annotations_dir=annotations_dir,
-        images_dir=images_dir,
-        class_map=class_map,
+        annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map,
     )
 
     if mask:
@@ -28,7 +26,7 @@ def voc(
     return parser
 
 
-class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin):
+class VocXmlParser(DefaultImageInfoParser, LabelsMixin, BBoxesMixin):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -92,7 +90,7 @@ class VocXmlParser(DefaultImageInfoParser, LabelsParserMixin, BBoxesParserMixin)
         return bboxes
 
 
-class VocMaskParser(Parser, ImageidParserMixin, MasksParserMixin):
+class VocMaskParser(Parser, ImageidMixin, MasksMixin):
     def __init__(self, masks_dir: Union[str, Path]):
         self.mask_files = get_image_files(masks_dir)
 
