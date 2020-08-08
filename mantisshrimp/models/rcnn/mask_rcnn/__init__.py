@@ -7,10 +7,10 @@ from mantisshrimp.models.rcnn.mask_rcnn.model import *
 from mantisshrimp.models.rcnn.mask_rcnn.prediction import *
 
 # Soft dependencies
-from mantisshrimp.utils.soft_dependencies import *
+from mantisshrimp.utils import SoftDependencies
 
-if HAS_FASTAI:
+if SoftDependencies.fastai2:
     import mantisshrimp.models.rcnn.mask_rcnn.fastai
 
-if HAS_LIGHTNING:
+if SoftDependencies.pytorch_lightning:
     import mantisshrimp.models.rcnn.mask_rcnn.lightning

@@ -4,10 +4,10 @@ from mantisshrimp.models.efficientdet.loss_fn import *
 from mantisshrimp.models.efficientdet.prediction import *
 
 # Soft dependencies
-from mantisshrimp.utils.soft_dependencies import *
+from mantisshrimp.utils import SoftDependencies
 
-if HAS_FASTAI:
+if SoftDependencies.fastai2:
     import mantisshrimp.models.efficientdet.fastai
 
-if HAS_LIGHTNING:
+if SoftDependencies.pytorch_lightning:
     import mantisshrimp.models.efficientdet.lightning

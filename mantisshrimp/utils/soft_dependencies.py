@@ -1,32 +1,28 @@
-__all__ = ["HAS_FASTAI", "HAS_LIGHTNING", "HAS_ALBUMENTATIONS"]
+__all__ = ["soft_import", "SoftDependencies"]
 
-try:
-    import fastai2.vision.all
-
-    HAS_FASTAI = True
-except ImportError as e:
-    if str(e) != "No module named 'fastai2'":
-        raise e
-
-    HAS_FASTAI = False
+from mantisshrimp.imports import *
+import importlib
 
 
-try:
-    import pytorch_lightning
+def soft_import(name: str):
+    try:
+        importlib.import_module(name)
+        return True
+    except ModuleNotFoundError as e:
+        if str(e) != f"No module named '{name}'":
+            raise e
+        return False
 
-    HAS_LIGHTNING = True
-except ImportError as e:
-    if str(e) != "No module named 'pytorch_lightning'":
-        raise e
 
-    HAS_LIGHTNING = False
+class _SoftDependencies:
+    def __init__(self):
+        self.fastai2 = soft_import("fastai2")
+        self.pytorch_lightning = soft_import("pytorch_lightning")
+        self.albumentations = soft_import("albumentations")
+        self.effdet = soft_import("effdet")
 
-try:
-    import albumentations
+    def check(self) -> Dict[str, bool]:
+        return self.__dict__.copy()
 
-    HAS_ALBUMENTATIONS = True
-except ImportError as e:
-    if str(e) != "No module named 'albumentations'":
-        raise e
 
-    HAS_ALBUMENTATIONS = False
+SoftDependencies = _SoftDependencies()
