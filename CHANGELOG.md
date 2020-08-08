@@ -14,7 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `Dataset.from_images` Contructs a `Dataset` from a list of images (numpy arrays)
 - `tfms.A.aug_tfms` for easy access to common augmentation transforms with albumentations
 - `tfms.A.resize_and_pad`, useful as a validation transform
-- Added `**predict_kwargs` to `predict_dl` 
+- `**predict_kwargs` to `predict_dl` signature
+- `from mantisshrimp.all import *` to import internal modules and external imports
 
 ### Changed
 

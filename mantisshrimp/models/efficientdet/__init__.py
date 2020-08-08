@@ -4,7 +4,7 @@ from mantisshrimp.models.efficientdet.loss_fn import *
 from mantisshrimp.models.efficientdet.prediction import *
 
 # Soft dependencies
-from mantisshrimp.utils import SoftDependencies
+from mantisshrimp.soft_dependencies import SoftDependencies
 
 if SoftDependencies.fastai2:
     import mantisshrimp.models.efficientdet.fastai

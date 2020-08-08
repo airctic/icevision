@@ -7,7 +7,7 @@ from mantisshrimp.models.rcnn.mask_rcnn.model import *
 from mantisshrimp.models.rcnn.mask_rcnn.prediction import *
 
 # Soft dependencies
-from mantisshrimp.utils import SoftDependencies
+from mantisshrimp.soft_dependencies import SoftDependencies
 
 if SoftDependencies.fastai2:
     import mantisshrimp.models.rcnn.mask_rcnn.fastai

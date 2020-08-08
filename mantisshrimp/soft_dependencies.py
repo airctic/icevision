@@ -1,7 +1,7 @@
 __all__ = ["soft_import", "SoftDependencies"]
 
-from mantisshrimp.imports import *
 import importlib
+from typing import *
 
 
 def soft_import(name: str):
