@@ -36,3 +36,12 @@ from torch.optim.lr_scheduler import (
 )
 
 from torchvision.transforms.functional import to_tensor as im2tensor
+
+# Soft imports
+from mantisshrimp.soft_dependencies import SoftDependencies
+
+if SoftDependencies.fastai2:
+    import fastai2.vision.all as fastai
+
+if SoftDependencies.pytorch_lightning:
+    import pytorch_lightning as pl

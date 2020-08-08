@@ -2,7 +2,8 @@ from mantisshrimp.tfms.transform import *
 
 import mantisshrimp.tfms.batch
 
-from mantisshrimp.utils import SoftDependencies
+# Soft dependencies
+from mantisshrimp.soft_dependencies import SoftDependencies
 
 if SoftDependencies.albumentations:
     # `import mantisshrimp.tfms.albumentations as A` fails in python 3.6
