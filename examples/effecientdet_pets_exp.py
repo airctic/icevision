@@ -6,9 +6,7 @@ How to use EffecientDet.
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
 # Imports
-from mantisshrimp.imports import *
-from mantisshrimp import *
-from mantisshrimp.models import efficientdet
+from mantisshrimp.all import *
 
 # Common part to all models
 
