@@ -4,7 +4,7 @@ from mantisshrimp import *
 def test_voc_annotation_parser(samples_source):
     class_map = datasets.voc.class_map()
 
-    annotation_parser = datasets.voc.VocXmlParser(
+    annotation_parser = parsers.voc(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         class_map=class_map,
@@ -37,7 +37,7 @@ def test_voc_annotation_parser(samples_source):
 
 
 def test_voc_mask_parser(samples_source):
-    mask_parser = datasets.voc.VocMaskParser(
+    mask_parser = parsers.VocMaskParser(
         masks_dir=samples_source / "voc/SegmentationClass"
     )
     records = mask_parser.parse()[0]
@@ -55,12 +55,12 @@ def test_voc_mask_parser(samples_source):
 def test_voc_combined_parser(samples_source):
     class_map = datasets.voc.class_map()
 
-    annotation_parser = datasets.voc.VocXmlParser(
+    annotation_parser = parsers.VocXmlParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         class_map=class_map,
     )
-    mask_parser = datasets.voc.VocMaskParser(
+    mask_parser = parsers.VocMaskParser(
         masks_dir=samples_source / "voc/SegmentationClass"
     )
 
