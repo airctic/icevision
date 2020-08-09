@@ -45,7 +45,7 @@ class COCOImageInfoParser(DefaultImageInfoParser):
         return o["width"]
 
 
-class COCOBBoxParser(FasterRCNNParser, AreasMixin, IsCrowdsMixin):
+class COCOBBoxParser(FasterRCNN, AreasMixin, IsCrowdsMixin):
     def __init__(self, annotations: list):
         self.annotations = annotations
 
@@ -71,7 +71,7 @@ class COCOBBoxParser(FasterRCNNParser, AreasMixin, IsCrowdsMixin):
         return [o["iscrowd"]]
 
 
-class COCOAnnotationParser(MaskRCNNParser, COCOBBoxParser):
+class COCOAnnotationParser(MaskRCNN, COCOBBoxParser):
     def masks(self, o) -> List[MaskArray]:
         seg = o["segmentation"]
         if o["iscrowd"]:

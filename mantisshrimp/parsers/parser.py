@@ -98,4 +98,3 @@ class Parser(ImageidMixin, ParserInterface, ABC):
     def generate_template(cls):
         for template in cls._templates():
             print(f"{template}")
-
