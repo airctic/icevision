@@ -1,6 +1,6 @@
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
-from mantisshrimp.parsers import *
+from mantisshrimp import parsers
 import mantisshrimp.tfms as tfms
 from mantisshrimp.data import *
 import mantisshrimp.datasets as datasets

@@ -2,8 +2,7 @@ __all__ = ["parser", "PetsXmlParser", "PetsMaskParser", "PetsMaskFile"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.core import *
-from mantisshrimp.parsers import *
-from mantisshrimp.datasets.voc import VocXmlParser, VocMaskParser
+from mantisshrimp import parsers
 
 
 def parser(data_dir: Path, class_map: ClassMap, mask=False):
@@ -15,12 +14,12 @@ def parser(data_dir: Path, class_map: ClassMap, mask=False):
 
     if mask:
         mask_parser = PetsMaskParser(data_dir / "annotations/trimaps")
-        parser = CombinedParser(parser, mask_parser)
+        parser = parsers.CombinedParser(parser, mask_parser)
 
     return parser
 
 
-class PetsXmlParser(VocXmlParser):
+class PetsXmlParser(parsers.VocXmlParser):
     def labels(self, o) -> List[int]:
         name = re.findall(r"^(.*)_\d+$", o.stem)[0]
         class_id = self.class_map.get_name(name)
@@ -31,7 +30,7 @@ class PetsXmlParser(VocXmlParser):
         return [class_id] * num_objs
 
 
-class PetsMaskParser(VocMaskParser):
+class PetsMaskParser(parsers.VocMaskParser):
     def masks(self, o) -> List[Mask]:
         return [PetsMaskFile(o)]
 

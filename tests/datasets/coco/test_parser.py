@@ -3,7 +3,7 @@ from mantisshrimp import *
 
 
 def test_coco_parser(samples_source):
-    parser = datasets.coco.parser(
+    parser = parsers.coco(
         annotations_file=samples_source / "annotations.json",
         img_dir=samples_source / "images",
     )

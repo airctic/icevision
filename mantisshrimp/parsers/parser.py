@@ -4,7 +4,6 @@ from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers.mixins import *
-from mantisshrimp.parsers.splits import *
 
 RecordType = Dict[str, Any]
 
@@ -17,7 +16,7 @@ class ParserInterface(ABC):
         pass
 
 
-class Parser(ImageidParserMixin, ParserInterface, ABC):
+class Parser(ImageidMixin, ParserInterface, ABC):
     """Base class for all parsers, implements the main parsing logic.
 
     The actual fields to be parsed are defined by the mixins used when
@@ -37,7 +36,7 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
         pass
 
     @abstractmethod
-    def __iter__(self):
+    def __iter__(self) -> Any:
         pass
 
     def parse_dicted(
@@ -89,3 +88,13 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(records.keys())
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return ["def __iter__(self) -> Any:"] + templates
+
+    @classmethod
+    def generate_template(cls):
+        for template in cls._templates():
+            print(f"{template}")

@@ -63,4 +63,3 @@ light_model = LightModel(model, metrics=metrics)
 
 trainer = pl.Trainer(max_epochs=10, gpus=1)
 trainer.fit(light_model, train_dl, valid_dl)
-
