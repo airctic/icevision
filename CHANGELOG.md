@@ -24,6 +24,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - All `build_batch` method now returns `batch, samples`, the batch is always a tuple of inputs to the model
 - `batch_tfms` moved to `tfms.batch`
 - `AlbumentationTransforms` moved to `tfms.A.Adapter`
+- All parsers function were moved to their own namespace `parsers` instead of being on the global namespace
+so, for example, instead of `Parser` now we have to do `parsers.Parser`
+- Removed `Parser` word from Mixins, e.g. `ImageidParserMixin` -> `parsers.ImageidMixin`
+- Removed `Parser` word from parser default bundle, e.g. `FasterRCNNParser` -> `parsers.FasterRCNN`
+- COCO and VOC parsers moved from `datasets` to `parsers`
+- `DataSplitter`s moved from `parsers/splits.py` to `utils/data_splitter.py`
 
 ## [0.0.0-pre-release]
 
