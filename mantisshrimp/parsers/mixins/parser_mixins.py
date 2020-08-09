@@ -20,6 +20,14 @@ class ParserMixin(ABC):
     def collect_info_parse_funcs(self, funcs=None):
         return funcs or {}
 
+    @classmethod
+    def generate_template(cls):
+        pass
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        return []
+
 
 class ImageidMixin(ParserMixin):
     """Adds `imageid` method to parser"""
@@ -32,6 +40,11 @@ class ImageidMixin(ParserMixin):
     def imageid(self, o) -> Hashable:
         pass
 
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def imageid(self, o) -> Hashable:"]
+
 
 class FilepathMixin(ParserMixin):
     """Adds `filepath` method to parser"""
@@ -43,6 +56,11 @@ class FilepathMixin(ParserMixin):
     @abstractmethod
     def filepath(self, o) -> Union[str, Path]:
         pass
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def filepath(self, o) -> Union[str, Path]:"]
 
 
 class SizeMixin(ParserMixin):
@@ -60,10 +78,13 @@ class SizeMixin(ParserMixin):
     def width(self, o) -> int:
         pass
 
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def height(self, o) -> int:", "def width(self, o) -> int:"]
+
 
 ### Annotation parsers ###
-
-
 class LabelsMixin(ParserMixin):
     """Adds `labels` method to parser"""
 
@@ -80,6 +101,11 @@ class LabelsMixin(ParserMixin):
         remember to return 0 for background.
         """
 
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def labels(self, o) -> List[int]:"]
+
 
 class BBoxesMixin(ParserMixin):
     """Adds `bboxes` method to parser"""
@@ -92,6 +118,16 @@ class BBoxesMixin(ParserMixin):
     def bboxes(self, o) -> List[BBox]:
         pass
 
+    @classmethod
+    def generate_template(cls):
+        print("def bboxes(self, o) -> List[BBox]:")
+        super().generate_template()
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def bboxes(self, o) -> List[BBox]:"]
+
 
 class MasksMixin(ParserMixin):
     """Adds `masks` method to parser"""
@@ -103,6 +139,11 @@ class MasksMixin(ParserMixin):
     @abstractmethod
     def masks(self, o) -> List[Mask]:
         pass
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def masks(self, o) -> List[Mask]:"]
 
 
 class AreasMixin(ParserMixin):
@@ -117,6 +158,11 @@ class AreasMixin(ParserMixin):
         """ Returns areas of the segmentation
         """
 
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def areas(self, o) -> List[float]:"]
+
 
 class IsCrowdsMixin(ParserMixin):
     """Adds `iscrowds` method to parser"""
@@ -128,3 +174,8 @@ class IsCrowdsMixin(ParserMixin):
     @abstractmethod
     def iscrowds(self, o) -> List[bool]:
         pass
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def iscrowds(self, o) -> List[bool]:"]

@@ -36,7 +36,7 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         pass
 
     @abstractmethod
-    def __iter__(self):
+    def __iter__(self) -> Any:
         pass
 
     def parse_dicted(
@@ -88,3 +88,14 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(records.keys())
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return ["def __iter__(self) -> Any:"] + templates
+
+    @classmethod
+    def generate_template(cls):
+        for template in cls._templates():
+            print(f"{template}")
+
