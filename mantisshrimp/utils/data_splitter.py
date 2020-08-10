@@ -5,7 +5,7 @@ __all__ = [
 ]
 
 from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from mantisshrimp.utils.utils import *
 
 
 class DataSplitter(ABC):

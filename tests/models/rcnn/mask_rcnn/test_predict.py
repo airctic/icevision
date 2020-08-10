@@ -66,4 +66,3 @@ def test_mantis_mask_rcnn_predict_dl_threshold(sample_dataset, pretrained_state_
     )
 
     assert len(preds[0]["labels"]) == 0
-
