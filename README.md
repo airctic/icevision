@@ -65,7 +65,7 @@ Out of the box, we offer several annotation parsers that translates
 different annotation formats into a very flexibe parser:
 
 * By default, we offer differents standard format parsers such as COCO
-  and ROC.
+  and VOC.
 * We host a community curated parsers where community contributors
   publish their own parsers to be shared, and therefore save time and
   energy in creating similar parsers over and over.
