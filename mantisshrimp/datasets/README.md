@@ -1,5 +1,8 @@
 # Datasets
 
+[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/)
+
+
 `Datasets` are designed to simplify both loading and parsing a wide range of computer vision datasets.
 
 **Main Features:**
@@ -67,7 +70,7 @@ show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
 ```
 
 !!! info "Note 1" 
-    The datasets interface will always have at least the following functions: `load`, `parser`, and `class_map`. You might also have noticed the stong similarity between the 2 examples listed here above. Indeed, only the names of the datasets differ, the rest of the code is the same: That highlights how we both simpified and standardized the process of loading and parsing a given dataset.
+    The datasets interface will always have at least the following functions: [load](https://github.com/airctic/mantisshrimp/blob/67b89be104be584eac925faa293256beba084408/mantisshrimp/datasets/pets/data.py#L54), [class_map](https://github.com/airctic/mantisshrimp/blob/67b89be104be584eac925faa293256beba084408/mantisshrimp/datasets/pets/data.py#L50), and [parser](https://github.com/airctic/mantisshrimp/blob/67b89be104be584eac925faa293256beba084408/mantisshrimp/datasets/pets/parsers.py#L8). You might also have noticed the strong similarity between the 2 examples listed here above. Indeed, only the names of the datasets differ, the rest of the code is the same: That highlights how we both simpified and standardized the process of loading and parsing a given dataset.
 
 !!! info "Note 2" 
     If you would like to create your own dataset, we strongly recommend you following the same file structure, and naming found in the different examples such as the [Fridge Objects dataset](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/fridge), and the [PETS dataset](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/pets)    
