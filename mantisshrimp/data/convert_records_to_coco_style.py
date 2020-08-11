@@ -47,6 +47,8 @@ def create_coco_eval(records, preds, metric_type: str) -> COCOeval:
         pred["imageid"] = record["imageid"]
         pred["height"] = record["height"]
         pred["width"] = record["width"]
+        # needs 'filepath' for mask `coco.py#418`
+        pred["filepath"] = record["filepath"]
 
     target_ds = coco_api_from_records(records)
     pred_ds = coco_api_from_preds(preds)
@@ -118,7 +120,7 @@ def convert_record_to_coco_annotations(record):
 
 
 def convert_preds_to_coco_style(preds):
-    return convert_records_to_coco_style(records=preds, images=False, categories=False)
+    return convert_records_to_coco_style(records=preds, images=True, categories=False)
 
 
 def convert_records_to_coco_style(
