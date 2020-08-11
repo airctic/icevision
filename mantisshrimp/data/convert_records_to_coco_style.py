@@ -2,6 +2,7 @@ __all__ = [
     "create_coco_api",
     "convert_records_to_coco_style",
     "convert_preds_to_coco_style",
+    "convert_record_to_coco_annotations",
     "coco_api_from_records",
     "coco_api_from_preds",
     "create_coco_eval",
@@ -65,15 +66,21 @@ def convert_record_to_coco_image(record) -> dict:
 
 
 def convert_record_to_coco_annotations(record):
-    annotations_dict = defaultdict(list)
+    annotations_dict = {
+        "image_id": [],
+        "category_id": [],
+        "bbox": [],
+        "area": [],
+        "iscrowd": [],
+        "score": [],
+    }
     # build annotations field
     for label in record["labels"]:
         annotations_dict["image_id"].append(record["imageid"])
         annotations_dict["category_id"].append(label)
 
-    if "bboxes" in record:
-        for bbox in record["bboxes"]:
-            annotations_dict["bbox"].append(bbox.xywh)
+    for bbox in record["bboxes"]:
+        annotations_dict["bbox"].append(bbox.xywh)
 
     if "areas" in record:
         for area in record["areas"]:
@@ -85,6 +92,7 @@ def convert_record_to_coco_annotations(record):
     # HACK: Because of prepare_record, mask should always be `MaskArray`,
     # maybe the for loop is not required?
     if "masks" in record:
+        annotations_dict["segmentation"] = []
         for mask in record["masks"]:
             if isinstance(mask, MaskArray):
                 # HACK: see previous hack
@@ -113,8 +121,7 @@ def convert_record_to_coco_annotations(record):
     for iscrowd in record["iscrowds"]:
         annotations_dict["iscrowd"].append(iscrowd)
 
-    if "scores" in record:
-        annotations_dict["score"].extend(record["scores"])
+    annotations_dict["score"].extend(record["scores"])
 
     return annotations_dict
 

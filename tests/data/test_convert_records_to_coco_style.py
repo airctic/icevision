@@ -78,3 +78,18 @@ def test_coco_api_from_records(records):
     image_info = coco_api.loadImgs([2])
     expected = [{"id": 2, "file_name": "000000343934.jpg", "width": 640, "height": 480}]
     assert image_info == expected
+
+
+def test_convert_record_to_coco_annotations_empty():
+    record = {"labels": [], "bboxes": [], "masks": [], "scores": [], "masks": []}
+    res = convert_record_to_coco_annotations(record)
+    assert set(res.keys()) == {
+        "image_id",
+        "category_id",
+        "bbox",
+        "area",
+        "iscrowd",
+        "score",
+        "segmentation",
+    }
+
