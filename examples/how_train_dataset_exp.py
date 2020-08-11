@@ -64,10 +64,7 @@ learn = efficientdet.fastai.learner(
 learn.freeze()
 learn.lr_find()
 
-learn.fine_tune(150, 1e-2, freeze_epochs=1)
-
-# Train longer
-learn.fit_one_cycle(150, 1e-2)
+learn.fine_tune(50, 1e-2, freeze_epochs=20)
 
 # Inference
 # DataLoader
