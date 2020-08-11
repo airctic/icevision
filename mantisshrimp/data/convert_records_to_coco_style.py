@@ -45,6 +45,8 @@ def create_coco_eval(records, preds, metric_type: str) -> COCOeval:
 
     for record, pred in zip(records, preds):
         pred["imageid"] = record["imageid"]
+        pred["height"] = record["height"]
+        pred["width"] = record["width"]
 
     target_ds = coco_api_from_records(records)
     pred_ds = coco_api_from_preds(preds)
@@ -78,9 +80,17 @@ def convert_record_to_coco_annotations(record):
         for bbox in record["bboxes"]:
             annotations_dict["area"].append(bbox.area)
 
+    # HACK: Because of prepare_record, mask should always be `MaskArray`,
+    # maybe the for loop is not required?
     if "masks" in record:
         for mask in record["masks"]:
-            if isinstance(mask, Polygon):
+            if isinstance(mask, MaskArray):
+                # HACK: see previous hack
+                assert len(mask.shape) == 2
+                mask2 = MaskArray(mask.data[None])
+                rles = mask2.to_coco_rle(record["height"], record["width"])
+                annotations_dict["segmentation"].extend(rles)
+            elif isinstance(mask, Polygon):
                 annotations_dict["segmentation"].append(mask.points)
             elif isinstance(mask, RLE):
                 coco_rle = {
