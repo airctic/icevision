@@ -36,13 +36,15 @@ nav:
     - Custom Parser: custom_parser.md
     - EffecientDet: efficientdet_pets.md
     - Training a dataset: how_train_dataset.md
-  - Models:
-    - Faster RCNN: model_faster_rcnn.md
   - Examples:
     - Training: examples/training.md
     - Inference: examples/inference.md
-    - EffecientDet: examples/effecientdet_pets_exp.md
+    - EffecientDet: examples/efficientdet_pets_exp.md
     - Training a dataset: examples/how_train_dataset_exp.md
+  - Models:
+    - Faster RCNN: model_faster_rcnn.md
+  - Datasets:
+    - Overview: datasets.md 
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
