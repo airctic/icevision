@@ -72,7 +72,6 @@ def convert_record_to_coco_annotations(record):
         "bbox": [],
         "area": [],
         "iscrowd": [],
-        "score": [],
     }
     # build annotations field
     for label in record["labels"]:
@@ -121,7 +120,8 @@ def convert_record_to_coco_annotations(record):
     for iscrowd in record["iscrowds"]:
         annotations_dict["iscrowd"].append(iscrowd)
 
-    annotations_dict["score"].extend(record["scores"])
+    if "scores" in record:
+        annotations_dict["score"] = record["scores"]
 
     return annotations_dict
 
