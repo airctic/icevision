@@ -41,10 +41,10 @@ nav:
     - Inference: examples/inference.md
     - EffecientDet: examples/efficientdet_pets_exp.md
     - Training a dataset: examples/how_train_dataset_exp.md
-  - Models:
-    - Faster RCNN: model_faster_rcnn.md
   - Datasets:
     - Overview: datasets.md 
+  - Models:
+    - Faster RCNN: model_faster_rcnn.md
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
