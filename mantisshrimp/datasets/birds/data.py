@@ -10,6 +10,7 @@ def load(force_download: bool = False) -> Path:
     lists_url = "https://drive.google.com/uc?export=download&id=1vZuZPqha0JjmwkdaS_XtYryE3Jf5Q1AC"
     annotations_url = "https://drive.google.com/uc?export=download&id=16NsbTpMs5L6hT4hUJAmpW2u7wH326WTR"
     data_dir = get_data_dir() / "birds"
+    data_dir.mkdir(exist_ok=True, parents=True)
 
     if not data_dir.exists() or force_download:
         download_and_extract_gdrive(
