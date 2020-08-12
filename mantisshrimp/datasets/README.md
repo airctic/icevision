@@ -11,16 +11,49 @@
 
 - Lightweight and fast with a transparent and pythonic API.
 
-- Ready-to-use standard parsers (COCO, and VOC) as well as some custom parsers to convert datasets into Mantisshrimp Data Format.
+- Out-of-the-box parsers to convert different datasets into Mantisshrimp Data Format.
 
 Mantisshrimp provides several ready-to-use datasets that use both standard annotation format such as COCO and VOC as well as custom annotation formats such [WheatParser](https://airctic.github.io/mantisshrimp/custom_parser/) used in the [Kaggle Global Wheat Competition](https://www.kaggle.com/c/global-wheat-detection) 
 
 
 # Usage
 
-Here are some examples of datasets with their corresponding parsers:
+Object detection datasets use different annotations formats (COCO, VOC, and custom formats). Mantisshrimp offers different options to parse each one of those formats:
 
-## Fridge Objects: a Dataset using the VOC parser
+
+## Case 1: COCO, and VOC compatible datasets
+
+### **Option 1: Using mantisshrimp predefined VOC parser**
+**Example:** Fridge Objects - dataset using the predefined VOC parser
+
+```python
+# Imports
+from mantisshrimp.all import *
+
+# WARNING: Make sure you have already cloned the raccoon dataset using the command shown here above
+# Set images and annotations directories
+data_dir = Path("raccoon_dataset")
+images_dir = data_dir / "images"
+annotations_dir = data_dir / "annotations"
+
+# Define class_map
+class_map = ClassMap(["raccoon"])
+
+# Parser: Use mantisshrimp predefined VOC parser
+parser = parsers.voc(
+    annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
+)
+
+# train and validation records
+data_splitter = RandomSplitter([0.8, 0.2])
+train_records, valid_records = parser.parse(data_splitter)
+show_records(train_records[:3], ncols=3, class_map=class_map)
+```
+
+### **Option 2: Creating both data, and parsers files for the VOC or COCO parsers**
+
+**Example:** Fridge Objects - dataset redefining its VOC parser
+
 Please check out the [fridge folder](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/fridge) for more information on how this dataset is structured.
 
 ```python
@@ -44,7 +77,10 @@ train_records, valid_records = parser.parse(data_splitter)
 show_records(train_records[:3], ncols=3, class_map=class_map)
 ```
 
-## PETS: a Dataset using a custom parser
+## Case 2: Datasets using a custom parser
+
+**Example:** PETS - a dataset using its custom parser
+
 Please check out the [fridge folder](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/fridge) for more information on how this dataset is structured.
 
 ```python
