@@ -41,6 +41,7 @@ nav:
     - Inference: examples/inference.md
     - EffecientDet: examples/efficientdet_pets_exp.md
     - Training a dataset: examples/how_train_dataset_exp.md
+    - Training a VOC dataset: examples/dataset_voc_exp.md
   - Datasets:
     - Overview: datasets.md 
   - Models:

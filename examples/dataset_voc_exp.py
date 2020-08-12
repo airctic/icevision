@@ -11,6 +11,7 @@ How to train a voc compatible dataset.
 # Imports
 from mantisshrimp.all import *
 
+# WARNING: Make sure you have already cloned the raccoon dataset using the command shown here above
 # Set images and annotations directories
 data_dir = Path("raccoon_dataset")
 images_dir = data_dir / "images"
