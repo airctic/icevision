@@ -61,15 +61,16 @@ class Parser(ImageidMixin, ParserInterface, ABC):
                 records[imageid][name].extend(func(sample))
 
         # check that all annotations have the same length
-        # TODO: instead of immediatily raising the error, store the result and raise
-        # at the end of the for loop for all records
+        # HACK: Masks is not checked, because it can be a single file with multiple masks
+        annotations_names = [n for n in annotation_parse_funcs.keys() if n != "masks"]
         for imageid, record_annotations in records.items():
             record_annotations_len = {
-                annotation_name: len(record_annotations[annotation_name])
-                for annotation_name in annotation_parse_funcs
+                name: len(record_annotations[name]) for name in annotations_names
             }
             if not allequal(list(record_annotations_len.values())):
                 true_imageid = idmap.i2imageid[imageid]
+                # TODO: instead of immediatily raising the error, store the
+                # result and raise at the end of the for loop for all records
                 raise RuntimeError(
                     f"imageid->{true_imageid} has an inconsistent number of annotations"
                     f", all annotations must have the same length."
