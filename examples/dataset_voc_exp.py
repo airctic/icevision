@@ -5,25 +5,24 @@ How to train a voc compatible dataset.
 # Installing Mantisshrimp
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
+# Clone Dataset Repo
+# !git clone https://github.com/datitran/raccoon_dataset
+
 # Imports
 from mantisshrimp.all import *
 
-# Common part to all models
-
-# Clone Dataset Repo
-!git clone https://github.com/datitran/raccoon_dataset
-
 # Set images and annotations directories
-data_dir = Path('raccoon_dataset')
-images_dir = data_dir / 'images'
-annotations_dir = data_dir / 'annotations'
+data_dir = Path("raccoon_dataset")
+images_dir = data_dir / "images"
+annotations_dir = data_dir / "annotations"
 
 # Define class_map
-class_map = ClassMap(['raccoon'])
+class_map = ClassMap(["raccoon"])
 
-# Parser: Use mantisshrimp pre-defined VOC parser 
-parser = parsers.voc(annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map)
-
+# Parser: Use mantisshrimp pre-defined VOC parser
+parser = parsers.voc(
+    annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
+)
 
 # train and validation records
 data_splitter = RandomSplitter([0.8, 0.2])
@@ -34,7 +33,9 @@ show_records(train_records[:3], ncols=3, class_map=class_map)
 # Transforms
 presize = 512
 size = 384
-train_tfms = tfms.A.Adapter([*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()])
+train_tfms = tfms.A.Adapter(
+    [*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()]
+)
 valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size=size), tfms.A.Normalize()])
 
 # Train and Validation Dataset Objects
@@ -47,8 +48,12 @@ show_samples(samples, ncols=3, class_map=class_map, denormalize_fn=denormalize_i
 # EffecientDet Specific Part
 
 # DataLoaders
-train_dl = efficientdet.train_dataloader(train_ds, batch_size=16, num_workers=4, shuffle=True)
-valid_dl = efficientdet.valid_dataloader(valid_ds, batch_size=16, num_workers=4, shuffle=False)
+train_dl = efficientdet.train_dataloader(
+    train_ds, batch_size=16, num_workers=4, shuffle=True
+)
+valid_dl = efficientdet.valid_dataloader(
+    valid_ds, batch_size=16, num_workers=4, shuffle=False
+)
 
 # Grab the first batch
 batch, samples = first(train_dl)
@@ -74,7 +79,7 @@ learn.lr_find()
 
 # Fine tune: 2 Phases
 # Phase 1: Train the head for 10 epochs while freezing the body
-# Phase 2: Train both the body and the head during 50 epochs 
+# Phase 2: Train both the body and the head during 50 epochs
 learn.fine_tune(50, 1e-2, freeze_epochs=10)
 
 # Inference
