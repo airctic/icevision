@@ -50,6 +50,14 @@ train_records, valid_records = parser.parse(data_splitter)
 show_records(train_records[:3], ncols=3, class_map=class_map)
 ```
 
+!!! info "Note" 
+    Notice how we use the predifined [parsers.voc()](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/parsers/voc_parser.py) function:
+    
+    **parser = parsers.voc(
+    annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
+    )**
+
+
 ### **Option 2: Creating both data, and parsers files for the VOC or COCO parsers**
 
 **Example:** Fridge Objects - dataset redefining its VOC parser
@@ -77,7 +85,13 @@ train_records, valid_records = parser.parse(data_splitter)
 show_records(train_records[:3], ncols=3, class_map=class_map)
 ```
 
-## Case 2: Datasets using a custom parser
+!!! info "Note" 
+    Notice how we use a new defined [datasets.fridge.parser()](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/datasets/fridge/parsers.py) function:
+    
+    **parser = datasets.fridge.parser(data_dir, class_map)**
+
+
+## Case 2: Dataset using a custom parser
 
 **Example:** PETS - a dataset using its custom parser
 
