@@ -3,7 +3,7 @@ How to train a voc compatible dataset.
 """
 
 # This notebook shows a special use case of training a VOC compatible dataset using the predefined [VOC parser](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/parsers/voc_parser.py)
-# without creating the data, and parsers files as it shown the [fridge dataset](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/fridge) example.
+# without creating data, and parsers files as opposed to the [fridge dataset](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/datasets/fridge) example.
 
 # Installing Mantisshrimp
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
@@ -23,7 +23,7 @@ annotations_dir = data_dir / "annotations"
 # Define class_map
 class_map = ClassMap(["raccoon"])
 
-# Parser: Use mantisshrimp pre-defined VOC parser
+# Parser: Use mantisshrimp predefined VOC parser
 parser = parsers.voc(
     annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
 )
