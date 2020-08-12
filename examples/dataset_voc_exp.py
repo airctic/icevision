@@ -5,7 +5,7 @@ How to train a voc compatible dataset.
 # Installing Mantisshrimp
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
-# Clone Dataset Repo
+# Clone the raccoom dataset repository
 # !git clone https://github.com/datitran/raccoon_dataset
 
 # Imports
@@ -56,11 +56,9 @@ valid_dl = efficientdet.valid_dataloader(
     valid_ds, batch_size=16, num_workers=4, shuffle=False
 )
 
-# Grab the first batch
-batch, samples = first(train_dl)
-show_samples(
-    samples[:6], class_map=class_map, ncols=3, denormalize_fn=denormalize_imagenet
-)
+# Show some image samples
+samples = [train_ds[5] for _ in range(3)]
+show_samples(samples, class_map=class_map, denormalize_fn=denormalize_imagenet, ncols=3)
 
 # Model
 model = efficientdet.model(
@@ -84,12 +82,11 @@ learn.lr_find()
 learn.fine_tune(50, 1e-2, freeze_epochs=10)
 
 # Inference
-# DataLoader
 infer_dl = efficientdet.infer_dataloader(valid_ds, batch_size=16)
 # Predict
 samples, preds = efficientdet.predict_dl(model, infer_dl)
 
-# Show samples
+# Show some samples
 imgs = [sample["img"] for sample in samples]
 show_preds(
     imgs=imgs[:6],
