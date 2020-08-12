@@ -1,7 +1,11 @@
-__all__ = ["load"]
+__all__ = ["load", "class_map"]
 
 from mantisshrimp.imports import *
 from mantisshrimp import *
+
+
+def class_map(background: Optional[int] = 0) -> ClassMap:
+    return ClassMap(["person"], background=background)
 
 
 def load(force_download=False):
