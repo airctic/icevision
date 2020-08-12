@@ -24,7 +24,7 @@ Object detection datasets use different annotations formats (COCO, VOC, and cust
 ## Case 1: COCO, and VOC compatible datasets
 
 ### **Option 1: Using mantisshrimp predefined VOC parser**
-**Example:** Fridge Objects - dataset using the predefined VOC parser
+**Example:** Raccoon - dataset using the predefined VOC parser
 
 ```python
 # Imports
