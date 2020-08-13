@@ -4,7 +4,6 @@ from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp import parsers
-import scipy.io
 
 
 def parser(data_dir: Union[str, Path], class_map: ClassMap) -> parsers.ParserInterface:
@@ -43,6 +42,8 @@ class AnnotationParser(
         return [BirdMaskFile(o)]
 
     def bboxes(self, o) -> List[BBox]:
+        import scipy.io
+
         mat = scipy.io.loadmat(str(o))
         bbox = mat["bbox"]
         xyxy = [int(bbox[pos]) for pos in ["left", "top", "right", "bottom"]]
@@ -58,5 +59,7 @@ class AnnotationParser(
 
 class BirdMaskFile(MaskFile):
     def to_mask(self, h, w):
+        import scipy.io
+
         mat = scipy.io.loadmat(str(self.filepath))
         return MaskArray(mat["seg"])[None]

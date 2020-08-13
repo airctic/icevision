@@ -1,4 +1,9 @@
-__all__ = ["download_url", "download_and_extract", "download_gdrive", "download_and_extract_gdrive"]
+__all__ = [
+    "download_url",
+    "download_and_extract",
+    "download_gdrive",
+    "download_and_extract_gdrive",
+]
 
 from mantisshrimp.imports import *
 import requests
@@ -29,6 +34,7 @@ def download_gdrive(url, save_path):
     """Download from gdrive, passing virus scan for big files.
     """
     import gdown
+
     gdown.download(url=str(url), output=str(save_path), quiet=False)
 
 

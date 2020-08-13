@@ -92,4 +92,3 @@ def test_convert_record_to_coco_annotations_empty():
         "score",
         "segmentation",
     }
-
