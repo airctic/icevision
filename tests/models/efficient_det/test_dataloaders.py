@@ -68,14 +68,14 @@ def test_efficient_det_build_valid_batch(records):
 
 
 def test_efficient_det_train_dataloader(records):
-    dl = efficientdet.train_dataloader(records, batch_size=2)
+    dl = efficientdet.train_dl(records, batch_size=2)
     (xb, yb), records = first(dl)
 
     _test_batch_train(images=xb, targets=yb)
 
 
 def test_efficient_det_valid_dataloader(records):
-    dl = efficientdet.valid_dataloader(records, batch_size=2)
+    dl = efficientdet.valid_dl(records, batch_size=2)
     (xb, yb), records = first(dl)
 
     _test_batch_valid(images=xb, targets=yb)
