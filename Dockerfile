@@ -43,7 +43,7 @@ RUN pip install torch==$PYTORCH_VERSION
 
 # Now install mantisshrimp
 # We need only the master branch not all branches
-RUN git clone https://github.com/lgvaz/mantisshrimp.git --single-branch --branch $MANTISSHRIMP_VERSION
+RUN git clone https://github.com/airctic/mantisshrimp.git --single-branch --branch $MANTISSHRIMP_VERSION
 
 # WORKDIR "/mantisshrimp"
 

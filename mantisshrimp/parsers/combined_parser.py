@@ -1,9 +1,9 @@
 __all__ = ["CombinedParser"]
 
 from mantisshrimp.imports import *
+from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers.parser import *
-from mantisshrimp.parsers.splits import *
 
 
 class CombinedParser(ParserInterface):
@@ -36,4 +36,5 @@ class CombinedParser(ParserInterface):
                     record.update(records[id])
                 current_records.append(record)
             split_records.append(current_records)
+
         return split_records

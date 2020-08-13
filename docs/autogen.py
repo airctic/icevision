@@ -8,19 +8,80 @@ import keras_autodoc
 import tutobooks
 
 PAGES = {
-    "model_faster_rcnn.md": [
-        "mantisshrimp.MantisFasterRCNN",
-        "mantisshrimp.MantisFasterRCNN.predict",
-        "mantisshrimp.MantisFasterRCNN.param_groups",
-        "mantisshrimp.MantisFasterRCNN.convert_raw_prediction",
-        "mantisshrimp.MantisFasterRCNN.build_training_sample",
+    "parser.md": [
+        "mantisshrimp.parsers.Parser",
+        "mantisshrimp.parsers.FasterRCNN",
+        "mantisshrimp.parsers.MaskRCNN",
+        "mantisshrimp.parsers.mixins.ImageidMixin",
+        "mantisshrimp.parsers.mixins.FilepathMixin",
+        "mantisshrimp.parsers.mixins.SizeMixin",
+        "mantisshrimp.parsers.mixins.LabelsMixin",
+        "mantisshrimp.parsers.mixins.BBoxesMixin",
+        "mantisshrimp.parsers.mixins.MasksMixin",
+        "mantisshrimp.parsers.mixins.AreasMixin",
+        "mantisshrimp.parsers.mixins.IsCrowdsMixin",
     ],
-    "model_mask_rcnn.md": [
-        "mantisshrimp.MantisMaskRCNN",
-        "mantisshrimp.MantisMaskRCNN.predict",
-        "mantisshrimp.MantisMaskRCNN.param_groups",
-        "mantisshrimp.MantisMaskRCNN.convert_raw_prediction",
-        "mantisshrimp.MantisMaskRCNN.build_training_sample",
+    "dataset.md": [
+        "mantisshrimp.data.dataset.Dataset",
+        "mantisshrimp.data.dataset.Dataset.from_images",
+    ],
+    "albumentations_tfms.md": [
+        #     "mantisshrimp.tfms.albumentations.aug_tfms",
+        "mantisshrimp.tfms.albumentations.Adapter",
+    ],
+    # "coco_metric.md": [
+    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetric",
+    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetricType",
+    # ],
+    "data_splits.md": [
+        "mantisshrimp.utils.DataSplitter",
+        "mantisshrimp.utils.RandomSplitter",
+        "mantisshrimp.utils.SingleSplitSplitter",
+    ],
+    "faster_rcnn.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.model.model",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.train_dl",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.valid_dl",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.infer_dl",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_train_batch",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_valid_batch",
+        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_infer_batch",
+    ],
+    "faster_rcnn_fastai.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.fastai.learner.learner",
+    ],
+    "faster_rcnn_lightning.md": [
+        "mantisshrimp.models.rcnn.faster_rcnn.lightning.model_adapter.ModelAdapter",
+    ],
+    "mask_rcnn.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.model.model",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.train_dl",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.valid_dl",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.infer_dl",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_train_batch",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
+        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
+    ],
+    "mask_rcnn_fastai.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.fastai.learner.learner",
+    ],
+    "mask_rcnn_lightning.md": [
+        "mantisshrimp.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
+    ],
+    "efficientdet.md": [
+        "mantisshrimp.models.efficientdet.model.model",
+        "mantisshrimp.models.efficientdet.dataloaders.train_dl",
+        "mantisshrimp.models.efficientdet.dataloaders.valid_dl",
+        "mantisshrimp.models.efficientdet.dataloaders.infer_dl",
+        "mantisshrimp.models.efficientdet.dataloaders.build_train_batch",
+        "mantisshrimp.models.efficientdet.dataloaders.build_valid_batch",
+        "mantisshrimp.models.efficientdet.dataloaders.build_infer_batch",
+    ],
+    "efficientdet_fastai.md": [
+        "mantisshrimp.models.efficientdet.fastai.learner.learner",
+    ],
+    "efficientdet_lightning.md": [
+        "mantisshrimp.models.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
 }
 
@@ -32,7 +93,7 @@ PAGES = {
 # ]
 
 
-ROOT = "https://lgvaz.github.io/mantisshrimp/"
+ROOT = "https://airctic.github.io/mantisshrimp/"
 
 mantisshrimp_dir = Path(__file__).resolve().parents[1]
 
@@ -108,7 +169,7 @@ def py_to_nb_md(dest_dir):
 
         tutobooks.py_to_md(py_path, nb_path, md_path, "templates/img")
 
-        github_repo_dir = "lgvaz/mantisshrimp/blob/master/docs/"
+        github_repo_dir = "airctic/mantisshrimp/blob/master/docs/"
         with open(md_path, "r") as md_file:
             button_lines = [
                 ":material-link: "
@@ -184,13 +245,13 @@ def generate(dest_dir):
 
     os.makedirs(dest_dir)
 
-    # doc_generator = keras_autodoc.DocumentationGenerator(
-    #     PAGES,
-    #     'https://github.com/lgvaz/mantisshrimp/blob/master',
-    #     template_dir,
-    #     mantisshrimp_dir / 'examples',
-    # )
-    # doc_generator.generate(dest_dir)
+    doc_generator = keras_autodoc.DocumentationGenerator(
+        pages=PAGES,
+        project_url="https://github.com/airctic/mantisshrimp/blob/master",
+        template_dir=template_dir,
+        examples_dir=mantisshrimp_dir / "examples",
+    )
+    doc_generator.generate(dest_dir)
 
     # Auto generate the index.md file using the README.md file and the index.md file in templates folder
     readme = (mantisshrimp_dir / "README.md").read_text()
@@ -219,7 +280,13 @@ def generate(dest_dir):
         mantisshrimp_dir / "CHANGING-THE-COLORS.md", dest_dir / "changing-the-colors.md"
     )
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
-
+    shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/models/rcnn/faster_rcnn/README.md",
+        dest_dir / "model_faster_rcnn.md",
+    )
+    shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/datasets/README.md", dest_dir / "datasets.md",
+    )
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir) / "images"
     print("Template folder: ", template_images_dir)

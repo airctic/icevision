@@ -4,7 +4,6 @@ from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers.mixins import *
-from mantisshrimp.parsers.splits import *
 
 RecordType = Dict[str, Any]
 
@@ -17,12 +16,27 @@ class ParserInterface(ABC):
         pass
 
 
-class Parser(ImageidParserMixin, ParserInterface, ABC):
+class Parser(ImageidMixin, ParserInterface, ABC):
+    """Base class for all parsers, implements the main parsing logic.
+
+    The actual fields to be parsed are defined by the mixins used when
+    defining a custom parser. The only required field for all parsers
+    is the `image_id`.
+
+    # Examples
+
+    Create a parser for image filepaths.
+    ```python
+    class FilepathParser(Parser, FilepathParserMixin):
+        # implement required abstract methods
+    ```
+    """
+
     def prepare(self, o):
         pass
 
     @abstractmethod
-    def __iter__(self):
+    def __iter__(self) -> Any:
         pass
 
     def parse_dicted(
@@ -47,15 +61,16 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
                 records[imageid][name].extend(func(sample))
 
         # check that all annotations have the same length
-        # TODO: instead of immediatily raising the error, store the result and raise
-        # at the end of the for loop for all records
+        # HACK: Masks is not checked, because it can be a single file with multiple masks
+        annotations_names = [n for n in annotation_parse_funcs.keys() if n != "masks"]
         for imageid, record_annotations in records.items():
             record_annotations_len = {
-                annotation_name: len(record_annotations[annotation_name])
-                for annotation_name in annotation_parse_funcs
+                name: len(record_annotations[name]) for name in annotations_names
             }
             if not allequal(list(record_annotations_len.values())):
                 true_imageid = idmap.i2imageid[imageid]
+                # TODO: instead of immediatily raising the error, store the
+                # result and raise at the end of the for loop for all records
                 raise RuntimeError(
                     f"imageid->{true_imageid} has an inconsistent number of annotations"
                     f", all annotations must have the same length."
@@ -74,3 +89,13 @@ class Parser(ImageidParserMixin, ParserInterface, ABC):
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(records.keys())
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return ["def __iter__(self) -> Any:"] + templates
+
+    @classmethod
+    def generate_template(cls):
+        for template in cls._templates():
+            print(f"{template}")

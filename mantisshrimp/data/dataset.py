@@ -1,11 +1,24 @@
 __all__ = ["Dataset"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.transforms import *
+from mantisshrimp.tfms import *
 from mantisshrimp.data.prepare_record import *
 
 
 class Dataset:
+    """Container for a list of records and transforms.
+
+    Steps each time an item is requested (normally via directly indexing the `Dataset`):
+        * Grab a record from the internal list of records.
+        * Prepare the record (open the image, open the mask, add metadata).
+        * Apply transforms to the record.
+
+    # Arguments
+        records: A list of records.
+        tfm: Transforms to be applied to each item.
+        prepare_record: Function that prepares the record before the transforms are applied.
+    """
+
     def __init__(
         self, records: List[dict], tfm: Transform = None, prepare_record=None,
     ):
@@ -26,11 +39,20 @@ class Dataset:
         return f"<{self.__class__.__name__} with {len(self.records)} items>"
 
     @classmethod
-    def from_images(cls, images: Sequence[np.array], tfm=None):
+    def from_images(
+        cls, images: Sequence[np.array], tfm: Transform = None, prepare_record=None
+    ):
+        """Creates a `Dataset` from a list of images.
+
+        # Arguments
+            images: `Sequence` of images in memory (numpy arrays).
+            tfm: Transforms to be applied to each item.
+            prepare_record: Function that prepares the record before the transforms are applied.
+        """
         records = []
         for image in images:
             record = {"img": image}
             record["height"], record["width"], _ = image.shape
             records.append(record)
 
-        return cls(records=records, tfm=tfm)
+        return cls(records=records, tfm=tfm, prepare_record=prepare_record)

@@ -2,11 +2,11 @@
 Example showing how to train the PETS dataset, showcasing [fastai2](https://github.com/fastai/fastai2) and [pytorch-lightning](https://github.com/PyTorchLightning/pytorch-lightning)
 """
 
+# Installing Mantisshrimp
+# !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
-from mantisshrimp.imports import *
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import faster_rcnn
-import albumentations as A
+# Imports
+from mantisshrimp.all import *
 
 # Load the PETS dataset
 path = datasets.pets.load()
@@ -24,17 +24,18 @@ train_records, valid_records = parser.parse(data_splitter)
 # shows images with corresponding labels and boxes
 show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
 
-# Create both training and validation datasets - using Albumentations transforms out of the box
-train_ds = Dataset(train_records, datasets.pets.train_albumentations_tfms_pets())
-valid_ds = Dataset(valid_records, datasets.pets.valid_albumentations_tfms_pets())
+# Define transforms - using Albumentations transforms out of the box
+train_tfms = tfms.A.Adapter(
+    [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]
+)
+valid_tfms = tfms.A.Adapter([tfms.A.LongestMaxSize(384), tfms.A.Normalize()])
+# Create both training and validation datasets
+train_ds = Dataset(train_records, train_tfms)
+valid_ds = Dataset(valid_records, valid_tfms)
 
 # Create both training and validation dataloaders
-train_dl = faster_rcnn.train_dataloader(
-    train_ds, batch_size=16, num_workers=4, shuffle=True
-)
-valid_dl = faster_rcnn.valid_dataloader(
-    valid_ds, batch_size=16, num_workers=4, shuffle=False
-)
+train_dl = faster_rcnn.train_dl(train_ds, batch_size=16, num_workers=4, shuffle=True)
+valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 
 # Create model
 model = faster_rcnn.model(num_classes=len(class_map))
@@ -49,9 +50,6 @@ learn = faster_rcnn.fastai.learner(
 learn.fine_tune(10, lr=1e-4)
 
 # Train using pytorch-lightning
-import pytorch_lightning as pl
-
-
 class LightModel(faster_rcnn.lightning.ModelAdapter):
     def configure_optimizers(self):
         return SGD(self.parameters(), lr=1e-4)

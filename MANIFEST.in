@@ -1,8 +1,31 @@
-include CONTIBUTING.md
-include LICENSE
-include README.md
-include CHANGELOG.md
-include DOCKER.md
+# Manifest syntax https://docs.python.org/2/distutils/sourcedist.html
+include *.md
 include settings.ini
+
+# Include the license file
+include LICENSE
+
+# include examples
+recursive-include examples *.py *.md *.sh *.txt
+
+# exclude tests from package
+recursive-exclude tests *
+recursive-exclude site *
+exclude tests
+
+# Exclude the documentation files
+recursive-exclude docs *
+exclude docs
+
+# Include the Requirements
+recursive-include requirements *.txt
+
+# Exclude build configs
+exclude *.yml
+exclude *.yaml
+
+# Prune Git / GitHub stuff
+prune .git
+prune .github
 
 recursive-exclude * __pycache__ 

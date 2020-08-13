@@ -12,10 +12,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `infer_dl = <model_name>.infer_dataloader(dataset)`
 - `samples, preds = predict_dl(model, infer_dl)`
 - `Dataset.from_images` Contructs a `Dataset` from a list of images (numpy arrays)
+- `tfms.A.aug_tfms` for easy access to common augmentation transforms with albumentations
+- `tfms.A.resize_and_pad`, useful as a validation transform
+- `**predict_kwargs` to `predict_dl` signature
+- `from mantisshrimp.all import *` to import internal modules and external imports
+- `show` parameter to `show_img`
+- `download_gdrive` and `download_and_extract_gdrive`
+- New datasets `pennfundan` and `birds`
 
 ### Changed
 
+- Renames `AlbuTransform` to `AlbumentationTransforms`
 - All `build_batch` method now returns `batch, samples`, the batch is always a tuple of inputs to the model
+- `batch_tfms` moved to `tfms.batch`
+- `AlbumentationTransforms` moved to `tfms.A.Adapter`
+- All parsers function were moved to their own namespace `parsers` instead of being on the global namespace
+so, for example, instead of `Parser` now we have to do `parsers.Parser`
+- Removed `Parser` word from Mixins, e.g. `ImageidParserMixin` -> `parsers.ImageidMixin`
+- Removed `Parser` word from parser default bundle, e.g. `FasterRCNNParser` -> `parsers.FasterRCNN`
+- COCO and VOC parsers moved from `datasets` to `parsers`
+- `DataSplitter`s moved from `parsers/splits.py` to `utils/data_splitter.py`
+- Renames `*_dataloader` to `*_dl`, e.g. `mask_rcnn.train_dataloader` to `mask_rcnn.train_dl`
 
 ## [0.0.0-pre-release]
 
@@ -44,4 +61,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 ## Links  
-[Unreleased]: https://github.com/lgvaz/mantisshrimp/tree/master
+[Unreleased]: https://github.com/airctic/mantisshrimp/tree/master

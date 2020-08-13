@@ -7,11 +7,11 @@ theme:
     accent: 'blue'
 
 docs_dir: sources
-repo_url: https://github.com/lgvaz/Mantisshrimp
-site_url: https://lgvaz.github.io/mantisshrimp/
+repo_url: https://github.com/airctic/Mantisshrimp
+site_url: https://airctic.github.io/mantisshrimp/
 edit_uri: ""
 site_description: 'Documentation for Mantisshrimp.'
-# google_analytics: ['UA-44322747-3', 'https://lgvaz.github.io/mantisshrimp/']
+# google_analytics: ['UA-44322747-3', 'https://airctic.github.io/mantisshrimp/']
 markdown_extensions:
   - codehilite
   - pymdownx.superfences:
@@ -34,11 +34,42 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
-    - Advanced Guide: advanced_guide.md
+    - EffecientDet: efficientdet_pets.md
+    - Training a dataset: how_train_dataset.md
+    - Training a VOC dataset: dataset_voc_nb.md
   - Examples:
     - Training: examples/training.md
     - Inference: examples/inference.md
+    - EffecientDet: examples/efficientdet_pets_exp.md
+    - Mask RCNN: examples/pennfundan.md
+    - Training a dataset: examples/how_train_dataset_exp.md
+    - Training a VOC dataset: examples/dataset_voc_exp.md
+  - Datasets:
+    - Overview: datasets.md 
+  - Models:
+    - Faster RCNN: model_faster_rcnn.md
   - Deployment: deployment.md
+  - API Documentation:
+    - Parser: parser.md
+    - Dataset: dataset.md
+    - Transforms:
+      - Albumentations: albumentations_tfms.md
+    - Models:
+      - Faster RCNN:
+        - common: faster_rcnn.md
+        - fastai: faster_rcnn_fastai.md
+        - lightning: faster_rcnn_lightning.md
+      - Mask RCNN:
+        - common: mask_rcnn.md
+        - fastai: mask_rcnn_fastai.md
+        - lightning: mask_rcnn_lightning.md
+      - EfficientDet:
+        - common: efficientdet.md
+        - fastai: efficientdet_fastai.md
+        - lightning: efficientdet_lightning.md
+      # - Metrics:
+      #   - COCOMetric: coco_metric.md
+      - Data Splitters: data_splits.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:

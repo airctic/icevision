@@ -2,7 +2,7 @@ __all__ = [
     "filter_params",
     "unfreeze",
     "freeze",
-    "transform_dataloader",
+    "transform_dl",
     "common_build_batch",
     "_predict_dl",
 ]
@@ -51,7 +51,7 @@ def freeze(params):
         p.requires_grad = False
 
 
-def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
+def transform_dl(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
     collate_fn = partial(build_batch, batch_tfms=batch_tfms)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
@@ -65,11 +65,15 @@ def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
 
 @torch.no_grad()
 def _predict_dl(
-    predict_fn, model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True
+    predict_fn,
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    **predict_kwargs,
 ):
     all_preds, all_samples = [], []
     for batch, samples in pbar(infer_dl, show=show_pbar):
-        preds = predict_fn(model=model, batch=batch)
+        preds = predict_fn(model=model, batch=batch, **predict_kwargs)
 
         all_samples.extend(samples)
         all_preds.extend(preds)

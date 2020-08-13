@@ -19,19 +19,19 @@ except FileNotFoundError:
 
 
 def sample_image_info_parser():
-    return datasets.coco.COCOImageInfoParser(
+    return parsers.COCOImageInfoParser(
         infos=annotations_dict["images"], img_dir=source / "images"
     )
 
 
 def sample_annotation_parser():
-    return datasets.coco.COCOAnnotationParser(
-        annotations=annotations_dict["annotations"]
-    )
+    return parsers.COCOAnnotationParser(annotations=annotations_dict["annotations"])
 
 
 def sample_combined_parser():
-    return CombinedParser(sample_image_info_parser(), sample_annotation_parser())
+    return parsers.CombinedParser(
+        sample_image_info_parser(), sample_annotation_parser()
+    )
 
 
 def sample_records():

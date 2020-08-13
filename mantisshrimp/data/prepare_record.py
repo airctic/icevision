@@ -30,5 +30,5 @@ def prepare_mask(record):
 
 
 default_prepare_record = compose(
-    prepare_copy, prepare_img, prepare_mask, prepare_img_size
+    prepare_copy, prepare_img, prepare_img_size, prepare_mask,
 )
