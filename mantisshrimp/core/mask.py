@@ -15,6 +15,7 @@ class Mask(ABC):
         pass
 
 
+# TODO: Assert shape? (bs, height, width)
 @dataclass
 class MaskArray(Mask):
     data: np.ndarray
@@ -65,6 +66,8 @@ class MaskArray(Mask):
             if isinstance(o, (RLE, Polygon)):
                 new.append(m[None])
             elif isinstance(o, MaskFile):
+                new.append(m)
+            elif isinstance(o, MaskArray):
                 new.append(m)
             else:
                 raise ValueError(f"Segmented type {type(o)} not supported")

@@ -36,4 +36,5 @@ class CombinedParser(ParserInterface):
                     record.update(records[id])
                 current_records.append(record)
             split_records.append(current_records)
+
         return split_records
