@@ -1,7 +1,7 @@
 __all__ = ["BatchTransform"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.parsers import RecordType
+from mantisshrimp.core import *
 
 
 class BatchTransform(ABC):

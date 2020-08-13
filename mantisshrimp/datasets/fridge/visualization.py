@@ -1,8 +1,6 @@
 __all__ = ["plot_size_histogram"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.parsers import RecordType
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def plot_size_histogram(records: List[RecordType], show=True) -> List[plt.Axes]:
