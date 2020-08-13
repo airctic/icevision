@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `from mantisshrimp.all import *` to import internal modules and external imports
 - `show` parameter to `show_img`
 - `download_gdrive` and `download_and_extract_gdrive`
+- New datasets `pennfundan` and `birds`
 
 ### Changed
 
