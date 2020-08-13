@@ -1,3 +1,7 @@
+"""
+How to train MaskRCNN, using the [Penn-Fundan](https://www.cis.upenn.edu/~jshi/ped_html/) dataset.
+"""
+
 # Install mantisshrimp
 # pip install git+git://github.com/airctic/mantisshrimp.git@train_mask#egg=mantisshrimp[all] --upgrade
 
@@ -36,6 +40,10 @@ train_dl = mask_rcnn.train_dataloader(
 valid_dl = mask_rcnn.valid_dataloader(
     valid_ds, batch_size=16, shuffle=False, num_workers=4
 )
+
+# Define metrics for the model
+# TODO: Currently broken for Mask RCNN
+# metrics = [COCOMetric(COCOMetricType.mask)]
 
 # Create model
 model = mask_rcnn.model(num_classes=len(class_map))

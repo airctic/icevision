@@ -40,6 +40,7 @@ nav:
     - Training: examples/training.md
     - Inference: examples/inference.md
     - EffecientDet: examples/efficientdet_pets_exp.md
+    - Mask RCNN: examples/pennfundan.md
     - Training a dataset: examples/how_train_dataset_exp.md
   - Datasets:
     - Overview: datasets.md 
