@@ -104,8 +104,8 @@ def fridge_ds() -> Tuple[Dataset, Dataset]:
 @pytest.fixture()
 def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = efficientdet.train_dataloader(train_ds, batch_size=2)
-    valid_dl = efficientdet.valid_dataloader(valid_ds, batch_size=2)
+    train_dl = efficientdet.train_dl(train_ds, batch_size=2)
+    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=2)
 
     return train_dl, valid_dl
 
@@ -113,7 +113,7 @@ def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
 @pytest.fixture()
 def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = faster_rcnn.train_dataloader(train_ds, batch_size=2)
-    valid_dl = faster_rcnn.valid_dataloader(valid_ds, batch_size=2)
+    train_dl = faster_rcnn.train_dl(train_ds, batch_size=2)
+    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2)
 
     return train_dl, valid_dl

@@ -38,12 +38,8 @@ show_samples(samples, ncols=3, class_map=class_map, denormalize_fn=denormalize_i
 # EffecientDet Specific Part
 
 # DataLoaders
-train_dl = efficientdet.train_dataloader(
-    train_ds, batch_size=16, num_workers=4, shuffle=True
-)
-valid_dl = efficientdet.valid_dataloader(
-    valid_ds, batch_size=16, num_workers=4, shuffle=False
-)
+train_dl = efficientdet.train_dl(train_ds, batch_size=16, num_workers=4, shuffle=True)
+valid_dl = efficientdet.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 batch, samples = first(train_dl)
 show_samples(
     samples[:6], class_map=class_map, ncols=3, denormalize_fn=denormalize_imagenet
@@ -68,7 +64,7 @@ learn.fine_tune(50, 1e-2, freeze_epochs=20)
 
 # Inference
 # DataLoader
-infer_dl = efficientdet.infer_dataloader(valid_ds, batch_size=8)
+infer_dl = efficientdet.infer_dl(valid_ds, batch_size=8)
 # Predict
 samples, preds = efficientdet.predict_dl(model, infer_dl)
 # Show samples

@@ -34,12 +34,8 @@ show_samples(
 )
 
 # Create DataLoaders
-train_dl = mask_rcnn.train_dataloader(
-    train_ds, batch_size=16, shuffle=True, num_workers=4
-)
-valid_dl = mask_rcnn.valid_dataloader(
-    valid_ds, batch_size=16, shuffle=False, num_workers=4
-)
+train_dl = mask_rcnn.train_dl(train_ds, batch_size=16, shuffle=True, num_workers=4)
+valid_dl = mask_rcnn.valid_dl(valid_ds, batch_size=16, shuffle=False, num_workers=4)
 
 # Define metrics for the model
 # TODO: Currently broken for Mask RCNN

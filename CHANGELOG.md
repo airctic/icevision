@@ -32,6 +32,7 @@ so, for example, instead of `Parser` now we have to do `parsers.Parser`
 - Removed `Parser` word from parser default bundle, e.g. `FasterRCNNParser` -> `parsers.FasterRCNN`
 - COCO and VOC parsers moved from `datasets` to `parsers`
 - `DataSplitter`s moved from `parsers/splits.py` to `utils/data_splitter.py`
+- Renames `*_dataloader` to `*_dl`, e.g. `mask_rcnn.train_dataloader` to `mask_rcnn.train_dl`
 
 ## [0.0.0-pre-release]
 

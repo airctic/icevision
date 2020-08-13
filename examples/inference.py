@@ -41,7 +41,7 @@ batch, samples = faster_rcnn.build_infer_batch(infer_ds)
 preds = faster_rcnn.predict(model=model, batch=batch)
 
 # If instead you want to predict in smaller batches, use `infer_dataloader`
-infer_dl = faster_rcnn.infer_dataloader(infer_ds, batch_size=1)
+infer_dl = faster_rcnn.infer_dl(infer_ds, batch_size=1)
 samples, preds = faster_rcnn.predict_dl(model=model, infer_dl=infer_dl)
 
 # Show preds by grabbing the images from `samples`

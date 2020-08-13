@@ -2,7 +2,7 @@ __all__ = [
     "filter_params",
     "unfreeze",
     "freeze",
-    "transform_dataloader",
+    "transform_dl",
     "common_build_batch",
     "_predict_dl",
 ]
@@ -51,7 +51,7 @@ def freeze(params):
         p.requires_grad = False
 
 
-def transform_dataloader(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
+def transform_dl(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
     collate_fn = partial(build_batch, batch_tfms=batch_tfms)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
