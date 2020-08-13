@@ -1,7 +1,7 @@
 __all__ = [
-    "train_dataloader",
-    "valid_dataloader",
-    "infer_dataloader",
+    "train_dl",
+    "valid_dl",
+    "infer_dl",
     "build_train_batch",
     "build_valid_batch",
     "build_infer_batch",
@@ -13,11 +13,11 @@ from mantisshrimp.models.utils import *
 from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import _build_train_sample
 from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import (
     build_infer_batch,
-    infer_dataloader,
+    infer_dl,
 )
 
 
-def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     """ A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
 
     # Arguments
@@ -29,7 +29,7 @@ def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
     # Returns
         A Pytorch `DataLoader`.
     """
-    return transform_dataloader(
+    return transform_dl(
         dataset=dataset,
         build_batch=build_train_batch,
         batch_tfms=batch_tfms,
@@ -37,7 +37,7 @@ def train_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
     )
 
 
-def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     """ A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
 
     # Arguments
@@ -49,7 +49,7 @@ def valid_dataloader(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoade
     # Returns
         A Pytorch `DataLoader`.
     """
-    return transform_dataloader(
+    return transform_dl(
         dataset=dataset,
         build_batch=build_valid_batch,
         batch_tfms=batch_tfms,

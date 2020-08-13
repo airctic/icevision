@@ -87,19 +87,19 @@ def test_faster_rcnn_build_infer_batch(dataset):
 
 
 def test_faster_rcnn_train_dataloader(records):
-    dl = faster_rcnn.train_dataloader(records, batch_size=2)
+    dl = faster_rcnn.train_dl(records, batch_size=2)
     batch = first(dl)
     _test_faster_rcnn_batch(batch=batch)
 
 
 def test_faster_rcnn_valid_dataloader(records):
-    dl = faster_rcnn.valid_dataloader(records, batch_size=2)
+    dl = faster_rcnn.valid_dl(records, batch_size=2)
     batch = first(dl)
     _test_faster_rcnn_batch(batch=batch)
 
 
 def test_faster_rcnn_infer_dataloader(dataset):
-    dl = faster_rcnn.infer_dataloader(dataset=dataset, batch_size=2)
+    dl = faster_rcnn.infer_dl(dataset=dataset, batch_size=2)
     batch, samples = first(dl)
     _test_infer_batch(batch=batch)
 
@@ -140,13 +140,13 @@ def test_mask_rcnn_build_infer_batch(dataset):
 
 
 def test_mask_rcnn_train_dataloader(mask_records):
-    dl = mask_rcnn.train_dataloader(mask_records, batch_size=2)
+    dl = mask_rcnn.train_dl(mask_records, batch_size=2)
     batch = first(dl)
     _test_mask_rcnn_batch(batch=batch)
 
 
 def test_mask_rcnn_valid_dataloader(mask_records):
-    dl = mask_rcnn.valid_dataloader(mask_records, batch_size=2)
+    dl = mask_rcnn.valid_dl(mask_records, batch_size=2)
     batch = first(dl)
     _test_mask_rcnn_batch(batch=batch)
 

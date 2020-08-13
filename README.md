@@ -18,7 +18,7 @@
 * * * * *
 
 ![image](images/mantisshrimp-logo.png)
-
+![image](images/training-illustration.png)
 <!-- Not included in docs - start -->
 ## Installation
 

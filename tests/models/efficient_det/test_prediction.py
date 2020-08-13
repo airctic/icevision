@@ -29,7 +29,7 @@ def test_efficient_det_predict_dl(
 ):
     fridge_efficientdet_model.eval()
 
-    infer_dl = efficientdet.infer_dataloader(fridge_efficientdet_records, batch_size=1)
+    infer_dl = efficientdet.infer_dl(fridge_efficientdet_records, batch_size=1)
     samples, preds = efficientdet.predict_dl(
         model=fridge_efficientdet_model, infer_dl=infer_dl, show_pbar=False
     )
@@ -42,7 +42,7 @@ def test_efficient_det_predict_dl_threshold(
 ):
     fridge_efficientdet_model.eval()
 
-    infer_dl = efficientdet.infer_dataloader(fridge_efficientdet_records, batch_size=1)
+    infer_dl = efficientdet.infer_dl(fridge_efficientdet_records, batch_size=1)
     samples, preds = efficientdet.predict_dl(
         model=fridge_efficientdet_model,
         infer_dl=infer_dl,

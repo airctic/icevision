@@ -2,6 +2,7 @@ __all__ = [
     "create_coco_api",
     "convert_records_to_coco_style",
     "convert_preds_to_coco_style",
+    "convert_record_to_coco_annotations",
     "coco_api_from_records",
     "coco_api_from_preds",
     "create_coco_eval",
@@ -45,6 +46,10 @@ def create_coco_eval(records, preds, metric_type: str) -> COCOeval:
 
     for record, pred in zip(records, preds):
         pred["imageid"] = record["imageid"]
+        pred["height"] = record["height"]
+        pred["width"] = record["width"]
+        # needs 'filepath' for mask `coco.py#418`
+        pred["filepath"] = record["filepath"]
 
     target_ds = coco_api_from_records(records)
     pred_ds = coco_api_from_preds(preds)
@@ -61,15 +66,20 @@ def convert_record_to_coco_image(record) -> dict:
 
 
 def convert_record_to_coco_annotations(record):
-    annotations_dict = defaultdict(list)
+    annotations_dict = {
+        "image_id": [],
+        "category_id": [],
+        "bbox": [],
+        "area": [],
+        "iscrowd": [],
+    }
     # build annotations field
     for label in record["labels"]:
         annotations_dict["image_id"].append(record["imageid"])
         annotations_dict["category_id"].append(label)
 
-    if "bboxes" in record:
-        for bbox in record["bboxes"]:
-            annotations_dict["bbox"].append(bbox.xywh)
+    for bbox in record["bboxes"]:
+        annotations_dict["bbox"].append(bbox.xywh)
 
     if "areas" in record:
         for area in record["areas"]:
@@ -78,9 +88,18 @@ def convert_record_to_coco_annotations(record):
         for bbox in record["bboxes"]:
             annotations_dict["area"].append(bbox.area)
 
+    # HACK: Because of prepare_record, mask should always be `MaskArray`,
+    # maybe the for loop is not required?
     if "masks" in record:
+        annotations_dict["segmentation"] = []
         for mask in record["masks"]:
-            if isinstance(mask, Polygon):
+            if isinstance(mask, MaskArray):
+                # HACK: see previous hack
+                assert len(mask.shape) == 2
+                mask2 = MaskArray(mask.data[None])
+                rles = mask2.to_coco_rle(record["height"], record["width"])
+                annotations_dict["segmentation"].extend(rles)
+            elif isinstance(mask, Polygon):
                 annotations_dict["segmentation"].append(mask.points)
             elif isinstance(mask, RLE):
                 coco_rle = {
@@ -102,13 +121,13 @@ def convert_record_to_coco_annotations(record):
         annotations_dict["iscrowd"].append(iscrowd)
 
     if "scores" in record:
-        annotations_dict["score"].extend(record["scores"])
+        annotations_dict["score"] = record["scores"]
 
     return annotations_dict
 
 
 def convert_preds_to_coco_style(preds):
-    return convert_records_to_coco_style(records=preds, images=False, categories=False)
+    return convert_records_to_coco_style(records=preds, images=True, categories=False)
 
 
 def convert_records_to_coco_style(
