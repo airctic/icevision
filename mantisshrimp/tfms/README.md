@@ -44,3 +44,12 @@ valid_tfms = tfms.A.Adapter([tfms.A.LongestMaxSize(384), tfms.A.Normalize()])
 train_ds = Dataset(train_records, train_tfms)
 valid_ds = Dataset(valid_records, valid_tfms)
 ```
+
+**Original Image:**
+![image](https://airctic.github.io/mantisshrimp/images/sample-image.png)
+
+**Transformed Images:**
+![image](https://airctic.github.io/mantisshrimp/images/sample-image-tfms.png)
+
+!!! info "Note" 
+    Notice how different transforms are applied to the original image. All the transformed have the same size despite applying some crop transforms. The size is preserved by adding padding (grey area) 
