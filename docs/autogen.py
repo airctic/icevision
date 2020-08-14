@@ -273,20 +273,31 @@ def generate(dest_dir):
     shutil.copyfile(mantisshrimp_dir / "CONTRIBUTING.md", dest_dir / "contributing.md")
     shutil.copyfile(mantisshrimp_dir / "DOCKER.md", dest_dir / "docker.md")
     shutil.copyfile(mantisshrimp_dir / "INSTALL.md", dest_dir / "install.md")
+
     shutil.copyfile(
         mantisshrimp_dir / "README_MKDOCS.md", dest_dir / "readme_mkdocs.md"
     )
+
     shutil.copyfile(
         mantisshrimp_dir / "CHANGING-THE-COLORS.md", dest_dir / "changing-the-colors.md"
     )
+
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
+
+    shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/models/efficientdet/README.md",
+        dest_dir / "model_efficientdet.md",
+    )
+
     shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/models/rcnn/faster_rcnn/README.md",
         dest_dir / "model_faster_rcnn.md",
     )
+
     shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/datasets/README.md", dest_dir / "datasets.md",
     )
+
     shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/tfms/README.md",
         dest_dir / "albumentations.md",
