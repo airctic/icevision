@@ -287,6 +287,11 @@ def generate(dest_dir):
     shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/datasets/README.md", dest_dir / "datasets.md",
     )
+    shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/tfms/README.md",
+        dest_dir / "albumentations.md",
+    )
+
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir) / "images"
     print("Template folder: ", template_images_dir)
