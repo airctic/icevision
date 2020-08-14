@@ -28,7 +28,7 @@ show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
 train_tfms = tfms.A.Adapter(
     [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]
 )
-valid_tfms = tfms.A.Adapter([tfms.A.LongestMaxSize(384), tfms.A.Normalize()])
+valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size), tfms.A.Normalize()])
 # Create both training and validation datasets
 train_ds = Dataset(train_records, train_tfms)
 valid_ds = Dataset(valid_records, valid_tfms)

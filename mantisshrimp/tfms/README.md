@@ -38,7 +38,9 @@ In this example, there are two points to highlight:
 train_tfms = tfms.A.Adapter(
     [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]
 )
-valid_tfms = tfms.A.Adapter([tfms.A.LongestMaxSize(384), tfms.A.Normalize()])
+valid_tfms = tfms.A.Adapter(
+    [*tfms.A.resize_and_pad(size), tfms.A.Normalize()]
+)
 
 # Creating both training and validation datasets
 train_ds = Dataset(train_records, train_tfms)
