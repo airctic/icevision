@@ -18,7 +18,7 @@
 * * * * *
 
 ![image](images/mantisshrimp-logo.png)
-![image](images/training-illustration.png)
+![image](https://media.giphy.com/media/fwzt3dm6ldZcT5ZguQ/giphy.gif)
 <!-- Not included in docs - start -->
 ## Installation
 

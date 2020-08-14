@@ -46,7 +46,10 @@ nav:
     - Training a VOC dataset: examples/dataset_voc_exp.md
   - Datasets:
     - Overview: datasets.md 
+  - Transforms:
+    - Albumentations: albumentations.md 
   - Models:
+    - EffecientDet: model_efficientdet.md
     - Faster RCNN: model_faster_rcnn.md
   - Deployment: deployment.md
   - API Documentation:
