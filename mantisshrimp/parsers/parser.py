@@ -3,6 +3,7 @@ __all__ = ["ParserInterface", "Parser"]
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
+from mantisshrimp.data import *
 from mantisshrimp.parsers.mixins import *
 
 
@@ -38,10 +39,8 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         pass
 
     def parse_dicted(
-        self, show_pbar: bool = True, idmap: IDMap = None
+        self, idmap: IDMap, show_pbar: bool = True
     ) -> Dict[int, RecordType]:
-        idmap = idmap or IDMap()
-
         info_parse_funcs = self.collect_info_parse_funcs()
         annotation_parse_funcs = self.collect_annotation_parse_funcs()
 
@@ -66,7 +65,7 @@ class Parser(ImageidMixin, ParserInterface, ABC):
                 name: len(record_annotations[name]) for name in annotations_names
             }
             if not allequal(list(record_annotations_len.values())):
-                true_imageid = idmap.i2imageid[imageid]
+                true_imageid = idmap.get_id(imageid)
                 # TODO: instead of immediatily raising the error, store the
                 # result and raise at the end of the for loop for all records
                 raise RuntimeError(
@@ -83,9 +82,10 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         idmap: IDMap = None,
         show_pbar: bool = True,
     ) -> List[List[RecordType]]:
+        idmap = idmap or IDMap()
         data_splitter = data_splitter or SingleSplitSplitter()
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
-        splits = data_splitter(records.keys())
+        splits = data_splitter(idmap=idmap)
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
 
     @classmethod
