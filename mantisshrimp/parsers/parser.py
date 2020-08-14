@@ -1,11 +1,9 @@
-__all__ = ["RecordType", "ParserInterface", "Parser"]
+__all__ = ["ParserInterface", "Parser"]
 
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers.mixins import *
-
-RecordType = Dict[str, Any]
 
 
 class ParserInterface(ABC):
