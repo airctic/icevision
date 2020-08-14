@@ -34,9 +34,10 @@ PAGES = {
     # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetricType",
     # ],
     "data_splits.md": [
-        "mantisshrimp.utils.DataSplitter",
-        "mantisshrimp.utils.RandomSplitter",
-        "mantisshrimp.utils.SingleSplitSplitter",
+        "mantisshrimp.data.DataSplitter",
+        "mantisshrimp.data.RandomSplitter",
+        "mantisshrimp.data.FixedSplitter",
+        "mantisshrimp.data.SingleSplitSplitter",
     ],
     "faster_rcnn.md": [
         "mantisshrimp.models.rcnn.faster_rcnn.model.model",
