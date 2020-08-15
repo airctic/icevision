@@ -1,5 +1,4 @@
-from mantisshrimp import *
-from mantisshrimp.imports import Union, Path, np
+from mantisshrimp.all import *
 
 
 def test_all_parser_mixins():

@@ -1,4 +1,4 @@
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def test_capture_stdout_simple():

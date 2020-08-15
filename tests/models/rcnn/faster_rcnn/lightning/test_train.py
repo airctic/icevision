@@ -1,8 +1,5 @@
 import pytest
-import pytorch_lightning as pl
-from mantisshrimp.imports import *
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import faster_rcnn
+from mantisshrimp.all import *
 
 
 @pytest.fixture

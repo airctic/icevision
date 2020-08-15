@@ -1,4 +1,4 @@
-from mantisshrimp.utils import *
+from mantisshrimp.all import *
 
 
 def test_get_image_files():

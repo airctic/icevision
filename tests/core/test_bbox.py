@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def test_bbox_simple():
