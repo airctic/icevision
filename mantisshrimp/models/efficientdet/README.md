@@ -18,30 +18,31 @@ train_dl = efficientdet.train_dl(train_ds, batch_size=16, num_workers=4, shuffle
 valid_dl = efficientdet.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 ```
 
-### **Fastai Example**
-There are 2 locations where the EffecientDet functions are called:
+- **Model:** Mantisshrimp creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). The model accepts a variety of backbones. In following example, the **tf_efficientdet_lite0** is used. We can also choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, and **MobileNetv3** classes (which also includes **MNasNet**, **MobileNetV2**, **MixNet** and more)
 
-- **Model:** Mantisshrimp creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). The model accepts a variety of backbones. In following example, the **tf_efficientdet_lite0** is chosen. We can also chose one of the **efficientdet_d0** to **efficientdet_d7** backbones, or any other backbones listed here below
-
-- **Fastai Learner:** It glues the EffecientDet model with the EffecientDet DataLoaders as well as the metrics and any other fastai Learner arguments.
-
-``` python hl_lines="2 8"
+``` python hl_lines="2 3"
 # Model
 model = efficientdet.model(
     model_name="tf_efficientdet_lite0", num_classes=len(class_map), img_size=size
 )
+```
 
+### **Fastai Example**
+Once the DataLoaders and the EffecientDet model are created, we create the fastai Learner. The latter uses the DataLoaders and the EffecientDet model shared with the Pytorch-Lightning Trainer (as shown in the Pytorch-Lightning example here below):
+
+- **Fastai Learner:** It glues the EffecientDet model with the DataLoaders as well as the metrics and any other fastai Learner arguments. In the code snippet shown here below, we highlight the parts related to the EffecientDet model.
+
+``` python hl_lines="3"
 # Fastai Learner
 metrics = [COCOMetric()]
 learn = efficientdet.fastai.learner(dls=[train_dl, valid_dl], model=model, metrics=metrics)
+learn.fine_tune(10, 1e-2, freeze_epochs=1)
 ```
 
 ### **Pytorch-Lightning Example**
-The Pytorch-Lightning example is quiet similar to the fastai one in a sense it uses the same DataLoaders objects, and it creates an EffecientDet model that is passed to the Pytorch-Lightning Trainer as follow:
+The Pytorch-Lightning example is quiet similar to the fastai one in a sense it uses the same DataLoaders objects, and the same EffecientDet model. Those are subsenquently passed on to the Pytorch-Lightning Trainer:
 
-- **Model:** Mantisshrimp creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). 
-
-- **Pytorch-Lightning Trainer:** It glues the EffecientDet model with the EffecientDet DataLoaders. In Pytorch-Lightning, the metrics are passed to the model as opposed to fastai where it is passed to the Learner.
+- **Pytorch-Lightning Trainer:** It glues the EffecientDet model with the DataLoaders. In Pytorch-Lightning, the metrics are passed to the model object as opposed to fastai where it is passed to the Learner object. In the code snippet shown here below, we highlight the parts related to the EffecientDet model.
 
 ``` python hl_lines="2 6 9"
 # Train using pytorch-lightning
@@ -55,6 +56,12 @@ trainer = pl.Trainer(max_epochs=10, gpus=1)
 trainer.fit(light_model, train_dl, valid_dl)
 ```
 
+## How to train the **PETS Dataset** using **EffecientDet**
+
+[**Source Code**](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
+![image](https://airctic.github.io/mantisshrimp/images/effecientdet-training.png)
+
+
 ## Background: Paper Abstract
 Model efficiency has become increasingly important in computer vision. In this paper, we systematically study neural network architecture design choices for object detection and propose several key optimizations to improve efficiency.
 First, we propose a weighted bi-directional feature pyramid network (BiFPN), which allows easy and fast multiscale feature fusion; Second, we propose a compound scaling method that uniformly scales the resolution, depth, and width for all backbone, feature network, and box/class prediction networks at the same time. 
@@ -66,12 +73,6 @@ Based on these optimizations and better backbones, we have developed a new famil
 ![image](https://airctic.github.io/mantisshrimp/images/effecientdet-fig2.png)
 
 ![image](https://airctic.github.io/mantisshrimp/images/effecientdet-fig3.png)
-
-## Mantisshrimp Quick Example: How to train the **PETS Dataset**
-
-[**Source Code**](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
-![image](https://airctic.github.io/mantisshrimp/images/effecientdet-training.png)
-
 
 ## References
 
