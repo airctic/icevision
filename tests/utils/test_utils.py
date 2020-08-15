@@ -1,5 +1,4 @@
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from mantisshrimp.all import *
 
 
 def test_notnone():

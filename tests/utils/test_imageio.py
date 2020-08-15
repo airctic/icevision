@@ -1,5 +1,4 @@
-from mantisshrimp.imports import Path
-from mantisshrimp.utils import *
+from mantisshrimp.all import *
 
 
 def test_open_img():

@@ -1,6 +1,5 @@
 import pytest
-from mantisshrimp import *
-from mantisshrimp.models import efficientdet
+from mantisshrimp.all import *
 
 
 # WARNING: Only works with cuda: https://github.com/rwightman/efficientdet-pytorch/issues/44#issuecomment-662594014
