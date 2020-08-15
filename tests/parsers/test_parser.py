@@ -1,6 +1,5 @@
 import pytest
-from mantisshrimp import *
-from mantisshrimp.imports import *
+from mantisshrimp.all import *
 
 
 @pytest.fixture()

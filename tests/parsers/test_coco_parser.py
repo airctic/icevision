@@ -1,6 +1,5 @@
 import pytest
-from mantisshrimp.imports import Path, json, plt
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 source = Path(__file__).absolute().parent.parent.parent / "samples"
 

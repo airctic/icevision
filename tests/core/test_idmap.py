@@ -24,4 +24,3 @@ def test_id_map_filter_ids(id_map):
 
     assert filtered_id_map.get_ids() == [0, 2]
     assert filtered_id_map.get_names() == ["file1", "file3"]
-

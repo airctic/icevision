@@ -1,7 +1,6 @@
 import pytest
 import mantisshrimp
-from mantisshrimp import *
-from mantisshrimp.imports import np, itemgetter, Path, torchvision
+from mantisshrimp.all import *
 
 
 @pytest.fixture()

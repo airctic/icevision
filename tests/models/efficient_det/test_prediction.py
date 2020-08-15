@@ -1,6 +1,4 @@
-from mantisshrimp import *
-from mantisshrimp.imports import *
-from mantisshrimp.models import efficientdet
+from mantisshrimp.all import *
 
 
 def _test_preds(preds):

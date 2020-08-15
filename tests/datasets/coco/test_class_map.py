@@ -1,4 +1,4 @@
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def test_coco_class_map(coco_annotations_file):

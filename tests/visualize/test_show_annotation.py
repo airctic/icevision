@@ -1,5 +1,4 @@
-from mantisshrimp.imports import plt
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def test_show_annotation(record, monkeypatch):

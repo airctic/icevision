@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp import *
+from mantisshrimp.all import *
 from copy import deepcopy
 
 
