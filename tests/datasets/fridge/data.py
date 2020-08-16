@@ -1,4 +1,4 @@
-from mantisshrimp import *
+from mantisshrimp.all import *
 
 
 def test_fridge_class_map():

@@ -1,7 +1,7 @@
 __all__ = ["plot_size_histogram"]
 
 from mantisshrimp.imports import *
-from mantisshrimp.parsers import RecordType
+from mantisshrimp.core import *
 from mantisshrimp import *
 
 

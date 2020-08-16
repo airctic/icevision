@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 from mantisshrimp.imports import *
-from mantisshrimp.parsers import *
+from mantisshrimp.core import *
 from mantisshrimp.models.utils import *
 
 

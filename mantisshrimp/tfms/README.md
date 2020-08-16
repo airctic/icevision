@@ -20,7 +20,7 @@ In addition, Mantisshrimp offers the users the option to create their own adapte
 To ease the users' learning curve, we also provide the [aug_tfms](https://github.com/airctic/mantisshrimp/blob/863f4fcf82a795254e5f3c12b22a3f103c7ad08d/mantisshrimp/tfms/albumentations/tfms.py#L23) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
 
 
-# Usage
+## Usage
 
 In the following example, we highlight some of the most common usage of transforms. Transforms are used when we create both the train and valid Dataset objects. 
 
@@ -38,7 +38,9 @@ In this example, there are two points to highlight:
 train_tfms = tfms.A.Adapter(
     [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]
 )
-valid_tfms = tfms.A.Adapter([tfms.A.LongestMaxSize(384), tfms.A.Normalize()])
+valid_tfms = tfms.A.Adapter(
+    [*tfms.A.resize_and_pad(size), tfms.A.Normalize()]
+)
 
 # Creating both training and validation datasets
 train_ds = Dataset(train_records, train_tfms)

@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp.models import efficientdet
+from mantisshrimp.all import *
 
 
 @pytest.mark.parametrize(

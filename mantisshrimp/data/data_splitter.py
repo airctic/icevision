@@ -2,25 +2,27 @@ __all__ = [
     "DataSplitter",
     "SingleSplitSplitter",
     "RandomSplitter",
+    "FixedSplitter",
 ]
 
 from mantisshrimp.imports import *
-from mantisshrimp.utils.utils import *
+from mantisshrimp.utils import *
+from mantisshrimp.core import *
 
 
 class DataSplitter(ABC):
     """Base class for all data splitters.
     """
 
-    def __call__(self, ids):
-        return self.split(ids)
+    def __call__(self, idmap: IDMap):
+        return self.split(idmap=idmap)
 
     @abstractmethod
-    def split(self, ids):
+    def split(self, idmap: IDMap):
         """Splits `ids` into groups.
 
         # Arguments
-            ids: Items to be splitted.
+            idmap: idmap used for getting ids.
         """
         pass
 
@@ -29,13 +31,13 @@ class SingleSplitSplitter(DataSplitter):
     """Return all items in a single group, without shuffling.
     """
 
-    def split(self, ids):
+    def split(self, idmap: IDMap):
         """Puts all `ids` in a single group.
 
         # Arguments
-            ids: Items to be splitted.
+            idmap: idmap used for getting ids.
         """
-        return [ids]
+        return [idmap.get_ids()]
 
 
 class RandomSplitter(DataSplitter):
@@ -52,12 +54,13 @@ class RandomSplitter(DataSplitter):
         self.probs = probs
         self.seed = seed
 
-    def split(self, ids):
+    def split(self, idmap: IDMap):
         """Randomly splits `ids` based on parameters passed to the constructor of this class.
 
         # Arguments
-            ids: Items to be splitted.
+            idmap: idmap used for getting ids.
         """
+        ids = idmap.get_ids()
         # calculate split indexes
         p = np.array(self.probs) * len(ids)  # convert percentage to absolute
         p = np.ceil(p).astype(int)  # round up, so each split has at least one example
@@ -67,3 +70,22 @@ class RandomSplitter(DataSplitter):
         with np_local_seed(self.seed):
             shuffled = np.random.permutation(list(ids))
         return np.split(shuffled, p.tolist())[:-1]  # last element is always empty
+
+
+class FixedSplitter(DataSplitter):
+    """ Split `ids` based on predefined splits.
+
+    # Arguments:
+        splits: The predefined splits.
+    """
+
+    def __init__(self, splits: Sequence[Sequence[Hashable]]):
+        self.splits = splits
+
+    def split(self, idmap: IDMap):
+        """Execute the split
+
+        # Arguments
+            idmap: idmap used for getting ids.
+        """
+        return [[idmap.get_name(name) for name in names] for names in self.splits]

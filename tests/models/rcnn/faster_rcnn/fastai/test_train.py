@@ -1,6 +1,5 @@
 import pytest
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import faster_rcnn
+from mantisshrimp.all import *
 
 
 @pytest.mark.parametrize("metrics", [[COCOMetric()]])

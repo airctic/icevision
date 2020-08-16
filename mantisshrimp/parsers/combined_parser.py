@@ -3,6 +3,7 @@ __all__ = ["CombinedParser"]
 from mantisshrimp.imports import *
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
+from mantisshrimp.data import *
 from mantisshrimp.parsers.parser import *
 
 
@@ -23,7 +24,8 @@ class CombinedParser(ParserInterface):
         excluded = set.union(*ids) - valid_ids
         print(f"Removed {len(excluded)} files: {excluded}")
 
-        splits = data_splitter(valid_ids)
+        intersect_idmap = idmap.filter_ids(ids=valid_ids)
+        splits = data_splitter(idmap=intersect_idmap)
 
         # TODO: Confusing names
         # combine keys for all parsers

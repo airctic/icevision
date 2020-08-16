@@ -1,5 +1,4 @@
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import faster_rcnn
+from mantisshrimp.all import *
 
 
 def test_faster_rcnn_default_param_groups():
