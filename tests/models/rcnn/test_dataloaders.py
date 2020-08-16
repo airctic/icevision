@@ -76,6 +76,15 @@ def test_faster_rcnn_build_train_batch(records):
     _test_faster_rcnn_batch(batch=batch)
 
 
+def test_faster_rcnn_build_train_batch_empty(img):
+    records = [{"img": img, "labels": [], "bboxes": []}] * 2
+    (_, targets), _ = faster_rcnn.build_train_batch(records)
+
+    for x in targets:
+        assert x["labels"].equal(torch.zeros(0, dtype=torch.int64))
+        assert x["boxes"].equal(torch.zeros((0, 4), dtype=torch.float32))
+
+
 def test_faster_rcnn_build_valid_batch(records):
     batch = faster_rcnn.build_valid_batch(records)
     _test_faster_rcnn_batch(batch=batch)
@@ -128,6 +137,17 @@ def _test_mask_rcnn_batch(batch):
 def test_mask_rcnn_build_train_batch(mask_records):
     batch = mask_rcnn.build_train_batch(mask_records)
     _test_mask_rcnn_batch(batch)
+
+
+def test_mask_rcnn_build_train_batch_empty(img):
+    records = [{"img": img, "labels": [], "bboxes": [], "masks": []}] * 2
+    (_, targets), _ = mask_rcnn.build_train_batch(records)
+
+    height, width = img.shape[:-1]
+    for x in targets:
+        assert x["labels"].equal(torch.zeros(0, dtype=torch.int64))
+        assert x["boxes"].equal(torch.zeros((0, 4), dtype=torch.float32))
+        assert x["masks"].equal(torch.zeros((0, height, width), dtype=torch.uint8))
 
 
 def test_mask_rcnn_build_valid_batch(mask_records):
