@@ -12,4 +12,4 @@ from mantisshrimp.visualize import *
 
 import mantisshrimp.test_utils as test_utils
 
-__version__ = "0.0.8"
+__version__ = "0.0.9rc1"
