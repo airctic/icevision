@@ -1,3 +1,5 @@
+# Copied from: https://github.com/PyTorchLightning/pytorch-lightning/blob/master/.github/workflows/pypi-release.yml
+
 name: PyPi Release
 
 # https://help.github.com/en/actions/reference/events-that-trigger-workflows
