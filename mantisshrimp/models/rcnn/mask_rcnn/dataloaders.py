@@ -65,7 +65,7 @@ def _build_mask_train_sample(record: RecordType):
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
     if len(record["masks"]) == 0:
-        height, width = record['img'].shape[:-1]
+        height, width = record["img"].shape[:-1]
         target["masks"] = torch.zeros((0, height, width), dtype=torch.uint8)
     else:
         target["masks"] = tensor(record["masks"].data, dtype=torch.uint8)

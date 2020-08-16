@@ -82,7 +82,7 @@ def _build_train_sample(
 
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
-    if len(record['labels']) == 0:
+    if len(record["labels"]) == 0:
         target["labels"] = torch.zeros(0, dtype=torch.int64)
         target["boxes"] = torch.zeros((0, 4), dtype=torch.float32)
     else:
