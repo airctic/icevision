@@ -161,7 +161,10 @@ def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied. # Examples 
+        of the input records with `batch_tfms` applied.
+
+    # Examples 
+
     Use the result of this function to feed the model.
     ```python
     batch, records = build_infer_batch(records)
