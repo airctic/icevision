@@ -10,13 +10,14 @@ To train an EffecientDet model, you need to call the following highlighted funct
 
 ### **Common part to both Fastai and Pytorch-Lightning Training Loop**
 
-- **DataLoaders:** Manstisshrimp creates both the train DataLoader and the valid DataLoader for both the fastai Learner and the Pytorch-Lightning Trainer  
+- **DataLoaders:** Manstisshrimp creates common train DataLoader and valid DataLoader to both fastai Learner and Pytorch-Lightning Trainer   
 
 ``` python hl_lines="2 3"
 # DataLoaders
 train_dl = efficientdet.train_dl(train_ds, batch_size=16, num_workers=4, shuffle=True)
 valid_dl = efficientdet.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=False)
 ```
+
 
 - **Model:** Mantisshrimp creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). The model accepts a variety of backbones. In following example, the **tf_efficientdet_lite0** is used. We can also choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, and **MobileNetv3** classes (which also includes **MNasNet**, **MobileNetV2**, **MixNet** and more)
 
@@ -27,15 +28,26 @@ model = efficientdet.model(
 )
 ```
 
+- **How to use a different backbone:** "efficientdet_d0" example
+``` python hl_lines="3"
+# Model
+model = efficientdet.model(
+    model_name="efficientdet_d0", num_classes=len(class_map), img_size=size
+)
+```
+
+
 ### **Fastai Example**
 Once the DataLoaders and the EffecientDet model are created, we create the fastai Learner. The latter uses the DataLoaders and the EffecientDet model shared with the Pytorch-Lightning Trainer (as shown in the Pytorch-Lightning example here below):
 
 - **Fastai Learner:** It glues the EffecientDet model with the DataLoaders as well as the metrics and any other fastai Learner arguments. In the code snippet shown here below, we highlight the parts related to the EffecientDet model.
 
-``` python hl_lines="3"
+``` python hl_lines="3-5"
 # Fastai Learner
 metrics = [COCOMetric()]
-learn = efficientdet.fastai.learner(dls=[train_dl, valid_dl], model=model, metrics=metrics)
+learn = efficientdet.fastai.learner(
+    dls=[train_dl, valid_dl], model=model, metrics=metrics
+)
 learn.fine_tune(10, 1e-2, freeze_epochs=1)
 ```
 
