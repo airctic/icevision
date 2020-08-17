@@ -6,6 +6,22 @@ from mantisshrimp.imports import *
 # TODO: Can pnts and be tuple? Same for properties like xyxy
 @dataclass
 class BBox:
+    """Bounding Box representation.
+
+    Should **not** be instantiated directly, instead use `from_*` methods.
+    e.g. `from_xyxy`, `from_xywh`.
+    Is able to transform coordinates into different formats,
+    e.g. `xyxy`, `xywh`.
+
+    # Examples
+
+    Create from `xywh` format, and get `xyxy` coordinates.
+    ```python
+    bbox = BBox.from_xywh(1, 1, 4, 4)
+    xyxy = bbox.xyxy
+    ```
+    """
+
     pnts: List[int]
 
     def __post_init__(self):
