@@ -26,7 +26,7 @@ PAGES = {
         "mantisshrimp.data.dataset.Dataset.from_images",
     ],
     "albumentations_tfms.md": [
-        #     "mantisshrimp.tfms.albumentations.aug_tfms",
+        "mantisshrimp.tfms.albumentations.aug_tfms",
         "mantisshrimp.tfms.albumentations.Adapter",
     ],
     # "coco_metric.md": [
