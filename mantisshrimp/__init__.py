@@ -1,15 +1,15 @@
 from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp import parsers
-import mantisshrimp.tfms as tfms
+from mantisshrimp import tfms
 from mantisshrimp.data import *
-import mantisshrimp.datasets as datasets
-import mantisshrimp.backbones
-import mantisshrimp.models
+from mantisshrimp import datasets
+from mantisshrimp import backbones
+from mantisshrimp import models
 from mantisshrimp.models import *
 from mantisshrimp.metrics import *
 from mantisshrimp.visualize import *
 
 import mantisshrimp.test_utils as test_utils
 
-__version__ = "0.0.8"
+__version__ = "0.0.9rc1"
