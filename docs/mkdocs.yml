@@ -76,6 +76,7 @@ nav:
       # - Metrics:
       #   - COCOMetric: coco_metric.md
       - Data Splitters: data_splits.md
+  - How-To: how-to.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:

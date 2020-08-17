@@ -309,6 +309,10 @@ def generate(dest_dir):
         dest_dir / "albumentations.md",
     )
 
+    shutil.copyfile(
+        mantisshrimp_dir / "HOW-TO.md", dest_dir / "how-to.md",
+    )
+
     # Copy images folder from the template folder to the destination folder
     template_images_dir = Path(template_dir) / "images"
     print("Template folder: ", template_images_dir)
