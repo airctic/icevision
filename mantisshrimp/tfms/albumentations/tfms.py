@@ -6,8 +6,8 @@ from mantisshrimp.core import *
 from mantisshrimp.tfms.transform import *
 
 
-def _resize(size):
-    return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
+def _resize(size, ratio_resize=A.LongestMaxSize):
+    return ratio_resize(size) if isinstance(size, int) else A.Resize(*size)
 
 
 def resize_and_pad(
@@ -64,7 +64,7 @@ def aug_tfms(
     height, width = (size, size) if isinstance(size, int) else size
 
     tfms = []
-    tfms += [_resize(presize) if presize is not None else None]
+    tfms += [_resize(presize, A.SmallestMaxSize) if presize is not None else None]
     tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
     # Resize as the last transforms to reduce the number of artificial artifacts created
     if crop_fn is not None:
@@ -112,12 +112,14 @@ class Adapter(Transform):
         out = {"img": d["image"]}
         out["height"], out["width"], _ = out["img"].shape
 
+        # We use the values in d['labels'] to get what was removed by the transform
         if labels is not None:
             out["labels"] = [labels[i] for i in d["labels"]]
         if bboxes is not None:
             out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
         if masks is not None:
-            out["masks"] = MaskArray(np.stack(d["masks"]))
+            keep_masks = [d["masks"][i] for i in d["labels"]]
+            out["masks"] = MaskArray(np.array(keep_masks))
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         return out
