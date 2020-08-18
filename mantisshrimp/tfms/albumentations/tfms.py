@@ -6,8 +6,8 @@ from mantisshrimp.core import *
 from mantisshrimp.tfms.transform import *
 
 
-def _resize(size):
-    return A.LongestMaxSize(size) if isinstance(size, int) else A.Resize(*size)
+def _resize(size, ratio_resize=A.LongestMaxSize):
+    return ratio_resize(size) if isinstance(size, int) else A.Resize(*size)
 
 
 def resize_and_pad(
@@ -64,7 +64,7 @@ def aug_tfms(
     height, width = (size, size) if isinstance(size, int) else size
 
     tfms = []
-    tfms += [_resize(presize) if presize is not None else None]
+    tfms += [_resize(presize, A.SmallestMaxSize) if presize is not None else None]
     tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
     # Resize as the last transforms to reduce the number of artificial artifacts created
     if crop_fn is not None:
