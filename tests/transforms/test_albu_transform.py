@@ -25,3 +25,14 @@ def test_crop_transform(records):
     assert len(tfmed["bboxes"]) == 1
     assert len(tfmed["masks"]) == 1
     assert len(tfmed["iscrowds"]) == 1
+
+
+def test_crop_transform_empty(records):
+    tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
+    tfmed = tfm_ds[0]
+    assert len(tfmed["labels"]) == 0
+    assert len(tfmed["bboxes"]) == 0
+    assert len(tfmed["masks"]) == 0
+    assert len(tfmed["iscrowds"]) == 0
+

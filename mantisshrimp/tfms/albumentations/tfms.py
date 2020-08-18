@@ -112,13 +112,14 @@ class Adapter(Transform):
         out = {"img": d["image"]}
         out["height"], out["width"], _ = out["img"].shape
 
+        # We use the values in d['labels'] to get what was removed by the transform
         if labels is not None:
             out["labels"] = [labels[i] for i in d["labels"]]
         if bboxes is not None:
             out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
         if masks is not None:
             keep_masks = [d["masks"][i] for i in d["labels"]]
-            out["masks"] = MaskArray(np.stack(keep_masks))
+            out["masks"] = MaskArray(np.array(keep_masks))
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         return out
