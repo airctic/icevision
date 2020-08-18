@@ -3,7 +3,7 @@ How to train MaskRCNN, using the [Penn-Fundan](https://www.cis.upenn.edu/~jshi/p
 """
 
 # Install mantisshrimp
-# pip install git+git://github.com/airctic/mantisshrimp.git@train_mask#egg=mantisshrimp[all] --upgrade
+# pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
 # Import everything from mantisshrimp
 from mantisshrimp.all import *
