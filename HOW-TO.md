@@ -19,7 +19,7 @@ For more options, and more in-depth explanation on how to install Mantisshrimp, 
 
 **tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
 
-``` python hl_lines="1"
+``` python
 model = efficientdet.model(
     model_name="tf_efficientdet_lite0", num_classes=len(class_map), img_size=size
 )
@@ -27,7 +27,7 @@ model = efficientdet.model(
 
 **efficientdet_d0** Example:
 
-``` python hl_lines="1"
+``` python
 model = efficientdet.model(
     model_name="efficientdet_d0", num_classes=len(class_map), img_size=size
 )
@@ -40,12 +40,12 @@ For more information checkout the [EffecientDet Model](https://airctic.github.io
 **fasterrcnn_resnet50_fpn** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/backbones_faster_rcnn/)
 
 **- Using the default argument**
-``` python hl_lines="1"
+``` python
 model = faster_rcnn.model(num_classes=len(class_map))
 ```
 
 **Using the explicit backbone definition**
-``` python hl_lines="2"
+``` python
 backbone = backbones.resnet_fpn.resnet50(pretrained=True) # Default
 model = faster_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
@@ -58,12 +58,12 @@ For more information checkout the [Faster RCNN Model](https://airctic.github.io/
 ## How to create a Mask RCNN Model?
 
 **- Using the default argument**
-``` python hl_lines="1"
+``` python
 model = mask_rcnn.model(num_classes=len(class_map))
 ```
 
 **Using the explicit backbone definition**
-``` python hl_lines="2"
+``` python
 backbone = backbones.resnet_fpn.resnet50(pretrained=True) # Default
 model = mask_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
@@ -98,7 +98,7 @@ Mask RCNN backbones are passed a model object argument to the Mask RCNN model fu
 
 ``` python hl_lines="1 3"
 backbone = backbones.resnet_fpn.resnet34(pretrained=True)
-model = faster_rcnn.model(
+model = mask_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
 )
 ```
