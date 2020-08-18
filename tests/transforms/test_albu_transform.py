@@ -21,6 +21,7 @@ def test_crop_transform(records):
     tfm = tfms.A.Adapter([tfms.A.CenterCrop(100, 100, p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
-    print(tfmed["filepath"])
+    assert len(tfmed["labels"]) == 1
     assert len(tfmed["bboxes"]) == 1
+    assert len(tfmed["masks"]) == 1
     assert len(tfmed["iscrowds"]) == 1

@@ -117,7 +117,8 @@ class Adapter(Transform):
         if bboxes is not None:
             out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
         if masks is not None:
-            out["masks"] = MaskArray(np.stack(d["masks"]))
+            keep_masks = [d["masks"][i] for i in d["labels"]]
+            out["masks"] = MaskArray(np.stack(keep_masks))
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         return out
