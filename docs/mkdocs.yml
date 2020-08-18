@@ -14,6 +14,8 @@ site_description: 'Documentation for Mantisshrimp.'
 # google_analytics: ['UA-44322747-3', 'https://airctic.github.io/mantisshrimp/']
 markdown_extensions:
   - codehilite
+  - pymdownx.snippets:
+      base_path: docs
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -53,7 +55,8 @@ nav:
     - EffecientDet: model_efficientdet.md
     - Faster RCNN: model_faster_rcnn.md
   - Backbones:
-    - Overview: backbones_overview.md
+    - EffecientDet: backbones_effecientdet.md
+    - Faster/Mask RCNN: backbones_faster_mask_rcnn.md
   - Deployment: deployment.md
   - API Documentation:
     - Parser: parser.md
