@@ -296,8 +296,13 @@ def generate(dest_dir):
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/backbones/README.md",
-        dest_dir / "backbones_overview.md",
+        mantisshrimp_dir / "mantisshrimp/backbones/backbones_effecientdet.md",
+        dest_dir / "backbones_effecientdet.md",
+    )
+
+    shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/backbones/backbones_faster_mask_rcnn.md",
+        dest_dir / "backbones_faster_mask_rcnn.md",
     )
 
     shutil.copyfile(
