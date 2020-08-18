@@ -48,6 +48,19 @@ class RandomSplitter(DataSplitter):
             `Sequence` is the number of groups to to split the items into.
         seed: Internal seed used for shuffling the items. Define this if you need
             reproducible results.
+
+    # Examples
+
+        Split data into three random groups.
+
+        ```python
+        idmap = IDMap(["file1", "file2", "file3", "file4"])
+
+        data_splitter = RandomSplitter([0.6, 0.2, 0.2], seed=42)
+        splits = data_splitter(idmap)
+
+        np.testing.assert_equal(splits, [[1, 3], [0], [2]])
+        ```
     """
 
     def __init__(self, probs: Sequence[int], seed: int = None):
@@ -77,6 +90,19 @@ class FixedSplitter(DataSplitter):
 
     # Arguments:
         splits: The predefined splits.
+
+    # Examples
+    
+        Split data into three pre-defined groups.
+        ```python
+        idmap = IDMap(["file1", "file2", "file3", "file4"])
+        presplits = [["file4", "file3"], ["file2"], ["file1"]]
+
+        data_splitter = FixedSplitter(presplits)
+        splits = data_splitter(idmap=idmap)
+
+        assert splits == [[3, 2], [1], [0]]
+        ```
     """
 
     def __init__(self, splits: Sequence[Sequence[Hashable]]):

@@ -26,7 +26,7 @@ PAGES = {
         "mantisshrimp.data.dataset.Dataset.from_images",
     ],
     "albumentations_tfms.md": [
-        #     "mantisshrimp.tfms.albumentations.aug_tfms",
+        "mantisshrimp.tfms.albumentations.aug_tfms",
         "mantisshrimp.tfms.albumentations.Adapter",
     ],
     # "coco_metric.md": [
@@ -307,6 +307,10 @@ def generate(dest_dir):
     shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/tfms/README.md",
         dest_dir / "albumentations.md",
+    )
+
+    shutil.copyfile(
+        mantisshrimp_dir / "HOW-TO.md", dest_dir / "how-to.md",
     )
 
     # Copy images folder from the template folder to the destination folder
