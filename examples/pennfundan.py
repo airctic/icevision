@@ -20,8 +20,18 @@ train_records, valid_records = parser.parse(data_splitter)
 # Define the transforms and create the Datasets
 presize = 512
 size = 384
+shift_scale_rotate = tfms.A.ShiftScaleRotate(rotate_limit=10)
+crop_fn = partial(tfms.A.RandomSizedCrop, min_max_height=(size // 2, size), p=0.5)
 train_tfms = tfms.A.Adapter(
-    [*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()]
+    [
+        *tfms.A.aug_tfms(
+            size=size,
+            presize=presize,
+            shift_scale_rotate=shift_scale_rotate,
+            crop_fn=crop_fn,
+        ),
+        tfms.A.Normalize(),
+    ]
 )
 valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size=size), tfms.A.Normalize()])
 train_ds = Dataset(train_records, train_tfms)
