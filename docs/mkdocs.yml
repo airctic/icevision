@@ -36,6 +36,7 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
+    - Inference: inference.md
     - Mask RCNN: mask_rcnn_pennfundan.md
     - EffecientDet: efficientdet_pets.md
     - Training a dataset: how_train_dataset.md
