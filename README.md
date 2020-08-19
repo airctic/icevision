@@ -93,4 +93,5 @@ different annotation formats into a very flexibe parser:
   libraries side by side.
 
 
-
+## Happy Learning!
+If you need any assistance, feel free to join our [forum](https://spectrum.chat/mantis).
