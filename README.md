@@ -18,8 +18,14 @@
 * * * * *
 
 ![image](images/mantisshrimp-logo.png)
-![image](https://media.giphy.com/media/fwzt3dm6ldZcT5ZguQ/giphy.gif)
+![image](images/mantis-end-to-end-training.gif)
+
 <!-- Not included in docs - start -->
+## **Contributors**
+
+[![image0](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/0)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/0)[![image1](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/1)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/1)[![image2](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/2)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/2)[![image3](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/3)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/3)[![image4](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/4)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/4)[![image5](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/5)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/5)[![image6](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/6)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/6)[![image7](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7)
+
+
 ## Installation
 
 First follow the instructions for installing PyTorch [here](https://pytorch.org/get-started/locally/).
@@ -85,4 +91,6 @@ different annotation formats into a very flexibe parser:
   library. Our tutorials have several examples showing you how to
   train a given model using both fastai and Pytorch Lightning
   libraries side by side.
+
+
 
