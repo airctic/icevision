@@ -7,13 +7,19 @@
     If you find this work useful, please let other people know by **starring** it,
     and sharing it. 
     Thank you!
-
-
+    
+<div align="center">
+    
 [![tests](https://github.com/airctic/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/airctic/mantisshrimp/actions?query=workflow%3Atests)
 [![docs](https://github.com/airctic/mantisshrimp/workflows/docs/badge.svg)](https://airctic.github.io/mantisshrimp/index.html)
 [![codecov](https://codecov.io/gh/airctic/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/mantisshrimp)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/mantisshrimp/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/mantisshrimp/blob/master/LICENSE)  
+
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mantis)
+
+</div>
+
 
 * * * * *
 
@@ -93,4 +99,5 @@ different annotation formats into a very flexibe parser:
   libraries side by side.
 
 
-
+## Happy Learning!
+If you need any assistance, feel free to join our [forum](https://spectrum.chat/mantis).
