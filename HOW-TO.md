@@ -178,7 +178,7 @@ model = efficientdet.model(
 # Train the model using either Fastai Learner of Pytorch-Lightning Trainer
 
 ## Saving a Model on Google Drive
-rom google.colab import drive
+from google.colab import drive
 drive.mount('/content/gdrive', force_remount=True)
 root_dir = Path('/content/gdrive/My Drive/')
 
