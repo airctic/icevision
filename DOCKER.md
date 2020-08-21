@@ -12,12 +12,16 @@ Please, follow the 3 steps:
     not already installed)
 2.  In the terminal, download Mantisshrimp docker image to your machine:
 
-```bash
-docker pull mantisshrimp
+<div class="termy">
+```console
+$ docker pull mantisshrimp
 ```
+</div>
 
 3.  In the terminal, run the mantisshrimp docker container:
 
-```bash
-docker run -it mantisshrimp
+<div class="termy">
+```console
+$ docker run -it mantisshrimp
 ```
+</div>
