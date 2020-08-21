@@ -8,9 +8,11 @@
 To install the mantisshrimp package from its GitHub repo, run the command here below. This option can be used in Google Colab,
 for example, where you might install the mantisshrimp latest version (from the `master` branch)
 
-```bash
-pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+<div class="termy">
+```console
+$ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 ```
+</div>
 
 ### **Option 2:** Installing an editable package from GitHub **[For Developers]**
 
@@ -23,51 +25,64 @@ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] 
 
 All we have to do is to follow these 3 simple steps by running the following commands:
 
-```bash
-git clone --depth=1 https://github.com/airctic/mantisshrimp.git
-cd mantisshrimp
-pip install .[all]
+<div class="termy">
+```console
+$ git clone --depth=1 https://github.com/airctic/mantisshrimp.git
+$ cd mantisshrimp
+$ pip install .[all]
 ```
+</div>
 
 ### **Option 3:** Installing from pypi repository **[Coming Soon!]**
  
 #### All Packages
 To install mantisshrimp package together with all dependencies:
 
-```bash
-pip install mantisshrimp[all]
+<div class="termy">
+```console
+$ pip install mantisshrimp[all]
 ```
+</div>
 
 #### Mantisshrimp + Fastai
 To install mantisshrimp package and only the Fastai library, run the following command:
 
-```bash
-pip install mantisshrimp[fastai]
+<div class="termy">
+```console
+$ pip install mantisshrimp[fastai]
 ```
+</div>
 
 #### Mantisshrimp + Pytorch-Lightning
 To install mantisshrimp package and only the Pytorch-Lightning library, run the following command:
 
-```bash
-pip install mantisshrimp[pytorch_lightning]
+<div class="termy">
+```console
+$ pip install mantisshrimp[pytorch_lightning]
 ```
+</div>
 
 ## B- Installation using conda
 Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **mantis**
 
-```bash
-conda env create -n mantis
-conda activate mantis
-pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
+<div class="termy">
+```console
+$ conda env create -n mantis
+$ conda activate mantis
+$ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
 ```
+</div>
 
 ## C- Fixing the Error: Failed building wheel for pycocotools
 If you encounter the **Failed building wheel for pycocotools error** (see screenshoot here below), you can easily fix it by installing  `gcc` from your linux terminal as shown in the following steps:
 
-```bash
-sudo apt update
-sudo apt install gcc
+<div class="termy">
+```console
+$ sudo apt update
+$ sudo apt install gcc
 ```
+</div>
+
 ![image](images/pycoco-installation-issue.png)
 
 
