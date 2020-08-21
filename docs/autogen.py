@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import shutil
+from distutils.dir_util import copy_tree
 
 import keras_autodoc
 
@@ -236,7 +237,7 @@ def examples_to_md(dest_dir):
         copy_examples(examples_dir, dest_dir / "examples")
 
 
-def generate(dest_dir):
+def generate(dest_dir: Path):
     template_dir = mantisshrimp_dir / "docs" / "templates"
 
     # Create dest_dir if doesn't exist
@@ -322,16 +323,14 @@ def generate(dest_dir):
     template_images_dir = Path(template_dir) / "images"
     print("Template folder: ", template_images_dir)
     dest_images_dir = Path(dest_dir) / "images"
+    # Copy images folder
+    copy_tree(str(template_images_dir), str(dest_images_dir))
 
-    if not os.path.exists(dest_images_dir):
-        os.makedirs(dest_images_dir)
+    # Copy css folder
+    copy_tree(str(mantisshrimp_dir / "docs/css"), str(dest_dir / "css"))
 
-    if os.path.exists(template_images_dir):
-        for fname in os.listdir(template_images_dir):
-            src = Path(template_images_dir) / fname
-            target = Path(dest_images_dir) / fname
-            print("copy", src, "to", target)
-            shutil.copyfile(src, target)
+    # Copy js folder
+    copy_tree(str(mantisshrimp_dir / "docs/js"), str(dest_dir / "js"))
 
     # Generate .md files form Jupyter Notebooks located in the /ipynb folder
     nb_to_md(dest_dir)
