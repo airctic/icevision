@@ -1,0 +1,45 @@
+{
+    "short_name": "IceVision",
+    "name": "IceVision: Object Detection, Ice Simple",
+    "description": "Agnostic Object Detection Framework",
+    "icons": [
+      {
+        "src": "/images/icons-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/images/icons-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/?source=pwa",
+    "background_color": "blue",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "blue",
+    "shortcuts": [
+      {
+        "name": "IceVision: Overview",
+        "short_name": "Overview",
+        "description": "A general overview about IceVision",
+        "url": "/?source=pwa",
+        "icons": [{ "src": "/images/today.png", "sizes": "192x192" }]
+      },
+      {
+        "name": "Getting Started",
+        "short_name": "Getting Started",
+        "description": "Getting started guide - Notebook",
+        "url": "/tomorrow?source=pwa",
+        "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "How-To",
+      "short_name": "How-To",
+      "description": "How-To guide",
+      "url": "/tomorrow?source=pwa",
+      "icons": [{ "src": "/images/tomorrow.png", "sizes": "192x192" }]
+    }
+    ]
+  }
