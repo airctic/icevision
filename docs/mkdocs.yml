@@ -25,6 +25,8 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
+extra:
+  manifest: manifest.webmanifest
 extra_css:
 - css/termynal.css
 - css/custom.css

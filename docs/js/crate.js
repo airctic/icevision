@@ -2,4 +2,7 @@ new Crate({
     server: '735877944085446747',
     channel: '735877944517591151'
 })
-crate.notify('Have questions? Join us!')
+crate.notify({
+    content: 'Have questions? Join us!',
+    timeout: 1400
+})
