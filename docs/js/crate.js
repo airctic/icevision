@@ -4,5 +4,5 @@ new Crate({
 })
 crate.notify({
     content: 'Have questions? Join us!',
-    timeout: 1400
+    timeout: 1600
 })
