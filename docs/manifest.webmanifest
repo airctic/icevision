@@ -14,7 +14,7 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "/?source=pwa",
+    "start_url": "/mantisshrimp/",
     "background_color": "white",
     "display": "standalone",
     "scope": "/",
@@ -24,7 +24,7 @@
             "name": "IceVision: Overview",
             "short_name": "Overview",
             "description": "A general overview about IceVision",
-            "url": "/?source=pwa",
+            "url": "/",
             "icons": [
                 {
                     "src": "/mantisshrimp/images/icons-192.png",
@@ -36,7 +36,7 @@
             "name": "Getting Started",
             "short_name": "Getting Started",
             "description": "Getting started guide - Notebook",
-            "url": "/getting_started?source=pwa",
+            "url": "/getting_started",
             "icons": [
                 {
                     "src": "/mantisshrimp/images/icons-192.png",
@@ -48,7 +48,7 @@
             "name": "How-To",
             "short_name": "How-To",
             "description": "How-To guide",
-            "url": "/how-to?source=pwa",
+            "url": "/how-to",
             "icons": [
                 {
                     "src": "/mantisshrimp/images/icons-192.png",
