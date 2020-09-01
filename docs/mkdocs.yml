@@ -25,6 +25,7 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
+  - pymdownx.tabbed
 extra:
   manifest: manifest.webmanifest
 extra_css:
@@ -64,6 +65,7 @@ nav:
   - Models:
     - EffecientDet: model_efficientdet.md
     - Faster RCNN: model_faster_rcnn.md
+    - Models Comparison: model_comparison.md
   - Backbones:
     - EffecientDet: backbones_effecientdet.md
     - Faster/Mask RCNN: backbones_faster_mask_rcnn.md
