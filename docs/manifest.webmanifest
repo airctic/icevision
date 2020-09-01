@@ -4,21 +4,21 @@
     "description": "Agnostic Object Detection Framework",
     "icons": [
         {
-            "src": "/images/icons-192.png",
+            "src": "/mantishrimp/images/icons-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/images/icons-512.png",
+            "src": "/mantishrimp/images/icons-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
     ],
     "start_url": "/?source=pwa",
-    "background_color": "blue",
+    "background_color": "white",
     "display": "standalone",
     "scope": "/",
-    "theme_color": "blue",
+    "theme_color": "white",
     "shortcuts": [
         {
             "name": "IceVision: Overview",
@@ -27,7 +27,7 @@
             "url": "/?source=pwa",
             "icons": [
                 {
-                    "src": "/images/icons-192.png",
+                    "src": "/mantishrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
@@ -39,7 +39,7 @@
             "url": "/getting_started?source=pwa",
             "icons": [
                 {
-                    "src": "/images/icons-192.png",
+                    "src": "/mantishrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
@@ -51,7 +51,7 @@
             "url": "/how-to?source=pwa",
             "icons": [
                 {
-                    "src": "/images/icons-192.png",
+                    "src": "/mantishrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
