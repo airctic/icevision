@@ -4,12 +4,12 @@
     "description": "Agnostic Object Detection Framework",
     "icons": [
         {
-            "src": "/mantishrimp/images/icons-192.png",
+            "src": "/mantisshrimp/images/icons-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/mantishrimp/images/icons-512.png",
+            "src": "/mantisshrimp/images/icons-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
@@ -27,7 +27,7 @@
             "url": "/?source=pwa",
             "icons": [
                 {
-                    "src": "/mantishrimp/images/icons-192.png",
+                    "src": "/mantisshrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
@@ -39,7 +39,7 @@
             "url": "/getting_started?source=pwa",
             "icons": [
                 {
-                    "src": "/mantishrimp/images/icons-192.png",
+                    "src": "/mantisshrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
@@ -51,7 +51,7 @@
             "url": "/how-to?source=pwa",
             "icons": [
                 {
-                    "src": "/mantishrimp/images/icons-192.png",
+                    "src": "/mantisshrimp/images/icons-192.png",
                     "sizes": "192x192"
                 }
             ]
