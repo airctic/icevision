@@ -14,9 +14,9 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "/",
+    "start_url": "/mantisshrimp/",
     "background_color": "white",
-    "display": "browser",
+    "display": "standalone",
     "scope": "/",
     "theme_color": "white",
     "shortcuts": [
