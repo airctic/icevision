@@ -288,6 +288,11 @@ def generate(dest_dir: Path):
     shutil.copyfile(mantisshrimp_dir / "DEPLOYMENT.md", dest_dir / "deployment.md")
 
     shutil.copyfile(
+        mantisshrimp_dir / "mantisshrimp/models/README.md",
+        dest_dir / "model_comparison.md",
+    )
+
+    shutil.copyfile(
         mantisshrimp_dir / "mantisshrimp/models/efficientdet/README.md",
         dest_dir / "model_efficientdet.md",
     )
