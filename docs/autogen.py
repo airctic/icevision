@@ -239,12 +239,16 @@ def examples_to_md(dest_dir):
 
 def generate(dest_dir: Path):
     template_dir = mantisshrimp_dir / "docs" / "templates"
+    template_images_dir = Path(template_dir) / "images"
 
     # Create dest_dir if doesn't exist
     if os.path.exists(dest_dir):
         print("Removing sources folder:", dest_dir)
         shutil.rmtree(dest_dir)
     os.makedirs(dest_dir)
+
+    # Copy images folder from root folder to the template images folder
+    copy_tree(str(mantisshrimp_dir / "images"), str(template_images_dir))
 
     # Generate APIs Documentation
     doc_generator = keras_autodoc.DocumentationGenerator(
@@ -273,12 +277,12 @@ def generate(dest_dir: Path):
 
     # Copy static .md files from the root folder
     shutil.copyfile(mantisshrimp_dir / "CONTRIBUTING.md", dest_dir / "contributing.md")
-    shutil.copyfile(mantisshrimp_dir / "INSTALL.md", dest_dir / "install.md")
-    shutil.copyfile(
-        mantisshrimp_dir / "HOW-TO.md", dest_dir / "how-to.md",
-    )
 
     # Copy static .md files from the docs folder
+    shutil.copyfile(mantisshrimp_dir / "docs/INSTALL.md", dest_dir / "install.md")
+    shutil.copyfile(
+        mantisshrimp_dir / "docs/HOW-TO.md", dest_dir / "how-to.md",
+    )
     shutil.copyfile(mantisshrimp_dir / "docs/ABOUT.md", dest_dir / "about.md")
 
     shutil.copyfile(mantisshrimp_dir / "docs/DOCKER.md", dest_dir / "docker.md")
@@ -328,7 +332,6 @@ def generate(dest_dir: Path):
     )
 
     # Copy images folder from the template folder to the destination folder
-    template_images_dir = Path(template_dir) / "images"
     print("Template folder: ", template_images_dir)
     dest_images_dir = Path(dest_dir) / "images"
 
