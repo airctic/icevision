@@ -110,6 +110,15 @@ def draw_bbox(
 def draw_mask(
     img: np.ndarray, mask: MaskArray, color: Tuple[int, int, int], blend: float = 0.5
 ):
+    color = np.asarray(color, dtype=int)
+    # draw mask
     mask_idxs = np.where(mask.data)
     img[mask_idxs] = blend * img[mask_idxs] + (1 - blend) * color
+
+    # draw border
+    border = mask.data - cv2.erode(mask.data, np.ones((7, 7), np.uint8), iterations=1)
+    border_idxs = np.where(border)
+    img[border_idxs] = color
+
     return img
+
