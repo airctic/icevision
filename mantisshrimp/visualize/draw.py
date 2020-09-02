@@ -69,13 +69,26 @@ def draw_label(
     return _draw_label(img=img, caption=caption, x=int(x), y=int(y), color=color)
 
 
-def _draw_label(img: np.ndarray, caption: str, x: int, y: int, color):
+def _draw_label(
+    img: np.ndarray,
+    caption: str,
+    x: int,
+    y: int,
+    color,
+    font=cv2.FONT_HERSHEY_SIMPLEX,
+    font_scale: float = 1.0,
+):
     """ Draws a caption above the box in an image.
     """
-    cv2.putText(img, caption, (x, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
-    cv2.putText(
-        img, caption, (x, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1
-    )
+    y -= 10
+    w, h = cv2.getTextSize(caption, font, fontScale=font_scale, thickness=1)[0]
+
+    # make the coords of the box with a small padding of two pixels
+    box_pt1, box_pt2 = (x, y + 10), (x + w + 2, y - h - 2)
+    cv2.rectangle(img, box_pt1, box_pt2, color, cv2.FILLED)
+
+    cv2.putText(img, caption, (x, y), font, font_scale, (240, 240, 240), 2)
+
     return img
 
 
