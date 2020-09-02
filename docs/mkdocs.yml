@@ -1,4 +1,6 @@
 site_name: Mantisshrimp
+site_author: Lucas Goulart Vazquez, Farid Hassainia, and Contributors
+copyright: airctic.com
 theme:
   name: 'material'
   palette:
