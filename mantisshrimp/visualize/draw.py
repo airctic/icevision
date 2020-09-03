@@ -161,4 +161,3 @@ def draw_mask(
     img[border_idxs] = color
 
     return img
-
