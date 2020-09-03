@@ -1,6 +1,9 @@
-"""
-How to use the inference API.
-"""
+# How to use the inference API
+
+The inference API is unified one. It is independent from both [Fastai](https://github.com/fastai/fastai) or [Pytorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning)
+
+
+```python
 # Installing Mantisshrimp
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
@@ -53,3 +56,4 @@ show_preds(
     denormalize_fn=denormalize_imagenet,
     show=True,
 )
+```
