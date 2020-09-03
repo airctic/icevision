@@ -2,7 +2,7 @@ from mantisshrimp.all import *
 
 
 def test_draw_record(record):
-    img = draw_record(record)
+    img = draw_record(record, display_bbox=False)
     show_img(img, show=True)
 
 

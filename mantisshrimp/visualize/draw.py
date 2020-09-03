@@ -19,6 +19,9 @@ def draw_sample(
     sample,
     class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
 ):
     img = sample["img"].copy()
     if denormalize_fn is not None:
@@ -29,11 +32,11 @@ def draw_sample(
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
 
-        if mask is not None:
+        if display_mask and mask is not None:
             img = draw_mask(img=img, mask=mask, color=color)
-        if bbox is not None:
+        if display_bbox and bbox is not None:
             img = draw_bbox(img=img, bbox=bbox, color=color)
-        if label is not None:
+        if display_label and label is not None:
             img = draw_label(
                 img=img,
                 label=label,
@@ -54,6 +57,7 @@ def draw_label(
     bbox=None,
     mask=None,
 ):
+    # finds label position based on bbox or mask
     if bbox is not None:
         x, y = bbox.x, bbox.y
     elif mask is not None:
@@ -92,17 +96,40 @@ def _draw_label(
     return img
 
 
-def draw_record(record, class_map: Optional[ClassMap] = None):
+def draw_record(
+    record,
+    class_map: Optional[ClassMap] = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
+):
     sample = default_prepare_record(record)
-    return draw_sample(sample=sample, class_map=class_map)
+    return draw_sample(
+        sample=sample,
+        class_map=class_map,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
+    )
 
 
 def draw_pred(
-    img: np.ndarray, pred: dict,
+    img: np.ndarray,
+    pred: dict,
+    class_map: Optional[ClassMap] = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
 ):
     sample = pred.copy()
     sample["img"] = img
-    return draw_sample(sample=sample)
+    return draw_sample(
+        sample=sample,
+        class_map=class_map,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
+    )
 
 
 def draw_bbox(
