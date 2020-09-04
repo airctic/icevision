@@ -27,6 +27,11 @@ def record(records):
     return records[0].copy()
 
 
+@pytest.fixture(scope="module")
+def sample(record):
+    return default_prepare_record(record)
+
+
 @pytest.fixture()
 def image():
     # Get a big image because of these big CNNs

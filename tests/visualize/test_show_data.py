@@ -1,35 +1,18 @@
-import pytest
 from mantisshrimp.all import *
 
 
-def test_show_record_label_bbox_mask(record, monkeypatch):
+def test_show_record(record, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
-    show_record(record)
-    plt.show()
+    show_record(record, display_bbox=False, show=True)
 
 
-def test_show_record_label_bbox(record, monkeypatch):
+def test_show_sample(sample, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
-    record = record.copy()
-    record.pop("masks")
-    show_record(record)
-    plt.show()
+    show_sample(sample, show=True)
 
 
-def test_show_record_label_mask(record, monkeypatch):
+def test_show_pred(record, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
-    record = record.copy()
-    record.pop("bboxes")
-    show_record(record)
-    plt.show()
-
-
-def test_show_record_label(record, monkeypatch):
-    monkeypatch.setattr(plt, "show", lambda: None)
-    record = record.copy()
-    record.pop("bboxes")
-    record.pop("masks")
-    with pytest.raises(ValueError) as e:
-        show_record(record)
-    assert str(e.value) == "Can only display labels if bboxes or masks are given"
-    plt.show()
+    img = np.zeros((200, 200, 3))
+    pred = {"bboxes": [BBox.from_xywh(100, 100, 50, 50)], "labels": [1]}
+    show_pred(img=img, pred=pred)

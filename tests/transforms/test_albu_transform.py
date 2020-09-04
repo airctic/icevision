@@ -35,4 +35,3 @@ def test_crop_transform_empty(records):
     assert len(tfmed["bboxes"]) == 0
     assert len(tfmed["masks"]) == 0
     assert len(tfmed["iscrowds"]) == 0
-
