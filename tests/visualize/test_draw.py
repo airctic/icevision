@@ -1,12 +1,14 @@
 from mantisshrimp.all import *
 
 
-def test_draw_record(record):
+def test_draw_record(record, monkeypatch):
+    monkeypatch.setattr(plt, "show", lambda: None)
     img = draw_record(record, display_bbox=False)
     show_img(img, show=True)
 
 
-def test_draw_sample(fridge_ds):
+def test_draw_sample(fridge_ds, monkeypatch):
+    monkeypatch.setattr(plt, "show", lambda: None)
     sample = fridge_ds[0][0]
     class_map = datasets.fridge.class_map()
     img = draw_sample(sample, class_map=class_map, denormalize_fn=denormalize_imagenet)
