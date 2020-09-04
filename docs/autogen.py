@@ -331,6 +331,10 @@ def generate(dest_dir: Path):
         dest_dir / "albumentations.md",
     )
 
+    # Copy .md examples files to destination examples folder
+    # Copy css folder
+    copy_tree(str(mantisshrimp_dir / "examples"), str(dest_dir / "examples"))
+
     # Copy images folder from the template folder to the destination folder
     print("Template folder: ", template_images_dir)
     dest_images_dir = Path(dest_dir) / "images"
@@ -348,7 +352,7 @@ def generate(dest_dir: Path):
     nb_to_md(dest_dir)
 
     # Generate .md files form python files located in the /examples folder
-    examples_to_md(dest_dir)
+    # examples_to_md(dest_dir)
 
 
 if __name__ == "__main__":
