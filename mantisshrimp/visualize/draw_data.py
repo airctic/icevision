@@ -119,6 +119,7 @@ def draw_pred(
     img: np.ndarray,
     pred: dict,
     class_map: Optional[ClassMap] = None,
+    denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
@@ -128,6 +129,7 @@ def draw_pred(
     return draw_sample(
         sample=sample,
         class_map=class_map,
+        denormalize_fn=denormalize_fn,
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,

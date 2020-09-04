@@ -12,85 +12,80 @@ from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers import *
 from mantisshrimp.data import *
-from mantisshrimp.visualize.show_annotation import *
+from mantisshrimp.visualize.draw import *
 
 
 def show_sample(
     sample,
     class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = None,
-    label=True,
-    bbox=True,
-    mask=True,
-    show=False,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
+    show: bool = True,
     ax: plt.Axes = None,
 ) -> None:
-    show_annotation(
-        img=sample["img"] if denormalize_fn is None else denormalize_fn(sample["img"]),
-        labels=sample["labels"] if (label and "labels" in sample) else None,
-        bboxes=sample["bboxes"] if (bbox and "bboxes" in sample) else None,
-        masks=sample["masks"] if (mask and "masks" in sample) else None,
+    img = draw_sample(
+        sample=sample,
         class_map=class_map,
-        ax=ax,
-        show=show,
+        denormalize_fn=denormalize_fn,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
     )
+    show_img(img=img, ax=ax, show=show)
 
 
 def show_record(
-    record: RecordType,
+    record,
     class_map: Optional[ClassMap] = None,
-    label: bool = True,
-    bbox: bool = True,
-    mask: bool = True,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
     ax: plt.Axes = None,
     show: bool = False,
     prepare_record: Optional[callable] = None,
 ) -> None:
-    data_preparer = prepare_record or default_prepare_record
-    sample = data_preparer(record)
-    show_sample(
-        sample=sample,
-        label=label,
-        bbox=bbox,
-        mask=mask,
+    img = draw_record(
+        record=record,
         class_map=class_map,
-        ax=ax,
-        show=show,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
+        prepare_record=prepare_record,
     )
+    show_img(img=img, ax=ax, show=show)
 
 
 def show_pred(
     img: np.ndarray,
     pred: dict,
     class_map: Optional[ClassMap] = None,
-    denormalize_fn=None,
-    label=True,
-    bbox=True,
-    mask=True,
-    show=False,
+    denormalize_fn: Optional[callable] = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
+    show: bool = True,
     ax: plt.Axes = None,
 ) -> None:
-    sample = pred.copy()
-    sample["img"] = img
-
-    show_sample(
-        sample=sample,
-        denormalize_fn=denormalize_fn,
-        label=label,
-        bbox=bbox,
-        mask=mask,
+    img = draw_pred(
+        img=img,
+        pred=pred,
         class_map=class_map,
-        show=show,
-        ax=ax,
+        denormalize_fn=denormalize_fn,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
     )
+    show_img(img=img, ax=ax, show=show)
 
 
 def show_records(
     records: Sequence[RecordType],
     class_map: Optional[ClassMap] = None,
-    label: bool = True,
-    bbox: bool = True,
-    mask: bool = True,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
     prepare_record: Optional[callable] = None,
     ncols: int = 1,
     figsize=None,
@@ -100,9 +95,9 @@ def show_records(
         partial(
             show_record,
             record=record,
-            label=label,
-            bbox=bbox,
-            mask=mask,
+            display_label=display_label,
+            display_bbox=display_bbox,
+            display_mask=display_mask,
             class_map=class_map,
             prepare_record=prepare_record,
             show=False,
@@ -116,9 +111,9 @@ def show_samples(
     samples: Sequence[dict],
     class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = None,
-    label=True,
-    bbox=True,
-    mask=True,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
     ncols: int = 1,
     figsize=None,
     show=False,
@@ -128,9 +123,9 @@ def show_samples(
             show_sample,
             sample=sample,
             denormalize_fn=denormalize_fn,
-            label=label,
-            bbox=bbox,
-            mask=mask,
+            display_label=display_label,
+            display_bbox=display_bbox,
+            display_mask=display_mask,
             class_map=class_map,
             show=False,
         )
@@ -144,9 +139,9 @@ def show_preds(
     preds: Sequence[dict],
     class_map: Optional[ClassMap] = None,
     denormalize_fn=None,
-    label=True,
-    bbox=True,
-    mask=True,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
     ncols: int = 1,
     figsize=None,
     show=False,
@@ -164,9 +159,9 @@ def show_preds(
             pred=pred,
             class_map=class_map,
             denormalize_fn=denormalize_fn,
-            label=label,
-            bbox=bbox,
-            mask=mask,
+            display_label=display_label,
+            display_bbox=display_bbox,
+            display_mask=display_mask,
             show=False,
         )
         for img, pred in zip(imgs, preds)
