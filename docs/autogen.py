@@ -277,6 +277,9 @@ def generate(dest_dir: Path):
 
     # Copy static .md files from the root folder
     shutil.copyfile(mantisshrimp_dir / "CONTRIBUTING.md", dest_dir / "contributing.md")
+    shutil.copyfile(
+        mantisshrimp_dir / "CODE_OF_CONDUCT.md", dest_dir / "code_of_conduct.md"
+    )
 
     # Copy static .md files from the docs folder
     shutil.copyfile(mantisshrimp_dir / "docs/INSTALL.md", dest_dir / "install.md")
@@ -291,7 +294,7 @@ def generate(dest_dir: Path):
 
     shutil.copyfile(
         mantisshrimp_dir / "docs/CHANGING-THE-COLORS.md",
-        dest_dir / "changing-the-colors.md",
+        dest_dir / "changing_the_colors.md",
     )
 
     shutil.copyfile(mantisshrimp_dir / "docs/DEPLOYMENT.md", dest_dir / "deployment.md")
