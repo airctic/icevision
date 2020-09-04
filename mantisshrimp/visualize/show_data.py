@@ -12,7 +12,7 @@ from mantisshrimp.utils import *
 from mantisshrimp.core import *
 from mantisshrimp.parsers import *
 from mantisshrimp.data import *
-from mantisshrimp.visualize.draw import *
+from mantisshrimp.visualize.draw_data import *
 
 
 def show_sample(
