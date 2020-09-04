@@ -11,8 +11,7 @@ from icevision.core import *
 
 
 class DataSplitter(ABC):
-    """Base class for all data splitters.
-    """
+    """Base class for all data splitters."""
 
     def __call__(self, idmap: IDMap):
         return self.split(idmap=idmap)
@@ -28,8 +27,7 @@ class DataSplitter(ABC):
 
 
 class SingleSplitSplitter(DataSplitter):
-    """Return all items in a single group, without shuffling.
-    """
+    """Return all items in a single group, without shuffling."""
 
     def split(self, idmap: IDMap):
         """Puts all `ids` in a single group.
@@ -44,7 +42,7 @@ class RandomSplitter(DataSplitter):
     """Randomly splits items.
 
     # Arguments
-        probs: `Sequence` of probabilities that must sum to one. The length of the 
+        probs: `Sequence` of probabilities that must sum to one. The length of the
             `Sequence` is the number of groups to to split the items into.
         seed: Internal seed used for shuffling the items. Define this if you need
             reproducible results.
@@ -86,13 +84,13 @@ class RandomSplitter(DataSplitter):
 
 
 class FixedSplitter(DataSplitter):
-    """ Split `ids` based on predefined splits.
+    """Split `ids` based on predefined splits.
 
     # Arguments:
         splits: The predefined splits.
 
     # Examples
-    
+
         Split data into three pre-defined groups.
         ```python
         idmap = IDMap(["file1", "file2", "file3", "file4"])

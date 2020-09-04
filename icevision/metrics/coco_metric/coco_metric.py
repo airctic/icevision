@@ -7,8 +7,7 @@ from icevision.metrics.metric import *
 
 
 class COCOMetricType(Enum):
-    """Available options for `COCOMetric`.
-    """
+    """Available options for `COCOMetric`."""
 
     bbox = "bbox"
     mask = "segm"

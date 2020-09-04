@@ -64,7 +64,9 @@ PAGES = {
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
     ],
-    "mask_rcnn_fastai.md": ["icevision.models.rcnn.mask_rcnn.fastai.learner.learner",],
+    "mask_rcnn_fastai.md": [
+        "icevision.models.rcnn.mask_rcnn.fastai.learner.learner",
+    ],
     "mask_rcnn_lightning.md": [
         "icevision.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
@@ -77,7 +79,9 @@ PAGES = {
         "icevision.models.efficientdet.dataloaders.build_valid_batch",
         "icevision.models.efficientdet.dataloaders.build_infer_batch",
     ],
-    "efficientdet_fastai.md": ["icevision.models.efficientdet.fastai.learner.learner",],
+    "efficientdet_fastai.md": [
+        "icevision.models.efficientdet.fastai.learner.learner",
+    ],
     "efficientdet_lightning.md": [
         "icevision.models.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
@@ -280,7 +284,8 @@ def generate(dest_dir: Path):
     # Copy static .md files from the docs folder
     shutil.copyfile(mantisshrimp_dir / "docs/INSTALL.md", dest_dir / "install.md")
     shutil.copyfile(
-        mantisshrimp_dir / "docs/HOW-TO.md", dest_dir / "how-to.md",
+        mantisshrimp_dir / "docs/HOW-TO.md",
+        dest_dir / "how-to.md",
     )
     shutil.copyfile(mantisshrimp_dir / "docs/ABOUT.md", dest_dir / "about.md")
 
@@ -322,11 +327,13 @@ def generate(dest_dir: Path):
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/datasets/README.md", dest_dir / "datasets.md",
+        mantisshrimp_dir / "icevision/datasets/README.md",
+        dest_dir / "datasets.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
+        mantisshrimp_dir / "icevision/tfms/README.md",
+        dest_dir / "albumentations.md",
     )
 
     # Copy .md examples files to destination examples folder

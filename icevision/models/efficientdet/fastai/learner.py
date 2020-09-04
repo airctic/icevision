@@ -13,7 +13,7 @@ def learner(
     cbs=None,
     **learner_kwargs,
 ):
-    """ Fastai `Learner` adapted for EfficientDet.
+    """Fastai `Learner` adapted for EfficientDet.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.

@@ -49,7 +49,7 @@ if SoftDependencies.pytorch_lightning:
 
 # TODO: Stop importing partial from fastcore and move this to utils
 class partial:
-    """ Wraps functools.partial, same functionality.
+    """Wraps functools.partial, same functionality.
 
     Modifies the original partial `__repr__` and `__str__` in other to fix #270
     """

@@ -12,7 +12,7 @@ from icevision.models.utils import *
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """ A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
 
     # Arguments
         dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
@@ -32,7 +32,7 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """ A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
 
     # Arguments
         dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
@@ -52,7 +52,7 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """ A `DataLoader` with a custom `collate_fn` that batches items as required for inferring the model.
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for inferring the model.
 
     # Arguments
         dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
@@ -72,12 +72,12 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def build_train_batch(records, batch_tfms=None):
-    """ Builds a batch in the format required by the model when training.
+    """Builds a batch in the format required by the model when training.
 
     # Arguments
         records: A `Sequence` of records.
         batch_tfms: Transforms to be applied at the batch level.
-    
+
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list
@@ -110,12 +110,12 @@ def build_train_batch(records, batch_tfms=None):
 
 
 def build_valid_batch(records, batch_tfms=None):
-    """ Builds a batch in the format required by the model when validating.
+    """Builds a batch in the format required by the model when validating.
 
     # Arguments
         records: A `Sequence` of records.
         batch_tfms: Transforms to be applied at the batch level.
-    
+
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list
@@ -142,16 +142,16 @@ def build_valid_batch(records, batch_tfms=None):
 
 
 def build_infer_batch(dataset, batch_tfms=None):
-    """ Builds a batch in the format required by the model when doing inference.
+    """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
         records: A `Sequence` of records.
         batch_tfms: Transforms to be applied at the batch level.
-    
+
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied. # Examples 
+        of the input records with `batch_tfms` applied. # Examples
     Use the result of this function to feed the model.
     ```python
     batch, records = build_infer_batch(records)

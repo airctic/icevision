@@ -5,7 +5,7 @@ from io import StringIO
 
 
 class CaptureStdout(list):
-    """ Capture the stdout (like prints)
+    """Capture the stdout (like prints)
     From: https://stackoverflow.com/a/16571630/6772672
     """
 

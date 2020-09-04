@@ -24,7 +24,10 @@ def predict(
 
 
 def predict_dl(
-    model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True, **predict_kwargs,
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    **predict_kwargs,
 ):
     return _predict_dl(
         predict_fn=predict,

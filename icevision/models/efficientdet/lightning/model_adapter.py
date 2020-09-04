@@ -8,8 +8,8 @@ from icevision.models import efficientdet
 
 
 class ModelAdapter(LightningModelAdapter, ABC):
-    """ Lightning module specialized for EfficientDet, with metrics support.
-    
+    """Lightning module specialized for EfficientDet, with metrics support.
+
     The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
     are already overriden.
 

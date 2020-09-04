@@ -155,8 +155,7 @@ class AreasMixin(ParserMixin):
 
     @abstractmethod
     def areas(self, o) -> List[float]:
-        """ Returns areas of the segmentation
-        """
+        """Returns areas of the segmentation"""
 
     @classmethod
     def _templates(cls) -> List[str]:

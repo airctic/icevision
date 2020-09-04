@@ -9,13 +9,11 @@ class Metric(ABC):
 
     @abstractmethod
     def accumulate(self, records, preds):
-        """ Accumulate stats for a single batch
-        """
+        """Accumulate stats for a single batch"""
 
     @abstractmethod
     def finalize(self) -> Dict[str, float]:
-        """ Called at the end of the validation loop
-        """
+        """Called at the end of the validation loop"""
 
     @property
     def name(self) -> str:

@@ -18,7 +18,7 @@ from icevision.models.rcnn.faster_rcnn.dataloaders import (
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """ A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
 
     # Arguments
         dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
@@ -38,7 +38,7 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """ A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
 
     # Arguments
         dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
@@ -76,12 +76,12 @@ def _build_mask_train_sample(record: RecordType):
 def build_train_batch(
     records: List[RecordType], batch_tfms=None
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
-    """ Builds a batch in the format required by the model when training.
+    """Builds a batch in the format required by the model when training.
 
     # Arguments
         records: A `Sequence` of records.
         batch_tfms: Transforms to be applied at the batch level.
-    
+
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list
@@ -109,12 +109,12 @@ def build_train_batch(
 def build_valid_batch(
     records: List[RecordType], batch_tfms=None
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
-    """ Builds a batch in the format required by the model when validating.
+    """Builds a batch in the format required by the model when validating.
 
     # Arguments
         records: A `Sequence` of records.
         batch_tfms: Transforms to be applied at the batch level.
-    
+
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
         in the input format required by the model. The second will be an updated list

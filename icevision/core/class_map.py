@@ -4,8 +4,7 @@ from icevision.imports import *
 
 
 class ClassMap:
-    """ Utility class for mapping between class name and id.
-    """
+    """Utility class for mapping between class name and id."""
 
     def __init__(self, classes: List[str], background: Optional[int] = 0):
         classes = classes.copy()

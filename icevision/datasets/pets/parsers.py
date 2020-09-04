@@ -37,7 +37,7 @@ class PetsMaskParser(parsers.VocMaskParser):
 
 @dataclass
 class PetsMaskFile(VocMaskFile):
-    """ Extension of `MaskFile` for Pets masks.
+    """Extension of `MaskFile` for Pets masks.
     Invert 0s and 1s in the mask (the background is orignally 1 in the pets masks)
     Removes the color pallete and optionally drops void pixels.
 

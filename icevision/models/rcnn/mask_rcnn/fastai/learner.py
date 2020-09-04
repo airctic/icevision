@@ -12,7 +12,7 @@ def learner(
     cbs=None,
     **learner_kwargs
 ):
-    """ Fastai `Learner` adapted for Mask RCNN.
+    """Fastai `Learner` adapted for Mask RCNN.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.

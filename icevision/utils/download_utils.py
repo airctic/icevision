@@ -10,8 +10,7 @@ import requests
 
 
 def download_url(url, save_path, chunk_size=1024) -> None:
-    """ Download file from url
-    """
+    """Download file from url"""
     r = requests.get(url, stream=True)
     with open(save_path, "wb") as f:
         bar = tqdm(unit="B", total=int(r.headers["Content-Length"]))
@@ -31,8 +30,7 @@ def download_and_extract(
 
 
 def download_gdrive(url, save_path):
-    """Download from gdrive, passing virus scan for big files.
-    """
+    """Download from gdrive, passing virus scan for big files."""
     import gdown
 
     gdown.download(url=str(url), output=str(save_path), quiet=False)

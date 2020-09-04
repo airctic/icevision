@@ -82,8 +82,7 @@ def _draw_label(
     font=cv2.FONT_HERSHEY_SIMPLEX,
     font_scale: float = 1.0,
 ):
-    """ Draws a caption above the box in an image.
-    """
+    """Draws a caption above the box in an image."""
     y -= 10
     w, h = cv2.getTextSize(caption, font, fontScale=font_scale, thickness=1)[0]
 
@@ -139,7 +138,7 @@ def draw_pred(
 def draw_bbox(
     img: np.ndarray, bbox: BBox, color: Tuple[int, int, int], thickness: int = 2
 ):
-    """ Draws a box on an image with a given color.
+    """Draws a box on an image with a given color.
     # Arguments
         image     : The image to draw on.
         box       : A list of 4 elements (x1, y1, x2, y2).

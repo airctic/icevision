@@ -24,7 +24,7 @@ class Transform(ABC):
         bbox: List[BBox],
         mask: MaskArray,
     ):
-        """ Apply the transform
+        """Apply the transform
         Returns:
               dict: Modified values, the keys of the dictionary should have the same
               names as the keys received by this function

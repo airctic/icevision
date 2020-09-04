@@ -14,8 +14,7 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
 
     @abstractmethod
     def convert_raw_predictions(self, raw_preds):
-        """ Convert raw predictions from the model to library standard.
-        """
+        """Convert raw predictions from the model to library standard."""
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)

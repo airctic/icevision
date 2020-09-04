@@ -39,8 +39,7 @@ class MaskArray(Mask):
         return mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
 
     def to_coco_rle(self, h, w) -> List[dict]:
-        """ From https://stackoverflow.com/a/49547872/6772672
-        """
+        """From https://stackoverflow.com/a/49547872/6772672"""
         assert self.data.shape[1:] == (h, w)
         rles = []
         for mask in self.data:
@@ -96,7 +95,7 @@ class MaskFile(Mask):
 
 @dataclass
 class VocMaskFile(MaskFile):
-    """ Extension of `MaskFile` for VOC masks.
+    """Extension of `MaskFile` for VOC masks.
     Removes the color pallete and optionally drops void pixels.
 
     Args:
@@ -151,16 +150,14 @@ class RLE(Mask):
 
     @classmethod
     def from_kaggle(cls, counts):
-        """Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)
-        """
+        """Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)"""
         if len(counts) % 2 != 0:
             raise ValueError("Counts must be divisible by 2")
         return cls(counts)
 
     @classmethod
     def from_coco(cls, counts):
-        """Described [here](https://stackoverflow.com/a/49547872/6772672)
-        """
+        """Described [here](https://stackoverflow.com/a/49547872/6772672)"""
         # when counts is odd, round it with 0 ones at the end
         if len(counts) % 2 != 0:
             counts = counts + [0]

@@ -16,7 +16,9 @@ def voc(
     mask: bool = False,
 ):
     parser = VocXmlParser(
-        annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map,
+        annotations_dir=annotations_dir,
+        images_dir=images_dir,
+        class_map=class_map,
     )
 
     if mask:

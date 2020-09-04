@@ -10,7 +10,7 @@ def learner(
     cbs: Optional[Sequence[fastai.Callback]] = None,
     **learner_kwargs
 ) -> fastai.Learner:
-    """ Fastai `Learner` adapted for Faster RCNN.
+    """Fastai `Learner` adapted for Faster RCNN.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.

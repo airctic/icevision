@@ -80,7 +80,7 @@ def aug_tfms(
 
 
 class Adapter(Transform):
-    """ Adapter that enables the use of albumentations transforms.
+    """Adapter that enables the use of albumentations transforms.
 
     # Arguments
         tfms: `Sequence` of albumentation transforms.

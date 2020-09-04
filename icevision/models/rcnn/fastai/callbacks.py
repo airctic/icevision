@@ -8,8 +8,7 @@ from icevision.models.rcnn import faster_rcnn
 class RCNNCallback(fastai.Callback, ABC):
     @abstractmethod
     def convert_raw_predictions(self, raw_preds):
-        """ Convert raw predictions from the model to library standard.
-        """
+        """Convert raw predictions from the model to library standard."""
 
     def begin_batch(self):
         assert len(self.xb) == len(self.yb) == 1, "Only works for single input-output"

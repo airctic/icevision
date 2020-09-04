@@ -40,7 +40,7 @@ def check_all_model_params_in_groups2(
 
 
 def model_device(model: nn.Module):
-    """ Returns the device the first model parameter is stored.
+    """Returns the device the first model parameter is stored.
 
     Can be wrong if different parts of the model are in different devices.
     """

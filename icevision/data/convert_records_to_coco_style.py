@@ -16,7 +16,7 @@ from pycocotools.cocoeval import COCOeval
 
 
 def create_coco_api(coco_records) -> COCO:
-    """ Create COCO dataset api
+    """Create COCO dataset api
 
     Args:
         coco_records: Records in coco style (use convert_records_to_coco_style to convert
@@ -35,8 +35,7 @@ def coco_api_from_preds(preds) -> COCO:
 
 
 def coco_api_from_records(records) -> COCO:
-    """ Create pycocotools COCO dataset from records
-    """
+    """Create pycocotools COCO dataset from records"""
     coco_records = convert_records_to_coco_style(records)
     return create_coco_api(coco_records=coco_records)
 
@@ -133,7 +132,7 @@ def convert_preds_to_coco_style(preds):
 def convert_records_to_coco_style(
     records, images: bool = True, annotations: bool = True, categories: bool = True
 ):
-    """ Converts records from library format to coco format.
+    """Converts records from library format to coco format.
     Inspired from: https://github.com/pytorch/vision/blob/master/references/detection/coco_utils.py#L146
     """
     images_ = []
