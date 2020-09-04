@@ -1,6 +1,6 @@
 import pytest
-import mantisshrimp
-from mantisshrimp.all import *
+import icevision
+from icevision.all import *
 
 
 @pytest.fixture()
@@ -10,7 +10,7 @@ def coco_records(records):
 
 @pytest.fixture()
 def expected_records():
-    source = Path(mantisshrimp.__file__).parent.parent / "samples"
+    source = Path(icevision.__file__).parent.parent / "samples"
     dataset = torchvision.datasets.CocoDetection(source, source / "annotations.json")
     return dataset.coco.dataset
 

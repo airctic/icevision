@@ -5,11 +5,11 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
 === "Fastai"
     ```python  hl_lines="52-61"
 
-    # Installing Mantisshrimp
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Installing IceVision
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 
@@ -86,11 +86,11 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
 === "Pytorch Lightning"
     ```python  hl_lines="52-60"
     
-    # Installing Mantisshrimp
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Installing IceVision
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 

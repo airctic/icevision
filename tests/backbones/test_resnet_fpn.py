@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp import *
+from icevision import *
 
 
 @pytest.mark.parametrize(

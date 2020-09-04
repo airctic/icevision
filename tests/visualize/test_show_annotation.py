@@ -1,4 +1,4 @@
-from mantisshrimp.all import *
+from icevision.all import *
 
 
 def test_show_annotation(record, monkeypatch):

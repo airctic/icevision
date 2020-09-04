@@ -1,4 +1,4 @@
-site_name: Mantisshrimp
+site_name: IceVision
 site_author: Lucas Goulart Vazquez, Farid Hassainia, and Contributors
 copyright: airctic.com
 theme:
@@ -9,11 +9,11 @@ theme:
     accent: 'blue'
 
 docs_dir: sources
-repo_url: https://github.com/airctic/Mantisshrimp
+repo_url: https://github.com/airctic/IceVision
 site_url: https://icevision.airctic.com/
 edit_uri: ""
-site_description: 'Documentation for Mantisshrimp.'
-# google_analytics: ['UA-44322747-3', 'https://airctic.github.io/mantisshrimp/']
+site_description: 'Documentation for IceVision.'
+# google_analytics: ['UA-44322747-3', 'https://airctic.github.io/icevision/']
 markdown_extensions:
   - codehilite
   - pymdownx.snippets:
@@ -28,6 +28,7 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
   - pymdownx.tabbed
+  - attr_list
 extra:
   manifest: manifest.webmanifest
 extra_css:
@@ -97,5 +98,6 @@ nav:
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Preferences:
-    - Changing the colors: changing-the-colors.md    
+    - Changing the colors: changing_the_colors.md    
+  - Code of Conduct: code_of_conduct.md
   - About: about.md

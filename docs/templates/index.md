@@ -2,14 +2,18 @@
 
 ##
 
-!!! danger "Mantisshrimp: Agnostic Object Detection Framework"
+!!! danger "IceVision: Agnostic Object Detection Framework"
     We are both a welcoming and an open community. 
     We warmly invite you to join us either as a user or a community contributor.
     We will be happy to hear from you.
 
+[Join our Users Forum](https://spectrum.chat/mantis){: .md-button .md-button--primary }
+[Join our Devs Forum](https://discord.gg/QxHctJF){: .md-button .md-button--secondary }
+
+
 !!! info "We Need Your Help" 
     If you find this work useful, please let other people know by **starring** it,
-    and sharing it on [GitHub](https://github.com/airctic/Mantisshrimp).
+    and sharing it on [GitHub](https://github.com/airctic/IceVision).
 
     Thank you
     

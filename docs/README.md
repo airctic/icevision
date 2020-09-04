@@ -1,12 +1,12 @@
-# Mantisshrimp Documentation
+# IceVision Documentation
 
-The source for Mantisshrimp documentation is in the `docs/` folder.
+The source for IceVision documentation is in the `docs/` folder.
 Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdocs.org).
 
 ## Building the documentation
 
 - Install dependencies: `pip install -r docs/requirements.txt`
-- `pip install -e .` to make sure that Python will import your modified version of Mantisshrimp.
+- `pip install -e .` to make sure that Python will import your modified version of IceVision.
 - From the root directory, `cd` into the `docs/` folder and run:
     - `python autogen.py`
     - `mkdocs serve`    # Starts a local webserver:  [localhost:8000](http://localhost:8000)

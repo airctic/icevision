@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp.all import *
+from icevision.all import *
 
 
 # WARNING: Only works with cuda: https://github.com/rwightman/efficientdet-pytorch/issues/44#issuecomment-662594014

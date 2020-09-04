@@ -41,23 +41,23 @@ ENV PATH /home/containeruser/conda/bin:$PATH
 # install Pytorch with cuda dependencies. This pytorch is GPU accelerated.
 RUN pip install torch==$PYTORCH_VERSION
 
-# Now install mantisshrimp
+# Now install icevision
 # We need only the master branch not all branches
-RUN git clone https://github.com/airctic/mantisshrimp.git --single-branch --branch $MANTISSHRIMP_VERSION
+RUN git clone https://github.com/airctic/icevision.git --single-branch --branch $MANTISSHRIMP_VERSION
 
-# WORKDIR "/mantisshrimp"
+# WORKDIR "/icevision"
 
 # This is another good practice to cache the files before installing.
 COPY requirements.txt  requirements.txt
 COPY requirements-extra.txt requirements-extra.txt
 RUN pip install -r requirements.txt && \
     pip install -r requirements-extra.txt && \
-    pip install ./mantisshrimp/ && \
+    pip install ./icevision/ && \
     pip install git+git://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI
 # CMD ls    
 # COPY Important files
 
-COPY mantisshrimp mantisshrimp
+COPY icevision icevision
 COPY examples examples
 COPY samples samples
 COPY tutorials tutorials

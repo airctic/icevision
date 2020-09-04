@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp.all import *
+from icevision.all import *
 from copy import deepcopy
 
 

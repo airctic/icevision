@@ -5,11 +5,11 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 === "Fastai"
     ```python  hl_lines="42-56"
 
-    # Installing Mantisshrimp
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Installing IceVision
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Load the PETS dataset
     path = datasets.pets.load()
@@ -56,11 +56,11 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 === "Pytorch Lightning"
     ```python  hl_lines="42-50"
     
-    # Installing Mantisshrimp
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Installing IceVision
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Load the PETS dataset
     path = datasets.pets.load()

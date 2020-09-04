@@ -1,4 +1,4 @@
-name: mantis
+name: ice
 channels:
 - fastai
 - pytorch
@@ -21,4 +21,4 @@ dependencies:
 - pip:
     - fastai2
 - pip:
-    - git+https://github.com/airctic/mantisshrimp.git
+    - git+https://github.com/airctic/icevision.git
