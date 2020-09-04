@@ -98,6 +98,7 @@ PAGES = {
 ROOT = "https://airctic.github.io/icevision/"
 
 mantisshrimp_dir = Path(__file__).resolve().parents[1]
+print("mantisshrimp_dir: ", mantisshrimp_dir)
 
 
 # From keras_autodocs
