@@ -1,2 +1,2 @@
-from mantisshrimp.datasets.pennfundan.data import *
-from mantisshrimp.datasets.pennfundan.parsers import *
+from icevision.datasets.pennfundan.data import *
+from icevision.datasets.pennfundan.parsers import *

@@ -8,8 +8,8 @@ __all__ = [
     "resnext101_32x8d",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 
 
 def _resnet_features(model: nn.Module, out_channels: int):

@@ -1,2 +1,2 @@
-from mantisshrimp.datasets.birds.data import *
-from mantisshrimp.datasets.birds.parsers import *
+from icevision.datasets.birds.data import *
+from icevision.datasets.birds.parsers import *

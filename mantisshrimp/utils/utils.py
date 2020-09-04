@@ -16,7 +16,7 @@ __all__ = [
     "denormalize_imagenet",
 ]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 def notnone(x):

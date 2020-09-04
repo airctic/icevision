@@ -1,8 +1,8 @@
 __all__ = ["DefaultImageInfoParser", "FasterRCNN", "MaskRCNN"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.parsers.parser import *
-from mantisshrimp.parsers.mixins import *
+from icevision.imports import *
+from icevision.parsers.parser import *
+from icevision.parsers.mixins import *
 
 
 class DefaultImageInfoParser(

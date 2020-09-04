@@ -1,7 +1,7 @@
 __all__ = ["Transform"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.core import *
 
 
 class Transform(ABC):

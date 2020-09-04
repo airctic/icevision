@@ -1,8 +1,8 @@
 __all__ = ["Dataset"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.tfms import *
-from mantisshrimp.data.prepare_record import *
+from icevision.imports import *
+from icevision.tfms import *
+from icevision.data.prepare_record import *
 
 
 class Dataset:

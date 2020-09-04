@@ -1,8 +1,8 @@
 __all__ = ["class_map", "load"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
 
 _CLASSES = sorted({"milk_bottle", "carton", "can", "water_bottle"})
 

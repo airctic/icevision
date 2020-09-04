@@ -1,9 +1,9 @@
 __all__ = ["COCOMetric", "COCOMetricType"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.data import *
-from mantisshrimp.metrics.metric import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.data import *
+from icevision.metrics.metric import *
 
 
 class COCOMetricType(Enum):

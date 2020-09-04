@@ -7,12 +7,12 @@ __all__ = [
     "show_preds",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.parsers import *
-from mantisshrimp.data import *
-from mantisshrimp.visualize.draw_data import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.parsers import *
+from icevision.data import *
+from icevision.visualize.draw_data import *
 
 
 def show_sample(

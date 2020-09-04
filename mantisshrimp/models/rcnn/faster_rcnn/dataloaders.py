@@ -7,9 +7,9 @@ __all__ = [
     "infer_dl",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp.models.utils import *
+from icevision.imports import *
+from icevision.core import *
+from icevision.models.utils import *
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:

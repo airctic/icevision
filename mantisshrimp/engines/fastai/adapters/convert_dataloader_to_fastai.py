@@ -1,7 +1,7 @@
 __all__ = ["convert_dataloader_to_fastai"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.engines.fastai.imports import *
+from icevision.imports import *
+from icevision.engines.fastai.imports import *
 from torch.utils.data import SequentialSampler, RandomSampler
 
 

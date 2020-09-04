@@ -1,9 +1,9 @@
 __all__ = ["RCNNCallback", "rcnn_learner"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.engines.fastai import *
-from mantisshrimp.models.rcnn.loss_fn import loss_fn
-from mantisshrimp.models.rcnn.fastai.callbacks import *
+from icevision.imports import *
+from icevision.engines.fastai import *
+from icevision.models.rcnn.loss_fn import loss_fn
+from icevision.models.rcnn.fastai.callbacks import *
 
 
 def rcnn_learner(

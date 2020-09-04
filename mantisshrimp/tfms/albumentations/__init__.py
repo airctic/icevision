@@ -1,2 +1,2 @@
 from albumentations import *
-from mantisshrimp.tfms.albumentations.tfms import *
+from icevision.tfms.albumentations.tfms import *

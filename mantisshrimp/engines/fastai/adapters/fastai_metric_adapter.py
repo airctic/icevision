@@ -1,8 +1,8 @@
 __all__ = ["FastaiMetricAdapter"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.metrics import Metric
-from mantisshrimp.engines.fastai.imports import *
+from icevision.imports import *
+from icevision.metrics import Metric
+from icevision.engines.fastai.imports import *
 
 
 class FastaiMetricAdapter(fastai.Metric):

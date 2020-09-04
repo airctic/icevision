@@ -5,9 +5,9 @@ __all__ = [
     "FixedSplitter",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
 
 
 class DataSplitter(ABC):

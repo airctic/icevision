@@ -1,8 +1,8 @@
 __all__ = ["plot_size_histogram"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp import *
+from icevision.imports import *
+from icevision.core import *
+from icevision import *
 
 
 def plot_size_histogram(records: List[RecordType], show=True) -> List[plt.Axes]:

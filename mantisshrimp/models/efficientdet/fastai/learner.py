@@ -1,9 +1,9 @@
 __all__ = ["learner"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.models import efficientdet
-from mantisshrimp.models.efficientdet.fastai.callbacks import *
-from mantisshrimp.engines.fastai import *
+from icevision.imports import *
+from icevision.models import efficientdet
+from icevision.models.efficientdet.fastai.callbacks import *
+from icevision.engines.fastai import *
 
 
 def learner(

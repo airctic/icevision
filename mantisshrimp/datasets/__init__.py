@@ -1,6 +1,6 @@
-import mantisshrimp.datasets.coco
-import mantisshrimp.datasets.voc
-import mantisshrimp.datasets.pets
-import mantisshrimp.datasets.fridge
-import mantisshrimp.datasets.pennfundan
-import mantisshrimp.datasets.birds
+import icevision.datasets.coco
+import icevision.datasets.voc
+import icevision.datasets.pets
+import icevision.datasets.fridge
+import icevision.datasets.pennfundan
+import icevision.datasets.birds

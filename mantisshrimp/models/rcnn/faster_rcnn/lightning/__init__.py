@@ -1,1 +1,1 @@
-from mantisshrimp.models.rcnn.faster_rcnn.lightning.model_adapter import *
+from icevision.models.rcnn.faster_rcnn.lightning.model_adapter import *

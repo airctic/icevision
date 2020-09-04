@@ -1,7 +1,7 @@
 __all__ = ["load", "class_map"]
 
-from mantisshrimp.imports import *
-from mantisshrimp import *
+from icevision.imports import *
+from icevision import *
 
 
 def class_map(background: Optional[int] = 0) -> ClassMap:

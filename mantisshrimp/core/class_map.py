@@ -1,6 +1,6 @@
 __all__ = ["ClassMap"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 class ClassMap:

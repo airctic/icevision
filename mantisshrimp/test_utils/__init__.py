@@ -1,1 +1,1 @@
-from mantisshrimp.test_utils.samples import *
+from icevision.test_utils.samples import *

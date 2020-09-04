@@ -7,12 +7,12 @@ __all__ = [
     "sample_dataset",
 ]
 
-import mantisshrimp
-from mantisshrimp.imports import *
-from mantisshrimp import *
+import icevision
+from icevision.imports import *
+from icevision import *
 
 try:
-    source = Path(mantisshrimp.__file__).parent.parent / "samples"
+    source = Path(icevision.__file__).parent.parent / "samples"
     annotations_dict = json.loads((source / "annotations.json").read())
 except FileNotFoundError:
     annotations_dict = None

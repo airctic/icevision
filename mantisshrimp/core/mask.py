@@ -1,7 +1,7 @@
 __all__ = ["Mask", "MaskArray", "MaskFile", "VocMaskFile", "RLE", "Polygon"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 from PIL import Image
 
 

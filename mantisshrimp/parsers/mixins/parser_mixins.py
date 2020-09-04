@@ -9,8 +9,8 @@ __all__ = [
     "IsCrowdsMixin",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.core import *
 
 
 class ParserMixin(ABC):

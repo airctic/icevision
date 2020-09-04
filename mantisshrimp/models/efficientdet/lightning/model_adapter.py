@@ -1,10 +1,10 @@
 __all__ = ["ModelAdapter"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.metrics import *
-from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from mantisshrimp.models import efficientdet
+from icevision.imports import *
+from icevision.utils import *
+from icevision.metrics import *
+from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
+from icevision.models import efficientdet
 
 
 class ModelAdapter(LightningModelAdapter, ABC):

@@ -1,9 +1,9 @@
 __all__ = ["predict", "predict_dl", "convert_raw_prediction", "convert_raw_predictions"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.models.utils import _predict_dl
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.models.utils import _predict_dl
 
 
 @torch.no_grad()

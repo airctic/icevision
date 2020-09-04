@@ -1,7 +1,7 @@
 __all__ = ["parser", "PennFundanParser"]
 
-from mantisshrimp.imports import *
-from mantisshrimp import *
+from icevision.imports import *
+from icevision import *
 
 
 def parser(data_dir) -> parsers.ParserInterface:

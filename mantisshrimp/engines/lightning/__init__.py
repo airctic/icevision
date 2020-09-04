@@ -1,2 +1,2 @@
-from mantisshrimp.engines.lightning.imports import *
-from mantisshrimp.engines.lightning.lightning_model_adapter import *
+from icevision.engines.lightning.imports import *
+from icevision.engines.lightning.lightning_model_adapter import *

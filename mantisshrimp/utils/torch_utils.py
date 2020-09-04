@@ -7,7 +7,7 @@ __all__ = [
     "model_device",
 ]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 def to_np(t):

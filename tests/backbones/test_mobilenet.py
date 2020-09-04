@@ -1,4 +1,4 @@
-from mantisshrimp import *
+from icevision import *
 
 
 def test_mobilenet_param_groups():

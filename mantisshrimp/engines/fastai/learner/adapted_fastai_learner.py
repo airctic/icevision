@@ -1,10 +1,10 @@
 __all__ = ["adapted_fastai_learner"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.metrics import *
-from mantisshrimp.engines.fastai.imports import *
-from mantisshrimp.engines.fastai.adapters import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.metrics import *
+from icevision.engines.fastai.imports import *
+from icevision.engines.fastai.adapters import *
 
 
 # TODO: param_groups fix for efficientdet

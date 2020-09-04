@@ -1,4 +1,4 @@
-from mantisshrimp.backbones import *
+from icevision.backbones import *
 import pytest
 import torch
 

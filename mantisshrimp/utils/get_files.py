@@ -1,6 +1,6 @@
 __all__ = ["get_files", "get_image_files"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 # All copied from fastai
 def _get_files(p, fs, extensions=None):

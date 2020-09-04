@@ -10,9 +10,9 @@ __all__ = [
     "draw_mask",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.data import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.data import *
+from icevision.core import *
 
 
 def draw_sample(

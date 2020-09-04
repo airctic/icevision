@@ -1,7 +1,7 @@
 __all__ = ["model"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain, unwrap_bench
 from effdet.efficientdet import HeadNet
 

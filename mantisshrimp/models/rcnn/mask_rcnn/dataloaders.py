@@ -7,11 +7,11 @@ __all__ = [
     "build_infer_batch",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp.models.utils import *
-from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import _build_train_sample
-from mantisshrimp.models.rcnn.faster_rcnn.dataloaders import (
+from icevision.imports import *
+from icevision.core import *
+from icevision.models.utils import *
+from icevision.models.rcnn.faster_rcnn.dataloaders import _build_train_sample
+from icevision.models.rcnn.faster_rcnn.dataloaders import (
     build_infer_batch,
     infer_dl,
 )

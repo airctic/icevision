@@ -1,3 +1,3 @@
-from mantisshrimp.datasets.pets.data import *
-from mantisshrimp.datasets.pets.parsers import *
-from mantisshrimp.datasets.pets.visualization import *
+from icevision.datasets.pets.data import *
+from icevision.datasets.pets.parsers import *
+from icevision.datasets.pets.visualization import *

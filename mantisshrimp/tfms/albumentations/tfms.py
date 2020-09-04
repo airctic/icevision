@@ -1,9 +1,9 @@
 __all__ = ["Adapter", "aug_tfms", "resize_and_pad"]
 
 import albumentations as A
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp.tfms.transform import *
+from icevision.imports import *
+from icevision.core import *
+from icevision.tfms.transform import *
 
 
 def _resize(size, ratio_resize=A.LongestMaxSize):

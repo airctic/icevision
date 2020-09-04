@@ -1,8 +1,8 @@
 __all__ = ["RCNNCallback"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.engines.fastai import *
-from mantisshrimp.models.rcnn import faster_rcnn
+from icevision.imports import *
+from icevision.engines.fastai import *
+from icevision.models.rcnn import faster_rcnn
 
 
 class RCNNCallback(fastai.Callback, ABC):

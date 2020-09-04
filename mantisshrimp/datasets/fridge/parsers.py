@@ -1,8 +1,8 @@
 __all__ = ["parser"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp import parsers
+from icevision.imports import *
+from icevision.core import *
+from icevision import parsers
 
 
 def parser(data_dir: Path, class_map: ClassMap):

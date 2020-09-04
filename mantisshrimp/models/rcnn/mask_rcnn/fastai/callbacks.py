@@ -1,7 +1,7 @@
 __all__ = ["MaskRCNNCallback"]
 
-from mantisshrimp.models.rcnn.fastai.callbacks import *
-from mantisshrimp.models.rcnn.mask_rcnn.prediction import *
+from icevision.models.rcnn.fastai.callbacks import *
+from icevision.models.rcnn.mask_rcnn.prediction import *
 
 
 class MaskRCNNCallback(RCNNCallback):

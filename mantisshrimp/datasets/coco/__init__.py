@@ -1,2 +1,2 @@
-from mantisshrimp.datasets.coco.data import *
-from mantisshrimp.datasets.coco.parsers import *
+from icevision.datasets.coco.data import *
+from icevision.datasets.coco.parsers import *

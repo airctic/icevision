@@ -1,5 +1,5 @@
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import mask_rcnn
+from icevision import *
+from icevision.models.rcnn import mask_rcnn
 
 
 def test_mask_rcnn_default_param_groups():

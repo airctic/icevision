@@ -1,8 +1,8 @@
 __all__ = ["coco", "COCOImageInfoParser", "COCOBBoxParser", "COCOAnnotationParser"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp.parsers import *
+from icevision.imports import *
+from icevision.core import *
+from icevision.parsers import *
 
 
 def coco(

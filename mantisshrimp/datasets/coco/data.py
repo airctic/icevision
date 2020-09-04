@@ -1,7 +1,7 @@
 __all__ = ["class_map"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.core import *
 
 
 def class_map(annotations_file, background: Optional[int] = 0) -> ClassMap:

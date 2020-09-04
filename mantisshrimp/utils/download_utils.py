@@ -5,7 +5,7 @@ __all__ = [
     "download_and_extract_gdrive",
 ]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 import requests
 
 

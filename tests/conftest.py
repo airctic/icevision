@@ -1,8 +1,8 @@
 import pytest, requests, PIL
-from mantisshrimp import *
-from mantisshrimp.imports import *
-from mantisshrimp.models.rcnn import faster_rcnn
-from mantisshrimp.models import efficientdet
+from icevision import *
+from icevision.imports import *
+from icevision.models.rcnn import faster_rcnn
+from icevision.models import efficientdet
 import albumentations as A
 
 
@@ -71,7 +71,7 @@ def fridge_efficientdet_records(samples_source):
 
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
-    WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
+    WEIGHTS_URL = "https://icevision-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
     model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
 
     state_dict = torch.hub.load_state_dict_from_url(

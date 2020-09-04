@@ -1,3 +1,3 @@
-from mantisshrimp.datasets.fridge.data import *
-from mantisshrimp.datasets.fridge.parsers import *
-from mantisshrimp.datasets.fridge.visualization import *
+from icevision.datasets.fridge.data import *
+from icevision.datasets.fridge.parsers import *
+from icevision.datasets.fridge.visualization import *

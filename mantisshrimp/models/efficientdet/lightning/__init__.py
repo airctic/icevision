@@ -1,1 +1,1 @@
-from mantisshrimp.models.efficientdet.lightning.model_adapter import *
+from icevision.models.efficientdet.lightning.model_adapter import *

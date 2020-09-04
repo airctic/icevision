@@ -1,9 +1,9 @@
 __all__ = ["show_annotation"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.visualize.utils import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.visualize.utils import *
 from matplotlib.collections import PatchCollection
 
 

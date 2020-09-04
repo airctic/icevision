@@ -1,8 +1,8 @@
 __all__ = ["LightningModelAdapter"]
 
 import pytorch_lightning as pl
-from mantisshrimp.imports import *
-from mantisshrimp.metrics import *
+from icevision.imports import *
+from icevision.metrics import *
 
 
 class LightningModelAdapter(pl.LightningModule, ABC):

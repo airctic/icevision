@@ -10,80 +10,76 @@ import tutobooks
 
 PAGES = {
     "parser.md": [
-        "mantisshrimp.parsers.Parser",
-        "mantisshrimp.parsers.FasterRCNN",
-        "mantisshrimp.parsers.MaskRCNN",
-        "mantisshrimp.parsers.mixins.ImageidMixin",
-        "mantisshrimp.parsers.mixins.FilepathMixin",
-        "mantisshrimp.parsers.mixins.SizeMixin",
-        "mantisshrimp.parsers.mixins.LabelsMixin",
-        "mantisshrimp.parsers.mixins.BBoxesMixin",
-        "mantisshrimp.parsers.mixins.MasksMixin",
-        "mantisshrimp.parsers.mixins.AreasMixin",
-        "mantisshrimp.parsers.mixins.IsCrowdsMixin",
+        "icevision.parsers.Parser",
+        "icevision.parsers.FasterRCNN",
+        "icevision.parsers.MaskRCNN",
+        "icevision.parsers.mixins.ImageidMixin",
+        "icevision.parsers.mixins.FilepathMixin",
+        "icevision.parsers.mixins.SizeMixin",
+        "icevision.parsers.mixins.LabelsMixin",
+        "icevision.parsers.mixins.BBoxesMixin",
+        "icevision.parsers.mixins.MasksMixin",
+        "icevision.parsers.mixins.AreasMixin",
+        "icevision.parsers.mixins.IsCrowdsMixin",
     ],
     "dataset.md": [
-        "mantisshrimp.data.dataset.Dataset",
-        "mantisshrimp.data.dataset.Dataset.from_images",
+        "icevision.data.dataset.Dataset",
+        "icevision.data.dataset.Dataset.from_images",
     ],
     "albumentations_tfms.md": [
-        "mantisshrimp.tfms.albumentations.aug_tfms",
-        "mantisshrimp.tfms.albumentations.Adapter",
+        "icevision.tfms.albumentations.aug_tfms",
+        "icevision.tfms.albumentations.Adapter",
     ],
     # "coco_metric.md": [
-    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetric",
-    # "mantisshrimp.metrics.coco_metric.coco_metric.COCOMetricType",
+    # "icevision.metrics.coco_metric.coco_metric.COCOMetric",
+    # "icevision.metrics.coco_metric.coco_metric.COCOMetricType",
     # ],
     "data_splits.md": [
-        "mantisshrimp.data.DataSplitter",
-        "mantisshrimp.data.RandomSplitter",
-        "mantisshrimp.data.FixedSplitter",
-        "mantisshrimp.data.SingleSplitSplitter",
+        "icevision.data.DataSplitter",
+        "icevision.data.RandomSplitter",
+        "icevision.data.FixedSplitter",
+        "icevision.data.SingleSplitSplitter",
     ],
     "faster_rcnn.md": [
-        "mantisshrimp.models.rcnn.faster_rcnn.model.model",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.train_dl",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.valid_dl",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.infer_dl",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_train_batch",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_valid_batch",
-        "mantisshrimp.models.rcnn.faster_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.rcnn.faster_rcnn.model.model",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.train_dl",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.valid_dl",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.infer_dl",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.build_train_batch",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.build_valid_batch",
+        "icevision.models.rcnn.faster_rcnn.dataloaders.build_infer_batch",
     ],
     "faster_rcnn_fastai.md": [
-        "mantisshrimp.models.rcnn.faster_rcnn.fastai.learner.learner",
+        "icevision.models.rcnn.faster_rcnn.fastai.learner.learner",
     ],
     "faster_rcnn_lightning.md": [
-        "mantisshrimp.models.rcnn.faster_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.rcnn.faster_rcnn.lightning.model_adapter.ModelAdapter",
     ],
     "mask_rcnn.md": [
-        "mantisshrimp.models.rcnn.mask_rcnn.model.model",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.train_dl",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.valid_dl",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.infer_dl",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_train_batch",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
-        "mantisshrimp.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.rcnn.mask_rcnn.model.model",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.train_dl",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.valid_dl",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.infer_dl",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.build_train_batch",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
+        "icevision.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
     ],
-    "mask_rcnn_fastai.md": [
-        "mantisshrimp.models.rcnn.mask_rcnn.fastai.learner.learner",
-    ],
+    "mask_rcnn_fastai.md": ["icevision.models.rcnn.mask_rcnn.fastai.learner.learner",],
     "mask_rcnn_lightning.md": [
-        "mantisshrimp.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
     "efficientdet.md": [
-        "mantisshrimp.models.efficientdet.model.model",
-        "mantisshrimp.models.efficientdet.dataloaders.train_dl",
-        "mantisshrimp.models.efficientdet.dataloaders.valid_dl",
-        "mantisshrimp.models.efficientdet.dataloaders.infer_dl",
-        "mantisshrimp.models.efficientdet.dataloaders.build_train_batch",
-        "mantisshrimp.models.efficientdet.dataloaders.build_valid_batch",
-        "mantisshrimp.models.efficientdet.dataloaders.build_infer_batch",
+        "icevision.models.efficientdet.model.model",
+        "icevision.models.efficientdet.dataloaders.train_dl",
+        "icevision.models.efficientdet.dataloaders.valid_dl",
+        "icevision.models.efficientdet.dataloaders.infer_dl",
+        "icevision.models.efficientdet.dataloaders.build_train_batch",
+        "icevision.models.efficientdet.dataloaders.build_valid_batch",
+        "icevision.models.efficientdet.dataloaders.build_infer_batch",
     ],
-    "efficientdet_fastai.md": [
-        "mantisshrimp.models.efficientdet.fastai.learner.learner",
-    ],
+    "efficientdet_fastai.md": ["icevision.models.efficientdet.fastai.learner.learner",],
     "efficientdet_lightning.md": [
-        "mantisshrimp.models.efficientdet.lightning.model_adapter.ModelAdapter",
+        "icevision.models.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
 }
 
@@ -95,7 +91,7 @@ PAGES = {
 # ]
 
 
-ROOT = "https://airctic.github.io/mantisshrimp/"
+ROOT = "https://airctic.github.io/icevision/"
 
 mantisshrimp_dir = Path(__file__).resolve().parents[1]
 
@@ -171,7 +167,7 @@ def py_to_nb_md(dest_dir):
 
         tutobooks.py_to_md(py_path, nb_path, md_path, "templates/img")
 
-        github_repo_dir = "airctic/mantisshrimp/blob/master/docs/"
+        github_repo_dir = "airctic/icevision/blob/master/docs/"
         with open(md_path, "r") as md_file:
             button_lines = [
                 ":material-link: "
@@ -253,7 +249,7 @@ def generate(dest_dir: Path):
     # Generate APIs Documentation
     doc_generator = keras_autodoc.DocumentationGenerator(
         pages=PAGES,
-        project_url="https://github.com/airctic/mantisshrimp/blob/master",
+        project_url="https://github.com/airctic/icevision/blob/master",
         template_dir=template_dir,
         examples_dir=mantisshrimp_dir / "examples",
     )
@@ -301,37 +297,36 @@ def generate(dest_dir: Path):
 
     # Copy static .md files from the other folders
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/models/README.md",
+        mantisshrimp_dir / "icevision/models/README.md",
         dest_dir / "model_comparison.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/models/efficientdet/README.md",
+        mantisshrimp_dir / "icevision/models/efficientdet/README.md",
         dest_dir / "model_efficientdet.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/models/rcnn/faster_rcnn/README.md",
+        mantisshrimp_dir / "icevision/models/rcnn/faster_rcnn/README.md",
         dest_dir / "model_faster_rcnn.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/backbones/backbones_effecientdet.md",
+        mantisshrimp_dir / "icevision/backbones/backbones_effecientdet.md",
         dest_dir / "backbones_effecientdet.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/backbones/backbones_faster_mask_rcnn.md",
+        mantisshrimp_dir / "icevision/backbones/backbones_faster_mask_rcnn.md",
         dest_dir / "backbones_faster_mask_rcnn.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/datasets/README.md", dest_dir / "datasets.md",
+        mantisshrimp_dir / "icevision/datasets/README.md", dest_dir / "datasets.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "mantisshrimp/tfms/README.md",
-        dest_dir / "albumentations.md",
+        mantisshrimp_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
     )
 
     # Copy .md examples files to destination examples folder

@@ -7,10 +7,10 @@ __all__ = [
     "_predict_dl",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.parsers import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.parsers import *
 
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)

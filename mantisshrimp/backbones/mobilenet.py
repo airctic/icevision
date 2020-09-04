@@ -1,7 +1,7 @@
 __all__ = ["mobilenet", "mobilenet_param_groups"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 
 
 def mobilenet(pretrained: bool = True):

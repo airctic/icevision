@@ -1,6 +1,6 @@
 __all__ = ["CaptureStdout"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 from io import StringIO
 
 

@@ -1,6 +1,6 @@
 __all__ = ["open_img", "show_img", "plot_grid"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 def open_img(fn, gray=False):

@@ -1,7 +1,7 @@
 __all__ = ["vgg_param_groups", "vgg11", "vgg13", "vgg16", "vgg19"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 
 
 def _vgg_features(model: nn.Module):

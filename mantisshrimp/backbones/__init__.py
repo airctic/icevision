@@ -1,5 +1,5 @@
-from mantisshrimp.backbones.vgg import *
-from mantisshrimp.backbones.resnet import *
-from mantisshrimp.backbones.mobilenet import *
+from icevision.backbones.vgg import *
+from icevision.backbones.resnet import *
+from icevision.backbones.mobilenet import *
 
-import mantisshrimp.backbones.resnet_fpn
+import icevision.backbones.resnet_fpn

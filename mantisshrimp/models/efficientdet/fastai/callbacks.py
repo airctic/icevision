@@ -1,7 +1,7 @@
 __all__ = ["EfficientDetCallback"]
 
-from mantisshrimp.models import efficientdet
-from mantisshrimp.engines.fastai import *
+from icevision.models import efficientdet
+from icevision.engines.fastai import *
 
 
 class EfficientDetCallback(fastai.Callback):

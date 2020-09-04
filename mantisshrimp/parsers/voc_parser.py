@@ -1,12 +1,12 @@
 __all__ = ["voc", "VocXmlParser", "VocMaskParser"]
 
 import xml.etree.ElementTree as ET
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.parsers.parser import *
-from mantisshrimp.parsers.defaults import *
-from mantisshrimp.parsers.mixins import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.parsers.parser import *
+from icevision.parsers.defaults import *
+from icevision.parsers.mixins import *
 
 
 def voc(

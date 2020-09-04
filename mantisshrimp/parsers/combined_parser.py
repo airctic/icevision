@@ -1,10 +1,10 @@
 __all__ = ["CombinedParser"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
-from mantisshrimp.data import *
-from mantisshrimp.parsers.parser import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.data import *
+from icevision.parsers.parser import *
 
 
 class CombinedParser(ParserInterface):

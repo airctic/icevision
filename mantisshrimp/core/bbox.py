@@ -1,6 +1,6 @@
 __all__ = ["BBox"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 # TODO: Can pnts and be tuple? Same for properties like xyxy

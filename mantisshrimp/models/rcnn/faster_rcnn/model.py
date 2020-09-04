@@ -1,6 +1,6 @@
-from mantisshrimp.imports import *
-from mantisshrimp.backbones import resnet_fpn
-from mantisshrimp.models.rcnn.utils import *
+from icevision.imports import *
+from icevision.backbones import resnet_fpn
+from icevision.models.rcnn.utils import *
 
 from torchvision.models.detection.faster_rcnn import (
     fasterrcnn_resnet50_fpn,

@@ -1,10 +1,10 @@
 __all__ = ["RCNNModelAdapter"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.metrics import *
-from mantisshrimp.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from mantisshrimp.models.rcnn.loss_fn import loss_fn
+from icevision.imports import *
+from icevision.utils import *
+from icevision.metrics import *
+from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
+from icevision.models.rcnn.loss_fn import loss_fn
 
 
 class RCNNModelAdapter(LightningModelAdapter, ABC):

@@ -1,8 +1,8 @@
 __all__ = ["default_prepare_record"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
 
 
 def prepare_copy(record):

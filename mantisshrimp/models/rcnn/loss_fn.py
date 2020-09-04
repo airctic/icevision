@@ -1,6 +1,6 @@
 __all__ = ["loss_fn"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 def loss_fn(preds, targets) -> Tensor:

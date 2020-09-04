@@ -1,7 +1,7 @@
 import pytest
-from mantisshrimp.imports import *
-from mantisshrimp import *
-from mantisshrimp.models.rcnn import mask_rcnn
+from icevision.imports import *
+from icevision import *
+from icevision.models.rcnn import mask_rcnn
 
 
 @pytest.fixture

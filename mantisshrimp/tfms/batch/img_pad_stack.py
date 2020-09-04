@@ -1,8 +1,8 @@
 __all__ = ["ImgPadStack"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.core import *
-from mantisshrimp.tfms.batch.batch_transform import BatchTransform
+from icevision.imports import *
+from icevision.core import *
+from icevision.tfms.batch.batch_transform import BatchTransform
 
 
 class ImgPadStack(BatchTransform):

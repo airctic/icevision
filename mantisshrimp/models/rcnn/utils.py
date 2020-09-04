@@ -1,7 +1,7 @@
 __all__ = ["remove_internal_model_transforms", "patch_param_groups"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
 
 

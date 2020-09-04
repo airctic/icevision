@@ -1,6 +1,6 @@
 __all__ = ["draw_label", "bbox_polygon", "draw_mask"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 from matplotlib import patches
 
 

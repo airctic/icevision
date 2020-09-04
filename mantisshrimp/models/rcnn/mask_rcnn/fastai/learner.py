@@ -1,9 +1,9 @@
 __all__ = ["learner"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.engines.fastai import *
-from mantisshrimp.models.rcnn.fastai.learner import rcnn_learner
-from mantisshrimp.models.rcnn.mask_rcnn.fastai.callbacks import *
+from icevision.imports import *
+from icevision.engines.fastai import *
+from icevision.models.rcnn.fastai.learner import rcnn_learner
+from icevision.models.rcnn.mask_rcnn.fastai.callbacks import *
 
 
 def learner(

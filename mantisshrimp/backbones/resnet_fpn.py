@@ -11,8 +11,8 @@ __all__ = [
     "param_groups",
 ]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
+from icevision.imports import *
+from icevision.utils import *
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 
 

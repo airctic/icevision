@@ -1,6 +1,6 @@
 __all__ = ["Metric"]
 
-from mantisshrimp.imports import *
+from icevision.imports import *
 
 
 class Metric(ABC):

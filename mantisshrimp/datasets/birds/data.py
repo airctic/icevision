@@ -1,8 +1,8 @@
 __all__ = ["load", "class_map"]
 
-from mantisshrimp.imports import *
-from mantisshrimp.utils import *
-from mantisshrimp.core import *
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
 
 
 def load(force_download: bool = False) -> Path:

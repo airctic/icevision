@@ -1,2 +1,2 @@
-from mantisshrimp.datasets.voc.data import *
-from mantisshrimp.datasets.voc.parsers import *
+from icevision.datasets.voc.data import *
+from icevision.datasets.voc.parsers import *
