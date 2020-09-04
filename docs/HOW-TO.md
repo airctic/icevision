@@ -7,13 +7,13 @@
 ## How to install icevision?
 To install the IceVision package as well as all its dependencies, choose one of the 2 options:
 
-Installing the Mantishrimp lastest version
+Installing the IceVision lastest version
 
 ```bash
 pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 
-Install the Mantishrimp lastest version from Pypi repository:
+Install the IceVision lastest version from Pypi repository:
 ```bash
 pip install icevision[all]
 ```

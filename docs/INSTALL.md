@@ -63,12 +63,12 @@ $ pip install icevision[pytorch_lightning]
 </div>
 
 ## B- Installation using conda
-Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **mantis**
+Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **ice**
 
 <div class="termy">
 ```console
-$ conda env create -n mantis
-$ conda activate mantis
+$ conda env create -n ice
+$ conda activate ice
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
 ```
 </div>

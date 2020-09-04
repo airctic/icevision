@@ -8,7 +8,7 @@
 
 **Please, follow these steps**
 
-## Step 1: Forking and Installing MantisShrimp
+## Step 1: Forking and Installing IceVision
 
 ​1. Fork the repo to your own github account. click the Fork button to
 create your own repo copy under your GitHub account. Once forked, you're
@@ -158,7 +158,7 @@ icevision repo.
 
 > **note**
 >
-> MantisShrimp has CI checking. It will automatically check your code
+> IceVision has CI checking. It will automatically check your code
 > for build as well.
 
 

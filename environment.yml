@@ -1,4 +1,4 @@
-name: mantis
+name: ice
 channels:
 - fastai
 - pytorch

@@ -129,7 +129,7 @@ show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
 
 # Disclaimer
 
-Inspired from HuggingFace [nlp](https://github.com/huggingface/nlp), mantisshrimp_datasets is a utility library that downloads and prepares computer vision datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license.
+Inspired from HuggingFace [nlp](https://github.com/huggingface/nlp), icevision_datasets is a utility library that downloads and prepares computer vision datasets. We do not host or distribute these datasets, vouch for their quality or fairness, or claim that you have license to use the dataset. It is your responsibility to determine whether you have permission to use the dataset under the dataset's license.
 
 If you are a dataset owner and wish to update any part of it (description, citation, etc.), or do not want your dataset to be included in this library, please get in touch through a [GitHub issue](https://github.com/airctic/icevision/issues). Thanks for your contribution to the ML community!
 
