@@ -5,7 +5,7 @@
 
 
 ## How to install mantisshrimp?
-To install the Mantisshrimp package as well as all its dependencies, choose one of the 2 options:
+To install the IceVision package as well as all its dependencies, choose one of the 2 options:
 
 Installing the Mantishrimp lastest version
 
@@ -18,7 +18,7 @@ Install the Mantishrimp lastest version from Pypi repository:
 pip install mantisshrimp[all]
 ```
 
-For more options, and more in-depth explanation on how to install Mantisshrimp, please check out our [Installation Guide](https://airctic.github.io/mantisshrimp/install/
+For more options, and more in-depth explanation on how to install IceVision, please check out our [Installation Guide](https://airctic.github.io/mantisshrimp/install/
 ) 
 
 ## How to create an EffecientDet Model?
@@ -166,7 +166,7 @@ show_preds(
 ```
 
 ## How to save trained weights in Google Colab?
-In the following example, we show how to save trained weight using an EffecientDet model. The latter can be replaced by any model supported by Mantisshrimp
+In the following example, we show how to save trained weight using an EffecientDet model. The latter can be replaced by any model supported by IceVision
 
 Check out the [Train a Dataset Notebook](https://airctic.github.io/mantisshrimp/how_train_dataset/) to get familiar with all the steps from the training a dataset to saving the trained weights. 
 

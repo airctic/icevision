@@ -1,7 +1,7 @@
 
 <img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
-# Mantisshrimp: Agnostic Object Detection Framework
+# IceVision: Agnostic Object Detection Framework
 
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
@@ -68,7 +68,7 @@ For more installation options, check our [docs](https://airctic.github.io/mantis
 
 ## Our Solution
 
-Mantisshrimp library provides some elegant solutions in those 2
+IceVision library provides some elegant solutions in those 2
 fundamental components:
 
 **1- A Unified Data API**
@@ -87,7 +87,7 @@ different annotation formats into a very flexibe parser:
 
 **2- A Universal Adapter to different DL Libraries**
 
-* Mantisshrimp provides a universal adapter that allows you to hook up
+* IceVision provides a universal adapter that allows you to hook up
   your dataset to the DL library of your choice (fastai, Pytorch
   Lightning and Pytorch), and train your model using a familiar API.
 * Our library allows you to choose one of the public implementations

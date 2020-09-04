@@ -11,11 +11,11 @@
 
 - All the transforms are lazy transforms meaning they are applied on-the-fly: in other words, we do not create static transformed images which would increase the storage space
 
-**Mantisshrimp Transforms Implementation:**
+**IceVision Transforms Implementation:**
 
-Mantisshrimp lays the foundation to easily integrate different augmentation libraries by using adapters. Out-of-the-box, it implements an adapter for the popular [Albumentations](https://albumentations.readthedocs.io/en/latest/) library. Most of the examples and notebooks that we provide showcase how to use our Albumentations transforms.
+IceVision lays the foundation to easily integrate different augmentation libraries by using adapters. Out-of-the-box, it implements an adapter for the popular [Albumentations](https://albumentations.readthedocs.io/en/latest/) library. Most of the examples and notebooks that we provide showcase how to use our Albumentations transforms.
 
-In addition, Mantisshrimp offers the users the option to create their own adapters using the augmentation library of their choice. They can follow a [similar approach](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/tfms/albumentations) to the one we use to create their own augmentation library adapter.
+In addition, IceVision offers the users the option to create their own adapters using the augmentation library of their choice. They can follow a [similar approach](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/tfms/albumentations) to the one we use to create their own augmentation library adapter.
 
 To ease the users' learning curve, we also provide the [aug_tfms](https://github.com/airctic/mantisshrimp/blob/863f4fcf82a795254e5f3c12b22a3f103c7ad08d/mantisshrimp/tfms/albumentations/tfms.py#L23) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
 

@@ -2,13 +2,13 @@
 
 [**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/models)
 
-Mantisshrimp offers both [EffecientDet](https://airctic.github.io/mantisshrimp/model_efficientdet/) and [Faster RCNN](https://airctic.github.io/mantisshrimp/model_faster_rcnn/) models.
+IceVision offers both [EffecientDet](https://airctic.github.io/mantisshrimp/model_efficientdet/) and [Faster RCNN](https://airctic.github.io/mantisshrimp/model_faster_rcnn/) models.
 
-Mantisshrimp uses a unified API that makes it easy for the users to swap one model by another as it is shown in the following example. Click one or the other tab to compare both implementations and discover the strong similarities between the two implementations:
+IceVision uses a unified API that makes it easy for the users to swap one model by another as it is shown in the following example. Click one or the other tab to compare both implementations and discover the strong similarities between the two implementations:
 
 === "EffecientDet"
     ```python  hl_lines="33 34 37 43 51 54"
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports
@@ -78,7 +78,7 @@ Mantisshrimp uses a unified API that makes it easy for the users to swap one mod
 
 === "Faster RCNN"
     ```python hl_lines="33 34 37 41 49 52"
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports

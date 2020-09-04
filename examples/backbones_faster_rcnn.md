@@ -5,7 +5,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
 === "Fastai"
     ```python  hl_lines="70-76"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Clone the raccoom dataset repository
@@ -101,7 +101,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
 === "Pytorch Lightning"
     ```python  hl_lines="65-73"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Clone the raccoom dataset repository

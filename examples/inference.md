@@ -4,7 +4,7 @@ The inference API is unified one. It is independent from both [Fastai](https://g
 
 
 ```python
-# Installing Mantisshrimp
+# Installing IceVision
 # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
 # Imports

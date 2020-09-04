@@ -11,14 +11,14 @@
 
 - Lightweight and fast with a transparent and pythonic API.
 
-- Out-of-the-box parsers to convert different datasets into Mantisshrimp Data Format.
+- Out-of-the-box parsers to convert different datasets into IceVision Data Format.
 
-Mantisshrimp provides several ready-to-use datasets that use both standard annotation format such as COCO and VOC as well as custom annotation formats such [WheatParser](https://airctic.github.io/mantisshrimp/custom_parser/) used in the [Kaggle Global Wheat Competition](https://www.kaggle.com/c/global-wheat-detection) 
+IceVision provides several ready-to-use datasets that use both standard annotation format such as COCO and VOC as well as custom annotation formats such [WheatParser](https://airctic.github.io/mantisshrimp/custom_parser/) used in the [Kaggle Global Wheat Competition](https://www.kaggle.com/c/global-wheat-detection) 
 
 
 # Usage
 
-Object detection datasets use different annotations formats (COCO, VOC, and custom formats). Mantisshrimp offers different options to parse each one of those formats:
+Object detection datasets use different annotations formats (COCO, VOC, and custom formats). IceVision offers different options to parse each one of those formats:
 
 
 ## Case 1: COCO, and VOC compatible datasets

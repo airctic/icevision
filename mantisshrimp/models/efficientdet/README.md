@@ -19,7 +19,7 @@ valid_dl = efficientdet.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle
 ```
 
 
-- **Model:** Mantisshrimp creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). The model accepts a variety of backbones. In following example, the **tf_efficientdet_lite0** is used. We can also choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, and **MobileNetv3** classes (which also includes **MNasNet**, **MobileNetV2**, **MixNet** and more)
+- **Model:** IceVision creates an EffecientDet model implemented by [Ross Wightman](https://github.com/rwightman/efficientdet-pytorch). The model accepts a variety of backbones. In following example, the **tf_efficientdet_lite0** is used. We can also choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, and **MobileNetv3** classes (which also includes **MNasNet**, **MobileNetV2**, **MixNet** and more)
 
 ``` python hl_lines="3"
 # Model

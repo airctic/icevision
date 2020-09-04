@@ -5,7 +5,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
 === "Fastai"
     ```python  hl_lines="52-61"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports
@@ -86,7 +86,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
 === "Pytorch Lightning"
     ```python  hl_lines="52-60"
     
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports

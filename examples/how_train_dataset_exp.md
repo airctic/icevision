@@ -5,7 +5,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
 === "Fastai"
     ```python  hl_lines="52-61"
     
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports
@@ -85,7 +85,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
 === "Pytorch Lightning"
     ```python  hl_lines="52-60"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports

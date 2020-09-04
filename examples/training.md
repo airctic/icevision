@@ -5,7 +5,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 === "Fastai"
     ```python  hl_lines="42-56"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports
@@ -56,7 +56,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 === "Pytorch Lightning"
     ```python  hl_lines="42-50"
     
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Imports

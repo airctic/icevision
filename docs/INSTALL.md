@@ -44,7 +44,7 @@ $ pip install mantisshrimp[all]
 ```
 </div>
 
-#### Mantisshrimp + Fastai
+#### IceVision + Fastai
 To install mantisshrimp package and only the Fastai library, run the following command:
 
 <div class="termy">
@@ -53,7 +53,7 @@ $ pip install mantisshrimp[fastai]
 ```
 </div>
 
-#### Mantisshrimp + Pytorch-Lightning
+#### IceVision + Pytorch-Lightning
 To install mantisshrimp package and only the Pytorch-Lightning library, run the following command:
 
 <div class="termy">

@@ -6,7 +6,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
 === "Fastai"
     ```python  hl_lines="68-76"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Clone the raccoom dataset repository
@@ -102,7 +102,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
 === "Pytorch Lightning"
     ```python  hl_lines="69-77"
 
-    # Installing Mantisshrimp
+    # Installing IceVision
     # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
 
     # Clone the raccoom dataset repository

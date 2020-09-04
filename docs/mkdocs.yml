@@ -1,4 +1,4 @@
-site_name: Mantisshrimp
+site_name: IceVision
 site_author: Lucas Goulart Vazquez, Farid Hassainia, and Contributors
 copyright: airctic.com
 theme:
@@ -9,10 +9,10 @@ theme:
     accent: 'blue'
 
 docs_dir: sources
-repo_url: https://github.com/airctic/Mantisshrimp
+repo_url: https://github.com/airctic/IceVision
 site_url: https://icevision.airctic.com/
 edit_uri: ""
-site_description: 'Documentation for Mantisshrimp.'
+site_description: 'Documentation for IceVision.'
 # google_analytics: ['UA-44322747-3', 'https://airctic.github.io/mantisshrimp/']
 markdown_extensions:
   - codehilite

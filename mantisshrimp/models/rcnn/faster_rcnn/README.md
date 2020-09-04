@@ -19,7 +19,7 @@ valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=
 ```
 
 
-- **Model:** Mantisshrimp creates a Faster RCNN model implemented in [torchvision FasterRCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/faster_rcnn.py). The model accepts a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the following [backbones](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/backbones/resnet_fpn.py): resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
+- **Model:** IceVision creates a Faster RCNN model implemented in [torchvision FasterRCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/faster_rcnn.py). The model accepts a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the following [backbones](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/backbones/resnet_fpn.py): resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
 
 
 ``` python hl_lines="2"
