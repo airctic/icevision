@@ -1,7 +1,5 @@
 
-<img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
-
-# IceVision: Agnostic Object Detection Framework
+<img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
@@ -16,7 +14,7 @@
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)  
 
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mantis)
+[![Join Users Forum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mantis)
 
 </div>
 

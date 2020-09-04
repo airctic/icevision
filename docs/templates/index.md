@@ -1,4 +1,4 @@
-# <img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
+# <img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
 ##
 
@@ -7,7 +7,7 @@
     We warmly invite you to join us either as a user or a community contributor.
     We will be happy to hear from you.
 
-[Join our Users Forum](https://spectrum.chat/mantis){: .md-button .md-button--primary }
+[Join our Users Forum](https://spectrum.chat/mantis){: .md-button .md-button--secondary }
 [Join our Devs Forum](https://discord.gg/QxHctJF){: .md-button .md-button--secondary }
 
 
