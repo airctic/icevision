@@ -100,4 +100,8 @@ different annotation formats into a very flexibe parser:
 
 
 ## Happy Learning!
-If you need any assistance, feel free to join our [forum](https://spectrum.chat/mantis).
+If you need any assistance, feel free to:
+
+[Join our Users Forum](https://spectrum.chat/mantis)
+
+[Join our Devs Forum](https://discord.gg/QxHctJF)
