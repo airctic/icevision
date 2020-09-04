@@ -19,4 +19,4 @@ streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamli
 
 You can find the source code of this demo [here](https://github.com/oke-aditya/mantisshrimp_streamlit).
 
-You can also use it as a template when creating your own streamlit apps with mantisshrimp.
+You can also use it as a template when creating your own streamlit apps with icevision.

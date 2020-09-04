@@ -6,13 +6,13 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     ```python  hl_lines="70-76"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Clone the raccoom dataset repository
     # !git clone https://github.com/datitran/raccoon_dataset
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # WARNING: Make sure you have already cloned the raccoon dataset using the command shown here above
     # Set images and annotations directories
@@ -23,7 +23,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     # Define class_map
     class_map = ClassMap(["raccoon"])
 
-    # Parser: Use mantisshrimp predefined VOC parser
+    # Parser: Use icevision predefined VOC parser
     parser = parsers.voc(
         annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
     )
@@ -102,13 +102,13 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     ```python  hl_lines="65-73"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Clone the raccoom dataset repository
     # !git clone https://github.com/datitran/raccoon_dataset
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # WARNING: Make sure you have already cloned the raccoon dataset using the command shown here above
     # Set images and annotations directories
@@ -119,7 +119,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     # Define class_map
     class_map = ClassMap(["raccoon"])
 
-    # Parser: Use mantisshrimp predefined VOC parser
+    # Parser: Use icevision predefined VOC parser
     parser = parsers.voc(
         annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
     )

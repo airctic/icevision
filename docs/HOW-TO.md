@@ -1,29 +1,29 @@
 ## Where can I get some help?
-- If you find a bug, or you would like to suggest some new features, please file an issue [here](https://github.com/airctic/mantisshrimp/issues)
+- If you find a bug, or you would like to suggest some new features, please file an issue [here](https://github.com/airctic/icevision/issues)
 
 - If you need any assistance during your learning journey, feel free to join our [forum](https://spectrum.chat/mantis).
 
 
-## How to install mantisshrimp?
+## How to install icevision?
 To install the IceVision package as well as all its dependencies, choose one of the 2 options:
 
 Installing the Mantishrimp lastest version
 
 ```bash
-pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 
 Install the Mantishrimp lastest version from Pypi repository:
 ```bash
-pip install mantisshrimp[all]
+pip install icevision[all]
 ```
 
-For more options, and more in-depth explanation on how to install IceVision, please check out our [Installation Guide](https://airctic.github.io/mantisshrimp/install/
+For more options, and more in-depth explanation on how to install IceVision, please check out our [Installation Guide](https://airctic.github.io/icevision/install/
 ) 
 
 ## How to create an EffecientDet Model?
 
-**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
+**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/icevision/examples/efficientdet_pets_exp/)
 
 ``` python
 model = efficientdet.model(
@@ -39,11 +39,11 @@ model = efficientdet.model(
 )
 ```
 
-For more information checkout the [EffecientDet Model](https://airctic.github.io/mantisshrimp/model_efficientdet/) as well as the [EffecientDet Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) documents.
+For more information checkout the [EffecientDet Model](https://airctic.github.io/icevision/model_efficientdet/) as well as the [EffecientDet Backbone](https://airctic.github.io/icevision/backbones_overview/) documents.
 
 
 ## How to create a Faster RCNN Model?
-**fasterrcnn_resnet50_fpn** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/backbones_faster_rcnn/)
+**fasterrcnn_resnet50_fpn** Example: [Source Code](https://airctic.github.io/icevision/examples/backbones_faster_rcnn/)
 
 **- Using the default argument**
 ``` python
@@ -58,7 +58,7 @@ model = faster_rcnn.model(
 )
 ```
 
-For more information checkout the [Faster RCNN Model](https://airctic.github.io/mantisshrimp/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) documents/
+For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) documents/
 
 
 ## How to create a Mask RCNN Model?
@@ -76,7 +76,7 @@ model = mask_rcnn.model(
 )
 ```
 
-For more information checkout the [Faster RCNN Model](https://airctic.github.io/mantisshrimp/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) documents.
+For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) documents.
 
 ## How to use EffecientDet Backbones?
 EffecientDet backbones are passed as string argument to the effecientdet model function:
@@ -86,7 +86,7 @@ model = efficientdet.model(
     model_name="tf_efficientdet_lite0", num_classes=len(class_map), img_size=size
 )
 ```
-For more information checkout the [EffecientDet Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) document.
+For more information checkout the [EffecientDet Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
 
 ## How to use Faster RCNN Backbones?
 Faster RCNN backbones are passed a model object argument to the Faster RCNN model function:
@@ -97,7 +97,7 @@ model = faster_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
 )
 ```
-For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) document.
+For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
 
 ## How to use Mask RCNN Backbones?
 Mask RCNN backbones are passed a model object argument to the Mask RCNN model function:
@@ -108,14 +108,14 @@ model = mask_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
 )
 ```
-For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/mantisshrimp/backbones_overview/) document.
+For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
 
 ## How to predict (infer) a single image?
 This is a quick example using the PETS dataset:
 
 ```python hl_lines="14-16 22"
 # Imports
-from mantisshrimp.all import *
+from icevision.all import *
 
 # Maps from IDs to class names. `print(class_map)` for all available classes
 class_map = datasets.pets.class_map()
@@ -124,7 +124,7 @@ class_map = datasets.pets.class_map()
 IMAGE_URL = "https://petcaramelo.com/wp-content/uploads/2018/06/beagle-cachorro.jpg"
 IMG_PATH = "tmp.jpg"
 # Model trained on `Tutorials->Getting Started`
-WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/pets.zip"
+WEIGHTS_URL = "https://icevision-models.s3.us-east-2.amazonaws.com/pets.zip"
 
 # Download and open image, optionally show it
 download_url(IMAGE_URL, IMG_PATH)
@@ -168,7 +168,7 @@ show_preds(
 ## How to save trained weights in Google Colab?
 In the following example, we show how to save trained weight using an EffecientDet model. The latter can be replaced by any model supported by IceVision
 
-Check out the [Train a Dataset Notebook](https://airctic.github.io/mantisshrimp/how_train_dataset/) to get familiar with all the steps from the training a dataset to saving the trained weights. 
+Check out the [Train a Dataset Notebook](https://airctic.github.io/icevision/how_train_dataset/) to get familiar with all the steps from the training a dataset to saving the trained weights. 
 
 ```python
 # Model
@@ -182,18 +182,18 @@ from google.colab import drive
 drive.mount('/content/gdrive', force_remount=True)
 root_dir = Path('/content/gdrive/My Drive/')
 
-torch.save(model.state_dict(), root_dir/'mantisshrimp/models/fridge/fridge_tf_efficientdet_lite0.pth')
+torch.save(model.state_dict(), root_dir/'icevision/models/fridge/fridge_tf_efficientdet_lite0.pth')
 ```
 
 ## How to load pretrained weights?
-In this example, we show how to create a Faster RCNN model, and load pretrained weight that were previously obtained during the training of the PETS dataset as shown in the [Getting Started Notebook](https://airctic.github.io/mantisshrimp/getting_started/)
+In this example, we show how to create a Faster RCNN model, and load pretrained weight that were previously obtained during the training of the PETS dataset as shown in the [Getting Started Notebook](https://airctic.github.io/icevision/getting_started/)
 
 ```python
 # Maps IDs to class names.
 class_map = datasets.pets.class_map()
 
 # Model trained in `Tutorials->Getting Started`
-WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/pets.zip"
+WEIGHTS_URL = "https://icevision-models.s3.us-east-2.amazonaws.com/pets.zip"
 
 # Create the same model used in training and load the weights
 # `map_location` will put the model on cpu, optionally move to gpu if necessary
@@ -207,4 +207,4 @@ model.load_state_dict(state_dict)
 ## How to contribute?
 We are both a welcoming and an open community. We warmly invite you to join us either as a user or a community contributor. We will be happy to hear from you.
 
-To contribute, please follow the [Contributing Guide](https://airctic.github.io/mantisshrimp/contributing/). 
+To contribute, please follow the [Contributing Guide](https://airctic.github.io/icevision/contributing/). 

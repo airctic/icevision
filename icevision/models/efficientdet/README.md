@@ -1,6 +1,6 @@
 # EffecientDet Model
 
-[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/models/efficientdet)
+[**Source**](https://github.com/airctic/icevision/tree/master/icevision/models/efficientdet)
 
 EffecientDet is one of the effecient and fastest object detection model that also uses more constrained resources in comparison to other models (Fig. 1). It was introduced in the following paper: [EfficientDet: Scalable and Efficient Object Detection](https://arxiv.org/pdf/1911.09070.pdf)
 
@@ -70,8 +70,8 @@ trainer.fit(light_model, train_dl, valid_dl)
 
 ## How to train the **PETS Dataset** using **EffecientDet**
 
-[**Source Code**](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
-![image](https://airctic.github.io/mantisshrimp/images/effecientdet-training.png)
+[**Source Code**](https://airctic.github.io/icevision/examples/efficientdet_pets_exp/)
+![image](https://airctic.github.io/icevision/images/effecientdet-training.png)
 
 
 ## Background: Paper Abstract
@@ -80,11 +80,11 @@ First, we propose a weighted bi-directional feature pyramid network (BiFPN), whi
 
 Based on these optimizations and better backbones, we have developed a new family of object detectors, called EfficientDet, which consistently achieve much better efficiency than prior art across a wide spectrum of resource constraints. In particular, with singlemodel and single-scale, our EfficientDet-D7 achieves stateof-the-art 55.1 AP on COCO test-dev with 77M parameters and 410B FLOPs1, being 4x – 9x smaller and using 13x – 42x fewer FLOPs than previous detectors. 
 
-![image](https://airctic.github.io/mantisshrimp/images/effecientdet-fig1.png)
+![image](https://airctic.github.io/icevision/images/effecientdet-fig1.png)
 
-![image](https://airctic.github.io/mantisshrimp/images/effecientdet-fig2.png)
+![image](https://airctic.github.io/icevision/images/effecientdet-fig2.png)
 
-![image](https://airctic.github.io/mantisshrimp/images/effecientdet-fig3.png)
+![image](https://airctic.github.io/icevision/images/effecientdet-fig3.png)
 
 ## References
 

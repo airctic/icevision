@@ -14,7 +14,7 @@ We can choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, a
 
 #### **EffecientDet Backbones Examples**
 
-**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
+**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/icevision/examples/efficientdet_pets_exp/)
 
 ``` python hl_lines="2"
 model = efficientdet.model(

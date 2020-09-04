@@ -6,10 +6,10 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     ```python  hl_lines="52-61"
     
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 
@@ -86,10 +86,10 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     ```python  hl_lines="52-60"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 

@@ -1,18 +1,18 @@
 # Models
 
-[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/models)
+[**Source**](https://github.com/airctic/icevision/tree/master/icevision/models)
 
-IceVision offers both [EffecientDet](https://airctic.github.io/mantisshrimp/model_efficientdet/) and [Faster RCNN](https://airctic.github.io/mantisshrimp/model_faster_rcnn/) models.
+IceVision offers both [EffecientDet](https://airctic.github.io/icevision/model_efficientdet/) and [Faster RCNN](https://airctic.github.io/icevision/model_faster_rcnn/) models.
 
 IceVision uses a unified API that makes it easy for the users to swap one model by another as it is shown in the following example. Click one or the other tab to compare both implementations and discover the strong similarities between the two implementations:
 
 === "EffecientDet"
     ```python  hl_lines="33 34 37 43 51 54"
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 
@@ -79,10 +79,10 @@ IceVision uses a unified API that makes it easy for the users to swap one model 
 === "Faster RCNN"
     ```python hl_lines="33 34 37 41 49 52"
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
     # Imports
-    from mantisshrimp.all import *
+    from icevision.all import *
 
     # Common part to all models
 

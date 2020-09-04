@@ -1,6 +1,6 @@
 # Transforms
 
-[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/tfms/)
+[**Source**](https://github.com/airctic/icevision/tree/master/icevision/tfms/)
 
 
 `Transforms` are used in the following context:
@@ -15,9 +15,9 @@
 
 IceVision lays the foundation to easily integrate different augmentation libraries by using adapters. Out-of-the-box, it implements an adapter for the popular [Albumentations](https://albumentations.readthedocs.io/en/latest/) library. Most of the examples and notebooks that we provide showcase how to use our Albumentations transforms.
 
-In addition, IceVision offers the users the option to create their own adapters using the augmentation library of their choice. They can follow a [similar approach](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/tfms/albumentations) to the one we use to create their own augmentation library adapter.
+In addition, IceVision offers the users the option to create their own adapters using the augmentation library of their choice. They can follow a [similar approach](https://github.com/airctic/icevision/tree/master/icevision/tfms/albumentations) to the one we use to create their own augmentation library adapter.
 
-To ease the users' learning curve, we also provide the [aug_tfms](https://github.com/airctic/mantisshrimp/blob/863f4fcf82a795254e5f3c12b22a3f103c7ad08d/mantisshrimp/tfms/albumentations/tfms.py#L23) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
+To ease the users' learning curve, we also provide the [aug_tfms](https://github.com/airctic/icevision/blob/863f4fcf82a795254e5f3c12b22a3f103c7ad08d/icevision/tfms/albumentations/tfms.py#L23) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
 
 
 ## Usage
@@ -26,7 +26,7 @@ In the following example, we highlight some of the most common usage of transfor
 
 We often apply different transforms for the train and valid Dataset objects. Train transforms are used to augment the original dataset whereas valid transfoms are used to resize an image to fit the size the model expect.
 
-**Example:** [Source](https://airctic.github.io/mantisshrimp/examples/training/)
+**Example:** [Source](https://airctic.github.io/icevision/examples/training/)
 In this example, there are two points to highlight:
 
 - The train_tfms uses the predefined Albumentations transforms to augment the dataset during the train phase. They are applied on-the-fly (lazy transforms) 
@@ -48,10 +48,10 @@ valid_ds = Dataset(valid_records, valid_tfms)
 ```
 
 **Original Image:**
-![image](https://airctic.github.io/mantisshrimp/images/sample-image.png)
+![image](https://airctic.github.io/icevision/images/sample-image.png)
 
 **Transformed Images:**
-![image](https://airctic.github.io/mantisshrimp/images/sample-image-tfms.png)
+![image](https://airctic.github.io/icevision/images/sample-image-tfms.png)
 
 !!! info "Note" 
     Notice how different transforms are applied to the original image. All the transformed have the same size despite applying some crop transforms. The size is preserved by adding padding (grey area) 

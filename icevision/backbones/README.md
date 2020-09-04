@@ -18,7 +18,7 @@ We can choose one of the **efficientdet_d0** to **efficientdet_d7** backbones, a
 
 #### **EffecientDet Backbones Examples**
 
-**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/efficientdet_pets_exp/)
+**tf_efficientdet_lite0** Example: [Source Code](https://airctic.github.io/icevision/examples/efficientdet_pets_exp/)
 
 ``` python hl_lines="2"
 model = efficientdet.model(
@@ -68,17 +68,17 @@ model = efficientdet.model(
 
 # Faster RCNN / Mask RCNN Backbones
 
-[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/backbones)
+[**Source**](https://github.com/airctic/icevision/tree/master/icevision/backbones)
 
 
 ## Usage
 
 We use the [torchvision Faster RCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/faster_rcnn.py)  model, and the [torchvision Mask RCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/mask_rcnn.py) model. 
 
-Both models accept a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the many [backbones](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/backbones/resnet_fpn.py) listed here below: 
+Both models accept a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the many [backbones](https://github.com/airctic/icevision/blob/master/icevision/backbones/resnet_fpn.py) listed here below: 
 
 #### **Faster RCNN Backbones Examples**
-**fasterrcnn_resnet50_fpn** Example: [Source Code](https://airctic.github.io/mantisshrimp/examples/backbones_faster_rcnn/)
+**fasterrcnn_resnet50_fpn** Example: [Source Code](https://airctic.github.io/icevision/examples/backbones_faster_rcnn/)
 
 **- Using the default argument**
 ``` python

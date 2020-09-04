@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## Added
+
+## Changed
+- Renamed package from `mantisshrimp` to `icevision`
+
+## Deleted
+
+## [0.0.9]
+
 ### Added
 
 - `batch, samples = <model_name>.build_infer_batch(dataset)`  

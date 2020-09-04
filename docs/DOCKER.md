@@ -2,7 +2,7 @@
 
 ## Quick Start: Use IceVision Docker Container
 
-To jumpstart using mantisshrimp package without manually installing it
+To jumpstart using icevision package without manually installing it
 and its dependencies, use our docker container!
 
 Please, follow the 3 steps:
@@ -14,14 +14,14 @@ Please, follow the 3 steps:
 
 <div class="termy">
 ```console
-$ docker pull mantisshrimp
+$ docker pull icevision
 ```
 </div>
 
-3.  In the terminal, run the mantisshrimp docker container:
+3.  In the terminal, run the icevision docker container:
 
 <div class="termy">
 ```console
-$ docker run -it mantisshrimp
+$ docker run -it icevision
 ```
 </div>

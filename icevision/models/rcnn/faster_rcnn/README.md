@@ -1,6 +1,6 @@
 # Faster RCNN Model
 
-[**Source**](https://github.com/airctic/mantisshrimp/tree/master/mantisshrimp/models/rcnn/faster_rcnn/)
+[**Source**](https://github.com/airctic/icevision/tree/master/icevision/models/rcnn/faster_rcnn/)
 
 Faster RCNN is one of the most popular object detection model. It was introduced in the following paper:
 [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497)
@@ -19,7 +19,7 @@ valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=16, num_workers=4, shuffle=
 ```
 
 
-- **Model:** IceVision creates a Faster RCNN model implemented in [torchvision FasterRCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/faster_rcnn.py). The model accepts a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the following [backbones](https://github.com/airctic/mantisshrimp/blob/master/mantisshrimp/backbones/resnet_fpn.py): resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
+- **Model:** IceVision creates a Faster RCNN model implemented in [torchvision FasterRCNN](https://github.com/pytorch/vision/blob/master/torchvision/models/detection/faster_rcnn.py). The model accepts a variety of backbones. In following example, we use the default [fasterrcnn_resnet50_fpn](https://github.com/pytorch/vision/blob/27278ec8887a511bd7d6f1202d50b0da7537fc3d/torchvision/models/detection/faster_rcnn.py#L291) model. We can also choose one of the following [backbones](https://github.com/airctic/icevision/blob/master/icevision/backbones/resnet_fpn.py): resnet18, resnet34, resnet50, resnet101, resnet152, resnext50_32x4d, resnext101_32x8d, wide_resnet50_2, wide_resnet101_2
 
 
 ``` python hl_lines="2"
@@ -70,18 +70,18 @@ trainer.fit(light_model, train_dl, valid_dl)
 
 ## How to train the **PETS Dataset** using **Faster RCNN**
 
-[**Source Code**](https://airctic.github.io/mantisshrimp/examples/training/)
-![image](https://airctic.github.io/mantisshrimp/images/mantis-readme.png)
+[**Source Code**](https://airctic.github.io/icevision/examples/training/)
+![image](https://airctic.github.io/icevision/images/mantis-readme.png)
 
 
 ## Paper Introduction
 Faster R-CNN is built upon the knowledge of Fast RCNN which indeed built upon the ideas of RCNN and SPP-Net. In their paper, the authors introduced a Region Proposal Network (RPN) that shares full-image convolutional features with the detection network, thus enabling nearly cost-free region proposals. An RPN is a fully convolutional network that simultaneously predicts object bounds and objectness scores at each position. 
 
-![image](https://airctic.github.io/mantisshrimp/images/fast-rcnn-vs-faster-rcnn.png)
+![image](https://airctic.github.io/icevision/images/fast-rcnn-vs-faster-rcnn.png)
 
-![image](https://airctic.github.io/mantisshrimp/images/faster-rcnn-fig-2.png)
+![image](https://airctic.github.io/icevision/images/faster-rcnn-fig-2.png)
 
-![image](https://airctic.github.io/mantisshrimp/images/faster-rcnn-fig-3.png)
+![image](https://airctic.github.io/icevision/images/faster-rcnn-fig-3.png)
 
 
 ## References
