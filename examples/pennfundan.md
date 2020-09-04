@@ -5,11 +5,11 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
 === "Fastai"
     ```python  hl_lines="53-55"
 
-    # Install mantisshrimp
-    # pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Install icevision
+    # pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
-    # Import everything from mantisshrimp
-    from mantisshrimp.all import *
+    # Import everything from icevision
+    from icevision.all import *
 
     # Load the data and create the parser
     data_dir = datasets.pennfundan.load()
@@ -74,11 +74,11 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
 === "Pytorch Lightning"
     ```python  hl_lines="53-61"
 
-    # Install mantisshrimp
-    # pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+    # Install icevision
+    # pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
-    # Import everything from mantisshrimp
-    from mantisshrimp.all import *
+    # Import everything from icevision
+    from icevision.all import *
 
     # Load the data and create the parser
     data_dir = datasets.pennfundan.load()

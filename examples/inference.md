@@ -4,11 +4,11 @@ The inference API is unified one. It is independent from both [Fastai](https://g
 
 
 ```python
-# Installing Mantisshrimp
-# !pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+# Installing IceVision
+# !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 
 # Imports
-from mantisshrimp.all import *
+from icevision.all import *
 
 # Maps IDs to class names. `print(class_map)` for all available classes
 class_map = datasets.pets.class_map()
@@ -17,7 +17,7 @@ class_map = datasets.pets.class_map()
 IMAGE_URL = "https://petcaramelo.com/wp-content/uploads/2018/06/beagle-cachorro.jpg"
 IMG_PATH = "tmp.jpg"
 # Model trained in `Tutorials->Getting Started`
-WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/pets.zip"
+WEIGHTS_URL = "https://icevision-models.s3.us-east-2.amazonaws.com/pets.zip"
 
 # Download and open image, optionally show it
 download_url(IMAGE_URL, IMG_PATH)

@@ -1,7 +1,7 @@
 
 <img src="images/row_logo.svg" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 
-# Mantisshrimp: Agnostic Object Detection Framework
+# IceVision: Agnostic Object Detection Framework
 
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
@@ -10,11 +10,11 @@
     
 <div align="center">
     
-[![tests](https://github.com/airctic/mantisshrimp/workflows/tests/badge.svg?event=push)](https://github.com/airctic/mantisshrimp/actions?query=workflow%3Atests)
-[![docs](https://github.com/airctic/mantisshrimp/workflows/docs/badge.svg)](https://airctic.github.io/mantisshrimp/index.html)
-[![codecov](https://codecov.io/gh/airctic/mantisshrimp/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/mantisshrimp)
+[![tests](https://github.com/airctic/icevision/workflows/tests/badge.svg?event=push)](https://github.com/airctic/icevision/actions?query=workflow%3Atests)
+[![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](https://airctic.github.io/icevision/index.html)
+[![codecov](https://codecov.io/gh/airctic/icevision/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/icevision)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/mantisshrimp/blob/master/LICENSE)  
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)  
 
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mantis)
 
@@ -23,13 +23,13 @@
 
 * * * * *
 
-![image](images/mantisshrimp-logo.png)
+![image](images/icevision-logo.png)
 ![image](images/mantis-end-to-end-training.gif)
 
 <!-- Not included in docs - start -->
 ## **Contributors**
 
-[![image0](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/0)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/0)[![image1](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/1)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/1)[![image2](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/2)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/2)[![image3](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/3)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/3)[![image4](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/4)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/4)[![image5](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/5)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/5)[![image6](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/6)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/6)[![image7](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/images/7)](https://sourcerer.io/fame/lgvaz/lgvaz/mantisshrimp/links/7)
+[![image0](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/0)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/0)[![image1](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/1)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/1)[![image2](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/2)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/2)[![image3](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/3)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/3)[![image4](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/4)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/4)[![image5](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/5)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/5)[![image6](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/6)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/6)[![image7](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/images/7)](https://sourcerer.io/fame/lgvaz/lgvaz/icevision/links/7)
 
 
 ## Installation
@@ -38,17 +38,17 @@ First follow the instructions for installing PyTorch [here](https://pytorch.org/
 
 Then:
 ```bash
-pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
+pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
 ```
 
-For more installation options, check our [docs](https://airctic.github.io/mantisshrimp/install/).
+For more installation options, check our [docs](https://airctic.github.io/icevision/install/).
 
 **Important:** We currently only support Linux/MacOS.
 <!-- Not included in docs - end -->
 
 
 ## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://airctic.github.io/mantisshrimp/examples/training/)
+[**Source Code**](https://airctic.github.io/icevision/examples/training/)
 ![image](images/mantis-readme.png)
 
 
@@ -68,7 +68,7 @@ For more installation options, check our [docs](https://airctic.github.io/mantis
 
 ## Our Solution
 
-Mantisshrimp library provides some elegant solutions in those 2
+IceVision library provides some elegant solutions in those 2
 fundamental components:
 
 **1- A Unified Data API**
@@ -87,11 +87,11 @@ different annotation formats into a very flexibe parser:
 
 **2- A Universal Adapter to different DL Libraries**
 
-* Mantisshrimp provides a universal adapter that allows you to hook up
+* IceVision provides a universal adapter that allows you to hook up
   your dataset to the DL library of your choice (fastai, Pytorch
   Lightning and Pytorch), and train your model using a familiar API.
 * Our library allows you to choose one of the public implementations
-  of a given model, plug it in mantisshrimp model adapter, and
+  of a given model, plug it in icevision model adapter, and
   seamlessly train your model.
 * As a bonus, our library even allows to experiment with another DL
   library. Our tutorials have several examples showing you how to

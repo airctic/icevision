@@ -1,4 +1,4 @@
-from mantisshrimp.soft_dependencies import *
+from icevision.soft_dependencies import *
 
 
 def test_soft_import():

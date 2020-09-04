@@ -13,14 +13,14 @@
 ​1. Fork the repo to your own github account. click the Fork button to
 create your own repo copy under your GitHub account. Once forked, you're
 responsible for keeping your repo copy up-to-date with the upstream
-mantisshrimp repo.
+icevision repo.
 
-​2. Download a copy of your remote username/mantisshrimp repo to your
+​2. Download a copy of your remote username/icevision repo to your
 local machine. This is the working directory where you will make
 changes:
 
 ```bash
-git clone https://github.com/username/mantisshrimp.git
+git clone https://github.com/username/icevision.git
 ```
 
 3.  Install the requirments. You many use miniconda or conda as well.
@@ -32,10 +32,10 @@ pip install -r requirements.txt
 ## Step 2: Stay in Sync with the original (upstream) repo
 
 1.  Set the upstream to sync with this repo. This will keep you in sync
-    with mantisshrimp easily.
+    with icevision easily.
 
 ```bash
-git remote add upstream https://github.com/airctic/mantisshrimp.git
+git remote add upstream https://github.com/airctic/icevision.git
 ```
 
 2.  Updating your local repo: Pull the upstream (original) repo.
@@ -87,7 +87,7 @@ gh pr create -B master -b "enter body of PR here" -t "enter title"
 #### 2. Confirm PR was created
 
 You can confirm that your PR has been created by running the following
-command, from the mantisshrimp folder:
+command, from the icevision folder:
 
 ```bash
 gh pr list 
@@ -121,7 +121,7 @@ time and appear as a single commit in the repository.
 #### 1. Create a pull request git
 
 Upload your local branch to your remote GitHub repo
-(github.com/username/mantisshrimp)
+(github.com/username/icevision)
 
 ```bash
 git push
@@ -129,13 +129,13 @@ git push
 
 After the push completes, a message may display a URL to automatically
 submit a pull request to the upstream repo. If not, go to the
-mantisshrimp main repo and GitHub will prompt you to create a pull
+icevision main repo and GitHub will prompt you to create a pull
 request.
 
 #### 2. Confirm PR was created:
 
 Ensure your pr is listed
-[here](https://github.com/airctic/mantisshrimp/pulls)
+[here](https://github.com/airctic/icevision/pulls)
 
 3.  Updating a PR:
 
@@ -154,7 +154,7 @@ git push origin <enter-branch-name-same-as-before>
 Maintainers and other contributors will review your pull request. Please
 participate in the discussion and make the requested changes. When your
 pull request is approved, it will be merged into the upstream
-mantisshrimp repo.
+icevision repo.
 
 > **note**
 >
@@ -165,9 +165,9 @@ mantisshrimp repo.
 ## Feature Requests and questions
 
 For Feature Requests and more questions raise a github
-[issue](https://github.com/airctic/mantisshrimp/issues/). We will be happy
+[issue](https://github.com/airctic/icevision/issues/). We will be happy
 to assist you.
 
 Be sure to check the
-[documentation](https://airctic.github.io/mantisshrimp/index.html).
+[documentation](https://airctic.github.io/icevision/index.html).
 

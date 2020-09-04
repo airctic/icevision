@@ -1,8 +1,8 @@
 import pytest, requests, PIL
-from mantisshrimp import *
-from mantisshrimp.imports import *
-from mantisshrimp.models.rcnn import faster_rcnn
-from mantisshrimp.models import efficientdet
+from icevision import *
+from icevision.imports import *
+from icevision.models.rcnn import faster_rcnn
+from icevision.models import efficientdet
 import albumentations as A
 
 

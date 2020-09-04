@@ -1,4 +1,4 @@
-from mantisshrimp.all import *
+from icevision.all import *
 
 
 def _test_preds(preds):

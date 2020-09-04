@@ -5,12 +5,12 @@
 
 ### **Option 1:** Installing a non-editable package from GitHub **[Recommended]**
 
-To install the mantisshrimp package from its GitHub repo, run the command here below. This option can be used in Google Colab,
-for example, where you might install the mantisshrimp latest version (from the `master` branch)
+To install the icevision package from its GitHub repo, run the command here below. This option can be used in Google Colab,
+for example, where you might install the icevision latest version (from the `master` branch)
 
 <div class="termy">
 ```console
-$ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all] --upgrade
+$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 </div>
 
@@ -19,16 +19,16 @@ $ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all
 !!! info "Note"  
     This method is used by developers who are usually either:
 
-    - actively contributing to `mantisshrimp` project by adding new features or fixing bugs, or 
+    - actively contributing to `icevision` project by adding new features or fixing bugs, or 
 
-    - creating their own extensions, and making sure that their source code stay in sync with the `mantisshrimp` latest version.
+    - creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
 
 All we have to do is to follow these 3 simple steps by running the following commands:
 
 <div class="termy">
 ```console
-$ git clone --depth=1 https://github.com/airctic/mantisshrimp.git
-$ cd mantisshrimp
+$ git clone --depth=1 https://github.com/airctic/icevision.git
+$ cd icevision
 $ pip install .[all]
 ```
 </div>
@@ -36,29 +36,29 @@ $ pip install .[all]
 ### **Option 3:** Installing from pypi repository **[Coming Soon!]**
  
 #### All Packages
-To install mantisshrimp package together with all dependencies:
+To install icevision package together with all dependencies:
 
 <div class="termy">
 ```console
-$ pip install mantisshrimp[all]
+$ pip install icevision[all]
 ```
 </div>
 
-#### Mantisshrimp + Fastai
-To install mantisshrimp package and only the Fastai library, run the following command:
+#### IceVision + Fastai
+To install icevision package and only the Fastai library, run the following command:
 
 <div class="termy">
 ```console
-$ pip install mantisshrimp[fastai]
+$ pip install icevision[fastai]
 ```
 </div>
 
-#### Mantisshrimp + Pytorch-Lightning
-To install mantisshrimp package and only the Pytorch-Lightning library, run the following command:
+#### IceVision + Pytorch-Lightning
+To install icevision package and only the Pytorch-Lightning library, run the following command:
 
 <div class="termy">
 ```console
-$ pip install mantisshrimp[pytorch_lightning]
+$ pip install icevision[pytorch_lightning]
 ```
 </div>
 
@@ -69,7 +69,7 @@ Creating a conda environment is considered as a best practice because it avoids 
 ```console
 $ conda env create -n mantis
 $ conda activate mantis
-$ pip install git+git://github.com/airctic/mantisshrimp.git#egg=mantisshrimp[all]
+$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
 ```
 </div>
 

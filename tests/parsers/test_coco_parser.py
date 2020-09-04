@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp.all import *
+from icevision.all import *
 
 source = Path(__file__).absolute().parent.parent.parent / "samples"
 

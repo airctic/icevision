@@ -1,5 +1,5 @@
 import pytest
-from mantisshrimp import *
+from icevision import *
 
 
 @pytest.mark.parametrize("model_name", ["resnet34", "resnext101_32x8d"])
