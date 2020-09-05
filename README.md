@@ -1,19 +1,17 @@
 
-<div align="center">
 <img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
-<h2>An Agnostic Object Dectection Framework</h2
+<div align="center">
+  <h2><b>An Agnostic Object Detection Framework</b></h2>
 </div>
 
-
 * * * * *
-
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
     and sharing it. 
     Thank you!
     
-
-<div align="center">    
+<div align="center">
+    
 [![tests](https://github.com/airctic/icevision/workflows/tests/badge.svg?event=push)](https://github.com/airctic/icevision/actions?query=workflow%3Atests)
 [![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](https://airctic.github.io/icevision/index.html)
 [![codecov](https://codecov.io/gh/airctic/icevision/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/icevision)
