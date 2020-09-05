@@ -1,6 +1,5 @@
-
-<img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
 <div align="center">
+  <img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
   <h2><b>An Agnostic Object Detection Framework</b></h2>
 </div>
 
