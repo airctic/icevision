@@ -1,6 +1,9 @@
+<div align="center">
+  <img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
+  <h2><b>An Agnostic Object Detection Framework</b></h2>
+</div>
 
-<img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
-
+* * * * *
 >**Note: "We Need Your Help"**
     If you find this work useful, please let other people know by **starring** it,
     and sharing it. 
@@ -21,8 +24,7 @@
 
 * * * * *
 
-![image](images/icevision-logo.png)
-![image](images/mantis-end-to-end-training.gif)
+![image](images/icevision-end-to-end-training.gif)
 
 <!-- Not included in docs - start -->
 ## **Contributors**
