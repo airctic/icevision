@@ -25,4 +25,3 @@ def show_results(
         denormalize_fn=denormalize_fn,
         show=show,
     )
-

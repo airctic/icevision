@@ -28,4 +28,3 @@ def test_faster_rcnn_show_results(fake_faster_rcnn_model, fridge_ds):
     faster_rcnn.show_results(
         model=fake_faster_rcnn_model, dataset=valid_ds, num_samples=1, ncols=1
     )
-
