@@ -138,7 +138,7 @@ def show_preds(
     imgs: Sequence[np.ndarray],
     preds: Sequence[dict],
     class_map: Optional[ClassMap] = None,
-    denormalize_fn=None,
+    denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,

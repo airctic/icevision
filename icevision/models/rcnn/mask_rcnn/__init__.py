@@ -5,6 +5,7 @@ from icevision.models.rcnn.loss_fn import *
 from icevision.models.rcnn.mask_rcnn.dataloaders import *
 from icevision.models.rcnn.mask_rcnn.model import *
 from icevision.models.rcnn.mask_rcnn.prediction import *
+from icevision.models.rcnn.mask_rcnn.show_results import *
 
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies
