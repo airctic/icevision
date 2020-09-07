@@ -10,7 +10,7 @@ theme:
 
 docs_dir: sources
 repo_url: https://github.com/airctic/IceVision
-site_url: https://airctic.com/
+site_url: https://icevision.airctic.com/
 edit_uri: ""
 site_description: 'Documentation for IceVision.'
 # google_analytics: ['UA-44322747-3', 'https://airctic.github.io/icevision/']
