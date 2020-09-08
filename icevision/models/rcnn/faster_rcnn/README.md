@@ -71,7 +71,7 @@ trainer.fit(light_model, train_dl, valid_dl)
 ## How to train the **PETS Dataset** using **Faster RCNN**
 
 [**Source Code**](https://airctic.github.io/icevision/examples/training/)
-![image](https://airctic.github.io/icevision/images/mantis-readme.png)
+![image](https://airctic.github.io/icevision/images/icevision.png)
 
 
 ## Paper Introduction

@@ -48,7 +48,7 @@ For more installation options, check our [docs](https://airctic.github.io/icevis
 
 ## Quick Example: How to train the **PETS Dataset**
 [**Source Code**](https://airctic.github.io/icevision/examples/training/)
-![image](images/mantis-readme.png)
+![image](images/icevision-readme.png)
 
 
 
