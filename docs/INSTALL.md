@@ -1,7 +1,7 @@
 !!! danger "Important"  
     We currently only support Linux/MacOS installations
 
-## A- Installation using pypi
+## A- Installation using pip
 
 ### **Option 1:** Installing a non-editable package from GitHub **[Recommended]**
 
