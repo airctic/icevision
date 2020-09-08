@@ -44,7 +44,6 @@ extra_javascript:
 nav:
   - Home: index.md
   - Installation: install.md
-  - Docker: docker.md
   - Tutorials:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md

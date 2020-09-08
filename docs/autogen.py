@@ -290,8 +290,6 @@ def generate(dest_dir: Path):
     )
     shutil.copyfile(mantisshrimp_dir / "docs/ABOUT.md", dest_dir / "about.md")
 
-    shutil.copyfile(mantisshrimp_dir / "docs/DOCKER.md", dest_dir / "docker.md")
-
     shutil.copyfile(mantisshrimp_dir / "docs/README.md", dest_dir / "readme_mkdocs.md")
 
     shutil.copyfile(
