@@ -64,9 +64,7 @@ PAGES = {
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
     ],
-    "mask_rcnn_fastai.md": [
-        "icevision.models.rcnn.mask_rcnn.fastai.learner.learner",
-    ],
+    "mask_rcnn_fastai.md": ["icevision.models.rcnn.mask_rcnn.fastai.learner.learner",],
     "mask_rcnn_lightning.md": [
         "icevision.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
@@ -79,9 +77,7 @@ PAGES = {
         "icevision.models.efficientdet.dataloaders.build_valid_batch",
         "icevision.models.efficientdet.dataloaders.build_infer_batch",
     ],
-    "efficientdet_fastai.md": [
-        "icevision.models.efficientdet.fastai.learner.learner",
-    ],
+    "efficientdet_fastai.md": ["icevision.models.efficientdet.fastai.learner.learner",],
     "efficientdet_lightning.md": [
         "icevision.models.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
@@ -97,8 +93,8 @@ PAGES = {
 
 ROOT = "https://airctic.github.io/icevision/"
 
-mantisshrimp_dir = Path(__file__).resolve().parents[1]
-print("mantisshrimp_dir: ", mantisshrimp_dir)
+icevision_dir = Path(__file__).resolve().parents[1]
+print("icevision_dir: ", icevision_dir)
 
 
 # From keras_autodocs
@@ -198,7 +194,7 @@ def py_to_nb_md(dest_dir):
 
 
 def nb_to_md(dest_dir):
-    notebooks_dir = mantisshrimp_dir / "notebooks"
+    notebooks_dir = icevision_dir / "notebooks"
     print("Notebooks folder: ", notebooks_dir)
 
     for file_path in os.listdir(notebooks_dir):
@@ -219,7 +215,7 @@ def nb_to_md(dest_dir):
 
 
 def examples_to_md(dest_dir):
-    examples_dir = mantisshrimp_dir / "examples"
+    examples_dir = icevision_dir / "examples"
     print("Examples folder: ", examples_dir)
 
     for file_path in os.listdir(examples_dir):
@@ -239,7 +235,7 @@ def examples_to_md(dest_dir):
 
 
 def generate(dest_dir: Path):
-    template_dir = mantisshrimp_dir / "docs" / "templates"
+    template_dir = icevision_dir / "docs" / "templates"
     template_images_dir = Path(template_dir) / "images"
 
     # Create dest_dir if doesn't exist
@@ -249,14 +245,14 @@ def generate(dest_dir: Path):
     os.makedirs(dest_dir)
 
     # Copy images folder from root folder to the template images folder
-    copy_tree(str(mantisshrimp_dir / "images"), str(template_images_dir))
+    copy_tree(str(icevision_dir / "images"), str(template_images_dir))
 
     # Generate APIs Documentation
     doc_generator = keras_autodoc.DocumentationGenerator(
         pages=PAGES,
         project_url="https://github.com/airctic/icevision/blob/master",
         template_dir=template_dir,
-        examples_dir=mantisshrimp_dir / "examples",
+        examples_dir=icevision_dir / "examples",
     )
     doc_generator.generate(dest_dir)
 
@@ -264,7 +260,7 @@ def generate(dest_dir: Path):
     shutil.copyfile("manifest.webmanifest", dest_dir / "manifest.webmanifest")
 
     # Auto generate the index.md file using the README.md file and the index.md file in templates folder
-    readme = (mantisshrimp_dir / "README.md").read_text()
+    readme = (icevision_dir / "README.md").read_text()
 
     # Search for the beginning and the end of the installation procedure to hide in Docs to avoid duplication
     start = readme.find("<!-- Not included in docs - start -->")
@@ -277,67 +273,63 @@ def generate(dest_dir: Path):
     (dest_dir / "index.md").write_text(index, encoding="utf-8")
 
     # Copy static .md files from the root folder
-    shutil.copyfile(mantisshrimp_dir / "CONTRIBUTING.md", dest_dir / "contributing.md")
+    shutil.copyfile(icevision_dir / "CONTRIBUTING.md", dest_dir / "contributing.md")
     shutil.copyfile(
-        mantisshrimp_dir / "CODE_OF_CONDUCT.md", dest_dir / "code_of_conduct.md"
+        icevision_dir / "CODE_OF_CONDUCT.md", dest_dir / "code_of_conduct.md"
     )
 
     # Copy static .md files from the docs folder
-    shutil.copyfile(mantisshrimp_dir / "docs/INSTALL.md", dest_dir / "install.md")
+    shutil.copyfile(icevision_dir / "docs/INSTALL.md", dest_dir / "install.md")
     shutil.copyfile(
-        mantisshrimp_dir / "docs/HOW-TO.md",
-        dest_dir / "how-to.md",
+        icevision_dir / "docs/HOW-TO.md", dest_dir / "how-to.md",
     )
-    shutil.copyfile(mantisshrimp_dir / "docs/ABOUT.md", dest_dir / "about.md")
+    shutil.copyfile(icevision_dir / "docs/ABOUT.md", dest_dir / "about.md")
 
-    shutil.copyfile(mantisshrimp_dir / "docs/README.md", dest_dir / "readme_mkdocs.md")
+    shutil.copyfile(icevision_dir / "docs/README.md", dest_dir / "readme_mkdocs.md")
 
     shutil.copyfile(
-        mantisshrimp_dir / "docs/CHANGING-THE-COLORS.md",
+        icevision_dir / "docs/CHANGING-THE-COLORS.md",
         dest_dir / "changing_the_colors.md",
     )
 
-    shutil.copyfile(mantisshrimp_dir / "docs/DEPLOYMENT.md", dest_dir / "deployment.md")
+    shutil.copyfile(icevision_dir / "docs/DEPLOYMENT.md", dest_dir / "deployment.md")
 
     # Copy static .md files from the other folders
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/models/README.md",
-        dest_dir / "model_comparison.md",
+        icevision_dir / "icevision/models/README.md", dest_dir / "model_comparison.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/models/efficientdet/README.md",
+        icevision_dir / "icevision/models/efficientdet/README.md",
         dest_dir / "model_efficientdet.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/models/rcnn/faster_rcnn/README.md",
+        icevision_dir / "icevision/models/rcnn/faster_rcnn/README.md",
         dest_dir / "model_faster_rcnn.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/backbones/backbones_effecientdet.md",
+        icevision_dir / "icevision/backbones/backbones_effecientdet.md",
         dest_dir / "backbones_effecientdet.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/backbones/backbones_faster_mask_rcnn.md",
+        icevision_dir / "icevision/backbones/backbones_faster_mask_rcnn.md",
         dest_dir / "backbones_faster_mask_rcnn.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/datasets/README.md",
-        dest_dir / "datasets.md",
+        icevision_dir / "icevision/datasets/README.md", dest_dir / "datasets.md",
     )
 
     shutil.copyfile(
-        mantisshrimp_dir / "icevision/tfms/README.md",
-        dest_dir / "albumentations.md",
+        icevision_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
     )
 
     # Copy .md examples files to destination examples folder
     # Copy css folder
-    copy_tree(str(mantisshrimp_dir / "examples"), str(dest_dir / "examples"))
+    copy_tree(str(icevision_dir / "examples"), str(dest_dir / "examples"))
 
     # Copy images folder from the template folder to the destination folder
     print("Template folder: ", template_images_dir)
@@ -347,10 +339,10 @@ def generate(dest_dir: Path):
     copy_tree(str(template_images_dir), str(dest_images_dir))
 
     # Copy css folder
-    copy_tree(str(mantisshrimp_dir / "docs/css"), str(dest_dir / "css"))
+    copy_tree(str(icevision_dir / "docs/css"), str(dest_dir / "css"))
 
     # Copy js folder
-    copy_tree(str(mantisshrimp_dir / "docs/js"), str(dest_dir / "js"))
+    copy_tree(str(icevision_dir / "docs/js"), str(dest_dir / "js"))
 
     # Generate .md files form Jupyter Notebooks located in the /ipynb folder
     nb_to_md(dest_dir)
@@ -360,4 +352,4 @@ def generate(dest_dir: Path):
 
 
 if __name__ == "__main__":
-    generate(mantisshrimp_dir / "docs" / "sources")
+    generate(icevision_dir / "docs" / "sources")
