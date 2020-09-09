@@ -33,11 +33,10 @@
 
 ## Installation
 
-First follow the instructions for installing PyTorch [here](https://pytorch.org/get-started/locally/).
-
-Then:
 ```bash
-pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
+pip install icevision[all]
+pip install pycocotools@https://github.com/lgvaz/cocoapi/archive/master.zip#subdirectory=PythonAPI&egg=pycocotools-2.0
+pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 
 For more installation options, check our [docs](https://airctic.github.io/icevision/install/).
