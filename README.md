@@ -35,7 +35,6 @@
 
 ```bash
 pip install icevision[all]
-pip install pycocotools@https://github.com/lgvaz/cocoapi/archive/master.zip#subdirectory=PythonAPI&egg=pycocotools-2.0
 pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 
