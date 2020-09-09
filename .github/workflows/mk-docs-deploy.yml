@@ -20,6 +20,7 @@ jobs:
             python -m pip install --upgrade pip setuptools
             pip install -r docs/requirements.txt
             pip install -e .[all]
+            pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
       - name: Deploy the docs
         run:  |
           cd docs
