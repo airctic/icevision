@@ -45,15 +45,13 @@ def parse_requirements(name):
 requirements = parse_requirements("requirements")
 pl_req = parse_requirements("pytorch_lightning")
 fastai_req = parse_requirements("fastai")
-models_req = parse_requirements("models")
 all_req = parse_requirements("all")
 
 extras = {}
 extras["pytorch-lightning"] = pl_req
 extras["fastai"] = fastai_req
-extras["models"] = models_req
-extras["inference"] = models_req
-extras["all"] = all_req + pl_req + fastai_req + models_req
+extras["inference"] = []
+extras["all"] = all_req + pl_req + fastai_req
 
 lic = licenses[cfg["license"]]
 min_python = cfg["min_python"]
