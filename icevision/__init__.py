@@ -12,4 +12,4 @@ from icevision.visualize import *
 
 import icevision.test_utils as test_utils
 
-__version__ = "0.0.9rc1"
+__version__ = "0.1.0rc1"
