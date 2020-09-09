@@ -71,7 +71,7 @@ def fridge_efficientdet_records(samples_source):
 
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
-    WEIGHTS_URL = "https://mantisshrimp-models.s3.us-east-2.amazonaws.com/fridge_tf_efficientdet_lite0.zip"
+    WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/fridge_tf_efficientdet_lite0/fridge_tf_efficientdet_lite0.zip"
     model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
 
     state_dict = torch.hub.load_state_dict_from_url(
