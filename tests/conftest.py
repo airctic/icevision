@@ -6,7 +6,7 @@ from icevision.models import efficientdet
 import albumentations as A
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def samples_source():
     return Path(__file__).absolute().parent.parent / "samples"
 
@@ -88,20 +88,23 @@ def fridge_faster_rcnn_model() -> nn.Module:
     return faster_rcnn.model(num_classes=5, backbone=backbone)
 
 
-@pytest.fixture(scope="session")
-def fridge_ds() -> Tuple[Dataset, Dataset]:
+@pytest.fixture(scope="module")
+def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
     IMG_SIZE = 512
-    class_map = datasets.fridge.class_map()
-    data_dir = datasets.fridge.load()
-    parser = datasets.fridge.parser(data_dir, class_map)
+
+    parser = parsers.VocXmlParser(
+        annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
+        images_dir=samples_source / "fridge/odFridgeObjects/images",
+        class_map=fridge_class_map,
+    )
 
     data_splitter = RandomSplitter([0.8, 0.2])
     train_records, valid_records = parser.parse(data_splitter)
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
-    train_ds = Dataset(train_records[:4], tfms_)
-    valid_ds = Dataset(valid_records[:4], tfms_)
+    train_ds = Dataset(train_records, tfms_)
+    valid_ds = Dataset(valid_records, tfms_)
 
     return train_ds, valid_ds
 
@@ -122,3 +125,39 @@ def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
     valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2)
 
     return train_dl, valid_dl
+
+
+@pytest.fixture(scope="session")
+def voc_class_map():
+    classes = sorted(
+        {
+            "person",
+            "bird",
+            "cat",
+            "cow",
+            "dog",
+            "horse",
+            "sheep",
+            "aeroplane",
+            "bicycle",
+            "boat",
+            "bus",
+            "car",
+            "motorbike",
+            "train",
+            "bottle",
+            "chair",
+            "diningtable",
+            "pottedplant",
+            "sofa",
+            "tvmonitor",
+        }
+    )
+
+    return ClassMap(classes=classes, background=0)
+
+
+@pytest.fixture(scope="session")
+def fridge_class_map():
+    classes = sorted({"milk_bottle", "carton", "can", "water_bottle"})
+    return ClassMap(classes)

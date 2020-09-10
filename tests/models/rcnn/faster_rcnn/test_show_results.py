@@ -22,7 +22,8 @@ def fake_faster_rcnn_model():
     return FakeFasterRCNNModel()
 
 
-def test_faster_rcnn_show_results(fake_faster_rcnn_model, fridge_ds):
+def test_faster_rcnn_show_results(fake_faster_rcnn_model, fridge_ds, monkeypatch):
+    monkeypatch.setattr(plt, "show", lambda: None)
     train_ds, valid_ds = fridge_ds
 
     faster_rcnn.show_results(
