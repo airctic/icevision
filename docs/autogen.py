@@ -320,10 +320,6 @@ def generate(dest_dir: Path):
     )
 
     shutil.copyfile(
-        icevision_dir / "icevision/datasets/README.md", dest_dir / "datasets.md",
-    )
-
-    shutil.copyfile(
         icevision_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
     )
 

@@ -60,8 +60,6 @@ nav:
     - Training a dataset: examples/how_train_dataset_exp.md
     - Training a VOC dataset: examples/dataset_voc_exp.md
     - Backbones - Faster RCNN: examples/backbones_faster_rcnn.md
-  - Datasets:
-    - Overview: datasets.md 
   - Transforms:
     - Albumentations: albumentations.md 
   - Models:
