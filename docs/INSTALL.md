@@ -3,37 +3,7 @@
 
 ## A- Installation using pip
 
-### **Option 1:** Installing a non-editable package from GitHub **[Recommended]**
-
-To install the icevision package from its GitHub repo, run the command here below. This option can be used in Google Colab,
-for example, where you might install the icevision latest version (from the `master` branch)
-
-<div class="termy">
-```console
-$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
-```
-</div>
-
-### **Option 2:** Installing an editable package from GitHub **[For Developers]**
-
-!!! info "Note"  
-    This method is used by developers who are usually either:
-
-    - actively contributing to `icevision` project by adding new features or fixing bugs, or 
-
-    - creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
-
-All we have to do is to follow these 3 simple steps by running the following commands:
-
-<div class="termy">
-```console
-$ git clone --depth=1 https://github.com/airctic/icevision.git
-$ cd icevision
-$ pip install .[all]
-```
-</div>
-
-### **Option 3:** Installing from pypi repository **[Coming Soon!]**
+### **Option 1:** Installing from pypi repository **[Stable Version]**
  
 #### All Packages
 To install icevision package together with all dependencies:
@@ -41,7 +11,6 @@ To install icevision package together with all dependencies:
 <div class="termy">
 ```console
 $ pip install icevision[all]
-$ pip install pycocotools@https://github.com/lgvaz/cocoapi/archive/master.zip#subdirectory=PythonAPI&egg=pycocotools-2.0
 $ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 </div>
@@ -64,12 +33,43 @@ $ pip install icevision[pytorch_lightning]
 ```
 </div>
 
+### **Option 2:** Installing a non-editable package from GitHub **[Recommended for Active Users]**
+
+To install the icevision package from its GitHub repo, run the command here below. This option can be used in Google Colab,
+for example, where you might install the icevision latest version (from the `master` branch)
+
+<div class="termy">
+```console
+$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+```
+</div>
+
+### **Option 3:** Installing an editable package from GitHub **[For Developers]**
+
+!!! info "Note"  
+    This method is used by developers who are usually either:
+
+    - actively contributing to `icevision` project by adding new features or fixing bugs, or 
+
+    - creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
+
+All we have to do is to follow these 3 simple steps by running the following commands:
+
+<div class="termy">
+```console
+$ git clone --depth=1 https://github.com/airctic/icevision.git
+$ cd icevision
+$ pip install .[all]
+```
+</div>
+
+
 ## B- Installation using conda
 Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **ice**
 
 <div class="termy">
 ```console
-$ conda env create -n ice
+$ conda create -n ice python=3.8 anaconda
 $ conda activate ice
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
 ```
