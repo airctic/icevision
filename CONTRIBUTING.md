@@ -23,10 +23,12 @@ changes:
 git clone https://github.com/username/icevision.git
 ```
 
-3.  Install the requirments. You many use miniconda or conda as well.
+3.  Install icevision as an editable package. As a best practice, it is highly recommended to create either a mini-conda or a conda environment. Please, check out our [Installation Using Conda Guide](https://airctic.com/install/#b-installation-using-conda).
 
 ```bash
-pip install -r requirements.txt
+cd icevision
+pip install .[all]
+pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 
 ## Step 2: Stay in Sync with the original (upstream) repo
@@ -50,8 +52,9 @@ git pull upstream master
 ```bash
 git checkout -b feature-name
 git branch
- master 
- * feature_name: 
+ 
+  master 
+  * feature_name: 
 ```
 
 ## Step 4: Make changes, and commit your file changes
@@ -64,15 +67,56 @@ Edit files in your favorite editor, and format the code with
 git status  # See which files have changed
 git diff    # See changes within files
 
-git add path/to/file.md
+git add path/to/file
 git commit -m "Your meaningful commit message for the change."
 ```
 
 Add more commits, if necessary.
 
-## Step 5: Submitting a Pull Request
+## Step 5: Reabse your repository
 
-### A. Method 1: Using GitHub CLI
+It is a good practice to sync your repository code with the original repository, on a regular basis. This will avoid your repository code base diverging from the original repository one:
+
+```bash
+git fetch upstream
+git rebase upstream/master
+```
+
+
+## Step 6: Submitting a Pull Request
+
+### A. Method 1: Using Git
+
+#### 1. Create a pull request git
+
+Upload your local branch to your remote GitHub repo
+(github.com/username/icevision)
+
+```bash
+git push
+```
+
+After the push completes, a message may display a URL to automatically
+submit a pull request to the upstream repo. If not, go to the
+icevision main repo and GitHub will prompt you to create a pull
+request.
+
+#### 2. Confirm PR was created:
+
+Ensure your PR is listed
+[here](https://github.com/airctic/icevision/pulls)
+
+3.  Updating a PR:
+
+Same as before, normally push changes to your branch and the PR will get
+automatically updated.
+
+```bash
+git commit -m "updated the feature"
+git push origin <enter-branch-name-same-as-before>
+```
+
+### B. Method 2: Using GitHub CLI
 
 Preliminary step (done only once): Install gh by following the
 instructions in [docs](https://cli.github.com/manual/installation) .
@@ -115,37 +159,6 @@ git push origin <enter-branch-name-same-as-before>
 It will automatically show up in the PR on the github page. If these are
 small changes they can be squashed together by the reviewer at the merge
 time and appear as a single commit in the repository.
-
-### B. Method 2: Using Git
-
-#### 1. Create a pull request git
-
-Upload your local branch to your remote GitHub repo
-(github.com/username/icevision)
-
-```bash
-git push
-```
-
-After the push completes, a message may display a URL to automatically
-submit a pull request to the upstream repo. If not, go to the
-icevision main repo and GitHub will prompt you to create a pull
-request.
-
-#### 2. Confirm PR was created:
-
-Ensure your pr is listed
-[here](https://github.com/airctic/icevision/pulls)
-
-3.  Updating a PR:
-
-Same as before, normally push changes to your branch and the PR will get
-automatically updated.
-
-```bash
-git commit -m "updated the feature"
-git push origin <enter-branch-name-same-as-before>
-```
 
 * * * * *
 

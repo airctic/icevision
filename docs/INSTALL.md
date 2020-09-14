@@ -41,6 +41,7 @@ for example, where you might install the icevision latest version (from the `mas
 <div class="termy">
 ```console
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 </div>
 
@@ -60,6 +61,7 @@ All we have to do is to follow these 3 simple steps by running the following com
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
 $ pip install .[all]
+$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 </div>
 
@@ -69,9 +71,10 @@ Creating a conda environment is considered as a best practice because it avoids 
 
 <div class="termy">
 ```console
-$ conda create -n ice python=3.8 anaconda
-$ conda activate ice
+$ conda create -n icevision python=3.8 anaconda
+$ conda activate icevision
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
+$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 </div>
 
