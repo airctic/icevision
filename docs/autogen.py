@@ -256,6 +256,9 @@ def generate(dest_dir: Path):
     )
     doc_generator.generate(dest_dir)
 
+    # Copy CNAME file
+    shutil.copyfile(icevision_dir / "CNAME", dest_dir / "CNAME")
+    
     # Copy web manifest
     shutil.copyfile("manifest.webmanifest", dest_dir / "manifest.webmanifest")
 
