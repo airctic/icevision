@@ -7,11 +7,12 @@ def test_draw_record(record, monkeypatch):
     show_img(img, show=True)
 
 
-def test_draw_sample(fridge_ds, monkeypatch):
+def test_draw_sample(fridge_ds, fridge_class_map, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     sample = fridge_ds[0][0]
-    class_map = datasets.fridge.class_map()
-    img = draw_sample(sample, class_map=class_map, denormalize_fn=denormalize_imagenet)
+    img = draw_sample(
+        sample, class_map=fridge_class_map, denormalize_fn=denormalize_imagenet
+    )
     show_img(img, show=True)
 
 
