@@ -10,18 +10,22 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Python 3.6
         uses: actions/setup-python@v1
         with:
           python-version: 3.6
-      - name: Install dependencies
+
+      - name: Setup dependencies
         run: |
-            python -m pip install --upgrade pip setuptools
+            python -m pip install --upgrade pip
+            pip install poetry
             pip install -r docs/requirements.txt
-            pip install -e .[all]
-            pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+            poetry install -E all
+            poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
+
       - name: Build the docs
         run:  |
           cd docs
-          python autogen.py
+          poetry run python autogen.py
           mkdocs build
