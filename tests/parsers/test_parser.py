@@ -30,7 +30,7 @@ class SimpleParser(parsers.Parser, parsers.LabelsMixin, parsers.BBoxesMixin):
 def test_parser(data):
     parser = SimpleParser(data)
 
-    records = parser.parse()[0]
+    records = parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert len(records) == 2
 
     record = records[1]

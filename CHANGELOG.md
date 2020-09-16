@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `show_results` function for each model
 
 ## Changed
+- Default `data_splitter` for Parser changed to `RandomSplitter`
 - Renamed package from `mantisshrimp` to `icevision`
 
 ## Deleted
