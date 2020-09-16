@@ -64,7 +64,9 @@ PAGES = {
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_valid_batch",
         "icevision.models.rcnn.mask_rcnn.dataloaders.build_infer_batch",
     ],
-    "mask_rcnn_fastai.md": ["icevision.models.rcnn.mask_rcnn.fastai.learner.learner",],
+    "mask_rcnn_fastai.md": [
+        "icevision.models.rcnn.mask_rcnn.fastai.learner.learner",
+    ],
     "mask_rcnn_lightning.md": [
         "icevision.models.rcnn.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
@@ -77,7 +79,9 @@ PAGES = {
         "icevision.models.efficientdet.dataloaders.build_valid_batch",
         "icevision.models.efficientdet.dataloaders.build_infer_batch",
     ],
-    "efficientdet_fastai.md": ["icevision.models.efficientdet.fastai.learner.learner",],
+    "efficientdet_fastai.md": [
+        "icevision.models.efficientdet.fastai.learner.learner",
+    ],
     "efficientdet_lightning.md": [
         "icevision.models.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
@@ -258,7 +262,7 @@ def generate(dest_dir: Path):
 
     # Copy CNAME file
     shutil.copyfile(icevision_dir / "CNAME", dest_dir / "CNAME")
-    
+
     # Copy web manifest
     shutil.copyfile("manifest.webmanifest", dest_dir / "manifest.webmanifest")
 
@@ -284,7 +288,8 @@ def generate(dest_dir: Path):
     # Copy static .md files from the docs folder
     shutil.copyfile(icevision_dir / "docs/INSTALL.md", dest_dir / "install.md")
     shutil.copyfile(
-        icevision_dir / "docs/HOW-TO.md", dest_dir / "how-to.md",
+        icevision_dir / "docs/HOW-TO.md",
+        dest_dir / "how-to.md",
     )
     shutil.copyfile(icevision_dir / "docs/ABOUT.md", dest_dir / "about.md")
 
@@ -299,7 +304,8 @@ def generate(dest_dir: Path):
 
     # Copy static .md files from the other folders
     shutil.copyfile(
-        icevision_dir / "icevision/models/README.md", dest_dir / "model_comparison.md",
+        icevision_dir / "icevision/models/README.md",
+        dest_dir / "model_comparison.md",
     )
 
     shutil.copyfile(
@@ -323,7 +329,8 @@ def generate(dest_dir: Path):
     )
 
     shutil.copyfile(
-        icevision_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
+        icevision_dir / "icevision/tfms/README.md",
+        dest_dir / "albumentations.md",
     )
 
     # Copy .md examples files to destination examples folder
