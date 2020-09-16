@@ -12,9 +12,9 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     from icevision.all import *
 
     # Load the data and create the parser
-    data_dir = datasets.pennfundan.load()
-    class_map = datasets.pennfundan.class_map()
-    parser = datasets.pennfundan.parser(data_dir)
+    data_dir = icedata.pennfundan.load_data()
+    class_map = icedata.pennfundan.class_map()
+    parser = icedata.pennfundan.parser(data_dir)
 
     # Parse records with random splits
     data_splitter = RandomSplitter([0.8, 0.2])
@@ -81,9 +81,9 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     from icevision.all import *
 
     # Load the data and create the parser
-    data_dir = datasets.pennfundan.load()
-    class_map = datasets.pennfundan.class_map()
-    parser = datasets.pennfundan.parser(data_dir)
+    data_dir = icedata.pennfundan.load_data()
+    class_map = icedata.pennfundan.class_map()
+    parser = icedata.pennfundan.parser(data_dir)
 
     # Parse records with random splits
     data_splitter = RandomSplitter([0.8, 0.2])

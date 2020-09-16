@@ -9,9 +9,10 @@ The inference API is unified one. It is independent from both [Fastai](https://g
 
 # Imports
 from icevision.all import *
+import icedata
 
 # Maps IDs to class names. `print(class_map)` for all available classes
-class_map = datasets.pets.class_map()
+class_map = icedata.pets.class_map()
 
 # Try experimenting with new images, be sure to take one of the breeds from `class_map`
 IMAGE_URL = "https://petcaramelo.com/wp-content/uploads/2018/06/beagle-cachorro.jpg"
