@@ -25,22 +25,23 @@ jobs:
     - name: Setup dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry flake8 pytest-cov
+        pip install poetry
+        poetry add pytest-cov flake8
 
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Install package
       run: |
         poetry install -E all
-        pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+        poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 
     - name: Run tests
-      run: pytest tests -m "not cuda" --cov=icevision --cov-report=xml
+      run: poetry run pytest tests -m "not cuda" --cov=icevision --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
