@@ -82,8 +82,17 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         idmap: IDMap = None,
         show_pbar: bool = True,
     ) -> List[List[RecordType]]:
+        """Loops through all data points parsing the required fields.
+
+        # Arguments
+            data_splitter: How to split the parsed data, defaults to a [0.8, 0.2] random split.
+            idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
+            show_pbar: Whether or not to show a progress bar while parsing the data.
+
+        # Returns
+            A list of records for each split defined by `data_splitter`.
+        """
         idmap = idmap or IDMap()
-        data_splitter = data_splitter or SingleSplitSplitter()
         data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(idmap=idmap)

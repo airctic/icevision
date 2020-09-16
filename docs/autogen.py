@@ -11,6 +11,7 @@ import tutobooks
 PAGES = {
     "parser.md": [
         "icevision.parsers.Parser",
+        "icevision.parsers.Parser.parse",
         "icevision.parsers.FasterRCNN",
         "icevision.parsers.MaskRCNN",
         "icevision.parsers.mixins.ImageidMixin",
