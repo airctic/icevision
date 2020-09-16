@@ -7,7 +7,7 @@ def test_voc_annotation_parser(samples_source, voc_class_map):
         images_dir=samples_source / "voc/JPEGImages",
         class_map=voc_class_map,
     )
-    records = annotation_parser.parse()[0]
+    records = annotation_parser.parse(data_splitter=SingleSplitSplitter())[0]
 
     assert len(records) == 2
 
@@ -38,7 +38,7 @@ def test_voc_mask_parser(samples_source):
     mask_parser = parsers.VocMaskParser(
         masks_dir=samples_source / "voc/SegmentationClass"
     )
-    records = mask_parser.parse()[0]
+    records = mask_parser.parse(data_splitter=SingleSplitSplitter())[0]
 
     record = records[0]
     expected = {
@@ -61,7 +61,7 @@ def test_voc_combined_parser(samples_source, voc_class_map):
     )
 
     combined_parser = parsers.CombinedParser(annotation_parser, mask_parser)
-    records = combined_parser.parse()[0]
+    records = combined_parser.parse(data_splitter=SingleSplitSplitter())[0]
 
     assert len(records) == 1
 

@@ -12,7 +12,7 @@ class CombinedParser(ParserInterface):
         self.parsers = parsers
 
     def parse(self, data_splitter=None, idmap: IDMap = None, show_pbar: bool = True):
-        data_splitter = data_splitter or SingleSplitSplitter()
+        data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         idmap = idmap or IDMap()
 
         parsers_records = [
