@@ -19,7 +19,8 @@ def coco_imageid_map():
 @pytest.fixture(scope="module")
 def records(coco_imageid_map):
     parser = test_utils.sample_combined_parser()
-    return parser.parse(idmap=coco_imageid_map)[0]
+    data_splitter = SingleSplitSplitter()
+    return parser.parse(idmap=coco_imageid_map, data_splitter=data_splitter)[0]
 
 
 @pytest.fixture(scope="module")

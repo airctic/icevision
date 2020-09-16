@@ -6,7 +6,7 @@ source = Path(__file__).absolute().parent.parent.parent / "samples"
 
 def test_info_parser():
     parser = test_utils.sample_image_info_parser()
-    infos = parser.parse()[0]
+    infos = parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert len(infos) == 6
     expected = {
         "imageid": 0,
@@ -19,7 +19,7 @@ def test_info_parser():
 
 def test_coco_annotation_parser():
     parser = test_utils.sample_annotation_parser()
-    annotations = parser.parse()[0]
+    annotations = parser.parse(data_splitter=SingleSplitSplitter())[0]
     annotation = annotations[0]
     assert len(annotations) == 5
     assert annotation["imageid"] == 0

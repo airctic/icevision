@@ -84,6 +84,7 @@ class Parser(ImageidMixin, ParserInterface, ABC):
     ) -> List[List[RecordType]]:
         idmap = idmap or IDMap()
         data_splitter = data_splitter or SingleSplitSplitter()
+        data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(idmap=idmap)
         return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
