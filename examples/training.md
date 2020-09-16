@@ -10,6 +10,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 
     # Imports
     from icevision.all import *
+    import icedata
 
     # Load the PETS dataset
     path = icedata.pets.load_data()
@@ -61,6 +62,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 
     # Imports
     from icevision.all import *
+    import icedata
 
     # Load the PETS dataset
     path = icedata.pets.load_data()

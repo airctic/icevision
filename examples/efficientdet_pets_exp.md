@@ -92,6 +92,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
 
     # Imports
     from icevision.all import *
+    import icedata
 
     # Common part to all models
 

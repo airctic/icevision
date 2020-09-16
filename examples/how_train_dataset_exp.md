@@ -91,6 +91,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
 
     # Imports
     from icevision.all import *
+    import icedata
 
     # Common part to all models
 
