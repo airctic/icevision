@@ -48,7 +48,7 @@ nav:
     - Getting Started: getting_started.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
-    - Mask RCNN: mask_rcnn_pennfundan.md
+    - Mask RCNN: mask_rcnn_pennfudan.md
     - EffecientDet: efficientdet_pets.md
     - Training a dataset: how_train_dataset.md
     - Training a VOC dataset: dataset_voc_nb.md
@@ -56,7 +56,7 @@ nav:
     - Training: examples/training.md
     - Inference: examples/inference.md
     - EffecientDet: examples/efficientdet_pets_exp.md
-    - Mask RCNN: examples/pennfundan.md
+    - Mask RCNN: examples/pennfudan.md
     - Training a dataset: examples/how_train_dataset_exp.md
     - Training a VOC dataset: examples/dataset_voc_exp.md
     - Backbones - Faster RCNN: examples/backbones_faster_rcnn.md
