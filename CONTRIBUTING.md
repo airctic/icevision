@@ -15,9 +15,13 @@ create your own repo copy under your GitHub account. Once forked, you're
 responsible for keeping your repo copy up-to-date with the upstream
 icevision repo.
 
+![image](images/fork.png)
+
 ​2. Download a copy of your remote username/icevision repo to your
 local machine. This is the working directory where you will make
 changes:
+
+![image](images/clone.png)
 
 ```bash
 git clone https://github.com/username/icevision.git
@@ -29,7 +33,9 @@ git clone https://github.com/username/icevision.git
 cd icevision
 pip install .[all]
 pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+pip install black --upgrade
 ```
+
 
 ## Step 2: Stay in Sync with the original (upstream) repo
 
@@ -85,14 +91,14 @@ git rebase upstream/master
 
 ## Step 6: Submitting a Pull Request
 
-### A. Method 1: Using Git
-
-#### 1. Create a pull request git
+### 1. Create a pull request git
 
 Upload your local branch to your remote GitHub repo
 (github.com/username/icevision)
 
 ```bash
+cd to/icevision/folder
+black .
 git push
 ```
 
@@ -101,64 +107,28 @@ submit a pull request to the upstream repo. If not, go to the
 icevision main repo and GitHub will prompt you to create a pull
 request.
 
-#### 2. Confirm PR was created:
+![image](images/pull-request.png)
+
+Fill out the **Title** and the **Description** of your pull request. Then, click the **Submit Pull Request**
+### 2. Confirm PR was created:
 
 Ensure your PR is listed
 [here](https://github.com/airctic/icevision/pulls)
 
-3.  Updating a PR:
+![image](images/create-pull-request.png)
+
+
+### 3.  Updating a PR:
 
 Same as before, normally push changes to your branch and the PR will get
 automatically updated.
 
 ```bash
 git commit -m "updated the feature"
+cd to/icevision/folder
+black .
 git push origin <enter-branch-name-same-as-before>
 ```
-
-### B. Method 2: Using GitHub CLI
-
-Preliminary step (done only once): Install gh by following the
-instructions in [docs](https://cli.github.com/manual/installation) .
-
-#### 1. Create a pull request using GitHub CLI
-
-```bash
-# Fill up the PR title and the body 
-gh pr create -B master -b "enter body of PR here" -t "enter title"
-```
-
-#### 2. Confirm PR was created
-
-You can confirm that your PR has been created by running the following
-command, from the icevision folder:
-
-```bash
-gh pr list 
-```
-
-You can also check the status of your PR by running:
-
-```bash
-gh pr status 
-```
-
-More detailed documentation can be found
-<https://cli.github.com/manual/gh_pr>.
-
-#### 3. Updating a PR
-
-If you want to change your code after a PR has been created, you can do
-it by sending more commits to the same remote branch. For example:
-
-```bash
-git commit -m "updated the feature"
-git push origin <enter-branch-name-same-as-before>
-```
-
-It will automatically show up in the PR on the github page. If these are
-small changes they can be squashed together by the reviewer at the merge
-time and appear as a single commit in the repository.
 
 * * * * *
 
