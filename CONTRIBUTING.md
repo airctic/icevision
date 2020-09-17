@@ -80,6 +80,7 @@ git commit -m "Your meaningful commit message for the change."
 Add more commits, if necessary.
 
 ## Step 5: Reabse your repository
+## Step 5: Rebase your repository
 
 It is a good practice to sync your repository code with the original repository, on a regular basis. This will avoid your repository code base diverging from the original repository one:
 
