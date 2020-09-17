@@ -5,9 +5,7 @@ Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdo
 
 ## Building the documentation
 
-- Install dependencies: `pip install -r docs/requirements.txt`
-- `pip install -e .` to make sure that Python will import your modified version of IceVision.
+- Locally install the package as described [here](https://airctic.com/install/#option-2-installing-an-editable-package-locally-for-developers)
 - From the root directory, `cd` into the `docs/` folder and run:
-    - `python autogen.py`
-    - `mkdocs serve`    # Starts a local webserver:  [localhost:8000](http://localhost:8000)
-    - `mkdocs build`    # Builds a static site in `site/` directory
+    - `poetry run python autogen.py`
+    - `poetry run mkdocs serve`    # Starts a local webserver:  [localhost:8000](http://localhost:8000)
