@@ -11,16 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python 3.6
+      - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.6
+          python-version: 3.7
 
       - name: Setup dependencies
         run: |
             python -m pip install --upgrade pip
             pip install poetry
-            pip install -r docs/requirements.txt
             poetry install -E all
             poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 
@@ -28,4 +27,4 @@ jobs:
         run:  |
           cd docs
           poetry run python autogen.py
-          mkdocs build
+          poetry run mkdocs build

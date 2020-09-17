@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "icevision"
-version = "0.1.2-rc.2"
+version = "0.1.2-rc.3"
 description = "Agnostic Computer Vision Frameword"
 authors = ["Lucas Goulart Vazquez <lgvaz@airctic.com>", "Farid Hassainia <farid@airctic.com>"]
 license = "Apache-2.0"
@@ -13,8 +13,8 @@ opencv-python = "^4.4.0"
 albumentations = "^0.4.6"
 matplotlib = "^3.3.2"
 pycocotools = "^2.0.2"
-torch = "^1.6.0"
-torchvision = "^0.7.0"
+torch = "~1.6.0"
+torchvision = "~0.7.0"
 fastcore = "<0.1.33"
 requests = "^2.24.0"
 
@@ -24,10 +24,16 @@ pytorch-lightning = { version = "^0.9", optional = true }
 # Required by fastai
 ipykernel = { version = "^5.3.4", optional = true}
 
-
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.2"
-black = "^20.8b1"
+black = "^19.3b0"
+# Docs dependencies
+keras-autodoc = "0.5.1"
+mkdocs = "^1.1.2"
+mkdocs-material = "^5.5.12"
+jupyter = "^1.0.0"
+pymdown-extensions = "^8.0"
+Sphinx = "<3.1.0"
 
 [tool.poetry.extras]
 all = ["fastai2", "pytorch-lightning", "ipykernel"]
