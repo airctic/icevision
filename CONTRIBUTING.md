@@ -1,6 +1,5 @@
 # Contribution Guide
 
-!!! info "We value your contribution" 
 !!! info "We value your contribution"
     We are both a welcoming and an open community.
     We warmly invite you to join us either as a user or a community contributor.
@@ -59,7 +58,6 @@ git pull upstream master
 ```bash
 git checkout -b feature-name
 git branch
-  * feature_name: 
 
   master
   * feature_name:
@@ -81,7 +79,6 @@ git commit -m "Your meaningful commit message for the change."
 
 Add more commits, if necessary.
 
-## Step 5: Reabse your repository
 ## Step 5: Rebase your repository
 
 It is a good practice to sync your repository code with the original repository, on a regular basis. This will avoid your repository code base diverging from the original repository one:
@@ -185,4 +182,3 @@ to assist you.
 
 Be sure to check the
 [documentation](https://airctic.github.io/icevision/index.html).
-
