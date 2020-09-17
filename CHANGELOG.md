@@ -5,14 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-## Added
+### Added
+
+### Changed
+
+### Deleted
+
+## [0.1.2]
+
+### Added
 - `show_results` function for each model
 
-## Changed
+### Changed
 - Default `data_splitter` for Parser changed to `RandomSplitter`
 - Renamed package from `mantisshrimp` to `icevision`
 
-## Deleted
+### Deleted
 - Removed `datasets` module to instead use the new `icedata` package
 
 ## [0.0.9]
