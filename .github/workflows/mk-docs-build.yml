@@ -28,3 +28,7 @@ jobs:
           cd docs
           poetry run python autogen.py
           poetry run mkdocs build
+
+      - if: github.event_name == 'push'
+      - name: Deploy docs (if pushing to master)
+        run: poetry run mkdocs gh-deploy --force
