@@ -25,17 +25,19 @@ changes:
 
 ```bash
 git clone https://github.com/username/icevision.git
+cd icevision
 ```
 
 3.  Install icevision as an editable package. As a best practice, it is highly recommended to create either a mini-conda or a conda environment. Please, check out our [Installation Using Conda Guide](https://airctic.com/install/#b-installation-using-conda).
 
-```bash
-cd icevision
-pip install .[all]
-pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
-pip install black --upgrade
-```
+First, install Poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
 
+Then, to locally install the package:
+
+```bash
+poetry install -E all
+poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
+```
 
 ## Step 2: Stay in Sync with the original (upstream) repo
 
