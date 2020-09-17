@@ -33,4 +33,4 @@ jobs:
 
       - name: Deploy docs (if pushing to master)
         if: github.repository == 'airctic/icevision' && github.event_name == 'push'
-        run: poetry run mkdocs gh-deploy --force
+        run: cd docs && poetry run mkdocs gh-deploy --force
