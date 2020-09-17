@@ -12,7 +12,7 @@
 <div align="center">
     
 [![tests](https://github.com/airctic/icevision/workflows/tests/badge.svg?event=push)](https://github.com/airctic/icevision/actions?query=workflow%3Atests)
-[![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](https://airctic.github.io/icevision/index.html)
+[![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](airctic.com)
 [![codecov](https://codecov.io/gh/airctic/icevision/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/icevision)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)  
