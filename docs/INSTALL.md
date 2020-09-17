@@ -11,7 +11,7 @@ To install icevision package together with all dependencies:
 <div class="termy">
 ```console
 $ pip install icevision[all]
-$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
@@ -29,23 +29,11 @@ To install icevision package and only the Pytorch-Lightning library, run the fol
 
 <div class="termy">
 ```console
-$ pip install icevision[pytorch_lightning]
+$ pip install icevision[lightning]
 ```
 </div>
 
-### **Option 2:** Installing a non-editable package from GitHub **[Recommended for Active Users]**
-
-To install the icevision package from its GitHub repo, run the command here below. This option can be used in Google Colab,
-for example, where you might install the icevision latest version (from the `master` branch)
-
-<div class="termy">
-```console
-$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
-$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
-```
-</div>
-
-### **Option 3:** Installing an editable package from GitHub **[For Developers]**
+### **Option 2:** Installing an editable package locally **[For Developers]**
 
 !!! info "Note"  
     This method is used by developers who are usually either:
@@ -54,17 +42,29 @@ $ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch
 
     - creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
 
-All we have to do is to follow these 3 simple steps by running the following commands:
+First, install Poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
 
+Then, clone the repo and install the package:
 <div class="termy">
 ```console
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
-$ pip install .[all]
-$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+$ poetry install -E all
+$ poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
+### **Option 3:** Installing a non-editable package from GitHub:
+
+To install the icevision package from its GitHub repo, run the command here below. This option can be used in Google Colab,
+for example, where you might install the icevision latest version (from the `master` branch)
+
+<div class="termy">
+```console
+$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
+```
+</div>
 
 ## B- Installation using conda
 Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **ice**
@@ -73,8 +73,8 @@ Creating a conda environment is considered as a best practice because it avoids 
 ```console
 $ conda create -n icevision python=3.8 anaconda
 $ conda activate icevision
-$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all]
-$ pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
+$ pip install icevision[all]
+$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
