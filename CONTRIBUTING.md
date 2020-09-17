@@ -1,6 +1,8 @@
 # Contribution Guide
 
 !!! info "We value your contribution" 
+!!! info "We value your contribution"
+    We are both a welcoming and an open community.
     We warmly invite you to join us either as a user or a community contributor.
     We will be happy to hear from you.
 
@@ -58,6 +60,9 @@ git pull upstream master
 git checkout -b feature-name
 git branch
   * feature_name: 
+
+  master
+  * feature_name:
 ```
 
 ## Step 4: Make changes, and commit your file changes
