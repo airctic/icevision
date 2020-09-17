@@ -30,3 +30,7 @@ jobs:
           cd docs
           poetry run python autogen.py
           poetry run mkdocs build
+
+      - name: Deploy docs (if pushing to master)
+        if: github.repository == 'airctic/icevision' && github.event_name == 'push'
+        run: poetry run mkdocs gh-deploy --force
