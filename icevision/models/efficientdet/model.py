@@ -39,9 +39,7 @@ def model(
     config.num_classes = num_classes
     config.image_size = img_size
     net.class_net = HeadNet(
-        config,
-        num_outputs=num_classes,
-        norm_kwargs=dict(eps=0.001, momentum=0.01),
+        config, num_outputs=num_classes, norm_kwargs=dict(eps=0.001, momentum=0.01),
     )
 
     # TODO: Break down param groups for backbone

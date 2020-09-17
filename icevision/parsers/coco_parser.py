@@ -6,9 +6,7 @@ from icevision.parsers import *
 
 
 def coco(
-    annotations_file: Union[str, Path],
-    img_dir: Union[str, Path],
-    mask: bool = True,
+    annotations_file: Union[str, Path], img_dir: Union[str, Path], mask: bool = True,
 ) -> ParserInterface:
     annotations_dict = json.loads(Path(annotations_file).read())
 

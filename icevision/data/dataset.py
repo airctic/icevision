@@ -20,10 +20,7 @@ class Dataset:
     """
 
     def __init__(
-        self,
-        records: List[dict],
-        tfm: Transform = None,
-        prepare_record=None,
+        self, records: List[dict], tfm: Transform = None, prepare_record=None,
     ):
         self.records = records
         self.tfm = tfm

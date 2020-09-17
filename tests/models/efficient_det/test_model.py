@@ -13,10 +13,7 @@ from icevision.all import *
 )
 def test_efficient_det_param_groups(model_name):
     model = efficientdet.model(
-        model_name=model_name,
-        num_classes=42,
-        img_size=256,
-        pretrained=False,
+        model_name=model_name, num_classes=42, img_size=256, pretrained=False,
     )
 
     assert len(list(model.param_groups())) == 3
