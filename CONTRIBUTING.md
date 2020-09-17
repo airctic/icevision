@@ -1,7 +1,7 @@
 # Contribution Guide
 
-!!! info "We value your contribution" 
-    We are both a welcoming and an open community. 
+!!! info "We value your contribution"
+    We are both a welcoming and an open community.
     We warmly invite you to join us either as a user or a community contributor.
     We will be happy to hear from you.
 
@@ -58,9 +58,9 @@ git pull upstream master
 ```bash
 git checkout -b feature-name
 git branch
- 
-  master 
-  * feature_name: 
+
+  master
+  * feature_name:
 ```
 
 ## Step 4: Make changes, and commit your file changes
@@ -79,7 +79,7 @@ git commit -m "Your meaningful commit message for the change."
 
 Add more commits, if necessary.
 
-## Step 5: Reabse your repository
+## Step 5: Rebase your repository
 
 It is a good practice to sync your repository code with the original repository, on a regular basis. This will avoid your repository code base diverging from the original repository one:
 
@@ -144,6 +144,35 @@ icevision repo.
 > IceVision has CI checking. It will automatically check your code
 > for build as well.
 
+## Resolving Conflicts
+
+In your PR, you will see the message like below when the branch is
+not synced properly or changes were requested.
+
+> "This branch has conflicts that must be resolved"
+
+Click **Resolve conflicts** button near the bottom of your pull request.
+Then, a file with conflict will be shown with conflict markers `<<<<<<<`,
+`=======`, and `>>>>>>>`.
+
+```
+<<<<<<< edit-contributor
+Local Change
+=======
+Remote Change
+>>>>>>> master
+```
+
+The line between `<<<<<<<` and `=======` is your local change and
+the line between `=======` and `>>>>>>>` is the remote change. Make the
+changes you want in the final merge.
+
+Click **Mark as resolved** button after you've resolved all the conflicts.
+You might need to select next file if you have more than one file with a
+conflict.
+
+Click **Commit merge** button to merge base branch into the head branch.
+Then click **Merge pull request** to finish resolving conflicts.
 
 ## Feature Requests and questions
 
@@ -153,4 +182,3 @@ to assist you.
 
 Be sure to check the
 [documentation](https://airctic.github.io/icevision/index.html).
-
