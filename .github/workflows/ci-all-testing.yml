@@ -38,7 +38,6 @@ jobs:
     - name: Install package
       run: |
         poetry install -E all
-        poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 
     - name: Run tests
       run: poetry run pytest tests -m "not cuda" --cov=icevision --cov-report=xml

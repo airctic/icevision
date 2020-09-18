@@ -23,7 +23,6 @@ jobs:
             python -m pip install --upgrade pip
             pip install poetry
             poetry install -E all
-            poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 
       - name: Build the docs
         run:  |

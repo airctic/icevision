@@ -11,7 +11,6 @@ To install icevision package together with all dependencies:
 <div class="termy">
 ```console
 $ pip install icevision[all]
-$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
@@ -33,6 +32,15 @@ $ pip install icevision[lightning]
 ```
 </div>
 
+#### IceVision + Models + Other combinations
+You can combine installation options as you like, the `models` option will install all additional supported models (e.g EfficientDet), that can be combined with the training engine of your choice:
+
+<div class="termy">
+```console
+$ pip install icevision[models,fastai]
+```
+</div>
+
 ### **Option 2:** Installing an editable package locally **[For Developers]**
 
 !!! info "Note"  
@@ -50,7 +58,6 @@ Then, clone the repo and install the package:
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
 $ poetry install -E all
-$ poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
