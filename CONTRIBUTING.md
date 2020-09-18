@@ -81,17 +81,8 @@ git commit -m "Your meaningful commit message for the change."
 
 Add more commits, if necessary.
 
-## Step 5: Rebase your repository
 
-It is a good practice to sync your repository code with the original repository, on a regular basis. This will avoid your repository code base diverging from the original repository one:
-
-```bash
-git fetch upstream
-git rebase upstream/master
-```
-
-
-## Step 6: Submitting a Pull Request
+## Step 5: Submitting a Pull Request
 
 ### 1. Create a pull request git
 
@@ -157,13 +148,7 @@ Click **Resolve conflicts** button near the bottom of your pull request.
 Then, a file with conflict will be shown with conflict markers `<<<<<<<`,
 `=======`, and `>>>>>>>`.
 
-```
-<<<<<<< edit-contributor
-Local Change
-=======
-Remote Change
->>>>>>> master
-```
+![image](images/merge-conflicts.png)
 
 The line between `<<<<<<<` and `=======` is your local change and
 the line between `=======` and `>>>>>>>` is the remote change. Make the
