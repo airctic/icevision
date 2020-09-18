@@ -36,7 +36,6 @@ Then, to locally install the package:
 
 ```bash
 poetry install -E all
-poetry add omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 
 ## Step 2: Stay in Sync with the original (upstream) repo
