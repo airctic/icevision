@@ -20,9 +20,12 @@ requests = "^2.24.0"
 
 # Optional dependencies
 fastai2 = { version = ">= 0.0.18, <0.0.26", optional = true }
-pytorch-lightning = { version = "^0.9", optional = true }
-# Required by fastai
 ipykernel = { version = "^5.3.4", optional = true}
+
+pytorch-lightning = { version = "^0.9", optional = true }
+
+effdet = { version = "^0.1.6", optional=true }
+omegaconf = { version = "^2.0.2", optional=true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.2"
@@ -36,11 +39,11 @@ pymdown-extensions = "^8.0"
 Sphinx = "<3.1.0"
 
 [tool.poetry.extras]
-all = ["fastai2", "pytorch-lightning", "ipykernel"]
-training = ["fastai2", "pytorch-lightning", "ipykernel"]
+all = ["fastai2", "pytorch-lightning", "ipykernel", "effdet", "omegaconf"]
+training = ["fastai2", "pytorch-lightning", "ipykernel", "effdet", "omegaconf"]
 fastai = ["fastai2", "ipykernel"]
 lightning = ["pytorch-lightning"]
-inference = []
+inference = ["effdet", "omegaconf"]
 
 [build-system]
 requires = ["poetry>=0.12"]
