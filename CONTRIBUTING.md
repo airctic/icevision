@@ -148,7 +148,13 @@ Click **Resolve conflicts** button near the bottom of your pull request.
 Then, a file with conflict will be shown with conflict markers `<<<<<<<`,
 `=======`, and `>>>>>>>`.
 
-![image](images/merge-conflicts.png)
+```
+<<<<<<< edit-contributor
+Local Change
+=======
+Remote Change
+>>>>>>> master
+```
 
 The line between `<<<<<<<` and `=======` is your local change and
 the line between `=======` and `>>>>>>>` is the remote change. Make the
