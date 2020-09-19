@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-18.04]
-        python-version: [3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
     - name: Setup dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry
+        pip install poetry --pre
         poetry add pytest-cov flake8
 
     - name: Lint with flake8
