@@ -36,7 +36,6 @@
 
 ```bash
 pip install icevision[all]
-pip install omegaconf effdet@https://github.com/rwightman/efficientdet-pytorch/archive/master.zip#egg=effdet-0.1.4
 ```
 
 For more installation options, check our [docs](https://airctic.github.io/icevision/install/).
