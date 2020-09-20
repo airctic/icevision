@@ -30,9 +30,9 @@ dataclasses = { version = "0.6", optional=true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.0.2"
-black = "^19.3b0"
+black = "^20.8b1"
 # Docs dependencies
-keras-autodoc = "0.5.1"
+keras-autodoc = "0.6.0"
 mkdocs = "^1.1.2"
 mkdocs-material = "^5.5.12"
 jupyter = "^1.0.0"
