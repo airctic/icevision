@@ -6,7 +6,10 @@ from icevision.parsers.mixins import *
 
 
 class DefaultImageInfoParser(
-    Parser, FilepathMixin, SizeMixin, ABC,
+    Parser,
+    FilepathMixin,
+    SizeMixin,
+    ABC,
 ):
     """Bundles `Filepath` and `Size` mixins."""
 

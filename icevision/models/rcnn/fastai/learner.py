@@ -13,7 +13,11 @@ def rcnn_learner(
     **kwargs
 ):
     learn = adapted_fastai_learner(
-        dls=dls, model=model, cbs=cbs, loss_func=loss_fn, **kwargs,
+        dls=dls,
+        model=model,
+        cbs=cbs,
+        loss_func=loss_fn,
+        **kwargs,
     )
 
     # HACK: patch AvgLoss (in original, find_bs gives errors)
