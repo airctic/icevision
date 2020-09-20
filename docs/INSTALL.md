@@ -52,6 +52,13 @@ $ pip install icevision[models,fastai]
 
 First, install Poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
 
+Update poetry to the latest preview:
+<div class="termy">
+```console
+$ poetry self update --preview
+```
+</div>
+
 Then, clone the repo and install the package:
 <div class="termy">
 ```console
@@ -69,7 +76,6 @@ for example, where you might install the icevision latest version (from the `mas
 <div class="termy">
 ```console
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
-$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
@@ -81,7 +87,6 @@ Creating a conda environment is considered as a best practice because it avoids 
 $ conda create -n icevision python=3.8 anaconda
 $ conda activate icevision
 $ pip install icevision[all]
-$ pip install omegaconf git+https://github.com/rwightman/efficientdet-pytorch.git
 ```
 </div>
 
