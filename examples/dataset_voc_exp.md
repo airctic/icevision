@@ -30,8 +30,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
     )
 
     # train and validation records
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets
@@ -126,8 +125,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
     )
 
     # train and validation records
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets

@@ -20,8 +20,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     # Parser
     class_map = icedata.fridge.class_map()
     parser = icedata.fridge.parser(data_dir, class_map)
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets
@@ -101,8 +100,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     # Parser
     class_map = icedata.fridge.class_map()
     parser = icedata.fridge.parser(data_dir, class_map)
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets

@@ -20,8 +20,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     # Parser
     class_map = icedata.pets.class_map()
     parser = icedata.pets.parser(data_dir, class_map)
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets
@@ -102,8 +101,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     # Parser
     class_map = icedata.pets.class_map()
     parser = icedata.pets.parser(data_dir, class_map)
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
     show_records(train_records[:3], ncols=3, class_map=class_map)
 
     # Datasets

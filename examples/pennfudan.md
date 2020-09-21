@@ -18,8 +18,7 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     parser = icedata.pennfudan.parser(data_dir)
 
     # Parse records with random splits
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
 
     # Define the transforms and create the Datasets
     presize = 512
@@ -87,9 +86,8 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     class_map = icedata.pennfudan.class_map()
     parser = icedata.pennfudan.parser(data_dir)
 
-    # Parse records with random splits
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+
+    train_records, valid_records = parser.parse()
 
     # Define the transforms and create the Datasets
     presize = 512
