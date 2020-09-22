@@ -13,7 +13,8 @@ def download_url(url, save_path, chunk_size=1024) -> None:
     """Download file from url"""
     r = requests.get(url, stream=True)
     with open(save_path, "wb") as f:
-        bar = tqdm(unit="B", total=int(r.headers["Content-Length"]))
+        bar_total = r.headers.get("Content-Length")
+        bar = tqdm(unit="B", total=int(bar_total) if bar_total else None)
         for chunk in r.iter_content(chunk_size=chunk_size):
             if chunk:  # filter out keep-alive new chunks
                 bar.update(len(chunk))
