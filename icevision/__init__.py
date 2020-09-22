@@ -11,4 +11,9 @@ from icevision.visualize import *
 
 import icevision.test_utils as test_utils
 
-__version__ = "0.1.1rc2"
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
+
+__version__ = importlib_metadata.version(__name__)
