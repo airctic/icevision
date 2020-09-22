@@ -71,7 +71,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
 
     # PETS parser: provided out-of-the-box
     parser = icedata.pets.parser(data_dir=path, class_map=class_map)
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
 
     # shows images with corresponding labels and boxes
     show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
