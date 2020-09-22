@@ -29,8 +29,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     )
 
     # train and validation records
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
 
     # Datasets
     # Transforms
@@ -125,8 +124,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     )
 
     # train and validation records
-    data_splitter = RandomSplitter([0.8, 0.2])
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
 
     # Datasets
     # Transforms

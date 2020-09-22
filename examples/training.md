@@ -18,8 +18,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
     # Get the class_map, a utility that maps from number IDs to classs names
     class_map = icedata.pets.class_map()
 
-    # Randomly split our data into train/valid
-    data_splitter = RandomSplitter([0.8, 0.2])
+    
 
     # PETS parser: provided out-of-the-box
     parser = icedata.pets.parser(data_dir=path, class_map=class_map)
@@ -70,12 +69,9 @@ In this example, we are training the PETS dataset using either [Fastai](https://
     # Get the class_map, a utility that maps from number IDs to classs names
     class_map = icedata.pets.class_map()
 
-    # Randomly split our data into train/valid
-    data_splitter = RandomSplitter([0.8, 0.2])
-
     # PETS parser: provided out-of-the-box
     parser = icedata.pets.parser(data_dir=path, class_map=class_map)
-    train_records, valid_records = parser.parse(data_splitter)
+    train_records, valid_records = parser.parse()
 
     # shows images with corresponding labels and boxes
     show_records(train_records[:6], ncols=3, class_map=class_map, show=True)
