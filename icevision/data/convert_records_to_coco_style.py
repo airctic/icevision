@@ -29,18 +29,20 @@ def create_coco_api(coco_records) -> COCO:
     return coco_ds
 
 
-def coco_api_from_preds(preds) -> COCO:
-    coco_preds = convert_preds_to_coco_style(preds)
+def coco_api_from_preds(preds, show_pbar: bool = False) -> COCO:
+    coco_preds = convert_preds_to_coco_style(preds, show_pbar=show_pbar)
     return create_coco_api(coco_preds)
 
 
-def coco_api_from_records(records) -> COCO:
+def coco_api_from_records(records, show_pbar: bool = False) -> COCO:
     """Create pycocotools COCO dataset from records"""
-    coco_records = convert_records_to_coco_style(records)
+    coco_records = convert_records_to_coco_style(records, show_pbar=show_pbar)
     return create_coco_api(coco_records=coco_records)
 
 
-def create_coco_eval(records, preds, metric_type: str) -> COCOeval:
+def create_coco_eval(
+    records, preds, metric_type: str, show_pbar: bool = False
+) -> COCOeval:
     assert len(records) == len(preds)
 
     for record, pred in zip(records, preds):
@@ -50,8 +52,8 @@ def create_coco_eval(records, preds, metric_type: str) -> COCOeval:
         # needs 'filepath' for mask `coco.py#418`
         pred["filepath"] = record["filepath"]
 
-    target_ds = coco_api_from_records(records)
-    pred_ds = coco_api_from_preds(preds)
+    target_ds = coco_api_from_records(records, show_pbar=show_pbar)
+    pred_ds = coco_api_from_preds(preds, show_pbar=show_pbar)
     return COCOeval(target_ds, pred_ds, metric_type)
 
 
@@ -125,12 +127,18 @@ def convert_record_to_coco_annotations(record):
     return annotations_dict
 
 
-def convert_preds_to_coco_style(preds):
-    return convert_records_to_coco_style(records=preds, images=True, categories=False)
+def convert_preds_to_coco_style(preds, show_pbar: bool = False):
+    return convert_records_to_coco_style(
+        records=preds, images=True, categories=False, show_pbar=show_pbar
+    )
 
 
 def convert_records_to_coco_style(
-    records, images: bool = True, annotations: bool = True, categories: bool = True
+    records,
+    images: bool = True,
+    annotations: bool = True,
+    categories: bool = True,
+    show_pbar: bool = True,
 ):
     """Converts records from library format to coco format.
     Inspired from: https://github.com/pytorch/vision/blob/master/references/detection/coco_utils.py#L146
@@ -138,7 +146,7 @@ def convert_records_to_coco_style(
     images_ = []
     annotations_dict = defaultdict(list)
 
-    for record in pbar(records):
+    for record in pbar(records, show=show_pbar):
         if images:
             image_ = convert_record_to_coco_image(record)
             images_.append(image_)
