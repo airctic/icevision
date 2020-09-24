@@ -18,7 +18,7 @@
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)  
 
-[![Join Users Forum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/mantis)
+![Discord](https://img.shields.io/discord/735877944085446747?label=Discord&logo=Discord)
 
 </div>
 
