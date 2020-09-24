@@ -5,5 +5,5 @@ from icevision import *
 try:
     import icedata
 except ModuleNotFoundError as e:
-    if str(e) != f"No module named icedata":
+    if str(e) != f"No module named 'icedata'":
         raise e
