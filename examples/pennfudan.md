@@ -6,7 +6,7 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     ```python  hl_lines="53-55"
 
     # Install icevision
-    # pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all] icedata
 
     # Import everything from icevision
     from icevision.all import *
@@ -75,7 +75,7 @@ This shows how to train a MaskRCNN model on  the [Penn-Fundan](https://www.cis.u
     ```python  hl_lines="53-61"
 
     # Install icevision
-    # pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all] icedata
 
     # Import everything from icevision
     from icevision.all import *

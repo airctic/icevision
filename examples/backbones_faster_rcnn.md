@@ -6,7 +6,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     ```python  hl_lines="70-76"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all]
 
     # Clone the raccoom dataset repository
     # !git clone https://github.com/datitran/raccoon_dataset
@@ -101,7 +101,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     ```python  hl_lines="65-73"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all]
 
     # Clone the raccoom dataset repository
     # !git clone https://github.com/datitran/raccoon_dataset

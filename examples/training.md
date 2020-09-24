@@ -6,7 +6,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
     ```python  hl_lines="42-56"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all] icedata
 
     # Imports
     from icevision.all import *
@@ -57,7 +57,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
     ```python  hl_lines="42-50"
     
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all]
 
     # Imports
     from icevision.all import *

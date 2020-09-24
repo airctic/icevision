@@ -6,7 +6,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     ```python  hl_lines="52-61"
 
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all] icedata
 
     # Imports
     from icevision.all import *
@@ -87,7 +87,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     ```python  hl_lines="52-60"
     
     # Installing IceVision
-    # !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+    # !pip install icevision[all] icedata
 
     # Imports
     from icevision.all import *

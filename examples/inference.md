@@ -5,7 +5,7 @@ The inference API is unified one. It is independent from both [Fastai](https://g
 
 ```python
 # Installing IceVision
-# !pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+# !pip install icevision[all] icedata
 
 # Imports
 from icevision.all import *
