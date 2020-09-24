@@ -22,15 +22,18 @@ class COCOMetric(Metric):
     # Arguments
         metric_type: Dependent on the task you're solving.
         print_summary: If `True`, prints a table with statistics.
+        show_pbar: If `True` shows pbar when preparing the data for evaluation.
     """
 
     def __init__(
         self,
         metric_type: COCOMetricType = COCOMetricType.bbox,
         print_summary: bool = False,
+        show_pbar: bool = False,
     ):
         self.metric_type = metric_type
         self.print_summary = print_summary
+        self.show_pbar = show_pbar
         self._records, self._preds = [], []
 
     def _reset(self):
@@ -47,6 +50,7 @@ class COCOMetric(Metric):
                 records=self._records,
                 preds=self._preds,
                 metric_type=self.metric_type.value,
+                show_pbar=self.show_pbar,
             )
             coco_eval.evaluate()
             coco_eval.accumulate()
