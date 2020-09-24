@@ -198,8 +198,8 @@ def py_to_nb_md(dest_dir):
             md_file.write(md_content)
 
 
-def nb_to_md(dest_dir):
-    notebooks_dir = icevision_dir / "notebooks"
+def nb_to_md(src_dir, nb_folder, dest_dir):
+    notebooks_dir = src_dir / nb_folder
     print("Notebooks folder: ", notebooks_dir)
 
     for file_path in os.listdir(notebooks_dir):
@@ -351,8 +351,11 @@ def generate(dest_dir: Path):
     # Copy js folder
     copy_tree(str(icevision_dir / "docs/js"), str(dest_dir / "js"))
 
-    # Generate .md files form Jupyter Notebooks located in the /ipynb folder
-    nb_to_md(dest_dir)
+    # Generate .md files form Jupyter Notebooks located in the /notebooks folder
+    nb_to_md(icevision_dir, "notebooks", dest_dir)
+
+    # Generate .md files form Jupyter Notebooks located in the /deployment folder
+    nb_to_md(icevision_dir / "docs", "deployment", dest_dir)
 
     # Generate .md files form python files located in the /examples folder
     # examples_to_md(dest_dir)

@@ -1,22 +1,5 @@
-# Deployment using Streamlit
+# Deployment 
 
-We provide a nice demo using [streamlit](https://www.streamlit.io/). 
+We offer some easy-to-use options to deploy models trained using IceVision framework. Please, check out the [deployment](https://airctic.com/deployment/) section in our documentation or the [icevision-gradio](https://github.com/airctic/icevision-gradio) repository. 
 
-If streamlit is not already install, run the following command, from the
-terminal to install it:
-
-```bash
-pip install streamlit
-```
-
-Simply run the following in your terminal. It should start a demo in
-your browser. It will show you one of our trained models as a pet
-detector!!
-
-```bash
-streamlit run https://raw.githubusercontent.com/oke-aditya/mantisshrimp_streamlit/master/app.py
-```
-
-You can find the source code of this demo [here](https://github.com/oke-aditya/mantisshrimp_streamlit).
-
-You can also use it as a template when creating your own streamlit apps with icevision.
+We are using [gradio](https://www.gradio.app/) because it is a powerful yet to easy-to-use deployment option. 
