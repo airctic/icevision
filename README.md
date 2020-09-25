@@ -15,9 +15,10 @@
 [![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](https://airctic.com)
 [![codecov](https://codecov.io/gh/airctic/icevision/branch/master/graph/badge.svg)](https://codecov.io/gh/airctic/icevision)
 [![PyPI version](https://badge.fury.io/py/icevision.svg)](https://badge.fury.io/py/icevision)
-[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)  
+[![Downloads](https://pepy.tech/badge/icevision)](https://pepy.tech/project/icevision)
 
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/airctic/icevision/blob/master/LICENSE)
 [![Discord](https://img.shields.io/discord/735877944085446747?label=Discord&logo=Discord)](https://discord.gg/2jqrwrQ)
 
 </div>
