@@ -7,7 +7,7 @@ license = "Apache-2.0"
 include = ["CHANGELOG.md"]
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.7.0"
 tqdm = "^4.49.0"
 opencv-python = "^4.4.0"
 albumentations = "^0.4.6"
@@ -15,11 +15,11 @@ matplotlib = "^3.3.2"
 pycocotools = "^2.0.2"
 torch = "~1.6.0"
 torchvision = "~0.7.0"
-fastcore = "<0.1.33"
+fastcore = "^1.0.14"
 requests = "^2.24.0"
 
 # Optional dependencies
-fastai2 = { version = ">= 0.0.18, <0.0.26", optional = true }
+fastai = { version = ">= 2.0.13", optional = true }
 ipykernel = { version = "^5.3.4", optional = true}
 
 pytorch-lightning = { version = "^0.9", optional = true }
@@ -40,9 +40,9 @@ pymdown-extensions = "^8.0"
 Sphinx = "<3.1.0"
 
 [tool.poetry.extras]
-all = ["fastai2", "pytorch-lightning", "ipykernel", "effdet", "omegaconf", "dataclasses"]
-training = ["fastai2", "pytorch-lightning", "ipykernel", "effdet", "omegaconf", "dataclasses"]
-fastai = ["fastai2", "ipykernel"]
+all = ["fastai", "pytorch-lightning", "ipykernel", "effdet", "omegaconf", "dataclasses"]
+training = ["fastai", "pytorch-lightning", "ipykernel", "effdet", "omegaconf", "dataclasses"]
+fastai = ["fastai", "ipykernel"]
 lightning = ["pytorch-lightning"]
 inference = ["effdet", "omegaconf", "dataclasses"]
 models = ["effdet", "omegaconf", "dataclasses"]

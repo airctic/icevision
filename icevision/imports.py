@@ -1,9 +1,11 @@
-import cv2, json, torch, torchvision, dataclasses, zipfile
+import cv2, json, mimetypes, torch, torchvision, dataclasses, zipfile
 
+from dataclasses import dataclass
 from fastcore.imports import *
 from fastcore.foundation import *
 from fastcore.utils import *
 
+import numpy as np
 import torch.nn as nn
 import torch.optim.lr_scheduler as lr_scheduler
 import matplotlib.pyplot as plt
@@ -40,8 +42,8 @@ from torchvision.transforms.functional import to_tensor as im2tensor
 # Soft imports
 from icevision.soft_dependencies import SoftDependencies
 
-if SoftDependencies.fastai2:
-    import fastai2.vision.all as fastai
+if SoftDependencies.fastai:
+    import fastai.vision.all as fastai
 
 if SoftDependencies.pytorch_lightning:
     import pytorch_lightning as pl
@@ -53,7 +55,7 @@ class partial:
 
     Modifies the original partial `__repr__` and `__str__` in other to fix #270
     """
-
+    
     def __init__(self, func, *args, **kwargs):
         self._partial = functools.partial(func, *args, **kwargs)
 

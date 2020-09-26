@@ -1,1 +1,1 @@
-import fastai2.vision.all as fastai
+import fastai.vision.all as fastai

@@ -13,7 +13,7 @@ def test_soft_import_fail():
 
 def test_soft_dependencies():
     assert SoftDependencies.check() == {
-        "fastai2": True,
+        "fastai": True,
         "pytorch_lightning": True,
         "albumentations": True,
         "effdet": True,
