@@ -10,7 +10,7 @@ from icevision.models.rcnn.faster_rcnn.show_results import *
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies
 
-if SoftDependencies.fastai2:
+if SoftDependencies.fastai:
     import icevision.models.rcnn.faster_rcnn.fastai
 
 if SoftDependencies.pytorch_lightning:

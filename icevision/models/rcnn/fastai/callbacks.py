@@ -10,7 +10,7 @@ class RCNNCallback(fastai.Callback, ABC):
     def convert_raw_predictions(self, raw_preds):
         """Convert raw predictions from the model to library standard."""
 
-    def begin_batch(self):
+    def before_batch(self):
         assert len(self.xb) == len(self.yb) == 1, "Only works for single input-output"
         self.learn.xb = self.xb[0]
         self.learn.records = self.yb[0]
@@ -20,7 +20,7 @@ class RCNNCallback(fastai.Callback, ABC):
         self.learn.yb = [self.learn.xb[1]]
         self.learn.xb = [self.learn.xb[0]]
 
-    def begin_validate(self):
+    def before_validate(self):
         # put model in training mode so we can calculate losses for validation
         self.model.train()
 

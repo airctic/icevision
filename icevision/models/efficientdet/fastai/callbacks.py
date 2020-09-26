@@ -5,7 +5,7 @@ from icevision.engines.fastai import *
 
 
 class EfficientDetCallback(fastai.Callback):
-    def begin_batch(self):
+    def before_batch(self):
         assert len(self.xb) == len(self.yb) == 1, "Only works for single input-output"
         self.learn.xb = self.xb[0]
         self.learn.records = self.yb[0]
