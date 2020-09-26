@@ -55,7 +55,7 @@ class partial:
 
     Modifies the original partial `__repr__` and `__str__` in other to fix #270
     """
-    
+
     def __init__(self, func, *args, **kwargs):
         self._partial = functools.partial(func, *args, **kwargs)
 

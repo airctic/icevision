@@ -7,7 +7,7 @@ license = "Apache-2.0"
 include = ["CHANGELOG.md"]
 
 [tool.poetry.dependencies]
-python = "^3.7.0"
+python = "^3.6.1"
 tqdm = "^4.49.0"
 opencv-python = "^4.4.0"
 albumentations = "^0.4.6"
