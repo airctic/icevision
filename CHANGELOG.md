@@ -9,9 +9,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+### Deleted
+
+
+## [0.1.5]
+
+### Changed
+
 - Updates fastai2 to the final release version
 
-### Deleted
 
 ## [0.1.4]
 
