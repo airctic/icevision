@@ -17,7 +17,10 @@ class FastaiMetricAdapter(fastai.Metric):
 
     @property
     def value(self) -> Dict[str, float]:
-        return self.metric.finalize()
+        # return self.metric.finalize()
+        # HACK: Return single item from dict
+        logs = self.metric.finalize()
+        return next(iter(logs.values()))
 
     @property
     def name(self) -> str:
