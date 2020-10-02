@@ -100,8 +100,8 @@ def build_train_batch(records, batch_tfms=None):
         images.append(image)
 
         if len(record["labels"]) == 0:
-            targets["cls"].append(torch.zeros(0, dtype=torch.float))
-            targets["bbox"].append(torch.zeros((0, 4), dtype=torch.float))
+            targets["cls"].append(tensor([0], dtype=torch.float))
+            targets["bbox"].append(tensor([[0, 0, 0, 0]], dtype=torch.float))
         else:
             labels = tensor(record["labels"], dtype=torch.float)
             targets["cls"].append(labels)
