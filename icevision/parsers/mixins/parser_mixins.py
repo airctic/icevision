@@ -64,24 +64,27 @@ class FilepathMixin(ParserMixin):
 
 
 class SizeMixin(ParserMixin):
-    """Adds `height` and `width` method to parser"""
+    """Adds `image_height` and `image_width` method to parser"""
 
     def collect_info_parse_funcs(self, funcs=None):
         funcs = super().collect_info_parse_funcs(funcs)
-        return {"height": self.height, "width": self.width, **funcs}
+        return {"height": self.image_height, "width": self.image_width, **funcs}
 
     @abstractmethod
-    def height(self, o) -> int:
+    def image_height(self, o) -> int:
         pass
 
     @abstractmethod
-    def width(self, o) -> int:
+    def image_width(self, o) -> int:
         pass
 
     @classmethod
     def _templates(cls) -> List[str]:
         templates = super()._templates()
-        return templates + ["def height(self, o) -> int:", "def width(self, o) -> int:"]
+        return templates + [
+            "def image_height(self, o) -> int:",
+            "def image_width(self, o) -> int:",
+        ]
 
 
 ### Annotation parsers ###
