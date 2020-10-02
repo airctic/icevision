@@ -68,6 +68,4 @@ For more installation options, check our [docs](https://airctic.github.io/icevis
 ## Happy Learning!
 If you need any assistance, feel free to:
 
-[Join our Users Forum](https://spectrum.chat/mantis)
-
-[Join our Devs Forum](https://discord.gg/QxHctJF)
+[Join our Forum](https://discord.gg/JDBeZYK)
