@@ -1,7 +1,7 @@
 ## Where can I get some help?
 - If you find a bug, or you would like to suggest some new features, please file an issue [here](https://github.com/airctic/icevision/issues)
 
-- If you need any assistance during your learning journey, feel free to join our [forum](https://spectrum.chat/mantis).
+- If you need any assistance during your learning journey, feel free to join our [forum](https://discord.gg/JDBeZYK).
 
 
 ## How to install icevision?

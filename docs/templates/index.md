@@ -7,8 +7,7 @@
     We warmly invite you to join us either as a user or a community contributor.
     We will be happy to hear from you.
 
-[Join our Users Forum](https://spectrum.chat/mantis){: .md-button .md-button--secondary }
-[Join our Devs Forum](https://discord.gg/QxHctJF){: .md-button .md-button--secondary }
+[Join our Forum](https://discord.gg/JDBeZYK){: .md-button .md-button--secondary }
 
 
 !!! info "We Need Your Help" 
