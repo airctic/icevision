@@ -99,11 +99,16 @@ def build_train_batch(records, batch_tfms=None):
         image = im2tensor(record["img"])
         images.append(image)
 
-        labels = tensor(record["labels"], dtype=torch.float)
-        targets["cls"].append(labels)
+        if len(record["labels"]) == 0:
+            targets["cls"].append(tensor([0], dtype=torch.float))
+            targets["bbox"].append(tensor([[0, 0, 0, 0]], dtype=torch.float))
+        else:
+            labels = tensor(record["labels"], dtype=torch.float)
+            targets["cls"].append(labels)
 
-        bboxes = tensor([bbox.yxyx for bbox in record["bboxes"]], dtype=torch.float)
-        targets["bbox"].append(bboxes)
+            bboxes = tensor([bbox.yxyx for bbox in record["bboxes"]], dtype=torch.float)
+            targets["bbox"].append(bboxes)
+
     images = torch.stack(images)
 
     return (images, targets), records
