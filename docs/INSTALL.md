@@ -75,6 +75,7 @@ for example, where you might install the icevision latest version (from the `mas
 
 <div class="termy">
 ```console
+$ pip install jsonschema --upgrade # Without updating the jsonschema package installing raises an error
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 </div>

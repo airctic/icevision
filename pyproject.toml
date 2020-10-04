@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "icevision"
-version = "0.1.5"
+version = "0.1.6"
 description = "Agnostic Computer Vision Framework"
 authors = ["Lucas Goulart Vazquez <lgvaz@airctic.com>", "Farid Hassainia <farid@airctic.com>"]
 license = "Apache-2.0"
