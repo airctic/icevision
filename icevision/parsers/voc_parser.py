@@ -59,10 +59,10 @@ class VocXmlParser(DefaultImageInfoParser, LabelsMixin, BBoxesMixin):
     def filepath(self, o) -> Union[str, Path]:
         return self.images_dir / self._filename
 
-    def height(self, o) -> int:
+    def image_height(self, o) -> int:
         return int(self._size.find("height").text)
 
-    def width(self, o) -> int:
+    def image_width(self, o) -> int:
         return int(self._size.find("width").text)
 
     def labels(self, o) -> List[int]:

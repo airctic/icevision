@@ -40,10 +40,10 @@ class COCOImageInfoParser(DefaultImageInfoParser):
     def filepath(self, o) -> Union[str, Path]:
         return self.img_dir / o["file_name"]
 
-    def height(self, o) -> int:
+    def image_height(self, o) -> int:
         return o["height"]
 
-    def width(self, o) -> int:
+    def image_width(self, o) -> int:
         return o["width"]
 
 
