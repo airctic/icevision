@@ -17,10 +17,10 @@ def test_all_parser_mixins():
         def filepath(self, o) -> Union[str, Path]:
             return "path"
 
-        def height(self, o) -> int:
+        def image_height(self, o) -> int:
             return 420
 
-        def width(self, o) -> int:
+        def image_width(self, o) -> int:
             return 480
 
         def labels(self, o):
@@ -38,8 +38,8 @@ def test_all_parser_mixins():
     test = TestAllParserMixins()
     info_parse_funcs = {
         "imageid": test.imageid,
-        "height": test.height,
-        "width": test.width,
+        "height": test.image_height,
+        "width": test.image_width,
         "filepath": test.filepath,
     }
     annotation_parse_funcs = {
