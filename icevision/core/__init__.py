@@ -1,3 +1,4 @@
+from icevision.core.exceptions import *
 from icevision.core.id_map import *
 from icevision.core.class_map import *
 from icevision.core.mask import *

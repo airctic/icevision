@@ -1,6 +1,7 @@
 __all__ = ["BBox"]
 
 from icevision.imports import *
+from .exceptions import *
 
 
 # TODO: Can pnts and be tuple? Same for properties like xyxy
@@ -29,6 +30,16 @@ class BBox:
             xl, yu, xr, yb = self.pnts
             self.x, self.y, self.h, self.w = xl, yu, (yb - yu), (xr - xl)
             self.area = self.h * self.w
+
+            if (xl >= xr) or (yu >= yb):
+                msg = []
+                if xl >= xr:
+                    msg += [f"\tx_min:{xl} is greater than or equal to x_max:{xr}"]
+                if yu >= yb:
+                    msg += [f"\ty_min:{yu} is greater than or equal to y_max:{yb}"]
+
+                msg = "\n".join(msg)
+                raise InvalidDataError(f"Invalid bbox coordinates: {self.pnts}\n{msg}")
 
     def to_tensor(self):
         return tensor(self.xyxy, dtype=torch.float)
