@@ -39,6 +39,8 @@ from torch.optim.lr_scheduler import (
 
 from torchvision.transforms.functional import to_tensor as im2tensor
 
+from loguru import logger
+
 # Soft imports
 from icevision.soft_dependencies import SoftDependencies
 
