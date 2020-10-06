@@ -6,7 +6,7 @@ from icevision.all import *
 def data():
     return [
         {"id": 1, "labels": [1], "bboxes": [[1, 2, 3, 4]]},
-        {"id": 42, "labels": [2, 1], "bboxes": [[1, 2, 3, 4], [4, 3, 2, 1]]},
+        {"id": 42, "labels": [2, 1], "bboxes": [[1, 2, 3, 4], [10, 20, 30, 40]]},
     ]
 
 
@@ -37,7 +37,10 @@ def test_parser(data):
     assert set(record.keys()) == {"imageid", "labels", "bboxes"}
     assert record["imageid"] == 1
     assert record["labels"] == [2, 1]
-    assert record["bboxes"] == [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
+    assert record["bboxes"] == [
+        BBox.from_xyxy(1, 2, 3, 4),
+        BBox.from_xyxy(10, 20, 30, 40),
+    ]
 
 
 def test_parser_annotation_len_mismatch(data):
@@ -50,3 +53,15 @@ def test_parser_annotation_len_mismatch(data):
     with pytest.raises(RuntimeError) as err:
         records = parser.parse(data)
     assert "inconsistent number of annotations" in str(err)
+
+
+@pytest.mark.parametrize(
+    "bbox_xyxy", [[1, 2, 1, 4], [3, 2, 1, 4], [1, 2, 3, 2], [1, 4, 3, 2]]
+)
+def test_parser_invalid_data(data, bbox_xyxy):
+    invalid_sample = [{"id": 3, "labels": [1], "bboxes": [bbox_xyxy]}]
+
+    parser = SimpleParser(data + invalid_sample)
+
+    with pytest.raises(InvalidDataError) as err:
+        records = parser.parse(data)

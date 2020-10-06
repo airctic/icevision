@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- InvalidDataError for BBox
+- Catches InvalidDataError while parsing data
 
 ### Changed
 - Rename Parser `SizeMixin` fields from `width` `height` to `image_width` `image_height`

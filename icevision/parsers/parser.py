@@ -44,6 +44,8 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         info_parse_funcs = self.collect_info_parse_funcs()
         annotation_parse_funcs = self.collect_annotation_parse_funcs()
 
+        has_invalid_data_error = False
+
         get_imageid = info_parse_funcs.pop("imageid")
 
         records = defaultdict(lambda: {name: [] for name in annotation_parse_funcs})
@@ -55,7 +57,19 @@ class Parser(ImageidMixin, ParserInterface, ABC):
                 records[imageid][name] = func(sample)
 
             for name, func in annotation_parse_funcs.items():
-                records[imageid][name].extend(func(sample))
+                try:
+                    records[imageid][name].extend(func(sample))
+                except InvalidDataError as e:
+                    has_invalid_data_error = True
+                    true_imageid = idmap.get_id(imageid)
+                    logger.info(
+                        f"\nInvalid data error in imageid:{true_imageid}\n{str(e)}"
+                    )
+
+        if has_invalid_data_error:
+            raise InvalidDataError(
+                "Some annotations are invalid, check the errors listed here above."
+            )
 
         # check that all annotations have the same length
         # HACK: Masks is not checked, because it can be a single file with multiple masks

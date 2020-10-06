@@ -16,3 +16,8 @@ def test_bbox_relative_xcycwh():
     bbox = BBox.from_relative_xcycwh(*xcycwh, img_width=w, img_height=h)
     assert bbox.xyxy == [416, 48, 480, 144]
     assert bbox.relative_xcycwh(img_width=w, img_height=h) == pytest.approx(xcycwh)
+
+
+def test_bbox_invalid_data_error():
+    with pytest.raises(InvalidDataError) as e:
+        BBox.from_xyxy(10, 20, 20, 20)
