@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 ### Changed
+- Rename Parser `SizeMixin` fields from `width` `height` to `image_width` `image_height`
 
 ### Deleted
 
