@@ -62,7 +62,9 @@ class Parser(ImageidMixin, ParserInterface, ABC):
                 except InvalidDataError as e:
                     has_invalid_data_error = True
                     true_imageid = idmap.get_id(imageid)
-                    print(f"\nInvalid data error in imageid:{true_imageid}\n{str(e)}")
+                    logger.info(
+                        f"\nInvalid data error in imageid:{true_imageid}\n{str(e)}"
+                    )
 
         if has_invalid_data_error:
             raise InvalidDataError(
