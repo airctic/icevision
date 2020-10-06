@@ -14,7 +14,7 @@ def labels():
 
 @pytest.fixture()
 def bboxes():
-    return [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
+    return [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
 
 
 @pytest.fixture()
@@ -34,7 +34,7 @@ def _test_batch(images, targets):
 
     assert targets["bbox"][0].dtype == torch.float
     assert len(targets["bbox"]) == 2
-    expected_bboxes = tensor([[2, 1, 4, 3], [3, 4, 1, 2]], dtype=torch.float)
+    expected_bboxes = tensor([[2, 1, 4, 3], [20, 10, 40, 30]], dtype=torch.float)
     assert torch.all(targets["bbox"][0] == expected_bboxes)
 
 

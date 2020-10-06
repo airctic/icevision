@@ -14,7 +14,7 @@ def labels():
 
 @pytest.fixture()
 def bboxes():
-    return [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(4, 3, 2, 1)]
+    return [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
 
 
 @pytest.fixture()
@@ -46,7 +46,7 @@ def _test_common_rcnn_batch(batch):
 
         assert target["boxes"].dtype == torch.float
         assert torch.all(
-            target["boxes"] == tensor([[1, 2, 3, 4], [4, 3, 2, 1]], dtype=torch.float)
+            target["boxes"] == tensor([[1, 2, 3, 4], [10, 20, 30, 40]], dtype=torch.float)
         )
 
 
