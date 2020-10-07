@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### IMPORTANT
+- **Switched from poetry to setuptools**
+
 ### Added
 - InvalidDataError for BBox
 - Catches InvalidDataError while parsing data
