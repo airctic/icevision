@@ -14,33 +14,6 @@ $ pip install icevision[all]
 ```
 </div>
 
-#### IceVision + Fastai
-To install icevision package and only the Fastai library, run the following command:
-
-<div class="termy">
-```console
-$ pip install icevision[fastai]
-```
-</div>
-
-#### IceVision + Pytorch-Lightning
-To install icevision package and only the Pytorch-Lightning library, run the following command:
-
-<div class="termy">
-```console
-$ pip install icevision[lightning]
-```
-</div>
-
-#### IceVision + Models + Other combinations
-You can combine installation options as you like, the `models` option will install all additional supported models (e.g EfficientDet), that can be combined with the training engine of your choice:
-
-<div class="termy">
-```console
-$ pip install icevision[models,fastai]
-```
-</div>
-
 ### **Option 2:** Installing an editable package locally **[For Developers]**
 
 !!! info "Note"  
@@ -50,21 +23,12 @@ $ pip install icevision[models,fastai]
 
     - creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
 
-First, install Poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
-
-Update poetry to the latest preview:
-<div class="termy">
-```console
-$ poetry self update --preview
-```
-</div>
-
 Then, clone the repo and install the package:
 <div class="termy">
 ```console
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
-$ poetry install -E all
+$ pip install -e ".[all,dev]"
 ```
 </div>
 
@@ -75,7 +39,6 @@ for example, where you might install the icevision latest version (from the `mas
 
 <div class="termy">
 ```console
-$ pip install jsonschema --upgrade # Without updating the jsonschema package installing raises an error
 $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 </div>
