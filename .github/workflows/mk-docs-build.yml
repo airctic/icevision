@@ -21,15 +21,14 @@ jobs:
       - name: Setup dependencies
         run: |
             python -m pip install --upgrade pip
-            pip install poetry --pre
-            poetry install -E all
+            pip install -e ".[all,dev]"
 
       - name: Build the docs
         run:  |
           cd docs
-          poetry run python autogen.py
-          poetry run mkdocs build
+          python autogen.py
+          mkdocs build
 
       - name: Deploy docs (if pushing to master)
         if: github.repository == 'airctic/icevision' && github.event_name == 'push'
-        run: cd docs && poetry run mkdocs gh-deploy --force
+        run: cd docs && mkdocs gh-deploy --force
