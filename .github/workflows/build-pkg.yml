@@ -18,10 +18,5 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: Setup dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry --pre
-
       - name: Build package
-        run: poetry build
+        run: python setup.py sdist
