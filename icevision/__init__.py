@@ -1,5 +1,3 @@
-__version__ = "0.2.0b2"
-
 from icevision.utils import *
 from icevision.core import *
 from icevision import parsers
@@ -17,3 +15,5 @@ try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:
     import importlib_metadata
+
+__version__ = importlib_metadata.version(__name__)
