@@ -2,6 +2,7 @@ import pytest
 from icevision.all import *
 
 
+# TODO: Duplicated fixture between here and rcnn:test_dataloaders
 @pytest.fixture()
 def img():
     return 255 * np.ones((4, 4, 3), dtype=np.uint8)
@@ -19,9 +20,16 @@ def bboxes():
 
 @pytest.fixture()
 def records(img, labels, bboxes):
-    return [
-        {"img": img, "labels": labels, "bboxes": bboxes, "height": 4, "width": 4}
-    ] * 2
+    Record = type(
+        "Record",
+        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin, BaseRecord),
+        {},
+    )
+    record = Record()
+    record.set_img(img)
+    record.add_labels(labels)
+    record.add_bboxes(bboxes)
+    return [record] * 2
 
 
 def _test_batch(images, targets):

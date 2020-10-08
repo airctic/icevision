@@ -7,6 +7,7 @@ from icevision.data import *
 from icevision.parsers.mixins import *
 
 
+# TODO: Rename to BaseParser
 class ParserInterface(ABC):
     @abstractmethod
     def parse(
@@ -31,62 +32,50 @@ class Parser(ImageidMixin, ParserInterface, ABC):
     ```
     """
 
-    def prepare(self, o):
-        pass
-
     @abstractmethod
     def __iter__(self) -> Any:
         pass
 
+    def prepare(self, o):
+        pass
+
+    def record_class(self) -> BaseRecord:
+        record_bases = self.record_mixins()
+        return type("Record", (*record_bases, BaseRecord), {})
+
     def parse_dicted(
         self, idmap: IDMap, show_pbar: bool = True
     ) -> Dict[int, RecordType]:
-        info_parse_funcs = self.collect_info_parse_funcs()
-        annotation_parse_funcs = self.collect_annotation_parse_funcs()
 
-        has_invalid_data_error = False
+        Record = self.record_class()
+        records = defaultdict(Record)
 
-        get_imageid = info_parse_funcs.pop("imageid")
-
-        records = defaultdict(lambda: {name: [] for name in annotation_parse_funcs})
         for sample in pbar(self, show_pbar):
             self.prepare(sample)
-            imageid = idmap[get_imageid(sample)]
 
-            for name, func in info_parse_funcs.items():
-                records[imageid][name] = func(sample)
+            imageid = idmap[self.imageid(sample)]
+            record = records[imageid]
 
-            for name, func in annotation_parse_funcs.items():
-                try:
-                    records[imageid][name].extend(func(sample))
-                except InvalidDataError as e:
-                    has_invalid_data_error = True
-                    true_imageid = idmap.get_id(imageid)
-                    logger.info(
-                        f"\nInvalid data error in imageid:{true_imageid}\n{str(e)}"
-                    )
-
-        if has_invalid_data_error:
-            raise InvalidDataError(
-                "Some annotations are invalid, check the errors listed here above."
-            )
+            self.parse_fields(sample, record)
+            # HACK: fix imageid (needs to be transformed with idmap)
+            record.set_imageid(imageid)
 
         # check that all annotations have the same length
         # HACK: Masks is not checked, because it can be a single file with multiple masks
-        annotations_names = [n for n in annotation_parse_funcs.keys() if n != "masks"]
-        for imageid, record_annotations in records.items():
-            record_annotations_len = {
-                name: len(record_annotations[name]) for name in annotations_names
-            }
-            if not allequal(list(record_annotations_len.values())):
-                true_imageid = idmap.get_id(imageid)
-                # TODO: instead of immediatily raising the error, store the
-                # result and raise at the end of the for loop for all records
-                raise RuntimeError(
-                    f"imageid->{true_imageid} has an inconsistent number of annotations"
-                    f", all annotations must have the same length."
-                    f"\nNumber of annotations: {record_annotations_len}"
-                )
+        # annotations_names = [n for n in annotation_parse_funcs.keys() if n != "masks"]
+        # for imageid, record_annotations in records.items():
+        #     record_annotations_len = {
+        #         name: len(record_annotations[name]) for name in annotations_names
+        #     }
+        #     if not allequal(list(record_annotations_len.values())):
+        #         true_imageid = idmap.get_id(imageid)
+        #         # TODO: instead of immediatily raising the error, store the
+        #         # result and raise at the end of the for loop for all records
+        #         raise RuntimeError(
+        #             f"imageid->{true_imageid} has an inconsistent number of annotations"
+        #             f", all annotations must have the same length."
+        #             f"\nNumber of annotations: {record_annotations_len}"
+        #         )
 
         return dict(records)
 
@@ -110,7 +99,7 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
         splits = data_splitter(idmap=idmap)
-        return [[{"imageid": id, **records[id]} for id in ids] for ids in splits]
+        return [[records[id] for id in ids] for ids in splits]
 
     @classmethod
     def _templates(cls) -> List[str]:

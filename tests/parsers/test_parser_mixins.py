@@ -9,6 +9,7 @@ def test_all_parser_mixins():
         parsers.LabelsMixin,
         parsers.BBoxesMixin,
         parsers.MasksMixin,
+        parsers.AreasMixin,
         parsers.IsCrowdsMixin,
     ):
         def imageid(self, o) -> int:
@@ -23,30 +24,35 @@ def test_all_parser_mixins():
         def image_width(self, o) -> int:
             return 480
 
-        def labels(self, o):
-            return 0
+        def labels(self, o) -> List[int]:
+            return [0]
 
-        def bboxes(self, o) -> BBox:
-            return BBox.from_xyxy(1, 2, 3, 4)
+        def bboxes(self, o) -> List[BBox]:
+            return [BBox.from_xyxy(1, 2, 3, 4)]
 
-        def masks(self, o) -> MaskArray:
-            return MaskArray(np.array([]))
+        def masks(self, o) -> List[Mask]:
+            return [MaskArray(np.array([]))]
 
-        def iscrowds(self, o) -> bool:
-            return 0
+        def areas(self, o) -> List[float]:
+            return [4.2]
 
-    test = TestAllParserMixins()
-    info_parse_funcs = {
-        "imageid": test.imageid,
-        "height": test.image_height,
-        "width": test.image_width,
-        "filepath": test.filepath,
-    }
-    annotation_parse_funcs = {
-        "labels": test.labels,
-        "bboxes": test.bboxes,
-        "masks": test.masks,
-        "iscrowds": test.iscrowds,
-    }
-    assert test.collect_info_parse_funcs() == info_parse_funcs
-    assert test.collect_annotation_parse_funcs() == annotation_parse_funcs
+        def iscrowds(self, o) -> List[bool]:
+            return [False]
+
+    mixins = TestAllParserMixins()
+
+    record_bases = mixins.record_mixins()
+    Record = type("Record", (*record_bases, BaseRecord), {})
+    record = Record()
+
+    mixins.parse_fields(None, record)
+
+    assert record["imageid"] == 42
+    assert record["filepath"] == Path("path")
+    assert record["height"] == 420
+    assert record["width"] == 480
+    assert record["labels"] == [0]
+    assert record["bboxes"] == [BBox.from_xyxy(1, 2, 3, 4)]
+    assert all(record["masks"][0].data == MaskArray(np.array([])).data)
+    assert record["areas"] == [4.2]
+    assert record["iscrowds"] == [False]

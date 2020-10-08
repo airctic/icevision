@@ -2,6 +2,7 @@ import pytest
 from icevision.all import *
 
 
+# TODO: Duplicated fixture between here and efficientdet:test_dataloaders
 @pytest.fixture()
 def img():
     return 255 * np.ones((4, 4, 3), dtype=np.uint8)
@@ -19,7 +20,16 @@ def bboxes():
 
 @pytest.fixture()
 def records(img, labels, bboxes):
-    return [{"img": img, "labels": labels, "bboxes": bboxes}] * 2
+    Record = type(
+        "Record",
+        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin, BaseRecord),
+        {},
+    )
+    record = Record()
+    record.set_img(img)
+    record.add_labels(labels)
+    record.add_bboxes(bboxes)
+    return [record] * 2
 
 
 @pytest.fixture()
@@ -118,9 +128,27 @@ def masks():
     return MaskArray(np.ones((2, 4, 4), dtype=np.uint8))
 
 
+# TODO: Duplication with fasterrcnn records
 @pytest.fixture()
 def mask_records(img, labels, bboxes, masks):
-    return [{"img": img, "labels": labels, "bboxes": bboxes, "masks": masks}] * 2
+    Record = type(
+        "Record",
+        (
+            ImageRecordMixin,
+            LabelsRecordMixin,
+            BBoxesRecordMixin,
+            MasksRecordMixin,
+            BaseRecord,
+        ),
+        {},
+    )
+    record = Record()
+    record.set_img(img)
+    record.add_labels(labels)
+    record.add_bboxes(bboxes)
+    record.add_masks([masks])
+    sample = record.load()
+    return [sample] * 2
 
 
 def _test_mask_rcnn_batch(batch):
