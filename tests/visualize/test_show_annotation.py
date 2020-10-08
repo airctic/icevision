@@ -4,7 +4,7 @@ from icevision.all import *
 def test_show_annotation(record, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
 
-    data = default_prepare_record(record)
+    data = record.load()
     show_annotation(
         img=data["img"],
         labels=data["labels"],

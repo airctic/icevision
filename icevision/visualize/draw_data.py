@@ -101,10 +101,8 @@ def draw_record(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
-    prepare_record: Optional[callable] = None,
 ):
-    data_preparer = prepare_record or default_prepare_record
-    sample = data_preparer(record)
+    sample = record.load()
     return draw_sample(
         sample=sample,
         class_map=class_map,

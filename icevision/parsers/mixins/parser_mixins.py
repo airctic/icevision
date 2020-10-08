@@ -14,14 +14,10 @@ from icevision.core import *
 
 
 class ParserMixin(ABC):
-    def collect_annotation_parse_funcs(self, funcs=None):
-        return funcs or {}
+    def record_mixins(self) -> List[RecordMixin]:
+        return []
 
-    def collect_info_parse_funcs(self, funcs=None):
-        return funcs or {}
-
-    @classmethod
-    def generate_template(cls):
+    def parse_fields(self, o, record) -> None:
         pass
 
     @classmethod
@@ -32,9 +28,12 @@ class ParserMixin(ABC):
 class ImageidMixin(ParserMixin):
     """Adds `imageid` method to parser"""
 
-    def collect_info_parse_funcs(self, funcs=None):
-        funcs = super().collect_info_parse_funcs(funcs)
-        return {"imageid": self.imageid, **funcs}
+    def record_mixins(self):
+        return [ImageidRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.set_imageid(self.imageid(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def imageid(self, o) -> Hashable:
@@ -49,9 +48,12 @@ class ImageidMixin(ParserMixin):
 class FilepathMixin(ParserMixin):
     """Adds `filepath` method to parser"""
 
-    def collect_info_parse_funcs(self, funcs=None):
-        funcs = super().collect_info_parse_funcs(funcs)
-        return {"filepath": self.filepath, **funcs}
+    def record_mixins(self):
+        return [FilepathRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.set_filepath(Path(self.filepath(o)))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def filepath(self, o) -> Union[str, Path]:
@@ -66,9 +68,13 @@ class FilepathMixin(ParserMixin):
 class SizeMixin(ParserMixin):
     """Adds `image_height` and `image_width` method to parser"""
 
-    def collect_info_parse_funcs(self, funcs=None):
-        funcs = super().collect_info_parse_funcs(funcs)
-        return {"height": self.image_height, "width": self.image_width, **funcs}
+    def record_mixins(self):
+        return [SizeRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        # TODO: rename to image_weight, image_height
+        record.set_image_size(width=self.image_width(o), height=self.image_height(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def image_height(self, o) -> int:
@@ -91,9 +97,12 @@ class SizeMixin(ParserMixin):
 class LabelsMixin(ParserMixin):
     """Adds `labels` method to parser"""
 
-    def collect_annotation_parse_funcs(self, funcs=None):
-        funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"labels": self.labels, **funcs}
+    def record_mixins(self) -> List[RecordMixin]:
+        return [LabelsRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.add_labels(self.labels(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def labels(self, o) -> List[int]:
@@ -113,18 +122,16 @@ class LabelsMixin(ParserMixin):
 class BBoxesMixin(ParserMixin):
     """Adds `bboxes` method to parser"""
 
-    def collect_annotation_parse_funcs(self, funcs=None):
-        funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"bboxes": self.bboxes, **funcs}
+    def record_mixins(self) -> List[RecordMixin]:
+        return [BBoxesRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.add_bboxes(self.bboxes(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def bboxes(self, o) -> List[BBox]:
         pass
-
-    @classmethod
-    def generate_template(cls):
-        print("def bboxes(self, o) -> List[BBox]:")
-        super().generate_template()
 
     @classmethod
     def _templates(cls) -> List[str]:
@@ -135,9 +142,12 @@ class BBoxesMixin(ParserMixin):
 class MasksMixin(ParserMixin):
     """Adds `masks` method to parser"""
 
-    def collect_annotation_parse_funcs(self, funcs=None):
-        funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"masks": self.masks, **funcs}
+    def record_mixins(self) -> List[RecordMixin]:
+        return [MasksRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record) -> None:
+        record.add_masks(self.masks(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def masks(self, o) -> List[Mask]:
@@ -152,9 +162,12 @@ class MasksMixin(ParserMixin):
 class AreasMixin(ParserMixin):
     """Adds `areas` method to parser"""
 
-    def collect_annotation_parse_funcs(self, funcs=None):
-        funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"areas": self.areas, **funcs}
+    def record_mixins(self) -> List[RecordMixin]:
+        return [AreasRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record) -> None:
+        record.add_areas(self.areas(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def areas(self, o) -> List[float]:
@@ -169,9 +182,12 @@ class AreasMixin(ParserMixin):
 class IsCrowdsMixin(ParserMixin):
     """Adds `iscrowds` method to parser"""
 
-    def collect_annotation_parse_funcs(self, funcs=None):
-        funcs = super().collect_annotation_parse_funcs(funcs)
-        return {"iscrowds": self.iscrowds, **funcs}
+    def record_mixins(self) -> List[RecordMixin]:
+        return [IsCrowdsRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.add_iscrowds(self.iscrowds(o))
+        super().parse_fields(o, record)
 
     @abstractmethod
     def iscrowds(self, o) -> List[bool]:

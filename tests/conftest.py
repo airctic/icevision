@@ -30,7 +30,7 @@ def record(records):
 
 @pytest.fixture(scope="module")
 def sample(record):
-    return default_prepare_record(record)
+    return record.load()
 
 
 @pytest.fixture()

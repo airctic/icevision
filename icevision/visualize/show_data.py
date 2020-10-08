@@ -44,7 +44,6 @@ def show_record(
     display_mask: bool = True,
     ax: plt.Axes = None,
     show: bool = False,
-    prepare_record: Optional[callable] = None,
 ) -> None:
     img = draw_record(
         record=record,
@@ -52,7 +51,6 @@ def show_record(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
-        prepare_record=prepare_record,
     )
     show_img(img=img, ax=ax, show=show)
 
@@ -86,7 +84,6 @@ def show_records(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
-    prepare_record: Optional[callable] = None,
     ncols: int = 1,
     figsize=None,
     show: bool = False,
@@ -99,7 +96,6 @@ def show_records(
             display_bbox=display_bbox,
             display_mask=display_mask,
             class_map=class_map,
-            prepare_record=prepare_record,
             show=False,
         )
         for record in records
