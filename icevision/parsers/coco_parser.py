@@ -10,7 +10,7 @@ def coco(
     img_dir: Union[str, Path],
     mask: bool = True,
 ) -> ParserInterface:
-    annotations_dict = json.loads(Path(annotations_file).read())
+    annotations_dict = json.loads(Path(annotations_file).read_text())
 
     image_info_parser = COCOImageInfoParser(
         infos=annotations_dict["images"], img_dir=img_dir
