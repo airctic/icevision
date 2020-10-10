@@ -13,7 +13,7 @@ from icevision import *
 
 try:
     source = Path(icevision.__file__).parent.parent / "samples"
-    annotations_dict = json.loads((source / "annotations.json").read())
+    annotations_dict = json.loads((source / "annotations.json").read_text())
 except FileNotFoundError:
     annotations_dict = None
 
