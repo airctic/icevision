@@ -13,9 +13,15 @@ class CombinedParser(ParserInterface):
 
     def record_class(self) -> BaseRecord:
         record_bases = [parser.record_class() for parser in self.parsers]
-        return type("Record", (*record_bases, BaseRecord), {})
+        return type("Record", record_bases, {})
 
-    def parse(self, data_splitter=None, idmap: IDMap = None, show_pbar: bool = True):
+    def parse(
+        self,
+        data_splitter=None,
+        idmap: IDMap = None,
+        autofix: bool = True,
+        show_pbar: bool = True,
+    ):
         data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         idmap = idmap or IDMap()
 
@@ -43,6 +49,10 @@ class CombinedParser(ParserInterface):
                     # HACK: directly updating __dict__
                     record.__dict__.update(records[id].as_dict())
                 current_records.append(record)
+
+            if autofix:
+                autofix_records(current_records)
+
             split_records.append(current_records)
 
         return split_records

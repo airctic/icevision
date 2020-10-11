@@ -1,16 +1,31 @@
-__all__ = ["BaseRecord"]
+__all__ = ["BaseRecord", "autofix_records"]
 
 from icevision.imports import *
+from icevision.utils import *
 from collections.abc import MutableMapping
 from copy import copy
-from .record_mixins import RecordMixin
+from .record_mixins import *
 
 
 # TODO: MutableMapping because of backwards compatability
-class BaseRecord(MutableMapping, RecordMixin):
-    def clean(self):
-        # For loop the annotations
-        pass
+class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMapping):
+    def autofix(self):
+        # TODO: Check number of annotations is consistent (#bboxes==#labels==#masks)
+        # checking number #masks is tricky, because single filepath can have multiple
+        success_dict = self._autofix()
+        success_list = np.array(list(success_dict.values()))
+        keep_mask = reduce(np.logical_and, success_list)
+        discard_idxs = np.where(keep_mask == False)[0]
+
+        for i in discard_idxs:
+            logger.info("Removed annotation with index: {}", i)
+            self.remove_annotation(i)
+
+        return success_dict
+
+    def remove_annotation(self, i):
+        # TODO: remove_annotation might work incorrectly with masks
+        self._remove_annotation(i)
 
     def copy(self) -> "BaseRecord":
         return copy(self)
@@ -37,77 +52,13 @@ class BaseRecord(MutableMapping, RecordMixin):
         return len(self.as_dict())
 
 
-# class AnnotationParserMixin(ParserMixin):
-#     def collect_parse_funcs(self, funcs):
-#         funcs = super().collect_info_parse_funcs(funcs)
-#         return [*funcs]
+def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
+    for record in records:
 
-# class BBoxesMixin(AnnotationParserMixin):
-#     """Adds `bboxes` method to parser"""
-#     def collect_parse_funcs(self, funcs=None):
-#         funcs = super().collect_annotation_parse_funcs(funcs)
-#         return [self._bboxes, *funcs]
+        def _pre_replay():
+            logger.info("Autofixing record with imageid: {}", record.imageid)
 
-#     def _bboxes(self, o, record):
-#         bboxes = self.bboxes(o)
-#         record.add_annotation('bboxes', bboxes)
+        with ReplaySink(_pre_replay) as sink:
+            record.autofix()
 
-#     @abstractmethod
-#     def bboxes(self, o) -> List[BBox]:
-#         pass
-
-# class BBoxMixin:
-#     def __init__(self):
-#         super().__init__()
-#         self.bboxes = []
-
-#     def add_bboxes(self, bboxes:List[BBox]):
-#         self.add_annotation
-#         self.bboxes.extend(bboxes)
-
-# class ImageidMixin:
-#     def __init__(self):
-#         super().__init__()
-#         self.imageid = None
-
-#     def set_imageid(self, imageid: int):
-#         self.imageid = imageid
-
-# class Record(BBoxMixin, LabelMixin): # Same mixins as parser
-#     def __init__(self):
-#         self.metadata = []
-#         self.annotations = []
-#         super().__init__()
-
-#     def clean(self):
-#         # needs to know what are annotations and what is metadata
-
-# record.set_imageid()
-# record.add_bbox()
-
-# class ImageidMixin(ParserMixin):
-#     """Adds `imageid` method to parser"""
-
-#     def collect_info_parse_funcs(self, funcs=None):
-#         funcs = super().collect_info_parse_funcs(funcs)
-#         return {"imageid": self.imageid, **funcs}
-
-#     def
-
-#     @abstractmethod
-#     def imageid(self, o) -> Hashable:
-#         pass
-
-# class BBoxesMixin(ParserMixin):
-#     """Adds `bboxes` method to parser"""
-#     def collect_annotation_parse_funcs(self, funcs=None):
-#         funcs = super().collect_annotation_parse_funcs(funcs)
-#         return {"bboxes": self._bboxes, **funcs}
-
-#     def _bboxes(self, o, record):
-#         bboxes = self.bboxes(o)
-#         record.add_bboxes(bboxes)
-
-#     @abstractmethod
-#     def bboxes(self, o) -> List[BBox]:
-#         pass
+    return records

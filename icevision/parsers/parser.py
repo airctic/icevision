@@ -11,7 +11,7 @@ from icevision.parsers.mixins import *
 class ParserInterface(ABC):
     @abstractmethod
     def parse(
-        self, data_splitter: DataSplitter, show_pbar: bool = True
+        self, data_splitter: DataSplitter, autofix: bool = True, show_pbar: bool = True
     ) -> List[List[RecordType]]:
         pass
 
@@ -41,7 +41,7 @@ class Parser(ImageidMixin, ParserInterface, ABC):
 
     def record_class(self) -> BaseRecord:
         record_bases = self.record_mixins()
-        return type("Record", (*record_bases, BaseRecord), {})
+        return type("Record", (BaseRecord, *record_bases), {})
 
     def parse_dicted(
         self, idmap: IDMap, show_pbar: bool = True
@@ -83,8 +83,9 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         self,
         data_splitter: DataSplitter = None,
         idmap: IDMap = None,
+        autofix: bool = True,
         show_pbar: bool = True,
-    ) -> List[List[RecordType]]:
+    ) -> List[List[BaseRecord]]:
         """Loops through all data points parsing the required fields.
 
         # Arguments
@@ -98,8 +99,18 @@ class Parser(ImageidMixin, ParserInterface, ABC):
         idmap = idmap or IDMap()
         data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
         records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
+
         splits = data_splitter(idmap=idmap)
-        return [[records[id] for id in ids] for ids in splits]
+        all_splits_records = []
+        for ids in splits:
+            split_records = [records[i] for i in ids]
+
+            if autofix:
+                split_records = autofix_records(split_records)
+
+            all_splits_records.append(split_records)
+
+        return all_splits_records
 
     @classmethod
     def _templates(cls) -> List[str]:
