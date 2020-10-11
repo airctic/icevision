@@ -15,6 +15,7 @@ from icevision.imports import *
 from icevision.utils import *
 from .bbox import *
 from .mask import *
+from .exceptions import *
 
 
 class RecordMixin:
@@ -23,6 +24,12 @@ class RecordMixin:
         return {}
 
     def _load(self) -> None:
+        return
+
+    def _autofix(self) -> Dict[str, bool]:
+        return {}
+
+    def _remove_annotation(self, i) -> None:
         return
 
 
@@ -86,6 +93,10 @@ class LabelsRecordMixin(RecordMixin):
     def add_labels(self, labels: List[int]):
         self.labels.extend(labels)
 
+    def _remove_annotation(self, i):
+        super()._remove_annotation(i)
+        self.labels.pop(i)
+
     def as_dict(self) -> dict:
         return {"labels": self.labels, **super().as_dict()}
 
@@ -95,14 +106,24 @@ class BBoxesRecordMixin(RecordMixin):
         super().__init__()
         self.bboxes: List[BBox] = []
 
-    def is_valid(self) -> List[bool]:
-        super_valids = super().is_valid()
-        valids = [bbox.is_valid(self.width, self.height) for bbox in self.bboxes]
+    def _autofix(self) -> Dict[str, bool]:
+        success = []
+        for bbox in self.bboxes:
+            try:
+                autofixed = bbox.autofix(img_w=self.width, img_h=self.height)
+                success.append(True)
+            except InvalidDataError as e:
+                logger.info("Failed to fix: {}", bbox)
+                success.append(False)
 
-        return valids + super_valids
+        return {"bboxes": success, **super()._autofix()}
 
     def add_bboxes(self, bboxes):
         self.bboxes.extend(bboxes)
+
+    def _remove_annotation(self, i):
+        super()._remove_annotation(i)
+        self.bboxes.pop(i)
 
     def as_dict(self) -> dict:
         return {"bboxes": self.bboxes, **super().as_dict()}
@@ -120,6 +141,10 @@ class MasksRecordMixin(RecordMixin):
     def add_masks(self, masks: Sequence[Mask]):
         self.masks.extend(masks)
 
+    def _remove_annotation(self, i):
+        super()._remove_annotation(i)
+        self.masks.pop(i)
+
     def as_dict(self) -> dict:
         return {"masks": self.masks, **super().as_dict()}
 
@@ -132,6 +157,10 @@ class AreasRecordMixin(RecordMixin):
     def add_areas(self, areas: Sequence[float]):
         self.areas.extend(areas)
 
+    def _remove_annotation(self, i):
+        super()._remove_annotation(i)
+        self.areas.pop(i)
+
     def as_dict(self) -> dict:
         return {"areas": self.areas, **super().as_dict()}
 
@@ -143,6 +172,10 @@ class IsCrowdsRecordMixin(RecordMixin):
 
     def add_iscrowds(self, iscrowds: Sequence[bool]):
         self.iscrowds.extend(iscrowds)
+
+    def _remove_annotation(self, i):
+        super()._remove_annotation(i)
+        self.iscrowds.pop(i)
 
     def as_dict(self) -> dict:
         return {"iscrowds": self.iscrowds, **super().as_dict()}
