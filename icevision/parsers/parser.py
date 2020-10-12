@@ -40,8 +40,7 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         pass
 
     def record_class(self) -> BaseRecord:
-        record_bases = self.record_mixins()
-        return type("Record", (BaseRecord, *record_bases), {})
+        return create_mixed_record(self.record_mixins())
 
     def parse_dicted(
         self, idmap: IDMap, show_pbar: bool = True

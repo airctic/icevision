@@ -5,7 +5,7 @@ from copy import deepcopy
 
 @pytest.fixture()
 def record():
-    Record = type("Record", (BBoxesRecordMixin, LabelsRecordMixin, BaseRecord), {})
+    Record = create_mixed_record((BBoxesRecordMixin, LabelsRecordMixin))
     record = Record()
 
     record.set_imageid(1)

@@ -14,6 +14,7 @@ __all__ = [
     "denormalize",
     "normalize_imagenet",
     "denormalize_imagenet",
+    "patch_class_to_main",
 ]
 
 from icevision.imports import *
@@ -94,3 +95,10 @@ def denormalize_imagenet(img):
 def normalize_imagenet(img):
     mean, std = IMAGENET_STATS
     return normalize(img=img, mean=mean, std=std)
+
+def patch_class_to_main(cls):
+    import __main__
+
+    setattr(__main__, cls.__name__, cls)
+    cls.__module__ = "__main__"
+    return cls

@@ -13,7 +13,7 @@ class CombinedParser(ParserInterface):
 
     def record_class(self) -> BaseRecord:
         record_bases = [parser.record_class() for parser in self.parsers]
-        return type("Record", record_bases, {})
+        return create_mixed_record(record_bases, add_base=False)
 
     def parse(
         self,
@@ -51,7 +51,7 @@ class CombinedParser(ParserInterface):
                 current_records.append(record)
 
             if autofix:
-                autofix_records(current_records)
+                current_records = autofix_records(current_records)
 
             split_records.append(current_records)
 
