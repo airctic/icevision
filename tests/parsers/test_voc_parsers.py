@@ -34,34 +34,15 @@ def test_voc_annotation_parser(samples_source, voc_class_map):
     assert record == expected
 
 
-def test_voc_mask_parser(samples_source):
-    mask_parser = parsers.VocMaskParser(
-        masks_dir=samples_source / "voc/SegmentationClass"
-    )
-    records = mask_parser.parse(data_splitter=SingleSplitSplitter())[0]
-
-    record = records[0]
-    expected = {
-        "imageid": 0,
-        "masks": [
-            VocMaskFile(samples_source / "voc/SegmentationClass/2007_000063.png"),
-        ],
-    }
-    assert record == expected
-
-
-def test_voc_combined_parser(samples_source, voc_class_map):
-    annotation_parser = parsers.VocXmlParser(
+def test_voc_mask_parser(samples_source, voc_class_map):
+    parser = parsers.voc(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         class_map=voc_class_map,
-    )
-    mask_parser = parsers.VocMaskParser(
-        masks_dir=samples_source / "voc/SegmentationClass"
+        masks_dir=samples_source / "voc/SegmentationClass",
     )
 
-    combined_parser = parsers.CombinedParser(annotation_parser, mask_parser)
-    records = combined_parser.parse(data_splitter=SingleSplitSplitter())[0]
+    records = parser.parse(data_splitter=SingleSplitSplitter())[0]
 
     assert len(records) == 1
 

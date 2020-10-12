@@ -13,22 +13,24 @@ def voc(
     annotations_dir: Union[str, Path],
     images_dir: Union[str, Path],
     class_map: ClassMap,
-    mask: bool = False,
+    masks_dir: Optional[Union[str, Path]] = None,
 ):
-    parser = VocXmlParser(
-        annotations_dir=annotations_dir,
-        images_dir=images_dir,
-        class_map=class_map,
-    )
+    if not masks_dir:
+        return VocXmlParser(
+            annotations_dir=annotations_dir,
+            images_dir=images_dir,
+            class_map=class_map,
+        )
+    else:
+        return VocMaskParser(
+            annotations_dir=annotations_dir,
+            images_dir=images_dir,
+            masks_dir=masks_dir,
+            class_map=class_map,
+        )
 
-    if mask:
-        mask_parser = VocMaskParser(data_dir / "annotations/trimaps")
-        parser = CombinedParser(parser, mask_parser)
 
-    return parser
-
-
-class VocXmlParser(DefaultImageInfoParser, LabelsMixin, BBoxesMixin):
+class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -92,18 +94,40 @@ class VocXmlParser(DefaultImageInfoParser, LabelsMixin, BBoxesMixin):
         return bboxes
 
 
-class VocMaskParser(Parser, ImageidMixin, MasksMixin):
-    def __init__(self, masks_dir: Union[str, Path]):
+class VocMaskParser(VocXmlParser, MasksMixin):
+    def __init__(
+        self,
+        annotations_dir: Union[str, Path],
+        images_dir: Union[str, Path],
+        masks_dir: Union[str, Path],
+        class_map: ClassMap,
+    ):
+        super().__init__(
+            annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
+        )
+        self.masks_dir = masks_dir
         self.mask_files = get_image_files(masks_dir)
 
+        self._imageid2maskfile = {self.imageid_mask(o): o for o in self.mask_files}
+
+        # filter annotations
+        masks_ids = frozenset(self._imageid2maskfile.keys())
+        self._intersection = []
+        for item in super().__iter__():
+            super().prepare(item)
+            if super().imageid(item) in masks_ids:
+                self._intersection.append(item)
+
     def __len__(self):
-        return len(self.mask_files)
+        return len(self._intersection)
 
     def __iter__(self):
-        yield from self.mask_files
+        yield from self._intersection
 
-    def imageid(self, o) -> Hashable:
+    def imageid_mask(self, o) -> Hashable:
+        """Should return the same as `imageid` from parent parser."""
         return str(Path(o).stem)
 
     def masks(self, o) -> List[Mask]:
-        return [VocMaskFile(o)]
+        mask_file = self._imageid2maskfile[self.imageid(o)]
+        return [VocMaskFile(mask_file)]
