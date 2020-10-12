@@ -16,7 +16,7 @@ class ParserInterface(ABC):
         pass
 
 
-class Parser(ImageidMixin, ParserInterface, ABC):
+class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
     """Base class for all parsers, implements the main parsing logic.
 
     The actual fields to be parsed are defined by the mixins used when
