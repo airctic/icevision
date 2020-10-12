@@ -1,4 +1,4 @@
-__all__ = ["BaseRecord", "autofix_records"]
+__all__ = ["BaseRecord", "autofix_records", "create_mixed_record"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -62,3 +62,15 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
             record.autofix()
 
     return records
+
+
+def create_mixed_record(
+    mixins: Sequence[Type[RecordMixin]], add_base: bool = True
+) -> Type[BaseRecord]:
+    mixins = (BaseRecord, *mixins) if add_base else tuple(mixins)
+
+    TemporaryRecord = type("Record", mixins, {})
+    class_name = "".join([o.__name__ for o in TemporaryRecord.mro()])
+
+    Record = type(class_name, mixins, {})
+    return patch_class_to_main(Record)

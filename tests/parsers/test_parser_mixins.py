@@ -41,8 +41,7 @@ def test_all_parser_mixins():
 
     mixins = TestAllParserMixins()
 
-    record_bases = mixins.record_mixins()
-    Record = type("Record", (*record_bases, BaseRecord), {})
+    Record = create_mixed_record(mixins.record_mixins())
     record = Record()
 
     mixins.parse_fields(None, record)
