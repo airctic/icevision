@@ -59,7 +59,7 @@ def draw_label(
 ):
     # finds label position based on bbox or mask
     if bbox is not None:
-        x, y = bbox.x, bbox.y
+        x, y, _, _ = bbox.xyxy
     elif mask is not None:
         y, x = np.unravel_index(mask.data.argmax(), mask.data.shape)
     else:
