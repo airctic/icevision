@@ -1,6 +1,8 @@
+import pytest
 from icevision.all import *
 
 
+@pytest.mark.skip
 def test_show_annotation(record, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
 

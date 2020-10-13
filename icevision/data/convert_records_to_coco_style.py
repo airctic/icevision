@@ -80,7 +80,7 @@ def convert_record_to_coco_annotations(record):
         annotations_dict["category_id"].append(label)
 
     for bbox in record["bboxes"]:
-        annotations_dict["bbox"].append(bbox.xywh)
+        annotations_dict["bbox"].append(list(bbox.xywh))
 
     if "areas" in record:
         for area in record["areas"]:

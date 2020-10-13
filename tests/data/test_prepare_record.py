@@ -8,11 +8,12 @@ def filepath(samples_source):
 
 
 def test_prepare_img(filepath):
-    Record = type("Record", (FilepathRecordMixin, BaseRecord), {})
+    Record = create_mixed_record((FilepathRecordMixin,))
     record = Record()
+    record.set_imageid(1)
     record.set_filepath(filepath)
     record = record.load()
 
-    assert set(record.keys()) == {"filepath", "img", "height", "width"}
+    assert set(record.keys()) == {"imageid", "filepath", "img", "height", "width"}
     assert record["img"].shape == (375, 500, 3)
     assert (record["width"], record["height"]) == (500, 375)

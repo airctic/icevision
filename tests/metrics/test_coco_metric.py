@@ -5,28 +5,32 @@ from copy import deepcopy
 
 @pytest.fixture()
 def records():
-    record1 = {
-        "filepath": "none",
-        "imageid": 0,
-        "labels": [2],
-        "bboxes": [BBox.from_xywh(10, 10, 200, 200)],
-        "height": 400,
-        "width": 400,
-    }
-    record2 = {
-        "filepath": "none",
-        "imageid": 1,
-        "labels": [3, 2],
-        "bboxes": [BBox.from_xywh(10, 10, 50, 50), BBox.from_xywh(10, 10, 400, 400)],
-        "height": 500,
-        "width": 500,
-    }
+    Record = create_mixed_record(
+        (SizeRecordMixin, FilepathRecordMixin, LabelsRecordMixin, BBoxesRecordMixin)
+    )
+
+    record1 = Record()
+    record1.set_imageid(0)
+    record1.set_filepath("none")
+    record1.set_image_size(400, 400)
+    record1.add_labels([2])
+    record1.add_bboxes([BBox.from_xywh(10, 10, 200, 200)])
+
+    record2 = Record()
+    record2.set_imageid(1)
+    record2.set_filepath("none")
+    record2.set_image_size(500, 500)
+    record2.add_labels([3, 2])
+    record2.add_bboxes(
+        [BBox.from_xywh(10, 10, 50, 50), BBox.from_xywh(10, 10, 400, 400)]
+    )
+
     return [record1, record2]
 
 
 @pytest.fixture()
 def preds(records):
-    pred1 = deepcopy(records[0])
+    pred1 = deepcopy(records[0].as_dict())
     pred1["scores"] = [0.9]
     pred1.pop("imageid")
 

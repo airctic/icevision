@@ -4,8 +4,8 @@ from icevision.all import *
 
 
 @pytest.fixture()
-def coco_records(records):
-    return convert_records_to_coco_style(records)
+def coco_records(coco_mask_records):
+    return convert_records_to_coco_style(coco_mask_records)
 
 
 @pytest.fixture()
@@ -72,10 +72,10 @@ def test_convert_records_to_coco_style_annotations(
                 np.testing.assert_almost_equal(v1, v2)
 
 
-def test_coco_api_from_records(records):
-    coco_api = coco_api_from_records(records)
-    image_info = coco_api.loadImgs([2])
-    expected = [{"id": 2, "file_name": "000000343934.jpg", "width": 640, "height": 480}]
+def test_coco_api_from_records(coco_mask_records):
+    coco_api = coco_api_from_records(coco_mask_records)
+    image_info = coco_api.loadImgs([0])
+    expected = [{"id": 0, "file_name": "000000343934.jpg", "width": 640, "height": 480}]
     assert image_info == expected
 
 

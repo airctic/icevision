@@ -162,3 +162,36 @@ def voc_class_map():
 def fridge_class_map():
     classes = sorted({"milk_bottle", "carton", "can", "water_bottle"})
     return ClassMap(classes)
+
+
+# COCO fixtures
+@pytest.fixture(scope="session")
+def coco_dir():
+    return Path(__file__).absolute().parent.parent / "samples"
+
+
+@pytest.fixture(scope="module")
+def coco_bbox_parser(coco_dir):
+    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=False)
+
+
+@pytest.fixture(scope="module")
+def coco_mask_parser(coco_dir):
+    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=True)
+
+
+@pytest.fixture(scope="module")
+def coco_mask_records(coco_mask_parser, coco_imageid_map):
+    return coco_mask_parser.parse(
+        data_splitter=SingleSplitSplitter(), idmap=coco_imageid_map
+    )[0]
+
+
+@pytest.fixture
+def coco_record(coco_mask_records):
+    return coco_mask_records[0].copy()
+
+
+@pytest.fixture
+def coco_sample(coco_record):
+    return coco_record.load().copy()
