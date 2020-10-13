@@ -16,35 +16,6 @@ def coco_imageid_map():
     return IDMap()
 
 
-@pytest.fixture(scope="module")
-def records(coco_imageid_map):
-    parser = test_utils.sample_combined_parser()
-    data_splitter = SingleSplitSplitter()
-    return parser.parse(idmap=coco_imageid_map, data_splitter=data_splitter)[0]
-
-
-@pytest.fixture(scope="module")
-def record(records):
-    return records[0].copy()
-
-
-@pytest.fixture(scope="module")
-def sample(record):
-    return record.load()
-
-
-@pytest.fixture()
-def image():
-    # Get a big image because of these big CNNs
-    url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    img = np.array(PIL.Image.open(requests.get(url, stream=True).raw))
-    # Get a big size image for these big resnets
-    img = cv2.resize(img, (2048, 2048))
-    tensor_img = im2tensor(img)
-    tensor_img = torch.unsqueeze(tensor_img, 0)
-    return tensor_img
-
-
 @pytest.fixture()
 def fridge_efficientdet_records(samples_source):
     IMG_SIZE = 512

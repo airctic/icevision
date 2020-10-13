@@ -9,8 +9,6 @@ from icevision.models import *
 from icevision.metrics import *
 from icevision.visualize import *
 
-import icevision.test_utils as test_utils
-
 try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:
