@@ -96,6 +96,7 @@ def normalize_imagenet(img):
     mean, std = IMAGENET_STATS
     return normalize(img=img, mean=mean, std=std)
 
+
 def patch_class_to_main(cls):
     import __main__
 

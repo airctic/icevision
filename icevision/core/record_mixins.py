@@ -129,7 +129,7 @@ class BBoxesRecordMixin(RecordMixin):
                 autofixed = bbox.autofix(img_w=self.width, img_h=self.height)
                 success.append(True)
             except InvalidDataError as e:
-                logger.info("Failed to fix: {}", bbox)
+                logger.log("AUTOFIX", "Failed to fix: {}", bbox)
                 success.append(False)
 
         return {"bboxes": success, **super()._autofix()}

@@ -15,7 +15,7 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
     def check_num_annotations(self):
         num_annotations = self.num_annotations()
-        if len(set(num_annotations.values())) != 1:
+        if len(set(num_annotations.values())) > 1:
             msg = "\n".join([f"\t- {v} for {k}" for k, v in num_annotations.items()])
             raise AutofixAbort(
                 "Number of items should be the same for each annotation type"
@@ -41,7 +41,7 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
         discard_idxs = np.where(keep_mask == False)[0]
 
         for i in discard_idxs:
-            logger.info("Removed annotation with index: {}", i)
+            logger.log("AUTOFIX", "Removed annotation with index: {}", i)
             self.remove_annotation(i)
 
         return success_dict
@@ -80,16 +80,17 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
     for record in records:
 
         def _pre_replay():
-            logger.info("Autofixing record with imageid: {}", record.imageid)
+            logger.log(
+                "AUTOFIX", "️🔨  Autofixing record with imageid: {}  ️🔨", record.imageid
+            )
 
         with ReplaySink(_pre_replay) as sink:
             try:
                 record.autofix()
                 keep_records.append(record)
             except AutofixAbort as e:
-                # TODO: add more emphasis to this image, maybe colour it red
-                logger.info(
-                    "Record could not be autofixed and will be removed because: {}",
+                logger.warning(
+                    "🚫 Record could not be autofixed and will be removed because: {}",
                     str(e),
                 )
 

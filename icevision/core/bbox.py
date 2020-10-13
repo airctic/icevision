@@ -60,17 +60,22 @@ class BBox:
         """
         # conditions where data can be fixed
         if self.xmin < 0:
-            logger.info(f"Clipping xmin from {self.xmin} to 0")
+            logger.log("AUTOFIX", f"Clipping bbox xmin from {self.xmin} to 0")
             self.xmin = max(self.xmin, 0)
         if self.ymin < 0:
-            logger.info(f"Clipping ymin from {self.ymin} to 0")
+            logger.log("AUTOFIX", f"Clipping bbox ymin from {self.ymin} to 0")
             self.ymin = max(self.ymin, 0)
 
         if self.xmax > img_w:
-            logger.info(f"Clipping xmax from {self.xmax} to {img_w} (image width)")
+            logger.log(
+                "AUTOFIX", f"Clipping bbox xmax from {self.xmax} to image width {img_w}"
+            )
             self.xmax = min(self.xmax, img_w)
         if self.ymax > img_h:
-            logger.info(f"Clipping ymax from {self.ymax} to {img_h} (image height)")
+            logger.log(
+                "AUTOFIX",
+                f"Clipping bbox ymax from {self.ymax} to image height {img_h}",
+            )
             self.ymax = min(self.ymax, img_h)
 
         # conditions where data cannot be fixed
