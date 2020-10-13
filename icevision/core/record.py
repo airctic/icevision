@@ -5,11 +5,34 @@ from icevision.utils import *
 from collections.abc import MutableMapping
 from copy import copy
 from .record_mixins import *
+from .exceptions import *
 
 
 # TODO: MutableMapping because of backwards compatability
 class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMapping):
+    def num_annotations(self) -> Dict[str, int]:
+        return self._num_annotations()
+
+    def check_num_annotations(self):
+        num_annotations = self.num_annotations()
+        if len(set(num_annotations.values())) != 1:
+            msg = "\n".join([f"\t- {v} for {k}" for k, v in num_annotations.items()])
+            raise AutofixAbort(
+                "Number of items should be the same for each annotation type"
+                f", but got:\n{msg}"
+            )
+
     def autofix(self):
+        if not isinstance(self, SizeRecordMixin):
+            raise RuntimeError("Cannot autofix if `SizeMixin` is not present")
+        if isinstance(self, MasksRecordMixin):
+            logger.warning(
+                "autofix still experimental for masks and may produce wrong results."
+                "If using PNG masks this method **will** produce wrong results"
+            )
+
+        self.check_num_annotations()
+
         # TODO: Check number of annotations is consistent (#bboxes==#labels==#masks)
         # checking number #masks is tricky, because single filepath can have multiple
         success_dict = self._autofix()
@@ -53,15 +76,24 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
 
 def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
+    keep_records = []
     for record in records:
 
         def _pre_replay():
             logger.info("Autofixing record with imageid: {}", record.imageid)
 
         with ReplaySink(_pre_replay) as sink:
-            record.autofix()
+            try:
+                record.autofix()
+                keep_records.append(record)
+            except AutofixAbort as e:
+                # TODO: add more emphasis to this image, maybe colour it red
+                logger.info(
+                    "Record could not be autofixed and will be removed because: {}",
+                    str(e),
+                )
 
-    return records
+    return keep_records
 
 
 def create_mixed_record(
