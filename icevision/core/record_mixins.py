@@ -35,10 +35,16 @@ class RecordMixin:
     def _remove_annotation(self, i) -> None:
         return
 
+    def _repr(self) -> List[str]:
+        return []
+
 
 class ImageidRecordMixin(RecordMixin):
     def set_imageid(self, imageid: int):
         self.imageid = imageid
+
+    def _repr(self) -> List[str]:
+        return [f"Image ID: {self.imageid}", *super()._repr()]
 
     def as_dict(self) -> dict:
         return {"imageid": self.imageid, **super().as_dict()}
@@ -49,6 +55,9 @@ class ImageRecordMixin(RecordMixin):
     def set_img(self, img: np.ndarray):
         self.img = img
         self.height, self.width, _ = self.img.shape
+
+    def _repr(self) -> List[str]:
+        return [f"Image: {self.img}", *super()._repr()]
 
     def as_dict(self) -> dict:
         return {
@@ -76,6 +85,9 @@ class FilepathRecordMixin(RecordMixin):
 
         return super()._autofix()
 
+    def _repr(self) -> List[str]:
+        return [f"Filepath: {self.filepath}", *super()._repr()]
+
     def as_dict(self) -> dict:
         # return {"filepath": self.filepath, **super().as_dict()}
         # HACK: img, height, width are conditonal, use __dict__ to circumvent that
@@ -86,6 +98,12 @@ class FilepathRecordMixin(RecordMixin):
 class SizeRecordMixin(RecordMixin):
     def set_image_size(self, width: int, height: int):
         self.width, self.height = width, height
+
+    def _repr(self) -> List[str]:
+        return [
+            f"Image size (width, height): ({self.width}, {self.height})",
+            *super()._repr(),
+        ]
 
     def as_dict(self) -> dict:
         return {"width": self.width, "height": self.height, **super().as_dict()}
@@ -112,6 +130,9 @@ class LabelsRecordMixin(RecordMixin):
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.labels.pop(i)
+
+    def _repr(self) -> List[str]:
+        return [f"Labels: {self.labels}", *super()._repr()]
 
     def as_dict(self) -> dict:
         return {"labels": self.labels, **super().as_dict()}
@@ -144,6 +165,9 @@ class BBoxesRecordMixin(RecordMixin):
         super()._remove_annotation(i)
         self.bboxes.pop(i)
 
+    def _repr(self) -> List[str]:
+        return [f"BBoxes: {self.bboxes}", *super()._repr()]
+
     def as_dict(self) -> dict:
         return {"bboxes": self.bboxes, **super().as_dict()}
 
@@ -168,6 +192,9 @@ class MasksRecordMixin(RecordMixin):
         super()._remove_annotation(i)
         self.masks.pop(i)
 
+    def _repr(self) -> List[str]:
+        return [f"Masks: {self.masks}", *super()._repr()]
+
     def as_dict(self) -> dict:
         return {"masks": self.masks, **super().as_dict()}
 
@@ -187,6 +214,9 @@ class AreasRecordMixin(RecordMixin):
         super()._remove_annotation(i)
         self.areas.pop(i)
 
+    def _repr(self) -> List[str]:
+        return [f"Areas: {self.areas}", *super()._repr()]
+
     def as_dict(self) -> dict:
         return {"areas": self.areas, **super().as_dict()}
 
@@ -205,6 +235,9 @@ class IsCrowdsRecordMixin(RecordMixin):
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.iscrowds.pop(i)
+
+    def _repr(self) -> List[str]:
+        return [f"Is Crowds: {self.iscrowds}", *super()._repr()]
 
     def as_dict(self) -> dict:
         return {"iscrowds": self.iscrowds, **super().as_dict()}

@@ -58,6 +58,11 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
         record._load()
         return record
 
+    def __repr__(self) -> str:
+        _reprs = self._repr()
+        _repr = "".join(f"\n\t- {o}" for o in _reprs)
+        return f"Record:{_repr}"
+
     # backwards compatiblity: implemented method to behave like a dict
     def __getitem__(self, key):
         return self.as_dict()[key]
