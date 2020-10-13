@@ -4,7 +4,6 @@ from icevision.imports import *
 from .exceptions import *
 
 
-# TODO: Can pnts and be tuple? Same for properties like xyxy
 class BBox:
     """Bounding Box representation.
 
@@ -51,10 +50,6 @@ class BBox:
     def to_tensor(self):
         return tensor(self.xyxy, dtype=torch.float)
 
-    # Three things can happen
-    # - nothing wrong with data
-    # - able to fix data
-    # - not able to fix data
     def autofix(self, img_w, img_h) -> bool:
         """Tries to automatically fix invalid coordinates.
 
@@ -63,21 +58,6 @@ class BBox:
         - True if data was successfully fixed
         - Raises `InvalidDataError` if unables to automatically fix the data
         """
-        # conditions where data cannot be fixed
-        if (self.xmin >= self.xmax) or (self.ymin >= self.ymax):
-            msg = []
-            if self.xmin >= self.xmax:
-                msg += [
-                    f"\tx_min:{self.xmin} is greater than or equal to x_max:{self.xmax}"
-                ]
-            if self.ymin >= self.ymax:
-                msg += [
-                    f"\ty_min:{self.ymin} is greater than or equal to y_max:{self.ymax}"
-                ]
-
-            msg = "\n".join(msg)
-            raise InvalidDataError(f"Cannot auto-fix coordinates: {self}\n{msg}")
-
         # conditions where data can be fixed
         if self.xmin < 0:
             logger.info(f"Clipping xmin from {self.xmin} to 0")
@@ -92,6 +72,21 @@ class BBox:
         if self.ymax > img_h:
             logger.info(f"Clipping ymax from {self.ymax} to {img_h} (image height)")
             self.ymax = min(self.ymax, img_h)
+
+        # conditions where data cannot be fixed
+        if (self.xmin >= self.xmax) or (self.ymin >= self.ymax):
+            msg = []
+            if self.xmin >= self.xmax:
+                msg += [
+                    f"\tx_min:{self.xmin} is greater than or equal to x_max:{self.xmax}"
+                ]
+            if self.ymin >= self.ymax:
+                msg += [
+                    f"\ty_min:{self.ymin} is greater than or equal to y_max:{self.ymax}"
+                ]
+
+            msg = "\n".join(msg)
+            raise InvalidDataError(f"Cannot auto-fix coordinates: {self}\n{msg}")
 
         if self.xmin < 0 or self.ymin < 0 or self.xmax > img_w or self.ymax > img_h:
             return True

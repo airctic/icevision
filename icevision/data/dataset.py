@@ -46,10 +46,11 @@ class Dataset:
             images: `Sequence` of images in memory (numpy arrays).
             tfm: Transforms to be applied to each item.
         """
-        Record = type("Record", (ImageRecordMixin, BaseRecord), {})
+        Record = create_mixed_record((ImageRecordMixin,))
         records = []
-        for image in images:
+        for i, image in enumerate(images):
             record = Record()
+            record.set_imageid(i)
             record.set_img(image)
             records.append(record)
 

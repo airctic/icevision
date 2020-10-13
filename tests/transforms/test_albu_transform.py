@@ -3,9 +3,8 @@ from icevision.all import *
 
 
 @pytest.fixture
-def records():
-    train_records, valid_records = test_utils.sample_records()
-    return train_records
+def records(coco_mask_records):
+    return coco_mask_records
 
 
 def test_simple_transform(records):

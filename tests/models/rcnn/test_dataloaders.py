@@ -20,12 +20,11 @@ def bboxes():
 
 @pytest.fixture()
 def records(img, labels, bboxes):
-    Record = type(
-        "Record",
-        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin, BaseRecord),
-        {},
+    Record = create_mixed_record(
+        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin)
     )
     record = Record()
+    record.set_imageid(1)
     record.set_img(img)
     record.add_labels(labels)
     record.add_bboxes(bboxes)
@@ -131,18 +130,11 @@ def masks():
 # TODO: Duplication with fasterrcnn records
 @pytest.fixture()
 def mask_records(img, labels, bboxes, masks):
-    Record = type(
-        "Record",
-        (
-            ImageRecordMixin,
-            LabelsRecordMixin,
-            BBoxesRecordMixin,
-            MasksRecordMixin,
-            BaseRecord,
-        ),
-        {},
+    Record = create_mixed_record(
+        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin, MasksRecordMixin)
     )
     record = Record()
+    record.set_imageid(1)
     record.set_img(img)
     record.add_labels(labels)
     record.add_bboxes(bboxes)

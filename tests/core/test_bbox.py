@@ -18,12 +18,9 @@ def test_bbox_relative_xcycwh():
     assert bbox.relative_xcycwh(img_width=w, img_height=h) == pytest.approx(xcycwh)
 
 
-def test_bbox_autofix_invalid_data_error():
-    bbox = BBox.from_xyxy(1, 2, 2, 2)
-    with pytest.raises(InvalidDataError) as e:
-        bbox.autofix(2, 2)
-
-    bbox = BBox.from_xyxy(-2, 1, -1, 2)
+@pytest.mark.parametrize("xyxy", [(1, 2, 2, 2), (-2, 1, -1, 2), (3, 1, 4, 2)])
+def test_bbox_autofix_invalid_data_error(xyxy):
+    bbox = BBox.from_xyxy(*xyxy)
     with pytest.raises(InvalidDataError) as e:
         bbox.autofix(2, 2)
 
