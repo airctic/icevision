@@ -59,23 +59,6 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
             # HACK: fix imageid (needs to be transformed with idmap)
             record.set_imageid(imageid)
 
-        # check that all annotations have the same length
-        # HACK: Masks is not checked, because it can be a single file with multiple masks
-        # annotations_names = [n for n in annotation_parse_funcs.keys() if n != "masks"]
-        # for imageid, record_annotations in records.items():
-        #     record_annotations_len = {
-        #         name: len(record_annotations[name]) for name in annotations_names
-        #     }
-        #     if not allequal(list(record_annotations_len.values())):
-        #         true_imageid = idmap.get_id(imageid)
-        #         # TODO: instead of immediatily raising the error, store the
-        #         # result and raise at the end of the for loop for all records
-        #         raise RuntimeError(
-        #             f"imageid->{true_imageid} has an inconsistent number of annotations"
-        #             f", all annotations must have the same length."
-        #             f"\nNumber of annotations: {record_annotations_len}"
-        #         )
-
         return dict(records)
 
     def parse(

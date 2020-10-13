@@ -26,6 +26,9 @@ class RecordMixin:
     def _load(self) -> None:
         return
 
+    def _num_annotations(self) -> Dict[str, int]:
+        return {}
+
     def _autofix(self) -> Dict[str, bool]:
         return {}
 
@@ -57,14 +60,21 @@ class ImageRecordMixin(RecordMixin):
 
 
 class FilepathRecordMixin(RecordMixin):
-    def set_filepath(self, filepath: Path):
-        self.filepath = filepath
+    def set_filepath(self, filepath: Union[str, Path]):
+        self.filepath = Path(filepath)
 
     def _load(self):
         self.img = open_img(self.filepath)
         # TODO, HACK: is it correct to overwrite height and width here?
         self.height, self.width, _ = self.img.shape
         super()._load()
+
+    def _autofix(self) -> Dict[str, bool]:
+        exists = self.filepath.exists()
+        if not exists:
+            raise AutofixAbort(f"File '{self.filepath}' does not exist")
+
+        return super()._autofix()
 
     def as_dict(self) -> dict:
         # return {"filepath": self.filepath, **super().as_dict()}
@@ -92,6 +102,12 @@ class LabelsRecordMixin(RecordMixin):
 
     def add_labels(self, labels: List[int]):
         self.labels.extend(labels)
+
+    def _num_annotations(self) -> Dict[str, int]:
+        return {"labels": len(self.labels), **super()._num_annotations()}
+
+    def _autofix(self) -> Dict[str, bool]:
+        return {"labels": [True] * len(self.labels), **super()._autofix()}
 
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
@@ -121,6 +137,9 @@ class BBoxesRecordMixin(RecordMixin):
     def add_bboxes(self, bboxes):
         self.bboxes.extend(bboxes)
 
+    def _num_annotations(self) -> Dict[str, int]:
+        return {"bboxes": len(self.bboxes), **super()._num_annotations()}
+
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.bboxes.pop(i)
@@ -141,6 +160,10 @@ class MasksRecordMixin(RecordMixin):
     def add_masks(self, masks: Sequence[Mask]):
         self.masks.extend(masks)
 
+    def _num_annotations(self) -> Dict[str, int]:
+        masks = MaskArray.from_masks(self.masks, self.height, self.width)
+        return {"masks": len(masks), **super()._num_annotations()}
+
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.masks.pop(i)
@@ -157,6 +180,9 @@ class AreasRecordMixin(RecordMixin):
     def add_areas(self, areas: Sequence[float]):
         self.areas.extend(areas)
 
+    def _num_annotations(self) -> Dict[str, int]:
+        return {"areas": len(self.areas), **super()._num_annotations()}
+
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.areas.pop(i)
@@ -172,6 +198,9 @@ class IsCrowdsRecordMixin(RecordMixin):
 
     def add_iscrowds(self, iscrowds: Sequence[bool]):
         self.iscrowds.extend(iscrowds)
+
+    def _num_annotations(self) -> Dict[str, int]:
+        return {"iscrowds": len(self.iscrowds), **super()._num_annotations()}
 
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
