@@ -15,12 +15,6 @@ def logger_default_config():
     )
 
 
-"🛠️"
-
-
-"<level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
-
-
 logger_default_config()
 
 
@@ -60,8 +54,18 @@ class ReplaySink:
         logger_default_config()
         if self.captured:
             self.pre_replay()
+
             for msg in self.captured:
                 record = msg.record
+
+                level = record["level"].name
+                try:
+                    logger.level(level)
+                except ValueError:
+                    # If the level 'name' is not registered, use its 'no' instead
+                    level = record["level"].no
+
                 patched = logger.patch(lambda r: r.update(record))
-                patched.log(record["level"].no, record["message"])
+                patched.log(level, record["message"])
+
             self.post_replay()
