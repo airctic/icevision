@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Template code for `parsers.SizeMixin` if `parsers.FilepathMixin` is used
-- Get image size without opening with `get_image_size`
+- Get image size without opening image with `get_image_size`
 - Ability to skip record while parsing with `AbortParseRecord`
 - Autofix for record
 - Record class and mixins
