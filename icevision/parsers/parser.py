@@ -52,7 +52,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         for sample in pbar(self, show_pbar):
             try:
                 self.prepare(sample)
-                imageid = idmap[self.imageid(sample)]
+                true_imageid = self.imageid(sample)
+                imageid = idmap[true_imageid]
 
                 try:
                     record = records[imageid]
@@ -65,9 +66,12 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
                 record.set_imageid(imageid)
                 records[imageid] = record
 
-            except AbortParseRecord:
-                # Give imageid
-                logger.info("Record was skipped")
+            except AbortParseRecord as e:
+                logger.warning(
+                    "Record with imageid: {} was skipped because: {}",
+                    true_imageid,
+                    str(e),
+                )
 
         return dict(records)
 
