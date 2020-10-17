@@ -1,4 +1,4 @@
-__all__ = ["get_image_size"]
+__all__ = ["get_image_size", "UnknownImageFormat"]
 
 """
 get_image_size.py
