@@ -1,8 +1,10 @@
+import pytest
 from icevision.all import *
 
 
-def test_all_parser_mixins():
-    class TestAllParserMixins(
+@pytest.fixture
+def all_parser_mixins_cls():
+    class AllParserMixins(
         parsers.ImageidMixin,
         parsers.FilepathMixin,
         parsers.SizeMixin,
@@ -16,7 +18,7 @@ def test_all_parser_mixins():
             return 42
 
         def filepath(self, o) -> Union[str, Path]:
-            return "path"
+            return __file__
 
         def image_height(self, o) -> int:
             return 420
@@ -39,7 +41,11 @@ def test_all_parser_mixins():
         def iscrowds(self, o) -> List[bool]:
             return [False]
 
-    mixins = TestAllParserMixins()
+    return AllParserMixins
+
+
+def test_all_parser_mixins(all_parser_mixins_cls):
+    mixins = all_parser_mixins_cls()
 
     Record = create_mixed_record(mixins.record_mixins())
     record = Record()
@@ -47,7 +53,7 @@ def test_all_parser_mixins():
     mixins.parse_fields(None, record)
 
     assert record["imageid"] == 42
-    assert record["filepath"] == Path("path")
+    assert record["filepath"] == Path(__file__)
     assert record["height"] == 420
     assert record["width"] == 480
     assert record["labels"] == [0]
@@ -55,3 +61,17 @@ def test_all_parser_mixins():
     assert all(record["masks"][0].data == MaskArray(np.array([])).data)
     assert record["areas"] == [4.2]
     assert record["iscrowds"] == [False]
+
+
+def test_all_parser_mixins_broken_filepath(all_parser_mixins_cls):
+    class BrokenFilepath(all_parser_mixins_cls):
+        def filepath(self, o) -> Union[str, Path]:
+            return "path.none"
+
+    mixins = BrokenFilepath()
+
+    Record = create_mixed_record(mixins.record_mixins())
+    record = Record()
+
+    with pytest.raises(AbortParseRecord):
+        mixins.parse_fields(None, record)

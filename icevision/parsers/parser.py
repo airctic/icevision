@@ -47,17 +47,27 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
     ) -> Dict[int, RecordType]:
 
         Record = self.record_class()
-        records = defaultdict(Record)
+        records = {}
 
         for sample in pbar(self, show_pbar):
-            self.prepare(sample)
+            try:
+                self.prepare(sample)
+                imageid = idmap[self.imageid(sample)]
 
-            imageid = idmap[self.imageid(sample)]
-            record = records[imageid]
+                try:
+                    record = records[imageid]
+                except KeyError:
+                    record = Record()
 
-            self.parse_fields(sample, record)
-            # HACK: fix imageid (needs to be transformed with idmap)
-            record.set_imageid(imageid)
+                self.parse_fields(sample, record)
+
+                # HACK: fix imageid (needs to be transformed with idmap)
+                record.set_imageid(imageid)
+                records[imageid] = record
+
+            except AbortParseRecord:
+                # Give imageid
+                logger.info("Record was skipped")
 
         return dict(records)
 
@@ -85,7 +95,7 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         splits = data_splitter(idmap=idmap)
         all_splits_records = []
         for ids in splits:
-            split_records = [records[i] for i in ids]
+            split_records = [records[i] for i in ids if i in records]
 
             if autofix:
                 split_records = autofix_records(split_records)
