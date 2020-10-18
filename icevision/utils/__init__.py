@@ -6,3 +6,4 @@ from icevision.utils.download_utils import *
 from icevision.utils.data_dir import *
 from icevision.utils.capture_stdout import *
 from icevision.utils.logger_utils import *
+from icevision.utils.get_image_size import *

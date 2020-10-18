@@ -11,6 +11,7 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.core import *
+from icevision.utils import *
 
 
 class ParserMixin(ABC):
@@ -41,8 +42,7 @@ class ImageidMixin(ParserMixin):
 
     @classmethod
     def _templates(cls) -> List[str]:
-        templates = super()._templates()
-        return templates + ["def imageid(self, o) -> Hashable:"]
+        return ["def imageid(self, o) -> Hashable:"] + super()._templates()
 
 
 class FilepathMixin(ParserMixin):
@@ -52,7 +52,12 @@ class FilepathMixin(ParserMixin):
         return [FilepathRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
-        record.set_filepath(Path(self.filepath(o)))
+        filepath = Path(self.filepath(o))
+
+        if not filepath.exists():
+            raise AbortParseRecord(f"File '{filepath}' does not exist")
+
+        record.set_filepath(filepath)
         super().parse_fields(o, record)
 
     @abstractmethod
@@ -61,8 +66,7 @@ class FilepathMixin(ParserMixin):
 
     @classmethod
     def _templates(cls) -> List[str]:
-        templates = super()._templates()
-        return templates + ["def filepath(self, o) -> Union[str, Path]:"]
+        return ["def filepath(self, o) -> Union[str, Path]:"] + super()._templates()
 
 
 class SizeMixin(ParserMixin):
@@ -73,8 +77,11 @@ class SizeMixin(ParserMixin):
 
     def parse_fields(self, o, record):
         # TODO: rename to image_weight, image_height
-        record.set_image_size(width=self.image_width(o), height=self.image_height(o))
         super().parse_fields(o, record)
+        record.set_image_size(width=self.image_width(o), height=self.image_height(o))
+
+    # def image_width_height(self, o) -> Tuple[int, int]:
+    #     return get_image_size(self.filepath(o))
 
     @abstractmethod
     def image_height(self, o) -> int:
@@ -87,10 +94,18 @@ class SizeMixin(ParserMixin):
     @classmethod
     def _templates(cls) -> List[str]:
         templates = super()._templates()
-        return templates + [
+        # Dynamic template based if FilepathMixin is present
+        if issubclass(cls, FilepathMixin):
+            return [
+                "def image_height(self, o) -> int:\n"
+                "    return get_image_size(self.filepath(o))[1]",
+                "def image_width(self, o) -> int:\n"
+                "    return get_image_size(self.filepath(o))[0]",
+            ] + templates
+        return [
             "def image_height(self, o) -> int:",
             "def image_width(self, o) -> int:",
-        ]
+        ] + templates
 
 
 ### Annotation parsers ###

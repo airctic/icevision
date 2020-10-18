@@ -1,4 +1,4 @@
-__all__ = ["InvalidDataError", "AutofixAbort"]
+__all__ = ["InvalidDataError", "AutofixAbort", "AbortParseRecord"]
 
 
 class InvalidDataError(Exception):
@@ -6,4 +6,8 @@ class InvalidDataError(Exception):
 
 
 class AutofixAbort(Exception):
+    pass
+
+
+class AbortParseRecord(Exception):
     pass

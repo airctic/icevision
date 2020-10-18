@@ -5,13 +5,19 @@ from icevision.all import *
 @pytest.fixture()
 def data():
     return [
-        {"id": 1, "labels": [1], "bboxes": [[1, 2, 3, 4]]},
-        {"id": 42, "labels": [2, 1], "bboxes": [[1, 2, 3, 4], [10, 20, 30, 40]]},
+        {"id": 1, "filepath": __file__, "labels": [1], "bboxes": [[1, 2, 3, 4]]},
+        {
+            "id": 42,
+            "filepath": __file__,
+            "labels": [2, 1],
+            "bboxes": [[1, 2, 3, 4], [10, 20, 30, 40]],
+        },
+        {"id": 3, "filepath": "none.txt", "labels": [1], "bboxes": [[1, 2, 3, 4]]},
     ]
 
 
 class SimpleParser(
-    parsers.Parser, parsers.SizeMixin, parsers.LabelsMixin, parsers.BBoxesMixin
+    parsers.Parser, parsers.FilepathMixin, parsers.LabelsMixin, parsers.BBoxesMixin
 ):
     def __init__(self, data):
         self.data = data
@@ -21,6 +27,9 @@ class SimpleParser(
 
     def imageid(self, o) -> Hashable:
         return o["id"]
+
+    def filepath(self, o) -> Union[str, Path]:
+        return o["filepath"]
 
     def image_height(self, o) -> int:
         return 100
@@ -42,8 +51,16 @@ def test_parser(data):
     assert len(records) == 2
 
     record = records[1]
-    assert set(record.keys()) == {"imageid", "height", "width", "labels", "bboxes"}
+    assert set(record.keys()) == {
+        "imageid",
+        "filepath",
+        "height",
+        "width",
+        "labels",
+        "bboxes",
+    }
     assert record["imageid"] == 1
+    assert record["filepath"] == Path(__file__)
     assert record["labels"] == [2, 1]
     assert record["bboxes"] == [
         BBox.from_xyxy(1, 2, 3, 4),
