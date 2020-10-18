@@ -91,11 +91,11 @@ class SizeMixin(ParserMixin):
         # Dynamic template based if FilepathMixin is present
         if issubclass(cls, FilepathMixin):
             return [
-                "def image_width_height(self, o) -> int:\n"
+                "def image_width_height(self, o) -> Tuple[int, int]:\n"
                 "    return get_image_size(self.filepath(o))",
             ] + templates
         return [
-            "def image_width_height(self, o) -> int:",
+            "def image_width_height(self, o) -> Tuple[int, int]:",
         ] + templates
 
 
