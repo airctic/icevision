@@ -30,7 +30,7 @@ class Dataset:
         return len(self.records)
 
     def __getitem__(self, i):
-        data = self.records[i].load()
+        data = self.records[i].load().as_dict()
         if self.tfm is not None:
             data = self.tfm(data)
         return data
