@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Switched from poetry to setuptools**
 
 ### Added
+- Function `wandb_img_preds` to help logging bboxes to wandb
+- wandb as a soft dependency
 - Template code for `parsers.SizeMixin` if `parsers.FilepathMixin` is used
 - Get image size without opening image with `get_image_size`
 - Ability to skip record while parsing with `AbortParseRecord`
