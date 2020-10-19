@@ -14,8 +14,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Template code for `parsers.SizeMixin` if `parsers.FilepathMixin` is used
 - Get image size without opening image with `get_image_size`
 - Ability to skip record while parsing with `AbortParseRecord`
-- Autofix for record
-- Record class and mixins
+- Autofix for record: `autofix_records` function and `autofix:bool` parameter added to `Parser.parse`
+- Record class and mixins, `create_mixed_record` function to help creating Records
 - InvalidDataError for BBox
 - Catches InvalidDataError while parsing data
 
@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Rename Parser `SizeMixin` fields from `width` `height` to `image_width` `image_height`
 
 ### Deleted
+- Removed `CombinedParser`, all parsing can be done with the standard `Parser`
 
 ## [0.1.6]
 
