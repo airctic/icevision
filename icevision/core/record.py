@@ -87,7 +87,7 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
         def _pre_replay():
             logger.opt(colors=True).log(
                 "AUTOFIX",
-                "️🔨  <red><bold>Autofixing record with imageid: {}</></>  ️🔨",
+                "️🔨  <green><bold>Autofixing record with imageid: {}</></>  ️🔨",
                 record.imageid,
             )
 
