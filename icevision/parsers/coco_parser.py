@@ -2,6 +2,7 @@ __all__ = ["coco", "COCOBaseParser", "COCOBBoxParser", "COCOMaskParser"]
 
 from icevision.imports import *
 from icevision.core import *
+from icevision.utils import *
 from icevision.parsers import *
 
 
@@ -38,11 +39,8 @@ class COCOBaseParser(
     def filepath(self, o) -> Union[str, Path]:
         return self.img_dir / self._info["file_name"]
 
-    def image_height(self, o) -> int:
-        return self._info["height"]
-
-    def image_width(self, o) -> int:
-        return self._info["width"]
+    def image_width_height(self, o) -> Tuple[int, int]:
+        return get_image_size(self.filepath(o))
 
     def labels(self, o) -> List[int]:
         return [o["category_id"]]

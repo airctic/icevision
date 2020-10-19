@@ -77,19 +77,13 @@ class SizeMixin(ParserMixin):
 
     def parse_fields(self, o, record):
         # TODO: rename to image_weight, image_height
+        width, height = self.image_width_height(o)
+        record.set_image_size(width=width, height=height)
         super().parse_fields(o, record)
-        record.set_image_size(width=self.image_width(o), height=self.image_height(o))
-
-    # def image_width_height(self, o) -> Tuple[int, int]:
-    #     return get_image_size(self.filepath(o))
 
     @abstractmethod
-    def image_height(self, o) -> int:
-        pass
-
-    @abstractmethod
-    def image_width(self, o) -> int:
-        pass
+    def image_width_height(self, o) -> Tuple[int, int]:
+        """Returns the image size (width, height)."""
 
     @classmethod
     def _templates(cls) -> List[str]:
@@ -97,14 +91,11 @@ class SizeMixin(ParserMixin):
         # Dynamic template based if FilepathMixin is present
         if issubclass(cls, FilepathMixin):
             return [
-                "def image_height(self, o) -> int:\n"
-                "    return get_image_size(self.filepath(o))[1]",
-                "def image_width(self, o) -> int:\n"
-                "    return get_image_size(self.filepath(o))[0]",
+                "def image_width_height(self, o) -> Tuple[int, int]:\n"
+                "    return get_image_size(self.filepath(o))",
             ] + templates
         return [
-            "def image_height(self, o) -> int:",
-            "def image_width(self, o) -> int:",
+            "def image_width_height(self, o) -> Tuple[int, int]:",
         ] + templates
 
 

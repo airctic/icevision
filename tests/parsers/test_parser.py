@@ -31,11 +31,8 @@ class SimpleParser(
     def filepath(self, o) -> Union[str, Path]:
         return o["filepath"]
 
-    def image_height(self, o) -> int:
-        return 100
-
-    def image_width(self, o) -> int:
-        return 100
+    def image_width_height(self, o) -> Tuple[int, int]:
+        return (100, 100)
 
     def labels(self, o) -> List[int]:
         return o["labels"]

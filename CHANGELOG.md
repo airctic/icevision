@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Catches InvalidDataError while parsing data
 
 ### Changed
+- **Breaking:** Unified `parsers.SizeMixin` functions `image_width` and `image_height` into a single function `image_width_height`
 - Rename Parser `SizeMixin` fields from `width` `height` to `image_width` `image_height`
 
 ### Deleted

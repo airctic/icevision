@@ -20,11 +20,8 @@ def all_parser_mixins_cls():
         def filepath(self, o) -> Union[str, Path]:
             return __file__
 
-        def image_height(self, o) -> int:
-            return 420
-
-        def image_width(self, o) -> int:
-            return 480
+        def image_width_height(self, o) -> Tuple[int, int]:
+            return (480, 420)
 
         def labels(self, o) -> List[int]:
             return [0]
