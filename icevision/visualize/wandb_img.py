@@ -5,14 +5,10 @@ __all__ = [
 from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
-import wandb
 
 
-# returns a box as a wandb compatible dictionnary
-# get bounding box, label, and score
-def bbox_wandb(bbox, label, class_id_to_label, pred_score=None):
-    pred_all_boxes = []
-    # get coordinates and labels
+def bbox_wandb(bbox: BBox, label: int, class_id_to_label, pred_score=None):
+    """Creates a wandb compatible dictionary with bbox, label and score"""
     xmin, ymin, xmax, ymax = map(int, bbox.xyxy)
 
     box_data = {
@@ -24,11 +20,11 @@ def bbox_wandb(bbox, label, class_id_to_label, pred_score=None):
     if pred_score:
         score = int(pred_score * 100)
         box_caption = f"{class_id_to_label[label]} ({score}%)"
-        box_data["box_caption"] = box_caption
         box_data["score"] = score
     else:
         box_caption = f"{class_id_to_label[label]}"
-        box_data["box_caption"] = box_caption
+
+    box_data["box_caption"] = box_caption
 
     return box_data
 
@@ -55,7 +51,7 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
         "predictions": {"box_data": pred_all_boxes, "class_labels": class_id_to_label}
     }
 
-    if add_ground_truth == True:
+    if add_ground_truth:
         true_all_boxes = []
         # Collect ground truth bounding boxes for this image
         for b_i, bbox in enumerate(true_bboxes):
@@ -72,6 +68,7 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
 
 def wandb_img_preds(samples, preds, class_map, add_ground_truth=False):
     class_id_to_label = {int(v): k for k, v in class_map.class2id.items()}
+
     wandb_imgs = []
     for (sample, pred) in zip(samples, preds):
         img_wandb = wandb_image(

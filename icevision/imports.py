@@ -50,6 +50,9 @@ if SoftDependencies.fastai:
 if SoftDependencies.pytorch_lightning:
     import pytorch_lightning as pl
 
+if SoftDependencies.wandb:
+    import wandb
+
 
 # TODO: Stop importing partial from fastcore and move this to utils
 class partial:

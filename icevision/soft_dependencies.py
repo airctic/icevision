@@ -20,6 +20,7 @@ class _SoftDependencies:
         self.pytorch_lightning = soft_import("pytorch_lightning")
         self.albumentations = soft_import("albumentations")
         self.effdet = soft_import("effdet")
+        self.wandb = soft_import("wandb")
 
     def check(self) -> Dict[str, bool]:
         return self.__dict__.copy()

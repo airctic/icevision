@@ -17,4 +17,5 @@ def test_soft_dependencies():
         "pytorch_lightning": True,
         "albumentations": True,
         "effdet": True,
+        "wandb": True,
     }
