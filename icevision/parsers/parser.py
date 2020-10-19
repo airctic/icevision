@@ -98,6 +98,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
         splits = data_splitter(idmap=idmap)
         all_splits_records = []
+        if autofix:
+            logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
         for ids in splits:
             split_records = [records[i] for i in ids if i in records]
 
