@@ -131,7 +131,7 @@ def show_samples(
 
 
 def show_preds(
-    imgs: Sequence[np.ndarray],
+    samples: Union[Sequence[np.ndarray], Sequence[dict]],
     preds: Sequence[dict],
     class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
@@ -142,24 +142,52 @@ def show_preds(
     figsize=None,
     show=False,
 ) -> None:
-    if not len(imgs) == len(preds):
+    if not len(samples) == len(preds):
         raise ValueError(
-            f"Number of imgs ({len(imgs)}) should be the same as "
+            f"Number of imgs ({len(samples)}) should be the same as "
             f"the number of preds ({len(preds)})"
         )
+    
+    if all(type(x) is dict for x in samples):
+      actuals = [
+          draw_sample(sample=sample, 
+                      class_map=class_map, 
+                      display_label=display_label, 
+                      display_bbox=display_bbox, 
+                      display_mask=display_mask, 
+                      denormalize_fn=denormalize_fn, 
+                      )
+          for sample in samples
+      ] 
 
-    partials = [
-        partial(
-            show_pred,
-            img=img,
-            pred=pred,
-            class_map=class_map,
-            denormalize_fn=denormalize_fn,
-            display_label=display_label,
-            display_bbox=display_bbox,
-            display_mask=display_mask,
-            show=False,
-        )
-        for img, pred in zip(imgs, preds)
-    ]
-    plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
+      imgs = [sample["img"] for sample in samples]      
+      predictions = [
+          draw_pred(img=img,
+                    pred=pred,
+                    class_map=class_map,
+                    denormalize_fn=denormalize_fn,
+                    display_label=display_label,
+                    display_bbox=display_bbox,
+                    display_mask=display_mask,
+                    )
+          for img, pred in zip(imgs, preds)
+      ]
+
+      plot_grid_preds_actuals(actuals, predictions, figsize=figsize, show=show)
+
+    else:
+      partials = [
+          partial(
+              show_pred,
+              img=img,
+              pred=pred,
+              class_map=class_map,
+              denormalize_fn=denormalize_fn,
+              display_label=display_label,
+              display_bbox=display_bbox,
+              display_mask=display_mask,
+              show=False,
+          )
+          for img, pred in zip(samples, preds)
+      ]
+      plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
