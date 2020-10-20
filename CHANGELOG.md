@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Deleted
 
+## [0.2.1]
+
+### Changed
+- updated matplotlib and ipykernel minimum version for colab compatibility
+
 ## [0.2.0]
 
 ### IMPORTANT
