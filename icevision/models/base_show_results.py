@@ -18,7 +18,7 @@ def base_show_results(
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     show: bool = True,
 ) -> None:
-    samples = [dataset[i] for i in range(num_samples)]
+    samples = random.choices(dataset, k=num_samples)
     batch, samples = build_infer_batch_fn(samples)
     preds = predict_fn(model, batch)
 
