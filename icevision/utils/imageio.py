@@ -40,19 +40,24 @@ def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
     if show:
         plt.show()
 
-def plot_grid_preds_actuals(actuals, predictions, figsize=None, show=False, **kwargs):
-    fig, axs = plt.subplots(nrows=len(actuals), ncols=2, figsize=figsize or (6 * len(actuals) / 2, 6 * len(actuals) / 2 / 0.75))
-    
-    for im, ax in zip(zip(actuals, predictions), axs):
-          ax[0].imshow(im[0], cmap=None)
-          ax[0].set_axis_off()
-          ax[0].set_title("Ground truth")
 
-          ax[1].imshow(im[1], cmap=None)
-          ax[1].set_axis_off()
-          ax[1].set_title("Prediction")
+def plot_grid_preds_actuals(actuals, predictions, figsize=None, show=False, **kwargs):
+    fig, axs = plt.subplots(
+        nrows=len(actuals),
+        ncols=2,
+        figsize=figsize or (6 * len(actuals) / 2, 6 * len(actuals) / 2 / 0.75),
+    )
+
+    for im, ax in zip(zip(actuals, predictions), axs):
+        ax[0].imshow(im[0], cmap=None)
+        ax[0].set_axis_off()
+        ax[0].set_title("Ground truth")
+
+        ax[1].imshow(im[1], cmap=None)
+        ax[1].set_axis_off()
+        ax[1].set_title("Prediction")
 
     plt.tight_layout()
     if show:
-      plt.show()
+        plt.show()
     return axs
