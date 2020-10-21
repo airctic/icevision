@@ -53,6 +53,7 @@ nav:
     - EffecientDet: efficientdet_pets.md
     - Training a VOC dataset: dataset_voc_nb.md
     - Model Tracking Using Wandb: wandb_efficientdet.md
+    - How to use negative samples: negative_samples.md
   - Examples:
     - Getting Started: examples/getting_started_exp.md
     - Quickstart: examples/quickstart_exp.md
