@@ -87,10 +87,16 @@ def _draw_label(
     w, h = cv2.getTextSize(caption, font, fontScale=font_scale, thickness=1)[0]
 
     # make the coords of the box with a small padding of two pixels
-    box_pt1, box_pt2 = (x, y + 10), (x + w + 2, y - h - 2)
+    # check if the box_pt2 is inside the image otherwise invert the label box (meaning the label box will be inside the bounding box)
+    if (y - h - 2) > 0:
+        box_pt1, box_pt2 = (x, y + 10), (x + w + 2, y - h - 2)
+    else:
+        box_pt1, box_pt2 = (x, y + h + 22), (x + w + 2, y + 10)
+
     cv2.rectangle(img, box_pt1, box_pt2, color, cv2.FILLED)
 
-    cv2.putText(img, caption, (x, y), font, font_scale, (240, 240, 240), 2)
+    label_pt = (box_pt1[0], box_pt1[1] - 10)
+    cv2.putText(img, caption, label_pt, font, font_scale, (240, 240, 240), 2)
 
     return img
 
@@ -134,7 +140,11 @@ def draw_pred(
 
 
 def draw_bbox(
-    img: np.ndarray, bbox: BBox, color: Tuple[int, int, int], thickness: int = 2
+    img: np.ndarray,
+    bbox: BBox,
+    color: Tuple[int, int, int],
+    thickness: int = 5,
+    gap: bool = True,
 ):
     """Draws a box on an image with a given color.
     # Arguments
@@ -143,8 +153,52 @@ def draw_bbox(
         color     : The color of the box.
         thickness : The thickness of the lines to draw a box with.
     """
-    xyxy = tuple(np.array(bbox.xyxy, dtype=int))
-    cv2.rectangle(img, xyxy[:2], xyxy[2:], color, thickness, cv2.LINE_AA)
+
+    if gap == False:
+        xyxy = tuple(np.array(bbox.xyxy, dtype=int))
+        cv2.rectangle(img, xyxy[:2], xyxy[2:], color, thickness, cv2.LINE_AA)
+        return img
+
+    xmin, ymin, xmax, ymax = tuple(np.array(bbox.xyxy, dtype=int))
+    d = 30
+    points = [0] * 12
+    points[0] = (xmin, ymin + d)
+    points[1] = (xmin, ymin)
+    points[2] = (xmin + d, ymin)
+
+    points[3] = (xmax - d, ymin)
+    points[4] = (xmax, ymin)
+    points[5] = (xmax, ymin + d)
+
+    points[6] = (xmax, ymax - d)
+    points[7] = (xmax, ymax)
+    points[8] = (xmax - d, ymax)
+
+    points[9] = (xmin + d, ymax)
+    points[10] = (xmin, ymax)
+    points[11] = (xmin, ymax - d)
+
+    for i in range(4):
+        for j in range(2):
+            cv2.line(
+                img,
+                points[i * 3 + j],
+                points[i * 3 + j + 1],
+                color,
+                thickness,
+                cv2.LINE_AA,
+            )
+
+    for i in range(4):
+        cv2.line(
+            img,
+            points[i * 3 + 2],
+            points[(i * 3 + 3) % 12],
+            color,
+            1,
+            cv2.LINE_4,
+        )
+
     return img
 
 
