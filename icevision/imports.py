@@ -23,6 +23,7 @@ from tqdm.auto import tqdm
 from pycocotools import mask as mask_utils
 from contextlib import contextmanager
 from typing import *
+import pickle
 
 from torch import tensor, Tensor
 from torch.utils.data import DataLoader

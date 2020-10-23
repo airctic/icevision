@@ -11,3 +11,7 @@ data_dir.mkdir(exist_ok=True)
 
 def get_data_dir():
     return data_dir
+
+
+def get_root_dir():
+    return get_root_dir

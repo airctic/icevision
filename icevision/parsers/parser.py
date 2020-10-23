@@ -7,6 +7,11 @@ from icevision.data import *
 from icevision.parsers.mixins import *
 
 
+def camel_to_snake(name):
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
+
+
 # TODO: Rename to BaseParser
 class ParserInterface(ABC):
     @abstractmethod
@@ -81,6 +86,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         idmap: IDMap = None,
         autofix: bool = True,
         show_pbar: bool = True,
+        use_cached: bool = True,
+        cache_path: Union[str, Path] = None,
     ) -> List[List[BaseRecord]]:
         """Loops through all data points parsing the required fields.
 
@@ -88,27 +95,44 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
             data_splitter: How to split the parsed data, defaults to a [0.8, 0.2] random split.
             idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
             show_pbar: Whether or not to show a progress bar while parsing the data.
+            use_cached: Whether or not to load records from an existing pickled file.
+            cache_path: Path to save records in pickle format.
 
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
-        idmap = idmap or IDMap()
-        data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
-        records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
+        cache_path = (
+            Path(cache_path) if cache_path is not None else get_root_dir() / "records"
+        )
+        cache_path.mkdir(exist_ok=True)
+        pkl_data = cache_path / (camel_to_snake(self.__class__.__name__) + ".pkl")
 
-        splits = data_splitter(idmap=idmap)
-        all_splits_records = []
-        if autofix:
-            logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
-        for ids in splits:
-            split_records = [records[i] for i in ids if i in records]
+        if pkl_data.exists() and use_cached:
+            logger.info(
+                f"Loading cached records from {pkl_data}, specify `use_cached=False` to force parsing the records",
+            )
+            return pickle.load(open(pkl_data, "rb"))
+        else:
+            idmap = idmap or IDMap()
+            data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
+            records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
 
+            splits = data_splitter(idmap=idmap)
+            all_splits_records = []
             if autofix:
-                split_records = autofix_records(split_records)
+                logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
+            for ids in splits:
+                split_records = [records[i] for i in ids if i in records]
 
-            all_splits_records.append(split_records)
+                if autofix:
+                    split_records = autofix_records(split_records)
 
-        return all_splits_records
+                all_splits_records.append(split_records)
+
+            if use_cached:
+                pickle.dump(all_splits_records, open(pkl_data, "wb"))
+
+            return all_splits_records
 
     @classmethod
     def _templates(cls) -> List[str]:
