@@ -17,8 +17,8 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
 
     # Parser
     class_map = ClassMap(["milk_bottle", "carton", "can", "water_bottle"])
-    parser = parsers.voc(annotations_dir=data_dir / "odFridgeObjects/images/",
-                        images_dir=data_dir / "odFridgeObjects/annotations",
+    parser = parsers.voc(annotations_dir=data_dir / "odFridgeObjects/annotations/",
+                        images_dir=data_dir / "odFridgeObjects/images",
                         class_map=class_map)
 
     # Records
