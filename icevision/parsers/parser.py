@@ -129,8 +129,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
                 all_splits_records.append(split_records)
 
-            if use_cached:
-                pickle.dump(all_splits_records, open(pkl_data, "wb"))
+            
+            pickle.dump(all_splits_records, open(pkl_data, "wb"))
 
             return all_splits_records
 

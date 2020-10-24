@@ -1,4 +1,4 @@
-__all__ = ["get_data_dir"]
+__all__ = ["get_data_dir", "get_root_dir"]
 
 from icevision.imports import *
 
@@ -14,4 +14,4 @@ def get_data_dir():
 
 
 def get_root_dir():
-    return get_root_dir
+    return root_dir
