@@ -105,7 +105,7 @@ class Adapter(Transform):
         params["labels"] = list(range_of(labels)) if labels is not None else []
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
         if masks is not None:
-            params["masks"] = masks.data
+            params["masks"] = list(masks.data)
 
         d = self.tfms(**params)
 
