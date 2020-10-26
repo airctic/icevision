@@ -30,7 +30,7 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
 
 ENV PATH /opt/conda/bin:$PATH
 
-RUN conda create -y -n icevison-stable python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
+RUN conda create -y -n icevision-stable python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
     source activate icevision-stable && \
     pip install -U pip wheel setuptools && \
     pip install icevision && \
@@ -40,7 +40,7 @@ RUN conda create -y -n icevison-stable python=${PYTHON_VERSION} pytorch=${PYTORC
 
 COPY . .
 
-RUN conda create -y -n icevison-dev python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit={CUDA_VERSION} -c pytorch && \
+RUN conda create -y -n icevision-dev python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit={CUDA_VERSION} -c pytorch && \
     source activate icevision-dev && \
     pip install -U pip wheel setuptools && \
     pip install ".[all,dev]" && \
