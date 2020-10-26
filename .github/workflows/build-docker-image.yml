@@ -20,6 +20,6 @@ jobs:
       - uses: docker/build-push-action@v2
         with:
           build-args: |
-            ENV_NAME=${{env_name}}
+            ENV_NAME=${{ matrix.env_name }}
           file: Dockerfile
           push: false
