@@ -25,8 +25,8 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
     chmod +x ~/miniconda.sh && \
     ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
-    conda config --set always_yes yes --set changeps1 no && \
-    conda update -q conda
+    opt/conda/bin/conda config --set always_yes yes --set changeps1 no && \
+    opt/conda/bin/conda update -q conda
 
 ENV PATH /opt/conda/bin:$PATH
 
