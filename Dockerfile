@@ -3,7 +3,6 @@ FROM nvidia/cuda:${CUDA_VERSION}-base
 
 ARG PYTHON_VERSION=3.7
 ARG PYTORCH_VERSION=1.6
-ARG ENV_NAME="icevision-stable"
 
 SHELL ["/bin/bash", "-c"]
 
@@ -21,10 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /root/.cache && \
-    rm -rf /var/lib/apt/lists/*
-
-# get miniconda
-RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    rm -rf /var/lib/apt/lists/* && \
+    # get miniconda
+    curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod +x ~/miniconda.sh && \
     ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
@@ -34,20 +32,28 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
 # set conda path
 ENV PATH /opt/conda/bin:$PATH
 
-# create stable or dev environment
-RUN conda create -n ${ENV_NAME} python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
-    source activate ${ENV_NAME} && \
+# create stable environment
+RUN conda create -n icevision-stable python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
+    source activate icevision-stable && \
     pip install -U pip wheel setuptools && \
-    if [ ${ENV_NAME} = "icevision-dev" ]; then \
-        pip install git+https://github.com/airctic/icevision.git@master --upgrade ; \
-    else \
-        pip install icevision[all] ; \
-    fi && \
+    pip install icevision[all] && \
     conda clean -ya && \
     conda info && \
     conda list
 
-# make sure we have correct env
-RUN conda env list
+# create dev environment
+RUN conda create -n icevision-dev python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
+    source activate icevision-dev && \
+    pip install -U pip wheel setuptools && \
+    pip install git+https://github.com/airctic/icevision.git@master --upgrade && \
+    conda clean -ya && \
+    conda info && \
+    conda list
+
+# default conda env
+ENV CONDA_DEFAULT_ENV icevision-stable
+
+# make sure we have 2 envs and icevision-stable is activated
+RUN conda init bash && conda env list
 
 CMD ["/bin/bash"]
