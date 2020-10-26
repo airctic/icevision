@@ -3,6 +3,7 @@ FROM nvidia/cuda:${CUDA_VERSION}-base
 
 ARG PYTHON_VERSION=3.7
 ARG PYTORCH_VERSION=1.6
+ARG ENV_NAME="icevision-stable"
 
 SHELL ["/bin/bash", "-c"]
 
@@ -27,34 +28,29 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
     chmod +x ~/miniconda.sh && \
     ~/miniconda.sh -b -p /opt/conda && \
     rm ~/miniconda.sh && \
-    opt/conda/bin/conda config --set always_yes yes --set changeps1 no && \
+    opt/conda/bin/conda config --set always_yes yes && \
     opt/conda/bin/conda update -q conda
 
 # set conda path
 ENV PATH /opt/conda/bin:$PATH
 
-# create stable environment
-RUN conda create -y -n icevision-stable python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
-    source activate icevision-stable && \
-    pip install -U pip wheel setuptools && \
-    pip install icevision && \
-    conda clean -ya && \
-    conda info && \
-    conda list
-
 # copy everything
 COPY . .
 
-# create dev environment
-RUN conda create -y -n icevision-dev python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
-    source activate icevision-dev && \
+# create stable or dev environment
+RUN conda create -n ${ENV_NAME} python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
+    source activate ${ENV_NAME} && \
     pip install -U pip wheel setuptools && \
-    pip install ".[all,dev]" && \
+    if [ ${ENV_NAME} = "icevision-dev" ]; then \
+        pip install ".[all,dev]" && \
+    else \
+        pip install icevision && \
+    fi && \
     conda clean -ya && \
     conda info && \
     conda list
 
-# make sure we have 2 envs
+# make sure we have correct env
 RUN conda env list
 
 CMD ["/bin/bash"]
