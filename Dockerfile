@@ -42,9 +42,9 @@ RUN conda create -n ${ENV_NAME} python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSI
     source activate ${ENV_NAME} && \
     pip install -U pip wheel setuptools && \
     if [ ${ENV_NAME} = "icevision-dev" ]; then \
-        pip install ".[all,dev]" && \
+        pip install ".[all,dev]" ; \
     else \
-        pip install icevision && \
+        pip install icevision ; \
     fi && \
     conda clean -ya && \
     conda info && \
