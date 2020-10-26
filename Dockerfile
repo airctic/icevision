@@ -34,17 +34,14 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
 # set conda path
 ENV PATH /opt/conda/bin:$PATH
 
-# copy everything
-COPY . .
-
 # create stable or dev environment
 RUN conda create -n ${ENV_NAME} python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
     source activate ${ENV_NAME} && \
     pip install -U pip wheel setuptools && \
     if [ ${ENV_NAME} = "icevision-dev" ]; then \
-        pip install ".[all,dev]" ; \
+        pip install git+https://github.com/airctic/icevision.git@master --upgrade ; \
     else \
-        pip install icevision ; \
+        pip install icevision[all] ; \
     fi && \
     conda clean -ya && \
     conda info && \
