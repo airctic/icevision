@@ -49,7 +49,10 @@ def test_voc_mask_file(samples_source):
     mask = VocMaskFile(mask_filepath)
 
     mask_arr = mask.to_mask(0, 0)
-    assert mask_arr.data.shape[0] == 2
+    assert mask_arr.data.shape == (2, 375, 500)
+
+    erles = mask.to_erle(h=375, w=500)
+    assert len(erles) == 2
 
 
 # TODO: Test that all types of masks return the same encoded RLE

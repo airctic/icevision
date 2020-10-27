@@ -28,8 +28,6 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
         self.check_num_annotations()
 
-        # TODO: Check number of annotations is consistent (#bboxes==#labels==#masks)
-        # checking number #masks is tricky, because single filepath can have multiple
         success_dict = self._autofix()
         success_list = np.array(list(success_dict.values()))
         keep_mask = reduce(np.logical_and, success_list)

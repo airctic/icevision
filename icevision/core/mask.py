@@ -24,8 +24,21 @@ class Mask(ABC):
 
 
 class EncodedRLEs(Mask):
-    def __init__(self, erles: List[dict]):
-        self.erles = erles
+    def __init__(self, erles: List[dict] = None):
+        self.erles = erles or []
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} with {len(self)} objects>"
+
+    def __len__(self):
+        return len(self.erles)
+
+    def add_erles(self, erles: List["EncodedRLEs"]):
+        for erle in erles:
+            self.erles.extend(erle.erles)
+
+    def remove_erle(self, i: int):
+        self.erles.pop(i)
 
     def to_mask(self, h, w) -> "MaskArray":
         mask = mask_utils.decode(self.erles)
@@ -81,6 +94,9 @@ class MaskArray(Mask):
 
     @classmethod
     def from_masks(cls, masks, h, w):
+        # HACK: check for backwards compatibility
+        if isinstance(masks, EncodedRLEs):
+            return masks.to_mask(h, w)
         new = []
         # TODO: Instead of if checks, RLE and Polygon can return with extra dim
         for o in masks:
