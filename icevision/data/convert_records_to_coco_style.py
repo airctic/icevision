@@ -111,8 +111,10 @@ def convert_record_to_coco_annotations(record):
             elif isinstance(mask, MaskFile):
                 rles = mask.to_coco_rle(record["height"], record["width"])
                 annotations_dict["segmentation"].extend(rles)
+            elif isinstance(mask, EncodedRLEs):
+                annotations_dict["segmentation"].append(mask.erles)
             else:
-                msg = f"Mask type {type(mask)} unsupported, we only support RLE and Polygon"
+                msg = f"Mask type {type(mask)} unsupported"
                 raise ValueError(msg)
 
     # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)

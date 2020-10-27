@@ -1,4 +1,12 @@
-__all__ = ["Mask", "MaskArray", "MaskFile", "VocMaskFile", "RLE", "Polygon"]
+__all__ = [
+    "Mask",
+    "MaskArray",
+    "MaskFile",
+    "VocMaskFile",
+    "RLE",
+    "Polygon",
+    "EncodedRLEs",
+]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -13,6 +21,19 @@ class Mask(ABC):
     @abstractmethod
     def to_erle(self, h, w):
         pass
+
+
+class EncodedRLEs(Mask):
+    def __init__(self, erles: List[dict]):
+        self.erles = erles
+
+    def to_mask(self, h, w) -> "MaskArray":
+        mask = mask_utils.decode(self.erles)
+        mask = mask.transpose(2, 0, 1)  # channels first
+        return MaskArray(mask)
+
+    def to_erle(self, h, w):
+        return self
 
 
 # TODO: Assert shape? (bs, height, width)
@@ -36,7 +57,9 @@ class MaskArray(Mask):
         return self
 
     def to_erle(self, h, w):
-        return mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+        return EncodedRLEs(
+            mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+        )
 
     def to_coco_rle(self, h, w) -> List[dict]:
         """From https://stackoverflow.com/a/49547872/6772672"""
@@ -64,9 +87,7 @@ class MaskArray(Mask):
             m = o.to_mask(h, w).data
             if isinstance(o, (RLE, Polygon)):
                 new.append(m[None])
-            elif isinstance(o, MaskFile):
-                new.append(m)
-            elif isinstance(o, MaskArray):
+            elif isinstance(o, (MaskFile, MaskArray, EncodedRLEs)):
                 new.append(m)
             else:
                 raise ValueError(f"Segmented type {type(o)} not supported")
@@ -141,8 +162,10 @@ class RLE(Mask):
             coco_counts = coco_counts[:-1]
         return coco_counts
 
-    def to_erle(self, h, w):
-        return mask_utils.frPyObjects([{"counts": self.counts, "size": [h, w]}], h, w)
+    def to_erle(self, h, w) -> EncodedRLEs:
+        return EncodedRLEs(
+            mask_utils.frPyObjects([{"counts": self.to_coco(), "size": [h, w]}], h, w)
+        )
 
     @classmethod
     def from_string(cls, s, sep=" "):
@@ -175,10 +198,13 @@ class Polygon(Mask):
     points: List[List[int]]
 
     def to_mask(self, h, w):
-        erle = self.to_erle(h=h, w=w)
-        mask = mask_utils.decode(erle).sum(axis=-1)  # Sum is for unconnected polygons
-        assert mask.max() == 1, "Probable overlap in polygons"
+        mask = self.to_erle(h=h, w=w).to_mask(h=h, w=w)
+        mask = mask.sum(axis=-1)  # Sum is for unconnected polygons
+        if mask.max() > 1:
+            raise RuntimeError("Overlap in mask annotation")
         return MaskArray(mask)
 
     def to_erle(self, h, w):
-        return mask_utils.frPyObjects(self.points, h, w)
+        erles = mask_utils.frPyObjects(self.points, h, w)
+        erle = mask_utils.merge(erles)  # make unconnected polygons a single mask
+        return EncodedRLEs([erle])

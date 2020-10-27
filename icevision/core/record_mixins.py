@@ -175,14 +175,15 @@ class BBoxesRecordMixin(RecordMixin):
 class MasksRecordMixin(RecordMixin):
     def __init__(self):
         super().__init__()
-        self.masks: List[mask] = []
+        self.masks: List[Mask] = []
 
     def _load(self):
         super()._load()
         self.masks = MaskArray.from_masks(self.masks, self.height, self.width)
 
     def add_masks(self, masks: Sequence[Mask]):
-        self.masks.extend(masks)
+        erles = [mask.to_erle(h=self.height, w=self.width) for mask in masks]
+        self.masks.extend(erles)
 
     def _num_annotations(self) -> Dict[str, int]:
         masks = MaskArray.from_masks(self.masks, self.height, self.width)

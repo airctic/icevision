@@ -152,8 +152,8 @@ class MasksMixin(ParserMixin):
         return [MasksRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record) -> None:
-        record.add_masks(self.masks(o))
         super().parse_fields(o, record)
+        record.add_masks(self.masks(o))
 
     @abstractmethod
     def masks(self, o) -> List[Mask]:
