@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - master
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -13,7 +15,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: docker/setup-buildx-action@v1
+
+      - name: Get release version
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
+        id: release
+        run: echo ::set-output name=tags::$(echo ${GITHUB_REF##*/})
+
+      - uses: docker/login-action@v1
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
       - uses: docker/build-push-action@v2
         with:
           file: Dockerfile
-          push: false
+          push: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'release' }}
+          tags: icevision/icevision:${{ steps.release.output.tags }},icevision/icevision:latest
