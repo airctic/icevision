@@ -214,11 +214,7 @@ class Polygon(Mask):
     points: List[List[int]]
 
     def to_mask(self, h, w):
-        mask = self.to_erle(h=h, w=w).to_mask(h=h, w=w)
-        mask = mask.sum(axis=-1)  # Sum is for unconnected polygons
-        if mask.max() > 1:
-            raise RuntimeError("Overlap in mask annotation")
-        return MaskArray(mask)
+        return self.to_erle(h=h, w=w).to_mask(h=h, w=w)
 
     def to_erle(self, h, w):
         erles = mask_utils.frPyObjects(self.points, h, w)
