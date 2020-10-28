@@ -63,6 +63,9 @@ def test_parser(data):
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),
     ]
+    pkl_data = get_root_dir() / "records" / "simple_parser.pkl"
+    assert pkl_data.exists() == True
+    assert pickle.load(open(pkl_data, "rb"))[0] == records 
 
 
 @pytest.mark.skip

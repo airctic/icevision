@@ -101,6 +101,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
+        Record = self.record_class()
+
         cache_path = (
             Path(cache_path) if cache_path is not None else get_root_dir() / "records"
         )
@@ -129,7 +131,7 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
                 all_splits_records.append(split_records)
 
-            
+
             pickle.dump(all_splits_records, open(pkl_data, "wb"))
 
             return all_splits_records
