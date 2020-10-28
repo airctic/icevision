@@ -175,7 +175,7 @@ class BBoxesRecordMixin(RecordMixin):
 class MasksRecordMixin(RecordMixin):
     def __init__(self):
         super().__init__()
-        self.masks: EncodedRLEs = EncodedRLEs()
+        self.masks = EncodedRLEs()
 
     def _load(self):
         super()._load()
@@ -183,14 +183,14 @@ class MasksRecordMixin(RecordMixin):
 
     def add_masks(self, masks: Sequence[Mask]):
         erles = [mask.to_erle(h=self.height, w=self.width) for mask in masks]
-        self.masks.add_erles(erles)
+        self.masks.extend(erles)
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"masks": len(self.masks), **super()._num_annotations()}
 
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
-        self.masks.remove_erle(i)
+        self.masks.pop(i)
 
     def _repr(self) -> List[str]:
         return [f"Masks: {self.masks}", *super()._repr()]

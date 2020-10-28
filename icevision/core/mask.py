@@ -19,7 +19,7 @@ class Mask(ABC):
         pass
 
     @abstractmethod
-    def to_erle(self, h, w):
+    def to_erle(self, h, w) -> "EncodedRLEs":
         pass
 
 
@@ -33,11 +33,14 @@ class EncodedRLEs(Mask):
     def __len__(self):
         return len(self.erles)
 
-    def add_erles(self, erles: List["EncodedRLEs"]):
-        for erle in erles:
-            self.erles.extend(erle.erles)
+    def append(self, v: "EncodedRLEs"):
+        self.erles.extend(v.erles)
 
-    def remove_erle(self, i: int):
+    def extend(self, v: List["EncodedRLEs"]):
+        for o in v:
+            self.append(o)
+
+    def pop(self, i: int):
         self.erles.pop(i)
 
     def to_mask(self, h, w) -> "MaskArray":
