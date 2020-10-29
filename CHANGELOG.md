@@ -6,12 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+### Changed
+### Deleted
+
+## [0.2.2]
+
+### Added
 - Cache records after parsing with the new parameter `cache_filepath` added to `Parser.parse` (#504)
 - Added `pretrained: bool = True` argument to both faster_rcnn and mask_rcnn `model()` methods. (#516)
+- new class `EncodedRLEs`
+- all masks get converted to `EncodedRLEs` at parsing time
 
 ### Changed
-
-### Deleted
+- Removed warning on autofixing masks
+- RLE default counts is now COCO style
+- renamed `Mask.to_erle` to `Mask.to_erles`
 
 ## [0.2.1]
 
