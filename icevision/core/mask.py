@@ -33,6 +33,11 @@ class EncodedRLEs(Mask):
     def __len__(self):
         return len(self.erles)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.erles == other.erles
+        return False
+
     def append(self, v: "EncodedRLEs"):
         self.erles.extend(v.erles)
 
@@ -55,6 +60,11 @@ class EncodedRLEs(Mask):
 # TODO: Assert shape? (bs, height, width)
 @dataclass
 class MaskArray(Mask):
+    """Binary numpy array representation of a mask.
+
+    (num_instances, height, width)
+    """
+
     data: np.ndarray
 
     def __post_init__(self):
@@ -196,7 +206,7 @@ class RLE(Mask):
         return cls.from_coco(coco_counts)
 
     @classmethod
-    def from_coco(cls, counts:Sequence[int]):
+    def from_coco(cls, counts: Sequence[int]):
         """Described [here](https://stackoverflow.com/a/49547872/6772672)"""
         return cls(counts)
         # Convert from kaggle to coco
