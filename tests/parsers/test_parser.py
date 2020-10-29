@@ -41,9 +41,9 @@ class SimpleParser(
         return [BBox.from_xyxy(*pnts) for pnts in o["bboxes"]]
 
 
-def test_parser(data):
+def test_parser(data, tmpdir):
     parser = SimpleParser(data)
-    cache_filepath = Path("simple_parser.pkl")
+    cache_filepath = Path(tmpdir / "simple_parser.pkl")
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert cache_filepath.exists() == False
     assert len(records) == 2
@@ -73,7 +73,6 @@ def test_parser(data):
     assert parser._check_path(cache_filepath) == True
     assert cache_filepath.exists() == True
     assert pickle.load(open(cache_filepath, "rb"))[0] == records
-    cache_filepath.unlink()
 
 
 @pytest.mark.skip
