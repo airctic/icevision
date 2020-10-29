@@ -14,6 +14,7 @@ def model(
     num_classes: int,
     backbone: Optional[nn.Module] = None,
     remove_internal_transforms: bool = True,
+    pretrained: bool = True
     **mask_rcnn_kwargs
 ) -> nn.Module:
     """MaskRCNN model implemented by torchvision.
@@ -31,7 +32,7 @@ def model(
         A Pytorch `nn.Module`.
     """
     if backbone is None:
-        model = maskrcnn_resnet50_fpn(pretrained=True, **mask_rcnn_kwargs)
+        model = maskrcnn_resnet50_fpn(pretrained=pretrained, **mask_rcnn_kwargs)
 
         in_features_box = model.roi_heads.box_predictor.cls_score.in_features
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features_box, num_classes)
