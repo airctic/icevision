@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Cache records after parsing with the new parameter `cache_filepath` added to `Parser.parse` (#504)
+- Added `pretrained: bool = True` argument to both faster_rcnn and mask_rcnn `model()` methods. (#516)
 
 ### Changed
 
