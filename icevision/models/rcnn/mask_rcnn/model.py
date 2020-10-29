@@ -14,7 +14,7 @@ def model(
     num_classes: int,
     backbone: Optional[nn.Module] = None,
     remove_internal_transforms: bool = True,
-    pretrained: bool = True
+    pretrained: bool = True,
     **mask_rcnn_kwargs
 ) -> nn.Module:
     """MaskRCNN model implemented by torchvision.
