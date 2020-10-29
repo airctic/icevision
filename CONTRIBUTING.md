@@ -74,6 +74,9 @@ Edit files in your favorite editor, and format the code with
 git status  # See which files have changed
 git diff    # See changes within files
 
+cd to/icevision/folder
+black .
+
 git add path/to/file
 git commit -m "Your meaningful commit message for the change."
 ```
@@ -89,8 +92,6 @@ Upload your local branch to your remote GitHub repo
 (github.com/username/icevision)
 
 ```bash
-cd to/icevision/folder
-black .
 git push
 ```
 
