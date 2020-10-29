@@ -7,6 +7,7 @@ def coco_counts():
     # decoded: 1 1 1 0 0 0 1 1 0 0 0 0 0 0 1 0 0
     return [0, 3, 3, 2, 6, 1, 2]
 
+
 @pytest.fixture
 def kaggle_counts():
     # TODO: I originally thought the second to last number should've been 17
