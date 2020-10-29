@@ -30,7 +30,7 @@ def all_parser_mixins_cls():
             return [BBox.from_xyxy(1, 2, 3, 4)]
 
         def masks(self, o) -> List[Mask]:
-            return [MaskArray(np.array([]))]
+            return [MaskArray(np.zeros((420, 480)))]
 
         def areas(self, o) -> List[float]:
             return [4.2]
