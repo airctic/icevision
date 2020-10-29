@@ -23,13 +23,8 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
             )
 
     def autofix(self):
-        if not isinstance(self, SizeRecordMixin):
-            raise RuntimeError("Cannot autofix if `SizeMixin` is not present")
-
         self.check_num_annotations()
 
-        # TODO: Check number of annotations is consistent (#bboxes==#labels==#masks)
-        # checking number #masks is tricky, because single filepath can have multiple
         success_dict = self._autofix()
         success_list = np.array(list(success_dict.values()))
         keep_mask = reduce(np.logical_and, success_list)
@@ -76,13 +71,6 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
 
 def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
-    # HACK: can be removed once autofix starts working for masks
-    if records and isinstance(records[0], MasksRecordMixin):
-        logger.warning(
-            "autofix still experimental for masks and may produce wrong results."
-            "If using PNG masks this method **will** produce wrong results"
-        )
-
     keep_records = []
     for record in records:
 

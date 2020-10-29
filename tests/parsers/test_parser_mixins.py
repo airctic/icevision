@@ -30,7 +30,7 @@ def all_parser_mixins_cls():
             return [BBox.from_xyxy(1, 2, 3, 4)]
 
         def masks(self, o) -> List[Mask]:
-            return [MaskArray(np.array([]))]
+            return [MaskArray(np.zeros((1, 420, 480)))]
 
         def areas(self, o) -> List[float]:
             return [4.2]
@@ -55,7 +55,7 @@ def test_all_parser_mixins(all_parser_mixins_cls):
     assert record["width"] == 480
     assert record["labels"] == [0]
     assert record["bboxes"] == [BBox.from_xyxy(1, 2, 3, 4)]
-    assert all(record["masks"][0].data == MaskArray(np.array([])).data)
+    assert record["masks"].erles == [{"size": [420, 480], "counts": b"PlT6"}]
     assert record["areas"] == [4.2]
     assert record["iscrowds"] == [False]
 

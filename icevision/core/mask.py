@@ -1,4 +1,12 @@
-__all__ = ["Mask", "MaskArray", "MaskFile", "VocMaskFile", "RLE", "Polygon"]
+__all__ = [
+    "Mask",
+    "MaskArray",
+    "MaskFile",
+    "VocMaskFile",
+    "RLE",
+    "Polygon",
+    "EncodedRLEs",
+]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -11,13 +19,52 @@ class Mask(ABC):
         pass
 
     @abstractmethod
-    def to_erle(self, h, w):
+    def to_erles(self, h, w) -> "EncodedRLEs":
         pass
+
+
+class EncodedRLEs(Mask):
+    def __init__(self, erles: List[dict] = None):
+        self.erles = erles or []
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} with {len(self)} objects>"
+
+    def __len__(self):
+        return len(self.erles)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.erles == other.erles
+        return False
+
+    def append(self, v: "EncodedRLEs"):
+        self.erles.extend(v.erles)
+
+    def extend(self, v: List["EncodedRLEs"]):
+        for o in v:
+            self.append(o)
+
+    def pop(self, i: int):
+        self.erles.pop(i)
+
+    def to_mask(self, h, w) -> "MaskArray":
+        mask = mask_utils.decode(self.erles)
+        mask = mask.transpose(2, 0, 1)  # channels first
+        return MaskArray(mask)
+
+    def to_erles(self, h, w) -> "EncodedRLEs":
+        return self
 
 
 # TODO: Assert shape? (bs, height, width)
 @dataclass
 class MaskArray(Mask):
+    """Binary numpy array representation of a mask.
+
+    (num_instances, height, width)
+    """
+
     data: np.ndarray
 
     def __post_init__(self):
@@ -35,8 +82,10 @@ class MaskArray(Mask):
     def to_mask(self, h, w):
         return self
 
-    def to_erle(self, h, w):
-        return mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+    def to_erles(self, h, w) -> EncodedRLEs:
+        return EncodedRLEs(
+            mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+        )
 
     def to_coco_rle(self, h, w) -> List[dict]:
         """From https://stackoverflow.com/a/49547872/6772672"""
@@ -57,20 +106,13 @@ class MaskArray(Mask):
         return self.data.shape
 
     @classmethod
-    def from_masks(cls, masks, h, w):
-        new = []
-        # TODO: Instead of if checks, RLE and Polygon can return with extra dim
-        for o in masks:
-            m = o.to_mask(h, w).data
-            if isinstance(o, (RLE, Polygon)):
-                new.append(m[None])
-            elif isinstance(o, MaskFile):
-                new.append(m)
-            elif isinstance(o, MaskArray):
-                new.append(m)
-            else:
-                raise ValueError(f"Segmented type {type(o)} not supported")
-        return cls(np.concatenate(new))
+    def from_masks(cls, masks: Union[EncodedRLEs, Sequence[Mask]], h: int, w: int):
+        # HACK: check for backwards compatibility
+        if isinstance(masks, EncodedRLEs):
+            return masks.to_mask(h, w)
+        else:
+            masks_arrays = [o.to_mask(h=h, w=w).data for o in masks]
+            return cls(np.concatenate(masks_arrays))
 
 
 @dataclass
@@ -89,8 +131,8 @@ class MaskFile(Mask):
     def to_coco_rle(self, h, w) -> List[dict]:
         return self.to_mask(h=h, w=w).to_coco_rle(h=h, w=w)
 
-    def to_erle(self, h, w):
-        return self.to_mask(h, w).to_erle(h, w)
+    def to_erles(self, h, w) -> EncodedRLEs:
+        return self.to_mask(h, w).to_erles(h, w)
 
 
 @dataclass
@@ -119,55 +161,65 @@ class VocMaskFile(MaskFile):
 class RLE(Mask):
     counts: List[int]
 
-    def to_mask(self, h, w):
-        "From https://www.kaggle.com/julienbeaulieu/imaterialist-detectron2"
-        mask = np.full(h * w, 0, dtype=np.uint8)
-        for start, ones in zip(self.counts[::2], self.counts[1::2]):
-            # counting starts on one
-            start -= 1
-            if ones:
-                mask[start : start + ones] = 1
-        mask = mask.reshape((h, w), order="F")
-        return MaskArray(mask)
+    def to_mask(self, h, w) -> "MaskArray":
+        return self.to_erles(h=h, w=w).to_mask(h=h, w=w)
+        # Convert kaggle counts to mask
+        # "From https://www.kaggle.com/julienbeaulieu/imaterialist-detectron2"
+        # mask = np.full(h * w, 0, dtype=np.uint8)
+        # for start, ones in zip(self.counts[::2], self.counts[1::2]):
+        #     # counting starts on one
+        #     start -= 1
+        #     if ones:
+        #         mask[start : start + ones] = 1
+        # mask = mask.reshape((h, w), order="F")
+        # return MaskArray(mask)
 
     def to_coco(self) -> List[int]:
-        coco_counts, total = [], 0
-        for start, ones in zip(self.counts[::2], self.counts[1::2]):
-            zeros = start - total - 1
-            coco_counts.extend([zeros, ones])
-            total = start + ones - 1
-        # don't include last count if it's zero
-        if coco_counts[-1] == 0:
-            coco_counts = coco_counts[:-1]
-        return coco_counts
+        return self.counts
 
-    def to_erle(self, h, w):
-        return mask_utils.frPyObjects([{"counts": self.counts, "size": [h, w]}], h, w)
+    def to_erles(self, h, w) -> EncodedRLEs:
+        return EncodedRLEs(
+            mask_utils.frPyObjects([{"counts": self.to_coco(), "size": [h, w]}], h, w)
+        )
 
     @classmethod
     def from_string(cls, s, sep=" "):
         return cls(lmap(int, s.split(sep)))
 
     @classmethod
-    def from_kaggle(cls, counts):
+    def from_kaggle(cls, counts: Sequence[int]):
         """Described [here](https://www.kaggle.com/c/imaterialist-fashion-2020-fgvc7/overview/evaluation)"""
         if len(counts) % 2 != 0:
             raise ValueError("Counts must be divisible by 2")
-        return cls(counts)
+
+        current = 1
+        coco_counts = []
+        for start, count in zip(counts[::2], counts[1::2]):
+            coco_counts.append(start - current)  # zeros
+            coco_counts.append(count)  # ones
+            current = start + count
+
+        # remove trailing zero
+        if coco_counts[-1] == 0:
+            coco_counts.pop(-1)
+
+        return cls.from_coco(coco_counts)
 
     @classmethod
-    def from_coco(cls, counts):
+    def from_coco(cls, counts: Sequence[int]):
         """Described [here](https://stackoverflow.com/a/49547872/6772672)"""
+        return cls(counts)
+        # Convert from kaggle to coco
         # when counts is odd, round it with 0 ones at the end
-        if len(counts) % 2 != 0:
-            counts = counts + [0]
-
-        kaggle_counts, total = [], 0
-        for zeros, ones in zip(counts[::2], counts[1::2]):
-            start = zeros + total + 1
-            kaggle_counts.extend([start, ones])
-            total += zeros + ones
-        return cls.from_kaggle(kaggle_counts)
+        # if len(counts) % 2 != 0:
+        #     counts = counts + [0]
+        #
+        # kaggle_counts, total = [], 0
+        # for zeros, ones in zip(counts[::2], counts[1::2]):
+        #     start = zeros + total + 1
+        #     kaggle_counts.extend([start, ones])
+        #     total += zeros + ones
+        # return cls.from_kaggle(kaggle_counts)
 
 
 @dataclass(frozen=True)
@@ -175,10 +227,9 @@ class Polygon(Mask):
     points: List[List[int]]
 
     def to_mask(self, h, w):
-        erle = self.to_erle(h=h, w=w)
-        mask = mask_utils.decode(erle).sum(axis=-1)  # Sum is for unconnected polygons
-        assert mask.max() == 1, "Probable overlap in polygons"
-        return MaskArray(mask)
+        return self.to_erles(h=h, w=w).to_mask(h=h, w=w)
 
-    def to_erle(self, h, w):
-        return mask_utils.frPyObjects(self.points, h, w)
+    def to_erles(self, h, w) -> EncodedRLEs:
+        erles = mask_utils.frPyObjects(self.points, h, w)
+        erle = mask_utils.merge(erles)  # make unconnected polygons a single mask
+        return EncodedRLEs([erle])
