@@ -43,8 +43,9 @@ class SimpleParser(
 
 def test_parser(data):
     parser = SimpleParser(data)
-
+    cache_filepath = Path("simple_parser.pkl")
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
+    assert cache_filepath.exists() == False
     assert len(records) == 2
 
     record = records[1]
@@ -63,9 +64,16 @@ def test_parser(data):
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),
     ]
-    pkl_data = get_root_dir() / "records" / "simple_parser.pkl"
-    assert pkl_data.exists() == True
-    assert pickle.load(open(pkl_data, "rb"))[0] == records 
+
+    assert parser._check_path() == False
+    assert parser._check_path(cache_filepath) == False
+    records = parser.parse(
+        data_splitter=SingleSplitSplitter(), cache_filepath=cache_filepath
+    )[0]
+    assert parser._check_path(cache_filepath) == True
+    assert cache_filepath.exists() == True
+    assert pickle.load(open(cache_filepath, "rb"))[0] == records
+    cache_filepath.unlink()
 
 
 @pytest.mark.skip

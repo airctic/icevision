@@ -80,14 +80,19 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
         return dict(records)
 
+    def _check_path(self, path: Union[str, Path] = None):
+        if path is None:
+            return False
+        if path is not None:
+            return Path(path).exists()
+
     def parse(
         self,
         data_splitter: DataSplitter = None,
         idmap: IDMap = None,
         autofix: bool = True,
         show_pbar: bool = True,
-        use_cached: bool = True,
-        cache_path: Union[str, Path] = None,
+        cache_filepath: Union[str, Path] = None,
     ) -> List[List[BaseRecord]]:
         """Loops through all data points parsing the required fields.
 
@@ -95,25 +100,19 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
             data_splitter: How to split the parsed data, defaults to a [0.8, 0.2] random split.
             idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
             show_pbar: Whether or not to show a progress bar while parsing the data.
-            use_cached: Whether or not to load records from an existing pickled file.
-            cache_path: Path to save records in pickle format.
+            cache_filepath: Path to save records in pickle format. Defaults to None, e.g.
+                            if the user does not specify a path, no saving nor loading happens.
 
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
         Record = self.record_class()
 
-        cache_path = (
-            Path(cache_path) if cache_path is not None else get_root_dir() / "records"
-        )
-        cache_path.mkdir(exist_ok=True)
-        pkl_data = cache_path / (camel_to_snake(self.__class__.__name__) + ".pkl")
-
-        if pkl_data.exists() and use_cached:
+        if self._check_path(cache_filepath):
             logger.info(
-                f"Loading cached records from {pkl_data}, specify `use_cached=False` to force parsing the records",
+                f"Loading cached records from {cache_filepath}",
             )
-            return pickle.load(open(pkl_data, "rb"))
+            return pickle.load(open(Path(cache_filepath), "rb"))
         else:
             idmap = idmap or IDMap()
             data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
@@ -131,8 +130,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
                 all_splits_records.append(split_records)
 
-
-            pickle.dump(all_splits_records, open(pkl_data, "wb"))
+            if cache_filepath is not None:
+                pickle.dump(all_splits_records, open(Path(cache_filepath), "wb"))
 
             return all_splits_records
 
