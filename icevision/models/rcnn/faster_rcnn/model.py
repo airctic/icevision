@@ -24,9 +24,9 @@ def model(
         remove_internal_transforms: The torchvision model internally applies transforms
         like resizing and normalization, but we already do this at the `Dataset` level,
         so it's safe to remove those internal transforms.
-        pretrained: Argument passed to `maskrcnn_resnet50_fpn` if `backbone is None`. 
-        By default it is set to True: this is generally used when training a new model (transfer learning). 
-        `pretrained = False`  is used during inference (prediction) for cases where the users have their own pretrained weights. 
+        pretrained: Argument passed to `maskrcnn_resnet50_fpn` if `backbone is None`.
+        By default it is set to True: this is generally used when training a new model (transfer learning).
+        `pretrained = False`  is used during inference (prediction) for cases where the users have their own pretrained weights.
         **faster_rcnn_kwargs: Keyword arguments that internally are going to be passed to
         `torchvision.models.detection.faster_rcnn.FastRCNN`.
 
