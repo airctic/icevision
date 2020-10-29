@@ -58,16 +58,14 @@ class EncodedRLEs(Mask):
 
 
 # TODO: Assert shape? (bs, height, width)
-@dataclass
 class MaskArray(Mask):
     """Binary numpy array representation of a mask.
 
-    (num_instances, height, width)
+    # Arguments
+        data: Mask array, with the dimensions: (num_instances, height, width)
     """
 
-    data: np.ndarray
-
-    def __post_init__(self):
+    def __init__(self, data: np.uint8):
         self.data = self.data.astype(np.uint8)
 
     def __len__(self):
@@ -115,11 +113,14 @@ class MaskArray(Mask):
             return cls(np.concatenate(masks_arrays))
 
 
-@dataclass
 class MaskFile(Mask):
-    filepath: Union[str, Path]
+    """Holds the path to mask image file.
 
-    def __post_init__(self):
+    # Arguments
+        filepath: Path to the mask image file.
+    """
+
+    def __init__(self, filepath: Union[str, Path]):
         self.filepath = Path(self.filepath)
 
     def to_mask(self, h, w):
@@ -135,16 +136,18 @@ class MaskFile(Mask):
         return self.to_mask(h, w).to_erles(h, w)
 
 
-@dataclass
 class VocMaskFile(MaskFile):
     """Extension of `MaskFile` for VOC masks.
     Removes the color pallete and optionally drops void pixels.
 
-    Args:
-          drop_void (bool): drops the void pixels, which should have the value 255.
+    # Arguments
+        drop_void (bool): drops the void pixels, which should have the value 255.
+        filepath: Path to the mask image file.
     """
 
-    drop_void: bool = True
+    def __init__(self, filepath: Union[str, Path], drop_void: bool = True):
+        super().__init__(filepath=filepath)
+        self.drop_void = drop_void
 
     def to_mask(self, h, w) -> MaskArray:
         mask_arr = np.array(Image.open(self.filepath))
@@ -157,9 +160,15 @@ class VocMaskFile(MaskFile):
         return MaskArray(masks)
 
 
-@dataclass(frozen=True)
 class RLE(Mask):
-    counts: List[int]
+    """Run length encoding of a mask.
+
+    Don't instantiate this class directly, instead use the classmethods
+    `from_coco` and `from_kaggle`.
+    """
+
+    def __init__(self, counts: List[int]):
+        self.counts = counts
 
     def to_mask(self, h, w) -> "MaskArray":
         return self.to_erles(h=h, w=w).to_mask(h=h, w=w)
@@ -222,9 +231,15 @@ class RLE(Mask):
         # return cls.from_kaggle(kaggle_counts)
 
 
-@dataclass(frozen=True)
 class Polygon(Mask):
-    points: List[List[int]]
+    """Polygon representation of a mask
+
+    # Arguments
+        points: The vertices of the polygon in the COCO standard format.
+    """
+
+    def __init__(self, points: List[List[int]]):
+        self.points = points
 
     def to_mask(self, h, w):
         return self.to_erles(h=h, w=w).to_mask(h=h, w=w)
