@@ -81,7 +81,13 @@ def test_coco_api_from_records(coco_mask_records):
 
 
 def test_convert_record_to_coco_annotations_empty():
-    record = {"labels": [], "bboxes": [], "masks": [], "scores": [], "masks": []}
+    record = {
+        "labels": [],
+        "bboxes": [],
+        "masks": [],
+        "scores": [],
+        "masks": EncodedRLEs(),
+    }
     res = convert_record_to_coco_annotations(record)
     assert set(res.keys()) == {
         "image_id",
