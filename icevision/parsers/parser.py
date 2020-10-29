@@ -7,6 +7,11 @@ from icevision.data import *
 from icevision.parsers.mixins import *
 
 
+def camel_to_snake(name):
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
+
+
 # TODO: Rename to BaseParser
 class ParserInterface(ABC):
     @abstractmethod
@@ -75,12 +80,19 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
 
         return dict(records)
 
+    def _check_path(self, path: Union[str, Path] = None):
+        if path is None:
+            return False
+        if path is not None:
+            return Path(path).exists()
+
     def parse(
         self,
         data_splitter: DataSplitter = None,
         idmap: IDMap = None,
         autofix: bool = True,
         show_pbar: bool = True,
+        cache_filepath: Union[str, Path] = None,
     ) -> List[List[BaseRecord]]:
         """Loops through all data points parsing the required fields.
 
@@ -88,27 +100,40 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
             data_splitter: How to split the parsed data, defaults to a [0.8, 0.2] random split.
             idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
             show_pbar: Whether or not to show a progress bar while parsing the data.
+            cache_filepath: Path to save records in pickle format. Defaults to None, e.g.
+                            if the user does not specify a path, no saving nor loading happens.
 
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
-        idmap = idmap or IDMap()
-        data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
-        records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
+        Record = self.record_class()
 
-        splits = data_splitter(idmap=idmap)
-        all_splits_records = []
-        if autofix:
-            logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
-        for ids in splits:
-            split_records = [records[i] for i in ids if i in records]
+        if self._check_path(cache_filepath):
+            logger.info(
+                f"Loading cached records from {cache_filepath}",
+            )
+            return pickle.load(open(Path(cache_filepath), "rb"))
+        else:
+            idmap = idmap or IDMap()
+            data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
+            records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
 
+            splits = data_splitter(idmap=idmap)
+            all_splits_records = []
             if autofix:
-                split_records = autofix_records(split_records)
+                logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
+            for ids in splits:
+                split_records = [records[i] for i in ids if i in records]
 
-            all_splits_records.append(split_records)
+                if autofix:
+                    split_records = autofix_records(split_records)
 
-        return all_splits_records
+                all_splits_records.append(split_records)
+
+            if cache_filepath is not None:
+                pickle.dump(all_splits_records, open(Path(cache_filepath), "wb"))
+
+            return all_splits_records
 
     @classmethod
     def _templates(cls) -> List[str]:
