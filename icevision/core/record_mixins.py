@@ -182,7 +182,7 @@ class MasksRecordMixin(RecordMixin):
         self.masks = MaskArray.from_masks(self.masks, self.height, self.width)
 
     def add_masks(self, masks: Sequence[Mask]):
-        erles = [mask.to_erle(h=self.height, w=self.width) for mask in masks]
+        erles = [mask.to_erles(h=self.height, w=self.width) for mask in masks]
         self.masks.extend(erles)
 
     def _num_annotations(self) -> Dict[str, int]:
