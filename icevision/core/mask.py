@@ -66,7 +66,7 @@ class MaskArray(Mask):
     """
 
     def __init__(self, data: np.uint8):
-        self.data = self.data.astype(np.uint8)
+        self.data = data.astype(np.uint8)
 
     def __len__(self):
         return len(self.data)
@@ -121,7 +121,7 @@ class MaskFile(Mask):
     """
 
     def __init__(self, filepath: Union[str, Path]):
-        self.filepath = Path(self.filepath)
+        self.filepath = Path(filepath)
 
     def to_mask(self, h, w):
         mask = open_img(self.filepath, gray=True)
