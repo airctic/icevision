@@ -29,6 +29,7 @@ def model(
         pretrained: Argument passed to `maskrcnn_resnet50_fpn` if `backbone is None`.
         By default it is set to True: this is generally used when training a new model (transfer learning).
         `pretrained = False`  is used during inference (prediction) for cases where the users have their own pretrained weights.
+        `pretrained_backbone = False`  is used during inference (prediction) for cases where the users have their own pretrained backbone weights.
         **mask_rcnn_kwargs: Keyword arguments that internally are going to be passed to
         `torchvision.models.detection.mask_rcnn.MaskRCNN`.
 

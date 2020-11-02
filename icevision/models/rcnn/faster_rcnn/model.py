@@ -14,6 +14,7 @@ def model(
     backbone: Optional[nn.Module] = None,
     remove_internal_transforms: bool = True,
     pretrained: bool = True,
+    pretrained_backbone=True,
     **faster_rcnn_kwargs
 ) -> nn.Module:
     """FasterRCNN model implemented by torchvision.
@@ -27,6 +28,7 @@ def model(
         pretrained: Argument passed to `maskrcnn_resnet50_fpn` if `backbone is None`.
         By default it is set to True: this is generally used when training a new model (transfer learning).
         `pretrained = False`  is used during inference (prediction) for cases where the users have their own pretrained weights.
+        `pretrained_backbone = False`  is used during inference (prediction) for cases where the users have their own pretrained backbone weights.
         **faster_rcnn_kwargs: Keyword arguments that internally are going to be passed to
         `torchvision.models.detection.faster_rcnn.FastRCNN`.
 
@@ -34,7 +36,11 @@ def model(
         A Pytorch `nn.Module`.
     """
     if backbone is None:
-        model = fasterrcnn_resnet50_fpn(pretrained=True, **faster_rcnn_kwargs)
+        model = fasterrcnn_resnet50_fpn(
+            pretrained=True,
+            pretrained_backbone=pretrained_backbone,
+            **faster_rcnn_kwargs
+        )
 
         in_features = model.roi_heads.box_predictor.cls_score.in_features
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
