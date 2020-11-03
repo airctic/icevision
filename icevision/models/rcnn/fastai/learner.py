@@ -36,6 +36,7 @@ def rcnn_learner(
 
     is_wandb = [cb for cb in learn.cbs if "WandbCallback" in str(type(cb))]
     if len(is_wandb) == 1:
+        logger.warning("Wandb quickfix implemented, for more info check issue #527")
         wandb.watch = noop_watch
     if len(is_wandb) > 1:
         raise ValueError(
