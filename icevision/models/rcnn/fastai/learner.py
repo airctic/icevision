@@ -7,7 +7,6 @@ from icevision.models.rcnn.fastai.callbacks import *
 
 
 def noop_watch(models, criterion=None, log="gradients", log_freq=1000, idx=None):
-    print("inside noop_watch")
     return []
 
 
