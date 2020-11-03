@@ -6,11 +6,16 @@ from icevision.models.rcnn.loss_fn import loss_fn
 from icevision.models.rcnn.fastai.callbacks import *
 
 
+def noop_watch(models, criterion=None, log="gradients", log_freq=1000, idx=None):
+    print("inside noop_watch")
+    return []
+
+
 def rcnn_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
-    **kwargs
+    **kwargs,
 ):
     learn = adapted_fastai_learner(
         dls=dls,
@@ -29,5 +34,13 @@ def rcnn_learner(
 
     recorder = [cb for cb in learn.cbs if isinstance(cb, fastai.Recorder)][0]
     recorder.loss = RCNNAvgLoss()
+
+    is_wandb = [cb for cb in learn.cbs if "WandbCallback" in str(type(cb))]
+    if len(is_wandb) == 1:
+        wandb.watch = noop_watch
+    if len(is_wandb) > 1:
+        raise ValueError(
+            f"It seems you are passing {len(is_wandb)} `WandbCallback` instances to the `learner`. Only 1 is allowed."
+        )
 
     return learn
