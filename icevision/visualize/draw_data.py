@@ -8,6 +8,7 @@ __all__ = [
     "draw_pred",
     "draw_bbox",
     "draw_mask",
+    "draw_keypoints",
 ]
 
 from icevision.imports import *
@@ -214,5 +215,39 @@ def draw_mask(
     border = mask.data - cv2.erode(mask.data, np.ones((7, 7), np.uint8), iterations=1)
     border_idxs = np.where(border)
     img[border_idxs] = color
+
+    return img
+
+
+def draw_keypoints(
+    img: np.ndarray,
+    kps: KeyPoints,
+    color: Tuple[int, int, int],
+):
+    x, y, v, sks = kps.x, kps.y, kps.visible, kps.human_conns
+    if color.max() > 1:
+        color = color / 255
+
+    for sk in sks:
+        if np.all(v[sk] > 0):
+            plt.plot(x[sk], y[sk], linewidth=3, color=color)
+    plt.plot(
+        x[v > 0],
+        y[v > 0],
+        "o",
+        markersize=8,
+        markerfacecolor=color,
+        markeredgecolor="k",
+        markeredgewidth=2,
+    )
+    plt.plot(
+        x[v > 1],
+        y[v > 1],
+        "o",
+        markersize=8,
+        markerfacecolor=color,
+        markeredgecolor=color,
+        markeredgewidth=2,
+    )
 
     return img
