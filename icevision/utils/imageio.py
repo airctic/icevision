@@ -49,7 +49,7 @@ def plot_grid_preds_actuals(actuals, predictions, figsize=None, show=False, **kw
         **kwargs,
     )
 
-    for im, ax in zip(zip(actuals, predictions), axs):
+    for im, ax in zip(zip(actuals, predictions), axs.reshape(-1, 2)):
         ax[0].imshow(im[0], cmap=None)
         ax[0].set_axis_off()
         ax[0].set_title("Ground truth")
