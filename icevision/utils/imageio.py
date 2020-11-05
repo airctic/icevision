@@ -1,4 +1,4 @@
-__all__ = ["open_img", "show_img", "plot_grid"]
+__all__ = ["open_img", "show_img", "plot_grid", "plot_grid_preds_actuals"]
 
 from icevision.imports import *
 
@@ -46,6 +46,7 @@ def plot_grid_preds_actuals(actuals, predictions, figsize=None, show=False, **kw
         nrows=len(actuals),
         ncols=2,
         figsize=figsize or (6 * len(actuals) / 2, 6 * len(actuals) / 2 / 0.75),
+        **kwargs,
     )
 
     for im, ax in zip(zip(actuals, predictions), axs):
