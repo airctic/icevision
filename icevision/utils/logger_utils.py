@@ -2,7 +2,11 @@ __all__ = ["logger_default_config", "ReplaySink"]
 
 from icevision.imports import *
 
-logger.level("AUTOFIX", 25, color="<white>")
+logger.level("AUTOFIX", 25)
+logger.level("AUTOFIX-START", 25, color="<fg #1f6f8b><bold>")
+logger.level("AUTOFIX-SUCCESS", 25, color="<green>")
+logger.level("AUTOFIX-FAIL", 25, color="<fg #ea2c62>")
+logger.level("AUTOFIX-REPORT", 25, color="<fg #9a7d0a>")
 
 
 def logger_default_config():

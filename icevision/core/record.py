@@ -31,7 +31,12 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
         discard_idxs = np.where(keep_mask == False)[0]
 
         for i in discard_idxs:
-            logger.log("AUTOFIX", "Removed annotation with index: {}", i)
+            logger.log(
+                "AUTOFIX-REPORT",
+                "Removed annotation with index: {}, "
+                "for more info check the AUTOFIX-FAIL messages above",
+                i,
+            )
             self.remove_annotation(i)
 
         return success_dict
@@ -75,9 +80,9 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
     for record in records:
 
         def _pre_replay():
-            logger.opt(colors=True).log(
-                "AUTOFIX",
-                "️🔨  <green><bold>Autofixing record with imageid: {}</></>  ️🔨",
+            logger.log(
+                "AUTOFIX-START",
+                "️🔨  Autofixing record with imageid: {}  ️🔨",
                 record.imageid,
             )
 
