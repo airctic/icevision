@@ -22,9 +22,8 @@ def base_show_results(
     batch, samples = build_infer_batch_fn(samples)
     preds = predict_fn(model, batch)
 
-    imgs = [sample["img"] for sample in samples]
     show_preds(
-        imgs,
+        samples,
         preds,
         class_map=class_map,
         denormalize_fn=denormalize_fn,
