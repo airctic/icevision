@@ -173,5 +173,6 @@ def build_infer_batch(dataset, batch_tfms=None):
     tensor_imgs = torch.stack(tensor_imgs)
     tensor_sizes = tensor(img_sizes, dtype=torch.float)
     tensor_scales = tensor([1] * len(samples), dtype=torch.float)
+    img_info = {"img_size": tensor_sizes, "img_scale": tensor_scales}
 
-    return (tensor_imgs, tensor_scales, tensor_sizes), samples
+    return (tensor_imgs, img_info), samples

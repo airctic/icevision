@@ -96,10 +96,9 @@ def test_efficient_det_build_infer_batch(img, batch_tfms):
     tensor_img = torch.stack([im2tensor(img), im2tensor(img)])
     img_sizes = tensor([(4, 4), (4, 4)], dtype=torch.float)
     img_scales = tensor([1, 1], dtype=torch.float)
-    expected = [tensor_img, img_scales, img_sizes]
+    img_info = {"img_size": img_sizes, "img_scale": img_scales}
 
-    assert len(batch) == 3
-
-    assert torch.equal(batch[0], expected[0])
-    assert torch.equal(batch[1], expected[1])
-    assert torch.equal(batch[2], expected[2])
+    batch_imgs, batch_info = batch
+    assert torch.equal(batch_imgs, tensor_img)
+    assert torch.equal(batch_info["img_size"], img_info["img_size"])
+    assert torch.equal(batch_info["img_scale"], img_info["img_scale"])
