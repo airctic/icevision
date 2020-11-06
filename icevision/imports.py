@@ -3,7 +3,7 @@ import cv2, json, mimetypes, torch, torchvision, dataclasses, zipfile, random
 from dataclasses import dataclass
 from fastcore.imports import *
 from fastcore.foundation import *
-from fastcore.utils import *
+from fastcore.basics import *
 
 import numpy as np
 import torch.nn as nn
