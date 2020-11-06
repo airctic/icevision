@@ -1,4 +1,10 @@
-__all__ = ["coco", "COCOBaseParser", "COCOBBoxParser", "COCOMaskParser"]
+__all__ = [
+    "coco",
+    "COCOBaseParser",
+    "COCOBBoxParser",
+    "COCOMaskParser",
+    "COCOKeyPointsParser",
+]
 
 from icevision.imports import *
 from icevision.core import *
@@ -64,3 +70,8 @@ class COCOMaskParser(COCOBBoxParser, MasksMixin):
             return [RLE.from_coco(seg["counts"])]
         else:
             return [Polygon(seg)]
+
+
+class COCOKeyPointsParser(COCOBaseParser, KeyPointsMixin):
+    def keypoints(self, o) -> List[KeyPoints]:
+        return [KeyPoints.from_xyv(o["keypoints"])]

@@ -14,6 +14,7 @@ class KeyPoints:
         self.x = self.keypoints[0::3]
         self.y = self.keypoints[1::3]
         self.visible = self.keypoints[2::3]
+        self.n_visible_keypoints = (self.visible > 0).sum()
 
         self.human_kps = [
             "nose",
@@ -56,6 +57,11 @@ class KeyPoints:
                 [3, 5],
                 [4, 6],
             ]
+        )
+
+    def __repr__(self):
+        return (
+            f"<{self.__class__.__name__} " f"(N keypoints: {self.n_visible_keypoints})>"
         )
 
     @classmethod
