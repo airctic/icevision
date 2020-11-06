@@ -18,7 +18,7 @@ def coco_imageid_map():
 
 @pytest.fixture()
 def fridge_efficientdet_records(samples_source):
-    IMG_SIZE = 512
+    IMG_SIZE = 384
     filepath = samples_source / "fridge/odFridgeObjects/images/10.jpg"
 
     img = open_img(filepath)
@@ -26,7 +26,7 @@ def fridge_efficientdet_records(samples_source):
     img = normalize_imagenet(img)
 
     labels = [2, 3]
-    bboxes = [BBox.from_xyxy(88, 78, 221, 337), BBox.from_xyxy(153, 289, 456, 376)]
+    bboxes = [BBox.from_xyxy(66, 58, 165, 252), BBox.from_xyxy(114, 216, 342, 282)]
 
     record = {
         "filepath": filepath,
@@ -44,7 +44,7 @@ def fridge_efficientdet_records(samples_source):
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
-    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=512)
+    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=384)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")

@@ -15,12 +15,14 @@ def predict(
     device: Optional[torch.device] = None,
 ):
     device = device or model_device(model)
-    batch = [o.to(device) for o in batch]
+    imgs, img_info = batch
+    imgs = imgs.to(device)
+    img_info = {k: v.to(device) for k, v in img_info.items()}
 
-    bench = DetBenchPredict(unwrap_bench(model), config=model.config)
+    bench = DetBenchPredict(unwrap_bench(model))
     bench = bench.eval().to(device)
 
-    raw_preds = bench(*batch)
+    raw_preds = bench(x=imgs, img_info=img_info)
     return convert_raw_predictions(raw_preds, detection_threshold=detection_threshold)
 
 
@@ -50,7 +52,7 @@ def convert_raw_predictions(
         pred = {
             "scores": det[:, 4],
             "labels": det[:, 5].astype(int),
-            "bboxes": [BBox.from_xywh(*xywh) for xywh in det[:, :4]],
+            "bboxes": [BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]],
         }
         preds.append(pred)
 

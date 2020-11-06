@@ -3,6 +3,7 @@ __all__ = ["model"]
 from icevision.imports import *
 from icevision.utils import *
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain, unwrap_bench
+from effdet import create_model_from_config
 from effdet.efficientdet import HeadNet
 
 
@@ -26,22 +27,14 @@ def model(
         A PyTorch model.
     """
     config = get_efficientdet_config(model_name=model_name)
+    config.image_size = (img_size, img_size) if isinstance(img_size, int) else img_size
 
-    net = EfficientDet(config, pretrained_backbone=False)
-    if pretrained:
-        if not config.url:
-            raise RuntimeError(f"No pretrained weights for {model_name}")
-        state_dict = torch.hub.load_state_dict_from_url(
-            config.url, map_location=torch.device("cpu")
-        )
-        net.load_state_dict(state_dict)
-
-    config.num_classes = num_classes
-    config.image_size = img_size
-    net.class_net = HeadNet(
+    model_bench = create_model_from_config(
         config,
-        num_outputs=num_classes,
-        norm_kwargs=dict(eps=0.001, momentum=0.01),
+        bench_task="train",
+        bench_labeler=True,
+        num_classes=num_classes,
+        pretrained=pretrained,
     )
 
     # TODO: Break down param groups for backbone
@@ -58,7 +51,6 @@ def model(
 
         return param_groups
 
-    model_bench = DetBenchTrain(net, config)
     model_bench.param_groups = MethodType(param_groups_fn, model_bench)
 
     return model_bench
