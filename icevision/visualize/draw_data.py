@@ -23,13 +23,17 @@ def draw_sample(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    display_keypoints: bool = True,
 ):
     img = sample["img"].copy()
     if denormalize_fn is not None:
         img = denormalize_fn(img)
 
-    for label, bbox, mask in itertools.zip_longest(
-        sample.get("labels", []), sample.get("bboxes", []), sample.get("masks", [])
+    for label, bbox, mask, keypoints in itertools.zip_longest(
+        sample.get("labels", []),
+        sample.get("bboxes", []),
+        sample.get("masks", []),
+        sample.get("keypoints", []),
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
 
@@ -46,6 +50,8 @@ def draw_sample(
                 class_map=class_map,
                 color=color,
             )
+        if display_keypoints and keypoints is not None:
+            img = draw_keypoints(img=img, kps=keypoints, color=color)
 
     return img
 
@@ -108,6 +114,7 @@ def draw_record(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    display_keypoints: bool = True,
 ):
     sample = record.load()
     return draw_sample(
@@ -116,6 +123,7 @@ def draw_record(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        display_keypoints=display_keypoints,
     )
 
 
@@ -225,29 +233,18 @@ def draw_keypoints(
     color: Tuple[int, int, int],
 ):
     x, y, v, sks = kps.x, kps.y, kps.visible, kps.human_conns
-    if color.max() > 1:
-        color = color / 255
 
     for sk in sks:
         if np.all(v[sk] > 0):
-            plt.plot(x[sk], y[sk], linewidth=3, color=color)
-    plt.plot(
-        x[v > 0],
-        y[v > 0],
-        "o",
-        markersize=8,
-        markerfacecolor=color,
-        markeredgecolor="k",
-        markeredgewidth=2,
-    )
-    plt.plot(
-        x[v > 1],
-        y[v > 1],
-        "o",
-        markersize=8,
-        markerfacecolor=color,
-        markeredgecolor=color,
-        markeredgewidth=2,
-    )
+            cv2.line(
+                img,
+                (x[sk][0], y[sk][0]),
+                (x[sk][1], y[sk][1]),
+                color=color,
+                thickness=3,
+            )
+
+    for x_c, y_c in zip(x[v > 0], y[v > 0]):
+        cv2.circle(img, (x_c, y_c), radius=5, color=color, thickness=-1)
 
     return img
