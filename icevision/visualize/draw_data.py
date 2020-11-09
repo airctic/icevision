@@ -234,15 +234,15 @@ def draw_keypoints(
 ):
     x, y, v, sks = kps.x, kps.y, kps.visible, kps.human_conns
 
-    for sk in sks:
-        if np.all(v[sk] > 0):
-            cv2.line(
-                img,
-                (x[sk][0], y[sk][0]),
-                (x[sk][1], y[sk][1]),
-                color=color,
-                thickness=3,
-            )
+    # for sk in sks:
+    #     if np.all(v[sk] > 0):
+    #         cv2.line(
+    #             img,
+    #             (x[sk][0], y[sk][0]),
+    #             (x[sk][1], y[sk][1]),
+    #             color=color,
+    #             thickness=3,
+    #         )
 
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
         cv2.circle(img, (x_c, y_c), radius=5, color=color, thickness=-1)

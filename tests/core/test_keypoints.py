@@ -11,3 +11,5 @@ def test_keypoints_simple(keypoints_img_128372):
     assert kps.human_kps[0] == "nose"
     assert (kps.visible == np.array(keypoints_img_128372[2::3])).all()
     assert (kps.x == np.array(keypoints_img_128372[0::3])).all()
+    assert kps.xy == [(x, y) for x, y in zip(kps.x, kps.y)]
+    assert kps.xy[0] == (0, 0)
