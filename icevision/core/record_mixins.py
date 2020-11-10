@@ -9,6 +9,7 @@ __all__ = [
     "MasksRecordMixin",
     "AreasRecordMixin",
     "IsCrowdsRecordMixin",
+    "KeyPointsRecordMixin",
 ]
 
 from icevision.imports import *
@@ -16,6 +17,7 @@ from icevision.utils import *
 from .bbox import *
 from .mask import *
 from .exceptions import *
+from .keypoints import *
 
 
 class RecordMixin:
@@ -150,7 +152,7 @@ class BBoxesRecordMixin(RecordMixin):
                 autofixed = bbox.autofix(img_w=self.width, img_h=self.height)
                 success.append(True)
             except InvalidDataError as e:
-                logger.log("AUTOFIX", "Failed to fix: {}", bbox)
+                logger.log("AUTOFIX-FAIL", "{}", str(e))
                 success.append(False)
 
         return {"bboxes": success, **super()._autofix()}
@@ -241,3 +243,15 @@ class IsCrowdsRecordMixin(RecordMixin):
 
     def as_dict(self) -> dict:
         return {"iscrowds": self.iscrowds, **super().as_dict()}
+
+
+class KeyPointsRecordMixin(RecordMixin):
+    def __init__(self):
+        super().__init__()
+        self.keypoints: List[KeyPoints] = []
+
+    def add_keypoints(self, keypoints):
+        self.keypoints.extend(keypoints)
+
+    def _repr(self) -> List[str]:
+        return {f"KeyPoints: {self.keypoints}", *super()._repr()}

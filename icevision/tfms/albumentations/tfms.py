@@ -1,6 +1,7 @@
 __all__ = ["Adapter", "aug_tfms", "resize_and_pad"]
 
 import albumentations as A
+from itertools import chain
 from icevision.imports import *
 from icevision.core import *
 from icevision.tfms.transform import *
@@ -88,7 +89,12 @@ class Adapter(Transform):
 
     def __init__(self, tfms: Sequence[A.BasicTransform]):
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
-        super().__init__(tfms=A.Compose(tfms, bbox_params=self.bbox_params))
+        self.keypoint_params = A.KeypointParams(format="xy")
+        super().__init__(
+            tfms=A.Compose(
+                tfms, bbox_params=self.bbox_params, keypoint_params=self.keypoint_params
+            )
+        )
 
     def apply(
         self,
@@ -97,6 +103,7 @@ class Adapter(Transform):
         bboxes: List[BBox] = None,
         masks: MaskArray = None,
         iscrowds: List[int] = None,
+        keypoints: List[KeyPoints] = None,
         **kwargs
     ):
         # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes is removed
@@ -104,6 +111,22 @@ class Adapter(Transform):
         params = {"image": img}
         params["labels"] = list(range_of(labels)) if labels is not None else []
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
+        params["keypoints"] = (
+            [
+                xy
+                for o in keypoints
+                for xy, visible in zip(o.xy, o.visible)
+                if visible > 0
+            ]
+            if keypoints is not None
+            else []
+        )
+
+        if bboxes is None:
+            self.tfms.processors.pop("bboxes", None)
+        if keypoints is None:
+            self.tfms.processors.pop("keypoints", None)
+
         if masks is not None:
             params["masks"] = list(masks.data)
 
@@ -122,4 +145,7 @@ class Adapter(Transform):
             out["masks"] = MaskArray(np.array(keep_masks))
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
+        if keypoints is not None:
+            tra = list(chain.from_iterable([(c[0], c[1], 2) for c in d["keypoints"]]))
+            out["keypoints"] = [KeyPoints.from_xyv(tra)]
         return out

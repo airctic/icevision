@@ -22,6 +22,7 @@ def show_sample(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    display_keypoints: bool = True,
     show: bool = True,
     ax: plt.Axes = None,
 ) -> None:
@@ -32,6 +33,7 @@ def show_sample(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        display_keypoints=display_keypoints,
     )
     show_img(img=img, ax=ax, show=show)
 
@@ -42,6 +44,7 @@ def show_record(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    display_keypoints: bool = True,
     ax: plt.Axes = None,
     show: bool = False,
 ) -> None:
@@ -51,6 +54,7 @@ def show_record(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        display_keypoints=display_keypoints,
     )
     show_img(img=img, ax=ax, show=show)
 

@@ -152,6 +152,13 @@ def coco_mask_parser(coco_dir):
 
 
 @pytest.fixture(scope="module")
+def coco_keypoints_parser(coco_dir):
+    return parsers.COCOKeyPointsParser(
+        coco_dir / "keypoints_annotations.json", coco_dir / "images"
+    )
+
+
+@pytest.fixture(scope="module")
 def coco_mask_records(coco_mask_parser, coco_imageid_map):
     return coco_mask_parser.parse(
         data_splitter=SingleSplitSplitter(), idmap=coco_imageid_map
@@ -166,3 +173,60 @@ def coco_record(coco_mask_records):
 @pytest.fixture
 def coco_sample(coco_record):
     return coco_record.load().copy()
+
+
+@pytest.fixture
+def keypoints_img_128372():
+    return [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        406,
+        218,
+        1,
+        423,
+        218,
+        1,
+        394,
+        235,
+        2,
+        431,
+        236,
+        2,
+        384,
+        257,
+        2,
+        437,
+        269,
+        2,
+        396,
+        281,
+        2,
+        440,
+        292,
+        2,
+        402,
+        292,
+        2,
+        423,
+        293,
+        2,
+        401,
+        330,
+        2,
+        423,
+        329,
+        2,
+        399,
+        370,
+        2,
+        421,
+        371,
+        2,
+    ]

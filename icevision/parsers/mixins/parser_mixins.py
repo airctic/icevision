@@ -7,6 +7,7 @@ __all__ = [
     "AreasMixin",
     "MasksMixin",
     "IsCrowdsMixin",
+    "KeyPointsMixin",
 ]
 
 from icevision.imports import *
@@ -203,3 +204,23 @@ class IsCrowdsMixin(ParserMixin):
     def _templates(cls) -> List[str]:
         templates = super()._templates()
         return templates + ["def iscrowds(self, o) -> List[bool]:"]
+
+
+class KeyPointsMixin(ParserMixin):
+    """Adds `keypoints` method to parser"""
+
+    def record_mixins(self) -> List[RecordMixin]:
+        return [KeyPointsRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.add_keypoints(self.keypoints(o))
+        super().parse_fields(o, record)
+
+    @abstractmethod
+    def keypoints(self, o) -> List[KeyPoints]:
+        pass
+
+    @classmethod
+    def _templates(cls) -> List[str]:
+        templates = super()._templates()
+        return templates + ["def keypoints(self, o) -> List[KeyPoints]:"]
