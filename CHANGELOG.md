@@ -9,6 +9,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 ### Deleted
 
+## [0.3.0]
+
+### Added
+- pytorch 1.7 support, all dependencies updated
+- tutorial with hard negative samples
+- ability to skip record while parsing
+
+### Changed
+- show_preds visual improvement
+
+
 ## [0.2.2]
 
 ### Added
