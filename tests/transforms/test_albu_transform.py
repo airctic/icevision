@@ -53,4 +53,4 @@ def test_keypoints_transform(coco_keypoints_parser):
     assert "keypoints" in tfm.tfms.processors.keys()
     assert "bboxes" not in tfm.tfms.processors.keys()
     assert len(d["keypoints"]) == 9
-    assert len(t["keypoints"]) == 1
+    assert len(t["keypoints"]) == 3
