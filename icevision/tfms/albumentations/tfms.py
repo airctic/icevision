@@ -146,6 +146,15 @@ class Adapter(Transform):
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
         if keypoints is not None:
-            tra = list(chain.from_iterable([(c[0], c[1], 2) for c in d["keypoints"]]))
-            out["keypoints"] = [KeyPoints.from_xyv(tra)]
+            breaks = [0] + [
+                k for k in [(k.visible > 0).sum() for k in keypoints] if k > 0
+            ]
+            breaks = np.cumsum(breaks)
+
+            new_kps = []
+            for i in range(len(breaks) - 1):
+                t = d["keypoints"][breaks[i] : breaks[i + 1]]
+                new_kps.append(list(chain.from_iterable([(c[0], c[1], 2) for c in t])))
+
+            out["keypoints"] = [KeyPoints.from_xyv(k) for k in new_kps]
         return out

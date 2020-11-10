@@ -243,8 +243,24 @@ def draw_keypoints(
     #             color=color,
     #             thickness=3,
     #         )
+    if np.count_nonzero(y) > 0 and np.count_nonzero(x) > 0:
+        min_x, max_x = x[x > 0].min(), x[x > 0].max()
+        min_y, max_y = y[y > 0].min(), y[y > 0].max()
+
+        Rfactor = math.sqrt((max_x - min_x) * (max_y - min_y)) / math.sqrt(
+            img.shape[0] * img.shape[1]
+        )
+        Rpoint = int(min(8, max(Rfactor * 25, 5)))
+    else:
+        Rpoint = 3
 
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
-        cv2.circle(img, (x_c, y_c), radius=5, color=color, thickness=-1)
+        cv2.circle(
+            img,
+            (int(round(x_c)), int(round(y_c))),
+            radius=Rpoint,
+            color=color,
+            thickness=-1,
+        )
 
     return img
