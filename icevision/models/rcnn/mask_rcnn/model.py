@@ -47,12 +47,11 @@ def model(
             in_channels=in_features_mask, dim_reduced=256, num_classes=num_classes
         )
 
-        backbone_param_groups = resnet_fpn.param_groups(model.backbone)
+        resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = MaskRCNN(backbone, num_classes=num_classes, **mask_rcnn_kwargs)
-        backbone_param_groups = backbone.param_groups()
 
-    patch_param_groups(model=model, backbone_param_groups=backbone_param_groups)
+    patch_rcnn_param_groups(model=model)
 
     if remove_internal_transforms:
         remove_internal_model_transforms(model)
