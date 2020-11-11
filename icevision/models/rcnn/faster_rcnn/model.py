@@ -43,12 +43,11 @@ def model(
         in_features = model.roi_heads.box_predictor.cls_score.in_features
         model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
-        backbone_param_groups = resnet_fpn.param_groups(model.backbone)
+        resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = FasterRCNN(backbone, num_classes=num_classes, **faster_rcnn_kwargs)
-        backbone_param_groups = backbone.param_groups()
 
-    patch_param_groups(model=model, backbone_param_groups=backbone_param_groups)
+    patch_rcnn_param_groups(model=model)
 
     if remove_internal_transforms:
         remove_internal_model_transforms(model)
