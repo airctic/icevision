@@ -1,7 +1,7 @@
 import pytest, requests, PIL
 from icevision import *
 from icevision.imports import *
-from icevision.models.rcnn import faster_rcnn
+from icevision.models.torchvision_models import faster_rcnn
 from icevision.models import efficientdet
 import albumentations as A
 
