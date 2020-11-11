@@ -1,11 +1,11 @@
 __all__ = ["ModelAdapter"]
 
 from icevision.models.torchvision_models.lightning.model_adapter import *
-from icevision.models.torchvision_models.mask_rcnn.prediction import *
+from icevision.models.torchvision_models.retinanet.prediction import *
 
 
 class ModelAdapter(RCNNModelAdapter):
-    """Lightning module specialized for mask_rcnn, with metrics support.
+    """Lightning module specialized for retinanet, with metrics support.
 
     The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
     are already overriden.
@@ -19,6 +19,4 @@ class ModelAdapter(RCNNModelAdapter):
     """
 
     def convert_raw_predictions(self, raw_preds):
-        return convert_raw_predictions(
-            raw_preds=raw_preds, detection_threshold=0.0, mask_threshold=0.0
-        )
+        return convert_raw_predictions(raw_preds=raw_preds, detection_threshold=0.0)
