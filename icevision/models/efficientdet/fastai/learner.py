@@ -9,7 +9,6 @@ from icevision.engines.fastai import *
 def learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
-    param_groups: List[List[nn.Parameter]] = None,
     cbs=None,
     **learner_kwargs,
 ):
@@ -33,7 +32,6 @@ def learner(
         model=model,
         cbs=cbs,
         loss_func=efficientdet.loss_fn,
-        param_groups=param_groups,
         **learner_kwargs,
     )
 
