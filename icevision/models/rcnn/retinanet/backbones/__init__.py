@@ -1,0 +1,1 @@
+from icevision.models.rcnn.retinanet.backbones import resnet_fpn
