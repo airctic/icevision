@@ -62,7 +62,7 @@ def fridge_faster_rcnn_model() -> nn.Module:
 
 @pytest.fixture(scope="module")
 def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
-    IMG_SIZE = 512
+    IMG_SIZE = 384
 
     parser = parsers.VocXmlParser(
         annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
