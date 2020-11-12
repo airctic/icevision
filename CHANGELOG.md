@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- retinanet model, all utilities: model, dataloaders, predict, ...
+- retinanet: model, dataloaders, predict, ...
 
 ### Changed
 - models/rcnn renamed to models/torchvision_models
