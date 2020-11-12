@@ -1,7 +1,7 @@
 import pytest, requests, PIL
 from icevision import *
 from icevision.imports import *
-from icevision.models.rcnn import faster_rcnn
+from icevision.models.torchvision_models import faster_rcnn
 from icevision.models import efficientdet
 import albumentations as A
 
@@ -62,7 +62,7 @@ def fridge_faster_rcnn_model() -> nn.Module:
 
 @pytest.fixture(scope="module")
 def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
-    IMG_SIZE = 512
+    IMG_SIZE = 384
 
     parser = parsers.VocXmlParser(
         annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
@@ -75,8 +75,8 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
-    train_ds = Dataset(train_records, tfms_)
-    valid_ds = Dataset(valid_records, tfms_)
+    train_ds = Dataset(train_records[:2], tfms_)
+    valid_ds = Dataset(valid_records[:2], tfms_)
 
     return train_ds, valid_ds
 

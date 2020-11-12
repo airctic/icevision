@@ -26,6 +26,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     # Datasets
     # Transforms
     presize = 512
+    # For EffecientDet the size of the image has to be divisible by 128
     size = 384
     train_tfms = tfms.A.Adapter(
         [*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()]
@@ -107,6 +108,7 @@ In this example, we show how to train an EffecientDet model on the PETS dataset 
     # Datasets
     # Transforms
     presize = 512
+    # EffecientDet requires the image size to be divisible by 128
     size = 384
     train_tfms = tfms.A.Adapter(
         [*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()]

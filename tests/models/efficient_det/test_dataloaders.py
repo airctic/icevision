@@ -2,7 +2,7 @@ import pytest
 from icevision.all import *
 
 
-# TODO: Duplicated fixture between here and rcnn:test_dataloaders
+# TODO: Duplicated fixture between here and torchvision_models:test_dataloaders
 @pytest.fixture()
 def img():
     return 255 * np.ones((4, 4, 3), dtype=np.uint8)
