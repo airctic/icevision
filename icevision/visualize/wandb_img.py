@@ -33,11 +33,18 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
     raw_image = sample["img"]
     true_bboxes = sample["bboxes"]
     true_labels = sample["labels"]
+    # Check if "masks" key is the sample dictionnary
+    if "masks" in sample:
+        true_masks = sample["masks"]
 
     pred_bboxes = pred["bboxes"]
     pred_labels = pred["labels"].tolist()
     pred_scores = pred["scores"]
+    # Check if "masks" key is the pred dictionnary
+    if "masks" in pred:
+        pred_masks = pred["masks"]
 
+    # Predicted Boxes
     pred_all_boxes = []
     # Collect predicted bounding boxes for this image
     for b_i, bbox in enumerate(pred_bboxes):
@@ -51,7 +58,17 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
         "predictions": {"box_data": pred_all_boxes, "class_labels": class_id_to_label}
     }
 
+    # Predicted Masks
+    # Check if "masks" key is the pred dictionnary
+    if "masks" in pred:
+        mask_data = (pred_masks.data * pred["labels"][:, None, None]).max(0)
+        masks = {
+            "predictions": {"mask_data": mask_data, "class_labels": class_id_to_label}
+        }
+
+    # Ground Truth
     if add_ground_truth:
+        # Ground Truth Boxes
         true_all_boxes = []
         # Collect ground truth bounding boxes for this image
         for b_i, bbox in enumerate(true_bboxes):
@@ -63,7 +80,17 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
             "class_labels": class_id_to_label,
         }
 
-    return wandb.Image(raw_image, boxes=boxes)
+        # # Ground Truth Masks
+        # Check if "masks" key is the sample dictionnary
+        if "masks" in sample:
+            labels_arr = np.array(sample["labels"])
+            mask_data = (true_masks.data * labels_arr[:, None, None]).max(0)
+            masks["ground_truth"] = {
+                "mask_data": mask_data,
+                "class_labels": class_id_to_label,
+            }
+
+    return wandb.Image(raw_image, boxes=boxes, masks=masks)
 
 
 def wandb_img_preds(samples, preds, class_map, add_ground_truth=False):
