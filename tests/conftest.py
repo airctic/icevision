@@ -75,8 +75,8 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
-    train_ds = Dataset(train_records, tfms_)
-    valid_ds = Dataset(valid_records, tfms_)
+    train_ds = Dataset(train_records[:2], tfms_)
+    valid_ds = Dataset(valid_records[:2], tfms_)
 
     return train_ds, valid_ds
 
