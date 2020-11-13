@@ -1,0 +1,7 @@
+[flake8]
+ignore = E203, E266, E501, W503, F403, F401, F405
+# from ci-all-testing.yaml
+select = E9,F63,F7,F82
+# `--exit-zero` can't be set in config
+# max-line-length = 127
+# max-complexity = 10
