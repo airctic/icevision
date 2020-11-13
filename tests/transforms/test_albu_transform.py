@@ -51,6 +51,16 @@ def test_keypoints_transform(coco_keypoints_parser):
 
     d, t = ds[0], tfm_ds[0]
     assert "keypoints" in tfm.tfms.processors.keys()
-    assert "bboxes" not in tfm.tfms.processors.keys()
-    assert len(d["keypoints"]) == 9
+    assert "bboxes" in tfm.tfms.processors.keys()
+    assert len(d["keypoints"]) == 3
     assert len(t["keypoints"]) == 3
+    assert set([c for c in t["keypoints"][0].visible]) == {0.0, 1.0}
+    assert set([c for c in d["keypoints"][0].visible]) == {0, 1, 2}
+
+
+# def test_filter_keypoints():
+#     tfms_kps, w, h, v = [(0, 0), (79, 119), (-30, 40), (100, 300)], 80, 120, [0, 1, 1, 1]
+#     tra_n = filter_keypoints(tfms_kps, h, w, v)
+
+#     assert len(tfms_kps) == len(tra_n)
+#     assert tra_n == [(0, 0, 0), (79, 119, 1), (0, 0, 0), (0, 0, 0)]

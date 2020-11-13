@@ -12,13 +12,6 @@ def coco_mask_parser(coco_dir):
     return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=True)
 
 
-# @pytest.fixture
-# def coco_keypoints_parser(coco_dir):
-#     return parsers.COCOKeyPointsParser(
-#         coco_dir / "keypoints_annotations.json", coco_dir / "images"
-#     )
-
-
 def test_keypoints_parser(coco_dir, coco_keypoints_parser):
     records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert len(records) == 2
@@ -26,7 +19,7 @@ def test_keypoints_parser(coco_dir, coco_keypoints_parser):
     assert len(records[1].keypoints) == 1
     assert records[1].keypoints[0].n_visible_keypoints == 16
     assert records[1].keypoints[0].y.max() == 485
-    assert len(records[0].keypoints) == 9
+    assert len(records[0].keypoints) == 3
 
 
 def test_bbox_parser(coco_dir, coco_bbox_parser):

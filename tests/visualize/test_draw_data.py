@@ -27,6 +27,6 @@ def test_draw_pred():
 def test_draw_keypoints(keypoints_img_128372):
     img = np.zeros((427, 640, 3))
     color = (np.random.random(3) * 0.6 + 0.4) * 255
-    kps = KeyPoints.from_xyv(keypoints_img_128372)
+    kps = KeyPoints.from_xyv(keypoints_img_128372, COCO_KEYPOINTS_LABELS)
     img = draw_keypoints(img=img, kps=kps, color=color)
     assert (img[0][0] == np.array([0, 0, 0])).all()
