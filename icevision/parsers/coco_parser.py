@@ -74,6 +74,22 @@ class COCOMaskParser(COCOBBoxParser, MasksMixin):
             return [Polygon(seg)]
 
 
-class COCOKeyPointsParser(COCOBaseParser, KeyPointsMixin):
+class COCOKeyPointsParser(COCOBBoxParser, KeyPointsMixin):
     def keypoints(self, o) -> List[KeyPoints]:
-        return [KeyPoints.from_xyv(o["keypoints"])]
+        return (
+            [KeyPoints.from_xyv(o["keypoints"], COCO_KEYPOINTS_LABELS)]
+            if sum(o["keypoints"]) > 0
+            else []
+        )
+
+    def labels(self, o) -> List[int]:
+        return [o["category_id"]] if sum(o["keypoints"]) > 0 else []
+
+    def areas(self, o) -> List[float]:
+        return [o["area"]] if sum(o["keypoints"]) > 0 else []
+
+    def iscrowds(self, o) -> List[bool]:
+        return [o["iscrowd"]] if sum(o["keypoints"]) > 0 else []
+
+    def bboxes(self, o) -> List[BBox]:
+        return [BBox.from_xywh(*o["bbox"])] if sum(o["keypoints"]) > 0 else []

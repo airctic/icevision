@@ -89,7 +89,9 @@ class Adapter(Transform):
 
     def __init__(self, tfms: Sequence[A.BasicTransform]):
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
-        self.keypoint_params = A.KeypointParams(format="xy")
+        self.keypoint_params = A.KeypointParams(
+            format="xy", remove_invisible=False, label_fields=["keypoints_labels"]
+        )
         super().__init__(
             tfms=A.Compose(
                 tfms, bbox_params=self.bbox_params, keypoint_params=self.keypoint_params
@@ -111,24 +113,22 @@ class Adapter(Transform):
         params = {"image": img}
         params["labels"] = list(range_of(labels)) if labels is not None else []
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
-        params["keypoints"] = (
-            [
-                xy
-                for o in keypoints
-                for xy, visible in zip(o.xy, o.visible)
-                if visible > 0
-            ]
-            if keypoints is not None
-            else []
-        )
+
+        if keypoints is not None:
+            k = [xy for o in keypoints for xy in o.xy]
+            c = [label for o in keypoints for label in o.labels]
+            v = [visible for o in keypoints for visible in o.visible]
+            assert len(k) == len(c) == len(v)
+            params["keypoints"] = k
+            params["keypoints_labels"] = c
+
+        if masks is not None:
+            params["masks"] = list(masks.data)
 
         if bboxes is None:
             self.tfms.processors.pop("bboxes", None)
         if keypoints is None:
             self.tfms.processors.pop("keypoints", None)
-
-        if masks is not None:
-            params["masks"] = list(masks.data)
 
         d = self.tfms(**params)
 
@@ -136,25 +136,63 @@ class Adapter(Transform):
         out["height"], out["width"], _ = out["img"].shape
 
         # We use the values in d['labels'] to get what was removed by the transform
+        if keypoints is not None:
+            tfms_kps = d["keypoints"]
+            assert len(tfms_kps) == len(
+                k
+            )  # remove_invisible=False, therefore all points getting in are also getting out
+            tfms_kps_n = filter_keypoints(tfms_kps, out["height"], out["width"], v)
+            l = list(chain.from_iterable(tfms_kps_n))
+            l = [
+                l[i : i + len(l) // len(keypoints)]
+                for i in range(0, len(l), len(l) // len(keypoints))
+            ]
+            assert len(l) == len(keypoints)
+            cl = keypoints[0].labels
+            out["keypoints"] = [KeyPoints.from_xyv(k, cl) for k in l if sum(k) > 0]
         if labels is not None:
             out["labels"] = [labels[i] for i in d["labels"]]
+            if keypoints is not None:
+                out["labels"] = [
+                    labels[i] for i, k in zip(d["labels"], l) if sum(k) > 0
+                ]
         if bboxes is not None:
             out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
+            if keypoints is not None:
+                out["bboxes"] = [
+                    BBox.from_xyxy(*points)
+                    for points, k in zip(d["bboxes"], l)
+                    if sum(k) > 0
+                ]
         if masks is not None:
             keep_masks = [d["masks"][i] for i in d["labels"]]
+            if keypoints is not None:
+                keep_masks = [
+                    d["masks"][i] for i, k in zip(d["labels"], l) if sum(k) > 0
+                ]
             out["masks"] = MaskArray(np.array(keep_masks))
         if iscrowds is not None:
             out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
-        if keypoints is not None:
-            breaks = [0] + [
-                k for k in [(k.visible > 0).sum() for k in keypoints] if k > 0
-            ]
-            breaks = np.cumsum(breaks)
-
-            new_kps = []
-            for i in range(len(breaks) - 1):
-                t = d["keypoints"][breaks[i] : breaks[i + 1]]
-                new_kps.append(list(chain.from_iterable([(c[0], c[1], 2) for c in t])))
-
-            out["keypoints"] = [KeyPoints.from_xyv(k) for k in new_kps]
+            if keypoints is not None:
+                out["iscrowds"] = [
+                    iscrowds[i] for i, k in zip(d["labels"], l) if sum(k) > 0
+                ]
         return out
+
+
+def filter_keypoints(tfms_kps, h, w, v):
+    v_n = v.copy()
+    tra_n = tfms_kps.copy()
+    for i in range(len(tfms_kps)):
+        if v[i] > 0:
+            v_n[i] = int(
+                not (
+                    (tfms_kps[i][0] > w)
+                    or (tfms_kps[i][1] > h)
+                    or (tfms_kps[i][0] * tfms_kps[i][1] < 0)
+                )
+            )
+        if v_n[i] == 0:
+            tra_n[i] = (0, 0)
+        tra_n[i] = (tra_n[i][0], tra_n[i][1], v_n[i])
+    return tra_n

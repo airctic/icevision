@@ -89,6 +89,9 @@ def _build_train_sample(
         target["labels"] = tensor(record["labels"], dtype=torch.int64)
         xyxys = [bbox.xyxy for bbox in record["bboxes"]]
         target["boxes"] = tensor(xyxys, dtype=torch.float32)
+        if record.get("keypoints") is not None:
+            kps = [kp.xyv for kp in record["keypoints"]]
+            target["keypoints"] = tensor(kps, dtype=torch.float32)
 
     return image, target
 
