@@ -46,7 +46,8 @@ nav:
   - Installation: install.md
   - Tutorials:
     - Getting Started: getting_started.md
-    - Quickstart: quickstart.md
+    - Quickstart using EfficientDet: quickstart.md
+    - Quickstart using RetinaNet: retinanet.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
     - Mask RCNN: mask_rcnn_pennfudan.md
