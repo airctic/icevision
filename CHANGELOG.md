@@ -6,12 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+### Changed
+### Deleted
+
+## [0.4.0]
+
+### Added
 - retinanet: model, dataloaders, predict, ...
 
 ### Changed
-- models/rcnn renamed to models/torchvision_models
-
-### Deleted
+- **Breaking:** models/rcnn renamed to models/torchvision_models
+- tests/models/rcnn renamed to tests/models/torchvision_models
 
 ## [0.3.0]
 
