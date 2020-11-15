@@ -39,7 +39,7 @@ model = efficientdet.model(
 )
 ```
 
-For more information checkout the [EffecientDet Model](https://airctic.github.io/icevision/model_efficientdet/) as well as the [EffecientDet Backbone](https://airctic.github.io/icevision/backbones_overview/) documents.
+For more information checkout the [EffecientDet Model](https://airctic.github.io/icevision/model_efficientdet/) as well as the [EffecientDet Backbone](https://airctic.com/backbones_effecientdet/) documents.
 
 
 ## How to create a Faster RCNN Model?
@@ -58,7 +58,7 @@ model = faster_rcnn.model(
 )
 ```
 
-For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) documents/
+For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.com/backbones_faster_mask_rcnn/#faster-rcnn-backbones-examples) documents/
 
 
 ## How to create a Mask RCNN Model?
@@ -76,7 +76,7 @@ model = mask_rcnn.model(
 )
 ```
 
-For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) documents.
+For more information checkout the [Faster RCNN Model](https://airctic.github.io/icevision/model_faster_rcnn/) as well as the [Faster RCNN Backbone](https://airctic.com/backbones_faster_mask_rcnn/#mask-rcnn-backbones-examples) documents.
 
 ## How to use EffecientDet Backbones?
 EffecientDet backbones are passed as string argument to the effecientdet model function:
@@ -86,7 +86,7 @@ model = efficientdet.model(
     model_name="tf_efficientdet_lite0", num_classes=len(class_map), img_size=size
 )
 ```
-For more information checkout the [EffecientDet Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
+For more information checkout the [EffecientDet Backbone](https://airctic.com/backbones_effecientdet/) document.
 
 ## How to use Faster RCNN Backbones?
 Faster RCNN backbones are passed a model object argument to the Faster RCNN model function:
@@ -97,7 +97,7 @@ model = faster_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
 )
 ```
-For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
+For more information checkout the [Faster RCNN Backbone](https://airctic.com/backbones_faster_mask_rcnn/#faster-rcnn-backbones-examples) document.
 
 ## How to use Mask RCNN Backbones?
 Mask RCNN backbones are passed a model object argument to the Mask RCNN model function:
@@ -108,7 +108,7 @@ model = mask_rcnn.model(
     backbone=backbone, num_classes=len(class_map)
 )
 ```
-For more information checkout the [Faster RCNN Backbone](https://airctic.github.io/icevision/backbones_overview/) document.
+For more information checkout the [Faster RCNN Backbone](https://airctic.com/backbones_faster_mask_rcnn/#mask-rcnn-backbones-examples) document.
 
 ## How to predict (infer) a single image?
 This is a quick example using the PETS dataset:
@@ -168,7 +168,7 @@ show_preds(
 ## How to save trained weights in Google Colab?
 In the following example, we show how to save trained weight using an EffecientDet model. The latter can be replaced by any model supported by IceVision
 
-Check out the [Train a Dataset Notebook](https://airctic.github.io/icevision/how_train_dataset/) to get familiar with all the steps from the training a dataset to saving the trained weights. 
+Check out the [Quick Start Notebook](https://airctic.com/quickstart/) to get familiar with all the steps from the training a dataset to saving the trained weights. 
 
 ```python
 # Model
