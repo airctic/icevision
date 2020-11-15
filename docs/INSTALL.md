@@ -28,6 +28,7 @@ Then, clone the repo and install the package:
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
 $ pip install -e ".[all,dev]"
+$ pre-commit install
 ```
 </div>
 
