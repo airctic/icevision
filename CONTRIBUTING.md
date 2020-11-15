@@ -30,12 +30,16 @@ cd icevision
 
 3.  Install icevision as an editable package. As a best practice, it is highly recommended to create either a mini-conda or a conda environment. Please, check out our [Installation Using Conda Guide](https://airctic.com/install/#b-installation-using-conda).
 
-First, install Poetry by following the instructions [here](https://python-poetry.org/docs/#installation).
-
-Then, to locally install the package:
+First, locally install the package:
 
 ```bash
-poetry install -E all
+pip install -e ".[all,dev]"
+```
+
+Then, set up `pre-commit` hooks using:
+
+```bash
+pre-commit install
 ```
 
 ## Step 2: Stay in Sync with the original (upstream) repo
