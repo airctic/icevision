@@ -24,9 +24,11 @@ def coco(
 class COCOBaseParser(
     Parser, FilepathMixin, SizeMixin, LabelsMixin, AreasMixin, IsCrowdsMixin
 ):
-    def __init__(self, annotations_filepath, img_dir):
+    def __init__(
+        self, annotations_filepath: Union[str, Path], img_dir: Union[str, Path]
+    ):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
-        self.img_dir = img_dir
+        self.img_dir = Path(img_dir)
 
         self._imageid2info = {o["id"]: o for o in self.annotations_dict["images"]}
 
@@ -42,7 +44,7 @@ class COCOBaseParser(
     def imageid(self, o) -> int:
         return o["image_id"]
 
-    def filepath(self, o) -> Union[str, Path]:
+    def filepath(self, o) -> Path:
         return self.img_dir / self._info["file_name"]
 
     def image_width_height(self, o) -> Tuple[int, int]:
