@@ -192,6 +192,8 @@ def filter_keypoints(tfms_kps, h, w, v):
                     or (tfms_kps[i][0] * tfms_kps[i][1] < 0)
                 )
             )
+            if v_n[i] == 1:
+                v_n[i] = v[i]
         if v_n[i] == 0:
             tra_n[i] = (0, 0)
         tra_n[i] = (tra_n[i][0], tra_n[i][1], v_n[i])
