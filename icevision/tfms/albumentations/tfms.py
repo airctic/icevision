@@ -122,6 +122,20 @@ class Adapter(Transform):
             params["keypoints"] = k
             params["keypoints_labels"] = c
 
+            tfms_list = self.tfms.transforms.transforms
+            if get_transform(tfms_list, "Pad") is not None:
+                height, width = img.shape[:2]
+
+                presize = get_transform(tfms_list, "SmallestMaxSize").max_size
+                height_presize, width_presize = _func_max_size(
+                    height, width, presize, min
+                )
+
+                size = get_transform(tfms_list, "LongestMaxSize").max_size
+                height_size, width_size = _func_max_size(
+                    height_presize, width_presize, size, max
+                )
+
         if masks is not None:
             params["masks"] = list(masks.data)
 
@@ -138,10 +152,13 @@ class Adapter(Transform):
         # We use the values in d['labels'] to get what was removed by the transform
         if keypoints is not None:
             tfms_kps = d["keypoints"]
-            assert len(tfms_kps) == len(
-                k
-            )  # remove_invisible=False, therefore all points getting in are also getting out
-            tfms_kps_n = filter_keypoints(tfms_kps, out["height"], out["width"], v)
+            # remove_invisible=False, therefore all points getting in are also getting out
+            assert len(tfms_kps) == len(k)
+            if get_transform(tfms_list, "Pad") is not None:
+                tfms_kps_n = filter_keypoints(tfms_kps, height_size, width_size, v)
+            else:
+                tfms_kps_n = filter_keypoints(tfms_kps, out["height"], out["width"], v)
+
             l = list(chain.from_iterable(tfms_kps_n))
             l = [
                 l[i : i + len(l) // len(keypoints)]
@@ -185,16 +202,47 @@ def filter_keypoints(tfms_kps, h, w, v):
     tra_n = tfms_kps.copy()
     for i in range(len(tfms_kps)):
         if v[i] > 0:
-            v_n[i] = int(
-                not (
-                    (tfms_kps[i][0] > w)
-                    or (tfms_kps[i][1] > h)
-                    or (tfms_kps[i][0] * tfms_kps[i][1] < 0)
-                )
-            )
+            v_n[i] = _check_kps_coords(tfms_kps[i], h, w)
             if v_n[i] == 1:
                 v_n[i] = v[i]
         if v_n[i] == 0:
             tra_n[i] = (0, 0)
         tra_n[i] = (tra_n[i][0], tra_n[i][1], v_n[i])
     return tra_n
+
+
+def py3round(number):
+    """Unified rounding in all python versions."""
+    if abs(round(number) - number) == 0.5:
+        return int(2.0 * round(number / 2.0))
+
+    return int(round(number))
+
+
+def _func_max_size(height, width, max_size, func):
+    scale = max_size / float(func(width, height))
+
+    if scale != 1.0:
+        new_height, new_width = tuple(py3round(dim * scale) for dim in (height, width))
+    return new_height, new_width
+
+
+def get_transform(tfms_list, t):
+    for el in tfms_list:
+        if t in str(type(el)):
+            return el
+    return None
+
+
+def _check_kps_coords(p, h, w):
+    x, y = p
+    if w >= h:
+        pad = (w - h) // 2
+        h1 = pad
+        h2 = w - pad
+        return int((x <= w) and (x >= 0) and (y >= h1) and (y <= h2))
+    else:
+        pad = (h - w) // 2
+        w1 = pad
+        w2 = h - pad
+        return int((x <= w2) and (x >= w1) and (y >= 0) and (y <= h))
