@@ -50,8 +50,9 @@ def model(
             in_channels, num_keypoints
         )
 
-        in_features = model.roi_heads.box_predictor.cls_score.in_features
-        model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+        if num_classes != 2:
+            in_features = model.roi_heads.box_predictor.cls_score.in_features
+            model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
         resnet_fpn.patch_param_groups(model.backbone)
     else:

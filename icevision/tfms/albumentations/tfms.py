@@ -114,6 +114,8 @@ class Adapter(Transform):
         params["labels"] = list(range_of(labels)) if labels is not None else []
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
 
+        tfms_list = self.tfms.transforms.transforms
+
         if keypoints is not None:
             k = [xy for o in keypoints for xy in o.xy]
             c = [label for o in keypoints for label in o.labels]
@@ -122,19 +124,22 @@ class Adapter(Transform):
             params["keypoints"] = k
             params["keypoints_labels"] = c
 
-            tfms_list = self.tfms.transforms.transforms
             if get_transform(tfms_list, "Pad") is not None:
-                height, width = img.shape[:2]
+                height_size, width_size = img.shape[:2]
 
-                presize = get_transform(tfms_list, "SmallestMaxSize").max_size
-                height_presize, width_presize = _func_max_size(
-                    height, width, presize, min
-                )
+                t = get_transform(tfms_list, "SmallestMaxSize")
+                if t is not None:
+                    presize = t.max_size
+                    height_size, width_size = _func_max_size(
+                        height_size, width_size, presize, min
+                    )
 
-                size = get_transform(tfms_list, "LongestMaxSize").max_size
-                height_size, width_size = _func_max_size(
-                    height_presize, width_presize, size, max
-                )
+                t = get_transform(tfms_list, "LongestMaxSize")
+                if t is not None:
+                    size = t.max_size
+                    height_size, width_size = _func_max_size(
+                        height_size, width_size, size, max
+                    )
 
         if masks is not None:
             params["masks"] = list(masks.data)
@@ -174,12 +179,21 @@ class Adapter(Transform):
                     labels[i] for i, k in zip(d["labels"], l) if sum(k) > 0
                 ]
         if bboxes is not None:
-            out["bboxes"] = [BBox.from_xyxy(*points) for points in d["bboxes"]]
+            if get_transform(tfms_list, "Pad") is not None:
+                bb = [
+                    filter_boxes(xyxy, height_size, width_size) for xyxy in d["bboxes"]
+                ]
+            else:
+                bb = [
+                    filter_boxes(xyxy, out["height"], out["width"])
+                    for xyxy in d["bboxes"]
+                ]
+
+            out["bboxes"] = [BBox.from_xyxy(*points) for points in bb]
+
             if keypoints is not None:
                 out["bboxes"] = [
-                    BBox.from_xyxy(*points)
-                    for points, k in zip(d["bboxes"], l)
-                    if sum(k) > 0
+                    BBox.from_xyxy(*points) for points, k in zip(bb, l) if sum(k) > 0
                 ]
         if masks is not None:
             keep_masks = [d["masks"][i] for i in d["labels"]]
@@ -211,6 +225,20 @@ def filter_keypoints(tfms_kps, h, w, v):
     return tra_n
 
 
+def filter_boxes(xyxy, h, w):
+    x1, y1, x2, y2 = xyxy
+    if w >= h:
+        pad = (w - h) // 2
+        h1 = pad
+        h2 = w - pad
+        return (x1, max(y1, h1), x2, min(y2, h2))
+    else:
+        pad = (h - w) // 2
+        w1 = pad
+        w2 = h - pad
+        return (max(x1, w1), y1, min(x2, w2), y2)
+
+
 def py3round(number):
     """Unified rounding in all python versions."""
     if abs(round(number) - number) == 0.5:
@@ -223,8 +251,8 @@ def _func_max_size(height, width, max_size, func):
     scale = max_size / float(func(width, height))
 
     if scale != 1.0:
-        new_height, new_width = tuple(py3round(dim * scale) for dim in (height, width))
-    return new_height, new_width
+        height, width = tuple(py3round(dim * scale) for dim in (height, width))
+    return height, width
 
 
 def get_transform(tfms_list, t):
