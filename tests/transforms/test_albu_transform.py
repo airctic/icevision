@@ -1,6 +1,6 @@
 import pytest
 from icevision.all import *
-from icevision.tfms.albumentations.tfms import filter_keypoints
+from icevision.tfms.albumentations.tfms import filter_keypoints, filter_boxes
 
 
 @pytest.fixture
@@ -81,3 +81,12 @@ def test_filter_keypoints():
 
     assert len(tfms_kps) == len(tra_n)
     assert tra_n == [(0, 0, 0), (79, 119, 1), (0, 0, 0), (0, 0, 0), (70, 100, 2)]
+
+
+def test_filter_boxes():
+    inp = (52.17503641656451, 274.5014178489639, 123.51860681160832, 350.33471836373275)
+    out = (52.17503641656451, 274.5014178489639, 123.51860681160832, 320)
+    h, w = 256, 384
+
+    res = filter_boxes(inp, h, w)
+    assert out == res
