@@ -65,6 +65,8 @@ def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
         masks = {
             "predictions": {"mask_data": mask_data, "class_labels": class_id_to_label}
         }
+    else:
+        masks = None
 
     # Ground Truth
     if add_ground_truth:
