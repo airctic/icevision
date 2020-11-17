@@ -61,8 +61,19 @@ def test_keypoints_transform(coco_keypoints_parser):
 
 def test_filter_keypoints():
     tfms_kps, w, h, v = (
-        [(0, 0), (79, 119), (-30, 40), (100, 300), (70, 100)],
+        [(0, 0), (60, 119), (-30, 40), (100, 300), (30, 100)],
         80,
+        120,
+        [0, 1, 1, 1, 2],
+    )
+    tra_n = filter_keypoints(tfms_kps, h, w, v)
+
+    assert len(tfms_kps) == len(tra_n)
+    assert tra_n == [(0, 0, 0), (60, 119, 1), (0, 0, 0), (0, 0, 0), (30, 100, 2)]
+
+    tfms_kps, w, h, v = (
+        [(0, 0), (79, 119), (-30, 40), (100, 300), (70, 100)],
+        120,
         120,
         [0, 1, 1, 1, 2],
     )
