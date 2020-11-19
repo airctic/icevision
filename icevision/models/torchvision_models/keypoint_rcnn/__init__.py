@@ -5,14 +5,15 @@ from icevision.models.torchvision_models.keypoint_rcnn.dataloaders import *
 from icevision.models.torchvision_models.keypoint_rcnn.model import *
 
 from icevision.models.torchvision_models.keypoint_rcnn.prediction import *
-# from icevision.models.torchvision_models.faster_rcnn.show_results import *
+
+from icevision.models.torchvision_models.faster_rcnn.show_results import *
 
 
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies
 
 if SoftDependencies.fastai:
-   import icevision.models.torchvision_models.keypoint_rcnn.fastai
+    import icevision.models.torchvision_models.keypoint_rcnn.fastai
 
 # if SoftDependencies.pytorch_lightning:
 #    import icevision.models.torchvision_models.faster_rcnn.lightning

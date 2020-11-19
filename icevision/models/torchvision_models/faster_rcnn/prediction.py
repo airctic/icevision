@@ -4,6 +4,7 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.models.utils import _predict_dl
+from itertools import chain
 
 
 @torch.no_grad()
@@ -11,6 +12,7 @@ def predict(
     model: nn.Module,
     batch: Sequence[torch.Tensor],
     detection_threshold: float = 0.5,
+    keypoint_threshold: float = 0.0,
     device: Optional[torch.device] = None,
 ):
     model.eval()
@@ -19,7 +21,9 @@ def predict(
 
     raw_preds = model(*batch)
     return convert_raw_predictions(
-        raw_preds=raw_preds, detection_threshold=detection_threshold
+        raw_preds=raw_preds,
+        detection_threshold=detection_threshold,
+        keypoint_threshold=keypoint_threshold,
     )
 
 
@@ -38,14 +42,22 @@ def predict_dl(
     )
 
 
-def convert_raw_predictions(raw_preds, detection_threshold: float):
+def convert_raw_predictions(
+    raw_preds, detection_threshold: float, keypoint_threshold: float = 0.0
+):
     return [
-        convert_raw_prediction(raw_pred, detection_threshold=detection_threshold)
+        convert_raw_prediction(
+            raw_pred,
+            detection_threshold=detection_threshold,
+            keypoint_threshold=keypoint_threshold,
+        )
         for raw_pred in raw_preds
     ]
 
 
-def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
+def convert_raw_prediction(
+    raw_pred: dict, detection_threshold: float, keypoint_threshold: float = 0.0
+):
     above_threshold = raw_pred["scores"] >= detection_threshold
 
     labels = raw_pred["labels"][above_threshold]
@@ -61,9 +73,39 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         bbox = BBox.from_xyxy(*xyxy)
         bboxes.append(bbox)
 
-    return {
+    d = {
         "labels": labels,
         "scores": scores,
         "bboxes": bboxes,
         "above_threshold": above_threshold,
     }
+
+    if raw_pred.get("keypoints") is not None:
+        # above_threshold_kps = (
+        #     (raw_pred["keypoints_scores"] >= keypoint_threshold)
+        #     .unsqueeze(2)
+        #     .repeat(1, 1, 3)
+        # )
+        # zeroes = torch.zeros_like(raw_pred["keypoints"])
+        # kps = torch.where(above_threshold_kps == True, raw_pred["keypoints"], zeroes)
+
+        # zeroes = torch.zeros_like(raw_pred["keypoints_scores"])
+        # kps_scores = torch.where(
+        #     (raw_pred["keypoints_scores"] > 0.6) == True,
+        #     raw_pred["keypoints_scores"],
+        #     zeroes,
+        # )
+        kps = raw_pred["keypoints"][above_threshold]
+        keypoints = []
+        for k in kps:
+            k = k.cpu().numpy()
+            k = list(chain.from_iterable(k))
+            if sum(k) > 0:
+                keypoints.append(KeyPoints.from_xyv(k, []))
+
+        d["keypoints"] = keypoints
+        d["keypoints_scores"] = (
+            raw_pred["keypoints_scores"][above_threshold].detach().cpu().numpy()
+        )
+
+    return d
