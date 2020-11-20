@@ -1,8 +1,6 @@
-ARG CUDA_VERSION=10.1
-FROM nvidia/cuda:${CUDA_VERSION}-base
+FROM pytorch/pytorch:latest
 
-ARG PYTHON_VERSION=3.7
-ARG PYTORCH_VERSION=1.6
+ARG BUILD="dev"
 
 SHELL ["/bin/bash", "-c"]
 
@@ -21,39 +19,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /root/.cache && \
     rm -rf /var/lib/apt/lists/* && \
-    # get miniconda
-    curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    chmod +x ~/miniconda.sh && \
-    ~/miniconda.sh -b -p /opt/conda && \
-    rm ~/miniconda.sh && \
+    # config miniconda
     opt/conda/bin/conda config --set always_yes yes && \
-    opt/conda/bin/conda update -q conda
+    opt/conda/bin/conda update -q conda && \
+    pip install -U pip wheel setuptools
 
 # set conda path
 ENV PATH /opt/conda/bin:$PATH
 
-# create stable environment
-RUN conda create -n icevision-stable python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
-    source activate icevision-stable && \
-    pip install -U pip wheel setuptools && \
-    pip install icevision[all] && \
+RUN if [ $BUILD == "prod" ] ; then \
+        echo "Production Build" && pip install icevision[all] icedata \
+    fi
+
+RUN if [ $BUILD == "dev" ] ; then \
+        git clone https://github.com/airctic/icevision && \
+        git clone https://github.com/airctic/icedata \
+        echo "Development Build" && \
+        cd icevision && pip install ".[all]" && \
+        cd .. && cd icedata && pip install . \
+    fi
+
+RUN conda install -c conda-forge notebook && \
     conda clean -ya && \
-    conda info && \
-    conda list
+    echo '#!/bin/bash\njupyter notebook --ip=0.0.0.0 --port=8888 --allow-root --no-browser' >> run_jupyter.sh
 
-# create dev environment
-RUN conda create -n icevision-dev python=${PYTHON_VERSION} pytorch=${PYTORCH_VERSION} torchvision cudatoolkit=${CUDA_VERSION} -c pytorch && \
-    source activate icevision-dev && \
-    pip install -U pip wheel setuptools && \
-    pip install git+https://github.com/airctic/icevision.git@master --upgrade && \
-    conda clean -ya && \
-    conda info && \
-    conda list
-
-# default conda env
-ENV CONDA_DEFAULT_ENV icevision-stable
-
-# make sure we have 2 envs and icevision-stable is activated
-RUN conda init bash && conda env list
+RUN chmod u+x run_jupyter.sh && \
+    conda init bash && conda env list
 
 CMD ["/bin/bash"]
