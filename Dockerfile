@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # get miniconda
     curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod +x ~/miniconda.sh && \
-    ~/miniconda.sh -b -p /opt/conda && \
+    ~/miniconda.sh -b -u -p /opt/conda && \
     rm ~/miniconda.sh && \
     opt/conda/bin/conda config --set always_yes yes && \
     opt/conda/bin/conda update -q conda && \
@@ -40,7 +40,8 @@ RUN if [ $BUILD == "dev" ] ; then \
         git clone https://github.com/airctic/icedata \
         echo "Development Build" && \
         cd icevision && pip install ".[all]" && \
-        cd .. && cd icedata && pip install . \
+        cd .. && cd icedata && pip install . && \
+        rm -rf icedata icevision \
     fi
 
 RUN conda install -c conda-forge notebook && \
