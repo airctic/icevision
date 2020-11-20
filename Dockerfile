@@ -26,7 +26,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm ~/miniconda.sh && \
     /opt/conda/bin/conda config --set always_yes yes && \
     /opt/conda/bin/conda update -q conda && \
-    /opt/conda/bin/python -m pip install -U pip wheel setuptools
 
 # set conda path
 ENV PATH /opt/conda/bin:$PATH
