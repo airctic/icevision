@@ -31,11 +31,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # set conda path
 ENV PATH /miniconda/bin:$PATH
 
-RUN if [ $BUILD == "prod" ] ; then \
+RUN if [[ $BUILD == "prod" ]] ; then \
         echo "Production Build" && pip install icevision[all] icedata \
     fi
 
-RUN if [ $BUILD == "dev" ] ; then \
+RUN if [[ $BUILD == "dev" ]] ; then \
         git clone https://github.com/airctic/icevision && \
         git clone https://github.com/airctic/icedata \
         echo "Development Build" && \
