@@ -10,10 +10,12 @@ from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
 
 
 def remove_internal_model_transforms(model: GeneralizedRCNN):
-    def noop_normalize(image):
+    def noop_normalize(image: Tensor) -> Tensor:
         return image
 
-    def noop_resize(image, target):
+    def noop_resize(
+        image: Tensor, target: Optional[Dict[str, Tensor]]
+    ) -> Tuple[Tensor, Optional[Dict[str, Tensor]]]:
         return image, target
 
     model.transform.normalize = noop_normalize
