@@ -24,12 +24,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     chmod +x ~/miniconda.sh && \
     ~/miniconda.sh -b -u -p /miniconda && \
     rm ~/miniconda.sh && \
-    miniconda/bin/conda config --set always_yes yes && \
-    miniconda/bin/conda update -q conda && \
+    /miniconda/bin/conda config --set always_yes yes && \
+    /miniconda/bin/conda update -q conda && \
     pip install -U pip wheel setuptools
 
 # set conda path
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH /miniconda/bin:$PATH
 
 RUN if [ $BUILD == "prod" ] ; then \
         echo "Production Build" && pip install icevision[all] icedata \
