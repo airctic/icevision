@@ -36,11 +36,11 @@ RUN if [[ $BUILD == "prod" ]] ; then \
     fi
 
 RUN if [[ $BUILD == "dev" ]] ; then \
-        git clone https://github.com/airctic/icevision && \
-        git clone https://github.com/airctic/icedata \
-        echo "Development Build" && \
-        cd icevision && pip install ".[all]" && \
-        cd .. && cd icedata && pip install . && \
+        git clone https://github.com/airctic/icevision ; \
+        git clone https://github.com/airctic/icedata ; \
+        echo "Development Build" ; \
+        cd icevision && pip install ".[all]" ; \
+        cd .. && cd icedata && pip install . ; \
         rm -rf icedata icevision ; \
     fi
 
