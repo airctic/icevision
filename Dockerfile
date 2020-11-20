@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV PATH /miniconda/bin:$PATH
 
 RUN if [[ $BUILD == "prod" ]] ; then \
-        echo "Production Build" && pip install icevision[all] icedata \
+        echo "Production Build" && pip install icevision[all] icedata ; \
     fi
 
 RUN if [[ $BUILD == "dev" ]] ; then \
@@ -41,7 +41,7 @@ RUN if [[ $BUILD == "dev" ]] ; then \
         echo "Development Build" && \
         cd icevision && pip install ".[all]" && \
         cd .. && cd icedata && pip install . && \
-        rm -rf icedata icevision \
+        rm -rf icedata icevision ; \
     fi
 
 RUN conda install -c conda-forge notebook && \
