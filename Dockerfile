@@ -22,10 +22,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # get miniconda
     curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     chmod +x ~/miniconda.sh && \
-    ~/miniconda.sh -b -u -p /opt/conda && \
+    ~/miniconda.sh -b -u -p /miniconda && \
     rm ~/miniconda.sh && \
-    opt/conda/bin/conda config --set always_yes yes && \
-    opt/conda/bin/conda update -q conda && \
+    miniconda/bin/conda config --set always_yes yes && \
+    miniconda/bin/conda update -q conda && \
     pip install -U pip wheel setuptools
 
 # set conda path
