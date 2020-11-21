@@ -117,6 +117,10 @@ class Adapter(Transform):
         tfms_list = self.tfms.transforms.transforms
 
         if keypoints is not None:
+            assert (
+                get_transform(tfms_list, "OneOrOther") is None
+            ), " You must pass `crop_fn=None` to `aug_tfms` in case your dataset contains keypoints"
+
             k = [xy for o in keypoints for xy in o.xy]
             c = [label for o in keypoints for label in o.labels]
             v = [visible for o in keypoints for visible in o.visible]
@@ -171,6 +175,8 @@ class Adapter(Transform):
             ]
             assert len(l) == len(keypoints)
             cl = keypoints[0].labels
+            # `if sum(k) > 0` prevents empty `KeyPoints` objects to be instantiated.
+            # E.g. `k = [0, 0, 0, 0, 0, 0]` is a flattened list of 2 points `(0, 0, 0)` and `(0, 0, 0)`. We don't want a `KeyPoints` object to be created on top of this list.
             out["keypoints"] = [KeyPoints.from_xyv(k, cl) for k in l if sum(k) > 0]
         if labels is not None:
             out["labels"] = [labels[i] for i in d["labels"]]

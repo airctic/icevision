@@ -4,7 +4,6 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.models.utils import _predict_dl
-from itertools import chain
 
 
 @torch.no_grad()
@@ -65,25 +64,9 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         bbox = BBox.from_xyxy(*xyxy)
         bboxes.append(bbox)
 
-    d = {
+    return {
         "labels": labels,
         "scores": scores,
         "bboxes": bboxes,
         "above_threshold": above_threshold,
     }
-
-    if raw_pred.get("keypoints") is not None:
-        kps = raw_pred["keypoints"][above_threshold]
-        keypoints = []
-        for k in kps:
-            k = k.cpu().numpy()
-            k = list(chain.from_iterable(k))
-            if sum(k) > 0:
-                keypoints.append(KeyPoints.from_xyv(k, []))
-
-        d["keypoints"] = keypoints
-        d["keypoints_scores"] = (
-            raw_pred["keypoints_scores"][above_threshold].detach().cpu().numpy()
-        )
-
-    return d

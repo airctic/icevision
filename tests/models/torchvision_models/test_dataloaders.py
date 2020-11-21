@@ -203,7 +203,9 @@ def test_keypoints_rcnn_dataloader(coco_keypoints_parser):
         [*tfms.A.aug_tfms(size=384, presize=512, crop_fn=None), tfms.A.Normalize()]
     )
     train_ds = Dataset(records, tfm)
-    train_dl = faster_rcnn.train_dl(train_ds, batch_size=2, num_workers=1, shuffle=True)
+    train_dl = keypoint_rcnn.train_dl(
+        train_ds, batch_size=2, num_workers=1, shuffle=True
+    )
     (x, y), recs = first(train_dl)
 
     assert len(x) == len(y) == 2

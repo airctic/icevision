@@ -247,6 +247,7 @@ def draw_keypoints(
         min_x, max_x = x[x > 0].min(), x[x > 0].max()
         min_y, max_y = y[y > 0].min(), y[y > 0].max()
 
+        # Logic taken from the OCHuman repo: https://github.com/liruilong940607/OCHumanApi/blob/958aa2046ba4f5760fcc94cb458da8fe72cedf4f/ochumanApi/vis.py#L92
         Rfactor = math.sqrt((max_x - min_x) * (max_y - min_y)) / math.sqrt(
             img.shape[0] * img.shape[1]
         )
