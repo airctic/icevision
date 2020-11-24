@@ -157,6 +157,7 @@ class Adapter(Transform):
 
         out = {"img": d["image"]}
         out["height"], out["width"], _ = out["img"].shape
+        l = None
 
         # We use the values in d['labels'] to get what was removed by the transform
         if keypoints is not None:
@@ -178,12 +179,11 @@ class Adapter(Transform):
             # `if sum(k) > 0` prevents empty `KeyPoints` objects to be instantiated.
             # E.g. `k = [0, 0, 0, 0, 0, 0]` is a flattened list of 2 points `(0, 0, 0)` and `(0, 0, 0)`. We don't want a `KeyPoints` object to be created on top of this list.
             out["keypoints"] = [KeyPoints.from_xyv(k, cl) for k in l if sum(k) > 0]
+
+        labels_ = filter_attribute(d["labels"], l=l)
         if labels is not None:
-            out["labels"] = [labels[i] for i in d["labels"]]
-            if keypoints is not None:
-                out["labels"] = [
-                    labels[i] for i, k in zip(d["labels"], l) if sum(k) > 0
-                ]
+            out["labels"] = [labels[i] for i in labels_]
+
         if bboxes is not None:
             if get_transform(tfms_list, "Pad") is not None:
                 bb = [
@@ -195,26 +195,23 @@ class Adapter(Transform):
                     for xyxy in d["bboxes"]
                 ]
 
+            bb = filter_attribute(bb, l=l)
             out["bboxes"] = [BBox.from_xyxy(*points) for points in bb]
 
-            if keypoints is not None:
-                out["bboxes"] = [
-                    BBox.from_xyxy(*points) for points, k in zip(bb, l) if sum(k) > 0
-                ]
         if masks is not None:
-            keep_masks = [d["masks"][i] for i in d["labels"]]
-            if keypoints is not None:
-                keep_masks = [
-                    d["masks"][i] for i, k in zip(d["labels"], l) if sum(k) > 0
-                ]
+            keep_masks = [d["masks"][i] for i in labels_]
             out["masks"] = MaskArray(np.array(keep_masks))
         if iscrowds is not None:
-            out["iscrowds"] = [iscrowds[i] for i in d["labels"]]
-            if keypoints is not None:
-                out["iscrowds"] = [
-                    iscrowds[i] for i, k in zip(d["labels"], l) if sum(k) > 0
-                ]
+            out["iscrowds"] = [iscrowds[i] for i in labels_]
+
         return out
+
+
+def filter_attribute(o, l=None):
+    if l is None:
+        return o
+    else:
+        return [i for i, k in zip(o, l) if sum(k) > 0]
 
 
 def filter_keypoints(tfms_kps, h, w, v):
