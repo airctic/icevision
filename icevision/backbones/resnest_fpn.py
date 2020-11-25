@@ -13,7 +13,7 @@ from torchvision.models.detection.backbone_utils import (
     resnet_fpn_backbone,
     BackboneWithFPN,
 )
-import resnest
+import resnest.torch
 
 
 # ResNeSt Backbones
