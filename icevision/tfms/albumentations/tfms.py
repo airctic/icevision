@@ -88,6 +88,7 @@ class Adapter(Transform):
     """
 
     def __init__(self, tfms: Sequence[A.BasicTransform]):
+        self.tfms_list = tfms
         self.bbox_params = A.BboxParams(format="pascal_voc", label_fields=["labels"])
         self.keypoint_params = A.KeypointParams(
             format="xy", remove_invisible=False, label_fields=["keypoints_labels"]
@@ -108,18 +109,19 @@ class Adapter(Transform):
         keypoints: List[KeyPoints] = None,
         **kwargs
     ):
-        # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes is removed
+        # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes are removed
         # TODO: Same should be done if a masks is completely removed from the image (if bboxes is not given)
         params = {"image": img}
-        params["labels"] = list(range_of(labels)) if labels is not None else []
+        params["labels"] = list(range(len(labels)))
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
-
         tfms_list = self.tfms.transforms.transforms
 
         if keypoints is not None:
-            assert (
-                get_transform(tfms_list, "OneOrOther") is None
-            ), " You must pass `crop_fn=None` to `aug_tfms` in case your dataset contains keypoints"
+            flat_tfms_list_ = _flatten_tfms(self.tfms_list)
+            if get_transform(flat_tfms_list_, "RandomSizedBBoxSafeCrop") is not None:
+                raise RuntimeError(
+                    "RandomSizedBBoxSafeCrop is not supported for keypoints"
+                )
 
             k = [xy for o in keypoints for xy in o.xy]
             c = [label for o in keypoints for label in o.labels]
@@ -127,23 +129,6 @@ class Adapter(Transform):
             assert len(k) == len(c) == len(v)
             params["keypoints"] = k
             params["keypoints_labels"] = c
-
-            if get_transform(tfms_list, "Pad") is not None:
-                height_size, width_size = img.shape[:2]
-
-                t = get_transform(tfms_list, "SmallestMaxSize")
-                if t is not None:
-                    presize = t.max_size
-                    height_size, width_size = _func_max_size(
-                        height_size, width_size, presize, min
-                    )
-
-                t = get_transform(tfms_list, "LongestMaxSize")
-                if t is not None:
-                    size = t.max_size
-                    height_size, width_size = _func_max_size(
-                        height_size, width_size, size, max
-                    )
 
         if masks is not None:
             params["masks"] = list(masks.data)
@@ -155,66 +140,56 @@ class Adapter(Transform):
 
         d = self.tfms(**params)
 
-        out = {"img": d["image"]}
-        out["height"], out["width"], _ = out["img"].shape
-        l = None
-
+        img_h, img_w = _get_size_without_padding(self.tfms_list, img, d["image"])
         # We use the values in d['labels'] to get what was removed by the transform
-        if keypoints is not None:
-            tfms_kps = d["keypoints"]
-            # remove_invisible=False, therefore all points getting in are also getting out
-            assert len(tfms_kps) == len(k)
-            if get_transform(tfms_list, "Pad") is not None:
-                tfms_kps_n = filter_keypoints(tfms_kps, height_size, width_size, v)
-            else:
-                tfms_kps_n = filter_keypoints(tfms_kps, out["height"], out["width"], v)
+        keep_idxs = np.zeros(len(labels), dtype=bool)
+        keep_idxs[d["labels"]] = True
 
-            l = list(chain.from_iterable(tfms_kps_n))
-            l = [
-                l[i : i + len(l) // len(keypoints)]
-                for i in range(0, len(l), len(l) // len(keypoints))
-            ]
-            assert len(l) == len(keypoints)
-            cl = keypoints[0].labels
-            # `if sum(k) > 0` prevents empty `KeyPoints` objects to be instantiated.
-            # E.g. `k = [0, 0, 0, 0, 0, 0]` is a flattened list of 2 points `(0, 0, 0)` and `(0, 0, 0)`. We don't want a `KeyPoints` object to be created on top of this list.
-            out["keypoints"] = [KeyPoints.from_xyv(k, cl) for k in l if sum(k) > 0]
-
-        labels_ = filter_attribute(d["labels"], l=l)
-        if labels is not None:
-            out["labels"] = [labels[i] for i in labels_]
+        out = {"img": d["image"]}
+        out["height"], out["width"] = img_h, img_w
+        out["labels"] = _filter_attribute(labels, keep_idxs)
 
         if bboxes is not None:
-            if get_transform(tfms_list, "Pad") is not None:
-                bb = [
-                    filter_boxes(xyxy, height_size, width_size) for xyxy in d["bboxes"]
-                ]
-            else:
-                bb = [
-                    filter_boxes(xyxy, out["height"], out["width"])
-                    for xyxy in d["bboxes"]
-                ]
-
-            bb = filter_attribute(bb, l=l)
-            out["bboxes"] = [BBox.from_xyxy(*points) for points in bb]
+            bb = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
+            out["bboxes"] = [BBox.from_xyxy(*xyxy) for xyxy in bb]
 
         if masks is not None:
-            keep_masks = [d["masks"][i] for i in labels_]
+            keep_masks = _filter_attribute(d["masks"], keep_idxs)
             out["masks"] = MaskArray(np.array(keep_masks))
+
+        if keypoints is not None:
+            # remove_invisible=False, therefore all points getting in are also getting out
+            assert len(d["keypoints"]) == len(k)
+
+            tfmed_kpts = _remove_outside_keypoints(d["keypoints"], img_h, img_w, v)
+            # flatten list of keypoints
+            flat_kpts = list(chain.from_iterable(tfmed_kpts))
+            # group keypoints from same instance
+            group_kpts = [
+                flat_kpts[i : i + len(flat_kpts) // len(keypoints)]
+                for i in range(0, len(flat_kpts), len(flat_kpts) // len(keypoints))
+            ]
+            assert len(group_kpts) == len(keypoints)
+
+            kpts = [
+                KeyPoints.from_xyv(group_kpt, original_kpt.labels)
+                for group_kpt, original_kpt in zip(group_kpts, keypoints)
+            ]
+            out["keypoints"] = _filter_attribute(kpts, keep_idxs)
+
         if iscrowds is not None:
-            out["iscrowds"] = [iscrowds[i] for i in labels_]
+            out["iscrowds"] = _filter_attribute(iscrowds, keep_idxs)
 
         return out
 
 
-def filter_attribute(o, l=None):
-    if l is None:
-        return o
-    else:
-        return [i for i, k in zip(o, l) if sum(k) > 0]
+def _filter_attribute(v: list, keep_idxs: List[bool]):
+    assert len(v) == len(keep_idxs)
+    return [o for o, keep in zip(v, keep_idxs) if keep]
 
 
-def filter_keypoints(tfms_kps, h, w, v):
+def _remove_outside_keypoints(tfms_kps, h, w, v):
+    """Remove keypoints that are outside image dimensions."""
     v_n = v.copy()
     tra_n = tfms_kps.copy()
     for i in range(len(tfms_kps)):
@@ -228,7 +203,8 @@ def filter_keypoints(tfms_kps, h, w, v):
     return tra_n
 
 
-def filter_boxes(xyxy, h, w):
+def _clip_bboxes(xyxy, h, w):
+    """Clip bboxes coordinates that are outside image dimensions."""
     x1, y1, x2, y2 = xyxy
     if w >= h:
         pad = (w - h) // 2
@@ -240,6 +216,27 @@ def filter_boxes(xyxy, h, w):
         w1 = pad
         w2 = h - pad
         return (max(x1, w1), y1, min(x2, w2), y2)
+
+
+def _get_size_without_padding(
+    tfms_list, before_tfm_img, after_tfm_img
+) -> Tuple[int, int]:
+    height, width, _ = after_tfm_img.shape
+
+    if get_transform(tfms_list, "Pad") is not None:
+        after_pad_h, after_pad_w, _ = before_tfm_img.shape
+
+        t = get_transform(tfms_list, "SmallestMaxSize")
+        if t is not None:
+            presize = t.max_size
+            height, width = _func_max_size(after_pad_h, after_pad_w, presize, min)
+
+        t = get_transform(tfms_list, "LongestMaxSize")
+        if t is not None:
+            size = t.max_size
+            height, width = _func_max_size(after_pad_h, after_pad_w, size, max)
+
+    return height, width
 
 
 def py3round(number):
@@ -277,3 +274,21 @@ def _check_kps_coords(p, h, w):
         w1 = pad
         w2 = h - pad
         return int((x <= w2) and (x >= w1) and (y >= 0) and (y <= h))
+
+
+def _is_iter(o):
+    try:
+        i = iter(o)
+        return True
+    except:
+        return False
+
+
+def _flatten_tfms(t):
+    flat = []
+    for o in t:
+        if _is_iter(o):
+            flat += [i for i in o]
+        else:
+            flat.append(o)
+    return flat
