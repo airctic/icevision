@@ -13,7 +13,7 @@ from torchvision.models.detection.backbone_utils import (
     resnet_fpn_backbone,
     BackboneWithFPN,
 )
-from resnest.torch import *
+import resnest
 
 
 # ResNeSt Backbones
@@ -105,16 +105,16 @@ def _resnest_fpn(name, pretrained: bool = True, **kwargs):
 
 
 def resnest50(pretrained: bool = True, **kwargs):
-    return _resnest_fpn(resnest50, pretrained=pretrained, **kwargs)
+    return _resnest_fpn(resnest.torch.resnest50, pretrained=pretrained, **kwargs)
 
 
 def resnest101(pretrained: bool = True, **kwargs):
-    return _resnest_fpn(resnest101, pretrained=pretrained, **kwargs)
+    return _resnest_fpn(resnest.torch.resnest101, pretrained=pretrained, **kwargs)
 
 
 def resnest200(pretrained: bool = True, **kwargs):
-    return _resnest_fpn(resnest200, pretrained=pretrained, **kwargs)
+    return _resnest_fpn(resnest.torch.resnest200, pretrained=pretrained, **kwargs)
 
 
 def resnest269(pretrained: bool = True, **kwargs):
-    return _resnest_fpn(resnest269, pretrained=pretrained, **kwargs)
+    return _resnest_fpn(resnest.torch.resnest269, pretrained=pretrained, **kwargs)
