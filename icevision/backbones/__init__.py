@@ -4,4 +4,3 @@ from icevision.backbones.mobilenet import *
 
 import icevision.backbones.resnet_fpn
 import icevision.backbones.resnest_fpn
-
