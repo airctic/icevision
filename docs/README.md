@@ -7,5 +7,5 @@ Our documentation uses extended Markdown, as implemented by [MkDocs](http://mkdo
 
 - Locally install the package as described [here](https://airctic.com/install/#option-2-installing-an-editable-package-locally-for-developers)
 - From the root directory, `cd` into the `docs/` folder and run:
-    - `poetry run python autogen.py`
-    - `poetry run mkdocs serve`    # Starts a local webserver:  [localhost:8000](http://localhost:8000)
+    - `python autogen.py`
+    - `mkdocs serve`    # Starts a local webserver:  [localhost:8000](http://localhost:8000)
