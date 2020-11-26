@@ -21,6 +21,7 @@ class _SoftDependencies:
         self.albumentations = soft_import("albumentations")
         self.effdet = soft_import("effdet")
         self.wandb = soft_import("wandb")
+        self.resnest = soft_import("resnest")
 
     def check(self) -> Dict[str, bool]:
         return self.__dict__.copy()

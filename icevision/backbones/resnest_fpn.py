@@ -13,20 +13,24 @@ from torchvision.models.detection.backbone_utils import (
     resnet_fpn_backbone,
     BackboneWithFPN,
 )
-import resnest.torch
+
+from icevision.soft_dependencies import SoftDependencies
+
+if SoftDependencies.resnest:
+    import resnest.torch
 
 
-# ResNeSt Backbones
 class Identity(nn.Module):
     def __init__(self):
-        super(Identity, self).__init__()
+        super().__init__()
 
     def forward(self, x):
         return x
 
 
+# TODO: resnest_name?
 def resnest_fpn_backbone(
-    resnest_name,
+    backbone_fn,
     pretrained,
     # norm_layer=misc_nn_ops.FrozenBatchNorm2d,
     trainable_layers=3,
@@ -34,7 +38,7 @@ def resnest_fpn_backbone(
     extra_blocks=None,
 ):
     """
-    Constructs a specified ResNet backbone with FPN on top. Freezes the specified number of layers in the backbone.
+    Constructs a specified ResNest backbone with FPN on top. Freezes the specified number of layers in the backbone.
 
     Examples::
 
@@ -61,8 +65,7 @@ def resnest_fpn_backbone(
         trainable_layers (int): number of trainable (not frozen) resnet layers starting from final block.
             Valid values are between 0 and 5, with 5 meaning all backbone layers are trainable.
     """
-    backbone = resnest_name(pretrained=pretrained)
-    # backbone = resnest50(pretrained=pretrained)
+    backbone = backbone_fn(pretrained=pretrained)
 
     backbone.fc = Identity()
     backbone.avgpool = Identity()
@@ -98,7 +101,7 @@ def resnest_fpn_backbone(
 
 
 def _resnest_fpn(name, pretrained: bool = True, **kwargs):
-    model = resnest_fpn_backbone(resnest_name=name, pretrained=pretrained, **kwargs)
+    model = resnest_fpn_backbone(backbone_fn=name, pretrained=pretrained, **kwargs)
     patch_param_groups(model)
 
     return model
