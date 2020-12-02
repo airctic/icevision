@@ -124,7 +124,7 @@ class Adapter(Transform):
                 )
 
             k = [xy for o in keypoints for xy in o.xy]
-            c = [label for o in keypoints for label in o.labels]
+            c = [label for o in keypoints for label in o.metadata.labels]
             v = [visible for o in keypoints for visible in o.visible]
             assert len(k) == len(c) == len(v)
             params["keypoints"] = k
@@ -172,7 +172,7 @@ class Adapter(Transform):
             assert len(group_kpts) == len(keypoints)
 
             kpts = [
-                KeyPoints.from_xyv(group_kpt, original_kpt.labels)
+                KeyPoints.from_xyv(group_kpt, original_kpt.metadata)
                 for group_kpt, original_kpt in zip(group_kpts, keypoints)
             ]
             out["keypoints"] = _filter_attribute(kpts, keep_idxs)

@@ -232,6 +232,30 @@ def keypoints_img_128372():
     ]
 
 
+class OCHumanKeypointsMetadata(KeypointsMetadata):
+    labels = (
+        "right_shoulder",
+        "right_elbow",
+        "right_wrist",
+        "left_shoulder",
+        "left_elbow",
+        "left_wrist",
+        "right_hip",
+        "right_knee",
+        "right_ankle",
+        "left_hip",
+        "left_knee",
+        "left_ankle",
+        "head",
+        "neck",
+        "right_ear",
+        "left_ear",
+        "nose",
+        "right_eye",
+        "left_eye",
+    )
+
+
 @pytest.fixture(scope="module")
 def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
     class OCHumanParser(
@@ -244,27 +268,6 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def __init__(self, annotations_filepath, img_dir):
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
-            self._LABELS = [
-                "right_shoulder",
-                "right_elbow",
-                "right_wrist",
-                "left_shoulder",
-                "left_elbow",
-                "left_wrist",
-                "right_hip",
-                "right_knee",
-                "right_ankle",
-                "left_hip",
-                "left_knee",
-                "left_ankle",
-                "head",
-                "neck",
-                "right_ear",
-                "left_ear",
-                "nose",
-                "right_eye",
-                "left_eye",
-            ]
 
         def __iter__(self):
             yield from self.annotations_dict["images"]
@@ -280,7 +283,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
 
         def keypoints(self, o):
             return [
-                KeyPoints.from_xyv(kps["keypoints"], self._LABELS)
+                KeyPoints.from_xyv(kps["keypoints"], OCHumanKeypointsMetadata)
                 for kps in o["annotations"]
                 if kps["keypoints"] is not None
             ]

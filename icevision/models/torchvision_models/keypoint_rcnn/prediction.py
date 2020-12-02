@@ -66,7 +66,7 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         # `if sum(k) > 0` prevents empty `KeyPoints` objects to be instantiated.
         # E.g. `k = [0, 0, 0, 0, 0, 0]` is a flattened list of 2 points `(0, 0, 0)` and `(0, 0, 0)`. We don't want a `KeyPoints` object to be created on top of this list.
         if sum(k) > 0:
-            keypoints.append(KeyPoints.from_xyv(k, []))
+            keypoints.append(KeyPoints.from_xyv(k, None))
 
     preds["keypoints"] = keypoints
     preds["keypoints_scores"] = (
