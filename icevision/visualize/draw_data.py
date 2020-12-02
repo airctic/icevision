@@ -243,23 +243,17 @@ def draw_keypoints(
     #             color=color,
     #             thickness=3,
     #         )
-    if np.count_nonzero(y) > 0 and np.count_nonzero(x) > 0:
-        min_x, max_x = x[x > 0].min(), x[x > 0].max()
-        min_y, max_y = y[y > 0].min(), y[y > 0].max()
 
-        # Logic taken from the OCHuman repo: https://github.com/liruilong940607/OCHumanApi/blob/958aa2046ba4f5760fcc94cb458da8fe72cedf4f/ochumanApi/vis.py#L92
-        Rfactor = math.sqrt((max_x - min_x) * (max_y - min_y)) / math.sqrt(
-            img.shape[0] * img.shape[1]
-        )
-        Rpoint = int(min(8, max(Rfactor * 25, 5)))
-    else:
-        Rpoint = 3
+    img_h, img_w, _ = img.shape
+    img_area = img_h * img_w
+    point_radius = int(0.01867599 * (img_area ** 0.4422045))
+    point_radius = max(point_radius, 1)
 
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
         cv2.circle(
             img,
             (int(round(x_c)), int(round(y_c))),
-            radius=Rpoint,
+            radius=point_radius,
             color=color,
             thickness=-1,
         )
