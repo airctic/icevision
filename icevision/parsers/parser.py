@@ -106,7 +106,7 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
-        
+
         # Hack to define the class of the mixed_record in the local namespace. This is required for pickeling.
         Record = self.record_class()
 
