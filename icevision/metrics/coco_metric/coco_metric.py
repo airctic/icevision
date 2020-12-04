@@ -57,9 +57,22 @@ class COCOMetric(Metric):
 
         with CaptureStdout(propagate_stdout=self.print_summary):
             coco_eval.summarize()
-        # TODO: all results
-        mAP = coco_eval.stats[0]
-        logs = {"mAP": mAP}
+
+        stats = coco_eval.stats
+        logs = {
+            "AP (IoU=0.50:0.95) area=all": stats[0],
+            "AP (IoU=0.50) area=all": stats[1],
+            "AP (IoU=0.75) area=all": stats[2],
+            "AP (IoU=0.50:0.95) area=small": stats[3],
+            "AP (IoU=0.50:0.95) area=medium": stats[4],
+            "AP (IoU=0.50:0.95) area=large": stats[5],
+            "AR (IoU=0.50:0.95) area=all maxDets=1": stats[6],
+            "AR (IoU=0.50:0.95) area=all maxDets=10": stats[7],
+            "AR (IoU=0.50:0.95) area=all maxDets=100": stats[8],
+            "AR (IoU=0.50:0.95) area=small maxDets=100": stats[9],
+            "AR (IoU=0.50:0.95) area=medium maxDets=100": stats[10],
+            "AR (IoU=0.50:0.95) area=large maxDets=100": stats[11],
+        }
 
         self._reset()
         return logs
