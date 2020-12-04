@@ -27,11 +27,10 @@ def show_img(img, ax=None, show: bool = False, **kwargs):
 
 
 def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
-    figsize = figsize or (12 * len(fs) / ncols, 12)
     nrows = math.ceil(len(fs) / ncols)
+    figsize = (12 * ncols, 12 * nrows)
 
     fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, **kwargs)
-
     axs = np.asarray(axs)
     for f, ax in zip(fs, axs.flatten()):
         f(ax=ax)
