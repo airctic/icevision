@@ -150,7 +150,9 @@ class Adapter(Transform):
         out["labels"] = _filter_attribute(labels, keep_idxs)
 
         if bboxes is not None:
-            bb = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
+            # TODO: quickfix from 576
+            # bb = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
+            bb = [xyxy for xyxy in d["bboxes"]]
             out["bboxes"] = [BBox.from_xyxy(*xyxy) for xyxy in bb]
 
         if masks is not None:
