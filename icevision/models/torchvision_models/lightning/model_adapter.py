@@ -24,9 +24,9 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         preds = self(xb, yb)
 
         loss = loss_fn(preds, yb)
-        log = {"train/loss": loss}
+        self.log("train_loss", loss)
 
-        return {"loss": loss, "log": log}
+        return loss
 
     def validation_step(self, batch, batch_idx):
         (xb, yb), records = batch
@@ -41,10 +41,7 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
             preds = self.convert_raw_predictions(raw_preds=raw_preds)
             self.accumulate_metrics(records=records, preds=preds)
 
-        return {"valid/loss": loss}
+        self.log("val_loss", loss)
 
     def validation_epoch_end(self, outs):
-        loss_log = {k: torch.stack(v).mean() for k, v in mergeds(outs).items()}
-        metrics_log = self.finalize_metrics()
-        log = {**loss_log, **metrics_log}
-        return {"val_loss": log["valid/loss"], "log": log}
+        self.finalize_metrics()
