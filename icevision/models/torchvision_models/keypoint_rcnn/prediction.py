@@ -1,9 +1,13 @@
 __all__ = ["predict", "predict_dl", "convert_raw_prediction", "convert_raw_predictions"]
 
+from itertools import chain
 from icevision.imports import *
-from icevision.utils import *
 from icevision.core import *
+from icevision.utils import *
 from icevision.models.utils import _predict_dl
+from icevision.models.torchvision_models.faster_rcnn.prediction import (
+    convert_raw_prediction as faster_convert_raw_prediction,
+)
 
 
 @torch.no_grad()
@@ -49,24 +53,24 @@ def convert_raw_predictions(raw_preds, detection_threshold: float):
 
 
 def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
-    above_threshold = raw_pred["scores"] >= detection_threshold
+    preds = faster_convert_raw_prediction(
+        raw_pred=raw_pred, detection_threshold=detection_threshold
+    )
 
-    labels = raw_pred["labels"][above_threshold]
-    labels = labels.detach().cpu().numpy()
+    above_threshold = preds["above_threshold"]
+    kps = raw_pred["keypoints"][above_threshold]
+    keypoints = []
+    for k in kps:
+        k = k.cpu().numpy()
+        k = list(chain.from_iterable(k))
+        # `if sum(k) > 0` prevents empty `KeyPoints` objects to be instantiated.
+        # E.g. `k = [0, 0, 0, 0, 0, 0]` is a flattened list of 2 points `(0, 0, 0)` and `(0, 0, 0)`. We don't want a `KeyPoints` object to be created on top of this list.
+        if sum(k) > 0:
+            keypoints.append(KeyPoints.from_xyv(k, None))
 
-    scores = raw_pred["scores"][above_threshold]
-    scores = scores.detach().cpu().numpy()
+    preds["keypoints"] = keypoints
+    preds["keypoints_scores"] = (
+        raw_pred["keypoints_scores"][above_threshold].detach().cpu().numpy()
+    )
 
-    boxes = raw_pred["boxes"][above_threshold]
-    bboxes = []
-    for box_tensor in boxes:
-        xyxy = box_tensor.cpu().numpy()
-        bbox = BBox.from_xyxy(*xyxy)
-        bboxes.append(bbox)
-
-    return {
-        "labels": labels,
-        "scores": scores,
-        "bboxes": bboxes,
-        "above_threshold": above_threshold,
-    }
+    return preds

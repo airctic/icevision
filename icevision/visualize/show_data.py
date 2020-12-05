@@ -25,6 +25,7 @@ def show_sample(
     display_keypoints: bool = True,
     show: bool = True,
     ax: plt.Axes = None,
+    figsize: Tuple[int, int] = None,
 ) -> None:
     img = draw_sample(
         sample=sample,
@@ -35,7 +36,7 @@ def show_sample(
         display_mask=display_mask,
         display_keypoints=display_keypoints,
     )
-    show_img(img=img, ax=ax, show=show)
+    show_img(img=img, ax=ax, show=show, figsize=figsize)
 
 
 def show_record(
@@ -47,6 +48,7 @@ def show_record(
     display_keypoints: bool = True,
     ax: plt.Axes = None,
     show: bool = False,
+    figsize: Tuple[int, int] = None,
 ) -> None:
     img = draw_record(
         record=record,
@@ -56,7 +58,7 @@ def show_record(
         display_mask=display_mask,
         display_keypoints=display_keypoints,
     )
-    show_img(img=img, ax=ax, show=show)
+    show_img(img=img, ax=ax, show=show, figsize=figsize)
 
 
 def show_pred(

@@ -36,6 +36,7 @@ def draw_sample(
         sample.get("keypoints", []),
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
+        color = tuple(color.astype(int).tolist())
 
         if display_mask and mask is not None:
             img = draw_mask(img=img, mask=mask, color=color)
@@ -193,9 +194,9 @@ def draw_bbox(
                 img,
                 points[i * 3 + j],
                 points[i * 3 + j + 1],
-                color,
-                thickness,
-                cv2.LINE_AA,
+                color=color,
+                thickness=thickness,
+                lineType=cv2.LINE_AA,
             )
 
     for i in range(4):
@@ -203,9 +204,9 @@ def draw_bbox(
             img,
             points[i * 3 + 2],
             points[(i * 3 + 3) % 12],
-            color,
-            1,
-            cv2.LINE_4,
+            color=color,
+            thickness=1,
+            lineType=cv2.LINE_4,
         )
 
     return img
@@ -232,19 +233,34 @@ def draw_keypoints(
     kps: KeyPoints,
     color: Tuple[int, int, int],
 ):
-    x, y, v, sks = kps.x, kps.y, kps.visible, kps.human_conns
+    x, y, v = kps.x, kps.y, kps.visible
 
-    # for sk in sks:
-    #     if np.all(v[sk] > 0):
-    #         cv2.line(
-    #             img,
-    #             (x[sk][0], y[sk][0]),
-    #             (x[sk][1], y[sk][1]),
-    #             color=color,
-    #             thickness=3,
-    #         )
+    # calculate scaling for points and connections
+    img_h, img_w, _ = img.shape
+    img_area = img_h * img_w
+    dynamic_size = int(0.01867599 * (img_area ** 0.4422045))
+    dynamic_size = max(dynamic_size, 1)
 
+    # draw connections
+    if kps.metadata is not None and kps.metadata.connections is not None:
+        for connection in kps.metadata.connections:
+            if v[connection.p1] > 0 and v[connection.p2] > 0:
+                cv2.line(
+                    img,
+                    (int(x[connection.p1]), int(y[connection.p1])),
+                    (int(x[connection.p2]), int(y[connection.p2])),
+                    color=connection.color,
+                    thickness=dynamic_size,
+                )
+
+    # draw points
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
-        cv2.circle(img, (x_c, y_c), radius=5, color=color, thickness=-1)
+        cv2.circle(
+            img,
+            (int(round(x_c)), int(round(y_c))),
+            radius=dynamic_size,
+            color=color,
+            thickness=-1,
+        )
 
     return img

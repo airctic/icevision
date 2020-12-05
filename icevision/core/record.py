@@ -27,6 +27,8 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
         success_dict = self._autofix()
         success_list = np.array(list(success_dict.values()))
+        if len(success_list) == 0:
+            return success_dict
         keep_mask = reduce(np.logical_and, success_list)
         discard_idxs = np.where(keep_mask == False)[0]
 

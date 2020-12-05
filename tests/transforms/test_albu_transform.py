@@ -1,5 +1,6 @@
 import pytest
 from icevision.all import *
+from icevision.tfms.albumentations.tfms import _remove_outside_keypoints, _clip_bboxes
 
 
 @pytest.fixture
@@ -51,6 +52,50 @@ def test_keypoints_transform(coco_keypoints_parser):
 
     d, t = ds[0], tfm_ds[0]
     assert "keypoints" in tfm.tfms.processors.keys()
-    assert "bboxes" not in tfm.tfms.processors.keys()
-    assert len(d["keypoints"]) == 9
-    assert len(t["keypoints"]) == 1
+    assert "bboxes" in tfm.tfms.processors.keys()
+    assert len(d["keypoints"]) == 3
+    assert len(t["keypoints"]) == 3
+    assert set([c for c in t["keypoints"][0].visible]) == {0.0, 1.0, 2.0}
+    assert set([c for c in d["keypoints"][0].visible]) == {0, 1, 2}
+
+
+def test_keypoints_transform_crop_error(coco_keypoints_parser):
+    records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
+    tfm = tfms.A.Adapter([*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()])
+
+    tfm_ds = Dataset(records, tfm=tfm)
+    with pytest.raises(RuntimeError):
+        tfm_ds[0]
+
+
+def test_filter_keypoints():
+    tfms_kps, w, h, v = (
+        [(0, 0), (60, 119), (-30, 40), (100, 300), (30, 100)],
+        80,
+        120,
+        [0, 1, 1, 1, 2],
+    )
+    tra_n = _remove_outside_keypoints(tfms_kps, h, w, v)
+
+    assert len(tfms_kps) == len(tra_n)
+    assert tra_n == [(0, 0, 0), (60, 119, 1), (0, 0, 0), (0, 0, 0), (30, 100, 2)]
+
+    tfms_kps, w, h, v = (
+        [(0, 0), (79, 119), (-30, 40), (100, 300), (70, 100)],
+        120,
+        120,
+        [0, 1, 1, 1, 2],
+    )
+    tra_n = _remove_outside_keypoints(tfms_kps, h, w, v)
+
+    assert len(tfms_kps) == len(tra_n)
+    assert tra_n == [(0, 0, 0), (79, 119, 1), (0, 0, 0), (0, 0, 0), (70, 100, 2)]
+
+
+def test_filter_boxes():
+    inp = (52.17503641656451, 274.5014178489639, 123.51860681160832, 350.33471836373275)
+    out = (52.17503641656451, 274.5014178489639, 123.51860681160832, 320)
+    h, w = 256, 384
+
+    res = _clip_bboxes(inp, h, w)
+    assert out == res
