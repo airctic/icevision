@@ -243,7 +243,7 @@ def via_bbox_class_map():
 @pytest.fixture(scope="session")
 def via_dir():
     return Path(__file__).absolute().parent.parent / "samples/via"
-  
+
 
 # OCHumanKeypoints fixtures
 class OCHumanKeypointsMetadata(KeypointsMetadata):
@@ -344,4 +344,3 @@ def ochuman_keypoints_dls(ochuman_ds) -> Tuple[DataLoader, DataLoader]:
     valid_dl = keypoint_rcnn.valid_dl(valid_ds, batch_size=2)
 
     return train_dl, valid_dl
-
