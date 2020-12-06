@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - VGG Image Annotator v2 JSON format parser for bboxes
 
 ### Changed
+- Restricts maximum numpy version to 1.20 (check #572 for more info)
 ### Deleted
 
 ## [0.4.0]
