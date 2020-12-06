@@ -232,6 +232,20 @@ def keypoints_img_128372():
     ]
 
 
+# VIA fixtures
+@pytest.fixture(scope="session")
+def via_bbox_class_map():
+    classes = sorted({"z", "c", "n", "o"})
+
+    return ClassMap(classes=classes, background=0)
+
+
+@pytest.fixture(scope="session")
+def via_dir():
+    return Path(__file__).absolute().parent.parent / "samples/via"
+
+
+# OCHumanKeypoints fixtures
 class OCHumanKeypointsMetadata(KeypointsMetadata):
     labels = (
         "right_shoulder",
