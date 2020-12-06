@@ -7,9 +7,9 @@ from icevision.parsers import *
 
 
 def via(
-    annotations_file: Union[str, Path], img_dir: Union[str, Path], cls_map: ClassMap
+    annotations_file: Union[str, Path], img_dir: Union[str, Path], class_map: ClassMap
 ) -> Parser:
-    return VIABBoxParser(annotations_file, img_dir, cls_map)
+    return VIABBoxParser(annotations_file, img_dir, class_map)
 
 
 class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
