@@ -94,7 +94,9 @@ def convert_record_to_coco_annotations(record):
     if "masks" in record:
         masks = record["masks"]
 
-        # TODO, HACK: We should always have EncodedRLEs
+        if isinstance(masks, MaskArray):
+            masks = masks.to_erles(record["height"], record["width"])
+
         if isinstance(masks, EncodedRLEs):
             annotations_dict["segmentation"] = masks.erles
 
