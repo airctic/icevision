@@ -6,12 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+### Changed
+### Deleted
+
+## [0.5.0]
+
+### Added
+- Keypoints full support: data API, model and training
 - VGG Image Annotator v2 JSON format parser for bboxes
+- `figsize` parameter to `show_record` and `show_sample`
 
 ### Changed
 - improved visualisation for small bboxes
-
-### Deleted
+- `COCOMetric` now returns all metrics from pycocotools
+- makes torchvision models torchscriptable
 
 ## [0.4.0]
 
