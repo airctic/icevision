@@ -7,3 +7,4 @@ from icevision.core.record_type import *
 from icevision.core.record_mixins import *
 from icevision.core.record import *
 from icevision.core.keypoints import *
+from icevision.core.record_utils import *

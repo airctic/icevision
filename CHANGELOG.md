@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - VGG Image Annotator v2 JSON format parser for bboxes
+- `aggregate_records_objects` function
 
 ### Changed
 ### Deleted
@@ -179,3 +180,4 @@ so, for example, instead of `Parser` now we have to do `parsers.Parser`
 
 ## Links  
 [Unreleased]: https://github.com/airctic/mantisshrimp/tree/master
+
