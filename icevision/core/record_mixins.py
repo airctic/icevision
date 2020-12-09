@@ -182,7 +182,13 @@ class BBoxesRecordMixin(RecordMixin):
         for bbox in self.bboxes:
             x, y, w, h = bbox.xywh
             objects.append(
-                {"bbox_x": x, "bbox_y": y, "bbox_width": w, "bbox_height": h}
+                {
+                    "bbox_x": x,
+                    "bbox_y": y,
+                    "bbox_width": w,
+                    "bbox_height": h,
+                    "bbox_area": bbox.area,
+                }
             )
 
         return {"bboxes": objects, **super()._aggregate_objects()}
