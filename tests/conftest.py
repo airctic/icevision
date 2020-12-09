@@ -230,3 +230,117 @@ def keypoints_img_128372():
         371,
         2,
     ]
+
+
+# VIA fixtures
+@pytest.fixture(scope="session")
+def via_bbox_class_map():
+    classes = sorted({"z", "c", "n", "o"})
+
+    return ClassMap(classes=classes, background=0)
+
+
+@pytest.fixture(scope="session")
+def via_dir():
+    return Path(__file__).absolute().parent.parent / "samples/via"
+
+
+# OCHumanKeypoints fixtures
+class OCHumanKeypointsMetadata(KeypointsMetadata):
+    labels = (
+        "right_shoulder",
+        "right_elbow",
+        "right_wrist",
+        "left_shoulder",
+        "left_elbow",
+        "left_wrist",
+        "right_hip",
+        "right_knee",
+        "right_ankle",
+        "left_hip",
+        "left_knee",
+        "left_ankle",
+        "head",
+        "neck",
+        "right_ear",
+        "left_ear",
+        "nose",
+        "right_eye",
+        "left_eye",
+    )
+
+
+@pytest.fixture(scope="module")
+def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
+    class OCHumanParser(
+        parsers.Parser,
+        parsers.FilepathMixin,
+        parsers.KeyPointsMixin,
+        parsers.LabelsMixin,
+        parsers.BBoxesMixin,
+    ):
+        def __init__(self, annotations_filepath, img_dir):
+            self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
+            self.img_dir = Path(img_dir)
+
+        def __iter__(self):
+            yield from self.annotations_dict["images"]
+
+        def __len__(self):
+            return len(self.annotations_dict["images"])
+
+        def imageid(self, o):
+            return int(o["image_id"])
+
+        def filepath(self, o):
+            return self.img_dir / o["file_name"]
+
+        def keypoints(self, o):
+            return [
+                KeyPoints.from_xyv(kps["keypoints"], OCHumanKeypointsMetadata)
+                for kps in o["annotations"]
+                if kps["keypoints"] is not None
+            ]
+
+        def image_width_height(self, o) -> Tuple[int, int]:
+            return get_image_size(self.filepath(o))
+
+        def labels(self, o) -> List[int]:
+            return [1 for ann in o["annotations"] if ann["keypoints"] is not None]
+
+        def bboxes(self, o) -> List[BBox]:
+            return [
+                BBox.from_xyxy(*ann["bbox"])
+                for ann in o["annotations"]
+                if ann["keypoints"] is not None
+            ]
+
+    parser = OCHumanParser(
+        samples_source / "ochuman/annotations/ochuman.json",
+        samples_source / "ochuman/images/",
+    )
+    train_records, valid_records = parser.parse(
+        data_splitter=RandomSplitter([0.8, 0.2])
+    )
+
+    presize = 64
+    size = 32
+
+    valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size), tfms.A.Normalize()])
+    train_tfms = tfms.A.Adapter(
+        [*tfms.A.aug_tfms(size=size, presize=presize, crop_fn=None), tfms.A.Normalize()]
+    )
+
+    train_ds = Dataset(train_records, train_tfms)
+    valid_ds = Dataset(valid_records, valid_tfms)
+
+    return train_ds, valid_ds
+
+
+@pytest.fixture()
+def ochuman_keypoints_dls(ochuman_ds) -> Tuple[DataLoader, DataLoader]:
+    train_ds, valid_ds = ochuman_ds
+    train_dl = keypoint_rcnn.train_dl(train_ds, batch_size=2)
+    valid_dl = keypoint_rcnn.valid_dl(valid_ds, batch_size=2)
+
+    return train_dl, valid_dl

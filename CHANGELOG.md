@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- VGG Image Annotator v2 JSON format parser for bboxes
+
 ### Changed
 ### Deleted
 

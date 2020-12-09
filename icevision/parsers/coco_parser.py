@@ -4,6 +4,7 @@ __all__ = [
     "COCOBBoxParser",
     "COCOMaskParser",
     "COCOKeyPointsParser",
+    "COCOKeypointsMetadata",
 ]
 
 from icevision.imports import *
@@ -74,6 +75,75 @@ class COCOMaskParser(COCOBBoxParser, MasksMixin):
             return [Polygon(seg)]
 
 
-class COCOKeyPointsParser(COCOBaseParser, KeyPointsMixin):
+class COCOKeyPointsParser(COCOBBoxParser, KeyPointsMixin):
     def keypoints(self, o) -> List[KeyPoints]:
-        return [KeyPoints.from_xyv(o["keypoints"])]
+        return (
+            [KeyPoints.from_xyv(o["keypoints"], COCOKeypointsMetadata)]
+            if sum(o["keypoints"]) > 0
+            else []
+        )
+
+    def labels(self, o) -> List[int]:
+        return [o["category_id"]] if sum(o["keypoints"]) > 0 else []
+
+    def areas(self, o) -> List[float]:
+        return [o["area"]] if sum(o["keypoints"]) > 0 else []
+
+    def iscrowds(self, o) -> List[bool]:
+        return [o["iscrowd"]] if sum(o["keypoints"]) > 0 else []
+
+    def bboxes(self, o) -> List[BBox]:
+        return [BBox.from_xywh(*o["bbox"])] if sum(o["keypoints"]) > 0 else []
+
+
+class COCOConnectionsColor:
+    head = (220, 30, 200)
+    torso = (100, 240, 100)
+    right_arm = (170, 170, 100)
+    left_arm = (120, 120, 230)
+    left_leg = (230, 120, 130)
+    right_leg = (230, 180, 190)
+
+
+class COCOKeypointsMetadata(KeypointsMetadata):
+    labels = (
+        "nose",
+        "left_eye",
+        "right_eye",
+        "left_ear",
+        "right_ear",
+        "left_shoulder",
+        "right_shoulder",
+        "left_elbow",
+        "right_elbow",
+        "left_wrist",
+        "right_wrist",
+        "left_hip",
+        "right_hip",
+        "left_knee",
+        "right_knee",
+        "left_ankle",
+        "right_ankle",
+    )
+
+    connections = (
+        KeypointConnection(0, 1, COCOConnectionsColor.head),
+        KeypointConnection(0, 2, COCOConnectionsColor.head),
+        KeypointConnection(1, 2, COCOConnectionsColor.head),
+        KeypointConnection(1, 3, COCOConnectionsColor.head),
+        KeypointConnection(2, 4, COCOConnectionsColor.head),
+        KeypointConnection(3, 5, COCOConnectionsColor.head),
+        KeypointConnection(4, 6, COCOConnectionsColor.head),
+        KeypointConnection(5, 6, COCOConnectionsColor.torso),
+        KeypointConnection(5, 7, COCOConnectionsColor.left_arm),
+        KeypointConnection(5, 11, COCOConnectionsColor.torso),
+        KeypointConnection(6, 8, COCOConnectionsColor.right_arm),
+        KeypointConnection(6, 12, COCOConnectionsColor.torso),
+        KeypointConnection(7, 9, COCOConnectionsColor.left_arm),
+        KeypointConnection(8, 10, COCOConnectionsColor.right_arm),
+        KeypointConnection(11, 12, COCOConnectionsColor.torso),
+        KeypointConnection(13, 11, COCOConnectionsColor.left_leg),
+        KeypointConnection(14, 12, COCOConnectionsColor.right_leg),
+        KeypointConnection(15, 13, COCOConnectionsColor.left_leg),
+        KeypointConnection(16, 14, COCOConnectionsColor.right_leg),
+    )
