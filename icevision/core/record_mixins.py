@@ -187,7 +187,8 @@ class BBoxesRecordMixin(RecordMixin):
                     "bbox_y": y,
                     "bbox_width": w,
                     "bbox_height": h,
-                    "bbox_area": bbox.area,
+                    "bbox_sqrt_area": bbox.area ** 0.5,
+                    "bbox_aspect_ratio": w / h,
                 }
             )
 
