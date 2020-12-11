@@ -8,6 +8,15 @@ def records(coco_mask_records):
     return coco_mask_records
 
 
+def test_inference_transform(records):
+    img = open_img(records[0].filepath)
+    tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
+    ds = Dataset.from_images([img], tfm)
+
+    tfmed = ds[0]
+    assert (tfmed["img"] == img[:, ::-1, :]).all()
+
+
 def test_simple_transform(records):
     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
     ds = Dataset(records)
