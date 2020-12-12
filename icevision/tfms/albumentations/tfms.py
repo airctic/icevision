@@ -112,9 +112,8 @@ class Adapter(Transform):
         # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes are removed
         # TODO: Same should be done if a masks is completely removed from the image (if bboxes is not given)
         params = {"image": img}
-        params["labels"] = list(range(len(labels)))
+        params["labels"] = list(range(len(labels))) if labels is not None else []
         params["bboxes"] = [o.xyxy for o in bboxes] if bboxes is not None else []
-        tfms_list = self.tfms.transforms.transforms
 
         if keypoints is not None:
             flat_tfms_list_ = _flatten_tfms(self.tfms_list)
@@ -142,12 +141,17 @@ class Adapter(Transform):
 
         img_h, img_w = _get_size_without_padding(self.tfms_list, img, d["image"])
         # We use the values in d['labels'] to get what was removed by the transform
-        keep_idxs = np.zeros(len(labels), dtype=bool)
-        keep_idxs[d["labels"]] = True
+        if labels is not None:
+            keep_mask = np.zeros(len(labels), dtype=bool)
+            keep_mask[d["labels"]] = True
+        else:
+            keep_mask = None
 
         out = {"img": d["image"]}
         out["height"], out["width"] = img_h, img_w
-        out["labels"] = _filter_attribute(labels, keep_idxs)
+
+        if labels is not None:
+            out["labels"] = _filter_attribute(labels, keep_mask)
 
         if bboxes is not None:
             # TODO: quickfix from 576
@@ -156,7 +160,7 @@ class Adapter(Transform):
             out["bboxes"] = [BBox.from_xyxy(*xyxy) for xyxy in bb]
 
         if masks is not None:
-            keep_masks = _filter_attribute(d["masks"], keep_idxs)
+            keep_masks = _filter_attribute(d["masks"], keep_mask)
             out["masks"] = MaskArray(np.array(keep_masks))
 
         if keypoints is not None:
@@ -177,17 +181,19 @@ class Adapter(Transform):
                 KeyPoints.from_xyv(group_kpt, original_kpt.metadata)
                 for group_kpt, original_kpt in zip(group_kpts, keypoints)
             ]
-            out["keypoints"] = _filter_attribute(kpts, keep_idxs)
+            out["keypoints"] = _filter_attribute(kpts, keep_mask)
 
         if iscrowds is not None:
-            out["iscrowds"] = _filter_attribute(iscrowds, keep_idxs)
+            out["iscrowds"] = _filter_attribute(iscrowds, keep_mask)
 
         return out
 
 
-def _filter_attribute(v: list, keep_idxs: List[bool]):
-    assert len(v) == len(keep_idxs)
-    return [o for o, keep in zip(v, keep_idxs) if keep]
+def _filter_attribute(v: list, keep_mask: Union[List[bool], None]):
+    if keep_mask is None:
+        return v
+    assert len(v) == len(keep_mask)
+    return [o for o, keep in zip(v, keep_mask) if keep]
 
 
 def _remove_outside_keypoints(tfms_kps, h, w, v):
