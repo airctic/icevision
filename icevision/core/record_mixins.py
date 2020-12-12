@@ -37,6 +37,9 @@ class RecordMixin:
     def _remove_annotation(self, i) -> None:
         return
 
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        return {}
+
     def _repr(self) -> List[str]:
         return []
 
@@ -110,6 +113,10 @@ class SizeRecordMixin(RecordMixin):
     def as_dict(self) -> dict:
         return {"width": self.width, "height": self.height, **super().as_dict()}
 
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        info = [{"img_width": self.width, "img_height": self.height}]
+        return {"img_size": info, **super()._aggregate_objects()}
+
 
 ### Annotation parsers ###
 class LabelsRecordMixin(RecordMixin):
@@ -132,6 +139,9 @@ class LabelsRecordMixin(RecordMixin):
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.labels.pop(i)
+
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        return {"labels": self.labels, **super()._aggregate_objects()}
 
     def _repr(self) -> List[str]:
         return [f"Labels: {self.labels}", *super()._repr()]
@@ -166,6 +176,23 @@ class BBoxesRecordMixin(RecordMixin):
     def _remove_annotation(self, i):
         super()._remove_annotation(i)
         self.bboxes.pop(i)
+
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        objects = []
+        for bbox in self.bboxes:
+            x, y, w, h = bbox.xywh
+            objects.append(
+                {
+                    "bbox_x": x,
+                    "bbox_y": y,
+                    "bbox_width": w,
+                    "bbox_height": h,
+                    "bbox_sqrt_area": bbox.area ** 0.5,
+                    "bbox_aspect_ratio": w / h,
+                }
+            )
+
+        return {"bboxes": objects, **super()._aggregate_objects()}
 
     def _repr(self) -> List[str]:
         return [f"BBoxes: {self.bboxes}", *super()._repr()]
@@ -238,6 +265,9 @@ class IsCrowdsRecordMixin(RecordMixin):
         super()._remove_annotation(i)
         self.iscrowds.pop(i)
 
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        return {"iscrowds": self.iscrowds, **super()._aggregate_objects()}
+
     def _repr(self) -> List[str]:
         return [f"Is Crowds: {self.iscrowds}", *super()._repr()]
 
@@ -252,6 +282,13 @@ class KeyPointsRecordMixin(RecordMixin):
 
     def add_keypoints(self, keypoints):
         self.keypoints.extend(keypoints)
+
+    def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        objects = [
+            {"keypoint_x": kpt.x, "keypoint_y": kpt.y, "keypoint_visible": kpt.v}
+            for kpt in self.keypoints
+        ]
+        return {"keypoints": objects, **super()._aggregate_objects()}
 
     def _repr(self) -> List[str]:
         return {f"KeyPoints: {self.keypoints}", *super()._repr()}
