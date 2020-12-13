@@ -20,7 +20,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "z"
+                    "label": "z",
+                    "object": "z",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -42,7 +46,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "c"
+                    "label": "c",
+                    "object": "c",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -62,7 +70,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "o"
+                    "label": "o",
+                    "object": "o",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -82,7 +94,12 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "###"
+                    "label": "###",
+                    "object": "o",
+                    "qualities": {
+                        "is_rotated": true,
+                        "is_inverted": true
+                    }
                 }
             },
             {
@@ -94,7 +111,8 @@
                     "height": 48
                 },
                 "region_attributes": {
-                    "label": "n"
+                    "label": "n",
+                    "object": "n"
                 }
             }
         ],
@@ -121,7 +139,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "z"
+                    "label": "z",
+                    "object": "z",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -141,7 +163,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "c"
+                    "label": "c",
+                    "object": "c",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -161,7 +187,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "n"
+                    "label": "n",
+                    "object": "n",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -181,7 +211,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "o"
+                    "label": "o",
+                    "object": "o",
+                    "qualities": {
+                        "is_rotated": true
+                    }
                 }
             },
             {
@@ -201,7 +235,11 @@
                     ]
                 },
                 "region_attributes": {
-                    "label": "###"
+                    "label": "###",
+                    "object": "o",
+                    "qualities": {
+                        "is_inverted": true
+                    }
                 }
             }
         ],

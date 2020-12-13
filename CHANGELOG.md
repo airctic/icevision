@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `aggregate_records_objects` function
 
 ### Changed
+- Added `label_field` to VIA parser to allow for alternate `region_attribute` names
+ 
 ### Deleted
 
 ## [0.5.0]

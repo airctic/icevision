@@ -1,4 +1,4 @@
-__all__ = ["via", "VIABaseParser", "VIABBoxParser"]
+__all__ = ["via", "VIAParseError", "VIABaseParser", "VIABBoxParser"]
 
 from icevision.imports import *
 from icevision.core import *
@@ -7,9 +7,31 @@ from icevision.parsers import *
 
 
 def via(
-    annotations_file: Union[str, Path], img_dir: Union[str, Path], class_map: ClassMap
+    annotations_file: Union[str, Path],
+    img_dir: Union[str, Path],
+    class_map: ClassMap,
+    label_field: str = "label",
 ) -> Parser:
-    return VIABBoxParser(annotations_file, img_dir, class_map)
+    """
+    Parser for JSON annotations from the VGG Image Annotator V2.
+    See (https://www.robots.ox.ac.uk/~vgg/software/via/)
+
+    Just `polygon` and `rect` shape attribute types are supported.
+
+    # Arguments
+        annotations_file: Path to the JSON annotations file exported from VIA.
+        img_dir: Path to the directory containing the referenced images.
+        class_map: The ClassMap object for valid labels to retrieve from the annotations file.
+        label_field: Defaults to `label`. The name of the `region_attribute` containing the label.
+
+    # Returns
+        The Parser
+    """
+    return VIABBoxParser(annotations_file, img_dir, class_map, label_field)
+
+
+class VIAParseError(Exception):
+    pass
 
 
 class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
@@ -18,10 +40,12 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
         annotations_filepath: Union[str, Path],
         img_dir: Union[str, Path],
         cls_map: ClassMap,
+        label_field: str = "label",
     ):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
         self.cls_map = cls_map
+        self.label_field = label_field
 
     def __iter__(self):
         yield from self.annotations_dict.values()
@@ -38,10 +62,22 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
     def image_width_height(self, o) -> Tuple[int, int]:
         return get_image_size(self.filepath(o))
 
+    def _get_label(self, o, region_attributes: dict) -> str:
+        label = region_attributes.get(self.label_field)
+        if label is None:
+            raise VIAParseError(
+                f"Could not find label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+            )
+        elif not isinstance(label, str):
+            raise VIAParseError(
+                f"Non-string value found in label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+            )
+        return label
+
     def labels(self, o) -> List[int]:
         labels = []
         for shape in o["regions"]:
-            label = shape["region_attributes"]["label"]
+            label = self._get_label(o, shape["region_attributes"])
             if label in self.cls_map.class2id:
                 labels.append(self.cls_map.get_name(label))
         return labels
@@ -49,17 +85,14 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
 
 class VIABBoxParser(VIABaseParser, BBoxesMixin):
     """
-    VIABBoxParser parses JSON annotations from the VGG Image Annotator V2.
-    See (https://www.robots.ox.ac.uk/~vgg/software/via/)
-
-    Just `polygon` and `rect` shape attribute types are supported. Polygons
+    VIABBoxParser parses `polygon` and `rect` shape attribute types. Polygons
     are converted into bboxes that surround the entire shape.
     """
 
     def bboxes(self, o) -> List[BBox]:
         boxes = []
         for shape in o["regions"]:
-            label = shape["region_attributes"]["label"]
+            label = self._get_label(o, shape["region_attributes"])
             if label in self.cls_map.class2id:
                 shape_attr = shape["shape_attributes"]
                 if shape_attr["name"] == "polygon":
