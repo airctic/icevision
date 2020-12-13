@@ -104,6 +104,14 @@ def plot_top_losses(
     dataset: Dataset
     sort_by: (str) the loss to sort samples by
     n_samples: how many samples to show
+
+    Returns
+    -------
+    sorted_samples: those are the samples (dictionaries) contained in the original dataset
+                    enriched with losses and sorted by `sort_by`.
+    sorted_preds: `model` predictions on `sorted_samples`. Same order as `sorted_samples`.
+    losses_stats: dictionary containing losses stats (min, max, mean, 1-25-50-75-99 quantiles)
+                  for each one of the losses.
     """
 
     samples, losses_stats = get_losses(model, dataset)

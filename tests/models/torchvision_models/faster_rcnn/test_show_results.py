@@ -29,3 +29,14 @@ def test_faster_rcnn_show_results(fake_faster_rcnn_model, fridge_ds, monkeypatch
     faster_rcnn.show_results(
         model=fake_faster_rcnn_model, dataset=valid_ds, num_samples=1, ncols=1
     )
+
+
+def test_get_preds(fridge_faster_rcnn_model, fridge_ds):
+    model = fridge_faster_rcnn_model
+    ds, _ = fridge_ds
+
+    s, p = faster_rcnn.get_preds(model, ds)
+
+    assert len(ds) == 2
+    assert len(s) == 2
+    assert len(p) == 2
