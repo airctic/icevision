@@ -15,6 +15,8 @@ __all__ = [
     "normalize_imagenet",
     "denormalize_imagenet",
     "patch_class_to_main",
+    "sort_losses",
+    "get_stats",
 ]
 
 from icevision.imports import *
@@ -103,3 +105,28 @@ def patch_class_to_main(cls):
     setattr(__main__, cls.__name__, cls)
     cls.__module__ = "__main__"
     return cls
+
+
+def sort_losses(
+    samples: List[dict], preds: List[dict], by: str = "total_loss"
+) -> Tuple[List[dict], List[dict], List[str]]:
+    l = list(zip(samples, preds))
+    l = sorted(l, key=lambda i: i[0][by], reverse=True)
+    sorted_samples, sorted_preds = zip(*l)
+    annotations = [el["text"] for el in sorted_samples]
+    return sorted_samples, sorted_preds, annotations
+
+
+def get_stats(l: List) -> dict:
+    l = np.array(l)
+    quants_names = ["1ile", "25ile", "50ile", "75ile", "99ile"]
+    quants = np.quantile(l, [0.01, 0.25, 0.5, 0.75, 0.99])
+    d = {
+        "min": l.min(),
+        "max": l.max(),
+        "mean": l.mean(),
+    }
+
+    q = {k: v for k, v in zip(quants_names, quants)}
+    d.update(q)
+    return d

@@ -40,18 +40,27 @@ def plot_grid(fs: List[callable], ncols=1, figsize=None, show=False, **kwargs):
         plt.show()
 
 
-def plot_grid_preds_actuals(actuals, predictions, figsize=None, show=False, **kwargs):
+def plot_grid_preds_actuals(
+    actuals, predictions, figsize=None, show=False, annotations=None, **kwargs
+):
     fig, axs = plt.subplots(
         nrows=len(actuals),
         ncols=2,
-        figsize=figsize or (6 * len(actuals) / 2, 6 * len(actuals) / 2 / 0.75),
+        figsize=figsize or (6, 6 * len(actuals) / 2 / 0.75),
         **kwargs,
     )
-
+    i = 0
     for im, ax in zip(zip(actuals, predictions), axs.reshape(-1, 2)):
         ax[0].imshow(im[0], cmap=None)
-        ax[0].set_axis_off()
         ax[0].set_title("Ground truth")
+        if annotations is None:
+            ax[0].set_axis_off()
+        else:
+            ax[0].get_xaxis().set_ticks([])
+            ax[0].set_frame_on(False)
+            ax[0].get_yaxis().set_visible(False)
+            ax[0].set_xlabel(annotations[i], ma="left")
+            i += 1
 
         ax[1].imshow(im[1], cmap=None)
         ax[1].set_axis_off()

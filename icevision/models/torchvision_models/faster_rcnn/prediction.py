@@ -1,9 +1,17 @@
-__all__ = ["predict", "predict_dl", "convert_raw_prediction", "convert_raw_predictions"]
+__all__ = [
+    "predict",
+    "predict_dl",
+    "convert_raw_prediction",
+    "convert_raw_predictions",
+    "get_preds",
+]
 
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.models.utils import _predict_dl
+from icevision.data import *
+from icevision.models.torchvision_models.faster_rcnn.dataloaders import infer_dl
 
 
 @torch.no_grad()
@@ -70,3 +78,9 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         "bboxes": bboxes,
         "above_threshold": above_threshold,
     }
+
+
+def get_preds(model: nn.Module, dataset: Dataset, batch_size: int = 16) -> List[dict]:
+    dl = infer_dl(dataset, batch_size=batch_size)
+    samples, preds = predict_dl(model=model, infer_dl=dl)
+    return samples, preds

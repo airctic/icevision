@@ -147,6 +147,7 @@ def show_preds(
     ncols: int = 1,
     figsize=None,
     show=False,
+    annotations=None,
 ) -> None:
     if not len(samples) == len(preds):
         raise ValueError(
@@ -181,7 +182,9 @@ def show_preds(
             for img, pred in zip(imgs, preds)
         ]
 
-        plot_grid_preds_actuals(actuals, predictions, figsize=figsize, show=show)
+        plot_grid_preds_actuals(
+            actuals, predictions, figsize=figsize, show=show, annotations=annotations
+        )
 
     else:
         partials = [
@@ -198,4 +201,6 @@ def show_preds(
             )
             for img, pred in zip(samples, preds)
         ]
-        plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
+        plot_grid(
+            partials, ncols=ncols, figsize=figsize, show=show, annotations=annotations
+        )
