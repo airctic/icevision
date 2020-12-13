@@ -42,3 +42,53 @@ def normalize_denormalize():
     res = denormalize(normalize(img, mean=mean, std=std), mean=mean, std=std)
     assert type(res) == type(img)
     assert np.all(res == img)
+
+
+def test_get_stats():
+    l = list(np.arange(10))
+    result = get_stats(l)
+
+    expected = {
+        "min": 0,
+        "max": 9,
+        "mean": 4.5,
+        "1ile": 0.09,
+        "25ile": 2.25,
+        "50ile": 4.5,
+        "75ile": 6.75,
+        "99ile": 8.91,
+    }
+    assert result == expected
+
+
+def test_sort_losses():
+
+    samples = [
+        {"stuff": 0.2, "loss_total": 2, "text": "text2"},
+        {"stuff": 0.1, "loss_total": 1, "text": "text1"},
+        {"stuff": 0.3, "loss_total": 3, "text": "text3"},
+    ]
+
+    preds = [
+        {"stuff": 0.1, "pred": 1},
+        {"stuff": 0.2, "pred": 2},
+        {"stuff": 0.3, "pred": 3},
+    ]
+
+    sorted_samples_ex = [
+        {"stuff": 0.3, "loss_total": 3, "text": "text3"},
+        {"stuff": 0.2, "loss_total": 2, "text": "text2"},
+        {"stuff": 0.1, "loss_total": 1, "text": "text1"},
+    ]
+
+    sorted_preds_ex = [
+        {"stuff": 0.3, "pred": 3},
+        {"stuff": 0.1, "pred": 1},
+        {"stuff": 0.2, "pred": 2},
+    ]
+
+    sorted_samples, sorted_preds, annotations = sort_losses(samples, preds)
+
+    assert sorted_samples == sorted_samples_ex
+    assert sorted_preds == sorted_preds_ex
+    assert annotations == ["text3", "text2", "text1"]

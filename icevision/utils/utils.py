@@ -108,13 +108,13 @@ def patch_class_to_main(cls):
 
 
 def sort_losses(
-    samples: List[dict], preds: List[dict], by: str = "total_loss"
+    samples: List[dict], preds: List[dict], by: str = "loss_total"
 ) -> Tuple[List[dict], List[dict], List[str]]:
     l = list(zip(samples, preds))
     l = sorted(l, key=lambda i: i[0][by], reverse=True)
     sorted_samples, sorted_preds = zip(*l)
     annotations = [el["text"] for el in sorted_samples]
-    return sorted_samples, sorted_preds, annotations
+    return list(sorted_samples), list(sorted_preds), annotations
 
 
 def get_stats(l: List) -> dict:
