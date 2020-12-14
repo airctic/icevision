@@ -65,18 +65,27 @@ def get_losses(
 
     torch.manual_seed(0)
     samples_plus_losses = []
-    losses_stats = {"loss_classifier": [], "loss_box_reg": [], "loss_total": []}
+    losses_stats = {
+        "loss_classifier": [],
+        "loss_box_reg": [],
+        "loss_objectness": [],
+        "loss_rpn_box_reg": [],
+        "loss_total": [],
+    }
+    for_text = ["loss_classifier", "loss_box_reg", "loss_total"]
 
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
             loss = model(x, y)
-            loss = {k: v.numpy() for k, v in loss.items()}
+            loss = {k: float(v.numpy()) for k, v in loss.items()}
             loss["loss_total"] = sum(loss.values())
 
             text = ""
             for l in losses_stats.keys():
-                text += f"{l}: {round(float(loss[l]), 5)}\n"
-                losses_stats[l].append(float(loss[l]))
+                losses_stats[l].append(loss[l])
+                if l in for_text:
+                    text += f"{l}: {round(loss[l], 5)}\n"
+
             text += f"IMG: {sample[0]['filepath'].name}"
             loss["text"] = text
 

@@ -59,7 +59,13 @@ def test_get_losses(fridge_faster_rcnn_model, fridge_ds):
 
     samples, losses_stats = faster_rcnn.get_losses(model, ds)
     assert len(samples) == len(ds)
-    assert set(losses_stats.keys()) == {"loss_box_reg", "loss_classifier", "loss_total"}
+    assert set(losses_stats.keys()) == {
+        "loss_box_reg",
+        "loss_classifier",
+        "loss_objectness",
+        "loss_rpn_box_reg",
+        "loss_total",
+    }
     assert "loss_box_reg" in samples[0].keys()
     assert "loss_classifier" in samples[0]["text"]
     assert "IMG" in samples[0]["text"]
