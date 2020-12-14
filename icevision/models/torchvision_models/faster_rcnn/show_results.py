@@ -117,6 +117,7 @@ def plot_top_losses(
     samples, losses_stats = get_losses(model, dataset)
     _, preds = get_preds(model, dataset)
     sorted_samples, sorted_preds, annotations = sort_losses(samples, preds, by=sort_by)
+    assert len(sorted_samples) == len(samples) == len(preds) == len(sorted_preds)
     show_preds(
         samples=sorted_samples[:n_samples],
         preds=sorted_preds[:n_samples],

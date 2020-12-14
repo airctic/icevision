@@ -40,3 +40,26 @@ def test_get_preds(fridge_faster_rcnn_model, fridge_ds):
     assert len(ds) == 2
     assert len(s) == 2
     assert len(p) == 2
+
+
+def test_plot_losses(fridge_faster_rcnn_model, fridge_ds, monkeypatch):
+    monkeypatch.setattr(plt, "show", lambda: None)
+    model = fridge_faster_rcnn_model
+    ds, _ = fridge_ds
+
+    samples_plus_losses, preds, _ = faster_rcnn.plot_top_losses(
+        model=model, dataset=ds, sort_by="loss_total", n_samples=2
+    )
+    assert len(samples_plus_losses) == len(ds) == len(preds)
+
+
+def test_get_losses(fridge_faster_rcnn_model, fridge_ds):
+    model = fridge_faster_rcnn_model
+    ds, _ = fridge_ds
+
+    samples, losses_stats = faster_rcnn.get_losses(model, ds)
+    assert len(samples) == len(ds)
+    assert set(losses_stats.keys()) == {"loss_box_reg", "loss_classifier", "loss_total"}
+    assert "loss_box_reg" in samples[0].keys()
+    assert "loss_classifier" in samples[0]["text"]
+    assert "IMG" in samples[0]["text"]
