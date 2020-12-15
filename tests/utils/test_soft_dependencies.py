@@ -18,4 +18,5 @@ def test_soft_dependencies():
         "albumentations": True,
         "effdet": True,
         "wandb": True,
+        "resnest": True,
     }
