@@ -46,9 +46,18 @@ def test_plot_losses(fridge_faster_rcnn_model, fridge_ds, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     model = fridge_faster_rcnn_model
     ds, _ = fridge_ds
+    by = {
+        "method": "weighted",
+        "weights": {
+            "loss_box_reg": 1,
+            "loss_classifier": 0,
+            "loss_objectness": 0,
+            "loss_rpn_box_reg": 0,
+        },
+    }
 
     samples_plus_losses, preds, _ = faster_rcnn.plot_top_losses(
-        model=model, dataset=ds, sort_by="loss_total", n_samples=2
+        model=model, dataset=ds, sort_by=by, n_samples=2
     )
     assert len(samples_plus_losses) == len(ds) == len(preds)
 

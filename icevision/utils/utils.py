@@ -17,6 +17,7 @@ __all__ = [
     "patch_class_to_main",
     "sort_losses",
     "get_stats",
+    "compute_weighted_sum",
 ]
 
 from icevision.imports import *
@@ -107,13 +108,54 @@ def patch_class_to_main(cls):
     return cls
 
 
+def compute_weighted_sum(sample, weights):
+    loss_weighted = 0
+    for loss, weight in weights.items():
+        loss_weighted += sample[loss] * weight
+    sample["loss_weighted"] = loss_weighted
+    return sample
+
+
 def sort_losses(
-    samples: List[dict], preds: List[dict], by: str = "loss_total"
+    samples: List[dict], preds: List[dict], by: Union[str, dict] = "loss_total"
 ) -> Tuple[List[dict], List[dict], List[str]]:
+    by_copy = deepcopy(by)
+    losses_expected = [
+        k for k in samples[0].keys() if "loss" in k and k != "loss_total"
+    ]
+
+    if isinstance(by, str):
+        loss_check = losses_expected + ["loss_total"]
+        assert (
+            by in loss_check
+        ), f"You must `sort_by` one of the losses. '{by}' is not among {loss_check}"
+
+    if isinstance(by, dict):
+        expected = ["weighted"]
+        assert (
+            by["method"] in expected
+        ), f"`method` must be in {expected}, got {by['method']} instead."
+        if by["method"] == "weighted":
+            losses_passed = set(by["weights"].keys())
+            losses_expected = set(losses_expected)
+            assert (
+                losses_passed == losses_expected
+            ), f"You need to pass a weight for each of the losses in {losses_expected}, got {losses_passed} instead."
+            samples = [compute_weighted_sum(s, by["weights"]) for s in samples]
+            by = "loss_weighted"
+
     l = list(zip(samples, preds))
     l = sorted(l, key=lambda i: i[0][by], reverse=True)
     sorted_samples, sorted_preds = zip(*l)
     annotations = [el["text"] for el in sorted_samples]
+
+    if isinstance(by_copy, dict):
+        if by_copy["method"] == "weighted":
+            annotations = [
+                f"loss_weighted: {round(s['loss_weighted'], 5)}\n" + a
+                for a, s in zip(annotations, sorted_samples)
+            ]
+
     return list(sorted_samples), list(sorted_preds), annotations
 
 

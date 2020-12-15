@@ -92,3 +92,23 @@ def test_sort_losses():
     assert sorted_samples == sorted_samples_ex
     assert sorted_preds == sorted_preds_ex
     assert annotations == ["text3", "text2", "text1"]
+
+
+def test_compute_weighted_sum():
+    s = {
+        "loss1": 1,
+        "loss2": 1,
+        "loss3": 1,
+        "loss4": 1,
+    }
+    weights = {
+        "loss1": 0.25,
+        "loss2": 0.25,
+        "loss3": 0.25,
+        "loss4": 0.25,
+    }
+    expected = {"loss1": 1, "loss2": 1, "loss3": 1, "loss4": 1, "loss_weighted": 1.0}
+
+    result = compute_weighted_sum(s, weights)
+
+    assert result["loss_weighted"] == expected["loss_weighted"]
