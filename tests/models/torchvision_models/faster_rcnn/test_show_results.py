@@ -31,17 +31,6 @@ def test_faster_rcnn_show_results(fake_faster_rcnn_model, fridge_ds, monkeypatch
     )
 
 
-def test_get_preds(fridge_faster_rcnn_model, fridge_ds):
-    model = fridge_faster_rcnn_model
-    ds, _ = fridge_ds
-
-    s, p = faster_rcnn.get_preds(model, ds)
-
-    assert len(ds) == 2
-    assert len(s) == 2
-    assert len(p) == 2
-
-
 def test_plot_losses(fridge_faster_rcnn_model, fridge_ds, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     model = fridge_faster_rcnn_model

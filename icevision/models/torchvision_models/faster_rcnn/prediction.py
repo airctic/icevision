@@ -3,7 +3,6 @@ __all__ = [
     "predict_dl",
     "convert_raw_prediction",
     "convert_raw_predictions",
-    "get_preds",
 ]
 
 from icevision.imports import *
@@ -78,12 +77,3 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         "bboxes": bboxes,
         "above_threshold": above_threshold,
     }
-
-
-def get_preds(model: nn.Module, dataset: Dataset, batch_size: int = 16) -> List[dict]:
-    """
-    Utility to run inference on a dataset, given an input model.
-    """
-    dl = infer_dl(dataset, batch_size=batch_size)
-    samples, preds = predict_dl(model=model, infer_dl=dl)
-    return samples, preds

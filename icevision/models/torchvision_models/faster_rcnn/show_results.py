@@ -8,10 +8,11 @@ from icevision.models.base_show_results import base_show_results
 from icevision.models.torchvision_models.faster_rcnn.dataloaders import (
     build_infer_batch,
     valid_dl,
+    infer_dl,
 )
 from icevision.models.torchvision_models.faster_rcnn.prediction import (
     predict,
-    get_preds,
+    predict_dl,
 )
 from icevision.visualize.show_data import show_preds
 
@@ -59,11 +60,10 @@ def get_losses(
     losses_stats: dictionary containing losses stats (min, max, mean, 1-25-50-75-99 quantiles)
                   for each one of the losses.
     """
-    device = torch.device("cpu")
-    model = model.to(device)
+
+    device = model_device(model)
     dl = valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
 
-    torch.manual_seed(0)
     samples_plus_losses = []
     losses_stats = {
         "loss_classifier": [],
@@ -76,8 +76,10 @@ def get_losses(
 
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
+            torch.manual_seed(0)
+            x = [x[0].to(device)]
             loss = model(x, y)
-            loss = {k: float(v.numpy()) for k, v in loss.items()}
+            loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
             loss["loss_total"] = sum(loss.values())
 
             text = ""
@@ -122,17 +124,18 @@ def plot_top_losses(
     losses_stats: dictionary containing losses stats (min, max, mean, 1-25-50-75-99 quantiles)
                   for each one of the losses.
     """
-    model_inf = deepcopy(
-        model
-    )  # we need to create a copy of the model as `get_preds` puts it in eval mode and we need it in training mode
     samples, losses_stats = get_losses(model, dataset)
-    _, preds = get_preds(model_inf, dataset)
+
+    dl = infer_dl(dataset, batch_size=16)  # setting `batch_size` to 16 is arbitrary.
+    _, preds = predict_dl(model=model, infer_dl=dl)
+
     sorted_samples, sorted_preds, annotations = sort_losses(samples, preds, by=sort_by)
     assert len(sorted_samples) == len(samples) == len(preds) == len(sorted_preds)
+
     show_preds(
         samples=sorted_samples[:n_samples],
         preds=sorted_preds[:n_samples],
         annotations=annotations[:n_samples],
     )
-
+    model.train()
     return sorted_samples, sorted_preds, losses_stats
