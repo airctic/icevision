@@ -4,3 +4,4 @@ from icevision.parsers.defaults import *
 
 from icevision.parsers.coco_parser import *
 from icevision.parsers.voc_parser import *
+from icevision.parsers.via_parser import *

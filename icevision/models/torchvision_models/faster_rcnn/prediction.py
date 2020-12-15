@@ -40,7 +40,10 @@ def predict_dl(
 
 def convert_raw_predictions(raw_preds, detection_threshold: float):
     return [
-        convert_raw_prediction(raw_pred, detection_threshold=detection_threshold)
+        convert_raw_prediction(
+            raw_pred,
+            detection_threshold=detection_threshold,
+        )
         for raw_pred in raw_preds
     ]
 

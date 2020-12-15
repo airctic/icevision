@@ -192,3 +192,27 @@ def test_mask_rcnn_valid_dataloader(mask_records):
 
 def test_mask_rcnn_infer_dataloader(dataset):
     test_faster_rcnn_infer_dataloader(dataset)
+
+
+def test_keypoints_rcnn_dataloader(coco_keypoints_parser):
+    import random
+
+    random.seed(40)
+    records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
+    tfm = tfms.A.Adapter(
+        [*tfms.A.aug_tfms(size=384, presize=512, crop_fn=None), tfms.A.Normalize()]
+    )
+    train_ds = Dataset(records, tfm)
+    train_dl = keypoint_rcnn.train_dl(
+        train_ds, batch_size=2, num_workers=1, shuffle=True
+    )
+    (x, y), recs = first(train_dl)
+
+    assert len(x) == len(y) == 2
+    assert x[0].shape == x[1].shape == torch.Size([3, 384, 384])
+
+    ind = [r["filepath"].parts[-1] for r in recs].index("000000128372.jpg")
+    assert y[ind]["keypoints"].shape == torch.Size([3, 17, 3])
+    assert y[ind]["labels"].tolist() == [1, 1, 1]
+    assert y[-(ind - 1)]["keypoints"].shape == torch.Size([1, 17, 3])
+    assert y[-(ind - 1)]["boxes"].shape == torch.Size([1, 4])

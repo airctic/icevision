@@ -36,6 +36,7 @@ def draw_sample(
         sample.get("keypoints", []),
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
+        color = tuple(color.astype(int).tolist())
 
         if display_mask and mask is not None:
             img = draw_mask(img=img, mask=mask, color=color)
@@ -152,7 +153,6 @@ def draw_bbox(
     img: np.ndarray,
     bbox: BBox,
     color: Tuple[int, int, int],
-    thickness: int = 5,
     gap: bool = True,
 ):
     """Draws a box on an image with a given color.
@@ -160,53 +160,118 @@ def draw_bbox(
         image     : The image to draw on.
         box       : A list of 4 elements (x1, y1, x2, y2).
         color     : The color of the box.
-        thickness : The thickness of the lines to draw a box with.
     """
+
+    # Calculate image dimensions
+    dims = sorted(img.shape, reverse=True)
+
+    # corner thickness is linearly correlated with the smaller image dimension.
+    # We use the smaller image dimension rather than image area so as to avoid
+    # overly thick lines for large non-square images prior to transforming
+    # images. We set lower and upper bounds for corner thickness.
+    min_corner = 1
+    max_corner = 15
+    corner_thickness = int(0.005 * dims[1] + min_corner)
+    if corner_thickness > max_corner:
+        corner_thickness = int(max_corner)
+
+    corner_length = int(0.021 * dims[1] + 2.25)
+
+    # inner thickness of bboxes with corners
+    inner_thickness = int(1 + 0.0005 * dims[1])
+
+    # bbox thickness of bboxes without corners
+    min_bbox = 1
+    max_bbox = 8
+    bbox_thickness = int(0.0041 * dims[1] - 0.0058)
+    if bbox_thickness < min_bbox:
+        bbox_thickness = min_bbox
+    if bbox_thickness > max_bbox:
+        bbox_thickness = int(max_bbox)
 
     if gap == False:
         xyxy = tuple(np.array(bbox.xyxy, dtype=int))
-        cv2.rectangle(img, xyxy[:2], xyxy[2:], color, thickness, cv2.LINE_AA)
+        cv2.rectangle(img, xyxy[:2], xyxy[2:], color, bbox_thickness, cv2.LINE_AA)
         return img
 
     xmin, ymin, xmax, ymax = tuple(np.array(bbox.xyxy, dtype=int))
-    d = 30
+
     points = [0] * 12
-    points[0] = (xmin, ymin + d)
+    points[0] = (xmin, ymin + corner_length)
     points[1] = (xmin, ymin)
-    points[2] = (xmin + d, ymin)
+    points[2] = (xmin + corner_length, ymin)
 
-    points[3] = (xmax - d, ymin)
+    points[3] = (xmax - corner_length, ymin)
     points[4] = (xmax, ymin)
-    points[5] = (xmax, ymin + d)
+    points[5] = (xmax, ymin + corner_length)
 
-    points[6] = (xmax, ymax - d)
+    points[6] = (xmax, ymax - corner_length)
     points[7] = (xmax, ymax)
-    points[8] = (xmax - d, ymax)
+    points[8] = (xmax - corner_length, ymax)
 
-    points[9] = (xmin + d, ymax)
+    points[9] = (xmin + corner_length, ymax)
     points[10] = (xmin, ymax)
-    points[11] = (xmin, ymax - d)
+    points[11] = (xmin, ymax - corner_length)
 
-    for i in range(4):
-        for j in range(2):
+    if (
+        ymax - (ymin + 4 * corner_length) < corner_length
+        or xmax - (xmin + 4 * corner_length) < corner_length
+    ):
+        for i in range(4):
             cv2.line(
                 img,
-                points[i * 3 + j],
-                points[i * 3 + j + 1],
+                points[i * 3 + 1],
+                points[10 - 3 * i],
                 color,
-                thickness,
-                cv2.LINE_AA,
+                bbox_thickness,
+                cv2.LINE_4,
             )
-
-    for i in range(4):
-        cv2.line(
-            img,
-            points[i * 3 + 2],
-            points[(i * 3 + 3) % 12],
-            color,
-            1,
-            cv2.LINE_4,
-        )
+        for i in range(2):
+            cv2.line(
+                img,
+                points[6 * i + 1],
+                points[i * 6 + 4],
+                color,
+                bbox_thickness,
+                cv2.LINE_4,
+            )
+    else:
+        for i in range(2):
+            for j in range(2):
+                cv2.line(
+                    img,
+                    points[i * 6 + j * 4],
+                    points[i * 6 + j * 4 + 1],
+                    color,
+                    corner_thickness,
+                    cv2.LINE_AA,
+                )
+                cv2.line(
+                    img,
+                    points[i * 3 + 1],
+                    points[10 - 3 * i],
+                    color,
+                    inner_thickness,
+                    cv2.LINE_4,
+                )
+        for i in range(2):
+            for j in range(2):
+                cv2.line(
+                    img,
+                    points[i * 6 + j * 2 + 1],
+                    points[i * 6 + j * 2 + 2],
+                    color,
+                    corner_thickness,
+                    cv2.LINE_4,
+                )
+                cv2.line(
+                    img,
+                    points[6 * i + 1],
+                    points[i * 6 + 4],
+                    color,
+                    inner_thickness,
+                    cv2.LINE_AA,
+                )
 
     return img
 
@@ -232,19 +297,34 @@ def draw_keypoints(
     kps: KeyPoints,
     color: Tuple[int, int, int],
 ):
-    x, y, v, sks = kps.x, kps.y, kps.visible, kps.human_conns
+    x, y, v = kps.x, kps.y, kps.visible
 
-    # for sk in sks:
-    #     if np.all(v[sk] > 0):
-    #         cv2.line(
-    #             img,
-    #             (x[sk][0], y[sk][0]),
-    #             (x[sk][1], y[sk][1]),
-    #             color=color,
-    #             thickness=3,
-    #         )
+    # calculate scaling for points and connections
+    img_h, img_w, _ = img.shape
+    img_area = img_h * img_w
+    dynamic_size = int(0.01867599 * (img_area ** 0.4422045))
+    dynamic_size = max(dynamic_size, 1)
 
+    # draw connections
+    if kps.metadata is not None and kps.metadata.connections is not None:
+        for connection in kps.metadata.connections:
+            if v[connection.p1] > 0 and v[connection.p2] > 0:
+                cv2.line(
+                    img,
+                    (int(x[connection.p1]), int(y[connection.p1])),
+                    (int(x[connection.p2]), int(y[connection.p2])),
+                    color=connection.color,
+                    thickness=dynamic_size,
+                )
+
+    # draw points
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
-        cv2.circle(img, (x_c, y_c), radius=5, color=color, thickness=-1)
+        cv2.circle(
+            img,
+            (int(round(x_c)), int(round(y_c))),
+            radius=dynamic_size,
+            color=color,
+            thickness=-1,
+        )
 
     return img

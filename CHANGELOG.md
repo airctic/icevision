@@ -6,8 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `aggregate_records_objects` function
+
 ### Changed
+- Added `label_field` to VIA parser to allow for alternate `region_attribute` names
+ 
 ### Deleted
+
+## [0.5.0]
+
+### Added
+- Keypoints full support: data API, model and training
+- VGG Image Annotator v2 JSON format parser for bboxes
+- `figsize` parameter to `show_record` and `show_sample`
+
+### Changed
+- improved visualisation for small bboxes
+- `COCOMetric` now returns all metrics from pycocotools
+- makes torchvision models torchscriptable
 
 ## [0.4.0]
 
@@ -177,3 +193,4 @@ so, for example, instead of `Parser` now we have to do `parsers.Parser`
 
 ## Links  
 [Unreleased]: https://github.com/airctic/mantisshrimp/tree/master
+
