@@ -71,7 +71,7 @@ class FilepathMixin(ParserMixin):
 
 
 class SizeMixin(ParserMixin):
-    """Adds `image_height` and `image_width` method to parser"""
+    """Adds `image_width_height` method to parser"""
 
     def record_mixins(self):
         return [SizeRecordMixin, *super().record_mixins()]

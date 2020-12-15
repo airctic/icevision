@@ -25,8 +25,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
     """Base class for all parsers, implements the main parsing logic.
 
     The actual fields to be parsed are defined by the mixins used when
-    defining a custom parser. The only required field for all parsers
-    is the `image_id`.
+    defining a custom parser. The only required fields for all parsers
+    are `image_id` and `image_width_height`.
 
     # Examples
 
@@ -106,6 +106,8 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
+
+        # Hack to define the class of the mixed_record in the local namespace. This is required for pickeling.
         Record = self.record_class()
 
         if self._check_path(cache_filepath):

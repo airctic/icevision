@@ -57,12 +57,19 @@ def record_wrong_num_annotations(samples_source):
     return record
 
 
+class TestKeypointsMetadata(KeypointsMetadata):
+    labels = ("nose", "ankle")
+
+
 @pytest.fixture()
 def record_keypoints():
     Record = create_mixed_record([BBoxesRecordMixin, KeyPointsRecordMixin])
     record = Record()
     record.add_keypoints(
-        [KeyPoints.from_xyv([0, 0, 0, 1, 1, 1, 2, 2, 2]), KeyPoints.from_xyv([0, 0, 0])]
+        [
+            KeyPoints.from_xyv([0, 0, 0, 1, 1, 1, 2, 2, 2], TestKeypointsMetadata),
+            KeyPoints.from_xyv([0, 0, 0], TestKeypointsMetadata),
+        ]
     )
     record.add_bboxes([BBox.from_xyxy(1, 2, 4, 4)])
 
@@ -75,7 +82,11 @@ def test_record_keypoints(record_keypoints):
     assert (record_keypoints.keypoints[0].visible == np.array([0, 1, 2])).all()
     assert (record_keypoints.keypoints[0].x == np.array([0, 1, 2])).all()
     assert record_keypoints.bboxes == [BBox.from_xyxy(1, 2, 4, 4)]
-    assert (record_keypoints.keypoints[1].y == KeyPoints.from_xyv([0, 0, 0]).y).all()
+    assert (
+        record_keypoints.keypoints[1].y
+        == KeyPoints.from_xyv([0, 0, 0], TestKeypointsMetadata).y
+    ).all()
+    assert record_keypoints.keypoints[0].metadata == TestKeypointsMetadata
 
 
 def test_record_num_annotations(record):
