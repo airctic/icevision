@@ -110,6 +110,7 @@ def plot_top_losses(
     dataset: Dataset,
     sort_by: str = "loss_total",
     n_samples: int = 5,
+    batch_size: int = 8,
 ) -> Tuple[List[dict], List[dict], dict]:
     """
     Gets a dataset and a model as input. Calculates losses for each sample in the dataset.
@@ -122,6 +123,7 @@ def plot_top_losses(
     dataset: Dataset
     sort_by: (str) the loss to sort samples by
     n_samples: how many samples to show
+    batch_size: used when creating the infer dataloader to get model predictions on the dataset
 
     Returns
     -------
@@ -134,7 +136,7 @@ def plot_top_losses(
     samples, losses_stats = get_losses(model, dataset)
     samples = add_annotations(samples)
 
-    dl = infer_dl(dataset, batch_size=16)  # setting `batch_size` to 16 is arbitrary.
+    dl = infer_dl(dataset, batch_size=batch_size)
     _, preds = predict_dl(model=model, infer_dl=dl)
 
     sorted_samples, sorted_preds, annotations = sort_losses(samples, preds, by=sort_by)
