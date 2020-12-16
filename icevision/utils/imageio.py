@@ -53,18 +53,24 @@ def plot_grid_preds_actuals(
     for im, ax in zip(zip(actuals, predictions), axs.reshape(-1, 2)):
         ax[0].imshow(im[0], cmap=None)
         ax[0].set_title("Ground truth")
+        ax[1].imshow(im[1], cmap=None)
+        ax[1].set_title("Prediction")
+
         if annotations is None:
             ax[0].set_axis_off()
+            ax[1].set_axis_off()
         else:
             ax[0].get_xaxis().set_ticks([])
             ax[0].set_frame_on(False)
             ax[0].get_yaxis().set_visible(False)
-            ax[0].set_xlabel(annotations[i], ma="left")
-            i += 1
+            ax[0].set_xlabel(annotations[i][0], ma="left")
 
-        ax[1].imshow(im[1], cmap=None)
-        ax[1].set_axis_off()
-        ax[1].set_title("Prediction")
+            ax[1].get_xaxis().set_ticks([])
+            ax[1].set_frame_on(False)
+            ax[1].get_yaxis().set_visible(False)
+            ax[1].set_xlabel(annotations[i][1], ma="left")
+
+            i += 1
 
     plt.tight_layout()
     if show:

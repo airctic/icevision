@@ -1,4 +1,4 @@
-__all__ = ["show_results", "get_losses", "plot_top_losses"]
+__all__ = ["show_results", "get_losses", "plot_top_losses", "add_annotations"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -72,7 +72,6 @@ def get_losses(
         "loss_rpn_box_reg": [],
         "loss_total": [],
     }
-    for_text = ["loss_classifier", "loss_box_reg", "loss_total"]
 
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
@@ -82,20 +81,28 @@ def get_losses(
             loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
             loss["loss_total"] = sum(loss.values())
 
-            text = ""
             for l in losses_stats.keys():
                 losses_stats[l].append(loss[l])
-                if l in for_text:
-                    text += f"{l}: {round(loss[l], 5)}\n"
-
-            text += f"IMG: {sample[0]['filepath'].name}"
-            loss["text"] = text
 
             sample[0].update(loss)
             samples_plus_losses.append(sample[0])
 
     losses_stats = {k: get_stats(v) for k, v in losses_stats.items()}
     return samples_plus_losses, losses_stats
+
+
+def add_annotations(samples: List[dict]) -> List[dict]:
+    """
+    Adds a `text` field to the sample dict to use as annotations when plotting.
+    """
+    for sample in samples:
+        text = ""
+        for key in sample.keys():
+            if "loss" in key:
+                text += f"{key}: {round(sample[key], 5)}\n"
+        text += f"IMG: {sample['filepath'].name}"
+        sample["text"] = text
+    return samples
 
 
 def plot_top_losses(
@@ -125,6 +132,7 @@ def plot_top_losses(
                   for each one of the losses.
     """
     samples, losses_stats = get_losses(model, dataset)
+    samples = add_annotations(samples)
 
     dl = infer_dl(dataset, batch_size=16)  # setting `batch_size` to 16 is arbitrary.
     _, preds = predict_dl(model=model, infer_dl=dl)
@@ -132,10 +140,17 @@ def plot_top_losses(
     sorted_samples, sorted_preds, annotations = sort_losses(samples, preds, by=sort_by)
     assert len(sorted_samples) == len(samples) == len(preds) == len(sorted_preds)
 
+    anns = []
+    for ann in annotations:
+        ann = ann.split("\n")
+        ann1 = "\n".join(ann[:3])
+        ann2 = "\n".join(ann[3:])
+        anns.append((ann1, ann2))
+
     show_preds(
         samples=sorted_samples[:n_samples],
         preds=sorted_preds[:n_samples],
-        annotations=annotations[:n_samples],
+        annotations=anns[:n_samples],
     )
     model.train()
     return sorted_samples, sorted_preds, losses_stats
