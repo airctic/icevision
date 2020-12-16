@@ -39,6 +39,15 @@ def show_results(
     )
 
 
+def _move_to_device(x, y, device):
+    x = [o.to(device) for o in x]
+    y = [
+        {k: (v.to(device) if isinstance(v, torch.Tensor) else v) for k, v in o.items()}
+        for o in y
+    ]
+    return x, y
+
+
 def get_losses(
     model: nn.Module,
     dataset: Dataset,
@@ -76,7 +85,7 @@ def get_losses(
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
             torch.manual_seed(0)
-            x = [x[0].to(device)]
+            x, y = _move_to_device(x, y, device)
             loss = model(x, y)
             loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
             loss["loss_total"] = sum(loss.values())
