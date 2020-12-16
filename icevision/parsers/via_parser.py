@@ -142,7 +142,7 @@ class VIAMaskParser(VIABBoxParser, MasksMixin):
                     ]
 
                     # create empty image and fill it with the polygon
-                    # mask_img = PIL.Image.new("L", get_image_size(self.filepath(o)), 0)
+                    mask_img = PIL.Image.new("L", get_image_size(self.filepath(o)), 0)
                     PIL.ImageDraw.Draw(mask_img).polygon(xy_coords, outline=1, fill=1)
 
                     # return binary mask array from created image
