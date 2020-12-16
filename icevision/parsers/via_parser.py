@@ -11,6 +11,7 @@ def via(
     img_dir: Union[str, Path],
     class_map: ClassMap,
     label_field: str = "label",
+    mask: bool = True,
 ) -> Parser:
     """
     Parser for JSON annotations from the VGG Image Annotator V2.
@@ -27,7 +28,8 @@ def via(
     # Returns
         The Parser
     """
-    return VIABBoxParser(annotations_file, img_dir, class_map, label_field)
+    parser_cls = VIAMaskParser if mask else VIABBoxParser
+    return parser_cls(annotations_file, img_dir, class_map, label_field)
 
 
 class VIAParseError(Exception):
@@ -74,20 +76,23 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
             )
         return label
 
-    def labels(self, o) -> List[int]:
-        labels = []
-        for shape in o["regions"]:
-            label = self._get_label(o, shape["region_attributes"])
-            if label in self.cls_map.class2id:
-                labels.append(self.cls_map.get_name(label))
-        return labels
-
 
 class VIABBoxParser(VIABaseParser, BBoxesMixin):
     """
-    VIABBoxParser parses `polygon` and `rect` shape attribute types. Polygons
-    are converted into bboxes that surround the entire shape.
+    VIABBoxParser parses `rect` shape attribute. Polygons are
+    ignored as they are assumed to be used for creating masks only
     """
+
+    def labels(self, o) -> List[int]:
+        labels = []
+        for shape in o["regions"]:
+            shape_attr = shape["shape_attributes"]
+            # only get label from `rect` shape attributes
+            if shape_attr["name"] == "rect":
+                label = self._get_label(o, shape["region_attributes"])
+                if label in self.cls_map.class2id:
+                    labels.append(self.cls_map.get_name(label))
+        return labels
 
     def bboxes(self, o) -> List[BBox]:
         boxes = []
@@ -95,10 +100,12 @@ class VIABBoxParser(VIABaseParser, BBoxesMixin):
             label = self._get_label(o, shape["region_attributes"])
             if label in self.cls_map.class2id:
                 shape_attr = shape["shape_attributes"]
-                if shape_attr["name"] == "polygon":
-                    x, y = shape_attr["all_points_x"], shape_attr["all_points_y"]
-                    boxes.append(BBox.from_xyxy(min(x), min(y), max(x), max(y)))
-                elif shape_attr["name"] == "rect":
+                # if shape_attr["name"] == "polygon":
+                #     x, y = shape_attr["all_points_x"], shape_attr["all_points_y"]
+                #     boxes.append(BBox.from_xyxy(min(x), min(y), max(x), max(y)))
+
+                # !! assumption !! -- bounding boxes are drawn as rectangles
+                if shape_attr["name"] == "rect":
                     boxes.append(
                         BBox.from_xywh(
                             shape_attr["x"],
@@ -108,3 +115,38 @@ class VIABBoxParser(VIABaseParser, BBoxesMixin):
                         )
                     )
         return boxes
+
+
+class VIAMaskParser(VIABBoxParser, MasksMixin):
+    """
+    VIAMaskParser creates a mask from the `polygon` shape attribute
+    i.e. a collection of corresponding x-y coordinates
+    """
+
+    def masks(self, o) -> List[MaskArray]:
+        import PIL
+
+        masks = []
+        for shape in o["regions"]:
+            label = self._get_label(o, shape["region_attributes"])
+            if label in self.cls_map.class2id:
+                shape_attr = shape["shape_attributes"]
+                # assume that masks exist as polygons only
+                if shape_attr["name"] == "polygon":
+                    # create pairs of x-y points for plotting the polygon
+                    xy_coords = [
+                        (x, y)
+                        for x, y in zip(
+                            shape_attr["all_points_x"], shape_attr["all_points_y"]
+                        )
+                    ]
+
+                    # create empty image and fill it with the polygon
+                    # mask_img = PIL.Image.new("L", get_image_size(self.filepath(o)), 0)
+                    PIL.ImageDraw.Draw(mask_img).polygon(xy_coords, outline=1, fill=1)
+
+                    # return binary mask array from created image
+                    mask_array = np.array(mask_img)[None, ...]
+                    masks.append(MaskArray(mask_array))
+        # if masks==[]: ?
+        return masks
