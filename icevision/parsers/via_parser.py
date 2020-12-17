@@ -11,7 +11,7 @@ def via(
     img_dir: Union[str, Path],
     class_map: ClassMap,
     label_field: str = "label",
-    mask: bool = True,
+    mask: bool = False,
 ) -> Parser:
     """
     Parser for JSON annotations from the VGG Image Annotator V2.
