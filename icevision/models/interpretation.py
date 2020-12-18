@@ -188,8 +188,8 @@ class Interpretation:
         anns = []
         for ann in annotations:
             ann = ann.split("\n")
-            ann1 = "\n".join(ann[:3])
-            ann2 = "\n".join(ann[3:])
+            ann1 = "\n".join(ann[:4])
+            ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
 
         show_preds(
