@@ -1,4 +1,10 @@
-__all__ = ["sort_losses", "get_stats", "compute_weighted_sum", "add_annotations"]
+__all__ = [
+    "sort_losses",
+    "get_stats",
+    "compute_weighted_sum",
+    "add_annotations",
+    "extract_losses_from_samples_dicts",
+]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -74,16 +80,32 @@ def get_stats(l: List) -> dict:
 
 
 def _move_to_device(x, y, device):
-    x = [o.to(device) for o in x]
-    y = [
-        {k: (v.to(device) if isinstance(v, torch.Tensor) else v) for k, v in o.items()}
-        for o in y
-    ]
+
+    if isinstance(y, list):
+        x = [o.to(device) for o in x]
+        y = [
+            {
+                k: (v.to(device) if isinstance(v, torch.Tensor) else v)
+                for k, v in o.items()
+            }
+            for o in y
+        ]
+    elif isinstance(
+        y, dict
+    ):  # this covers the efficientdet case in which `y` is a dict of Union[list, tensor] and not a list of dicts and `x` is a Tensor and not a list of Tensors
+        x = x.to(device)
+        for k in y.keys():
+            if isinstance(y[k], list):
+                y[k] = [
+                    o.to(device) if isinstance(o, torch.Tensor) else o for o in y[k]
+                ]
+            else:
+                y[k] = y[k].to(device) if isinstance(y[k], torch.Tensor) else y[k]
     return x, y
 
 
 def _prepend_str(d: dict, s: str):
-    return {(s + k if not k.startswith(s) else k): v for k, v in d.items()}
+    return {(s + "_" + k if s not in k else k): v for k, v in d.items()}
 
 
 class Interpretation:
@@ -132,12 +154,12 @@ class Interpretation:
                 for l in losses_stats.keys():
                     losses_stats[l].append(loss[l])
 
-                loss = _prepend_str(loss, "loss_")
+                loss = _prepend_str(loss, "loss")
                 sample[0].update(loss)
                 samples_plus_losses.append(sample[0])
 
         losses_stats = {k: get_stats(v) for k, v in losses_stats.items()}
-        losses_stats = _prepend_str(losses_stats, "loss_")
+        losses_stats = _prepend_str(losses_stats, "loss")
         return samples_plus_losses, losses_stats
 
     def plot_top_losses(
@@ -170,7 +192,7 @@ class Interpretation:
                     for each one of the losses.
         """
         logger.info(
-            f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss_').keys()) if l!='loss_total']}",
+            f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss').keys()) if l!='loss_total']}",
         )
 
         dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
@@ -213,3 +235,10 @@ def add_annotations(samples: List[dict]) -> List[dict]:
         text += f"IMG: {sample['filepath'].name}"
         sample["text"] = text
     return samples
+
+
+def extract_losses_from_samples_dicts(samples_plus_losses):
+    return [
+        {k: v for k, v in l.items() if "loss" in k or "file" in k}
+        for l in samples_plus_losses
+    ]
