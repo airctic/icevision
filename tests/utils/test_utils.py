@@ -94,7 +94,7 @@ def test_sort_losses():
     assert annotations == ["text3", "text2", "text1"]
 
 
-def test_compute_weighted_sum():
+def test_get_weighted_sum():
     s = {
         "loss1": 1,
         "loss2": 1,
@@ -109,6 +109,6 @@ def test_compute_weighted_sum():
     }
     expected = {"loss1": 1, "loss2": 1, "loss3": 1, "loss4": 1, "loss_weighted": 1.0}
 
-    result = compute_weighted_sum(s, weights)
+    result = get_weighted_sum(s, weights)
 
     assert result["loss_weighted"] == expected["loss_weighted"]

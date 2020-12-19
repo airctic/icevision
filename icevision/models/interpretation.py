@@ -1,9 +1,9 @@
 __all__ = [
     "sort_losses",
     "get_stats",
-    "compute_weighted_sum",
+    "get_weighted_sum",
     "add_annotations",
-    "extract_losses_from_samples_dicts",
+    "get_samples_losses",
 ]
 
 from icevision.imports import *
@@ -13,7 +13,7 @@ from icevision.data import *
 from icevision.visualize.show_data import show_preds
 
 
-def compute_weighted_sum(sample, weights):
+def get_weighted_sum(sample, weights):
     loss_weighted = 0
     for loss, weight in weights.items():
         loss_weighted += sample[loss] * weight
@@ -46,7 +46,7 @@ def sort_losses(
             assert (
                 losses_passed == losses_expected
             ), f"You need to pass a weight for each of the losses in {losses_expected}, got {losses_passed} instead."
-            samples = [compute_weighted_sum(s, by["weights"]) for s in samples]
+            samples = [get_weighted_sum(s, by["weights"]) for s in samples]
             by = "loss_weighted"
 
     l = list(zip(samples, preds))
@@ -237,7 +237,7 @@ def add_annotations(samples: List[dict]) -> List[dict]:
     return samples
 
 
-def extract_losses_from_samples_dicts(samples_plus_losses):
+def get_samples_losses(samples_plus_losses):
     return [
         {k: v for k, v in l.items() if "loss" in k or "file" in k}
         for l in samples_plus_losses
