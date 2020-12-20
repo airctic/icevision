@@ -39,8 +39,19 @@ def show_results(
     )
 
 
+def _rename_losses_effdet(loss):
+    loss["effdet_total_loss"] = loss["loss"]
+    _ = loss.pop("loss", None)
+    return loss
+
+def _sum_losses_effdet(loss):
+    _loss = loss.copy()
+    _ = _loss.pop("effdet_total_loss", None)
+    loss["loss_total"] = sum(_loss.values())
+    return loss
+
 _LOSSES_DICT = {
-    "loss": [],
+    "effdet_total_loss": [],
     "class_loss": [],
     "box_loss": [],
     "loss_total": [],
@@ -52,3 +63,6 @@ interp = Interpretation(
     infer_dl=infer_dl,
     predict_dl=predict_dl,
 )
+
+interp._rename_losses = _rename_losses_effdet
+interp._sum_losses = _sum_losses_effdet

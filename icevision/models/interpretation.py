@@ -28,6 +28,8 @@ def sort_losses(
     losses_expected = [
         k for k in samples[0].keys() if "loss" in k and k != "loss_total"
     ]
+    if "effdet_total_loss" in losses_expected: 
+        losses_expected.remove("effdet_total_loss")
 
     if isinstance(by, str):
         loss_check = losses_expected + ["loss_total"]
@@ -46,6 +48,7 @@ def sort_losses(
             assert (
                 losses_passed == losses_expected
             ), f"You need to pass a weight for each of the losses in {losses_expected}, got {losses_passed} instead."
+
             samples = [get_weighted_sum(s, by["weights"]) for s in samples]
             by = "loss_weighted"
 
@@ -115,6 +118,13 @@ class Interpretation:
         self.infer_dl = infer_dl
         self.predict_dl = predict_dl
 
+    def _rename_losses(self, losses_dict):
+        return losses_dict
+
+    def _sum_losses(self, losses_dict):
+        losses_dict["loss_total"] = sum(losses_dict.values())
+        return losses_dict
+
     def get_losses(
         self,
         model: nn.Module,
@@ -149,7 +159,8 @@ class Interpretation:
                 x, y = _move_to_device(x, y, device)
                 loss = model(x, y)
                 loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
-                loss["loss_total"] = sum(loss.values())
+                loss = self._rename_losses(loss)
+                loss = self._sum_losses(loss)
 
                 for l in losses_stats.keys():
                     losses_stats[l].append(loss[l])

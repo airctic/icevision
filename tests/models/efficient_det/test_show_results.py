@@ -8,7 +8,7 @@ def test_plot_losses(fridge_efficientdet_model, fridge_ds, monkeypatch):
     ds, _ = fridge_ds
     by = {
         "method": "weighted",
-        "weights": {"loss": 1, "class_loss": 0, "box_loss": 0},
+        "weights": {"class_loss": 0, "box_loss": 0},
     }
 
     samples_plus_losses, preds, _ = efficientdet.interp.plot_top_losses(
