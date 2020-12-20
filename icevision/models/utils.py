@@ -12,7 +12,6 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.parsers import *
 
-
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
 
 

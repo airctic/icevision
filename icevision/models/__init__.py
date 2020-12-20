@@ -1,4 +1,5 @@
 from icevision.models.utils import *
+from icevision.models.interpretation import *
 
 from icevision.models.torchvision_models import (
     faster_rcnn,

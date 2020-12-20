@@ -1,4 +1,4 @@
-__all__ = ["show_results"]
+__all__ = ["show_results", "interp"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -7,8 +7,14 @@ from icevision.data import *
 from icevision.models.base_show_results import base_show_results
 from icevision.models.torchvision_models.keypoint_rcnn.dataloaders import (
     build_infer_batch,
+    valid_dl,
+    infer_dl,
 )
-from icevision.models.torchvision_models.keypoint_rcnn.prediction import predict
+from icevision.models.torchvision_models.keypoint_rcnn.prediction import (
+    predict,
+    predict_dl,
+)
+from icevision.models.interpretation import Interpretation
 
 
 def show_results(
@@ -31,3 +37,20 @@ def show_results(
         denormalize_fn=denormalize_fn,
         show=show,
     )
+
+
+_LOSSES_DICT = {
+    "loss_classifier": [],
+    "loss_box_reg": [],
+    "loss_objectness": [],
+    "loss_rpn_box_reg": [],
+    "loss_keypoint": [],
+    "loss_total": [],
+}
+
+interp = Interpretation(
+    losses_dict=_LOSSES_DICT,
+    valid_dl=valid_dl,
+    infer_dl=infer_dl,
+    predict_dl=predict_dl,
+)
