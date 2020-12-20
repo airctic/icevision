@@ -28,7 +28,7 @@ def sort_losses(
     losses_expected = [
         k for k in samples[0].keys() if "loss" in k and k != "loss_total"
     ]
-    if "effdet_total_loss" in losses_expected: 
+    if "effdet_total_loss" in losses_expected:
         losses_expected.remove("effdet_total_loss")
 
     if isinstance(by, str):

@@ -44,11 +44,13 @@ def _rename_losses_effdet(loss):
     _ = loss.pop("loss", None)
     return loss
 
+
 def _sum_losses_effdet(loss):
     _loss = loss.copy()
     _ = _loss.pop("effdet_total_loss", None)
     loss["loss_total"] = sum(_loss.values())
     return loss
+
 
 _LOSSES_DICT = {
     "effdet_total_loss": [],
