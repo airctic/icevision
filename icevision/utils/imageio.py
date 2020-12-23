@@ -7,7 +7,7 @@ def open_img(fn, gray=False):
     if not os.path.exists(fn):
         raise ValueError(f"File {fn} does not exists")
     color = cv2.COLOR_BGR2GRAY if gray else cv2.COLOR_BGR2RGB
-    return cv2.cvtColor(cv2.imread(str(fn)), color)
+    return cv2.cvtColor(cv2.imread(str(fn), cv2.IMREAD_UNCHANGED), color)
 
 
 def show_img(img, ax=None, show: bool = False, **kwargs):
