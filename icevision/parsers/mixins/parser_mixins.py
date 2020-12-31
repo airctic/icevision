@@ -1,4 +1,5 @@
 __all__ = [
+    "ParserMixin",
     "ImageidMixin",
     "FilepathMixin",
     "SizeMixin",
