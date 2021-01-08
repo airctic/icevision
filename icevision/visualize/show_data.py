@@ -201,6 +201,4 @@ def show_preds(
             )
             for img, pred in zip(samples, preds)
         ]
-        plot_grid(
-            partials, ncols=ncols, figsize=figsize, show=show, annotations=annotations
-        )
+        plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
