@@ -13,3 +13,5 @@ from icevision.soft_dependencies import SoftDependencies
 
 if SoftDependencies.effdet:
     from icevision.models import efficientdet
+
+from icevision.models import mmdetection_models
