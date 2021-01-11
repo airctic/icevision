@@ -15,6 +15,11 @@ from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
 
+# This should probably move elsewhere
+from .utils import as_rgb_tuple
+from PIL import Image, ImageFont, ImageDraw
+import PIL
+
 
 def draw_sample(
     sample,
@@ -22,8 +27,18 @@ def draw_sample(
     denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
     display_bbox: bool = True,
+    display_score: bool = False,  # set to False for backward compat
     display_mask: bool = True,
     display_keypoints: bool = True,
+    font: Optional[os.PathLike] = None,
+    font_scale: Union[int, float] = 1.0,
+    label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    mask_blend: float = 0.5,
+    color_map: Optional[dict] = None,  # label -> color mapping
+    prettify: bool = False,
+    # Args for plotting specific labels
+    exclude_labels: List[str] = None,
+    include_only: List[str] = None,
 ):
     img = sample.img.copy()
     if denormalize_fn is not None:
@@ -40,36 +55,63 @@ def draw_sample(
         # getattr(sample, tasks.detection.name, {}).get("masks", []),
         # getattr(sample, tasks.detection.name, {}).get("keypoints", []),
     ):
+        # random color by default
         color = (np.random.random(3) * 0.6 + 0.4) * 255
-        color = tuple(color.astype(int).tolist())
+
+        # logic for plotting specific labels only
+        # `include_only` > `exclude_labels`
+        if label:
+            label_str = class_map.get_id(label)
+            if include_only is not None:
+                if not label_str in include_only:
+                    continue
+            elif label_str in exclude_labels:
+                continue
+
+        # if color-map is given and `labels` are predicted
+        # then set color accordingly
+        if color_map is not None:
+            color = np.array(color_map[label_str]).astype(np.float)
 
         if display_mask and mask is not None:
-            img = draw_mask(img=img, mask=mask, color=color)
+            img = draw_mask(
+                img=img,
+                mask=mask,
+                color=color,
+                blend=mask_blend,
+            )
         if display_bbox and bbox is not None:
             img = draw_bbox(img=img, bbox=bbox, color=color)
+        if display_keypoints and keypoints is not None:
+            img = draw_keypoints(img=img, kps=keypoints, color=color)
         if display_label and label is not None:
             img = draw_label(
                 img=img,
                 label=label,
+                score=score if display_score else None,
                 bbox=bbox,
                 mask=mask,
                 class_map=class_map,
-                color=color,
+                color=label_color,
+                font_scale=font_scale,
+                font=font,
+                prettify=prettify,
             )
-        if display_keypoints and keypoints is not None:
-            img = draw_keypoints(img=img, kps=keypoints, color=color)
-
     return img
 
 
 def draw_label(
     img: np.ndarray,
     label: int,
+    score: Optional[float],
     color,
     class_map: Optional[ClassMap] = None,
     bbox=None,
     mask=None,
-):
+    font: Optional[int, os.PathLike] = None,
+    font_scale: Union[int, float] = 1.0,
+    prettify: bool = False,
+) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
     if bbox is not None:
         x, y, _, _ = bbox.xyxy
@@ -82,11 +124,48 @@ def draw_label(
         caption = class_map.get_by_id(label)
     else:
         caption = str(label)
+    if prettify:
+        # We could introduce a callback here for more complex label renaming
+        caption = caption.capitalize()
 
-    return _draw_label(img=img, caption=caption, x=int(x), y=int(y), color=color)
+    # Append label confidence to caption if applicable
+    if score is not None:
+        if prettify:
+            score = f"{score * 100}%"
+        caption = f"{caption}: {score}"
+
+    if font is None:
+        font = cv2.FONT_HERSHEY_SIMPLEX
+
+    # cv2.FONT_ ... are all internally stored as `int` values
+    if isinstance(font, int):
+        return _draw_label_cv2(
+            img=img,
+            caption=caption,
+            x=x,
+            y=y,
+            color=color,
+            font=font,
+            font_scale=font_scale,
+        )
+    # else if path to custom font file is entered
+    else:
+        if not Path(font).exists():
+            # PIL throws cryptic errors for wrong filepaths, so let's catch it earlier here
+            raise FileNotFoundError(f"{font} file doesn't exist")
+        return _draw_label_PIL(
+            img=img,
+            caption=caption,
+            x=x,
+            y=y,
+            color=color,
+            font_path=font,
+            font_size=int(font_scale),
+            return_as_pil_img=True,
+        )
 
 
-def _draw_label(
+def _draw_label_cv2(
     img: np.ndarray,
     caption: str,
     x: int,
@@ -112,6 +191,29 @@ def _draw_label(
     cv2.putText(img, caption, label_pt, font, font_scale, (240, 240, 240), 2)
 
     return img
+
+
+def _draw_label_PIL(
+    img: np.ndarray,
+    caption: str,
+    x: int,
+    y: int,
+    color: Union[np.ndarray, list, tuple],
+    # font_path = None ## should assign a default PIL font
+    font_path="DIN Alternate Bold.ttf",
+    font_size: int = 20,
+    return_as_pil_img: bool = False,
+) -> Union[PIL.Image.Image, np.ndarray]:
+    """Draw labels on the image"""
+    font = PIL.ImageFont.truetype(font_path, size=font_size)
+    xy = (x + 10, y + 5)
+    img = PIL.Image.fromarray(img)
+    draw = ImageDraw.Draw(img)
+    draw.text(xy, caption, font=font, fill=as_rgb_tuple(color))
+    if return_as_pil_img:
+        return img
+    else:
+        return np.array(img)
 
 
 def draw_record(
