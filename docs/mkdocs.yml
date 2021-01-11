@@ -51,6 +51,7 @@ nav:
     - Custom Parser: custom_parser.md
     - Inference: inference.md
     - Mask RCNN: mask_rcnn_pennfudan.md
+    - Keypoints RCNN: ochuman_keypoint_detection.md
     - EffecientDet: efficientdet_pets.md
     - Training a VOC dataset: dataset_voc_nb.md
     - Model Tracking Using Wandb: wandb_efficientdet.md
