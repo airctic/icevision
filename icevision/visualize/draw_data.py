@@ -108,7 +108,7 @@ def draw_label(
     class_map: Optional[ClassMap] = None,
     bbox=None,
     mask=None,
-    font: Optional[int, os.PathLike] = None,
+    font: Union[int, os.PathLike, None] = None,
     font_scale: Union[int, float] = 1.0,
     prettify: bool = False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
