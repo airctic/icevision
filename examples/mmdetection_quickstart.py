@@ -1,11 +1,10 @@
 from icevision.all import *
 
 data_dir = icedata.fridge.load_data()
-class_map = icedata.fridge.class_map()
 
-parser = icedata.fridge.parser(data_dir, class_map=class_map)
+parser = icedata.fridge.parser(data_dir)
 
-train_records, valid_records = parser.parse()
+train_records, valid_records = parser.parse(autofix=False, background_id=-1)
 
 presize, size = 256, 128
 
@@ -18,7 +17,7 @@ train_ds = Dataset(train_records, train_tfms)
 valid_ds = Dataset(valid_records, valid_tfms)
 
 train_dl = mmdetection_models.train_dl(train_ds, batch_size=2, shuffle=True)
-valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2, shuffle=False)
+valid_dl = mmdetection_models.valid_dl(valid_ds, batch_size=2, shuffle=False)
 
 ### MODEL
 
@@ -40,6 +39,6 @@ class LitModel(mmdetection_models.lightning.ModelAdapter):
 
 lit_model = LitModel(model)
 trainer = pl.Trainer(
-    max_epochs=10, gpus=1, num_sanity_val_steps=0, check_val_every_n_epoch=99
+    max_epochs=10, gpus=1, num_sanity_val_steps=0, check_val_every_n_epoch=1
 )
 trainer.fit(lit_model, train_dl, valid_dl)

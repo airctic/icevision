@@ -1,6 +1,7 @@
 from icevision.models.torchvision_models import backbones
 from icevision.models.torchvision_models.loss_fn import *
 
+from icevision.models.torchvision_models.keypoint_rcnn.parser import *
 from icevision.models.torchvision_models.keypoint_rcnn.dataloaders import *
 from icevision.models.torchvision_models.keypoint_rcnn.model import *
 

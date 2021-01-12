@@ -12,7 +12,7 @@ from icevision.parsers.mixins import *
 def voc(
     annotations_dir: Union[str, Path],
     images_dir: Union[str, Path],
-    class_map: ClassMap,
+    class_map: Optional[ClassMap] = None,
     masks_dir: Optional[Union[str, Path]] = None,
 ):
     if not masks_dir:
@@ -35,10 +35,10 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
         self,
         annotations_dir: Union[str, Path],
         images_dir: Union[str, Path],
-        class_map: ClassMap,
+        class_map: Optional[ClassMap] = None,
     ):
+        super().__init__(class_map=class_map)
         self.images_dir = Path(images_dir)
-        self.class_map = class_map
 
         self.annotations_dir = Path(annotations_dir)
         self.annotation_files = get_files(self.annotations_dir, extensions=[".xml"])
@@ -64,12 +64,11 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
     def image_width_height(self, o) -> Tuple[int, int]:
         return get_image_size(self.filepath(o))
 
-    def labels(self, o) -> List[int]:
+    def labels(self, o) -> List[str]:
         labels = []
         for object in self._root.iter("object"):
             label = object.find("name").text
-            label_id = self.class_map.get_name(label)
-            labels.append(label_id)
+            labels.append(label)
 
         return labels
 
@@ -97,7 +96,7 @@ class VocMaskParser(VocXmlParser, MasksMixin):
         annotations_dir: Union[str, Path],
         images_dir: Union[str, Path],
         masks_dir: Union[str, Path],
-        class_map: ClassMap,
+        class_map: Optional[ClassMap] = None,
     ):
         super().__init__(
             annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
