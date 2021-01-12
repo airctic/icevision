@@ -131,7 +131,7 @@ def draw_label(
     # Append label confidence to caption if applicable
     if score is not None:
         if prettify:
-            score = f"{score * 100}%"
+            score = f"{score * 100: .2f}%"
         caption = f"{caption}: {score}"
 
     if font is None:
