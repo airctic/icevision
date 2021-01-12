@@ -37,7 +37,7 @@ def draw_sample(
     color_map: Optional[dict] = None,  # label -> color mapping
     prettify: bool = False,
     # Args for plotting specific labels
-    exclude_labels: List[str] = None,
+    exclude_labels: List[str] = [],
     include_only: List[str] = None,
 ):
     img = sample.img.copy()
