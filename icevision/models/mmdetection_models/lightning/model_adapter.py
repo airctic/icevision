@@ -38,40 +38,25 @@ class ModelAdapter(LightningModelAdapter, ABC):
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
-        (xb, yb), samples = batch
-        xb = torch.stack(xb)
-
-        # TODO: add number of channels to size mixin?
-        bs, img_c, img_h, img_w = xb.shape
-        img_metas = [
-            {
-                # height and width from sample is before padding
-                "img_shape": (sample["height"], sample["width"], img_c),
-                "pad_shape": (img_h, img_w, img_c),
-                "scale_factor": np.ones(4),  # TODO: is scale factor correct?
-            }
-            for sample in samples
-        ]
-
-        data = {
-            "img": xb,
-            "img_metas": img_metas,
-            "gt_bboxes": [o["boxes"] for o in yb],
-            "gt_labels": [o["labels"] for o in yb],
-        }
-
+        data, samples = batch
+        self.model.eval()
         with torch.no_grad():
-            raw_preds = self.model.val_step(data=data, optimizer=None)
+            results = self.model.simple_test(data["img"], data["img_metas"])
+            outputs = self.model.train_step(data=data, optimizer=None)
+
             set_trace()
 
-            preds = efficientdet.convert_raw_predictions(raw_preds["detections"], 0)
-            loss = efficientdet.loss_fn(raw_preds, yb)
+            # losses = self.model.val_step(data=data, optimizer=None)
+            # preds = self.model(return_loss=False, **data)
+            # # TODO: Similar problem to faster_rcnn, does not return the predictions
 
-        self.accumulate_metrics(samples, preds)
+            # preds = efficientdet.convert_raw_predictions(raw_preds["detections"], 0)
+            # loss = efficientdet.loss_fn(raw_preds, yb)
 
-        for k, v in raw_preds.items():
-            if "loss" in k:
-                self.log(f"valid/{k}", v)
+        # self.accumulate_metrics(samples, preds)
+
+        for k, v in outputs["log_vars"].items():
+            self.log(f"train/{k}", v)
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()

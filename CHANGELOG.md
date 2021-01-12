@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+
 ### Changed
+- **Breaking:** All `Parser` subclasses need to call `super.__init__`
+- **Breaking:** `LabelsMixin.labels` now needs to return `List[str]` instead of `List[int]` (labels names instead of label ids)
+
 ### Deleted
 
 ## [0.5.2]

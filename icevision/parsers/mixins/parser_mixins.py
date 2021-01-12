@@ -109,11 +109,14 @@ class LabelsMixin(ParserMixin):
         return [LabelsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
-        record.add_labels(self.labels(o))
+        names = self.labels(o)
+        ids = [self.class_map.get_name(name) for name in names]
+        record.add_labels(ids)
+
         super().parse_fields(o, record)
 
     @abstractmethod
-    def labels(self, o) -> List[int]:
+    def labels(self, o) -> List[str]:
         """Returns the labels for the receive sample.
 
         !!! danger "Important"

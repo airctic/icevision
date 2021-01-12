@@ -1,9 +1,9 @@
 __all__ = [
     "build_train_batch",
-    # "build_valid_batch",
+    "build_valid_batch",
     # "build_infer_batch",
     "train_dl",
-    # "valid_dl",
+    "valid_dl",
     # "infer_dl",
 ]
 
@@ -21,9 +21,24 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     )
 
 
+def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    return transform_dl(
+        dataset=dataset,
+        build_batch=build_valid_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
+
+
+def build_valid_batch(
+    records: Sequence[RecordType], batch_tfms=None
+) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
+    return build_train_batch(records=records, batch_tfms=batch_tfms)
+
+
 def build_train_batch(
     records: Sequence[RecordType], batch_tfms=None
-) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
+) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
     records = common_build_batch(records=records, batch_tfms=batch_tfms)
 
     images, labels, bboxes, img_metas = [], [], [], []
