@@ -2,6 +2,8 @@ __all__ = ["draw_label", "bbox_polygon", "draw_mask"]
 
 from icevision.imports import *
 from matplotlib import patches
+from PIL import Image, ImageFont, ImageDraw
+import PIL
 
 
 def draw_label(ax, x, y, name, color, fontsize=18):
