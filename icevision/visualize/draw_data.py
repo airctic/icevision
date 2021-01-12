@@ -36,10 +36,11 @@ def draw_sample(
     mask_blend: float = 0.5,
     color_map: Optional[dict] = None,  # label -> color mapping
     prettify: bool = False,
+    return_as_pil_img=False,
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
     include_only: List[str] = None,
-):
+) -> Union[np.ndarray, PIL.Image.Image]:
     img = sample.img.copy()
     if denormalize_fn is not None:
         img = denormalize_fn(img)
@@ -96,6 +97,7 @@ def draw_sample(
                 font_scale=font_scale,
                 font=font,
                 prettify=prettify,
+                return_as_pil_img=return_as_pil_img,
             )
     return img
 
@@ -111,6 +113,7 @@ def draw_label(
     font: Union[int, os.PathLike, None] = None,
     font_scale: Union[int, float] = 1.0,
     prettify: bool = False,
+    return_as_pil_img=False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
     if bbox is not None:
@@ -161,7 +164,7 @@ def draw_label(
             color=color,
             font_path=font,
             font_size=int(font_scale),
-            return_as_pil_img=True,
+            return_as_pil_img=return_as_pil_img,
         )
 
 
@@ -379,7 +382,11 @@ def draw_bbox(
 
 
 def draw_mask(
-    img: np.ndarray, mask: MaskArray, color: Tuple[int, int, int], blend: float = 0.5
+    img: np.ndarray,
+    mask: MaskArray,
+    color: Tuple[int, int, int],
+    blend: float = 0.5,
+    erode_strength: int = 7,
 ):
     color = np.asarray(color, dtype=int)
     # draw mask
@@ -387,7 +394,9 @@ def draw_mask(
     img[mask_idxs] = blend * img[mask_idxs] + (1 - blend) * color
 
     # draw border
-    border = mask.data - cv2.erode(mask.data, np.ones((7, 7), np.uint8), iterations=1)
+    border = mask.data - cv2.erode(
+        mask.data, np.ones((erode_strength, erode_strength), np.uint8), iterations=1
+    )
     border_idxs = np.where(border)
     img[border_idxs] = color
 
