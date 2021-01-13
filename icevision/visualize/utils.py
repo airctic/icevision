@@ -1,4 +1,4 @@
-__all__ = ["draw_label", "bbox_polygon", "draw_mask"]
+__all__ = ["draw_label", "bbox_polygon", "draw_mask", "as_rgb_tuple"]
 
 from icevision.imports import *
 from matplotlib import patches
