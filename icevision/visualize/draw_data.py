@@ -101,7 +101,12 @@ def draw_sample(
                 prettify=prettify,
                 return_as_pil_img=return_as_pil_img,
             )
-    return img
+    if return_as_pil_img:
+        # may or may not be a PIL Image based on `display_label`
+        return img if isinstance(img, PIL.Image.Image) else PIL.Image.fromarray(img)
+    else:
+        # will be a `np.ndarray` by default so no need for casting
+        return img
 
 
 def draw_label(
