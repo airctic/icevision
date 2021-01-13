@@ -34,6 +34,7 @@ def draw_sample(
     font_scale: Union[int, float] = 1.0,
     label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
     mask_blend: float = 0.5,
+    mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
     prettify: bool = False,
     return_as_pil_img=False,
@@ -80,6 +81,7 @@ def draw_sample(
                 mask=mask,
                 color=color,
                 blend=mask_blend,
+                border_thickness=mask_border_thickness,
             )
         if display_bbox and bbox is not None:
             img = draw_bbox(img=img, bbox=bbox, color=color)
@@ -386,16 +388,18 @@ def draw_mask(
     mask: MaskArray,
     color: Tuple[int, int, int],
     blend: float = 0.5,
-    erode_strength: int = 7,
+    border_thickness: int = 7,
 ):
     color = np.asarray(color, dtype=int)
     # draw mask
     mask_idxs = np.where(mask.data)
+
+    img = np.array(img)  # why is this necessary?
     img[mask_idxs] = blend * img[mask_idxs] + (1 - blend) * color
 
     # draw border
     border = mask.data - cv2.erode(
-        mask.data, np.ones((erode_strength, erode_strength), np.uint8), iterations=1
+        mask.data, np.ones((border_thickness, border_thickness), np.uint8), iterations=1
     )
     border_idxs = np.where(border)
     img[border_idxs] = color
