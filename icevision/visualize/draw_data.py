@@ -37,6 +37,7 @@ def draw_sample(
     mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
     prettify: bool = True,
+    prettify_func: Callable = str.capitalize,
     return_as_pil_img=False,
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
@@ -99,6 +100,7 @@ def draw_sample(
                 font_scale=font_scale,
                 font=font,
                 prettify=prettify,
+                prettify_func=prettify_func,
                 return_as_pil_img=return_as_pil_img,
             )
     if return_as_pil_img:
@@ -120,6 +122,7 @@ def draw_label(
     font: Union[int, os.PathLike, None] = None,
     font_scale: Union[int, float] = 1.0,
     prettify: bool = True,
+    prettify_func: Callable = str.capitalize,
     return_as_pil_img=False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
@@ -136,7 +139,7 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
-        caption = caption.capitalize()
+        caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
     if score is not None:
