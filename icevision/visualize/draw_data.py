@@ -27,7 +27,7 @@ def draw_sample(
     denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
     display_bbox: bool = True,
-    display_score: bool = False,  # set to False for backward compat
+    display_score: bool = True,
     display_mask: bool = True,
     display_keypoints: bool = True,
     font: Optional[os.PathLike] = None,
@@ -36,7 +36,7 @@ def draw_sample(
     mask_blend: float = 0.5,
     mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
-    prettify: bool = False,
+    prettify: bool = True,
     return_as_pil_img=False,
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
@@ -119,7 +119,7 @@ def draw_label(
     mask=None,
     font: Union[int, os.PathLike, None] = None,
     font_scale: Union[int, float] = 1.0,
-    prettify: bool = False,
+    prettify: bool = True,
     return_as_pil_img=False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
