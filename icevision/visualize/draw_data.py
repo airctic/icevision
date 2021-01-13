@@ -279,6 +279,9 @@ def draw_bbox(
 
     # Calculate image dimensions
     dims = sorted(img.shape, reverse=True)
+    color = as_rgb_tuple(color)
+    img = PIL.Image.fromarray(img)
+    draw = PIL.ImageDraw.Draw(img)
 
     # corner thickness is linearly correlated with the smaller image dimension.
     # We use the smaller image dimension rather than image area so as to avoid
@@ -306,8 +309,8 @@ def draw_bbox(
 
     if gap == False:
         xyxy = tuple(np.array(bbox.xyxy, dtype=int))
-        cv2.rectangle(img, xyxy[:2], xyxy[2:], color, bbox_thickness, cv2.LINE_AA)
-        return img
+        draw.rectangle(xyxy, fill=None, outline=color, width=bbox_thickness)
+        return np.array(img)
 
     xmin, ymin, xmax, ymax = tuple(np.array(bbox.xyxy, dtype=int))
 
@@ -333,62 +336,48 @@ def draw_bbox(
         or xmax - (xmin + 4 * corner_length) < corner_length
     ):
         for i in range(4):
-            cv2.line(
-                img,
-                points[i * 3 + 1],
-                points[10 - 3 * i],
-                color,
-                bbox_thickness,
-                cv2.LINE_4,
+            draw.line(
+                xy=(points[i * 3 + 1], points[10 - 3 * i]),
+                fill=color,
+                width=bbox_thickness,
             )
         for i in range(2):
-            cv2.line(
-                img,
-                points[6 * i + 1],
-                points[i * 6 + 4],
-                color,
-                bbox_thickness,
-                cv2.LINE_4,
+            draw.line(
+                xy=(points[6 * i + 1], points[i * 6 + 4]),
+                fill=color,
+                width=bbox_thickness,
             )
     else:
         for i in range(2):
             for j in range(2):
-                cv2.line(
-                    img,
-                    points[i * 6 + j * 4],
-                    points[i * 6 + j * 4 + 1],
-                    color,
-                    corner_thickness,
-                    cv2.LINE_AA,
+                draw.line(
+                    xy=(points[i * 6 + j * 4], points[i * 6 + j * 4 + 1]),
+                    fill=color,
+                    width=corner_thickness,
+                    joint=None,
                 )
-                cv2.line(
-                    img,
-                    points[i * 3 + 1],
-                    points[10 - 3 * i],
-                    color,
-                    inner_thickness,
-                    cv2.LINE_4,
+                draw.line(
+                    xy=(points[i * 3 + 1], points[10 - 3 * i]),
+                    fill=color,
+                    width=inner_thickness,
+                    joint=None,
                 )
         for i in range(2):
             for j in range(2):
-                cv2.line(
-                    img,
-                    points[i * 6 + j * 2 + 1],
-                    points[i * 6 + j * 2 + 2],
-                    color,
-                    corner_thickness,
-                    cv2.LINE_4,
+                draw.line(
+                    xy=(points[i * 6 + j * 2 + 1], points[i * 6 + j * 2 + 2]),
+                    fill=color,
+                    width=corner_thickness,
+                    joint=None,
                 )
-                cv2.line(
-                    img,
-                    points[6 * i + 1],
-                    points[i * 6 + 4],
-                    color,
-                    inner_thickness,
-                    cv2.LINE_AA,
+                draw.line(
+                    xy=(points[6 * i + 1], points[i * 6 + 4]),
+                    fill=color,
+                    width=inner_thickness,
+                    joint=None,
                 )
 
-    return img
+    return np.array(img)
 
 
 def draw_mask(
