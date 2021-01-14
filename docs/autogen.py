@@ -42,34 +42,34 @@ PAGES = {
         "icevision.data.SingleSplitSplitter",
     ],
     "faster_rcnn.md": [
-        "icevision.models.torchvision_models.faster_rcnn.model.model",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.train_dl",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.valid_dl",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.infer_dl",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.build_train_batch",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.build_valid_batch",
-        "icevision.models.torchvision_models.faster_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.torchvision.faster_rcnn.model.model",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.train_dl",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.valid_dl",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.infer_dl",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.build_train_batch",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.build_valid_batch",
+        "icevision.models.torchvision.faster_rcnn.dataloaders.build_infer_batch",
     ],
     "faster_rcnn_fastai.md": [
-        "icevision.models.torchvision_models.faster_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.faster_rcnn.fastai.learner.learner",
     ],
     "faster_rcnn_lightning.md": [
-        "icevision.models.torchvision_models.faster_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.faster_rcnn.lightning.model_adapter.ModelAdapter",
     ],
     "mask_rcnn.md": [
-        "icevision.models.torchvision_models.mask_rcnn.model.model",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.train_dl",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.valid_dl",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.infer_dl",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.build_train_batch",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.build_valid_batch",
-        "icevision.models.torchvision_models.mask_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.torchvision.mask_rcnn.model.model",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.train_dl",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.valid_dl",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.infer_dl",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.build_train_batch",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.build_valid_batch",
+        "icevision.models.torchvision.mask_rcnn.dataloaders.build_infer_batch",
     ],
     "mask_rcnn_fastai.md": [
-        "icevision.models.torchvision_models.mask_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.mask_rcnn.fastai.learner.learner",
     ],
     "mask_rcnn_lightning.md": [
-        "icevision.models.torchvision_models.mask_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
     "efficientdet.md": [
         "icevision.models.efficientdet.model.model",
@@ -315,7 +315,7 @@ def generate(dest_dir: Path):
     )
 
     shutil.copyfile(
-        icevision_dir / "icevision/models/torchvision_models/faster_rcnn/README.md",
+        icevision_dir / "icevision/models/torchvision/faster_rcnn/README.md",
         dest_dir / "model_faster_rcnn.md",
     )
 

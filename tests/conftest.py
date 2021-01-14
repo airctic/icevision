@@ -1,8 +1,8 @@
-import pytest, requests, PIL
+import pytest
 from icevision import *
 from icevision.imports import *
-from icevision.models.torchvision_models import faster_rcnn
-from icevision.models import efficientdet
+from icevision.models.torchvision import faster_rcnn
+from icevision.models.ross import efficientdet
 import albumentations as A
 
 
