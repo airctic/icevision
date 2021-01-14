@@ -1,5 +1,5 @@
 from icevision import *
-from icevision.models.torchvision_models import mask_rcnn
+from icevision.models.torchvision import mask_rcnn
 
 
 def test_mask_rcnn_default_param_groups():

@@ -8,7 +8,7 @@ from icevision.all import *
 def test_fastai_efficientdet_train(
     fridge_efficientdet_dls, fridge_efficientdet_model, metrics
 ):
-    learn = efficientdet.fastai.learner(
+    learn = icevision.models.ross.efficientdet.fastai.learner(
         dls=fridge_efficientdet_dls, model=fridge_efficientdet_model, metrics=metrics
     )
 
