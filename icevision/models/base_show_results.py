@@ -17,10 +17,11 @@ def base_show_results(
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     show: bool = True,
+    **predict_kwargs,
 ) -> None:
     samples = random.choices(dataset, k=num_samples)
     batch, samples = build_infer_batch_fn(samples)
-    preds = predict_fn(model, batch)
+    preds = predict_fn(model, batch, **predict_kwargs)
 
     show_preds(
         samples,

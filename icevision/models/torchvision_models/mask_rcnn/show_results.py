@@ -21,10 +21,13 @@ def show_results(
     model: nn.Module,
     dataset: Dataset,
     class_map: Optional[ClassMap] = None,
+    detection_threshold: float = 0.5,
+    mask_threshold: float = 0.5,
     num_samples: int = 6,
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     show: bool = True,
+    device: Optional[torch.device] = None,
 ) -> None:
     return base_show_results(
         predict_fn=predict,
@@ -36,6 +39,9 @@ def show_results(
         ncols=ncols,
         denormalize_fn=denormalize_fn,
         show=show,
+        detection_threshold=detection_threshold,
+        mask_threshold=mask_threshold,
+        device=device,
     )
 
 
