@@ -8,19 +8,23 @@ BACKGROUND = "background"
 class ClassMap:
     """Utility class for mapping between class name and id."""
 
-    def __init__(self, classes: Optional[Sequence[str]] = None):
-        self._classes = copy(classes) if classes else []
+    def __init__(
+        self,
+        classes: Optional[Sequence[str]] = None,
+        background: Optional[str] = BACKGROUND,
+    ):
         self._lock = True
-        self._background_id = None
-        self._update_ids()
 
-    def _update_ids(self):
-        self._id2class = copy(self._classes)
-        if self._background_id is not None:
-            background_id = (
-                self._background_id if self._background_id != -1 else len(self._classes)
-            )
-            self._id2class.insert(background_id, BACKGROUND)
+        self._id2class = copy(list(classes)) if classes else []
+        # insert background if required
+        self._background = background
+        if self._background is not None:
+            try:
+                self._id2class.remove(self._background)
+            except ValueError:
+                pass
+            # background is always index zero
+            self._id2class.insert(0, self._background)
 
         self._class2id = {name: i for i, name in enumerate(self._id2class)}
 
@@ -32,15 +36,15 @@ class ClassMap:
             return self._class2id[name]
         except KeyError as e:
             if not self._lock:
-                self._classes.append(name)
-                self._update_ids()
-                return self._class2id[name]
+                return self.add_name(name)
             else:
                 raise e
 
-    def set_background(self, id: Union[int, None]):
-        self._background_id = id
-        self._update_ids()
+    def add_name(self, name) -> int:
+        self._id2class.append(name)
+        id = len(self._class2id)
+        self._class2id[name] = id
+        return id
 
     def lock(self):
         self._lock = True

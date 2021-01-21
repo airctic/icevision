@@ -94,7 +94,6 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
     def parse(
         self,
         data_splitter: DataSplitter = None,
-        background_id: Optional[int] = None,
         idmap: IDMap = None,
         autofix: bool = True,
         show_pbar: bool = True,
@@ -122,7 +121,6 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
             )
             return pickle.load(open(Path(cache_filepath), "rb"))
         else:
-            self.class_map.set_background(background_id)
             idmap = idmap or IDMap()
             data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
             records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
