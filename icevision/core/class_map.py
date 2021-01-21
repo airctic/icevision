@@ -28,6 +28,10 @@ class ClassMap:
 
         self._class2id = {name: i for i, name in enumerate(self._id2class)}
 
+    @property
+    def num_classes(self):
+        return len(self)
+
     def get_id(self, id: int) -> str:
         return self._id2class[id]
 

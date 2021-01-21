@@ -1,5 +1,6 @@
 __all__ = [
     "ParserMixin",
+    "ClassMapMixin",
     "ImageidMixin",
     "FilepathMixin",
     "SizeMixin",
@@ -26,6 +27,11 @@ class ParserMixin(ABC):
     @classmethod
     def _templates(cls) -> List[str]:
         return []
+
+
+class ClassMapMixin(ParserMixin):
+    def record_mixins(self):
+        return [ClassMapRecordMixin, *super().record_mixins()]
 
 
 class ImageidMixin(ParserMixin):
