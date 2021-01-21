@@ -1,5 +1,6 @@
 __all__ = [
     "RecordMixin",
+    "ClassMapRecordMixin",
     "ImageidRecordMixin",
     "ImageRecordMixin",
     "FilepathRecordMixin",
@@ -18,6 +19,7 @@ from .bbox import *
 from .mask import *
 from .exceptions import *
 from .keypoints import *
+from .class_map import *
 
 
 class RecordMixin:
@@ -42,6 +44,14 @@ class RecordMixin:
 
     def _repr(self) -> List[str]:
         return []
+
+
+class ClassMapRecordMixin(RecordMixin):
+    def set_class_map(self, class_map: ClassMap):
+        self.class_map = class_map
+
+    def as_dict(self) -> dict:
+        return {"class_map": self.class_map, **super().as_dict()}
 
 
 class ImageidRecordMixin(RecordMixin):

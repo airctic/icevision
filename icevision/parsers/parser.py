@@ -21,7 +21,7 @@ class ParserInterface(ABC):
         pass
 
 
-class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
+class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     """Base class for all parsers, implements the main parsing logic.
 
     The actual fields to be parsed are defined by the mixins used when
@@ -69,6 +69,7 @@ class Parser(ImageidMixin, SizeMixin, ParserInterface, ABC):
                     record = records[imageid]
                 except KeyError:
                     record = Record()
+                    record.set_class_map(self.class_map)
 
                 self.parse_fields(sample, record)
 
