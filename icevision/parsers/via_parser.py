@@ -39,13 +39,13 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
         self,
         annotations_filepath: Union[str, Path],
         img_dir: Union[str, Path],
-        cls_map: ClassMap,
+        class_map: ClassMap,
         label_field: str = "label",
     ):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
-        self.cls_map = cls_map
         self.label_field = label_field
+        super().__init__(class_map=class_map)
 
     def __iter__(self):
         yield from self.annotations_dict.values()
@@ -78,8 +78,8 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
         labels = []
         for shape in o["regions"]:
             label = self._get_label(o, shape["region_attributes"])
-            if label in self.cls_map.class2id:
-                labels.append(self.cls_map.get_name(label))
+            if label in self.class_map._class2id:
+                labels.append(label)
         return labels
 
 
@@ -93,7 +93,7 @@ class VIABBoxParser(VIABaseParser, BBoxesMixin):
         boxes = []
         for shape in o["regions"]:
             label = self._get_label(o, shape["region_attributes"])
-            if label in self.cls_map.class2id:
+            if label in self.class_map._class2id:
                 shape_attr = shape["shape_attributes"]
                 if shape_attr["name"] == "polygon":
                     x, y = shape_attr["all_points_x"], shape_attr["all_points_y"]

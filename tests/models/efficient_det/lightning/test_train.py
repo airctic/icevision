@@ -4,7 +4,7 @@ from icevision.all import *
 
 @pytest.fixture
 def light_model_cls():
-    class LightModel(icevision.models.ross.efficientdet.lightning.ModelAdapter):
+    class LightModel(models.ross.efficientdet.lightning.ModelAdapter):
         def configure_optimizers(self):
             return SGD(self.parameters(), lr=1e-3)
 
@@ -22,7 +22,6 @@ def test_lightining_efficientdet_train(
 
     trainer = pl.Trainer(
         max_epochs=1,
-        gpus=1,
         weights_summary=None,
         num_sanity_val_steps=0,
         logger=False,

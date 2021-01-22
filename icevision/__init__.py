@@ -9,6 +9,9 @@ from icevision.models import *
 from icevision.metrics import *
 from icevision.visualize import *
 
+# HACK: quickfix because models import torchvision
+import torchvision
+
 try:
     import importlib.metadata as importlib_metadata
 except ModuleNotFoundError:

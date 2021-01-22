@@ -3,7 +3,7 @@ __all__ = ["ModelAdapter"]
 from icevision.imports import *
 from icevision.metrics import *
 from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from icevision.models import efficientdet
+from icevision.models.ross import efficientdet
 
 
 class ModelAdapter(LightningModelAdapter, ABC):

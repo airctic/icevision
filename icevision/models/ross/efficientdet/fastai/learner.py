@@ -1,8 +1,9 @@
 __all__ = ["learner"]
 
 from icevision.imports import *
-from icevision.models import efficientdet
 from icevision.engines.fastai import *
+from icevision.models.ross.efficientdet.loss_fn import loss_fn
+from icevision.models.ross.efficientdet.fastai.callbacks import EfficientDetCallback
 
 
 def learner(
@@ -29,7 +30,7 @@ def learner(
         dls=dls,
         model=model,
         cbs=cbs,
-        loss_func=efficientdet.loss_fn,
+        loss_func=loss_fn,
         **learner_kwargs,
     )
 

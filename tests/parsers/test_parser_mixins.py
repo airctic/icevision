@@ -5,6 +5,8 @@ from icevision.all import *
 @pytest.fixture
 def all_parser_mixins_cls():
     class AllParserMixins(
+        parsers.Parser,
+        parsers.ClassMapMixin,
         parsers.ImageidMixin,
         parsers.FilepathMixin,
         parsers.SizeMixin,
@@ -14,6 +16,9 @@ def all_parser_mixins_cls():
         parsers.AreasMixin,
         parsers.IsCrowdsMixin,
     ):
+        def __iter__(self) -> Any:
+            raise NotImplementedError
+
         def imageid(self, o) -> int:
             return 42
 
@@ -24,7 +29,7 @@ def all_parser_mixins_cls():
             return (480, 420)
 
         def labels(self, o) -> List[int]:
-            return [0]
+            return ["a"]
 
         def bboxes(self, o) -> List[BBox]:
             return [BBox.from_xyxy(1, 2, 3, 4)]
@@ -53,7 +58,7 @@ def test_all_parser_mixins(all_parser_mixins_cls):
     assert record["filepath"] == Path(__file__)
     assert record["height"] == 420
     assert record["width"] == 480
-    assert record["labels"] == [0]
+    assert record["labels"] == [1]
     assert record["bboxes"] == [BBox.from_xyxy(1, 2, 3, 4)]
     assert record["masks"].erles == [{"size": [420, 480], "counts": b"PlT6"}]
     assert record["areas"] == [4.2]

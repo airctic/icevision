@@ -126,7 +126,7 @@ def voc_class_map():
         }
     )
 
-    return ClassMap(classes=classes, background=0)
+    return ClassMap(classes=classes)
 
 
 @pytest.fixture(scope="session")
@@ -237,7 +237,7 @@ def keypoints_img_128372():
 def via_bbox_class_map():
     classes = sorted({"z", "c", "n", "o"})
 
-    return ClassMap(classes=classes, background=0)
+    return ClassMap(classes=classes)
 
 
 @pytest.fixture(scope="session")
@@ -282,6 +282,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def __init__(self, annotations_filepath, img_dir):
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
+            super().__init__()
 
         def __iter__(self):
             yield from self.annotations_dict["images"]
@@ -306,7 +307,9 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
             return get_image_size(self.filepath(o))
 
         def labels(self, o) -> List[int]:
-            return [1 for ann in o["annotations"] if ann["keypoints"] is not None]
+            return [
+                "person" for ann in o["annotations"] if ann["keypoints"] is not None
+            ]
 
         def bboxes(self, o) -> List[BBox]:
             return [
