@@ -19,4 +19,5 @@ def test_soft_dependencies():
         "effdet": True,
         "wandb": True,
         "resnest": True,
+        "mmdet": True,
     }

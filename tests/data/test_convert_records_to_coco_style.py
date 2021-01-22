@@ -38,7 +38,7 @@ def test_convert_records_to_coco_style_images(
 
 
 def test_convert_records_to_coco_style_annotations(
-    coco_records, expected_records, coco_imageid_map
+    coco_mask_records, coco_records, expected_records, coco_imageid_map
 ):
     annotations = coco_records["annotations"]
     expected_annotations = expected_records["annotations"]
@@ -57,6 +57,10 @@ def test_convert_records_to_coco_style_annotations(
     for annotation in expected_annotations:
         annotation["image_id"] = coco_imageid_map[annotation["image_id"]]
 
+    # convert label ids
+    original_cocoid2label = {o["id"]: o["name"] for o in expected_records["categories"]}
+    class_map = coco_mask_records[0].class_map
+
     # sort items so we compare each annotation with it's corresponded pair
     sorted_annotations = sorted(sorted(d.items()) for d in annotations)
     sorted_expectation = sorted(sorted(d.items()) for d in expected_annotations)
@@ -69,6 +73,8 @@ def test_convert_records_to_coco_style_annotations(
             if k1 == "segmentation":
                 # TODO: Skipping segmentation check
                 pass
+            elif k1 == "category_id":
+                assert class_map.get_id(v1) == original_cocoid2label[v2]
             else:
                 np.testing.assert_almost_equal(v1, v2)
 

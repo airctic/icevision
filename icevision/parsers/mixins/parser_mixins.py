@@ -33,6 +33,10 @@ class ClassMapMixin(ParserMixin):
     def record_mixins(self):
         return [ClassMapRecordMixin, *super().record_mixins()]
 
+    def parse_fields(self, o, record):
+        record.set_class_map(self.class_map)
+        super().parse_fields(o, record)
+
 
 class ImageidMixin(ParserMixin):
     """Adds `imageid` method to parser"""
@@ -115,11 +119,12 @@ class LabelsMixin(ParserMixin):
         return [LabelsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
+        # super first because class_map need to be set before
+        super().parse_fields(o, record)
+
         names = self.labels(o)
         ids = [self.class_map.get_name(name) for name in names]
         record.add_labels(ids)
-
-        super().parse_fields(o, record)
 
     @abstractmethod
     def labels(self, o) -> List[str]:

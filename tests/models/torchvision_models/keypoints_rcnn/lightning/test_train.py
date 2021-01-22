@@ -17,7 +17,6 @@ def test_lightining_keypoints_rcnn_train(ochuman_keypoints_dls, light_model_cls)
     light_model = light_model_cls(model)
 
     trainer = pl.Trainer(
-        gpus=0,
         max_epochs=1,
         weights_summary=None,
         num_sanity_val_steps=0,

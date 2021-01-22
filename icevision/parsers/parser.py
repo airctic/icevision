@@ -69,7 +69,6 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
                     record = records[imageid]
                 except KeyError:
                     record = Record()
-                    record.set_class_map(self.class_map)
 
                 self.parse_fields(sample, record)
 
@@ -138,6 +137,7 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
 
                 all_splits_records.append(split_records)
 
+            self.class_map.lock()
             if cache_filepath is not None:
                 pickle.dump(all_splits_records, open(Path(cache_filepath), "wb"))
 

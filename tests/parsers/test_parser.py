@@ -5,14 +5,14 @@ from icevision.all import *
 @pytest.fixture()
 def data():
     return [
-        {"id": 1, "filepath": __file__, "labels": [1], "bboxes": [[1, 2, 3, 4]]},
+        {"id": 1, "filepath": __file__, "labels": ["a"], "bboxes": [[1, 2, 3, 4]]},
         {
             "id": 42,
             "filepath": __file__,
-            "labels": [2, 1],
+            "labels": ["a", "b"],
             "bboxes": [[1, 2, 3, 4], [10, 20, 30, 40]],
         },
-        {"id": 3, "filepath": "none.txt", "labels": [1], "bboxes": [[1, 2, 3, 4]]},
+        {"id": 3, "filepath": "none.txt", "labels": ["a"], "bboxes": [[1, 2, 3, 4]]},
     ]
 
 
@@ -21,6 +21,7 @@ class SimpleParser(
 ):
     def __init__(self, data):
         self.data = data
+        super().__init__()
 
     def __iter__(self):
         yield from self.data
@@ -50,6 +51,7 @@ def test_parser(data, tmpdir):
 
     record = records[1]
     assert set(record.keys()) == {
+        "class_map",
         "imageid",
         "filepath",
         "height",
@@ -57,9 +59,10 @@ def test_parser(data, tmpdir):
         "labels",
         "bboxes",
     }
+    assert record["class_map"] == ClassMap(["a", "b"])
     assert record["imageid"] == 1
     assert record["filepath"] == Path(__file__)
-    assert record["labels"] == [2, 1]
+    assert record["labels"] == [1, 2]
     assert record["bboxes"] == [
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),

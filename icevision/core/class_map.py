@@ -56,6 +56,11 @@ class ClassMap:
     def unlock(self):
         self._lock = False
 
+    def __eq__(self, other) -> bool:
+        if isinstance(other, ClassMap):
+            return self.__dict__ == other.__dict__
+        return False
+
     def __len__(self):
         return len(self._id2class)
 
