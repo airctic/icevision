@@ -41,6 +41,9 @@ class COCOMetric(Metric):
         self._preds.clear()
 
     def accumulate(self, records, preds):
+        # to not store whole images and avoid excess memory use
+        for record in records:
+            record.pop("img", None)
         self._records.extend(records)
         self._preds.extend(preds)
 
