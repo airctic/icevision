@@ -72,19 +72,19 @@ PAGES = {
         "icevision.models.torchvision.mask_rcnn.lightning.model_adapter.ModelAdapter",
     ],
     "efficientdet.md": [
-        "icevision.models.efficientdet.model.model",
-        "icevision.models.efficientdet.dataloaders.train_dl",
-        "icevision.models.efficientdet.dataloaders.valid_dl",
-        "icevision.models.efficientdet.dataloaders.infer_dl",
-        "icevision.models.efficientdet.dataloaders.build_train_batch",
-        "icevision.models.efficientdet.dataloaders.build_valid_batch",
-        "icevision.models.efficientdet.dataloaders.build_infer_batch",
+        "icevision.models.ross.efficientdet.model.model",
+        "icevision.models.ross.efficientdet.dataloaders.train_dl",
+        "icevision.models.ross.efficientdet.dataloaders.valid_dl",
+        "icevision.models.ross.efficientdet.dataloaders.infer_dl",
+        "icevision.models.ross.efficientdet.dataloaders.build_train_batch",
+        "icevision.models.ross.efficientdet.dataloaders.build_valid_batch",
+        "icevision.models.ross.efficientdet.dataloaders.build_infer_batch",
     ],
     "efficientdet_fastai.md": [
-        "icevision.models.efficientdet.fastai.learner.learner",
+        "icevision.models.ross.efficientdet.fastai.learner.learner",
     ],
     "efficientdet_lightning.md": [
-        "icevision.models.efficientdet.lightning.model_adapter.ModelAdapter",
+        "icevision.models.ross.efficientdet.lightning.model_adapter.ModelAdapter",
     ],
 }
 
@@ -310,7 +310,7 @@ def generate(dest_dir: Path):
     )
 
     shutil.copyfile(
-        icevision_dir / "icevision/models/efficientdet/README.md",
+        icevision_dir / "icevision/models/ross/efficientdet/README.md",
         dest_dir / "model_efficientdet.md",
     )
 
