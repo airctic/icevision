@@ -127,18 +127,17 @@ class LabelsMixin(ParserMixin):
         record.add_labels(ids)
 
     @abstractmethod
-    def labels(self, o) -> List[str]:
+    def labels(self, o) -> List[Hashable]:
         """Returns the labels for the receive sample.
 
         !!! danger "Important"
-        If you are using a RCNN/efficientdet model,
-        remember to return 0 for background.
+        Return `BACKGROUND` (imported from icevision) for background.
         """
 
     @classmethod
     def _templates(cls) -> List[str]:
         templates = super()._templates()
-        return templates + ["def labels(self, o) -> List[int]:"]
+        return templates + ["def labels(self, o) -> List[Hashable]:"]
 
 
 class BBoxesMixin(ParserMixin):

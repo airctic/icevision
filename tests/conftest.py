@@ -306,7 +306,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def image_width_height(self, o) -> Tuple[int, int]:
             return get_image_size(self.filepath(o))
 
-        def labels(self, o) -> List[int]:
+        def labels(self, o) -> List[Hashable]:
             return [
                 "person" for ann in o["annotations"] if ann["keypoints"] is not None
             ]
