@@ -5,7 +5,7 @@
 
 ### **Option 1:** Installing from pypi repository **[Stable Version]**
  
-To install icevision package together with all dependencies:
+To install icevision package together with almost all dependencies:
 
 <div class="termy">
 ```console
@@ -54,7 +54,14 @@ $ pip install icevision[all]
 ```
 </div>
 
-## C- Fixing the Error: Failed building wheel for pycocotools
+## Optional dependencies
+
+### MMDetection
+Follow the instructions [here](https://mmdetection.readthedocs.io/en/latest/get_started.html#installation) to install and enable mmdetection support.
+
+## Troubleshooting
+
+### Fixing the Error: Failed building wheel for pycocotools
 If you encounter the **Failed building wheel for pycocotools error** (see screenshoot here below), you can easily fix it by installing  `gcc` from your linux terminal as shown in the following steps:
 
 <div class="termy">
