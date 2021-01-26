@@ -101,7 +101,7 @@ def draw_sample(
                 font=font,
                 prettify=prettify,
                 prettify_func=prettify_func,
-                return_as_pil_img=return_as_pil_img,
+                return_as_pil_img=False,  # should this always be False??
             )
     if return_as_pil_img:
         # may or may not be a PIL Image based on `display_label`
@@ -229,22 +229,30 @@ def _draw_label_PIL(
         return np.array(img)
 
 
+import fastcore.all as fastcore
+
+# This is temporary (for convenience) while we're still developing.
+#   Once changes are finalised, we'll change this to include
+#   all the required arguments
+@fastcore.delegates(to=draw_sample, but=["sample"])
 def draw_record(
     record,
-    class_map: Optional[ClassMap] = None,
-    display_label: bool = True,
-    display_bbox: bool = True,
-    display_mask: bool = True,
-    display_keypoints: bool = True,
+    **kwargs
+    # class_map: Optional[ClassMap] = None,
+    # display_label: bool = True,
+    # display_bbox: bool = True,
+    # display_mask: bool = True,
+    # display_keypoints: bool = True,
 ):
     sample = record.load()
     return draw_sample(
         sample=sample,
-        class_map=class_map,
-        display_label=display_label,
-        display_bbox=display_bbox,
-        display_mask=display_mask,
-        display_keypoints=display_keypoints,
+        **kwargs
+        # class_map=class_map,
+        # display_label=display_label,
+        # display_bbox=display_bbox,
+        # display_mask=display_mask,
+        # display_keypoints=display_keypoints,
     )
 
 
@@ -414,6 +422,8 @@ def draw_keypoints(
     # calculate scaling for points and connections
     img_h, img_w, _ = img.shape
     img_area = img_h * img_w
+    img = PIL.Image.fromarray(img)
+    draw = PIL.ImageDraw.Draw(img)
     dynamic_size = int(0.01867599 * (img_area ** 0.4422045))
     dynamic_size = max(dynamic_size, 1)
 
@@ -421,22 +431,28 @@ def draw_keypoints(
     if kps.metadata is not None and kps.metadata.connections is not None:
         for connection in kps.metadata.connections:
             if v[connection.p1] > 0 and v[connection.p2] > 0:
-                cv2.line(
-                    img,
-                    (int(x[connection.p1]), int(y[connection.p1])),
-                    (int(x[connection.p2]), int(y[connection.p2])),
-                    color=connection.color,
-                    thickness=dynamic_size,
+                draw.line(
+                    xy=(
+                        (int(x[connection.p1]), int(y[connection.p1])),
+                        (int(x[connection.p2]), int(y[connection.p2])),
+                    ),
+                    fill=connection.color,
+                    width=dynamic_size,
                 )
 
     # draw points
     for x_c, y_c in zip(x[v > 0], y[v > 0]):
-        cv2.circle(
-            img,
-            (int(round(x_c)), int(round(y_c))),
-            radius=dynamic_size,
-            color=color,
-            thickness=-1,
+        radius = dynamic_size
+        x1 = x_c - radius
+        x2 = x_c + radius
+        y1 = y_c - radius
+        y2 = y_c + radius
+        draw.ellipse(
+            xy=[x1, y1, x2, y2],
+            # xy=[x1, x0, y1, y0],
+            fill=as_rgb_tuple(color),
+            outline=None,
+            width=0,
         )
 
-    return img
+    return np.array(img)
