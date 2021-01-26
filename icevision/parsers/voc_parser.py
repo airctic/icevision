@@ -64,7 +64,7 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
     def image_width_height(self, o) -> Tuple[int, int]:
         return get_image_size(self.filepath(o))
 
-    def labels(self, o) -> List[str]:
+    def labels(self, o) -> List[Hashable]:
         labels = []
         for object in self._root.iter("object"):
             label = object.find("name").text

@@ -28,7 +28,7 @@ def all_parser_mixins_cls():
         def image_width_height(self, o) -> Tuple[int, int]:
             return (480, 420)
 
-        def labels(self, o) -> List[int]:
+        def labels(self, o) -> List[Hashable]:
             return ["a"]
 
         def bboxes(self, o) -> List[BBox]:

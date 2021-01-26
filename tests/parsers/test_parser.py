@@ -35,7 +35,7 @@ class SimpleParser(
     def image_width_height(self, o) -> Tuple[int, int]:
         return (100, 100)
 
-    def labels(self, o) -> List[int]:
+    def labels(self, o) -> List[Hashable]:
         return o["labels"]
 
     def bboxes(self, o) -> List[BBox]:
@@ -81,7 +81,7 @@ def test_parser(data, tmpdir):
 @pytest.mark.skip
 def test_parser_annotation_len_mismatch(data):
     class BrokenParser(SimpleParser):
-        def labels(self, o) -> List[int]:
+        def labels(self, o) -> List[Hashable]:
             return o["labels"][:1]
 
     parser = BrokenParser(data)

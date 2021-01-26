@@ -58,7 +58,7 @@ class COCOBaseParser(
     def image_width_height(self, o) -> Tuple[int, int]:
         return get_image_size(self.filepath(o))
 
-    def labels(self, o) -> List[str]:
+    def labels(self, o) -> List[Hashable]:
         return [self._cocoid2name[o["category_id"]]]
 
     def areas(self, o) -> List[float]:
@@ -90,7 +90,7 @@ class COCOKeyPointsParser(COCOBBoxParser, KeyPointsMixin):
             else []
         )
 
-    def labels(self, o) -> List[str]:
+    def labels(self, o) -> List[Hashable]:
         if sum(o["keypoints"]) <= 0:
             return []
         return super().labels(o)
