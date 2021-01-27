@@ -32,10 +32,10 @@ class ClassMap:
     def num_classes(self):
         return len(self)
 
-    def get_id(self, id: int) -> str:
+    def get_by_id(self, id: int) -> str:
         return self._id2class[id]
 
-    def get_name(self, name: str) -> int:
+    def get_by_name(self, name: str) -> int:
         try:
             return self._class2id[name]
         except KeyError as e:
