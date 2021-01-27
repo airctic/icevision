@@ -74,7 +74,7 @@ def draw_label(
         x, y = 0, 0
 
     if class_map is not None:
-        caption = class_map.get_id(label)
+        caption = class_map.get_by_id(label)
     else:
         caption = str(label)
 

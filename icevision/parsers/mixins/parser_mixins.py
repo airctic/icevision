@@ -123,7 +123,7 @@ class LabelsMixin(ParserMixin):
         super().parse_fields(o, record)
 
         names = self.labels(o)
-        ids = [self.class_map.get_name(name) for name in names]
+        ids = [self.class_map.get_by_name(name) for name in names]
         record.add_labels(ids)
 
     @abstractmethod

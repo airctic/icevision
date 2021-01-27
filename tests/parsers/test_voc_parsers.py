@@ -17,7 +17,7 @@ def test_voc_annotation_parser(samples_source, voc_class_map):
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.width == 500
     assert record.height == 375
-    assert record.labels == [voc_class_map.get_name(k) for k in ["dog", "chair"]]
+    assert record.labels == [voc_class_map.get_by_name(k) for k in ["dog", "chair"]]
     assert record.bboxes == [
         BBox.from_xyxy(123, 115, 379, 275),
         BBox.from_xyxy(75, 1, 428, 375),
@@ -29,7 +29,7 @@ def test_voc_annotation_parser(samples_source, voc_class_map):
     assert record.filepath == samples_source / "voc/JPEGImages/2011_003353.jpg"
     assert record.height == 500
     assert record.width == 375
-    assert record.labels == [voc_class_map.get_name("person")]
+    assert record.labels == [voc_class_map.get_by_name("person")]
     assert record.bboxes == [BBox.from_xyxy(130, 45, 375, 470)]
 
 
@@ -51,7 +51,7 @@ def test_voc_mask_parser(samples_source, voc_class_map):
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.height == 375
     assert record.width == 500
-    assert record.labels == [voc_class_map.get_name(k) for k in ["dog", "chair"]]
+    assert record.labels == [voc_class_map.get_by_name(k) for k in ["dog", "chair"]]
     assert record.bboxes == [
         BBox.from_xyxy(123, 115, 379, 275),
         BBox.from_xyxy(75, 1, 428, 375),
