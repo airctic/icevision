@@ -2,7 +2,6 @@
 from icevision.models.torchvision import backbones
 from icevision.models.torchvision.loss_fn import *
 
-from icevision.models.torchvision.mask_rcnn.parser import *
 from icevision.models.torchvision.mask_rcnn.dataloaders import *
 from icevision.models.torchvision.mask_rcnn.model import *
 from icevision.models.torchvision.mask_rcnn.prediction import *
