@@ -17,16 +17,20 @@ def coco(
     annotations_file: Union[str, Path],
     img_dir: Union[str, Path],
     mask: bool = True,
+    idmap: Optional[IDMap] = None,
 ) -> Parser:
     parser_cls = COCOMaskParser if mask else COCOBBoxParser
-    return parser_cls(annotations_file, img_dir)
+    return parser_cls(annotations_file, img_dir, idmap=idmap)
 
 
 class COCOBaseParser(
     Parser, FilepathMixin, SizeMixin, LabelsMixin, AreasMixin, IsCrowdsMixin
 ):
     def __init__(
-        self, annotations_filepath: Union[str, Path], img_dir: Union[str, Path]
+        self,
+        annotations_filepath: Union[str, Path],
+        img_dir: Union[str, Path],
+        idmap: Optional[IDMap] = None,
     ):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
@@ -38,7 +42,7 @@ class COCOBaseParser(
         self._cocoid2name[0] = BACKGROUND
         class_map = ClassMap(self._cocoid2name.values())
 
-        super().__init__(class_map=class_map)
+        super().__init__(class_map=class_map, idmap=idmap)
 
     def __iter__(self):
         yield from self.annotations_dict["annotations"]

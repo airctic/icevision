@@ -14,12 +14,14 @@ def voc(
     images_dir: Union[str, Path],
     class_map: Optional[ClassMap] = None,
     masks_dir: Optional[Union[str, Path]] = None,
+    idmap: Optional[IDMap] = None,
 ):
     if not masks_dir:
         return VocXmlParser(
             annotations_dir=annotations_dir,
             images_dir=images_dir,
             class_map=class_map,
+            idmap=idmap,
         )
     else:
         return VocMaskParser(
@@ -27,6 +29,7 @@ def voc(
             images_dir=images_dir,
             masks_dir=masks_dir,
             class_map=class_map,
+            idmap=idmap,
         )
 
 
@@ -36,8 +39,9 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
         annotations_dir: Union[str, Path],
         images_dir: Union[str, Path],
         class_map: Optional[ClassMap] = None,
+        idmap: Optional[IDMap] = None,
     ):
-        super().__init__(class_map=class_map)
+        super().__init__(class_map=class_map, idmap=idmap)
         self.images_dir = Path(images_dir)
 
         self.annotations_dir = Path(annotations_dir)
@@ -97,9 +101,13 @@ class VocMaskParser(VocXmlParser, MasksMixin):
         images_dir: Union[str, Path],
         masks_dir: Union[str, Path],
         class_map: Optional[ClassMap] = None,
+        idmap: Optional[IDMap] = None,
     ):
         super().__init__(
-            annotations_dir=annotations_dir, images_dir=images_dir, class_map=class_map
+            annotations_dir=annotations_dir,
+            images_dir=images_dir,
+            class_map=class_map,
+            idmap=idmap,
         )
         self.masks_dir = masks_dir
         self.mask_files = get_image_files(masks_dir)
