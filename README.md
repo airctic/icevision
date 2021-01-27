@@ -29,9 +29,6 @@
 ![image](images/icevision-end-to-end-training.gif)
 
 <!-- Not included in docs - start -->
-## **Contributors**
-
-[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/0)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/0)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/1)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/1)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/2)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/2)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/3)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/3)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/4)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/4)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/5)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/5)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/6)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/6)[![](https://sourcerer.io/fame/lgvaz/airctic/icevision/images/7)](https://sourcerer.io/fame/lgvaz/airctic/icevision/links/7)
 
 ## Installation
 
