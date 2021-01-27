@@ -28,6 +28,9 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     defining a custom parser. The only required fields for all parsers
     are `image_id` and `image_width_height`.
 
+    # Arguments
+        idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
+
     # Examples
 
     Create a parser for image filepaths.
@@ -37,10 +40,13 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     ```
     """
 
-    def __init__(self, class_map: Optional[ClassMap] = None):
+    def __init__(
+        self, class_map: Optional[ClassMap] = None, idmap: Optional[IDMap] = None
+    ):
         self.class_map = class_map or ClassMap()
         if class_map is None:
             self.class_map.unlock()
+        self.idmap = idmap or IDMap()
 
     @abstractmethod
     def __iter__(self) -> Any:
@@ -52,9 +58,7 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     def record_class(self) -> BaseRecord:
         return create_mixed_record(self.record_mixins())
 
-    def parse_dicted(
-        self, idmap: IDMap, show_pbar: bool = True
-    ) -> Dict[int, RecordType]:
+    def parse_dicted(self, show_pbar: bool = True) -> Dict[int, RecordType]:
 
         Record = self.record_class()
         records = {}
@@ -63,7 +67,7 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
             try:
                 self.prepare(sample)
                 true_imageid = self.imageid(sample)
-                imageid = idmap[true_imageid]
+                imageid = self.idmap[true_imageid]
 
                 try:
                     record = records[imageid]
@@ -94,7 +98,6 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     def parse(
         self,
         data_splitter: DataSplitter = None,
-        idmap: IDMap = None,
         autofix: bool = True,
         show_pbar: bool = True,
         cache_filepath: Union[str, Path] = None,
@@ -103,7 +106,6 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
 
         # Arguments
             data_splitter: How to split the parsed data, defaults to a [0.8, 0.2] random split.
-            idmap: Maps from filenames to unique ids, pass an `IDMap()` if you need this information.
             show_pbar: Whether or not to show a progress bar while parsing the data.
             cache_filepath: Path to save records in pickle format. Defaults to None, e.g.
                             if the user does not specify a path, no saving nor loading happens.
@@ -121,11 +123,10 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
             )
             return pickle.load(open(Path(cache_filepath), "rb"))
         else:
-            idmap = idmap or IDMap()
             data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
-            records = self.parse_dicted(show_pbar=show_pbar, idmap=idmap)
+            records = self.parse_dicted(show_pbar=show_pbar)
 
-            splits = data_splitter(idmap=idmap)
+            splits = data_splitter(idmap=self.idmap)
             all_splits_records = []
             if autofix:
                 logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")

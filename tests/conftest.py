@@ -147,8 +147,13 @@ def coco_bbox_parser(coco_dir):
 
 
 @pytest.fixture(scope="module")
-def coco_mask_parser(coco_dir):
-    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=True)
+def coco_mask_parser(coco_dir, coco_imageid_map):
+    return parsers.coco(
+        coco_dir / "annotations.json",
+        coco_dir / "images",
+        mask=True,
+        idmap=coco_imageid_map,
+    )
 
 
 @pytest.fixture(scope="module")
@@ -159,10 +164,8 @@ def coco_keypoints_parser(coco_dir):
 
 
 @pytest.fixture(scope="module")
-def coco_mask_records(coco_mask_parser, coco_imageid_map):
-    return coco_mask_parser.parse(
-        data_splitter=SingleSplitSplitter(), idmap=coco_imageid_map
-    )[0]
+def coco_mask_records(coco_mask_parser):
+    return coco_mask_parser.parse(data_splitter=SingleSplitSplitter())[0]
 
 
 @pytest.fixture
