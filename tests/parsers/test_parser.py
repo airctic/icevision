@@ -44,6 +44,11 @@ class SimpleParser(
 
 def test_parser(data, tmpdir):
     parser = SimpleParser(data)
+    assert len(parser.class_map) == 1
+    assert parser.class_map._lock == False
+    assert parser.class_map.get_by_name("background") == 0
+    assert parser.class_map.get_by_id(0) == "background"
+
     cache_filepath = Path(tmpdir / "simple_parser.pkl")
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert cache_filepath.exists() == False
