@@ -137,16 +137,19 @@ def build_valid_batch(records, batch_tfms=None):
     (images, targets), records = build_train_batch(
         records=records, batch_tfms=batch_tfms
     )
-
-    img_sizes = [(r["height"], r["width"]) for r in records]
-    targets["img_size"] = tensor(img_sizes, dtype=torch.float)
-
-    targets["img_scale"] = tensor([1] * len(records), dtype=torch.float)
+    res = [process_record(record) for record in records]
+    d = collate_records(res)
+    # passing the size of transformed image to efficientdet, necessary for its own scaling and resizing, see
+    # https://github.com/rwightman/efficientdet-pytorch/blob/645d84a6f0cd837703f98f48179a06c354902515/effdet/bench.py#L100
+    targets["img_size"] = tensor(
+        [_get_image_hw(image) for image in images], dtype=torch.float
+    )
+    targets["img_scale"] = tensor([1] * len(images), dtype=torch.float)
 
     return (images, targets), records
 
 
-def build_infer_batch(dataset, batch_tfms=None):
+def build_infer_batch(records, batch_tfms=None):
     """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
@@ -163,16 +166,64 @@ def build_infer_batch(dataset, batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    samples = common_build_batch(dataset, batch_tfms=batch_tfms)
+    records = common_build_batch(records, batch_tfms=batch_tfms)
 
-    tensor_imgs, img_sizes = [], []
-    for record in samples:
-        tensor_imgs.append(im2tensor(record["img"]))
-        img_sizes.append((record["height"], record["width"]))
+    res = [process_record(record, get_bbox=False) for record in records]
+    images, img_sizes = [], []
+    for record in records:
+        img = im2tensor(record["img"])
+        images.append(img)
 
-    tensor_imgs = torch.stack(tensor_imgs)
+        img_sizes.append(_get_image_hw(img))
+
+    images = torch.stack(images)
+
     tensor_sizes = tensor(img_sizes, dtype=torch.float)
-    tensor_scales = tensor([1] * len(samples), dtype=torch.float)
+    tensor_scales = tensor([1] * len(records), dtype=torch.float)
     img_info = {"img_size": tensor_sizes, "img_scale": tensor_scales}
 
-    return (tensor_imgs, img_info), samples
+    return (images, img_info), records
+
+
+def _get_image_hw(img: torch.Tensor) -> torch.Tensor:
+    return img.shape[-2:]
+
+
+def process_record(record, get_bbox=True, get_size=True, get_scale=True) -> dict:
+    """Extracts information from record and prepares a format required by the EffDet"""
+    img_info = dict()
+    img_info["img"] = im2tensor(record["img"])
+    if get_size:
+        img_info["img_size"] = _get_image_hw(img_info["img"])
+    if get_scale:
+        img_info["img_scale"] = 1.0
+    if get_bbox:
+        img_info["cls"] = (
+            record["labels"] if record["labels"] else [0]
+        )  # background and dummy if no label in record
+        img_info["bbox"] = (
+            [bbox.yxyx for bbox in record["bboxes"]]
+            if record["labels"]
+            else [[0, 0, 0, 0]]
+        )
+    return img_info
+
+
+def collate_records(records) -> dict:
+    """Converting list of dictionaries to a dictionary of lists (tensors if possible)"""
+    out_dict = {}
+    for key, item in records[0].items():
+        if isinstance(item, torch.Tensor):
+            collate_fn = torch.stack
+        elif isinstance(item, torch.Size):
+            collate_fn = torch.Tensor
+        elif isinstance(item, list):
+            collate_fn = lambda L: [torch.Tensor(el) for el in L]
+        else:
+            collate_fn = torch.Tensor
+        out_dict[key] = collate_fn([record[key] for record in records])
+
+    # check if lens are equal
+    lens = [len(val) for val in out_dict.values()]
+    assert all(x == lens[0] for x in lens), "Collating batch records failed"
+    return out_dict
