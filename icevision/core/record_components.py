@@ -1,30 +1,34 @@
 __all__ = [
-    "RecordMixin",
-    "ClassMapRecordMixin",
-    "ImageidRecordMixin",
-    "ImageRecordMixin",
-    "FilepathRecordMixin",
-    "SizeRecordMixin",
-    "LabelsRecordMixin",
-    "BBoxesRecordMixin",
-    "MasksRecordMixin",
-    "AreasRecordMixin",
-    "IsCrowdsRecordMixin",
-    "KeyPointsRecordMixin",
+    "RecordComponent",
+    "ClassMapRecordComponent",
+    "ImageidRecordComponent",
+    "ImageRecordComponent",
+    "FilepathRecordComponent",
+    "SizeRecordComponent",
+    "LabelsRecordComponent",
+    "BBoxesRecordComponent",
+    "MasksRecordComponent",
+    "AreasRecordComponent",
+    "IsCrowdsRecordComponent",
+    "KeyPointsRecordComponent",
 ]
 
 from icevision.imports import *
 from icevision.utils import *
-from icevision.core import components
-from .bbox import *
-from .mask import *
-from .exceptions import *
-from .keypoints import *
-from .class_map import *
+from icevision.core.components import *
+from icevision.core.bbox import *
+from icevision.core.mask import *
+from icevision.core.exceptions import *
+from icevision.core.keypoints import *
+from icevision.core.class_map import *
 
 
-class RecordMixin:
+class RecordComponent(Component):
     # TODO: as_dict is only necessary because of backwards compatibility
+    @property
+    def record(self):
+        return self.composite
+
     def as_dict(self) -> dict:
         return {}
 
@@ -47,48 +51,50 @@ class RecordMixin:
         return []
 
 
-@components.classmap
-class ClassMapRecordMixin(RecordMixin):
+@ClassMapComponent
+class ClassMapRecordComponent(RecordComponent):
     def set_class_map(self, class_map: ClassMap):
         self.class_map = class_map
 
     def as_dict(self) -> dict:
-        return {"class_map": self.class_map, **super().as_dict()}
+        return {"class_map": self.class_map}
 
 
-@components.imageid
-class ImageidRecordMixin(RecordMixin):
+@ImageidComponent
+class ImageidRecordComponent(RecordComponent):
     def set_imageid(self, imageid: int):
         self.imageid = imageid
 
     def _repr(self) -> List[str]:
-        return [f"Image ID: {self.imageid}", *super()._repr()]
+        return [f"Image ID: {self.imageid}"]
 
     def as_dict(self) -> dict:
-        return {"imageid": self.imageid, **super().as_dict()}
+        return {"imageid": self.imageid}
 
 
 # TODO: we need a way to combine filepath and image mixin
-class ImageRecordMixin(RecordMixin):
+# TODO: rename to ImageArrayRecordComponent
+@ImageArrayComponent
+class ImageRecordComponent(RecordComponent):
     def set_img(self, img: np.ndarray):
         self.img = img
         # TODO: setting size here?
         self.height, self.width, _ = self.img.shape
 
     def _repr(self) -> List[str]:
-        return [f"Image: {self.img}", *super()._repr()]
+        return [f"Image: {self.img}"]
 
     def as_dict(self) -> dict:
         return {
             "img": self.img,
+            # TODO: setting size here?
             "height": self.height,
             "width": self.width,
-            **super().as_dict(),
         }
 
 
-@components.filepath
-class FilepathRecordMixin(RecordMixin):
+@FilepathComponent
+class FilepathRecordComponent(RecordComponent):
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
@@ -96,27 +102,23 @@ class FilepathRecordMixin(RecordMixin):
         self.img = open_img(self.filepath)
         # TODO, HACK: is it correct to overwrite height and width here?
         # self.height, self.width, _ = self.img.shape
-        super()._load()
 
     def _autofix(self) -> Dict[str, bool]:
         exists = self.filepath.exists()
         if not exists:
             raise AutofixAbort(f"File '{self.filepath}' does not exist")
 
-        return super()._autofix()
+        return {}
 
     def _repr(self) -> List[str]:
-        return [f"Filepath: {self.filepath}", *super()._repr()]
+        return [f"Filepath: {self.filepath}"]
 
     def as_dict(self) -> dict:
-        return {"filepath": self.filepath, **super().as_dict()}
-        # # HACK: img, height, width are conditonal, use __dict__ to circumvent that
-        # # can be resolved once `as_dict` gets removed
-        # return {**self.__dict__, **super().as_dict()}
+        return {"filepath": self.filepath}
 
 
-@components.size
-class SizeRecordMixin(RecordMixin):
+@SizeComponent
+class SizeRecordComponent(RecordComponent):
     def set_image_size(self, width: int, height: int):
         # TODO: use ImgSize
         self.width, self.height = width, height
@@ -124,22 +126,21 @@ class SizeRecordMixin(RecordMixin):
     def _repr(self) -> List[str]:
         return [
             f"Image size (width, height): ({self.width}, {self.height})",
-            *super()._repr(),
         ]
 
     def as_dict(self) -> dict:
-        return {"width": self.width, "height": self.height, **super().as_dict()}
+        return {"width": self.width, "height": self.height}
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
         info = [{"img_width": self.width, "img_height": self.height}]
-        return {"img_size": info, **super()._aggregate_objects()}
+        return {"img_size": info}
 
 
-@components.label
+@LabelComponent
 ### Annotation parsers ###
-class LabelsRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+class LabelsRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.labels: List[int] = []
 
     def is_valid(self) -> List[bool]:
@@ -149,51 +150,51 @@ class LabelsRecordMixin(RecordMixin):
         self.labels.extend(labels)
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"labels": len(self.labels), **super()._num_annotations()}
+        return {"labels": len(self.labels)}
 
     def _autofix(self) -> Dict[str, bool]:
-        return {"labels": [True] * len(self.labels), **super()._autofix()}
+        return {"labels": [True] * len(self.labels)}
 
     def _remove_annotation(self, i):
-        super()._remove_annotation(i)
         self.labels.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
-        return {"labels": self.labels, **super()._aggregate_objects()}
+        return {"labels": self.labels}
 
     def _repr(self) -> List[str]:
-        return [f"Labels: {self.labels}", *super()._repr()]
+        return [f"Labels: {self.labels}"]
 
     def as_dict(self) -> dict:
-        return {"labels": self.labels, **super().as_dict()}
+        return {"labels": self.labels}
 
 
-@components.bbox
-class BBoxesRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+@BBoxComponent
+class BBoxesRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.bboxes: List[BBox] = []
 
     def _autofix(self) -> Dict[str, bool]:
         success = []
         for bbox in self.bboxes:
             try:
-                autofixed = bbox.autofix(img_w=self.width, img_h=self.height)
+                autofixed = bbox.autofix(
+                    img_w=self.record.width, img_h=self.record.height
+                )
                 success.append(True)
             except InvalidDataError as e:
                 logger.log("AUTOFIX-FAIL", "{}", str(e))
                 success.append(False)
 
-        return {"bboxes": success, **super()._autofix()}
+        return {"bboxes": success}
 
     def add_bboxes(self, bboxes):
         self.bboxes.extend(bboxes)
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"bboxes": len(self.bboxes), **super()._num_annotations()}
+        return {"bboxes": len(self.bboxes)}
 
     def _remove_annotation(self, i):
-        super()._remove_annotation(i)
         self.bboxes.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
@@ -211,118 +212,110 @@ class BBoxesRecordMixin(RecordMixin):
                 }
             )
 
-        return {"bboxes": objects, **super()._aggregate_objects()}
+        return {"bboxes": objects}
 
     def _repr(self) -> List[str]:
-        return [f"BBoxes: {self.bboxes}", *super()._repr()]
+        return [f"BBoxes: {self.bboxes}"]
 
     def as_dict(self) -> dict:
-        return {"bboxes": self.bboxes, **super().as_dict()}
-
-    def prepare_transform(self, tfm):
-        tfm.prepare_bboxes(self)
-        super().prepare_transform(tfm)
-
-    def collect_transform(self, tfm):
-        self.bboxes = tfm.collect_bboxes(self)
-        super().transform()
+        return {"bboxes": self.bboxes}
 
 
-@components.mask
-class MasksRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+@MaskComponent
+class MasksRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.masks = EncodedRLEs()
 
     def _load(self):
-        super()._load()
-        self.masks = MaskArray.from_masks(self.masks, self.height, self.width)
+        self.masks = MaskArray.from_masks(
+            self.masks, self.record.height, self.record.width
+        )
 
     def add_masks(self, masks: Sequence[Mask]):
-        erles = [mask.to_erles(h=self.height, w=self.width) for mask in masks]
+        erles = [
+            mask.to_erles(h=self.record.height, w=self.record.width) for mask in masks
+        ]
         self.masks.extend(erles)
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"masks": len(self.masks), **super()._num_annotations()}
+        return {"masks": len(self.masks)}
 
     def _remove_annotation(self, i):
-        super()._remove_annotation(i)
         self.masks.pop(i)
 
     def _repr(self) -> List[str]:
-        return [f"Masks: {self.masks}", *super()._repr()]
+        return [f"Masks: {self.masks}"]
 
     def as_dict(self) -> dict:
-        return {"masks": self.masks, **super().as_dict()}
+        return {"masks": self.masks}
 
 
-@components.area
-class AreasRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+@AreaComponent
+class AreasRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.areas: List[float] = []
 
     def add_areas(self, areas: Sequence[float]):
         self.areas.extend(areas)
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"areas": len(self.areas), **super()._num_annotations()}
+        return {"areas": len(self.areas)}
 
     def _remove_annotation(self, i):
-        super()._remove_annotation(i)
         self.areas.pop(i)
 
     def _repr(self) -> List[str]:
-        return [f"Areas: {self.areas}", *super()._repr()]
+        return [f"Areas: {self.areas}"]
 
     def as_dict(self) -> dict:
-        return {"areas": self.areas, **super().as_dict()}
+        return {"areas": self.areas}
 
 
-@components.iscrowd
-class IsCrowdsRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+@IsCrowdComponent
+class IsCrowdsRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.iscrowds: List[bool] = []
 
     def add_iscrowds(self, iscrowds: Sequence[bool]):
         self.iscrowds.extend(iscrowds)
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"iscrowds": len(self.iscrowds), **super()._num_annotations()}
+        return {"iscrowds": len(self.iscrowds)}
 
     def _remove_annotation(self, i):
-        super()._remove_annotation(i)
         self.iscrowds.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
-        return {"iscrowds": self.iscrowds, **super()._aggregate_objects()}
+        return {"iscrowds": self.iscrowds}
 
     def _repr(self) -> List[str]:
-        return [f"Is Crowds: {self.iscrowds}", *super()._repr()]
+        return [f"Is Crowds: {self.iscrowds}"]
 
     def as_dict(self) -> dict:
-        return {"iscrowds": self.iscrowds, **super().as_dict()}
+        return {"iscrowds": self.iscrowds}
 
 
-@components.keypoint
-class KeyPointsRecordMixin(RecordMixin):
-    def __init__(self):
-        super().__init__()
+@KeyPointComponent
+class KeyPointsRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
         self.keypoints: List[KeyPoints] = []
 
     def add_keypoints(self, keypoints):
         self.keypoints.extend(keypoints)
 
     def as_dict(self) -> dict:
-        return {"keypoints": self.keypoints, **super().as_dict()}
+        return {"keypoints": self.keypoints}
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
         objects = [
             {"keypoint_x": kpt.x, "keypoint_y": kpt.y, "keypoint_visible": kpt.v}
             for kpt in self.keypoints
         ]
-        return {"keypoints": objects, **super()._aggregate_objects()}
+        return {"keypoints": objects}
 
     def _repr(self) -> List[str]:
-        return {f"KeyPoints: {self.keypoints}", *super()._repr()}
+        return {f"KeyPoints: {self.keypoints}"}

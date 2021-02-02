@@ -1,17 +1,23 @@
-__all__ = ["BaseRecord", "autofix_records", "create_mixed_record"]
+__all__ = ["BaseRecord", "autofix_records"]
 
 from icevision.imports import *
 from icevision.utils import *
 from collections.abc import MutableMapping
-from copy import copy
-from .record_mixins import *
-from .exceptions import *
+from icevision.core.exceptions import *
+from icevision.core.components import *
+from icevision.core.record_components import *
 
 
 # TODO: MutableMapping because of backwards compatability
-class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMapping):
+# TODO: Rename to Record
+class BaseRecord(Composite, MutableMapping):
+    base_components = {ImageidRecordComponent, SizeRecordComponent}
+
+    def as_dict(self) -> dict:
+        return self.reduce_on_components("as_dict", reduction="update")
+
     def num_annotations(self) -> Dict[str, int]:
-        return self._num_annotations()
+        return self.reduce_on_components("_num_annotations", reduction="update")
 
     def check_num_annotations(self):
         num_annotations = self.num_annotations()
@@ -25,7 +31,7 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
     def autofix(self):
         self.check_num_annotations()
 
-        success_dict = self._autofix()
+        success_dict = self.reduce_on_components("_autofix", reduction="update")
         success_list = np.array(list(success_dict.values()))
         if len(success_list) == 0:
             return success_dict
@@ -43,24 +49,19 @@ class BaseRecord(ImageidRecordMixin, SizeRecordMixin, RecordMixin, MutableMappin
 
         return success_dict
 
-    def remove_annotation(self, i):
-        # TODO: remove_annotation might work incorrectly with masks
-        # TODO: fixed with EncodedRLEs?
-        self._remove_annotation(i)
+    def remove_annotation(self, i: int):
+        self.reduce_on_components("_remove_annotation", i=i)
 
     def aggregate_objects(self):
-        return self._aggregate_objects()
-
-    def copy(self) -> "BaseRecord":
-        return copy(self)
+        return self.reduce_on_components("_aggregate_objects", reduction="update")
 
     def load(self) -> "BaseRecord":
-        record = copy(self)
-        record._load()
+        record = deepcopy(self)
+        record.reduce_on_components("_load")
         return record
 
     def __repr__(self) -> str:
-        _reprs = self._repr()
+        _reprs = self.reduce_on_components("_repr", reduction="extend")
         _repr = "".join(f"\n\t- {o}" for o in _reprs)
         return f"Record:{_repr}"
 
@@ -103,15 +104,3 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
                 )
 
     return keep_records
-
-
-def create_mixed_record(
-    mixins: Sequence[Type[RecordMixin]], add_base: bool = True
-) -> Type[BaseRecord]:
-    mixins = (BaseRecord, *mixins) if add_base else tuple(mixins)
-
-    TemporaryRecord = type("Record", mixins, {})
-    class_name = "".join([o.__name__ for o in TemporaryRecord.mro()])
-
-    Record = type(class_name, mixins, {})
-    return patch_class_to_main(Record)
