@@ -55,11 +55,8 @@ def _test_batch_valid(images, targets):
 
     assert set(targets.keys()) == {"cls", "bbox", "img_size", "img_scale"}
 
-    assert targets["img_scale"].dtype == torch.float
-    assert torch.all(targets["img_scale"] == tensor([1, 1]))
-
-    assert targets["img_size"].dtype == torch.float
-    assert torch.all(targets["img_size"] == tensor([[4, 4], [4, 4]]))
+    assert targets["img_scale"] is None
+    assert targets["img_size"] is None
 
 
 def test_efficient_det_build_train_batch(records):
@@ -99,6 +96,8 @@ def test_efficient_det_build_infer_batch(img, batch_tfms):
     img_info = {"img_size": img_sizes, "img_scale": img_scales}
 
     batch_imgs, batch_info = batch
+
+    assert set(batch_info.keys()) == {"img_size", "img_scale"}
     assert torch.equal(batch_imgs, tensor_img)
     assert torch.equal(batch_info["img_size"], img_info["img_size"])
     assert torch.equal(batch_info["img_scale"], img_info["img_scale"])
