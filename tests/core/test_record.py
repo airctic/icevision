@@ -4,26 +4,40 @@ from icevision.all import *
 
 @pytest.fixture()
 def record(samples_source):
-    Record = create_mixed_record(
-        (BBoxesRecordMixin, LabelsRecordMixin, MasksRecordMixin)
+    record = BaseRecord(
+        (
+            BBoxesRecordComponent,
+            LabelsRecordComponent,
+            MasksRecordComponent,
+            FilepathRecordComponent,
+        )
     )
 
-    record = Record()
     record.set_imageid(1)
     record.set_image_size(3, 3)
     record.add_labels([1, 2])
     record.add_bboxes([BBox.from_xyxy(1, 2, 4, 4), BBox.from_xyxy(1, 2, 1, 3)])
+    record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
     mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
     record.add_masks([VocMaskFile(mask_filepath)])
 
     return record
 
 
+def test_record_load(record):
+    record_loaded = record.load()
+
+    assert isinstance(record_loaded.img, np.ndarray)
+    assert isinstance(record_loaded.masks, MaskArray)
+
+    # test original record is not modified
+    assert not hasattr(record, "img")
+    assert isinstance(record.masks, EncodedRLEs)
+
+
 @pytest.fixture
 def record_empty_annotations():
-    Record = create_mixed_record((BBoxesRecordMixin, LabelsRecordMixin))
-
-    record = Record()
+    record = BaseRecord((BBoxesRecordComponent, LabelsRecordComponent))
     record.set_imageid(2)
     record.set_image_size(3, 3)
     return record
@@ -31,9 +45,8 @@ def record_empty_annotations():
 
 @pytest.fixture
 def record_invalid_path():
-    Record = create_mixed_record((FilepathRecordMixin,))
+    record = BaseRecord((FilepathRecordComponent,))
 
-    record = Record()
     record.set_imageid(2)
     record.set_image_size(3, 3)
     record.set_filepath("none.jpg")
@@ -42,11 +55,10 @@ def record_invalid_path():
 
 @pytest.fixture()
 def record_wrong_num_annotations(samples_source):
-    Record = create_mixed_record(
-        (BBoxesRecordMixin, LabelsRecordMixin, MasksRecordMixin)
+    record = BaseRecord(
+        (BBoxesRecordComponent, LabelsRecordComponent, MasksRecordComponent)
     )
 
-    record = Record()
     record.set_imageid(3)
     record.set_image_size(3, 3)
     record.add_labels([1, 2])
@@ -63,8 +75,7 @@ class TestKeypointsMetadata(KeypointsMetadata):
 
 @pytest.fixture()
 def record_keypoints():
-    Record = create_mixed_record([BBoxesRecordMixin, KeyPointsRecordMixin])
-    record = Record()
+    record = BaseRecord((BBoxesRecordComponent, KeyPointsRecordComponent))
     record.add_keypoints(
         [
             KeyPoints.from_xyv([0, 0, 0, 1, 1, 1, 2, 2, 2], TestKeypointsMetadata),

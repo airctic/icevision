@@ -18,8 +18,10 @@ from icevision.utils import *
 
 
 class ParserMixin(ABC):
-    def record_mixins(self) -> List[RecordMixin]:
-        return []
+    # TODO: Rename to components_cls
+    @property
+    def components(self):
+        return [o for o in type(self).__mro__ if issubclass(o, ParserMixin)]
 
     def parse_fields(self, o, record) -> None:
         pass
@@ -29,20 +31,16 @@ class ParserMixin(ABC):
         return []
 
 
+@ClassMapComponent
 class ClassMapMixin(ParserMixin):
-    def record_mixins(self):
-        return [ClassMapRecordMixin, *super().record_mixins()]
-
     def parse_fields(self, o, record):
         record.set_class_map(self.class_map)
         super().parse_fields(o, record)
 
 
+@ImageidComponent
 class ImageidMixin(ParserMixin):
     """Adds `imageid` method to parser"""
-
-    def record_mixins(self):
-        return [ImageidRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         record.set_imageid(self.imageid(o))
@@ -57,11 +55,9 @@ class ImageidMixin(ParserMixin):
         return ["def imageid(self, o) -> Hashable:"] + super()._templates()
 
 
+@FilepathComponent
 class FilepathMixin(ParserMixin):
     """Adds `filepath` method to parser"""
-
-    def record_mixins(self):
-        return [FilepathRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         filepath = Path(self.filepath(o))
@@ -81,11 +77,9 @@ class FilepathMixin(ParserMixin):
         return ["def filepath(self, o) -> Union[str, Path]:"] + super()._templates()
 
 
+@SizeComponent
 class SizeMixin(ParserMixin):
     """Adds `image_width_height` method to parser"""
-
-    def record_mixins(self):
-        return [SizeRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         # TODO: rename to image_weight, image_height
@@ -112,11 +106,9 @@ class SizeMixin(ParserMixin):
 
 
 ### Annotation parsers ###
+@LabelComponent
 class LabelsMixin(ParserMixin):
     """Adds `labels` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [LabelsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         # super first because class_map need to be set before
@@ -140,11 +132,9 @@ class LabelsMixin(ParserMixin):
         return templates + ["def labels(self, o) -> List[Hashable]:"]
 
 
+@BBoxComponent
 class BBoxesMixin(ParserMixin):
     """Adds `bboxes` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [BBoxesRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         record.add_bboxes(self.bboxes(o))
@@ -160,11 +150,9 @@ class BBoxesMixin(ParserMixin):
         return templates + ["def bboxes(self, o) -> List[BBox]:"]
 
 
+@MaskComponent
 class MasksMixin(ParserMixin):
     """Adds `masks` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [MasksRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record) -> None:
         super().parse_fields(o, record)
@@ -180,11 +168,9 @@ class MasksMixin(ParserMixin):
         return templates + ["def masks(self, o) -> List[Mask]:"]
 
 
+@AreaComponent
 class AreasMixin(ParserMixin):
     """Adds `areas` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [AreasRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record) -> None:
         record.add_areas(self.areas(o))
@@ -200,11 +186,9 @@ class AreasMixin(ParserMixin):
         return templates + ["def areas(self, o) -> List[float]:"]
 
 
+@IsCrowdComponent
 class IsCrowdsMixin(ParserMixin):
     """Adds `iscrowds` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [IsCrowdsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         record.add_iscrowds(self.iscrowds(o))
@@ -220,11 +204,9 @@ class IsCrowdsMixin(ParserMixin):
         return templates + ["def iscrowds(self, o) -> List[bool]:"]
 
 
+@KeyPointComponent
 class KeyPointsMixin(ParserMixin):
     """Adds `keypoints` method to parser"""
-
-    def record_mixins(self) -> List[RecordMixin]:
-        return [KeyPointsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
         record.add_keypoints(self.keypoints(o))

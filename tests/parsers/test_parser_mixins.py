@@ -3,7 +3,7 @@ from icevision.all import *
 
 
 @pytest.fixture
-def all_parser_mixins_cls():
+def dummy_parser_all_mixins():
     class AllParserMixins(
         parsers.Parser,
         parsers.ClassMapMixin,
@@ -13,6 +13,7 @@ def all_parser_mixins_cls():
         parsers.LabelsMixin,
         parsers.BBoxesMixin,
         parsers.MasksMixin,
+        parsers.KeyPointsMixin,
         parsers.AreasMixin,
         parsers.IsCrowdsMixin,
     ):
@@ -37,6 +38,9 @@ def all_parser_mixins_cls():
         def masks(self, o) -> List[Mask]:
             return [MaskArray(np.zeros((1, 420, 480)))]
 
+        def keypoints(self, o) -> List[KeyPoints]:
+            return [KeyPoints((1, 1, 1), None)]
+
         def areas(self, o) -> List[float]:
             return [4.2]
 
@@ -46,13 +50,32 @@ def all_parser_mixins_cls():
     return AllParserMixins
 
 
-def test_all_parser_mixins(all_parser_mixins_cls):
-    mixins = all_parser_mixins_cls()
+def test_parser_components(dummy_parser_all_mixins):
+    parser = dummy_parser_all_mixins()
+    comp_groups = component_registry.get_components_groups(parser.components)
+    assert set(comp_groups) == set(
+        (
+            "classmap",
+            "imageid",
+            "filepath",
+            "size",
+            "label",
+            "bbox",
+            "mask",
+            "keypoint",
+            "area",
+            "iscrowd",
+        )
+    )
 
-    Record = create_mixed_record(mixins.record_mixins())
+
+def test_all_parser_mixins(dummy_parser_all_mixins):
+    parser = dummy_parser_all_mixins()
+
+    Record = parser.record_class()
     record = Record()
 
-    mixins.parse_fields(None, record)
+    parser.parse_fields(None, record)
 
     assert record["imageid"] == 42
     assert record["filepath"] == Path(__file__)
@@ -63,17 +86,18 @@ def test_all_parser_mixins(all_parser_mixins_cls):
     assert record["masks"].erles == [{"size": [420, 480], "counts": b"PlT6"}]
     assert record["areas"] == [4.2]
     assert record["iscrowds"] == [False]
+    assert record["keypoints"] == [KeyPoints((1, 1, 1), None)]
 
 
-def test_all_parser_mixins_broken_filepath(all_parser_mixins_cls):
-    class BrokenFilepath(all_parser_mixins_cls):
+def test_all_parser_mixins_broken_filepath(dummy_parser_all_mixins):
+    class BrokenFilepath(dummy_parser_all_mixins):
         def filepath(self, o) -> Union[str, Path]:
             return "path.none"
 
-    mixins = BrokenFilepath()
+    parser = BrokenFilepath()
 
-    Record = create_mixed_record(mixins.record_mixins())
+    Record = parser.record_class()
     record = Record()
 
     with pytest.raises(AbortParseRecord):
-        mixins.parse_fields(None, record)
+        parser.parse_fields(None, record)
