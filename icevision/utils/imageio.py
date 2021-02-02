@@ -1,13 +1,25 @@
-__all__ = ["open_img", "show_img", "plot_grid", "plot_grid_preds_actuals"]
+__all__ = [
+    "open_img",
+    "get_image_size",
+    "show_img",
+    "plot_grid",
+    "plot_grid_preds_actuals",
+]
 
 from icevision.imports import *
+import PIL, imagesize
 
 
 def open_img(fn, gray=False):
-    if not os.path.exists(fn):
-        raise ValueError(f"File {fn} does not exists")
-    color = cv2.COLOR_BGR2GRAY if gray else cv2.COLOR_BGR2RGB
-    return cv2.cvtColor(cv2.imread(str(fn), cv2.IMREAD_UNCHANGED), color)
+    color = "L" if gray else "RGB"
+    return np.array(PIL.Image.open(str(fn)).convert(color))
+
+
+def get_image_size(filepath: Union[str, Path]) -> Tuple[int, int]:
+    """
+    Returns image (width, height)
+    """
+    return imagesize.get(filepath)
 
 
 def show_img(img, ax=None, show: bool = False, **kwargs):

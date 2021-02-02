@@ -1,5 +1,6 @@
 __all__ = [
     "ParserMixin",
+    "ClassMapMixin",
     "ImageidMixin",
     "FilepathMixin",
     "SizeMixin",
@@ -26,6 +27,15 @@ class ParserMixin(ABC):
     @classmethod
     def _templates(cls) -> List[str]:
         return []
+
+
+class ClassMapMixin(ParserMixin):
+    def record_mixins(self):
+        return [ClassMapRecordMixin, *super().record_mixins()]
+
+    def parse_fields(self, o, record):
+        record.set_class_map(self.class_map)
+        super().parse_fields(o, record)
 
 
 class ImageidMixin(ParserMixin):
@@ -109,22 +119,25 @@ class LabelsMixin(ParserMixin):
         return [LabelsRecordMixin, *super().record_mixins()]
 
     def parse_fields(self, o, record):
-        record.add_labels(self.labels(o))
+        # super first because class_map need to be set before
         super().parse_fields(o, record)
 
+        names = self.labels(o)
+        ids = [self.class_map.get_by_name(name) for name in names]
+        record.add_labels(ids)
+
     @abstractmethod
-    def labels(self, o) -> List[int]:
+    def labels(self, o) -> List[Hashable]:
         """Returns the labels for the receive sample.
 
         !!! danger "Important"
-        If you are using a RCNN/efficientdet model,
-        remember to return 0 for background.
+        Return `BACKGROUND` (imported from icevision) for background.
         """
 
     @classmethod
     def _templates(cls) -> List[str]:
         templates = super()._templates()
-        return templates + ["def labels(self, o) -> List[int]:"]
+        return templates + ["def labels(self, o) -> List[Hashable]:"]
 
 
 class BBoxesMixin(ParserMixin):

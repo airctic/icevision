@@ -45,18 +45,18 @@ def preds(records):
 @pytest.fixture()
 def expected_coco_output():
     return [
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.501",
-        " Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000",
-        " Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.252",
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.300",
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.703",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.500",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.500",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.500",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.300",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.700",
+        "Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.501",
+        "Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000",
+        "Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.252",
+        "Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
+        "Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.300",
+        "Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.703",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.500",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.500",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.500",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.300",
+        "Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.700",
     ]
 
 

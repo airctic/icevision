@@ -5,7 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- mmdetection models
+
 ### Changed
+- **Breaking:** All `Parser` subclasses need to call `super.__init__`
+- **Breaking:** `LabelsMixin.labels` now needs to return `List[Hashable]` instead of `List[int]` (labels names instead of label ids)
+- **Breaking:** Model namespace changes e.g. `faster_rcnn` -> `models.torchvision.faster_rcnn`, `efficientdet` -> `models.ross.efficientdet`
+- **Breaking:** Renamed `ClassMap.get_name/get_id` to `ClassMap.get_by_name/get_by_id`
+- **Breaking:** Removes `idmap` argument from `Parser.parse`. Instead pass `idmap` to the constructor (`__init__`).
+- ClassMap is not created inside of the parser, it's not required to instantiate it before
+- class_map labels get automatically filled while parsing
+- background for class_map is now always 0 (unless no background)
+- adds `class_map` to `Record`
+
 ### Deleted
 
 ## [0.5.2]

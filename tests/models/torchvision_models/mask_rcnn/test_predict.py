@@ -1,7 +1,7 @@
 import pytest
 from icevision.imports import *
 from icevision import *
-from icevision.models.torchvision_models import mask_rcnn
+from icevision.models.torchvision import mask_rcnn
 
 
 @pytest.fixture
