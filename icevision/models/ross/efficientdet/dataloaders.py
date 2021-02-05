@@ -104,7 +104,7 @@ def build_train_batch(records, batch_tfms=None):
     # convert to EffDet interface
     targets = dict(
         bbox=batch_bboxes,
-        cls=batch_classes,
+        cls=batch_classes
     )
 
     return (batch_images, targets), records
