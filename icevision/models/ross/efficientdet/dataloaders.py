@@ -98,8 +98,8 @@ def build_train_batch(records, batch_tfms=None):
 
     # convert to tensors
     batch_images = torch.stack(batch_images)
-    batch_bboxes = [tensor(bboxes) for bboxes in batch_bboxes]
-    batch_classes = [tensor(classes) for classes in batch_classes]
+    batch_bboxes = [tensor(bboxes, dtype=torch.float32) for bboxes in batch_bboxes]
+    batch_classes = [tensor(classes, dtype=torch.float32) for classes in batch_classes]
 
     # convert to EffDet interface
     targets = dict(
@@ -166,8 +166,8 @@ def build_infer_batch(records, batch_tfms=None):
 
     # convert to tensors
     batch_images = torch.stack(batch_images)
-    batch_sizes = tensor(batch_sizes)
-    batch_scales = tensor(batch_scales)
+    batch_sizes = tensor(batch_sizes, dtype=torch.float32)
+    batch_scales = tensor(batch_scales, dtype=torch.float32)
 
     # convert to EffDet interface
     targets = dict(
