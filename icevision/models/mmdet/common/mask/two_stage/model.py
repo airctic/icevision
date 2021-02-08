@@ -17,7 +17,7 @@ def model(
     if weights_path is not None:
         cfg.model.pretrained = None
 
-    _model = build_detector(cfg.model, cfg.get('train_cfg'), cfg.get('test_cfg'))
+    _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
 
     if weights_path is not None:
         load_checkpoint(_model, str(weights_path))
