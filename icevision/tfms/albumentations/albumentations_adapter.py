@@ -41,7 +41,7 @@ class AlbumentationsImageComponent(AlbumentationsAdapterComponent):
         self.adapter._albu_in["image"] = record.img
 
     def collect(self, record):
-        record.img = self.adapter._albu_out["image"]
+        record.set_img(self.adapter._albu_out["image"])
 
 
 @SizeComponent
@@ -67,7 +67,8 @@ class AlbumentationsLabelsComponent(AlbumentationsAdapterComponent):
         self.adapter._keep_mask = np.zeros(len(self._original_labels), dtype=bool)
         self.adapter._keep_mask[self.adapter._albu_out["labels"]] = True
 
-        record.labels = self.adapter._filter_attribute(self._original_labels)
+        labels = self.adapter._filter_attribute(self._original_labels)
+        record.set_labels(labels)
 
 
 @BBoxComponent
@@ -82,9 +83,10 @@ class AlbumentationsBBoxesComponent(AlbumentationsAdapterComponent):
 
     def collect(self, record) -> List[BBox]:
         # TODO: quickfix from 576
-        # bb = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
-        bb = [xyxy for xyxy in self.adapter._albu_out["bboxes"]]
-        record.bboxes = [BBox.from_xyxy(*xyxy) for xyxy in bb]
+        # bboxes_xyxy = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
+        bboxes_xyxy = [xyxy for xyxy in self.adapter._albu_out["bboxes"]]
+        bboxes = [BBox.from_xyxy(*xyxy) for xyxy in bboxes_xyxy]
+        record.set_bboxes(bboxes)
 
     @staticmethod
     def _clip_bboxes(xyxy, h, w):
@@ -109,7 +111,8 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
 
     def collect(self, record):
         masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
-        record.masks = MaskArray(np.array(masks))
+        masks = MaskArray(np.array(masks))
+        record.set_masks(masks)
 
 
 @KeyPointComponent
@@ -160,7 +163,8 @@ class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
             KeyPoints.from_xyv(group_kpt, original_kpt.metadata)
             for group_kpt, original_kpt in zip(group_kpts, self._kpts)
         ]
-        record.keypoints = self.adapter._filter_attribute(kpts)
+        kpts = self.adapter._filter_attribute(kpts)
+        record.set_keypoints(kpts)
 
     @classmethod
     def _remove_albu_outside_keypoints(cls, tfms_kpts, kpts_visible, size_no_padding):
@@ -200,7 +204,8 @@ class AlbumentationsIsCrowdsComponent(AlbumentationsAdapterComponent):
         self._iscrowds = record.iscrowds
 
     def collect(self, record):
-        record.iscrowds = self.adapter._filter_attribute(self._iscrowds)
+        iscrowds = self.adapter._filter_attribute(self._iscrowds)
+        record.set_iscrowds(iscrowds)
 
 
 # TODO: Let's say same transforms are used for two different datasets types
