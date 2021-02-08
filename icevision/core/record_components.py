@@ -78,19 +78,15 @@ class ImageidRecordComponent(RecordComponent):
 class ImageRecordComponent(RecordComponent):
     def set_img(self, img: np.ndarray):
         self.img = img
-        # TODO: setting size here?
-        self.height, self.width, _ = self.img.shape
+        height, width, _ = self.img.shape
+        # this should set on SizeRecordComponent
+        self.record.set_image_size(width=width, height=height)
 
     def _repr(self) -> List[str]:
         return [f"Image: {self.img}"]
 
     def as_dict(self) -> dict:
-        return {
-            "img": self.img,
-            # TODO: setting size here?
-            "height": self.height,
-            "width": self.width,
-        }
+        return {"img": self.img}
 
 
 @FilepathComponent
@@ -98,10 +94,16 @@ class FilepathRecordComponent(RecordComponent):
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
+    # TODO, HACK: this is also present in ImageRecordComponent, possible conflict?
+    def set_img(self, img: np.ndarray):
+        self.img = img
+        # this should set on SizeRecordComponent
+        height, width, _ = self.img.shape
+        self.record.set_image_size(width=width, height=height)
+
     def _load(self):
-        self.img = open_img(self.filepath)
-        # TODO, HACK: is it correct to overwrite height and width here?
-        # self.height, self.width, _ = self.img.shape
+        img = open_img(self.filepath)
+        self.set_img(img)
 
     def _autofix(self) -> Dict[str, bool]:
         exists = self.filepath.exists()
@@ -121,6 +123,7 @@ class FilepathRecordComponent(RecordComponent):
 class SizeRecordComponent(RecordComponent):
     def set_image_size(self, width: int, height: int):
         # TODO: use ImgSize
+        self.img_size = ImgSize(width=width, height=height)
         self.width, self.height = width, height
 
     def _repr(self) -> List[str]:
@@ -143,11 +146,14 @@ class LabelsRecordComponent(RecordComponent):
         super().__init__(composite=composite)
         self.labels: List[int] = []
 
+    def set_labels(self, labels: Sequence[int]):
+        self.labels = list(labels)
+
+    def add_labels(self, labels: Sequence[int]):
+        self.labels.extend(labels)
+
     def is_valid(self) -> List[bool]:
         return [True for _ in self.labels]
-
-    def add_labels(self, labels: List[int]):
-        self.labels.extend(labels)
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"labels": len(self.labels)}
@@ -174,6 +180,12 @@ class BBoxesRecordComponent(RecordComponent):
         super().__init__(composite=composite)
         self.bboxes: List[BBox] = []
 
+    def set_bboxes(self, bboxes: Sequence[BBox]):
+        self.bboxes = list(bboxes)
+
+    def add_bboxes(self, bboxes: Sequence[BBox]):
+        self.bboxes.extend(bboxes)
+
     def _autofix(self) -> Dict[str, bool]:
         success = []
         for bbox in self.bboxes:
@@ -187,9 +199,6 @@ class BBoxesRecordComponent(RecordComponent):
                 success.append(False)
 
         return {"bboxes": success}
-
-    def add_bboxes(self, bboxes):
-        self.bboxes.extend(bboxes)
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"bboxes": len(self.bboxes)}
@@ -227,16 +236,20 @@ class MasksRecordComponent(RecordComponent):
         super().__init__(composite=composite)
         self.masks = EncodedRLEs()
 
+    def set_masks(self, masks: Sequence[Mask]):
+        self.masks = masks
+
+    def add_masks(self, masks: Sequence[Mask]):
+        self.masks.extend(self._masks_to_erle(masks))
+
+    def _masks_to_erle(self, masks: Sequence[Mask]) -> List[Mask]:
+        width, height = self.record.img_size
+        return [mask.to_erles(h=height, w=width) for mask in masks]
+
     def _load(self):
         self.masks = MaskArray.from_masks(
             self.masks, self.record.height, self.record.width
         )
-
-    def add_masks(self, masks: Sequence[Mask]):
-        erles = [
-            mask.to_erles(h=self.record.height, w=self.record.width) for mask in masks
-        ]
-        self.masks.extend(erles)
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"masks": len(self.masks)}
@@ -256,6 +269,9 @@ class AreasRecordComponent(RecordComponent):
     def __init__(self, composite):
         super().__init__(composite=composite)
         self.areas: List[float] = []
+
+    def add_areas(self, areas: Sequence[float]):
+        self.areas = list(areas)
 
     def add_areas(self, areas: Sequence[float]):
         self.areas.extend(areas)
@@ -278,6 +294,9 @@ class IsCrowdsRecordComponent(RecordComponent):
     def __init__(self, composite):
         super().__init__(composite=composite)
         self.iscrowds: List[bool] = []
+
+    def set_iscrowds(self, iscrowds: Sequence[bool]):
+        self.iscrowds = list(iscrowds)
 
     def add_iscrowds(self, iscrowds: Sequence[bool]):
         self.iscrowds.extend(iscrowds)
@@ -304,7 +323,10 @@ class KeyPointsRecordComponent(RecordComponent):
         super().__init__(composite=composite)
         self.keypoints: List[KeyPoints] = []
 
-    def add_keypoints(self, keypoints):
+    def set_keypoints(self, keypoints: Sequence[KeyPoints]):
+        self.keypoints = list(keypoints)
+
+    def add_keypoints(self, keypoints: Sequence[KeyPoints]):
         self.keypoints.extend(keypoints)
 
     def as_dict(self) -> dict:

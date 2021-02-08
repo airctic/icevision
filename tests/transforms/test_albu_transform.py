@@ -1,10 +1,42 @@
+from icevision.tfms.albumentations.albumentations_adapter import (
+    AlbumentationsMasksComponent,
+)
 import pytest
 from icevision.all import *
 
+component_field = {
+    ImageidRecordComponent: "imageid",
+    ClassMapRecordComponent: "class_map",
+    FilepathRecordComponent: "img",
+    ImageRecordComponent: "img",
+    SizeRecordComponent: "img_size",
+    LabelsRecordComponent: "labels",
+    BBoxesRecordComponent: "bboxes",
+    MasksRecordComponent: "masks",
+    KeyPointsRecordComponent: "keypoints",
+    AreasRecordComponent: "areas",
+    IsCrowdsRecordComponent: "iscrowds",
+}
 
+
+def check_attribute_on_component(record):
+    for component in record.components:
+        name = component_field[component.__class__]
+        assert getattr(record, name) is getattr(component, name)
+
+
+# TODO: Check that attributes are being set on components
 @pytest.fixture
 def records(coco_mask_records):
     return coco_mask_records
+
+
+def test_set_on_components(records):
+    tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
+
+    tfmed = tfm_ds[0]
+    check_attribute_on_component(tfmed)
 
 
 def test_inference_transform(records):
@@ -14,6 +46,7 @@ def test_inference_transform(records):
 
     tfmed = ds[0]
     assert (tfmed.img == img[:, ::-1, :]).all()
+    check_attribute_on_component(tfmed)
 
 
 def test_simple_transform(records):
@@ -23,6 +56,7 @@ def test_simple_transform(records):
 
     sample, tfmed = ds[0], tfm_ds[0]
     assert (tfmed.img == sample.img[:, ::-1, :]).all()
+    check_attribute_on_component(tfmed)
 
 
 def test_crop_transform(records):
@@ -34,6 +68,7 @@ def test_crop_transform(records):
     assert len(tfmed.bboxes) == 1
     assert len(tfmed.masks) == 1
     assert len(tfmed.iscrowds) == 1
+    check_attribute_on_component(tfmed)
 
 
 def test_crop_transform_empty(records):
@@ -45,6 +80,7 @@ def test_crop_transform_empty(records):
     assert len(tfmed.bboxes) == 0
     assert len(tfmed.masks) == 0
     assert len(tfmed.iscrowds) == 0
+    check_attribute_on_component(tfmed)
 
 
 def test_keypoints_transform(coco_keypoints_parser):
@@ -65,6 +101,7 @@ def test_keypoints_transform(coco_keypoints_parser):
     assert len(t.keypoints) == 3
     assert set([c for c in t.keypoints[0].visible]) == {0.0, 1.0, 2.0}
     assert set([c for c in d.keypoints[0].visible]) == {0, 1, 2}
+    check_attribute_on_component(t)
 
 
 def test_keypoints_transform_crop_error(coco_keypoints_parser):
