@@ -46,3 +46,8 @@ class Composite:
             out = results
 
         return out
+
+    def get_component_by_type(self, component_type) -> Union[Component, None]:
+        for component in self.components:
+            if isinstance(component, component_type):
+                return component
