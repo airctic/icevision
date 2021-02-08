@@ -1,4 +1,5 @@
 __all__ = [
+    "ImgSize",
     "open_img",
     "get_image_size",
     "show_img",
@@ -8,6 +9,8 @@ __all__ = [
 
 from icevision.imports import *
 import PIL, imagesize
+
+ImgSize = namedtuple("ImgSize", "width,height")
 
 
 def open_img(fn, gray=False):

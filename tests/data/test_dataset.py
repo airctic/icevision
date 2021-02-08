@@ -8,5 +8,5 @@ def test_dataset_from_images():
     assert len(dataset) == 2
 
     sample = dataset[0]
-    assert (sample["img"] == np.zeros([4, 4, 3])).all()
-    assert sample["height"] == sample["width"] == 4
+    assert (sample.img == np.zeros([4, 4, 3])).all()
+    assert sample.height == sample.width == 4

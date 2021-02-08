@@ -1,0 +1,315 @@
+__all__ = [
+    "Adapter",
+    "AlbumentationsAdapterComponent",
+    "AlbumentationsImageComponent",
+    "AlbumentationsSizeComponent",
+    "AlbumentationsLabelsComponent",
+    "AlbumentationsBBoxesComponent",
+    "AlbumentationsMasksComponent",
+    "AlbumentationsKeypointsComponent",
+    "AlbumentationsIsCrowdsComponent",
+]
+
+import albumentations as A
+from itertools import chain
+
+from icevision.imports import *
+from icevision.utils import *
+from icevision.core import *
+from icevision.tfms.transform import *
+
+
+class AlbumentationsAdapterComponent(Component):
+    @property
+    def adapter(self):
+        return self.composite
+
+    def setup(self):
+        return
+
+    def prepare(self, record):
+        pass
+
+    def collect(self, record):
+        pass
+
+
+@ImageArrayComponent
+@FilepathComponent
+class AlbumentationsImageComponent(AlbumentationsAdapterComponent):
+    def prepare(self, record):
+        self.adapter._albu_in["image"] = record.img
+
+    def collect(self, record):
+        record.img = self.adapter._albu_out["image"]
+
+
+@SizeComponent
+class AlbumentationsSizeComponent(AlbumentationsAdapterComponent):
+    order = 0.2
+
+    def collect(self, record) -> ImgSize:
+        # return self._size_no_padding
+        width, height = self.adapter._size_no_padding
+        record.set_image_size(width=width, height=height)
+
+
+@LabelComponent
+class AlbumentationsLabelsComponent(AlbumentationsAdapterComponent):
+    order = 0.1
+
+    def prepare(self, record):
+        self._original_labels = record.labels
+        # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes are removed
+        self.adapter._albu_in["labels"] = list(range(len(self._original_labels)))
+
+    def collect(self, record):
+        self.adapter._keep_mask = np.zeros(len(self._original_labels), dtype=bool)
+        self.adapter._keep_mask[self.adapter._albu_out["labels"]] = True
+
+        record.labels = self.adapter._filter_attribute(self._original_labels)
+
+
+@BBoxComponent
+class AlbumentationsBBoxesComponent(AlbumentationsAdapterComponent):
+    def setup(self):
+        self.adapter._compose_kwargs["bbox_params"] = A.BboxParams(
+            format="pascal_voc", label_fields=["labels"]
+        )
+
+    def prepare(self, record):
+        self.adapter._albu_in["bboxes"] = [o.xyxy for o in record.bboxes]
+
+    def collect(self, record) -> List[BBox]:
+        # TODO: quickfix from 576
+        # bb = [_clip_bboxes(xyxy, img_h, img_w) for xyxy in d["bboxes"]]
+        bb = [xyxy for xyxy in self.adapter._albu_out["bboxes"]]
+        record.bboxes = [BBox.from_xyxy(*xyxy) for xyxy in bb]
+
+    @staticmethod
+    def _clip_bboxes(xyxy, h, w):
+        """Clip bboxes coordinates that are outside image dimensions."""
+        x1, y1, x2, y2 = xyxy
+        if w >= h:
+            pad = (w - h) // 2
+            h1 = pad
+            h2 = w - pad
+            return (x1, max(y1, h1), x2, min(y2, h2))
+        else:
+            pad = (h - w) // 2
+            w1 = pad
+            w2 = h - pad
+            return (max(x1, w1), y1, min(x2, w2), y2)
+
+
+@MaskComponent
+class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
+    def prepare(self, record):
+        self.adapter._albu_in["masks"] = list(record.masks.data)
+
+    def collect(self, record):
+        masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
+        record.masks = MaskArray(np.array(masks))
+
+
+@KeyPointComponent
+class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
+    def setup(self):
+        self.adapter._compose_kwargs["keypoint_params"] = A.KeypointParams(
+            format="xy", remove_invisible=False, label_fields=["keypoints_labels"]
+        )
+
+    def prepare(self, record):
+        # not compatible with some transforms
+        flat_tfms_list_ = _flatten_tfms(self.adapter.tfms_list)
+        if get_transform(flat_tfms_list_, "RandomSizedBBoxSafeCrop") is not None:
+            raise RuntimeError("RandomSizedBBoxSafeCrop is not supported for keypoints")
+
+        self._kpts = record.keypoints
+        self._kpts_xy = [xy for o in self._kpts for xy in o.xy]
+        self._kpts_labels = [label for o in self._kpts for label in o.metadata.labels]
+        self._kpts_visible = [visible for o in self._kpts for visible in o.visible]
+        assert len(self._kpts_xy) == len(self._kpts_labels) == len(self._kpts_visible)
+
+        self.adapter._albu_in["keypoints"] = self._kpts_xy
+        self.adapter._albu_in["keypoints_labels"] = self._kpts_labels
+
+    def collect(self, record):
+        # remove_invisible=False, therefore all points getting in are also getting out
+        assert len(self.adapter._albu_out["keypoints"]) == len(self._kpts_xy)
+
+        tfmed_kpts = self._remove_albu_outside_keypoints(
+            tfms_kpts=self.adapter._albu_out["keypoints"],
+            kpts_visible=self._kpts_visible,
+            size_no_padding=self.adapter._size_no_padding,
+        )
+        # flatten list of keypoints
+        flat_kpts = list(chain.from_iterable(tfmed_kpts))
+        # group keypoints from same instance
+        group_kpts = [
+            flat_kpts[i : i + len(flat_kpts) // len(self._kpts)]
+            for i in range(
+                0,
+                len(flat_kpts),
+                len(flat_kpts) // len(self._kpts),
+            )
+        ]
+        assert len(group_kpts) == len(self._kpts)
+
+        kpts = [
+            KeyPoints.from_xyv(group_kpt, original_kpt.metadata)
+            for group_kpt, original_kpt in zip(group_kpts, self._kpts)
+        ]
+        record.keypoints = self.adapter._filter_attribute(kpts)
+
+    @classmethod
+    def _remove_albu_outside_keypoints(cls, tfms_kpts, kpts_visible, size_no_padding):
+        """Remove keypoints that are outside image dimensions."""
+        v = kpts_visible
+        v_n = v.copy()
+        tra_n = tfms_kpts.copy()
+        for i in range(len(tfms_kpts)):
+            if v[i] > 0:
+                v_n[i] = cls._check_kps_coords(tfms_kpts[i], size_no_padding)
+                if v_n[i] == 1:
+                    v_n[i] = v[i]
+            if v_n[i] == 0:
+                tra_n[i] = (0, 0)
+            tra_n[i] = (tra_n[i][0], tra_n[i][1], v_n[i])
+        return tra_n
+
+    @staticmethod
+    def _check_kps_coords(p, size_no_padding):
+        x, y = p
+        w, h = size_no_padding
+        if w >= h:
+            pad = (w - h) // 2
+            h1 = pad
+            h2 = w - pad
+            return int((x <= w) and (x >= 0) and (y >= h1) and (y <= h2))
+        else:
+            pad = (h - w) // 2
+            w1 = pad
+            w2 = h - pad
+            return int((x <= w2) and (x >= w1) and (y >= 0) and (y <= h))
+
+
+@IsCrowdComponent
+class AlbumentationsIsCrowdsComponent(AlbumentationsAdapterComponent):
+    def prepare(self, record):
+        self._iscrowds = record.iscrowds
+
+    def collect(self, record):
+        record.iscrowds = self.adapter._filter_attribute(self._iscrowds)
+
+
+# TODO: Let's say same transforms are used for two different datasets types
+# with different components, Adapter should be created per Dataset
+def Adapter(tfms):
+    def _inner(components):
+        return _Adapter.from_components(tfms=tfms, components=components)
+
+    return _inner
+
+
+class _Adapter(Transform, Composite):
+    def __init__(self, tfms, components):
+        super().__init__(components=components)
+        self.tfms_list = tfms
+        self.setup()
+
+    def setup(self):
+        self._compose_kwargs = {}
+        self.reduce_on_components("setup")
+        self.tfms = A.Compose(self.tfms_list, **self._compose_kwargs)
+
+    def apply(self, record):
+        self.prepare(record)
+
+        self._albu_out = self.tfms(**self._albu_in)
+
+        # store additional info (might be used by components on `collect`)
+        self._size_no_padding = self._get_size_without_padding(record)
+
+        self.reduce_on_components("collect", record=record)
+
+        return record
+
+    def prepare(self, record):
+        # use a dict that is passed, like out and size_no_padding
+        self._keep_mask = None
+        self._albu_in = {}
+
+        self.reduce_on_components("prepare", record=record)
+
+    @classmethod
+    def from_components(cls, tfms, components):
+        adapter_components = component_registry.match_components(
+            AlbumentationsAdapterComponent, components
+        )
+        return cls(tfms=tfms, components=adapter_components)
+
+    def _filter_attribute(self, v: list):
+        if self._keep_mask is None:
+            return v
+        assert len(v) == len(self._keep_mask)
+        return [o for o, keep in zip(v, self._keep_mask) if keep]
+
+    def _get_size_without_padding(self, record) -> ImgSize:
+        height, width, _ = self._albu_out["image"].shape
+
+        if get_transform(self.tfms_list, "Pad") is not None:
+            after_pad_h, after_pad_w, _ = record.img.shape
+
+            t = get_transform(self.tfms_list, "SmallestMaxSize")
+            if t is not None:
+                presize = t.max_size
+                height, width = _func_max_size(after_pad_h, after_pad_w, presize, min)
+
+            t = get_transform(self.tfms_list, "LongestMaxSize")
+            if t is not None:
+                size = t.max_size
+                height, width = _func_max_size(after_pad_h, after_pad_w, size, max)
+
+        return ImgSize(width=width, height=height)
+
+
+def _flatten_tfms(t):
+    flat = []
+    for o in t:
+        if _is_iter(o):
+            flat += [i for i in o]
+        else:
+            flat.append(o)
+    return flat
+
+
+def _is_iter(o):
+    try:
+        i = iter(o)
+        return True
+    except:
+        return False
+
+
+def get_transform(tfms_list, t):
+    for el in tfms_list:
+        if t in str(type(el)):
+            return el
+    return None
+
+
+def py3round(number):
+    """Unified rounding in all python versions."""
+    if abs(round(number) - number) == 0.5:
+        return int(2.0 * round(number / 2.0))
+
+    return int(round(number))
+
+
+def _func_max_size(height, width, max_size, func):
+    scale = max_size / float(func(width, height))
+
+    if scale != 1.0:
+        height, width = tuple(py3round(dim * scale) for dim in (height, width))
+    return height, width
