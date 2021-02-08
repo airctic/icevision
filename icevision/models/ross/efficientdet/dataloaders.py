@@ -27,7 +27,7 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_train_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -47,7 +47,7 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_valid_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -67,7 +67,7 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_infer_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -102,10 +102,7 @@ def build_train_batch(records, batch_tfms=None):
     batch_classes = [tensor(classes, dtype=torch.float32) for classes in batch_classes]
 
     # convert to EffDet interface
-    targets = dict(
-        bbox=batch_bboxes,
-        cls=batch_classes,
-    )
+    targets = dict(bbox=batch_bboxes, cls=batch_classes)
 
     return (batch_images, targets), records
 
@@ -133,11 +130,7 @@ def build_valid_batch(records, batch_tfms=None):
     (batch_images, targets), records = build_train_batch(records, batch_tfms)
 
     # convert to EffDet interface, when not training, dummy size and scale is required
-    targets = dict(
-        img_size=None,
-        img_scale=None,
-        **targets,
-    )
+    targets = dict(img_size=None, img_scale=None, **targets)
 
     return (batch_images, targets), records
 
@@ -170,10 +163,7 @@ def build_infer_batch(records, batch_tfms=None):
     batch_scales = tensor(batch_scales, dtype=torch.float32)
 
     # convert to EffDet interface
-    targets = dict(
-        img_size=batch_sizes,
-        img_scale=batch_scales,
-    )
+    targets = dict(img_size=batch_sizes, img_scale=batch_scales)
 
     return (batch_images, targets), records
 
