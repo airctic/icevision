@@ -103,14 +103,16 @@ def test_mmdet_mask_rcnn_build_train_batch(mask_records):
     batch = models.mmdet.mask_rcnn.build_train_batch(mask_records)
     _test_common_mmdet_mask_batch(batch)
 
+
 def test_mmdet_mask_rcnn_build_valid_batch(mask_records):
     batch = models.mmdet.mask_rcnn.build_valid_batch(mask_records)
     _test_common_mmdet_mask_batch(batch)
 
+
 def test_mmdet_mask_rcnn_build_infer_batch(mask_records):
     batch = models.mmdet.mask_rcnn.build_infer_batch(mask_records)
     data, recs = batch
-    
+
     assert set(data.keys()) == {
         "img",
         "img_metas",
