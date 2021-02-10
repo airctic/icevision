@@ -29,9 +29,7 @@ from icevision.all import *
     ],
 )
 class TestBboxModels:
-    def test_mmdet_bbox_models_fastai(
-        self, ds, model_type, path, config, weights_path, request
-    ):
+    def dls_model(self, ds, model_type, path, config, weights_path, request):
         train_ds, valid_ds = request.getfixturevalue(ds)
         train_dl = model_type.train_dl(train_ds, batch_size=2)
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
@@ -39,6 +37,15 @@ class TestBboxModels:
         config_path = request.getfixturevalue(path) / config
 
         model = model_type.model(config_path, num_classes=5, weights_path=weights_path)
+
+        return train_dl, valid_dl, model
+
+    def test_mmdet_bbox_models_fastai(
+        self, ds, model_type, path, config, weights_path, request
+    ):
+        train_dl, valid_dl, model = self.dls_model(
+            ds, model_type, path, config, weights_path, request
+        )
 
         learn = model_type.fastai.learner(
             dls=[train_dl, valid_dl], model=model, splitter=fastai.trainable_params
@@ -48,13 +55,9 @@ class TestBboxModels:
     def test_mmdet_bbox_models_light(
         self, ds, model_type, path, config, weights_path, request
     ):
-        train_ds, valid_ds = request.getfixturevalue(ds)
-        train_dl = model_type.train_dl(train_ds, batch_size=2)
-        valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
-
-        config_path = request.getfixturevalue(path) / config
-
-        model = model_type.model(config_path, num_classes=5, weights_path=weights_path)
+        train_dl, valid_dl, model = self.dls_model(
+            ds, model_type, path, config, weights_path, request
+        )
 
         class LitModel(model_type.lightning.ModelAdapter):
             def configure_optimizers(self):
