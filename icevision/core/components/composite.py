@@ -16,6 +16,9 @@ class Composite:
     def __init__(self, components):
         components = set(components).union(self.base_components)
         components = set(component(composite=self) for component in components)
+        self._sort_components(components)
+
+    def _sort_components(self, components):
         self.components = sorted(components, key=lambda o: o.order)
         self.components_cls = [comp.__class__ for comp in self.components]
 
@@ -51,3 +54,8 @@ class Composite:
         for component in self.components:
             if isinstance(component, component_type):
                 return component
+
+    def add_component(self, component):
+        components = set(self.components)
+        components.add(component(composite=self))
+        self._sort_components(components)
