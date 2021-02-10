@@ -17,7 +17,7 @@ def predict(
     device: Optional[torch.device] = None,
 ):
     device = device or model_device(model)
-    batch["img"] = [img.cuda() for img in batch["img"]]
+    batch["img"] = [img.to(device) for img in batch["img"]]
 
     raw_pred = model(return_loss=False, rescale=False, **batch)
     return convert_raw_predictions(raw_pred, detection_threshold=detection_threshold)
