@@ -29,7 +29,7 @@ cfg = Config.fromfile(
 
 from mmdet.models import build_detector
 
-model = build_detector(cfg.model, cfg.train_cfg, cfg.test_cfg)
+model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
 
 
 class LitModel(mmdetection_models.lightning.ModelAdapter):

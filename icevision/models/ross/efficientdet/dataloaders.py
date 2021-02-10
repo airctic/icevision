@@ -27,7 +27,7 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_train_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -47,7 +47,7 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_valid_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -67,7 +67,7 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         dataset=dataset,
         build_batch=build_infer_batch,
         batch_tfms=batch_tfms,
-        **dataloader_kwargs,
+        **dataloader_kwargs
     )
 
 
@@ -98,14 +98,11 @@ def build_train_batch(records, batch_tfms=None):
 
     # convert to tensors
     batch_images = torch.stack(batch_images)
-    batch_bboxes = [Tensor(bboxes) for bboxes in batch_bboxes]
-    batch_classes = [Tensor(classes) for classes in batch_classes]
+    batch_bboxes = [tensor(bboxes, dtype=torch.float32) for bboxes in batch_bboxes]
+    batch_classes = [tensor(classes, dtype=torch.float32) for classes in batch_classes]
 
     # convert to EffDet interface
-    targets = dict(
-        bbox=batch_bboxes,
-        cls=batch_classes,
-    )
+    targets = dict(bbox=batch_bboxes, cls=batch_classes)
 
     return (batch_images, targets), records
 
@@ -133,11 +130,7 @@ def build_valid_batch(records, batch_tfms=None):
     (batch_images, targets), records = build_train_batch(records, batch_tfms)
 
     # convert to EffDet interface, when not training, dummy size and scale is required
-    targets = dict(
-        img_size=None,
-        img_scale=None,
-        **targets,
-    )
+    targets = dict(img_size=None, img_scale=None, **targets)
 
     return (batch_images, targets), records
 
@@ -166,14 +159,11 @@ def build_infer_batch(records, batch_tfms=None):
 
     # convert to tensors
     batch_images = torch.stack(batch_images)
-    batch_sizes = Tensor(batch_sizes)
-    batch_scales = Tensor(batch_scales)
+    batch_sizes = tensor(batch_sizes, dtype=torch.float32)
+    batch_scales = tensor(batch_scales, dtype=torch.float32)
 
     # convert to EffDet interface
-    targets = dict(
-        img_size=batch_sizes,
-        img_scale=batch_scales,
-    )
+    targets = dict(img_size=batch_sizes, img_scale=batch_scales)
 
     return (batch_images, targets), records
 
@@ -181,11 +171,12 @@ def build_infer_batch(records, batch_tfms=None):
 def process_train_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet training"""
     image = im2tensor(record["img"])
-    classes = (
-        record["labels"] if record["labels"] else [0]
-    )  # background and dummy if no label in record
+    # background and dummy if no label in record
+    classes = record["labels"] if record["labels"] else [0]
     bboxes = (
-        [bbox.yxyx for bbox in record["bboxes"]] if record["labels"] else [[0, 0, 0, 0]]
+        [bbox.yxyx for bbox in record["bboxes"]]
+        if len(record["labels"]) > 0
+        else [[0, 0, 0, 0]]
     )
     return image, bboxes, classes
 
