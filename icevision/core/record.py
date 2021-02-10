@@ -55,10 +55,14 @@ class BaseRecord(Composite, MutableMapping):
     def aggregate_objects(self):
         return self.reduce_on_components("_aggregate_objects", reduction="update")
 
+    # Instead of copying here, copy outside?
     def load(self) -> "BaseRecord":
         record = deepcopy(self)
         record.reduce_on_components("_load")
         return record
+
+    def unload(self):
+        self.reduce_on_components("_unload")
 
     def __repr__(self) -> str:
         _reprs = self.reduce_on_components("_repr", reduction="extend")
