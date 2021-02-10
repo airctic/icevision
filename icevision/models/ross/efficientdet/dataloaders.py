@@ -92,26 +92,19 @@ def build_train_batch(records, batch_tfms=None):
     ```
     """
     records = common_build_batch(records, batch_tfms=batch_tfms)
+    batch_images, batch_bboxes, batch_classes = zip(
+        *(process_train_record(record) for record in records)
+    )
 
-    images = []
-    targets = {"bbox": [], "cls": []}
-    for record in records:
-        image = im2tensor(record["img"])
-        images.append(image)
+    # convert to tensors
+    batch_images = torch.stack(batch_images)
+    batch_bboxes = [tensor(bboxes, dtype=torch.float32) for bboxes in batch_bboxes]
+    batch_classes = [tensor(classes, dtype=torch.float32) for classes in batch_classes]
 
-        if len(record["labels"]) == 0:
-            targets["cls"].append(tensor([0], dtype=torch.float))
-            targets["bbox"].append(tensor([[0, 0, 0, 0]], dtype=torch.float))
-        else:
-            labels = tensor(record["labels"], dtype=torch.float)
-            targets["cls"].append(labels)
+    # convert to EffDet interface
+    targets = dict(bbox=batch_bboxes, cls=batch_classes)
 
-            bboxes = tensor([bbox.yxyx for bbox in record["bboxes"]], dtype=torch.float)
-            targets["bbox"].append(bboxes)
-
-    images = torch.stack(images)
-
-    return (images, targets), records
+    return (batch_images, targets), records
 
 
 def build_valid_batch(records, batch_tfms=None):
@@ -122,7 +115,7 @@ def build_valid_batch(records, batch_tfms=None):
         batch_tfms: Transforms to be applied at the batch level.
 
     # Returns
-        A tuple with two items. The first will be a tuple like `(images, targets)`,
+        A tuple with two items. The first will be a tuple like `(batch_images, targets)`,
         in the input format required by the model. The second will be an updated list
         of the input records with `batch_tfms` applied.
 
@@ -134,19 +127,15 @@ def build_valid_batch(records, batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    (images, targets), records = build_train_batch(
-        records=records, batch_tfms=batch_tfms
-    )
+    (batch_images, targets), records = build_train_batch(records, batch_tfms)
 
-    img_sizes = [(r["height"], r["width"]) for r in records]
-    targets["img_size"] = tensor(img_sizes, dtype=torch.float)
+    # convert to EffDet interface, when not training, dummy size and scale is required
+    targets = dict(img_size=None, img_scale=None, **targets)
 
-    targets["img_scale"] = tensor([1] * len(records), dtype=torch.float)
-
-    return (images, targets), records
+    return (batch_images, targets), records
 
 
-def build_infer_batch(dataset, batch_tfms=None):
+def build_infer_batch(records, batch_tfms=None):
     """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
@@ -163,16 +152,39 @@ def build_infer_batch(dataset, batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    samples = common_build_batch(dataset, batch_tfms=batch_tfms)
+    records = common_build_batch(records, batch_tfms=batch_tfms)
+    batch_images, batch_sizes, batch_scales = zip(
+        *(process_infer_record(record) for record in records)
+    )
 
-    tensor_imgs, img_sizes = [], []
-    for record in samples:
-        tensor_imgs.append(im2tensor(record["img"]))
-        img_sizes.append((record["height"], record["width"]))
+    # convert to tensors
+    batch_images = torch.stack(batch_images)
+    batch_sizes = tensor(batch_sizes, dtype=torch.float32)
+    batch_scales = tensor(batch_scales, dtype=torch.float32)
 
-    tensor_imgs = torch.stack(tensor_imgs)
-    tensor_sizes = tensor(img_sizes, dtype=torch.float)
-    tensor_scales = tensor([1] * len(samples), dtype=torch.float)
-    img_info = {"img_size": tensor_sizes, "img_scale": tensor_scales}
+    # convert to EffDet interface
+    targets = dict(img_size=batch_sizes, img_scale=batch_scales)
 
-    return (tensor_imgs, img_info), samples
+    return (batch_images, targets), records
+
+
+def process_train_record(record) -> tuple:
+    """Extracts information from record and prepares a format required by the EffDet training"""
+    image = im2tensor(record["img"])
+    # background and dummy if no label in record
+    classes = record["labels"] if record["labels"] else [0]
+    bboxes = (
+        [bbox.yxyx for bbox in record["bboxes"]]
+        if len(record["labels"]) > 0
+        else [[0, 0, 0, 0]]
+    )
+    return image, bboxes, classes
+
+
+def process_infer_record(record) -> tuple:
+    """Extracts information from record and prepares a format required by the EffDet inference"""
+    image = im2tensor(record["img"])
+    image_size = image.shape[-2:]
+    image_scale = 1.0
+
+    return image, image_size, image_scale
