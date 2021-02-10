@@ -9,7 +9,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
 
     from icevision.all import *
 
-    url = "https://cvbp.blob.core.windows.net/public/datasets/object_detection/odFridgeObjects.zip"
+    url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip"
     dest_dir = "fridge"
 
     # Loading Data
@@ -67,7 +67,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     from icevision.all import *
     import icedata
 
-    url = "https://cvbp.blob.core.windows.net/public/datasets/object_detection/odFridgeObjects.zip"
+    url = "https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip"
     dest_dir = "fridge"
 
     # Loading Data
