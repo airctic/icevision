@@ -84,7 +84,8 @@ class SizeMixin(ParserMixin):
     def parse_fields(self, o, record):
         # TODO: rename to image_weight, image_height
         width, height = self.image_width_height(o)
-        record.set_image_size(width=width, height=height)
+        # TODO: deprecate width/height and use ImgSize
+        record.set_img_size(ImgSize(width=width, height=height), original=True)
         super().parse_fields(o, record)
 
     @abstractmethod
