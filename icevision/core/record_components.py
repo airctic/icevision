@@ -11,6 +11,7 @@ __all__ = [
     "AreasRecordComponent",
     "IsCrowdsRecordComponent",
     "KeyPointsRecordComponent",
+    "ScoresRecordComponent",
 ]
 
 from icevision.imports import *
@@ -33,6 +34,9 @@ class RecordComponent(Component):
         return {}
 
     def _load(self) -> None:
+        return
+
+    def _unload(self) -> None:
         return
 
     def _num_annotations(self) -> Dict[str, int]:
@@ -76,11 +80,15 @@ class ImageidRecordComponent(RecordComponent):
 # TODO: rename to ImageArrayRecordComponent
 @ImageArrayComponent
 class ImageRecordComponent(RecordComponent):
+    def __init__(self, composite):
+        super().__init__(composite=composite)
+        self.img = None
+
     def set_img(self, img: np.ndarray):
         self.img = img
         height, width, _ = self.img.shape
         # this should set on SizeRecordComponent
-        self.record.set_image_size(width=width, height=height)
+        self.record.set_img_size(ImgSize(width=width, height=height), original=True)
 
     def _repr(self) -> List[str]:
         return [f"Image: {self.img}"]
@@ -90,33 +98,29 @@ class ImageRecordComponent(RecordComponent):
 
 
 @FilepathComponent
-class FilepathRecordComponent(RecordComponent):
+class FilepathRecordComponent(ImageRecordComponent):
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
-
-    # TODO, HACK: this is also present in ImageRecordComponent, possible conflict?
-    def set_img(self, img: np.ndarray):
-        self.img = img
-        # this should set on SizeRecordComponent
-        height, width, _ = self.img.shape
-        self.record.set_image_size(width=width, height=height)
 
     def _load(self):
         img = open_img(self.filepath)
         self.set_img(img)
+
+    def _unload(self):
+        self.img = None
 
     def _autofix(self) -> Dict[str, bool]:
         exists = self.filepath.exists()
         if not exists:
             raise AutofixAbort(f"File '{self.filepath}' does not exist")
 
-        return {}
+        return super()._autofix()
 
     def _repr(self) -> List[str]:
-        return [f"Filepath: {self.filepath}"]
+        return [f"Filepath: {self.filepath}", *super()._repr()]
 
     def as_dict(self) -> dict:
-        return {"filepath": self.filepath}
+        return {"filepath": self.filepath, **super().as_dict()}
 
 
 @SizeComponent
@@ -125,6 +129,13 @@ class SizeRecordComponent(RecordComponent):
         # TODO: use ImgSize
         self.img_size = ImgSize(width=width, height=height)
         self.width, self.height = width, height
+
+    def set_img_size(self, size: ImgSize, original: bool = False):
+        self.img_size = size
+        self.width, self.height = size
+
+        if original:
+            self.original_img_size = size
 
     def _repr(self) -> List[str]:
         return [
@@ -247,9 +258,13 @@ class MasksRecordComponent(RecordComponent):
         return [mask.to_erles(h=height, w=width) for mask in masks]
 
     def _load(self):
+        self._encoded_masks = self.masks
         self.masks = MaskArray.from_masks(
             self.masks, self.record.height, self.record.width
         )
+
+    def _unload(self):
+        self.masks = self._encoded_masks
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"masks": len(self.masks)}
@@ -341,3 +356,14 @@ class KeyPointsRecordComponent(RecordComponent):
 
     def _repr(self) -> List[str]:
         return {f"KeyPoints: {self.keypoints}"}
+
+
+class ScoresRecordComponent(RecordComponent):
+    def set_scores(self, scores: Sequence[float]):
+        self.scores = scores
+
+    def _repr(self) -> List[str]:
+        return [f"Scores: {self.scores}"]
+
+    def as_dict(self) -> dict:
+        return {"scores": self.scores}
