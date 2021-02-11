@@ -9,21 +9,21 @@ from icevision.all import *
             "fridge_ds",
             models.mmdet.faster_rcnn,
             "samples_source",
-            "mmdet/faster_rcnn_r50_fpn_1x_coco.py",
+            "mmdet/configs/faster_rcnn_r50_fpn_1x_coco.py",
             None,
         ),
         (
             "fridge_ds",
             models.mmdet.fcos,
             "samples_source",
-            "mmdet/fcos_r50_caffe_fpn_gn-head_1x_coco.py",
+            "mmdet/configs/fcos_r50_caffe_fpn_gn-head_1x_coco.py",
             None,
         ),
         (
             "fridge_ds",
             models.mmdet.retinanet,
             "samples_source",
-            "mmdet/retinanet_r50_fpn_1x_coco.py",
+            "mmdet/configs/retinanet_r50_fpn_1x_coco.py",
             None,
         ),
     ],
@@ -65,7 +65,7 @@ def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
     valid_ds = Dataset(valid_records, valid_tfms)
     model_type = models.mmdet.mask_rcnn
 
-    config_path = samples_source / "mmdet/mask_rcnn_r50_fpn_1x_coco.py"
+    config_path = samples_source / "mmdet/configs/mask_rcnn_r50_fpn_1x_coco.py"
     model = model_type.model(config_path, num_classes=81)
 
     infer_dl = model_type.infer_dl(valid_ds, batch_size=1, shuffle=False)
