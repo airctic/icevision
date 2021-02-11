@@ -19,9 +19,9 @@ def data():
 class SimpleParser(
     parsers.Parser, parsers.FilepathMixin, parsers.LabelsMixin, parsers.BBoxesMixin
 ):
-    def __init__(self, data):
+    def __init__(self, data, class_map=None):
         self.data = data
-        super().__init__()
+        super().__init__(class_map=class_map)
 
     def __iter__(self):
         yield from self.data
@@ -44,6 +44,11 @@ class SimpleParser(
 
 def test_parser(data, tmpdir):
     parser = SimpleParser(data)
+    assert len(parser.class_map) == 1
+    assert parser.class_map._lock == False
+    assert parser.class_map.get_by_name("background") == 0
+    assert parser.class_map.get_by_id(0) == "background"
+
     cache_filepath = Path(tmpdir / "simple_parser.pkl")
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert cache_filepath.exists() == False
@@ -76,6 +81,10 @@ def test_parser(data, tmpdir):
     assert parser._check_path(cache_filepath) == True
     assert cache_filepath.exists() == True
     assert pickle.load(open(cache_filepath, "rb"))[0] == records
+
+    parser = SimpleParser(data, class_map=ClassMap(["a", "b"]))
+    assert len(parser.class_map) == 3
+    assert parser.class_map._lock == True
 
 
 @pytest.mark.skip
