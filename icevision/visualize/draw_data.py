@@ -395,21 +395,39 @@ def draw_mask(
     blend: float = 0.5,
     border_thickness: int = 7,
 ):
-    color = np.asarray(color, dtype=int)
-    # draw mask
+    # Border thickness must be an odd integer
+    if border_thickness % 2 == 0:
+        # TODO: Shall we throw an error, or change the value to the nearest
+        # even integer automatically and raise a warning?
+        raise ValueError(
+            f"`border_thickness` must be an odd number. You entered {border_thickness}"
+        )
+    img = PIL.Image.fromarray(img)
+    w, h = img.size
+
     mask_idxs = np.where(mask.data)
 
-    img = np.array(img)  # why is this necessary?
-    img[mask_idxs] = blend * img[mask_idxs] + (1 - blend) * color
+    # Add alpha with 0 transparency. We draw the mask with border color first
+    color = np.append(color, 255)
+    mask_arr = np.zeros((h, w, 4), dtype=np.uint8)
+    mask_arr[mask_idxs] = color
 
-    # draw border
-    border = mask.data - cv2.erode(
-        mask.data, np.ones((border_thickness, border_thickness), np.uint8), iterations=1
-    )
-    border_idxs = np.where(border)
-    img[border_idxs] = color
+    # Now create a second mask and draw the desired color on top of the
+    # border mask. If `border_thickness` is 0, this replaces the border mask
+    _mask = Image.fromarray(mask_arr)
+    _mask = _mask.filter(PIL.ImageFilter.MinFilter(border_thickness))
+    _mask_idx = np.where(_mask.convert("L", palette=Image.ADAPTIVE))
+    mask_arr[_mask_idx] = np.append(color[:3], blend * 255)
 
-    return img
+    # Create RGBA PIL mask image
+    mask_pil = PIL.Image.fromarray(mask_arr, mode="RGBA")
+
+    # Blend everything keeping the alpha
+    # Key concept is that alpha for non-mask pixels are 0 (transparent)
+    img.putalpha(255)
+    img = PIL.Image.alpha_composite(img, mask_pil)
+
+    return np.array(img)
 
 
 def draw_keypoints(
