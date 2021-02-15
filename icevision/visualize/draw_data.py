@@ -164,72 +164,27 @@ def draw_label(
             score = f"{score * 100: .2f}%"
         caption = f"{caption}: {score}"
 
-    if font is None:
-        font = cv2.FONT_HERSHEY_SIMPLEX
-
-    # cv2.FONT_ ... are all internally stored as `int` values
-    if isinstance(font, int):
-        return _draw_label_cv2(
-            img=img,
-            caption=caption,
-            x=x,
-            y=y,
-            color=color,
-            font=font,
-            font_scale=font_size,
-        )
-    # else if path to custom font file is entered
-    else:
-        if not Path(font).exists():
-            # PIL throws cryptic errors for wrong filepaths, so let's catch it earlier here
-            raise FileNotFoundError(f"{font} file doesn't exist")
-        return _draw_label_PIL(
-            img=img,
-            caption=caption,
-            x=x,
-            y=y,
-            color=color,
-            font_path=font,
-            font_size=int(font_size),
-            return_as_pil_img=return_as_pil_img,
-        )
+    if not Path(font).exists():
+        # PIL throws cryptic errors for wrong filepaths, so let's catch it earlier here
+        raise FileNotFoundError(f"{font} file doesn't exist")
+    return _draw_label(
+        img=img,
+        caption=caption,
+        x=x,
+        y=y,
+        color=color,
+        font_path=font,
+        font_size=int(font_size),
+        return_as_pil_img=return_as_pil_img,
+    )
 
 
-def _draw_label_cv2(
-    img: np.ndarray,
-    caption: str,
-    x: int,
-    y: int,
-    color,
-    font=cv2.FONT_HERSHEY_SIMPLEX,
-    font_scale: float = 1.0,
-):
-    """Draws a caption above the box in an image."""
-    y -= 10
-    w, h = cv2.getTextSize(caption, font, fontScale=font_scale, thickness=1)[0]
-
-    # make the coords of the box with a small padding of two pixels
-    # check if the box_pt2 is inside the image otherwise invert the label box (meaning the label box will be inside the bounding box)
-    if (y - h - 2) > 0:
-        box_pt1, box_pt2 = (x, y + 10), (x + w + 2, y - h - 2)
-    else:
-        box_pt1, box_pt2 = (x, y + h + 22), (x + w + 2, y + 10)
-
-    cv2.rectangle(img, box_pt1, box_pt2, color, cv2.FILLED)
-
-    label_pt = (box_pt1[0], box_pt1[1] - 10)
-    cv2.putText(img, caption, label_pt, font, font_scale, (240, 240, 240), 2)
-
-    return img
-
-
-def _draw_label_PIL(
+def _draw_label(
     img: np.ndarray,
     caption: str,
     x: int,
     y: int,
     color: Union[np.ndarray, list, tuple],
-    # font_path = None ## should assign a default PIL font
     font_path=DEFAULT_FONT_PATH,
     font_size: int = 20,
     return_as_pil_img: bool = False,
@@ -252,6 +207,7 @@ def draw_record(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    display_score: bool = True,
     display_keypoints: bool = True,
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
@@ -271,6 +227,7 @@ def draw_record(
         sample=sample,
         class_map=class_map,
         display_label=display_label,
+        display_score=display_score,
         display_bbox=display_bbox,
         display_mask=display_mask,
         display_keypoints=display_keypoints,
@@ -292,6 +249,7 @@ def draw_pred(
     pred: Prediction,
     denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
+    display_score: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
@@ -311,6 +269,7 @@ def draw_pred(
         sample=pred.pred,
         denormalize_fn=denormalize_fn,
         display_label=display_label,
+        display_score=display_score,
         display_bbox=display_bbox,
         display_mask=display_mask,
         font_path=font_path,
