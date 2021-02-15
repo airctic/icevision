@@ -20,6 +20,8 @@ from .utils import as_rgb_tuple
 from PIL import Image, ImageFont, ImageDraw
 import PIL
 
+DEFAULT_FONT_PATH = Path.home() / ".icevision" / "fonts" / "SpaceGrotesk-Medium.ttf"
+
 
 def draw_sample(
     sample,
@@ -30,8 +32,8 @@ def draw_sample(
     display_score: bool = True,
     display_mask: bool = True,
     display_keypoints: bool = True,
-    font: Optional[os.PathLike] = None,
-    font_scale: Union[int, float] = 1.0,
+    font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
+    font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
     mask_blend: float = 0.5,
     mask_border_thickness: int = 7,
@@ -43,7 +45,22 @@ def draw_sample(
     exclude_labels: List[str] = [],
     include_only: List[str] = None,
 ) -> Union[np.ndarray, PIL.Image.Image]:
-    img = sample.img.copy()
+    """
+    Selected kwargs:
+
+    * label_color: A <collection> of RGB values or a hex code string that defines
+                   the color of all the plotted labels
+    * mask_blend: Degree of transparency of the mask. 1 = opaque, 0 = transparent
+    * mask_border_thickness: Degree of thickness of the mask. Must be an odd number
+    * color_map: An optional dictionary that maps the label => color-value
+    * prettify: Format labels based on `prettify_func`
+    * prettify_func: A string -> string processing function
+    * return_as_pil_image: If true, returns the sample as a PIL image, else np.array
+    * exclude_labels: (Optional) List of labels that you'd like to exclude from being plotted
+    * include_only: (Optional) List of labels that must be exclusively plotted. Takes
+                    precedence over `exclude_labels` (?)
+    """
+    img = sample["img"].copy()
     if denormalize_fn is not None:
         img = denormalize_fn(img)
 
@@ -97,8 +114,8 @@ def draw_sample(
                 mask=mask,
                 class_map=class_map,
                 color=label_color,
-                font_scale=font_scale,
-                font=font,
+                font_size=font_size,
+                font=font_path,
                 prettify=prettify,
                 prettify_func=prettify_func,
                 return_as_pil_img=False,  # should this always be False??
@@ -120,7 +137,7 @@ def draw_label(
     bbox=None,
     mask=None,
     font: Union[int, os.PathLike, None] = None,
-    font_scale: Union[int, float] = 1.0,
+    font_size: Union[int, float] = 12,
     prettify: bool = True,
     prettify_func: Callable = str.capitalize,
     return_as_pil_img=False,
@@ -159,7 +176,7 @@ def draw_label(
             y=y,
             color=color,
             font=font,
-            font_scale=font_scale,
+            font_scale=font_size,
         )
     # else if path to custom font file is entered
     else:
@@ -173,7 +190,7 @@ def draw_label(
             y=y,
             color=color,
             font_path=font,
-            font_size=int(font_scale),
+            font_size=int(font_size),
             return_as_pil_img=return_as_pil_img,
         )
 
@@ -213,7 +230,7 @@ def _draw_label_PIL(
     y: int,
     color: Union[np.ndarray, list, tuple],
     # font_path = None ## should assign a default PIL font
-    font_path="DIN Alternate Bold.ttf",
+    font_path=DEFAULT_FONT_PATH,
     font_size: int = 20,
     return_as_pil_img: bool = False,
 ) -> Union[PIL.Image.Image, np.ndarray]:
@@ -229,30 +246,45 @@ def _draw_label_PIL(
         return np.array(img)
 
 
-import fastcore.all as fastcore
-
-# This is temporary (for convenience) while we're still developing.
-#   Once changes are finalised, we'll change this to include
-#   all the required arguments
-@fastcore.delegates(to=draw_sample, but=["sample"])
 def draw_record(
     record,
-    **kwargs
-    # class_map: Optional[ClassMap] = None,
-    # display_label: bool = True,
-    # display_bbox: bool = True,
-    # display_mask: bool = True,
-    # display_keypoints: bool = True,
+    class_map: Optional[ClassMap] = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_mask: bool = True,
+    display_keypoints: bool = True,
+    font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
+    font_size: Union[int, float] = 12,
+    label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    mask_blend: float = 0.5,
+    mask_border_thickness: int = 7,
+    color_map: Optional[dict] = None,  # label -> color mapping
+    prettify: bool = True,
+    prettify_func: Callable = str.capitalize,
+    return_as_pil_img=False,
+    # Args for plotting specific labels
+    exclude_labels: List[str] = [],
+    include_only: List[str] = None,
 ):
     sample = record.load()
     return draw_sample(
         sample=sample,
-        **kwargs
-        # class_map=class_map,
-        # display_label=display_label,
-        # display_bbox=display_bbox,
-        # display_mask=display_mask,
-        # display_keypoints=display_keypoints,
+        class_map=class_map,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
+        display_keypoints=display_keypoints,
+        font_path=font_path,
+        font_size=font_size,
+        label_color=label_color,
+        mask_blend=mask_blend,
+        mask_border_thickness=mask_border_thickness,
+        color_map=color_map,
+        prettify=prettify,
+        prettify_func=prettify_func,
+        return_as_pil_img=return_as_pil_img,
+        exclude_labels=exclude_labels,
+        include_only=include_only,
     )
 
 
@@ -262,6 +294,18 @@ def draw_pred(
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
+    font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
+    font_size: Union[int, float] = 12,
+    label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    mask_blend: float = 0.5,
+    mask_border_thickness: int = 7,
+    color_map: Optional[dict] = None,  # label -> color mapping
+    prettify: bool = True,
+    prettify_func: Callable = str.capitalize,
+    return_as_pil_img=False,
+    # Args for plotting specific labels
+    exclude_labels: List[str] = [],
+    include_only: List[str] = None,
 ):
     return draw_sample(
         sample=pred.pred,
@@ -269,6 +313,17 @@ def draw_pred(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        font_path=font_path,
+        font_size=font_size,
+        label_color=label_color,
+        mask_blend=mask_blend,
+        mask_border_thickness=mask_border_thickness,
+        color_map=color_map,
+        prettify=prettify,
+        prettify_func=prettify_func,
+        return_as_pil_img=return_as_pil_img,
+        exclude_labels=exclude_labels,
+        include_only=include_only,
     )
 
 
