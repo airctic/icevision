@@ -26,6 +26,7 @@ def show_sample(
     show: bool = True,
     ax: plt.Axes = None,
     figsize: Tuple[int, int] = None,
+    **draw_sample_kwargs,
 ) -> None:
     img = draw_sample(
         sample=sample,
@@ -35,6 +36,7 @@ def show_sample(
         display_bbox=display_bbox,
         display_mask=display_mask,
         display_keypoints=display_keypoints,
+        **draw_sample_kwargs,
     )
     show_img(img=img, ax=ax, show=show, figsize=figsize)
 
@@ -49,6 +51,7 @@ def show_record(
     ax: plt.Axes = None,
     show: bool = False,
     figsize: Tuple[int, int] = None,
+    **draw_sample_kwargs,
 ) -> None:
     img = draw_record(
         record=record,
@@ -57,6 +60,7 @@ def show_record(
         display_bbox=display_bbox,
         display_mask=display_mask,
         display_keypoints=display_keypoints,
+        **draw_sample_kwargs,
     )
     show_img(img=img, ax=ax, show=show, figsize=figsize)
 
@@ -69,8 +73,12 @@ def show_pred(
     display_mask: bool = True,
     show: bool = True,
     ax: plt.Axes = None,
+<<<<<<< HEAD
     figsize=None,
     annotation=None,
+=======
+    **draw_sample_kwargs,
+>>>>>>> patch `show_*` functions with kwargs (ugh)
 ) -> None:
     actual = draw_sample(
         sample=pred.ground_truth,
@@ -86,6 +94,7 @@ def show_pred(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        **draw_sample_kwargs,
     )
 
     if ax is None:
@@ -123,6 +132,7 @@ def show_records(
     ncols: int = 1,
     figsize=None,
     show: bool = False,
+    **draw_sample_kwargs,
 ) -> None:
     partials = [
         partial(
@@ -133,6 +143,7 @@ def show_records(
             display_mask=display_mask,
             class_map=class_map,
             show=False,
+            **draw_sample_kwargs,
         )
         for record in records
     ]
@@ -149,6 +160,7 @@ def show_samples(
     ncols: int = 1,
     figsize=None,
     show=False,
+    **draw_sample_kwargs,
 ) -> None:
     partials = [
         partial(
@@ -160,6 +172,7 @@ def show_samples(
             display_mask=display_mask,
             class_map=class_map,
             show=False,
+            **draw_sample_kwargs,
         )
         for sample in samples
     ]
@@ -175,6 +188,7 @@ def show_preds(
     figsize=None,
     show=False,
     annotations=None,
+<<<<<<< HEAD
     ncols=None,  # TODO: Not used
 ) -> None:
     annotations = annotations or [None] * len(preds)
@@ -188,10 +202,52 @@ def show_preds(
             display_mask=display_mask,
             show=False,
             annotation=annotation,
+=======
+    **draw_sample_kwargs,
+) -> None:
+    if not len(samples) == len(preds):
+        raise ValueError(
+            f"Number of imgs ({len(samples)}) should be the same as "
+            f"the number of preds ({len(preds)})"
+        )
+
+    if all(type(x) is dict for x in samples):
+        actuals = [
+            draw_sample(
+                sample=sample,
+                class_map=class_map,
+                display_label=display_label,
+                display_bbox=display_bbox,
+                display_mask=display_mask,
+                denormalize_fn=denormalize_fn,
+                **draw_sample_kwargs,
+            )
+            for sample in samples
+        ]
+
+        imgs = [sample["img"] for sample in samples]
+        predictions = [
+            draw_pred(
+                img=img,
+                pred=pred,
+                class_map=class_map,
+                denormalize_fn=denormalize_fn,
+                display_label=display_label,
+                display_bbox=display_bbox,
+                display_mask=display_mask,
+                **draw_sample_kwargs,
+            )
+            for img, pred in zip(imgs, preds)
+        ]
+
+        plot_grid_preds_actuals(
+            actuals, predictions, figsize=figsize, show=show, annotations=annotations
+>>>>>>> patch `show_*` functions with kwargs (ugh)
         )
         for pred, annotation in zip(preds, annotations)
     ]
 
+<<<<<<< HEAD
     plot_grid(
         partials,
         ncols=2,
@@ -199,3 +255,22 @@ def show_preds(
         show=show,
         axs_per_iter=2,
     )
+=======
+    else:
+        partials = [
+            partial(
+                show_pred,
+                img=img,
+                pred=pred,
+                class_map=class_map,
+                denormalize_fn=denormalize_fn,
+                display_label=display_label,
+                display_bbox=display_bbox,
+                display_mask=display_mask,
+                show=False,
+                **draw_sample_kwargs,
+            )
+            for img, pred in zip(samples, preds)
+        ]
+        plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
+>>>>>>> patch `show_*` functions with kwargs (ugh)
