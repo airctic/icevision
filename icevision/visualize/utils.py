@@ -1,4 +1,10 @@
-__all__ = ["draw_label", "bbox_polygon", "draw_mask", "as_rgb_tuple"]
+__all__ = [
+    "draw_label",
+    "bbox_polygon",
+    "draw_mask",
+    "as_rgb_tuple",
+    "get_default_font",
+]
 
 from icevision.imports import *
 from matplotlib import patches
@@ -45,3 +51,22 @@ def as_rgb_tuple(x: Union[np.ndarray, tuple, list, str]) -> tuple:
         return PIL.ImageColor.getrgb(x)
     else:
         raise ValueError(f"Expected {{np.ndarray|list|tuple}}, got {type(x)}")
+
+
+def get_default_font() -> Path:
+    import requests
+
+    icedir = Path.home() / ".icevision"
+    icedir.mkdir(exist_ok=True)
+
+    font_dir = icedir / "fonts"
+    font_dir.mkdir(exist_ok=True)
+
+    font_file = font_dir / "SpaceGrotesk-Medium.ttf"
+    if not font_file.exists():
+        URL = "https://www.dropbox.com/s/m9vn5tsi3aqj9e4/SpaceGrotesk-Medium.ttf"
+        print(
+            f"Downloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from {URL} to {font_file}"
+        )
+        font_file.write_bytes(requests.get(URL).content)
+    return str(font_file)

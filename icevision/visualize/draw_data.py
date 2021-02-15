@@ -14,13 +14,13 @@ __all__ = [
 from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
+from icevision.visualize.utils import *
 
 # This should probably move elsewhere
-from .utils import as_rgb_tuple
 from PIL import Image, ImageFont, ImageDraw
 import PIL
 
-DEFAULT_FONT_PATH = Path.home() / ".icevision" / "fonts" / "SpaceGrotesk-Medium.ttf"
+DEFAULT_FONT_PATH = get_default_font()
 
 
 def draw_sample(
