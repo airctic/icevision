@@ -31,7 +31,7 @@ In this example, we are training the PETS dataset using either [Fastai](https://
     train_tfms = tfms.A.Adapter(
         [*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()]
     )
-    valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size), tfms.A.Normalize()])
+    valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(384), tfms.A.Normalize()])
     # Create both training and validation datasets
     train_ds = Dataset(train_records, train_tfms)
     valid_ds = Dataset(valid_records, valid_tfms)
