@@ -18,7 +18,7 @@ class_map = icedata.pets.class_map()
 IMAGE_URL = "https://petcaramelo.com/wp-content/uploads/2018/06/beagle-cachorro.jpg"
 IMG_PATH = "tmp.jpg"
 # Model trained in `Tutorials->Getting Started`
-WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/pets_faster_resnet50fpn/pets_faster_resnetfpn50.zip"
+WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m3/pets_faster_resnetfpn50.zip"
 
 # Download and open image, optionally show it
 download_url(IMAGE_URL, IMG_PATH)
