@@ -3,7 +3,7 @@ __all__ = ["SimpleConfusionMatrix"]
 import sklearn, PIL
 from icevision.imports import *
 from icevision.metrics.metric import *
-from icevision.metrics.confusion_matrix.cm_utils import *
+from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
 from pytorch_lightning import loggers as pl_loggers
 
 

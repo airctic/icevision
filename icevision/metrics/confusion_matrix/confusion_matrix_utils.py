@@ -28,6 +28,11 @@ except ImportError:
             self.label = label
             super(DetectedBBox, self).__init__(xmin, ymin, xmax, ymax)
 
+        @classmethod
+        def from_xywh(cls, x, y, w, h, score, label):
+            bbox = BBox.from_xywh(x, y, w, h)
+            return cls(*bbox.xyxy, score, label)
+
 
 def zeroify_items_below_threshold(
     iou_scores: torch.Tensor, threshold: float
