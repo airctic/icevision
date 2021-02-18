@@ -7,11 +7,16 @@ from mmcv.runner import load_checkpoint
 
 
 def model(
-    cfg_path: Union[str, Path],
+    cfg: Union[str, Path, Config],
     num_classes: int,
     weights_path: Optional[Union[str, Path]] = None,
 ) -> nn.Module:
-    cfg = Config.fromfile(str(cfg_path))
+
+    # if `cfg` argument a path (str, Path) create a Config object from the file
+    # otherwise cfg is already a Config object
+    if isinstance(cfg, (str, Path)):
+        cfg = Config.fromfile(str(cfg))
+
     cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
     if weights_path is not None:
         cfg.model.pretrained = None
