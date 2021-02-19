@@ -12,8 +12,8 @@ def model(
     weights_path: Optional[Union[str, Path]] = None,
 ) -> nn.Module:
 
-    # if `cfg` argument a path (str, Path) create a Config object from the file
-    # otherwise cfg is already a Config object
+    # if `cfg` argument is a path (str, Path) create an Config object from the file
+    # otherwise cfg should be already an Config object
     if isinstance(cfg, (str, Path)):
         cfg = Config.fromfile(str(cfg))
 
