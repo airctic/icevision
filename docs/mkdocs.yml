@@ -46,6 +46,7 @@ nav:
   - Installation: install.md
   - Tutorials:
     - Getting Started: getting_started.md
+    - Getting Started with MMDetection: getting_started_mmdetection.md
     - Quickstart using EfficientDet: quickstart.md
     - Quickstart using RetinaNet: retinanet.md
     - Custom Parser: custom_parser.md
