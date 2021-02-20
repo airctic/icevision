@@ -4,6 +4,7 @@ __all__ = [
     "get_weighted_sum",
     "add_annotations",
     "get_samples_losses",
+    "_move_to_device",
 ]
 
 from icevision.imports import *
@@ -96,7 +97,8 @@ def _move_to_device(x, y, device):
     elif isinstance(
         y, dict
     ):  # this covers the efficientdet case in which `y` is a dict of Union[list, tensor] and not a list of dicts and `x` is a Tensor and not a list of Tensors
-        x = x.to(device)
+        # and the mmdet case in which x and y are merged into a single dict, hence x will be None
+        x = x.to(device) if x is not None else x
         for k in y.keys():
             if isinstance(y[k], list):
                 y[k] = [
@@ -125,6 +127,26 @@ class Interpretation:
         losses_dict["loss_total"] = sum(losses_dict.values())
         return losses_dict
 
+    def _loop(self, dl, model, losses_stats, device):
+        samples_plus_losses = []
+
+        with torch.no_grad():
+            for (x, y), sample in pbar(dl):
+                torch.manual_seed(0)
+                x, y = _move_to_device(x, y, device)
+                loss = model(x, y)
+                loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
+                loss = self._rename_losses(loss)
+                loss = self._sum_losses(loss)
+
+                for l in losses_stats.keys():
+                    losses_stats[l].append(loss[l])
+
+                loss = _prepend_str(loss, "loss")
+                sample[0].update(loss)
+                samples_plus_losses.append(sample[0])
+        return samples_plus_losses, losses_stats
+
     def get_losses(
         self,
         model: nn.Module,
@@ -151,23 +173,7 @@ class Interpretation:
         losses_stats = self.losses_dict
         dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
 
-        samples_plus_losses = []
-
-        with torch.no_grad():
-            for (x, y), sample in pbar(dl):
-                torch.manual_seed(0)
-                x, y = _move_to_device(x, y, device)
-                loss = model(x, y)
-                loss = {k: float(v.cpu().numpy()) for k, v in loss.items()}
-                loss = self._rename_losses(loss)
-                loss = self._sum_losses(loss)
-
-                for l in losses_stats.keys():
-                    losses_stats[l].append(loss[l])
-
-                loss = _prepend_str(loss, "loss")
-                sample[0].update(loss)
-                samples_plus_losses.append(sample[0])
+        samples_plus_losses, losses_stats = self._loop(dl, model, losses_stats, device)
 
         losses_stats = {k: get_stats(v) for k, v in losses_stats.items()}
         losses_stats = _prepend_str(losses_stats, "loss")
