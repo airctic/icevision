@@ -11,6 +11,8 @@ from icevision.models.torchvision import (
 )
 from icevision.models import torchvision
 
+from icevision.models.yolo import yolov5
+
 
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies
