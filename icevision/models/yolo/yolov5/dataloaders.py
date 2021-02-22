@@ -39,7 +39,7 @@ def _build_train_sample(
 
     image = im2tensor(record["img"])
 
-    # target = {}
+    # UNSURE WHETHER NEGATIVE SAMPLES ARE SUPPORTED
     # # If no labels and bboxes are present, use as negative samples as described in
     # # https://github.com/pytorch/vision/releases/tag/v0.6.0
     # if len(record["labels"]) == 0:
