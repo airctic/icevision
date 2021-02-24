@@ -63,11 +63,16 @@ class SimpleConfusionMatrix(Metric):
         self.class_map = add_unknown_labels(
             self.ground_truths, self.predictions, self.class_map
         )
-        self.ground_truths = np.array(self.ground_truths)
-        self.predictions = np.array(self.predictions)
+        # this needs to be hacked, cause it may happen that we dont have all gts/preds classes in a batch.
+        # This results in missing values and class_map / gts shape mismatch
+        dummy_labels = [i for i in range(self.class_map.num_classes)]
+        dummy_diagonal = np.eye(self.class_map.num_classes)
+        self.ground_truths = np.array(self.ground_truths + dummy_labels)
+        self.predictions = np.array(self.predictions + dummy_labels)
         self.confusion_matrix = sklearn.metrics.confusion_matrix(
             y_true=self.ground_truths, y_pred=self.predictions
         )
+        self.confusion_matrix = self.confusion_matrix - dummy_diagonal
         return {"dummy_value_for_fastai": -1}
 
     def plot(
@@ -89,16 +94,8 @@ class SimpleConfusionMatrix(Metric):
         # properly display ints and floats
         if values_format is not None:
             values_format = ".2f" if normalize else "d"
-        cm = self.confusion_matrix
-        with np.errstate(all="ignore"):
-            if normalize == "true":
-                cm = cm / cm.sum(axis=1, keepdims=True)
-            elif normalize == "pred":
-                cm = cm / cm.sum(axis=0, keepdims=True)
-            elif normalize == "all":
-                cm = cm / cm.sum()
-        cm = np.nan_to_num(cm)
 
+        cm = self._maybe_normalize(self.confusion_matrix, normalize)
         cm_display = sklearn.metrics.ConfusionMatrixDisplay(
             cm, display_labels=self.class_map._id2class
         )
@@ -112,14 +109,29 @@ class SimpleConfusionMatrix(Metric):
         return figure
 
     def _fig2img(self, fig):
+        """Converts matplotlib figure object to PIL Image for easier logging. Writing to buffer is necessary
+        to avoid wandb cutting our labels off. Wandb autoconvert doesn't pass the `bbox_inches` parameter so we need
+        to do this manually."""
         buf = io.BytesIO()
         fig.savefig(buf, bbox_inches="tight")
         buf.seek(0)
         return PIL.Image.open(buf)
 
+    def _maybe_normalize(self, cm, normalize):
+        """This method is copied from sklearn. Only used in plot_confusion_matrix but we want to be able
+        to normalize upon plotting."""
+        with np.errstate(all="ignore"):
+            if normalize == "true":
+                cm = cm / cm.sum(axis=1, keepdims=True)
+            elif normalize == "pred":
+                cm = cm / cm.sum(axis=0, keepdims=True)
+            elif normalize == "all":
+                cm = cm / cm.sum()
+        cm = np.nan_to_num(cm)
+        return cm
+
     def log(self, logger_object) -> None:
         if isinstance(logger_object, pl_loggers.WandbLogger):
-            # writing to buffer is necessary to avoid wandb cutting our labels off
             fig = self.plot()
             image = self._fig2img(fig)
             logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
