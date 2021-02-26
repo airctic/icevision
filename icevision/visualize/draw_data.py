@@ -81,7 +81,7 @@ def draw_sample(
         # logic for plotting specific labels only
         # `include_only` > `exclude_labels`
         if not label == []:
-            label_str = class_map.get_id(label)
+            label_str = class_map.get_by_id(label) if class_map is not None else ""
             if include_only is not None:
                 if not label_str in include_only:
                     continue
