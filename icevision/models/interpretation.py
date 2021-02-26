@@ -169,6 +169,7 @@ class Interpretation:
         losses_stats: dictionary containing losses stats (min, max, mean, 1-25-50-75-99 quantiles)
                     for each one of the losses.
         """
+        model.train()
         device = model_device(model)
         losses_stats = self.losses_dict
         dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
