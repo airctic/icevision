@@ -96,8 +96,14 @@ def test_couple_with_wrong_preds(target_bboxes, predicted_bboxes_wrong):
     iou_scores = pairwise_iou(
         predicted_bboxes=predicted_bboxes_wrong, target_bboxes=target_bboxes
     )
+
+    that_match = torch.any(iou_scores > 0.5, dim=1)
+    iou_scores = iou_scores[that_match]
+    predicted_bboxes_wrong = list(
+        itertools.compress(predicted_bboxes_wrong, that_match)
+    )
+
     coupled_list = couple_with_targets(
         predicted_bboxes=predicted_bboxes_wrong, iou_scores=iou_scores
     )
-    that_match = torch.any(iou_scores > self._iou_threshold, dim=1)
-    iou_scores = iou_scores[that_match]
+    assert coupled_list == [[], []]
