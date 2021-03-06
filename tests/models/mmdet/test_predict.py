@@ -41,8 +41,7 @@ def test_mmdet_bbox_models_predict(ds, model_type, path, config, weights_path, r
     assert set(pred[0].keys()) == {"bboxes", "labels", "scores"}
 
     samps, preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
-    assert len(samps) == 1
-    assert len(preds) == 1
+    assert len(samps) == len(preds)
     assert set(samps[0].keys()) == {
         "bboxes",
         "class_map",
