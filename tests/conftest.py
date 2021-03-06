@@ -70,31 +70,31 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
         class_map=fridge_class_map,
     )
 
-    data_splitter = RandomSplitter([0.8, 0.2])
+    data_splitter = RandomSplitter((0.5, 0.5))
     train_records, valid_records = parser.parse(data_splitter)
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
-    train_ds = Dataset(train_records[:2], tfms_)
-    valid_ds = Dataset(valid_records[:2], tfms_)
+    train_ds = Dataset(train_records, tfms_)
+    valid_ds = Dataset(valid_records, tfms_)
 
     return train_ds, valid_ds
 
 
-@pytest.fixture()
-def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_efficientdet_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = efficientdet.train_dl(train_ds, batch_size=2)
-    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=2)
+    train_dl = efficientdet.train_dl(train_ds, batch_size=request.param)
+    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
 
-@pytest.fixture()
-def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_faster_rcnn_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = faster_rcnn.train_dl(train_ds, batch_size=2)
-    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2)
+    train_dl = faster_rcnn.train_dl(train_ds, batch_size=request.param)
+    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
