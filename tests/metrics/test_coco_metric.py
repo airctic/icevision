@@ -4,15 +4,22 @@ from copy import deepcopy
 
 
 @pytest.fixture()
-def records():
+def records(fridge_class_map):
     Record = create_mixed_record(
-        (SizeRecordMixin, FilepathRecordMixin, LabelsRecordMixin, BBoxesRecordMixin)
+        (
+            SizeRecordMixin,
+            FilepathRecordMixin,
+            LabelsRecordMixin,
+            BBoxesRecordMixin,
+            ClassMapRecordMixin,
+        )
     )
 
     record1 = Record()
     record1.set_imageid(0)
     record1.set_filepath("none")
     record1.set_image_size(400, 400)
+    record1.set_class_map(fridge_class_map)
     record1.add_labels([2])
     record1.add_bboxes([BBox.from_xywh(10, 10, 200, 200)])
 
@@ -20,6 +27,7 @@ def records():
     record2.set_imageid(1)
     record2.set_filepath("none")
     record2.set_image_size(500, 500)
+    record2.set_class_map(fridge_class_map)
     record2.add_labels([3, 2])
     record2.add_bboxes(
         [BBox.from_xywh(10, 10, 50, 50), BBox.from_xywh(10, 10, 400, 400)]
