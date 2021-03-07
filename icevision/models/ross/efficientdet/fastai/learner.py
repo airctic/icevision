@@ -37,7 +37,7 @@ def learner(
     # HACK: patch AvgLoss (in original, find_bs looks at the first element in dictionary and gives errors)
     class EffDetAvgLoss(fastai.AvgLoss):
         def accumulate(self, learn):
-            bs = len(learn.yb)
+            bs = len(first(learn.yb)["cls"])
             self.total += learn.to_detach(learn.loss.mean()) * bs
             self.count += bs
 
