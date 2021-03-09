@@ -3,6 +3,7 @@ __all__ = ["BaseRecord", "autofix_records"]
 from icevision.imports import *
 from icevision.utils import *
 from collections.abc import MutableMapping
+from icevision.core import tasks
 from icevision.core.exceptions import *
 from icevision.core.components import *
 from icevision.core.record_components import *
@@ -10,7 +11,7 @@ from icevision.core.record_components import *
 
 # TODO: MutableMapping because of backwards compatability
 # TODO: Rename to Record
-class BaseRecord(Composite, MutableMapping):
+class BaseRecord(TaskComposite):
     base_components = {ImageidRecordComponent, SizeRecordComponent}
 
     def as_dict(self) -> dict:
@@ -20,37 +21,43 @@ class BaseRecord(Composite, MutableMapping):
         return self.reduce_on_components("_num_annotations", reduction="update")
 
     def check_num_annotations(self):
-        num_annotations = self.num_annotations()
-        if len(set(num_annotations.values())) > 1:
-            msg = "\n".join([f"\t- {v} for {k}" for k, v in num_annotations.items()])
-            raise AutofixAbort(
-                "Number of items should be the same for each annotation type"
-                f", but got:\n{msg}"
-            )
+        tasks_num_annotations = self.num_annotations()
+        for task, num_annotations in tasks_num_annotations.items():
+            if len(set(num_annotations.values())) > 1:
+                msg = "\n".join(
+                    [f"\t- {v} for {k}" for k, v in num_annotations.items()]
+                )
+                raise AutofixAbort(
+                    "Number of items should be the same for each annotation type"
+                    f", but got for task {task}:\n{msg}"
+                )
 
     def autofix(self):
         self.check_num_annotations()
 
-        success_dict = self.reduce_on_components("_autofix", reduction="update")
-        success_list = np.array(list(success_dict.values()))
-        if len(success_list) == 0:
-            return success_dict
-        keep_mask = reduce(np.logical_and, success_list)
-        discard_idxs = np.where(keep_mask == False)[0]
+        tasks_success_dict = self.reduce_on_components("_autofix", reduction="update")
 
-        for i in discard_idxs:
-            logger.log(
-                "AUTOFIX-REPORT",
-                "Removed annotation with index: {}, "
-                "for more info check the AUTOFIX-FAIL messages above",
-                i,
-            )
-            self.remove_annotation(i)
+        for task_name, success_dict in tasks_success_dict.items():
+            success_list = np.array(list(success_dict.values()))
+            if len(success_list) == 0:
+                continue
+            keep_mask = reduce(np.logical_and, success_list)
+            discard_idxs = np.where(keep_mask == False)[0]
 
-        return success_dict
+            for i in discard_idxs:
+                logger.log(
+                    "AUTOFIX-REPORT",
+                    "Removed annotation with index: {}, "
+                    "for more info check the AUTOFIX-FAIL messages above",
+                    i,
+                )
+                self.remove_annotation(task_name=task_name, i=i)
 
-    def remove_annotation(self, i: int):
-        self.reduce_on_components("_remove_annotation", i=i)
+        return tasks_success_dict
+
+    # TODO: Might have weird interaction with task_components
+    def remove_annotation(self, i: int, task_name: str):
+        self.reduce_on_task_components("_remove_annotation", task_name=task_name, i=i)
 
     def aggregate_objects(self):
         return self.reduce_on_components("_aggregate_objects", reduction="update")
@@ -64,26 +71,39 @@ class BaseRecord(Composite, MutableMapping):
     def unload(self):
         self.reduce_on_components("_unload")
 
+    def setup_transform(self, tfm):
+        self.reduce_on_components("setup_transform", tfm=tfm)
+
+    def builder_template(self) -> List[str]:
+        res = self.reduce_on_components("builder_template", reduction="extend").values()
+        return [line for lines in res for line in lines]
+
     def __repr__(self) -> str:
-        _reprs = self.reduce_on_components("_repr", reduction="extend")
-        _repr = "".join(f"\n\t- {o}" for o in _reprs)
-        return f"Record:{_repr}"
+        tasks_reprs = self.reduce_on_components("_repr", reduction="extend")
 
-    # backwards compatiblity: implemented method to behave like a dict
-    def __getitem__(self, key):
-        return self.as_dict()[key]
+        def join_one(reprs):
+            return "".join(f"\n\t- {o}" for o in reprs)
 
-    def __setitem__(self, key, value):
-        setattr(self, key, value)
+        reprs = [f"{task}: {join_one(reprs)}" for task, reprs in tasks_reprs.items()]
+        repr = "\n".join(reprs)
 
-    def __delitem__(self, key):
-        delattr(self, key)
+        return f"{self.__class__.__name__}\n\n{repr}"
 
-    def __iter__(self):
-        yield from self.as_dict()
+    # # backwards compatiblity: implemented method to behave like a dict
+    # def __getitem__(self, key):
+    #     return self.as_dict()[key]
 
-    def __len__(self):
-        return len(self.as_dict())
+    # def __setitem__(self, key, value):
+    #     setattr(self, key, value)
+
+    # def __delitem__(self, key):
+    #     delattr(self, key)
+
+    # def __iter__(self):
+    #     yield from self.as_dict()
+
+    # def __len__(self):
+    #     return len(self.as_dict())
 
 
 def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:

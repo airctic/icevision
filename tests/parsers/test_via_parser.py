@@ -2,6 +2,7 @@ import pytest
 from icevision.all import *
 
 
+@pytest.mark.skip
 def test_bbox_parser(via_dir, via_bbox_class_map):
     parser = parsers.via(via_dir / "via_bbox.json", via_dir, via_bbox_class_map)
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
@@ -20,6 +21,7 @@ def test_bbox_parser(via_dir, via_bbox_class_map):
     assert record.bboxes[3].xyxy == (263, 55, 308, 103)
 
 
+@pytest.mark.skip
 def test_bbox_parser_alt_label(via_dir, via_bbox_class_map):
     parser = parsers.via(
         via_dir / "via_bbox.json", via_dir, via_bbox_class_map, label_field="object"
@@ -31,6 +33,7 @@ def test_bbox_parser_alt_label(via_dir, via_bbox_class_map):
     assert record.labels == [4, 1, 3, 3, 2]
 
 
+@pytest.mark.skip
 def test_bbox_parser_broken_label(via_dir, via_bbox_class_map):
     parser = parsers.via(
         via_dir / "via_bbox.json", via_dir, via_bbox_class_map, label_field="qualities"
@@ -39,6 +42,7 @@ def test_bbox_parser_broken_label(via_dir, via_bbox_class_map):
         _ = parser.parse(data_splitter=SingleSplitSplitter())[0]
 
 
+@pytest.mark.skip
 def test_bbox_parser_missing_label(via_dir, via_bbox_class_map):
     parser = parsers.via(
         via_dir / "via_bbox.json", via_dir, via_bbox_class_map, label_field="MISSING"

@@ -25,15 +25,20 @@ def draw_sample(
     display_mask: bool = True,
     display_keypoints: bool = True,
 ):
-    img = sample["img"].copy()
+    img = sample.img.copy()
     if denormalize_fn is not None:
         img = denormalize_fn(img)
 
+    # TODO, HACK: temporary solution, draw will be refactored to record
     for label, bbox, mask, keypoints in itertools.zip_longest(
-        sample.get("labels", []),
-        sample.get("bboxes", []),
-        sample.get("masks", []),
-        sample.get("keypoints", []),
+        getattr(sample.detect, "labels", []),
+        getattr(sample.detect, "bboxes", []),
+        getattr(sample.detect, "masks", []),
+        getattr(sample.detect, "keypoints", []),
+        # getattr(sample, tasks.detect.name, {}).get("labels", []),
+        # getattr(sample, tasks.detect.name, {}).get("bboxes", []),
+        # getattr(sample, tasks.detect.name, {}).get("masks", []),
+        # getattr(sample, tasks.detect.name, {}).get("keypoints", []),
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
         color = tuple(color.astype(int).tolist())
@@ -129,19 +134,14 @@ def draw_record(
 
 
 def draw_pred(
-    img: np.ndarray,
-    pred: dict,
-    class_map: Optional[ClassMap] = None,
+    pred: Prediction,
     denormalize_fn: Optional[callable] = None,
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
 ):
-    sample = pred.copy()
-    sample["img"] = img
     return draw_sample(
-        sample=sample,
-        class_map=class_map,
+        sample=pred.pred,
         denormalize_fn=denormalize_fn,
         display_label=display_label,
         display_bbox=display_bbox,

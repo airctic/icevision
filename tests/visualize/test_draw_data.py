@@ -1,3 +1,4 @@
+import pytest
 from icevision.parsers.coco_parser import COCOKeypointsMetadata
 from icevision.all import *
 
@@ -17,6 +18,7 @@ def test_draw_sample(fridge_ds, fridge_class_map, monkeypatch):
     show_img(img, show=True)
 
 
+@pytest.mark.skip
 def test_draw_pred():
     img = np.zeros((200, 200, 3))
     pred = {"bboxes": [BBox.from_xywh(100, 100, 50, 50)], "labels": [1]}

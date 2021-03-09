@@ -60,16 +60,20 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def _build_keypoints_train_sample(record: RecordType):
-    assert len(record["labels"]) == len(record["bboxes"]) == len(record["keypoints"])
+    assert (
+        len(record.detect.labels)
+        == len(record.detect.bboxes)
+        == len(record.detect.keypoints)
+    )
 
     image, target = _build_train_sample(record=record)
 
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
-    if len(record["labels"]) == 0:
+    if len(record.detect.labels) == 0:
         target["keypoints"] = torch.zeros((0, 3), dtype=torch.float32)
     else:
-        kps = [kp.xyv for kp in record["keypoints"]]
+        kps = [kp.xyv for kp in record.detect.keypoints]
         target["keypoints"] = tensor(kps, dtype=torch.float32)
 
     return image, target

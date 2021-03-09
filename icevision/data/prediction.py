@@ -14,7 +14,9 @@ class Prediction:
             pred.set_imageid(ground_truth.imageid)
             pred.set_img_size(ground_truth.original_img_size, original=True)
             pred.set_img_size(ground_truth.img_size)
-            pred.set_img(ground_truth.img)
+            # HACK
+            if ground_truth.img is not None:
+                pred.set_img(ground_truth.img)
 
     def __getattr__(self, name):
         if name == "pred":

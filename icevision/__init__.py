@@ -9,6 +9,10 @@ from icevision.models import *
 from icevision.metrics import *
 from icevision.visualize import *
 
+# HACK: Only for presentation, need to fix namespace
+from icevision.parsers import Parser
+
+
 # HACK: quickfix because models import torchvision
 import torchvision
 
