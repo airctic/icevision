@@ -170,12 +170,12 @@ def build_infer_batch(records, batch_tfms=None):
 
 def process_train_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet training"""
-    image = im2tensor(record["img"])
+    image = im2tensor(record.img)
     # background and dummy if no label in record
-    classes = record["labels"] if record["labels"] else [0]
+    classes = record.detect.labels if record.detect.labels else [0]
     bboxes = (
-        [bbox.yxyx for bbox in record["bboxes"]]
-        if len(record["labels"]) > 0
+        [bbox.yxyx for bbox in record.detect.bboxes]
+        if len(record.detect.labels) > 0
         else [[0, 0, 0, 0]]
     )
     return image, bboxes, classes
@@ -183,7 +183,7 @@ def process_train_record(record) -> tuple:
 
 def process_infer_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet inference"""
-    image = im2tensor(record["img"])
+    image = im2tensor(record.img)
     image_size = image.shape[-2:]
     image_scale = 1.0
 

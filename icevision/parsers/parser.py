@@ -2,9 +2,9 @@ __all__ = ["ParserInterface", "Parser"]
 
 from icevision.imports import *
 from icevision.utils import *
+from icevision.utils.code_template import *
 from icevision.core import *
 from icevision.data import *
-from icevision.parsers.mixins import *
 
 
 def camel_to_snake(name):
@@ -21,7 +21,7 @@ class ParserInterface(ABC):
         pass
 
 
-class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
+class Parser(ParserInterface, ABC):
     """Base class for all parsers, implements the main parsing logic.
 
     The actual fields to be parsed are defined by the mixins used when
@@ -41,44 +41,45 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
     """
 
     def __init__(
-        self, class_map: Optional[ClassMap] = None, idmap: Optional[IDMap] = None
+        self,
+        record,
+        class_map: Optional[ClassMap] = None,
+        idmap: Optional[IDMap] = None,
     ):
-        self.class_map = class_map or ClassMap()
-        if class_map is None:
-            self.class_map.unlock()
+        # self.class_map = class_map or ClassMap()
+        # if class_map is None:
+        #     self.class_map.unlock()
+        self._record = record
         self.idmap = idmap or IDMap()
 
     @abstractmethod
     def __iter__(self) -> Any:
         pass
 
+    @abstractmethod
+    def parse_fields(self, o, record: BaseRecord) -> None:
+        pass
+
+    def create_record(self) -> BaseRecord:
+        return deepcopy(self._record)
+
     def prepare(self, o):
         pass
 
-    def record_class(self) -> BaseRecord:
-        record_components = component_registry.match_components(
-            RecordComponent, self.components
-        )
-
-        def _inner():
-            return BaseRecord(record_components)
-
-        return _inner
-
     def parse_dicted(self, show_pbar: bool = True) -> Dict[int, RecordType]:
-        Record = self.record_class()
         records = {}
 
         for sample in pbar(self, show_pbar):
             try:
                 self.prepare(sample)
+                # TODO: Do we still need idmap?
                 true_imageid = self.imageid(sample)
                 imageid = self.idmap[true_imageid]
 
                 try:
                     record = records[imageid]
                 except KeyError:
-                    record = Record()
+                    record = self.create_record()
 
                 self.parse_fields(sample, record)
 
@@ -119,10 +120,6 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
         # Returns
             A list of records for each split defined by `data_splitter`.
         """
-
-        # Hack to define the class of the mixed_record in the local namespace. This is required for pickeling.
-        Record = self.record_class()
-
         if self._check_path(cache_filepath):
             logger.info(
                 f"Loading cached records from {cache_filepath}",
@@ -144,7 +141,7 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
 
                 all_splits_records.append(split_records)
 
-            self.class_map.lock()
+            # self.class_map.lock()
             if cache_filepath is not None:
                 pickle.dump(all_splits_records, open(Path(cache_filepath), "wb"))
 
@@ -156,6 +153,19 @@ class Parser(ClassMapMixin, ImageidMixin, SizeMixin, ParserInterface, ABC):
         return ["def __iter__(self) -> Any:"] + templates
 
     @classmethod
-    def generate_template(cls):
-        for template in cls._templates():
-            print(f"{template}")
+    def generate_template(cls, record):
+        record_builder_template = record.builder_template()
+
+        template = CodeTemplate()
+        template.add_line(f"class MyParser({cls.__name__}):", 0)
+        template.add_line(f"def __init__(self, record):", 1)
+        template.add_line(f"super().__init__(record=record)", 2)
+        template.add_line(f"def __iter__(self) -> Any:", 1)
+        template.add_line(f"def __len__(self) -> int:", 1)
+        # template.add_line("def create_record(self) -> BaseRecord:", 1)
+        # template.add_line(f"return {record.__class__.__name__}({components_names})", 2)
+        template.add_line("def imageid(self, o) -> Hashable:", 1)
+        template.add_line("def parse_fields(self, o, record):", 1)
+        template.add_lines(record_builder_template, 2)
+
+        template.display()

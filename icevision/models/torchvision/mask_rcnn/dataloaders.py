@@ -60,17 +60,21 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def _build_mask_train_sample(record: RecordType):
-    assert len(record["labels"]) == len(record["bboxes"]) == len(record["masks"])
+    assert (
+        len(record.detect.labels)
+        == len(record.detect.bboxes)
+        == len(record.detect.bboxes)
+    )
 
     image, target = _build_train_sample(record=record)
 
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
-    if len(record["masks"]) == 0:
-        height, width = record["img"].shape[:-1]
+    if len(record.detect.masks) == 0:
+        height, width = record.img.shape[:-1]
         target["masks"] = torch.zeros((0, height, width), dtype=torch.uint8)
     else:
-        target["masks"] = tensor(record["masks"].data, dtype=torch.uint8)
+        target["masks"] = tensor(record.detect.masks.data, dtype=torch.uint8)
 
     return image, target
 

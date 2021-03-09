@@ -1,3 +1,4 @@
+import pytest
 from icevision.all import *
 
 
@@ -24,6 +25,7 @@ def test_show_keypoints_record(coco_keypoints_parser, monkeypatch):
     show_record(records[0])
 
 
+@pytest.mark.skip
 def test_show_pred(monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     img = np.zeros((200, 200, 3))

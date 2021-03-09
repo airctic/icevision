@@ -3,7 +3,7 @@ __all__ = ["via", "VIAParseError", "VIABaseParser", "VIABBoxParser"]
 from icevision.imports import *
 from icevision.core import *
 from icevision.utils import *
-from icevision.parsers import *
+from icevision.parsers.parser import *
 
 
 def via(
@@ -34,7 +34,7 @@ class VIAParseError(Exception):
     pass
 
 
-class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
+class VIABaseParser(Parser):
     def __init__(
         self,
         annotations_filepath: Union[str, Path],
@@ -42,6 +42,7 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
         class_map: ClassMap,
         label_field: str = "label",
     ):
+        raise NotImplementedError("Has to be refactored to new API")
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
         self.label_field = label_field
@@ -83,7 +84,7 @@ class VIABaseParser(Parser, FilepathMixin, LabelsMixin):
         return labels
 
 
-class VIABBoxParser(VIABaseParser, BBoxesMixin):
+class VIABBoxParser(VIABaseParser):
     """
     VIABBoxParser parses `polygon` and `rect` shape attribute types. Polygons
     are converted into bboxes that surround the entire shape.

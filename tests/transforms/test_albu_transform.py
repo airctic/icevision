@@ -4,104 +4,94 @@ from icevision.tfms.albumentations.albumentations_adapter import (
 import pytest
 from icevision.all import *
 
-component_field = {
-    ImageidRecordComponent: "imageid",
-    ClassMapRecordComponent: "class_map",
-    FilepathRecordComponent: "img",
-    ImageRecordComponent: "img",
-    SizeRecordComponent: "img_size",
-    LabelsRecordComponent: "labels",
-    BBoxesRecordComponent: "bboxes",
-    MasksRecordComponent: "masks",
-    KeyPointsRecordComponent: "keypoints",
-    AreasRecordComponent: "areas",
-    IsCrowdsRecordComponent: "iscrowds",
-}
-
-
-def check_attribute_on_component(record):
-    for component in record.components:
-        name = component_field[component.__class__]
-        assert getattr(record, name) is getattr(component, name)
-
-
 # TODO: Check that attributes are being set on components
 @pytest.fixture
 def records(coco_mask_records):
     return coco_mask_records
 
 
-def test_set_on_components(records):
+def test_set_on_components(records, check_attributes_on_component):
     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
 
     tfmed = tfm_ds[0]
-    check_attribute_on_component(tfmed)
+    check_attributes_on_component(tfmed)
 
 
-def test_inference_transform(records):
+def test_inference_transform(records, check_attributes_on_component):
     img = open_img(records[0].filepath)
     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
     ds = Dataset.from_images([img], tfm)
 
     tfmed = ds[0]
     assert (tfmed.img == img[:, ::-1, :]).all()
-    check_attribute_on_component(tfmed)
+    check_attributes_on_component(tfmed)
 
 
-def test_simple_transform(records):
+def test_simple_transform(records, check_attributes_on_component):
     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
     ds = Dataset(records)
     tfm_ds = Dataset(records, tfm=tfm)
 
     sample, tfmed = ds[0], tfm_ds[0]
     assert (tfmed.img == sample.img[:, ::-1, :]).all()
-    check_attribute_on_component(tfmed)
+    check_attributes_on_component(tfmed)
 
 
-def test_crop_transform(records):
+def test_crop_transform(records, check_attributes_on_component):
     tfm = tfms.A.Adapter([tfms.A.CenterCrop(100, 100, p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
-    assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.labels) == 1
-    assert len(tfmed.bboxes) == 1
-    assert len(tfmed.masks) == 1
-    assert len(tfmed.iscrowds) == 1
-    check_attribute_on_component(tfmed)
+    # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
+    assert len(tfmed.detect.labels) == 1
+    assert len(tfmed.detect.bboxes) == 1
+    assert len(tfmed.detect.masks) == 1
+    assert len(tfmed.detect.iscrowds) == 1
+    assert len(tfmed.detect.areas) == 1
+    check_attributes_on_component(tfmed)
 
 
-def test_crop_transform_empty(records):
+def test_crop_transform_empty(records, check_attributes_on_component):
     tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
-    assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.labels) == 0
-    assert len(tfmed.bboxes) == 0
-    assert len(tfmed.masks) == 0
-    assert len(tfmed.iscrowds) == 0
-    check_attribute_on_component(tfmed)
+    # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
+    assert len(tfmed.detect.labels) == 0
+    assert len(tfmed.detect.bboxes) == 0
+    assert len(tfmed.detect.masks) == 0
+    assert len(tfmed.detect.iscrowds) == 0
+    assert len(tfmed.detect.areas) == 0
+    check_attributes_on_component(tfmed)
+
+    # assert orignal record was not changed
+    record = records[0]
+    assert len(record.detect.labels) == 1
+    assert len(record.detect.bboxes) == 1
+    assert len(record.detect.masks) == 1
+    assert len(record.detect.iscrowds) == 1
+    assert len(record.detect.areas) == 1
+    check_attributes_on_component(record)
 
 
-def test_keypoints_transform(coco_keypoints_parser):
+def test_keypoints_transform(coco_keypoints_parser, check_attributes_on_component):
     records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
-    tfm = tfms.A.Adapter(
-        [*tfms.A.aug_tfms(size=384, presize=512, crop_fn=None), tfms.A.Normalize()]
-    )
+    tfm = tfms.A.Adapter([tfms.A.Resize(427 * 2, 640 * 2), tfms.A.Normalize()])
     # assert "keypoints" in tfm.tfms.processors.keys()
     # assert "bboxes" in tfm.tfms.processors.keys()
 
     ds = Dataset(records)
     tfm_ds = Dataset(records, tfm=tfm)
 
-    d, t = ds[0], tfm_ds[0]
+    record, tfmed = ds[0], tfm_ds[0]
     # assert "keypoints" in tfm.tfms.processors.keys()
     # assert "bboxes" in tfm.tfms.processors.keys()
-    assert len(d.keypoints) == 3
-    assert len(t.keypoints) == 3
-    assert set([c for c in t.keypoints[0].visible]) == {0.0, 1.0, 2.0}
-    assert set([c for c in d.keypoints[0].visible]) == {0, 1, 2}
-    check_attribute_on_component(t)
+    assert len(record.detect.keypoints) == 3
+    assert len(tfmed.detect.keypoints) == 3
+    assert set([c for c in tfmed.detect.keypoints[0].visible]) == {0.0, 1.0, 2.0}
+    assert set([c for c in record.detect.keypoints[0].visible]) == {0, 1, 2}
+    assert (tfmed.detect.keypoints[0].x == record.detect.keypoints[0].x * 2).all()
+    assert (tfmed.detect.keypoints[0].y == record.detect.keypoints[0].y * 2).all()
+    check_attributes_on_component(tfmed)
 
 
 def test_keypoints_transform_crop_error(coco_keypoints_parser):

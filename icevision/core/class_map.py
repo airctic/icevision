@@ -52,9 +52,11 @@ class ClassMap:
 
     def lock(self):
         self._lock = True
+        return self
 
     def unlock(self):
         self._lock = False
+        return self
 
     def __eq__(self, other) -> bool:
         if isinstance(other, ClassMap):

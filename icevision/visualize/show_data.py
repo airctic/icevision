@@ -62,26 +62,56 @@ def show_record(
 
 
 def show_pred(
-    img: np.ndarray,
-    pred: dict,
-    class_map: Optional[ClassMap] = None,
+    pred: Prediction,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
     show: bool = True,
     ax: plt.Axes = None,
+    figsize=None,
+    annotation=None,
 ) -> None:
-    img = draw_pred(
-        img=img,
+    actual = draw_sample(
+        sample=pred.ground_truth,
+        display_label=display_label,
+        display_bbox=display_bbox,
+        display_mask=display_mask,
+        denormalize_fn=denormalize_fn,
+    )
+
+    prediction = draw_pred(
         pred=pred,
-        class_map=class_map,
         denormalize_fn=denormalize_fn,
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
     )
-    show_img(img=img, ax=ax, show=show)
+
+    if ax is None:
+        fig, ax = plt.subplots(1, 2, figsize=figsize)
+
+    ax[0].imshow(actual, cmap=None)
+    ax[0].set_title("Ground truth")
+    ax[1].imshow(prediction, cmap=None)
+    ax[1].set_title("Prediction")
+
+    if annotation is None:
+        ax[0].set_axis_off()
+        ax[1].set_axis_off()
+    else:
+        ax[0].get_xaxis().set_ticks([])
+        ax[0].set_frame_on(False)
+        ax[0].get_yaxis().set_visible(False)
+        ax[0].set_xlabel(annotation[0], ma="left")
+
+        ax[1].get_xaxis().set_ticks([])
+        ax[1].set_frame_on(False)
+        ax[1].get_yaxis().set_visible(False)
+        ax[1].set_xlabel(annotation[1], ma="left")
+
+    if show:
+        plt.show()
 
 
 def show_records(
@@ -137,68 +167,35 @@ def show_samples(
 
 
 def show_preds(
-    samples: Union[Sequence[np.ndarray], Sequence[dict]],
-    preds: Sequence[dict],
-    class_map: Optional[ClassMap] = None,
+    preds: Sequence[Prediction],
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     display_label: bool = True,
     display_bbox: bool = True,
     display_mask: bool = True,
-    ncols: int = 1,
     figsize=None,
     show=False,
     annotations=None,
+    ncols=None,  # TODO: Not used
 ) -> None:
-    if not len(samples) == len(preds):
-        raise ValueError(
-            f"Number of imgs ({len(samples)}) should be the same as "
-            f"the number of preds ({len(preds)})"
+    annotations = annotations or [None] * len(preds)
+    partials = [
+        partial(
+            show_pred,
+            pred=pred,
+            denormalize_fn=denormalize_fn,
+            display_label=display_label,
+            display_bbox=display_bbox,
+            display_mask=display_mask,
+            show=False,
+            annotation=annotation,
         )
+        for pred, annotation in zip(preds, annotations)
+    ]
 
-    if all(type(x) is dict for x in samples):
-        actuals = [
-            draw_sample(
-                sample=sample,
-                class_map=class_map,
-                display_label=display_label,
-                display_bbox=display_bbox,
-                display_mask=display_mask,
-                denormalize_fn=denormalize_fn,
-            )
-            for sample in samples
-        ]
-
-        imgs = [sample["img"] for sample in samples]
-        predictions = [
-            draw_pred(
-                img=img,
-                pred=pred,
-                class_map=class_map,
-                denormalize_fn=denormalize_fn,
-                display_label=display_label,
-                display_bbox=display_bbox,
-                display_mask=display_mask,
-            )
-            for img, pred in zip(imgs, preds)
-        ]
-
-        plot_grid_preds_actuals(
-            actuals, predictions, figsize=figsize, show=show, annotations=annotations
-        )
-
-    else:
-        partials = [
-            partial(
-                show_pred,
-                img=img,
-                pred=pred,
-                class_map=class_map,
-                denormalize_fn=denormalize_fn,
-                display_label=display_label,
-                display_bbox=display_bbox,
-                display_mask=display_mask,
-                show=False,
-            )
-            for img, pred in zip(samples, preds)
-        ]
-        plot_grid(partials, ncols=ncols, figsize=figsize, show=show)
+    plot_grid(
+        partials,
+        ncols=2,
+        figsize=figsize or (6, 6 * len(preds) / 2 / 0.75),
+        show=show,
+        axs_per_iter=2,
+    )

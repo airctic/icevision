@@ -24,7 +24,9 @@ class Dataset:
         tfm: Optional[Transform] = None,
     ):
         self.records = records
-        self.tfm = tfm(records[0].components_cls) if tfm is not None else None
+        self.tfm = tfm
+        # if self.tfm is not None:
+        #     self.tfm.setup(records[0].components_cls)
 
     def __len__(self):
         return len(self.records)
@@ -48,9 +50,12 @@ class Dataset:
         """
         records = []
         for i, image in enumerate(images):
-            record = BaseRecord((ImageRecordComponent,))
+            record = BaseRecord((ImageRecordComponent(),))
             record.set_imageid(i)
             record.set_img(image)
             records.append(record)
+
+            # TODO, HACK: adding class map because of `convert_raw_prediction`
+            record.add_component(ClassMapRecordComponent(task=tasks.detect))
 
         return cls(records=records, tfm=tfm)

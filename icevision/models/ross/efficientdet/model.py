@@ -33,7 +33,7 @@ def model(
         config,
         bench_task="train",
         bench_labeler=True,
-        num_classes=num_classes,
+        num_classes=num_classes - 1,
         pretrained=pretrained,
     )
 

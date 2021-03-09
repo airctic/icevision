@@ -9,6 +9,7 @@ from icevision.models.ross.efficientdet.dataloaders import *
 from effdet import DetBenchTrain, DetBenchPredict, unwrap_bench
 
 
+@torch.no_grad()
 def _predict_batch(
     model: Union[DetBenchTrain, DetBenchPredict],
     batch: Sequence[torch.Tensor],
@@ -33,7 +34,6 @@ def _predict_batch(
     return preds
 
 
-@torch.no_grad()
 def predict(
     model: Union[DetBenchTrain, DetBenchPredict],
     dataset: Dataset,
@@ -41,7 +41,7 @@ def predict(
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
 
-    batch, records = build_infer_batch(dataset=dataset)
+    batch, records = build_infer_batch(dataset)
     return _predict_batch(
         model=model,
         batch=batch,
@@ -76,16 +76,17 @@ def convert_raw_predictions(
 
         pred = BaseRecord(
             (
-                ScoresRecordComponent,
-                ImageRecordComponent,
-                LabelsRecordComponent,
-                BBoxesRecordComponent,
+                ScoresRecordComponent(),
+                ImageRecordComponent(),
+                InstancesLabelsRecordComponent(),
+                BBoxesRecordComponent(),
             )
         )
 
-        pred.set_scores(det[:, 4])
-        pred.set_labels(det[:, 5].astype(int))
-        pred.set_bboxes([BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]])
+        pred.detect.set_class_map(record.detect.class_map)
+        pred.detect.set_labels_by_id(det[:, 5].astype(int))
+        pred.detect.set_bboxes([BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]])
+        pred.detect.set_scores(det[:, 4])
 
         preds.append(Prediction(pred=pred, ground_truth=record))
 

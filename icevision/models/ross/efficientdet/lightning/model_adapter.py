@@ -48,7 +48,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
             )
             loss = efficientdet.loss_fn(raw_preds, yb)
 
-        self.accumulate_metrics(records, preds)
+        self.accumulate_metrics(preds)
 
         for k, v in raw_preds.items():
             if "loss" in k:

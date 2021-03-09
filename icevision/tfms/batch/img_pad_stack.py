@@ -13,16 +13,16 @@ class ImgPadStack(BatchTransform):
     def apply(self, records: List[RecordType]) -> List[RecordType]:
         max_sizes = np.zeros(3, dtype=int)
         for record in records:
-            max_sizes = np.maximum(max_sizes, record["img"].shape)
+            max_sizes = np.maximum(max_sizes, record.img.shape)
 
-        img_dtype = records[0]["img"].dtype
+        img_dtype = records[0].img.dtype
         padded_imgs = np.ones((len(records), *max_sizes), dtype=img_dtype)
         padded_imgs *= self.pad_value
         for record, padded_img in zip(records, padded_imgs):
-            img = record["img"]
+            img = record.img
 
             xmax, ymax, zmax = img.shape
             padded_img[:xmax, :ymax, :zmax] = img
-            record["img"] = padded_img
+            record.img = padded_img
 
         return records

@@ -218,7 +218,7 @@ class Interpretation:
         samples = add_annotations(samples)
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
-        _, preds = self.predict_dl(model=model, infer_dl=dl)
+        preds = self.predict_dl(model=model, infer_dl=dl)
 
         sorted_samples, sorted_preds, annotations = sort_losses(
             samples, preds, by=sort_by
