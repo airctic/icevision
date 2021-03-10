@@ -4,6 +4,7 @@ from icevision.models.mmdet.models import retinanet
 from icevision.models.mmdet.models import fcos
 from icevision.models.mmdet.models import cornernet
 from icevision.models.mmdet.models import centripetalnet
+from icevision.models.mmdet.models import sparse_rcnn
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
