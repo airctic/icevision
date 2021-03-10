@@ -87,6 +87,10 @@ class ClassMapRecordComponent(RecordComponent):
 
 
 class ImageidRecordComponent(RecordComponent):
+    def __init__(self, task=tasks.default):
+        super().__init__(task=task)
+        self.imageid = None
+
     def set_imageid(self, imageid: int):
         self.imageid = imageid
 
@@ -121,6 +125,10 @@ class ImageRecordComponent(RecordComponent):
 
 
 class FilepathRecordComponent(ImageRecordComponent):
+    def __init__(self, task=tasks.default):
+        super().__init__(task=task)
+        self.filepath = None
+
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
@@ -149,6 +157,10 @@ class FilepathRecordComponent(ImageRecordComponent):
 
 
 class SizeRecordComponent(RecordComponent):
+    def __init__(self, task=tasks.default):
+        super().__init__(task=task)
+        self.img_size = None
+
     def set_image_size(self, width: int, height: int):
         # TODO: use ImgSize
         self.img_size = ImgSize(width=width, height=height)
@@ -166,7 +178,7 @@ class SizeRecordComponent(RecordComponent):
 
     def _repr(self) -> List[str]:
         return [
-            f"Image size (width, height): ({self.width}, {self.height})",
+            f"Image size {self.img_size}",
         ]
 
     def as_dict(self) -> dict:
@@ -448,6 +460,7 @@ class KeyPointsRecordComponent(RecordComponent):
 class ScoresRecordComponent(RecordComponent):
     def __init__(self, task=tasks.detect):
         super().__init__(task=task)
+        self.scores = None
 
     def set_scores(self, scores: Sequence[float]):
         self.scores = scores
