@@ -1,9 +1,9 @@
 __all__ = ["model"]
 
 from icevision.imports import *
-from icevision.utils.data_dir import get_root_dir
-import yaml
+from icevision.utils import *
 
+import yaml
 import yolov5
 from yolov5.models.yolo import Model
 from yolov5.utils.google_utils import attempt_download
@@ -61,5 +61,24 @@ def model(
     model.nc = num_classes  # attach number of classes to model
     model.hyp = hyp  # attach hyperparameters to model
     model.gr = 1.0  # iou loss ratio (obj_loss = 1.0 or iou)
+
+    def param_groups_fn(model: nn.Module) -> List[List[nn.Parameter]]:
+        spp_index = [
+            i + 2
+            for i, layer in enumerate(model.model.children())
+            if layer._get_name() == "SPP"
+        ][0]
+        backbone = list(model.model.children())[:spp_index]
+        neck = list(model.model.children())[spp_index:-1]
+        head = list(model.model.children())[-1]
+
+        layers = [nn.Sequential(*backbone), nn.Sequential(*neck), nn.Sequential(head)]
+
+        param_groups = [list(group.parameters()) for group in layers]
+        check_all_model_params_in_groups2(model.model, param_groups)
+
+        return param_groups
+
+    model.param_groups = MethodType(param_groups_fn, model)
 
     return model
