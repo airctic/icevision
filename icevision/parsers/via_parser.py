@@ -42,11 +42,20 @@ class VIABaseParser(Parser):
         class_map: ClassMap,
         label_field: str = "label",
     ):
-        raise NotImplementedError("Has to be refactored to new API")
+        super().__init__(record=self.template_record())
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
         self.label_field = label_field
-        super().__init__(class_map=class_map)
+        self.class_map = class_map
+
+    def template_record(self) -> BaseRecord:
+        return BaseRecord(
+            (
+                FilepathRecordComponent(),
+                InstancesLabelsRecordComponent(),
+                BBoxesRecordComponent(),
+            )
+        )
 
     def __iter__(self):
         yield from self.annotations_dict.values()
@@ -57,11 +66,17 @@ class VIABaseParser(Parser):
     def imageid(self, o) -> Hashable:
         return o["filename"]
 
+    def parse_fields(self, o, record):
+        record.set_filepath(self.filepath(o))
+        record.set_img_size(self.image_width_height(o))
+        record.detect.set_class_map(self.class_map)
+        record.detect.add_labels(self.labels(o))
+
     def filepath(self, o) -> Path:
         return self.img_dir / f"{o['filename']}"
 
     def image_width_height(self, o) -> Tuple[int, int]:
-        return get_image_size(self.filepath(o))
+        return get_img_size(self.filepath(o))
 
     def _get_label(self, o, region_attributes: dict) -> str:
         label = region_attributes.get(self.label_field)
@@ -89,6 +104,10 @@ class VIABBoxParser(VIABaseParser):
     VIABBoxParser parses `polygon` and `rect` shape attribute types. Polygons
     are converted into bboxes that surround the entire shape.
     """
+
+    def parse_fields(self, o, record):
+        super().parse_fields(o, record)
+        record.detect.add_bboxes(self.bboxes(o))
 
     def bboxes(self, o) -> List[BBox]:
         boxes = []
