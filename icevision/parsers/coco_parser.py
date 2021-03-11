@@ -42,9 +42,13 @@ class COCOBaseParser(Parser):
         self._imageid2info = {o["id"]: o for o in self.annotations_dict["images"]}
 
         categories = self.annotations_dict["categories"]
-        self._cocoid2name = {o["id"]: o["name"] for o in categories}
-        self._cocoid2name[0] = BACKGROUND
-        self.class_map = ClassMap(self._cocoid2name.values())
+        id2class = {o["id"]: o["name"] for o in categories}
+        id2class[0] = BACKGROUND
+        # coco has non sequential ids, we fill the blanks with `None`, check #668 for more info
+        classes = [None for _ in range(max(id2class.keys()) + 1)]
+        for i, name in id2class.items():
+            classes[i] = name
+        self.class_map = ClassMap(classes)
 
         super().__init__(record=self.template_record(), idmap=idmap)
 
@@ -76,8 +80,8 @@ class COCOBaseParser(Parser):
     def img_size(self, o) -> ImgSize:
         return get_img_size(self.filepath(o))
 
-    def labels(self, o) -> List[Hashable]:
-        return [self._cocoid2name[o["category_id"]]]
+    def labels_ids(self, o) -> List[Hashable]:
+        return [o["category_id"]]
 
     def areas(self, o) -> List[float]:
         return [o["area"]]
@@ -91,7 +95,7 @@ class COCOBaseParser(Parser):
 
         # TODO: is class_map still a issue here?
         record.detect.set_class_map(self.class_map)
-        record.detect.add_labels(self.labels(o))
+        record.detect.add_labels_by_id(self.labels_ids(o))
         record.detect.add_areas(self.areas(o))
         record.detect.add_iscrowds(self.iscrowds(o))
 
@@ -141,10 +145,10 @@ class COCOKeyPointsParser(COCOBBoxParser):
             else []
         )
 
-    def labels(self, o) -> List[Hashable]:
+    def labels_ids(self, o) -> List[Hashable]:
         if sum(o["keypoints"]) <= 0:
             return []
-        return super().labels(o)
+        return super().labels_ids(o)
 
     def areas(self, o) -> List[float]:
         return [o["area"]] if sum(o["keypoints"]) > 0 else []

@@ -80,12 +80,11 @@ class Parser(ParserInterface, ABC):
                     record = records[imageid]
                 except KeyError:
                     record = self.create_record()
+                    # HACK: fix imageid (needs to be transformed with idmap)
+                    record.set_imageid(imageid)
+                    records[imageid] = record
 
                 self.parse_fields(sample, record)
-
-                # HACK: fix imageid (needs to be transformed with idmap)
-                record.set_imageid(imageid)
-                records[imageid] = record
 
             except AbortParseRecord as e:
                 logger.warning(
