@@ -5,8 +5,6 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.parsers.parser import *
-from icevision.parsers.defaults import *
-from icevision.parsers.mixins import *
 
 
 def voc(
@@ -16,6 +14,10 @@ def voc(
     masks_dir: Optional[Union[str, Path]] = None,
     idmap: Optional[IDMap] = None,
 ):
+    logger.warning(
+        "This function will be deprecated, instantiate the concrete "
+        "classes instead: `VocXmlParser`, `VocMaskParser`"
+    )
     if not masks_dir:
         return VocXmlParser(
             annotations_dir=annotations_dir,
@@ -33,7 +35,8 @@ def voc(
         )
 
 
-class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
+# TODO: Rename to VOCBBoxParser?
+class VocXmlParser(Parser):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -41,7 +44,8 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
         class_map: Optional[ClassMap] = None,
         idmap: Optional[IDMap] = None,
     ):
-        super().__init__(class_map=class_map, idmap=idmap)
+        super().__init__(record=self.template_record(), idmap=idmap)
+        self.class_map = class_map
         self.images_dir = Path(images_dir)
 
         self.annotations_dir = Path(annotations_dir)
@@ -53,20 +57,37 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
     def __iter__(self):
         yield from self.annotation_files
 
+    def template_record(self) -> BaseRecord:
+        return BaseRecord(
+            (
+                FilepathRecordComponent(),
+                InstancesLabelsRecordComponent(),
+                BBoxesRecordComponent(),
+            )
+        )
+
+    def imageid(self, o) -> Hashable:
+        return str(Path(self._filename).stem)
+
     def prepare(self, o):
         tree = ET.parse(str(o))
         self._root = tree.getroot()
         self._filename = self._root.find("filename").text
         self._size = self._root.find("size")
 
-    def imageid(self, o) -> Hashable:
-        return str(Path(self._filename).stem)
+    def parse_fields(self, o, record):
+        record.set_filepath(self.filepath(o))
+        record.set_img_size(self.image_width_height(o))
+
+        record.detect.set_class_map(self.class_map)
+        record.detect.add_labels(self.labels(o))
+        record.detect.add_bboxes(self.bboxes(o))
 
     def filepath(self, o) -> Union[str, Path]:
         return self.images_dir / self._filename
 
     def image_width_height(self, o) -> Tuple[int, int]:
-        return get_image_size(self.filepath(o))
+        return get_img_size(self.filepath(o))
 
     def labels(self, o) -> List[Hashable]:
         labels = []
@@ -94,7 +115,7 @@ class VocXmlParser(Parser, FilepathMixin, SizeMixin, LabelsMixin, BBoxesMixin):
         return bboxes
 
 
-class VocMaskParser(VocXmlParser, MasksMixin):
+class VocMaskParser(VocXmlParser):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -128,9 +149,18 @@ class VocMaskParser(VocXmlParser, MasksMixin):
     def __iter__(self):
         yield from self._intersection
 
+    def template_record(self) -> BaseRecord:
+        record = super().template_record()
+        record.add_component(MasksRecordComponent())
+        return record
+
     def imageid_mask(self, o) -> Hashable:
         """Should return the same as `imageid` from parent parser."""
         return str(Path(o).stem)
+
+    def parse_fields(self, o, record):
+        super().parse_fields(o, record)
+        record.detect.add_masks(self.masks(o))
 
     def masks(self, o) -> List[Mask]:
         mask_file = self._imageid2maskfile[self.imageid(o)]

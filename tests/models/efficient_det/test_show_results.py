@@ -1,6 +1,13 @@
 from icevision.all import *
 
 
+def test_show_results(
+    fridge_efficientdet_model, fridge_efficientdet_records, monkeypatch
+):
+    monkeypatch.setattr(plt, "show", lambda: None)
+    efficientdet.show_results(fridge_efficientdet_model, fridge_efficientdet_records)
+
+
 def test_plot_losses(fridge_efficientdet_model, fridge_ds, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
     model = fridge_efficientdet_model

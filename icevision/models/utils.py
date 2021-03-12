@@ -10,6 +10,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
+from icevision.data import *
 from icevision.parsers import *
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
@@ -70,12 +71,10 @@ def _predict_dl(
     infer_dl: DataLoader,
     show_pbar: bool = True,
     **predict_kwargs,
-):
-    all_preds, all_samples = [], []
-    for batch, samples in pbar(infer_dl, show=show_pbar):
-        preds = predict_fn(model=model, batch=batch, **predict_kwargs)
-
-        all_samples.extend(samples)
+) -> List[Prediction]:
+    all_preds = []
+    for batch, records in pbar(infer_dl, show=show_pbar):
+        preds = predict_fn(model=model, batch=batch, records=records, **predict_kwargs)
         all_preds.extend(preds)
 
-    return all_samples, all_preds
+    return all_preds

@@ -15,11 +15,13 @@ def coco_mask_parser(coco_dir):
 def test_keypoints_parser(coco_dir, coco_keypoints_parser):
     records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
     assert len(records) == 2
-    assert records[1].filepath == coco_dir / "images/000000404249.jpg"
-    assert len(records[1].keypoints) == 1
-    assert records[1].keypoints[0].n_visible_keypoints == 16
-    assert records[1].keypoints[0].y.max() == 485
-    assert len(records[0].keypoints) == 3
+    record = records[1]
+    assert record.filepath == coco_dir / "images/000000404249.jpg"
+    assert len(record.detect.keypoints) == 1
+    assert record.detect.keypoints[0].n_visible_keypoints == 16
+    assert record.detect.keypoints[0].y.max() == 485
+
+    assert len(records[0].detect.keypoints) == 3
 
 
 def test_bbox_parser(coco_dir, coco_bbox_parser):
@@ -32,10 +34,17 @@ def test_bbox_parser(coco_dir, coco_bbox_parser):
     assert record.width == 640
     assert record.height == 480
 
-    assert record.labels == [4]
-    assert pytest.approx(record.bboxes[0].xyxy) == (175.14, 175.68, 496.2199, 415.68)
-    assert record.iscrowds == [0]
-    assert pytest.approx(record.areas) == [43522.805]
+    assert len(record.detect.class_map) == 91
+    assert record.detect.class_map.get_by_id(90) == "toothbrush"
+    assert record.detect.labels == [4]
+    assert pytest.approx(record.detect.bboxes[0].xyxy) == (
+        175.14,
+        175.68,
+        496.2199,
+        415.68,
+    )
+    assert record.detect.iscrowds == [0]
+    assert pytest.approx(record.detect.areas) == [43522.805]
 
 
 def test_mask_parser(coco_mask_parser):
@@ -43,7 +52,7 @@ def test_mask_parser(coco_mask_parser):
     assert len(records) == 5
 
     record = records[0]
-    assert record.masks.erles == [
+    assert record.detect.masks.erles == [
         {
             "size": [480, 640],
             "counts": b"nWb24W10Y<=VC1`<6UC8a<T1O001O001O0cERNi7n1oG^Nm7c1iGiNT8W1hGPO"

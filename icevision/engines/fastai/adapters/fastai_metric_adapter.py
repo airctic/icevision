@@ -13,7 +13,7 @@ class FastaiMetricAdapter(fastai.Metric):
         pass
 
     def accumulate(self, learn: fastai.Learner):
-        self.metric.accumulate(records=learn.records, preds=learn.converted_preds)
+        self.metric.accumulate(preds=learn.converted_preds)
 
     @property
     def value(self) -> Dict[str, float]:

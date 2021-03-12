@@ -29,12 +29,20 @@ class KeyPoints:
         self.xyv = [(x, y, v) for x, y, v in zip(self.x, self.y, self.visible)]
         self.metadata = metadata
 
+    @classmethod
+    def from_xyv(cls, keypoints, labels):
+        return cls(keypoints, labels)
+
     def __repr__(self):
         return (
             f"<{self.__class__.__name__} "
             f"({self.n_visible_keypoints} visible keypoints)>"
         )
 
-    @classmethod
-    def from_xyv(cls, keypoints, labels):
-        return cls(keypoints, labels)
+    def __eq__(self, other) -> bool:
+        if isinstance(other, KeyPoints):
+            return (
+                np.all(self.keypoints == other.keypoints)
+                and self.metadata == other.metadata
+            )
+        return False

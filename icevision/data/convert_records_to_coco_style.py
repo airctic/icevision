@@ -46,11 +46,11 @@ def create_coco_eval(
     assert len(records) == len(preds)
 
     for record, pred in zip(records, preds):
-        pred["imageid"] = record["imageid"]
-        pred["height"] = record["height"]
-        pred["width"] = record["width"]
+        pred.imageid = record.imageid
+        pred.height = record.height
+        pred.width = record.width
         # needs 'filepath' for mask `coco.py#418`
-        pred["filepath"] = record["filepath"]
+        pred.filepath = record.filepath
 
     target_ds = coco_api_from_records(records, show_pbar=show_pbar)
     pred_ds = coco_api_from_preds(preds, show_pbar=show_pbar)
@@ -59,10 +59,10 @@ def create_coco_eval(
 
 def convert_record_to_coco_image(record) -> dict:
     image = {}
-    image["id"] = record["imageid"]
-    image["file_name"] = Path(record["filepath"]).name
-    image["width"] = record["width"]
-    image["height"] = record["height"]
+    image["id"] = record.imageid
+    image["file_name"] = Path(record.filepath).name
+    image["width"] = record.width
+    image["height"] = record.height
     return image
 
 
@@ -75,27 +75,27 @@ def convert_record_to_coco_annotations(record):
         "iscrowd": [],
     }
     # build annotations field
-    for label in record["labels"]:
-        annotations_dict["image_id"].append(record["imageid"])
+    for label in record.detect.labels:
+        annotations_dict["image_id"].append(record.imageid)
         annotations_dict["category_id"].append(label)
 
-    for bbox in record["bboxes"]:
+    for bbox in record.detect.bboxes:
         annotations_dict["bbox"].append(list(bbox.xywh))
 
-    if "areas" in record:
-        for area in record["areas"]:
+    if hasattr(record.detect, "areas"):
+        for area in record.detect.areas:
             annotations_dict["area"].append(area)
     else:
-        for bbox in record["bboxes"]:
+        for bbox in record.detect.bboxes:
             annotations_dict["area"].append(bbox.area)
 
     # HACK: Because of prepare_record, mask should always be `MaskArray`,
     # maybe the for loop is not required?
-    if "masks" in record:
-        masks = record["masks"]
+    if hasattr(record.detect, "masks"):
+        masks = record.detect.masks
 
         if isinstance(masks, MaskArray):
-            masks = masks.to_erles(record["height"], record["width"])
+            masks = masks.to_erles(record.height, record.width)
 
         if isinstance(masks, EncodedRLEs):
             annotations_dict["segmentation"] = masks.erles
@@ -106,23 +106,23 @@ def convert_record_to_coco_annotations(record):
                 "if you get this error please open an issue on github."
             )
             # annotations_dict["segmentation"] = []
-            # for mask in record["masks"]:
+            # for mask in record.detect.masks:
             #     if isinstance(mask, MaskArray):
             #         # HACK: see previous hack
             #         assert len(mask.shape) == 2
             #         mask2 = MaskArray(mask.data[None])
-            #         rles = mask2.to_coco_rle(record["height"], record["width"])
+            #         rles = mask2.to_coco_rle(record.height, record.width)
             #         annotations_dict["segmentation"].extend(rles)
             #     elif isinstance(mask, Polygon):
             #         annotations_dict["segmentation"].append(mask.points)
             #     elif isinstance(mask, RLE):
             #         coco_rle = {
             #             "counts": mask.to_coco(),
-            #             "size": [record["height"], record["width"]],
+            #             "size": [record.height, record.width],
             #         }
             #         annotations_dict["segmentation"].append(coco_rle)
             #     elif isinstance(mask, MaskFile):
-            #         rles = mask.to_coco_rle(record["height"], record["width"])
+            #         rles = mask.to_coco_rle(record.height, record.width)
             #         annotations_dict["segmentation"].extend(rles)
             #     elif isinstance(mask, EncodedRLEs):
             #         annotations_dict["segmentation"].append(mask.erles)
@@ -131,13 +131,13 @@ def convert_record_to_coco_annotations(record):
             #         raise ValueError(msg)
 
     # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
-    if "iscrowds" not in record:
-        record["iscrowds"] = [0] * len(record["labels"])
-    for iscrowd in record["iscrowds"]:
+    if not hasattr(record.detect, "iscrowds"):
+        record.detect.iscrowds = [0] * len(record.detect.labels)
+    for iscrowd in record.detect.iscrowds:
         annotations_dict["iscrowd"].append(iscrowd)
 
-    if "scores" in record:
-        annotations_dict["score"] = record["scores"]
+    if hasattr(record.detect, "scores"):
+        annotations_dict["score"] = record.detect.scores
 
     return annotations_dict
 

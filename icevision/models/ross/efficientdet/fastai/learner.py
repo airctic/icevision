@@ -34,4 +34,14 @@ def learner(
         **learner_kwargs,
     )
 
+    # HACK: patch AvgLoss (in original, find_bs gives errors)
+    class PatchedAvgLoss(fastai.AvgLoss):
+        def accumulate(self, learn):
+            bs = len(learn.yb)
+            self.total += fastai.to_detach(learn.loss.mean()) * bs
+            self.count += bs
+
+    recorder = [cb for cb in learn.cbs if isinstance(cb, fastai.Recorder)][0]
+    recorder.loss = PatchedAvgLoss()
+
     return learn

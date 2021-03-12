@@ -21,19 +21,21 @@ class Dataset:
     def __init__(
         self,
         records: List[dict],
-        tfm: Transform = None,
+        tfm: Optional[Transform] = None,
     ):
         self.records = records
         self.tfm = tfm
+        # if self.tfm is not None:
+        #     self.tfm.setup(records[0].components_cls)
 
     def __len__(self):
         return len(self.records)
 
     def __getitem__(self, i):
-        data = self.records[i].load().as_dict()
+        record = self.records[i].load()
         if self.tfm is not None:
-            data = self.tfm(data)
-        return data
+            record = self.tfm(record)
+        return record
 
     def __repr__(self):
         return f"<{self.__class__.__name__} with {len(self.records)} items>"
@@ -46,12 +48,14 @@ class Dataset:
             images: `Sequence` of images in memory (numpy arrays).
             tfm: Transforms to be applied to each item.
         """
-        Record = create_mixed_record((ImageRecordMixin,))
         records = []
         for i, image in enumerate(images):
-            record = Record()
+            record = BaseRecord((ImageRecordComponent(),))
             record.set_imageid(i)
             record.set_img(image)
             records.append(record)
+
+            # TODO, HACK: adding class map because of `convert_raw_prediction`
+            record.add_component(ClassMapRecordComponent(task=tasks.detect))
 
         return cls(records=records, tfm=tfm)

@@ -5,25 +5,13 @@ from icevision.core import *
 
 
 class Transform(ABC):
-    def __init__(self, tfms):
-        self.tfms = tfms
-
-    def __call__(self, data: dict):
-        data = data.copy()
-        tfmed = self.apply(**data)
-        data.update(tfmed)
-        return data
+    def __call__(self, record: BaseRecord):
+        # TODO: this assumes record is already loaded and copied
+        # which is generally true
+        return self.apply(record)
 
     @abstractmethod
-    def apply(
-        self,
-        img: np.ndarray,
-        imageid: int,
-        label: List[int],
-        iscrowd: List[int],
-        bbox: List[BBox],
-        mask: MaskArray,
-    ):
+    def apply(self, record: BaseRecord) -> BaseRecord:
         """Apply the transform
         Returns:
               dict: Modified values, the keys of the dictionary should have the same
