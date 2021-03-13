@@ -12,7 +12,7 @@ from icevision.core.record_components import *
 # TODO: MutableMapping because of backwards compatability
 # TODO: Rename to Record
 class BaseRecord(TaskComposite):
-    base_components = {ImageidRecordComponent, SizeRecordComponent}
+    base_components = {RecordIDRecordComponent, SizeRecordComponent}
 
     def as_dict(self) -> dict:
         return self.reduce_on_components("as_dict", reduction="update")
@@ -113,8 +113,8 @@ def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
         def _pre_replay():
             logger.log(
                 "AUTOFIX-START",
-                "️🔨  Autofixing record with imageid: {}  ️🔨",
-                record.imageid,
+                "️🔨  Autofixing record with record_id: {}  ️🔨",
+                record.record_id,
             )
 
         with ReplaySink(_pre_replay) as sink:

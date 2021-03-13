@@ -46,7 +46,7 @@ def create_coco_eval(
     assert len(records) == len(preds)
 
     for record, pred in zip(records, preds):
-        pred.imageid = record.imageid
+        pred.record_id = record.record_id
         pred.height = record.height
         pred.width = record.width
         # needs 'filepath' for mask `coco.py#418`
@@ -59,7 +59,7 @@ def create_coco_eval(
 
 def convert_record_to_coco_image(record) -> dict:
     image = {}
-    image["id"] = record.imageid
+    image["id"] = record.record_id
     image["file_name"] = Path(record.filepath).name
     image["width"] = record.width
     image["height"] = record.height
@@ -76,7 +76,7 @@ def convert_record_to_coco_annotations(record):
     }
     # build annotations field
     for label in record.detection.labels:
-        annotations_dict["image_id"].append(record.imageid)
+        annotations_dict["image_id"].append(record.record_id)
         annotations_dict["category_id"].append(label)
 
     for bbox in record.detection.bboxes:

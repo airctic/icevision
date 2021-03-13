@@ -73,23 +73,23 @@ class Parser(ParserInterface, ABC):
             try:
                 self.prepare(sample)
                 # TODO: Do we still need idmap?
-                true_imageid = self.imageid(sample)
-                imageid = self.idmap[true_imageid]
+                true_record_id = self.record_id(sample)
+                record_id = self.idmap[true_record_id]
 
                 try:
-                    record = records[imageid]
+                    record = records[record_id]
                 except KeyError:
                     record = self.create_record()
-                    # HACK: fix imageid (needs to be transformed with idmap)
-                    record.set_imageid(imageid)
-                    records[imageid] = record
+                    # HACK: fix record_id (needs to be transformed with idmap)
+                    record.set_record_id(record_id)
+                    records[record_id] = record
 
                 self.parse_fields(sample, record)
 
             except AbortParseRecord as e:
                 logger.warning(
-                    "Record with imageid: {} was skipped because: {}",
-                    true_imageid,
+                    "Record with record_id: {} was skipped because: {}",
+                    true_record_id,
                     str(e),
                 )
 
@@ -163,7 +163,7 @@ class Parser(ParserInterface, ABC):
         template.add_line(f"def __len__(self) -> int:", 1)
         # template.add_line("def create_record(self) -> BaseRecord:", 1)
         # template.add_line(f"return {record.__class__.__name__}({components_names})", 2)
-        template.add_line("def imageid(self, o) -> Hashable:", 1)
+        template.add_line("def record_id(self, o) -> Hashable:", 1)
         template.add_line("def parse_fields(self, o, record):", 1)
         template.add_lines(record_builder_template, 2)
 

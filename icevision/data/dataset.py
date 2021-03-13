@@ -51,7 +51,7 @@ class Dataset:
         records = []
         for i, image in enumerate(images):
             record = BaseRecord((ImageRecordComponent(),))
-            record.set_imageid(i)
+            record.set_record_id(i)
             record.set_img(image)
             records.append(record)
 

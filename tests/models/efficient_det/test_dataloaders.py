@@ -28,7 +28,7 @@ def records(img, labels, bboxes):
         )
     )
 
-    record.set_imageid(1)
+    record.set_record_id(1)
     record.set_img(img)
     record.detection.set_class_map(ClassMap(["a", "b"]))
     record.detection.add_labels_by_id(labels)

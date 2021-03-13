@@ -16,7 +16,7 @@ def expected_records():
 
 
 def test_convert_records_to_coco_style_images(
-    coco_records, expected_records, coco_imageid_map
+    coco_records, expected_records, coco_record_id_map
 ):
     # remove id 89 because it doesn't contain any annotations and it will be removed by the parser
     # also remove some unnecessary fields like flickr_url, coco_url, ...
@@ -25,9 +25,9 @@ def test_convert_records_to_coco_style_images(
         for o in expected_records["images"]
         if o["id"] != 89
     ]
-    # use imageid_map to convert to ids used by the parser
+    # use record_id_map to convert to ids used by the parser
     for sample in expected_images:
-        sample["id"] = coco_imageid_map[sample["id"]]
+        sample["id"] = coco_record_id_map[sample["id"]]
     # some of the checks need the lists to be in the same order
     expected_images = sorted(expected_images, key=itemgetter("id"))
     images = sorted(coco_records["images"], key=itemgetter("id"))
@@ -38,7 +38,7 @@ def test_convert_records_to_coco_style_images(
 
 
 def test_convert_records_to_coco_style_annotations(
-    coco_mask_records, coco_records, expected_records, coco_imageid_map
+    coco_mask_records, coco_records, expected_records, coco_record_id_map
 ):
     annotations = coco_records["annotations"]
     expected_annotations = expected_records["annotations"]
@@ -53,9 +53,9 @@ def test_convert_records_to_coco_style_annotations(
         del annotations[i]["id"]
         del expected_annotations[i]["id"]
 
-    # use imageid_map to convert to ids used by the parser
+    # use record_id_map to convert to ids used by the parser
     for annotation in expected_annotations:
-        annotation["image_id"] = coco_imageid_map[annotation["image_id"]]
+        annotation["image_id"] = coco_record_id_map[annotation["image_id"]]
 
     # convert label ids
     original_cocoid2label = {o["id"]: o["name"] for o in expected_records["categories"]}

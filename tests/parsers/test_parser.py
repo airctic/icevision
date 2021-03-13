@@ -32,7 +32,7 @@ class SimpleParser(parsers.Parser):
     def __iter__(self):
         yield from self.data
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return o["id"]
 
     def labels(self, o):
@@ -62,14 +62,14 @@ def test_parser(data, tmpdir):
     record = records[1]
     # assert set(record.keys()) == {
     #     "class_map",
-    #     "imageid",
+    #     "record_id",
     #     "filepath",
     #     "height",
     #     "width",
     #     "labels",
     #     "bboxes",
     # }
-    assert record.imageid == 1
+    assert record.record_id == 1
     assert record.filepath == Path(__file__)
     assert record.detection.class_map == ClassMap(["a", "b"])
     assert record.detection.labels == [1, 2]

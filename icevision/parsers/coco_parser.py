@@ -39,7 +39,7 @@ class COCOBaseParser(Parser):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
 
-        self._imageid2info = {o["id"]: o for o in self.annotations_dict["images"]}
+        self._record_id2info = {o["id"]: o for o in self.annotations_dict["images"]}
 
         categories = self.annotations_dict["categories"]
         id2class = {o["id"]: o["name"] for o in categories}
@@ -69,9 +69,9 @@ class COCOBaseParser(Parser):
         )
 
     def prepare(self, o):
-        self._info = self._imageid2info[o["image_id"]]
+        self._info = self._record_id2info[o["image_id"]]
 
-    def imageid(self, o) -> int:
+    def record_id(self, o) -> int:
         return o["image_id"]
 
     def filepath(self, o) -> Path:

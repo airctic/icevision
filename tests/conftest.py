@@ -12,7 +12,7 @@ def samples_source():
 
 
 @pytest.fixture(scope="session")
-def coco_imageid_map():
+def coco_record_id_map():
     return IDMap()
 
 
@@ -126,11 +126,11 @@ def coco_bbox_parser(coco_dir):
 
 
 @pytest.fixture(scope="module")
-def coco_mask_parser(coco_dir, coco_imageid_map):
+def coco_mask_parser(coco_dir, coco_record_id_map):
     return parsers.COCOMaskParser(
         annotations_filepath=coco_dir / "annotations.json",
         img_dir=coco_dir / "images",
-        idmap=coco_imageid_map,
+        idmap=coco_record_id_map,
     )
 
 
@@ -277,7 +277,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
                 )
             )
 
-        def imageid(self, o):
+        def record_id(self, o):
             return int(o["image_id"])
 
         def parse_fields(self, o, record: BaseRecord) -> None:
@@ -350,7 +350,7 @@ def ochuman_keypoints_dls(ochuman_ds) -> Tuple[DataLoader, DataLoader]:
 def object_detection_record(samples_source):
     record = ObjectDetectionRecord()
 
-    record.set_imageid(1)
+    record.set_record_id(1)
     record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
     record.set_img_size(ImgSize(width=500, height=375))
     record.detection.set_class_map(ClassMap(["a", "b"]))
@@ -384,7 +384,7 @@ def empty_annotations_record():
     )
 
     img = 255 * np.ones((4, 4, 3), dtype=np.uint8)
-    record.set_imageid(1)
+    record.set_record_id(1)
     record.set_img(img)
 
     return record
@@ -397,7 +397,7 @@ def infer_dataset(samples_source):
 
 
 component_field = {
-    ImageidRecordComponent: "imageid",
+    RecordIDRecordComponent: "record_id",
     ClassMapRecordComponent: "class_map",
     FilepathRecordComponent: "img",
     ImageRecordComponent: "img",

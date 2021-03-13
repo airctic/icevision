@@ -29,7 +29,7 @@ def test_bbox_parser(coco_dir, coco_bbox_parser):
     assert len(records) == 5
 
     record = records[0]
-    assert record.imageid == 0
+    assert record.record_id == 0
     assert record.filepath == coco_dir / "images/000000343934.jpg"
     assert record.width == 640
     assert record.height == 480

@@ -66,7 +66,7 @@ class VocXmlParser(Parser):
             )
         )
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return str(Path(self._filename).stem)
 
     def prepare(self, o):
@@ -133,14 +133,14 @@ class VocMaskParser(VocXmlParser):
         self.masks_dir = masks_dir
         self.mask_files = get_image_files(masks_dir)
 
-        self._imageid2maskfile = {self.imageid_mask(o): o for o in self.mask_files}
+        self._record_id2maskfile = {self.record_id_mask(o): o for o in self.mask_files}
 
         # filter annotations
-        masks_ids = frozenset(self._imageid2maskfile.keys())
+        masks_ids = frozenset(self._record_id2maskfile.keys())
         self._intersection = []
         for item in super().__iter__():
             super().prepare(item)
-            if super().imageid(item) in masks_ids:
+            if super().record_id(item) in masks_ids:
                 self._intersection.append(item)
 
     def __len__(self):
@@ -154,8 +154,8 @@ class VocMaskParser(VocXmlParser):
         record.add_component(MasksRecordComponent())
         return record
 
-    def imageid_mask(self, o) -> Hashable:
-        """Should return the same as `imageid` from parent parser."""
+    def record_id_mask(self, o) -> Hashable:
+        """Should return the same as `record_id` from parent parser."""
         return str(Path(o).stem)
 
     def parse_fields(self, o, record):
@@ -163,5 +163,5 @@ class VocMaskParser(VocXmlParser):
         record.detection.add_masks(self.masks(o))
 
     def masks(self, o) -> List[Mask]:
-        mask_file = self._imageid2maskfile[self.imageid(o)]
+        mask_file = self._record_id2maskfile[self.record_id(o)]
         return [VocMaskFile(mask_file)]

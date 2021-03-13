@@ -1,7 +1,7 @@
 __all__ = [
     "RecordComponent",
     "ClassMapRecordComponent",
-    "ImageidRecordComponent",
+    "RecordIDRecordComponent",
     "ImageRecordComponent",
     "FilepathRecordComponent",
     "SizeRecordComponent",
@@ -86,19 +86,19 @@ class ClassMapRecordComponent(RecordComponent):
         return ["record{task}set_class_map(<ClassMap>)"]
 
 
-class ImageidRecordComponent(RecordComponent):
+class RecordIDRecordComponent(RecordComponent):
     def __init__(self, task=tasks.common):
         super().__init__(task=task)
-        self.imageid = None
+        self.record_id = None
 
-    def set_imageid(self, imageid: int):
-        self.imageid = imageid
+    def set_record_id(self, record_id: int):
+        self.record_id = record_id
 
     def _repr(self) -> List[str]:
-        return [f"Image ID: {self.imageid}"]
+        return [f"Image ID: {self.record_id}"]
 
     def as_dict(self) -> dict:
-        return {"imageid": self.imageid}
+        return {"record_id": self.record_id}
 
 
 # TODO: we need a way to combine filepath and image mixin

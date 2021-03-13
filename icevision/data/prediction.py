@@ -9,9 +9,9 @@ class Prediction:
         self.ground_truth = ground_truth
         self.pred = pred
 
-        # TODO: imageid, img_size and stuff has to be set even if ground_truth is not stored
+        # TODO: record_id, img_size and stuff has to be set even if ground_truth is not stored
         if ground_truth is not None:
-            pred.set_imageid(ground_truth.imageid)
+            pred.set_record_id(ground_truth.record_id)
             pred.set_img_size(ground_truth.original_img_size, original=True)
             pred.set_img_size(ground_truth.img_size)
             # HACK

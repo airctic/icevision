@@ -63,7 +63,7 @@ class VIABaseParser(Parser):
     def __len__(self):
         return len(self.annotations_dict.values())
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return o["filename"]
 
     def parse_fields(self, o, record):
@@ -82,11 +82,11 @@ class VIABaseParser(Parser):
         label = region_attributes.get(self.label_field)
         if label is None:
             raise VIAParseError(
-                f"Could not find label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+                f"Could not find label_field [{self.label_field}] while parsing [{self.record_id(o)}]"
             )
         elif not isinstance(label, str):
             raise VIAParseError(
-                f"Non-string value found in label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+                f"Non-string value found in label_field [{self.label_field}] while parsing [{self.record_id(o)}]"
             )
         return label
 
