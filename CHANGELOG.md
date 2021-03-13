@@ -7,7 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 **BREAKING:** API Refactor
 
 ## Changed
-Renamed tasks `default,detect,classif` to `common,detection,classification`
+**Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
+**Breaking:** Renamed `imageid` to `record_id`
 
 ## [0.6.0b1]
 ### Added
