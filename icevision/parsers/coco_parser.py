@@ -94,10 +94,10 @@ class COCOBaseParser(Parser):
         record.set_img_size(self.img_size(o))
 
         # TODO: is class_map still a issue here?
-        record.detect.set_class_map(self.class_map)
-        record.detect.add_labels_by_id(self.labels_ids(o))
-        record.detect.add_areas(self.areas(o))
-        record.detect.add_iscrowds(self.iscrowds(o))
+        record.detection.set_class_map(self.class_map)
+        record.detection.add_labels_by_id(self.labels_ids(o))
+        record.detection.add_areas(self.areas(o))
+        record.detection.add_iscrowds(self.iscrowds(o))
 
 
 class COCOBBoxParser(COCOBaseParser):
@@ -111,7 +111,7 @@ class COCOBBoxParser(COCOBaseParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_bboxes(self.bboxes(o))
+        record.detection.add_bboxes(self.bboxes(o))
 
 
 class COCOMaskParser(COCOBBoxParser):
@@ -129,7 +129,7 @@ class COCOMaskParser(COCOBBoxParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_masks(self.masks(o))
+        record.detection.add_masks(self.masks(o))
 
 
 class COCOKeyPointsParser(COCOBBoxParser):
@@ -161,7 +161,7 @@ class COCOKeyPointsParser(COCOBBoxParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_keypoints(self.keypoints(o))
+        record.detection.add_keypoints(self.keypoints(o))
 
 
 class COCOConnectionsColor:

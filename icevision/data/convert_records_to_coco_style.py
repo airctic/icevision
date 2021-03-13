@@ -75,24 +75,24 @@ def convert_record_to_coco_annotations(record):
         "iscrowd": [],
     }
     # build annotations field
-    for label in record.detect.labels:
+    for label in record.detection.labels:
         annotations_dict["image_id"].append(record.imageid)
         annotations_dict["category_id"].append(label)
 
-    for bbox in record.detect.bboxes:
+    for bbox in record.detection.bboxes:
         annotations_dict["bbox"].append(list(bbox.xywh))
 
-    if hasattr(record.detect, "areas"):
-        for area in record.detect.areas:
+    if hasattr(record.detection, "areas"):
+        for area in record.detection.areas:
             annotations_dict["area"].append(area)
     else:
-        for bbox in record.detect.bboxes:
+        for bbox in record.detection.bboxes:
             annotations_dict["area"].append(bbox.area)
 
     # HACK: Because of prepare_record, mask should always be `MaskArray`,
     # maybe the for loop is not required?
-    if hasattr(record.detect, "masks"):
-        masks = record.detect.masks
+    if hasattr(record.detection, "masks"):
+        masks = record.detection.masks
 
         if isinstance(masks, MaskArray):
             masks = masks.to_erles(record.height, record.width)
@@ -106,7 +106,7 @@ def convert_record_to_coco_annotations(record):
                 "if you get this error please open an issue on github."
             )
             # annotations_dict["segmentation"] = []
-            # for mask in record.detect.masks:
+            # for mask in record.detection.masks:
             #     if isinstance(mask, MaskArray):
             #         # HACK: see previous hack
             #         assert len(mask.shape) == 2
@@ -131,13 +131,13 @@ def convert_record_to_coco_annotations(record):
             #         raise ValueError(msg)
 
     # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
-    if not hasattr(record.detect, "iscrowds"):
-        record.detect.iscrowds = [0] * len(record.detect.labels)
-    for iscrowd in record.detect.iscrowds:
+    if not hasattr(record.detection, "iscrowds"):
+        record.detection.iscrowds = [0] * len(record.detection.labels)
+    for iscrowd in record.detection.iscrowds:
         annotations_dict["iscrowd"].append(iscrowd)
 
-    if hasattr(record.detect, "scores"):
-        annotations_dict["score"] = record.detect.scores
+    if hasattr(record.detection, "scores"):
+        annotations_dict["score"] = record.detection.scores
 
     return annotations_dict
 

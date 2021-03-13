@@ -12,5 +12,5 @@ def test_predict_keypoints_rcnn_train(ochuman_ds):
 
     assert len(infer_dl) == 1
     assert len(preds) == 2
-    assert len(list(p.detect.keypoints_scores)) == len(p.detect.keypoints)
-    assert len(p.detect.bboxes) == len(p.detect.keypoints)
+    assert len(list(p.detection.keypoints_scores)) == len(p.detection.keypoints)
+    assert len(p.detection.bboxes) == len(p.detection.keypoints)

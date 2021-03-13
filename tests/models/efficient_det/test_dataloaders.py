@@ -30,9 +30,9 @@ def records(img, labels, bboxes):
 
     record.set_imageid(1)
     record.set_img(img)
-    record.detect.set_class_map(ClassMap(["a", "b"]))
-    record.detect.add_labels_by_id(labels)
-    record.detect.add_bboxes(bboxes)
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id(labels)
+    record.detection.add_bboxes(bboxes)
 
     return [record] * 2
 

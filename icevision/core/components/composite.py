@@ -15,7 +15,7 @@ class Component:
 
 
 class TaskComponent(Component):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         self.task = task
 
 
@@ -34,7 +34,7 @@ class TaskComposite:
 
         # TODO: Possible bug if no task with _default is passed
         try:
-            return getattr(self.task_composites[tasks.default.name], name)
+            return getattr(self.task_composites[tasks.common.name], name)
         except AttributeError:
             pass
 
@@ -61,7 +61,7 @@ class TaskComposite:
         ):
             self.task_composites[task.name] = composite = Composite()
             composite.add_components(components)
-            if task != tasks.default:
+            if task != tasks.common:
                 composite.set_parent(self)
 
     # TODO: rename reduce_on_all_tasks_components

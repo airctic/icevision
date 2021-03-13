@@ -14,27 +14,27 @@ def test_voc_annotation_parser(
     assert len(records) == 2
 
     record = records[0]
-    assert record.detect.class_map == voc_class_map
+    assert record.detection.class_map == voc_class_map
     assert record.imageid == 0
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.width == 500
     assert record.height == 375
-    assert record.detect.labels == [
+    assert record.detection.labels == [
         voc_class_map.get_by_name(k) for k in ["dog", "chair"]
     ]
-    assert record.detect.bboxes == [
+    assert record.detection.bboxes == [
         BBox.from_xyxy(123, 115, 379, 275),
         BBox.from_xyxy(75, 1, 428, 375),
     ]
 
     record = records[1]
-    assert record.detect.class_map == voc_class_map
+    assert record.detection.class_map == voc_class_map
     assert record.imageid == 1
     assert record.filepath == samples_source / "voc/JPEGImages/2011_003353.jpg"
     assert record.height == 500
     assert record.width == 375
-    assert record.detect.labels == [voc_class_map.get_by_name("person")]
-    assert record.detect.bboxes == [BBox.from_xyxy(130, 45, 375, 470)]
+    assert record.detection.labels == [voc_class_map.get_by_name("person")]
+    assert record.detection.bboxes == [BBox.from_xyxy(130, 45, 375, 470)]
 
     check_attributes_on_component(records[0])
     check_attributes_on_component(records[1])
@@ -53,19 +53,19 @@ def test_voc_mask_parser(samples_source, voc_class_map):
     assert len(records) == 1
 
     record = records[0]
-    assert record.detect.class_map == voc_class_map
+    assert record.detection.class_map == voc_class_map
     assert record.imageid == 0
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.height == 375
     assert record.width == 500
-    assert record.detect.labels == [
+    assert record.detection.labels == [
         voc_class_map.get_by_name(k) for k in ["dog", "chair"]
     ]
-    assert record.detect.bboxes == [
+    assert record.detection.bboxes == [
         BBox.from_xyxy(123, 115, 379, 275),
         BBox.from_xyxy(75, 1, 428, 375),
     ]
-    assert record.detect.masks == EncodedRLEs(
+    assert record.detection.masks == EncodedRLEs(
         [
             {
                 "size": [375, 500],

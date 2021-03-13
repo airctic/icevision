@@ -67,7 +67,7 @@ class AlbumentationsInstancesLabelsComponent(AlbumentationsAdapterComponent):
 
     def set_labels(self, record, labels):
         # TODO HACK: Will not work for multitask, will fail silently
-        record.detect.set_labels_by_id(labels)
+        record.detection.set_labels_by_id(labels)
 
     def setup_instances_labels(self, record_component):
         # TODO HACK: Will not work for multitask, will fail silently
@@ -103,7 +103,7 @@ class AlbumentationsBBoxesComponent(AlbumentationsAdapterComponent):
         bboxes_xyxy = [xyxy for xyxy in self.adapter._albu_out["bboxes"]]
         bboxes = [BBox.from_xyxy(*xyxy) for xyxy in bboxes_xyxy]
         # TODO HACK: Will not work for multitask, will fail silently
-        record.detect.set_bboxes(bboxes)
+        record.detection.set_bboxes(bboxes)
 
     @staticmethod
     def _clip_bboxes(xyxy, h, w):
@@ -129,7 +129,7 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
     def collect(self, record):
         masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
         masks = MaskArray(np.array(masks))
-        record.detect.set_masks(masks)
+        record.detection.set_masks(masks)
 
 
 class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
@@ -181,7 +181,7 @@ class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
             for group_kpt, original_kpt in zip(group_kpts, self._kpts)
         ]
         kpts = self.adapter._filter_attribute(kpts)
-        record.detect.set_keypoints(kpts)
+        record.detection.set_keypoints(kpts)
 
     @classmethod
     def _remove_albu_outside_keypoints(cls, tfms_kpts, kpts_visible, size_no_padding):
@@ -222,7 +222,7 @@ class AlbumentationsIsCrowdsComponent(AlbumentationsAdapterComponent):
 
     def collect(self, record):
         iscrowds = self.adapter._filter_attribute(self._iscrowds)
-        record.detect.set_iscrowds(iscrowds)
+        record.detection.set_iscrowds(iscrowds)
 
 
 class AlbumentationsAreasComponent(AlbumentationsAdapterComponent):
@@ -232,7 +232,7 @@ class AlbumentationsAreasComponent(AlbumentationsAdapterComponent):
 
     def collect(self, record):
         areas = self.adapter._filter_attribute(self._areas)
-        record.detect.set_areas(areas)
+        record.detection.set_areas(areas)
 
 
 class Adapter(Transform, Composite):
