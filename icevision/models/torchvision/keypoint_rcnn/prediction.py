@@ -79,7 +79,7 @@ def convert_raw_prediction(
         raw_pred=raw_pred, record=record, detection_threshold=detection_threshold
     )
 
-    above_threshold = pred.detect.above_threshold
+    above_threshold = pred.detection.above_threshold
     kps = raw_pred["keypoints"][above_threshold]
     keypoints = []
     for k in kps:
@@ -91,8 +91,8 @@ def convert_raw_prediction(
             keypoints.append(KeyPoints.from_xyv(k, None))
 
     pred.pred.add_component(KeyPointsRecordComponent())
-    pred.pred.detect.add_keypoints(keypoints)
-    pred.pred.detect.keypoints_scores = (
+    pred.pred.detection.add_keypoints(keypoints)
+    pred.pred.detection.keypoints_scores = (
         raw_pred["keypoints_scores"][above_threshold].detach().cpu().numpy()
     )
 

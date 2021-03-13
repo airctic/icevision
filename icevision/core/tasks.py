@@ -1,4 +1,4 @@
-__all__ = ["Task", "default", "detect", "classif"]
+__all__ = ["Task", "common", "detection", "classification"]
 
 from icevision.imports import *
 
@@ -9,6 +9,6 @@ class Task:
     order: float = 0.5
 
 
-default = Task("default", 0.3)
-detect = Task("detect")
-classif = Task("classif")
+common = Task("common", 0.3)
+detection = Task("detection")
+classification = Task("classification")

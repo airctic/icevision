@@ -284,10 +284,10 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
             record.set_filepath(self.filepath(o))
             record.set_img_size(self.img_size(o))
 
-            record.detect.set_class_map(self.class_map)
-            record.detect.add_labels(self.labels(o))
-            record.detect.add_bboxes(self.bboxes(o))
-            record.detect.add_keypoints(self.keypoints(o))
+            record.detection.set_class_map(self.class_map)
+            record.detection.add_labels(self.labels(o))
+            record.detection.add_bboxes(self.bboxes(o))
+            record.detection.add_keypoints(self.keypoints(o))
 
         def filepath(self, o):
             return self.img_dir / o["file_name"]
@@ -353,9 +353,9 @@ def object_detection_record(samples_source):
     record.set_imageid(1)
     record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
     record.set_img_size(ImgSize(width=500, height=375))
-    record.detect.set_class_map(ClassMap(["a", "b"]))
-    record.detect.add_labels_by_id([1, 2])
-    record.detect.add_bboxes(
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
         [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
     )
 
@@ -367,7 +367,7 @@ def instance_segmentation_record(object_detection_record):
     record = object_detection_record
     record.add_component(MasksRecordComponent())
 
-    record.detect.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
 
     return record
 

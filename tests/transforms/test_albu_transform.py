@@ -43,11 +43,11 @@ def test_crop_transform(records, check_attributes_on_component):
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.detect.labels) == 1
-    assert len(tfmed.detect.bboxes) == 1
-    assert len(tfmed.detect.masks) == 1
-    assert len(tfmed.detect.iscrowds) == 1
-    assert len(tfmed.detect.areas) == 1
+    assert len(tfmed.detection.labels) == 1
+    assert len(tfmed.detection.bboxes) == 1
+    assert len(tfmed.detection.masks) == 1
+    assert len(tfmed.detection.iscrowds) == 1
+    assert len(tfmed.detection.areas) == 1
     check_attributes_on_component(tfmed)
 
 
@@ -56,20 +56,20 @@ def test_crop_transform_empty(records, check_attributes_on_component):
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.detect.labels) == 0
-    assert len(tfmed.detect.bboxes) == 0
-    assert len(tfmed.detect.masks) == 0
-    assert len(tfmed.detect.iscrowds) == 0
-    assert len(tfmed.detect.areas) == 0
+    assert len(tfmed.detection.labels) == 0
+    assert len(tfmed.detection.bboxes) == 0
+    assert len(tfmed.detection.masks) == 0
+    assert len(tfmed.detection.iscrowds) == 0
+    assert len(tfmed.detection.areas) == 0
     check_attributes_on_component(tfmed)
 
     # assert orignal record was not changed
     record = records[0]
-    assert len(record.detect.labels) == 1
-    assert len(record.detect.bboxes) == 1
-    assert len(record.detect.masks) == 1
-    assert len(record.detect.iscrowds) == 1
-    assert len(record.detect.areas) == 1
+    assert len(record.detection.labels) == 1
+    assert len(record.detection.bboxes) == 1
+    assert len(record.detection.masks) == 1
+    assert len(record.detection.iscrowds) == 1
+    assert len(record.detection.areas) == 1
     check_attributes_on_component(record)
 
 
@@ -85,12 +85,12 @@ def test_keypoints_transform(coco_keypoints_parser, check_attributes_on_componen
     record, tfmed = ds[0], tfm_ds[0]
     # assert "keypoints" in tfm.tfms.processors.keys()
     # assert "bboxes" in tfm.tfms.processors.keys()
-    assert len(record.detect.keypoints) == 3
-    assert len(tfmed.detect.keypoints) == 3
-    assert set([c for c in tfmed.detect.keypoints[0].visible]) == {0.0, 1.0, 2.0}
-    assert set([c for c in record.detect.keypoints[0].visible]) == {0, 1, 2}
-    assert (tfmed.detect.keypoints[0].x == record.detect.keypoints[0].x * 2).all()
-    assert (tfmed.detect.keypoints[0].y == record.detect.keypoints[0].y * 2).all()
+    assert len(record.detection.keypoints) == 3
+    assert len(tfmed.detection.keypoints) == 3
+    assert set([c for c in tfmed.detection.keypoints[0].visible]) == {0.0, 1.0, 2.0}
+    assert set([c for c in record.detection.keypoints[0].visible]) == {0, 1, 2}
+    assert (tfmed.detection.keypoints[0].x == record.detection.keypoints[0].x * 2).all()
+    assert (tfmed.detection.keypoints[0].y == record.detection.keypoints[0].y * 2).all()
     check_attributes_on_component(tfmed)
 
 

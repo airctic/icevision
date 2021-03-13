@@ -7,7 +7,7 @@ __all__ = [
     "SizeRecordComponent",
     "BaseLabelsRecordComponent",
     "InstancesLabelsRecordComponent",
-    "ClassifLabelsRecordComponent",
+    "ClassificationLabelsRecordComponent",
     "BBoxesRecordComponent",
     "MasksRecordComponent",
     "AreasRecordComponent",
@@ -64,7 +64,7 @@ class RecordComponent(TaskComponent):
         return []
 
     def _format_builder_template(self, lines):
-        task = f".{self.task.name}." if self.task != tasks.default else "."
+        task = f".{self.task.name}." if self.task != tasks.common else "."
         return [line.format(task=task) for line in lines]
 
     def setup_transform(self, tfm) -> None:
@@ -87,7 +87,7 @@ class ClassMapRecordComponent(RecordComponent):
 
 
 class ImageidRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.imageid = None
 
@@ -104,7 +104,7 @@ class ImageidRecordComponent(RecordComponent):
 # TODO: we need a way to combine filepath and image mixin
 # TODO: rename to ImageArrayRecordComponent
 class ImageRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.img = None
 
@@ -125,7 +125,7 @@ class ImageRecordComponent(RecordComponent):
 
 
 class FilepathRecordComponent(ImageRecordComponent):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.filepath = None
 
@@ -157,7 +157,7 @@ class FilepathRecordComponent(ImageRecordComponent):
 
 
 class SizeRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.img_size = None
 
@@ -194,7 +194,7 @@ class SizeRecordComponent(RecordComponent):
 
 ### Annotation parsers ###
 class BaseLabelsRecordComponent(ClassMapRecordComponent):
-    def __init__(self, task=tasks.default):
+    def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.labels: List[int] = []
         self.labels_names: List[Hashable] = []
@@ -259,20 +259,20 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
 
 
 class InstancesLabelsRecordComponent(BaseLabelsRecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
 
     def setup_transform(self, tfm) -> None:
         tfm.setup_instances_labels(self)
 
 
-class ClassifLabelsRecordComponent(BaseLabelsRecordComponent):
-    def __init__(self, task=tasks.classif):
+class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
+    def __init__(self, task=tasks.classification):
         super().__init__(task=task)
 
 
 class BBoxesRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.bboxes: List[BBox] = []
 
@@ -333,7 +333,7 @@ class BBoxesRecordComponent(RecordComponent):
 
 
 class MasksRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.masks = EncodedRLEs()
 
@@ -373,7 +373,7 @@ class MasksRecordComponent(RecordComponent):
 
 
 class AreasRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.areas: List[float] = []
 
@@ -400,7 +400,7 @@ class AreasRecordComponent(RecordComponent):
 
 
 class IsCrowdsRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.iscrowds: List[bool] = []
 
@@ -430,7 +430,7 @@ class IsCrowdsRecordComponent(RecordComponent):
 
 
 class KeyPointsRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.keypoints: List[KeyPoints] = []
 
@@ -458,7 +458,7 @@ class KeyPointsRecordComponent(RecordComponent):
 
 
 class ScoresRecordComponent(RecordComponent):
-    def __init__(self, task=tasks.detect):
+    def __init__(self, task=tasks.detection):
         super().__init__(task=task)
         self.scores = None
 

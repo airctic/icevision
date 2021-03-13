@@ -101,10 +101,10 @@ def convert_raw_prediction(
             BBoxesRecordComponent(),
         )
     )
-    pred.detect.set_class_map(record.detect.class_map)
-    pred.detect.set_scores(scores)
-    pred.detect.set_labels_by_id(labels)
-    pred.detect.set_bboxes(bboxes)
-    pred.detect.above_threshold = above_threshold
+    pred.detection.set_class_map(record.detection.class_map)
+    pred.detection.set_scores(scores)
+    pred.detection.set_labels_by_id(labels)
+    pred.detection.set_bboxes(bboxes)
+    pred.detection.above_threshold = above_threshold
 
     return Prediction(pred=pred, ground_truth=record)

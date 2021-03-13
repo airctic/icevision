@@ -91,11 +91,11 @@ def convert_raw_prediction(
             MasksRecordComponent(),
         )
     )
-    pred.detect.set_class_map(record.detect.class_map)
-    pred.detect.set_scores(keep_scores)
-    pred.detect.set_labels_by_id(keep_labels)
-    pred.detect.set_bboxes(keep_bboxes)
-    pred.detect.set_masks(keep_masks)
+    pred.detection.set_class_map(record.detection.class_map)
+    pred.detection.set_scores(keep_scores)
+    pred.detection.set_labels_by_id(keep_labels)
+    pred.detection.set_bboxes(keep_bboxes)
+    pred.detection.set_masks(keep_masks)
     pred.above_threshold = keep_mask
 
     return Prediction(pred=pred, ground_truth=record)

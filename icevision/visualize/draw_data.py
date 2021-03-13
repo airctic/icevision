@@ -31,14 +31,14 @@ def draw_sample(
 
     # TODO, HACK: temporary solution, draw will be refactored to record
     for label, bbox, mask, keypoints in itertools.zip_longest(
-        getattr(sample.detect, "labels", []),
-        getattr(sample.detect, "bboxes", []),
-        getattr(sample.detect, "masks", []),
-        getattr(sample.detect, "keypoints", []),
-        # getattr(sample, tasks.detect.name, {}).get("labels", []),
-        # getattr(sample, tasks.detect.name, {}).get("bboxes", []),
-        # getattr(sample, tasks.detect.name, {}).get("masks", []),
-        # getattr(sample, tasks.detect.name, {}).get("keypoints", []),
+        getattr(sample.detection, "labels", []),
+        getattr(sample.detection, "bboxes", []),
+        getattr(sample.detection, "masks", []),
+        getattr(sample.detection, "keypoints", []),
+        # getattr(sample, tasks.detection.name, {}).get("labels", []),
+        # getattr(sample, tasks.detection.name, {}).get("bboxes", []),
+        # getattr(sample, tasks.detection.name, {}).get("masks", []),
+        # getattr(sample, tasks.detection.name, {}).get("keypoints", []),
     ):
         color = (np.random.random(3) * 0.6 + 0.4) * 255
         color = tuple(color.astype(int).tolist())

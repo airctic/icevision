@@ -88,7 +88,7 @@ def convert_raw_prediction(
         raw_pred=raw_pred, record=record, detection_threshold=detection_threshold
     )
 
-    above_threshold = pred.detect.above_threshold
+    above_threshold = pred.detection.above_threshold
     masks_probs = raw_pred["masks"][above_threshold]
     masks_probs = masks_probs.detach().cpu().numpy()
     # convert probabilities to 0 or 1 based on mask_threshold
@@ -96,6 +96,6 @@ def convert_raw_prediction(
     masks = MaskArray(masks.squeeze(1))
 
     pred.pred.add_component(MasksRecordComponent())
-    pred.detect.set_masks(masks)
+    pred.detection.set_masks(masks)
 
     return pred

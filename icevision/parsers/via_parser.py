@@ -69,8 +69,8 @@ class VIABaseParser(Parser):
     def parse_fields(self, o, record):
         record.set_filepath(self.filepath(o))
         record.set_img_size(self.image_width_height(o))
-        record.detect.set_class_map(self.class_map)
-        record.detect.add_labels(self.labels(o))
+        record.detection.set_class_map(self.class_map)
+        record.detection.add_labels(self.labels(o))
 
     def filepath(self, o) -> Path:
         return self.img_dir / f"{o['filename']}"
@@ -107,7 +107,7 @@ class VIABBoxParser(VIABaseParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_bboxes(self.bboxes(o))
+        record.detection.add_bboxes(self.bboxes(o))
 
     def bboxes(self, o) -> List[BBox]:
         boxes = []

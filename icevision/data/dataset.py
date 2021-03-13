@@ -56,6 +56,6 @@ class Dataset:
             records.append(record)
 
             # TODO, HACK: adding class map because of `convert_raw_prediction`
-            record.add_component(ClassMapRecordComponent(task=tasks.detect))
+            record.add_component(ClassMapRecordComponent(task=tasks.detection))
 
         return cls(records=records, tfm=tfm)
