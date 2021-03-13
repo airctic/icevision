@@ -39,10 +39,10 @@ def mask_records(img, labels, bboxes, masks, class_map):
     )
     record.set_imageid(1)
     record.set_img(img)
-    record.detect.set_class_map(class_map)
-    record.detect.add_labels(labels)
-    record.detect.add_bboxes(bboxes)
-    record.detect.add_masks([masks])
+    record.detection.set_class_map(class_map)
+    record.detection.add_labels(labels)
+    record.detection.add_bboxes(bboxes)
+    record.detection.add_masks([masks])
     sample = record.load()
     return [sample] * 2
 
@@ -55,16 +55,20 @@ def test_bbox_dataloader(fridge_ds, fridge_class_map):
     data, recs = first(train_dl)
 
     assert set(data.keys()) == {"gt_bboxes", "gt_labels", "img", "img_metas"}
-    assert ((np.array(recs[0].detect.labels) - 1) == data["gt_labels"][0].numpy()).all()
-    assert ((np.array(recs[1].detect.labels) - 1) == data["gt_labels"][1].numpy()).all()
+    assert (
+        (np.array(recs[0].detection.labels) - 1) == data["gt_labels"][0].numpy()
+    ).all()
+    assert (
+        (np.array(recs[1].detection.labels) - 1) == data["gt_labels"][1].numpy()
+    ).all()
     assert data["img_metas"][0]["img_shape"] == (384, 384, 3)
     assert data["img_metas"][1]["pad_shape"] == (384, 384, 3)
     assert (
         data["img_metas"][1]["scale_factor"] == np.array([1.0, 1.0, 1.0, 1.0])
     ).all()
-    assert recs[0].detect.class_map == fridge_class_map
-    assert recs[1].detect.class_map == fridge_class_map
-    assert recs[1].detect.img.shape == data["img"][1].numpy().swapaxes(0, -1).shape
+    assert recs[0].detection.class_map == fridge_class_map
+    assert recs[1].detection.class_map == fridge_class_map
+    assert recs[1].detection.img.shape == data["img"][1].numpy().swapaxes(0, -1).shape
 
 
 def _test_common_mmdet_mask_batch(batch):
@@ -77,7 +81,9 @@ def _test_common_mmdet_mask_batch(batch):
         "img",
         "img_metas",
     }
-    assert ((np.array(recs[0].detect.labels) - 1) == data["gt_labels"][0].numpy()).all()
+    assert (
+        (np.array(recs[0].detection.labels) - 1) == data["gt_labels"][0].numpy()
+    ).all()
     assert data["img_metas"][0]["img_shape"] == (4, 4, 3)
     assert (
         data["img_metas"][0]["scale_factor"] == np.array([1.0, 1.0, 1.0, 1.0])
@@ -87,9 +93,9 @@ def _test_common_mmdet_mask_batch(batch):
     assert data["gt_masks"][0].height == data["gt_masks"][0].width == 4
 
     rec = recs[0]
-    assert isinstance(rec.detect.labels, list)
-    assert isinstance(rec.detect.bboxes[0], BBox)
-    assert isinstance(rec.detect.masks, MaskArray)
+    assert isinstance(rec.detection.labels, list)
+    assert isinstance(rec.detection.bboxes[0], BBox)
+    assert isinstance(rec.detection.masks, MaskArray)
     assert isinstance(rec.height, int)
     assert isinstance(rec.width, int)
     assert isinstance(rec.imageid, int)
@@ -114,16 +120,16 @@ def test_mmdet_mask_rcnn_build_infer_batch(mask_records):
         "img",
         "img_metas",
     }
-    assert recs[0].detect.labels == [1, 2]
+    assert recs[0].detection.labels == [1, 2]
     assert data["img_metas"][0][0]["img_shape"] == (4, 4, 3)
     assert (
         data["img_metas"][0][0]["scale_factor"] == np.array([1.0, 1.0, 1.0, 1.0])
     ).all()
 
     rec = recs[0]
-    assert isinstance(rec.detect.labels, list)
-    assert isinstance(rec.detect.bboxes[0], BBox)
-    assert isinstance(rec.detect.masks, MaskArray)
+    assert isinstance(rec.detection.labels, list)
+    assert isinstance(rec.detection.bboxes[0], BBox)
+    assert isinstance(rec.detection.masks, MaskArray)
     assert isinstance(rec.height, int)
     assert isinstance(rec.width, int)
     assert isinstance(rec.imageid, int)
