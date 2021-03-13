@@ -41,5 +41,5 @@ class IDMap:
     def get_names(self) -> List[Hashable]:
         return list(self.name2id.keys())
 
-    def __getitem__(self, imageid):
-        return self.get_name(imageid)
+    def __getitem__(self, record_id):
+        return self.get_name(record_id)

@@ -18,7 +18,7 @@ def records():
     class_map = ClassMap(["a", "b", "c"])
 
     record1 = _get_record()
-    record1.set_imageid(0)
+    record1.set_record_id(0)
     record1.set_filepath("none")
     record1.set_img_size(ImgSize(400, 400), original=True)
     record1.detection.set_class_map(class_map)
@@ -26,7 +26,7 @@ def records():
     record1.detection.add_bboxes([BBox.from_xywh(10, 10, 200, 200)])
 
     record2 = _get_record()
-    record2.set_imageid(1)
+    record2.set_record_id(1)
     record2.set_filepath("none")
     record2.set_img_size(ImgSize(500, 500), original=True)
     record2.detection.set_class_map(class_map)

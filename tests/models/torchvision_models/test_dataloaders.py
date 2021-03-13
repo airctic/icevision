@@ -17,7 +17,7 @@ def mask_rcnn_records(instance_segmentation_record):
 # def mask_records(img, labels, bboxes, masks):
 #     record = InstanceSegmentationRecord()
 
-#     record.set_imageid(1)
+#     record.set_record_id(1)
 #     record.set_img(img)
 #     record.add_labels(labels)
 #     record.add_bboxes(bboxes)

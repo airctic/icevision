@@ -15,7 +15,7 @@ def test_voc_annotation_parser(
 
     record = records[0]
     assert record.detection.class_map == voc_class_map
-    assert record.imageid == 0
+    assert record.record_id == 0
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.width == 500
     assert record.height == 375
@@ -29,7 +29,7 @@ def test_voc_annotation_parser(
 
     record = records[1]
     assert record.detection.class_map == voc_class_map
-    assert record.imageid == 1
+    assert record.record_id == 1
     assert record.filepath == samples_source / "voc/JPEGImages/2011_003353.jpg"
     assert record.height == 500
     assert record.width == 375
@@ -54,7 +54,7 @@ def test_voc_mask_parser(samples_source, voc_class_map):
 
     record = records[0]
     assert record.detection.class_map == voc_class_map
-    assert record.imageid == 0
+    assert record.record_id == 0
     assert record.filepath == samples_source / "voc/JPEGImages/2007_000063.jpg"
     assert record.height == 375
     assert record.width == 500
