@@ -13,7 +13,6 @@ def show_results(
     model: nn.Module,
     dataset: Dataset,
     detection_threshold: float = 0.5,
-    class_map: Optional[ClassMap] = None,
     num_samples: int = 6,
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
@@ -22,10 +21,8 @@ def show_results(
 ) -> None:
     return base_show_results(
         predict_fn=predict,
-        build_infer_batch_fn=build_infer_batch,
         model=model,
         dataset=dataset,
-        class_map=class_map,
         num_samples=num_samples,
         ncols=ncols,
         denormalize_fn=denormalize_fn,
