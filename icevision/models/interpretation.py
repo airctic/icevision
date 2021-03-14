@@ -122,9 +122,6 @@ class LossesRecordComponent(RecordComponent):
     def set_losses(self, losses: Dict):
         self.losses = losses
 
-    def as_dict(self) -> dict:
-        return {"losses": self.losses}
-
 
 class Interpretation:
     def __init__(self, losses_dict, valid_dl, infer_dl, predict_dl):
