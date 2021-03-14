@@ -64,8 +64,8 @@ def test_get_losses(fridge_faster_rcnn_model, fridge_ds):
         "loss_rpn_box_reg",
         "loss_total",
     }
-    assert "loss_box_reg" in samples[0].keys()
-    assert "text" not in samples[0].keys()
+    assert "loss_box_reg" in samples[0].losses.keys()
+    assert "text" not in samples[0].losses.keys()
 
 
 def test_add_annotations(fridge_faster_rcnn_model, fridge_ds):
@@ -74,5 +74,5 @@ def test_add_annotations(fridge_faster_rcnn_model, fridge_ds):
 
     samples, _ = faster_rcnn.interp.get_losses(model, ds)
     samples = add_annotations(samples)
-    assert "loss_classifier" in samples[0]["text"]
-    assert "IMG" in samples[0]["text"]
+    assert "loss_classifier" in samples[0].losses["text"]
+    assert "IMG" in samples[0].losses["text"]
