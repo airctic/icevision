@@ -32,7 +32,7 @@ class SimpleParser(parsers.Parser):
     def __iter__(self):
         yield from self.data
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return o["id"]
 
     def labels(self, o):
@@ -42,9 +42,9 @@ class SimpleParser(parsers.Parser):
         record.set_filepath(o["filepath"])
         record.set_img_size(ImgSize(100, 100))
 
-        record.detect.set_class_map(ClassMap(["a", "b"]))
-        record.detect.add_labels(self.labels(o))
-        record.detect.add_bboxes([BBox.from_xyxy(*pnts) for pnts in o["bboxes"]])
+        record.detection.set_class_map(ClassMap(["a", "b"]))
+        record.detection.add_labels(self.labels(o))
+        record.detection.add_bboxes([BBox.from_xyxy(*pnts) for pnts in o["bboxes"]])
 
 
 def test_parser(data, tmpdir):
@@ -62,18 +62,18 @@ def test_parser(data, tmpdir):
     record = records[1]
     # assert set(record.keys()) == {
     #     "class_map",
-    #     "imageid",
+    #     "record_id",
     #     "filepath",
     #     "height",
     #     "width",
     #     "labels",
     #     "bboxes",
     # }
-    assert record.imageid == 1
+    assert record.record_id == 1
     assert record.filepath == Path(__file__)
-    assert record.detect.class_map == ClassMap(["a", "b"])
-    assert record.detect.labels == [1, 2]
-    assert record.detect.bboxes == [
+    assert record.detection.class_map == ClassMap(["a", "b"])
+    assert record.detection.labels == [1, 2]
+    assert record.detection.bboxes == [
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),
     ]
@@ -89,8 +89,8 @@ def test_parser(data, tmpdir):
     assert len(loaded_records) == len(records)
     for loaded_record, record in zip(loaded_records, records):
         assert loaded_record.filepath == record.filepath
-        assert loaded_record.detect.labels == record.detect.labels
-        assert loaded_record.detect.bboxes == record.detect.bboxes
+        assert loaded_record.detection.labels == record.detection.labels
+        assert loaded_record.detection.bboxes == record.detection.bboxes
 
     parser = SimpleParser(data, class_map=ClassMap(["a", "b"]))
     assert len(parser.class_map) == 3

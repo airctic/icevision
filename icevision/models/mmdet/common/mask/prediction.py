@@ -6,9 +6,10 @@ from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_dl
 from icevision.models.mmdet.common.mask.dataloaders import *
-from icevision.models.mmdet.common.bbox.prediction import (
-    _unpack_raw_bboxes,
-)
+
+# from icevision.models.mmdet.common.bbox.prediction import (
+#     _unpack_raw_bboxes,
+# )
 
 
 @torch.no_grad()
@@ -90,11 +91,24 @@ def convert_raw_prediction(
             MasksRecordComponent(),
         )
     )
-    pred.detect.set_class_map(record.detect.class_map)
-    pred.detect.set_scores(keep_scores)
-    pred.detect.set_labels_by_id(keep_labels)
-    pred.detect.set_bboxes(keep_bboxes)
-    pred.detect.set_masks(keep_masks)
+    pred.detection.set_class_map(record.detection.class_map)
+    pred.detection.set_scores(keep_scores)
+    pred.detection.set_labels_by_id(keep_labels)
+    pred.detection.set_bboxes(keep_bboxes)
+    pred.detection.set_masks(keep_masks)
     pred.above_threshold = keep_mask
 
     return Prediction(pred=pred, ground_truth=record)
+
+
+def _unpack_raw_bboxes(raw_bboxes):
+    stack_raw_bboxes = np.vstack(raw_bboxes)
+
+    scores = stack_raw_bboxes[:, -1]
+    bboxes = stack_raw_bboxes[:, :-1]
+
+    # each item in raw_pred is an array of predictions of it's `i` class
+    labels = [np.full(o.shape[0], i, dtype=np.int32) for i, o in enumerate(raw_bboxes)]
+    labels = np.concatenate(labels)
+
+    return scores, labels, bboxes

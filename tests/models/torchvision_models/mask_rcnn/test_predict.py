@@ -28,10 +28,10 @@ def _test_preds(preds):
     assert len(preds) == 2
 
     pred = preds[0].pred
-    assert isinstance(pred.detect.labels, list)
-    assert isinstance(pred.detect.bboxes[0], BBox)
-    assert isinstance(pred.detect.masks[0], MaskArray)
-    assert isinstance(pred.detect.scores, np.ndarray)
+    assert isinstance(pred.detection.labels, list)
+    assert isinstance(pred.detection.bboxes[0], BBox)
+    assert isinstance(pred.detection.masks[0], MaskArray)
+    assert isinstance(pred.detection.scores, np.ndarray)
 
 
 def test_mantis_mask_rcnn_predict(sample_dataset, pretrained_state_dict):
@@ -63,4 +63,4 @@ def test_mantis_mask_rcnn_predict_dl_threshold(sample_dataset, pretrained_state_
         detection_threshold=1.0,
     )
 
-    assert len(preds[0].pred.detect.labels) == 0
+    assert len(preds[0].pred.detection.labels) == 0

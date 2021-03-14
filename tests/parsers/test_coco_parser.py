@@ -17,11 +17,11 @@ def test_keypoints_parser(coco_dir, coco_keypoints_parser):
     assert len(records) == 2
     record = records[1]
     assert record.filepath == coco_dir / "images/000000404249.jpg"
-    assert len(record.detect.keypoints) == 1
-    assert record.detect.keypoints[0].n_visible_keypoints == 16
-    assert record.detect.keypoints[0].y.max() == 485
+    assert len(record.detection.keypoints) == 1
+    assert record.detection.keypoints[0].n_visible_keypoints == 16
+    assert record.detection.keypoints[0].y.max() == 485
 
-    assert len(records[0].detect.keypoints) == 3
+    assert len(records[0].detection.keypoints) == 3
 
 
 def test_bbox_parser(coco_dir, coco_bbox_parser):
@@ -29,22 +29,22 @@ def test_bbox_parser(coco_dir, coco_bbox_parser):
     assert len(records) == 5
 
     record = records[0]
-    assert record.imageid == 0
+    assert record.record_id == 0
     assert record.filepath == coco_dir / "images/000000343934.jpg"
     assert record.width == 640
     assert record.height == 480
 
-    assert len(record.detect.class_map) == 91
-    assert record.detect.class_map.get_by_id(90) == "toothbrush"
-    assert record.detect.labels == [4]
-    assert pytest.approx(record.detect.bboxes[0].xyxy) == (
+    assert len(record.detection.class_map) == 91
+    assert record.detection.class_map.get_by_id(90) == "toothbrush"
+    assert record.detection.labels == [4]
+    assert pytest.approx(record.detection.bboxes[0].xyxy) == (
         175.14,
         175.68,
         496.2199,
         415.68,
     )
-    assert record.detect.iscrowds == [0]
-    assert pytest.approx(record.detect.areas) == [43522.805]
+    assert record.detection.iscrowds == [0]
+    assert pytest.approx(record.detection.areas) == [43522.805]
 
 
 def test_mask_parser(coco_mask_parser):
@@ -52,7 +52,7 @@ def test_mask_parser(coco_mask_parser):
     assert len(records) == 5
 
     record = records[0]
-    assert record.detect.masks.erles == [
+    assert record.detection.masks.erles == [
         {
             "size": [480, 640],
             "counts": b"nWb24W10Y<=VC1`<6UC8a<T1O001O001O0cERNi7n1oG^Nm7c1iGiNT8W1hGPO"

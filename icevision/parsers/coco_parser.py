@@ -39,7 +39,7 @@ class COCOBaseParser(Parser):
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
 
-        self._imageid2info = {o["id"]: o for o in self.annotations_dict["images"]}
+        self._record_id2info = {o["id"]: o for o in self.annotations_dict["images"]}
 
         categories = self.annotations_dict["categories"]
         id2class = {o["id"]: o["name"] for o in categories}
@@ -69,9 +69,9 @@ class COCOBaseParser(Parser):
         )
 
     def prepare(self, o):
-        self._info = self._imageid2info[o["image_id"]]
+        self._info = self._record_id2info[o["image_id"]]
 
-    def imageid(self, o) -> int:
+    def record_id(self, o) -> int:
         return o["image_id"]
 
     def filepath(self, o) -> Path:
@@ -94,10 +94,10 @@ class COCOBaseParser(Parser):
         record.set_img_size(self.img_size(o))
 
         # TODO: is class_map still a issue here?
-        record.detect.set_class_map(self.class_map)
-        record.detect.add_labels_by_id(self.labels_ids(o))
-        record.detect.add_areas(self.areas(o))
-        record.detect.add_iscrowds(self.iscrowds(o))
+        record.detection.set_class_map(self.class_map)
+        record.detection.add_labels_by_id(self.labels_ids(o))
+        record.detection.add_areas(self.areas(o))
+        record.detection.add_iscrowds(self.iscrowds(o))
 
 
 class COCOBBoxParser(COCOBaseParser):
@@ -111,7 +111,7 @@ class COCOBBoxParser(COCOBaseParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_bboxes(self.bboxes(o))
+        record.detection.add_bboxes(self.bboxes(o))
 
 
 class COCOMaskParser(COCOBBoxParser):
@@ -129,7 +129,7 @@ class COCOMaskParser(COCOBBoxParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_masks(self.masks(o))
+        record.detection.add_masks(self.masks(o))
 
 
 class COCOKeyPointsParser(COCOBBoxParser):
@@ -161,7 +161,7 @@ class COCOKeyPointsParser(COCOBBoxParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_keypoints(self.keypoints(o))
+        record.detection.add_keypoints(self.keypoints(o))
 
 
 class COCOConnectionsColor:

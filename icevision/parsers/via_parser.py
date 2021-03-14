@@ -63,14 +63,14 @@ class VIABaseParser(Parser):
     def __len__(self):
         return len(self.annotations_dict.values())
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return o["filename"]
 
     def parse_fields(self, o, record):
         record.set_filepath(self.filepath(o))
         record.set_img_size(self.image_width_height(o))
-        record.detect.set_class_map(self.class_map)
-        record.detect.add_labels(self.labels(o))
+        record.detection.set_class_map(self.class_map)
+        record.detection.add_labels(self.labels(o))
 
     def filepath(self, o) -> Path:
         return self.img_dir / f"{o['filename']}"
@@ -82,11 +82,11 @@ class VIABaseParser(Parser):
         label = region_attributes.get(self.label_field)
         if label is None:
             raise VIAParseError(
-                f"Could not find label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+                f"Could not find label_field [{self.label_field}] while parsing [{self.record_id(o)}]"
             )
         elif not isinstance(label, str):
             raise VIAParseError(
-                f"Non-string value found in label_field [{self.label_field}] while parsing [{self.imageid(o)}]"
+                f"Non-string value found in label_field [{self.label_field}] while parsing [{self.record_id(o)}]"
             )
         return label
 
@@ -107,7 +107,7 @@ class VIABBoxParser(VIABaseParser):
 
     def parse_fields(self, o, record):
         super().parse_fields(o, record)
-        record.detect.add_bboxes(self.bboxes(o))
+        record.detection.add_bboxes(self.bboxes(o))
 
     def bboxes(self, o) -> List[BBox]:
         boxes = []
