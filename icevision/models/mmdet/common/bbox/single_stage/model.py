@@ -26,6 +26,6 @@ def model(
     if weights_path is not None:
         load_checkpoint(_model, str(weights_path))
 
-    model.param_groups = MethodType(param_groups, model)
+    _model.param_groups = MethodType(param_groups, _model)
 
     return _model
