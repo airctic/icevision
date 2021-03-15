@@ -6,6 +6,7 @@ from mmdet.models import build_detector
 from mmcv.runner import load_checkpoint
 from icevision.models.mmdet.utils import *
 
+
 def model(
     cfg: Union[str, Path, Config],
     num_classes: int,
