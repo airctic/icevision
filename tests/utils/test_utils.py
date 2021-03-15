@@ -1,4 +1,5 @@
 from icevision.all import *
+from icevision.core.record_components import LossesRecordComponent
 
 
 def test_notnone():
@@ -61,12 +62,17 @@ def test_get_stats():
     assert result == expected
 
 
-def test_sort_losses():
+def _set_losses_lrc(s):
+    br = LossesRecordComponent()
+    br.set_losses(s)
+    return br
 
+
+def test_sort_losses():
     samples = [
-        {"stuff": 0.2, "loss_total": 2, "text": "text2"},
-        {"stuff": 0.1, "loss_total": 1, "text": "text1"},
-        {"stuff": 0.3, "loss_total": 3, "text": "text3"},
+        _set_losses_lrc({"stuff": 0.2, "loss_total": 2, "text": "text2"}),
+        _set_losses_lrc({"stuff": 0.1, "loss_total": 1, "text": "text1"}),
+        _set_losses_lrc({"stuff": 0.3, "loss_total": 3, "text": "text3"}),
     ]
 
     preds = [
@@ -89,7 +95,7 @@ def test_sort_losses():
 
     sorted_samples, sorted_preds, annotations = sort_losses(samples, preds)
 
-    assert sorted_samples == sorted_samples_ex
+    assert [s.losses for s in sorted_samples] == sorted_samples_ex
     assert sorted_preds == sorted_preds_ex
     assert annotations == ["text3", "text2", "text1"]
 
@@ -107,8 +113,9 @@ def test_get_weighted_sum():
         "loss3": 0.25,
         "loss4": 0.25,
     }
+    br = _set_losses_lrc(s)
     expected = {"loss1": 1, "loss2": 1, "loss3": 1, "loss4": 1, "loss_weighted": 1.0}
 
-    result = get_weighted_sum(s, weights)
+    result = get_weighted_sum(br, weights)
 
-    assert result["loss_weighted"] == expected["loss_weighted"]
+    assert result.losses["loss_weighted"] == expected["loss_weighted"]
