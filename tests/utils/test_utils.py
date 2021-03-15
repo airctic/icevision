@@ -1,6 +1,5 @@
 from icevision.all import *
-from icevision.models.interpretation import LossesRecordComponent
-from icevision.core.tasks import common
+from icevision.core.record_components import LossesRecordComponent
 
 
 def test_notnone():
@@ -64,7 +63,7 @@ def test_get_stats():
 
 
 def _set_losses_lrc(s):
-    br = LossesRecordComponent(common)
+    br = LossesRecordComponent()
     br.set_losses(s)
     return br
 

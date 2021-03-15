@@ -4,8 +4,8 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
-from icevision.core.tasks import common
-from icevision.models.interpretation import _move_to_device, LossesRecordComponent
+from icevision.models.interpretation import _move_to_device
+from icevision.core.record_components import LossesRecordComponent
 
 
 def sum_losses_mmdet(losses_dict):
@@ -34,7 +34,7 @@ def loop_mmdet(dl, model, losses_stats, device):
             for l in losses_stats.keys():
                 losses_stats[l].append(loss[l])
 
-            loss_comp = LossesRecordComponent(common)
+            loss_comp = LossesRecordComponent()
             loss_comp.set_losses(loss)
             sample[0].add_component(loss_comp)
             samples_plus_losses.append(sample[0])

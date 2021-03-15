@@ -12,7 +12,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.visualize.show_data import show_preds
-from icevision.core.tasks import common
+from icevision.core.record_components import LossesRecordComponent
 
 
 def get_weighted_sum(sample, weights):
@@ -114,15 +114,6 @@ def _prepend_str(d: dict, s: str):
     return {(s + "_" + k if s not in k else k): v for k, v in d.items()}
 
 
-class LossesRecordComponent(RecordComponent):
-    def __init__(self, task):
-        super().__init__(task=task)
-        self.losses = None
-
-    def set_losses(self, losses: Dict):
-        self.losses = losses
-
-
 class Interpretation:
     def __init__(self, losses_dict, valid_dl, infer_dl, predict_dl):
         self.losses_dict = losses_dict
@@ -153,7 +144,7 @@ class Interpretation:
                     losses_stats[l].append(loss[l])
 
                 loss = _prepend_str(loss, "loss")
-                loss_comp = LossesRecordComponent(common)
+                loss_comp = LossesRecordComponent()
                 loss_comp.set_losses(loss)
                 sample[0].add_component(loss_comp)
                 samples_plus_losses.append(sample[0])
