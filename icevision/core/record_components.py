@@ -14,6 +14,7 @@ __all__ = [
     "IsCrowdsRecordComponent",
     "KeyPointsRecordComponent",
     "ScoresRecordComponent",
+    "LossesRecordComponent",
 ]
 
 from icevision.imports import *
@@ -470,3 +471,12 @@ class ScoresRecordComponent(RecordComponent):
 
     def as_dict(self) -> dict:
         return {"scores": self.scores}
+
+
+class LossesRecordComponent(RecordComponent):
+    def __init__(self, task=tasks.common):
+        super().__init__(task=task)
+        self.losses = None
+
+    def set_losses(self, losses: Dict):
+        self.losses = losses

@@ -12,13 +12,14 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.visualize.show_data import show_preds
+from icevision.core.record_components import LossesRecordComponent
 
 
 def get_weighted_sum(sample, weights):
     loss_weighted = 0
     for loss, weight in weights.items():
-        loss_weighted += sample[loss] * weight
-    sample["loss_weighted"] = loss_weighted
+        loss_weighted += sample.losses[loss] * weight
+    sample.losses["loss_weighted"] = loss_weighted
     return sample
 
 
@@ -27,7 +28,7 @@ def sort_losses(
 ) -> Tuple[List[dict], List[dict], List[str]]:
     by_copy = deepcopy(by)
     losses_expected = [
-        k for k in samples[0].keys() if "loss" in k and k != "loss_total"
+        k for k in samples[0].losses.keys() if "loss" in k and k != "loss_total"
     ]
     if "effdet_total_loss" in losses_expected:
         losses_expected.remove("effdet_total_loss")
@@ -54,14 +55,14 @@ def sort_losses(
             by = "loss_weighted"
 
     l = list(zip(samples, preds))
-    l = sorted(l, key=lambda i: i[0][by], reverse=True)
+    l = sorted(l, key=lambda i: i[0].losses[by], reverse=True)
     sorted_samples, sorted_preds = zip(*l)
-    annotations = [el["text"] for el in sorted_samples]
+    annotations = [el.losses["text"] for el in sorted_samples]
 
     if isinstance(by_copy, dict):
         if by_copy["method"] == "weighted":
             annotations = [
-                f"loss_weighted: {round(s['loss_weighted'], 5)}\n" + a
+                f"loss_weighted: {round(s.losses['loss_weighted'], 5)}\n" + a
                 for a, s in zip(annotations, sorted_samples)
             ]
 
@@ -143,7 +144,9 @@ class Interpretation:
                     losses_stats[l].append(loss[l])
 
                 loss = _prepend_str(loss, "loss")
-                sample[0].update(loss)
+                loss_comp = LossesRecordComponent()
+                loss_comp.set_losses(loss)
+                sample[0].add_component(loss_comp)
                 samples_plus_losses.append(sample[0])
         return samples_plus_losses, losses_stats
 
@@ -219,6 +222,7 @@ class Interpretation:
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
         preds = self.predict_dl(model=model, infer_dl=dl)
+        preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(
             samples, preds, by=sort_by
@@ -232,8 +236,12 @@ class Interpretation:
             ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
 
+        sorted_preds = [
+            Prediction(pred=p, ground_truth=s)
+            for s, p in zip(sorted_samples, sorted_preds)
+        ]
+
         show_preds(
-            samples=sorted_samples[:n_samples],
             preds=sorted_preds[:n_samples],
             annotations=anns[:n_samples],
         )
@@ -247,11 +255,11 @@ def add_annotations(samples: List[dict]) -> List[dict]:
     """
     for sample in samples:
         text = ""
-        for key in sample.keys():
+        for key in sample.losses.keys():
             if "loss" in key:
-                text += f"{key}: {round(sample[key], 5)}\n"
-        text += f"IMG: {sample['filepath'].name}"
-        sample["text"] = text
+                text += f"{key}: {round(sample.losses[key], 5)}\n"
+        text += f"IMG: {sample.filepath.name}"
+        sample.losses["text"] = text
     return samples
 
 
