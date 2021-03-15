@@ -2,6 +2,7 @@ __all__ = ["MMDetectionCallback"]
 
 from icevision.imports import *
 from icevision.engines.fastai import *
+from icevision.models.mmdet.utils import *
 
 
 class _ModelWrap(nn.Module):
@@ -16,6 +17,7 @@ class _ModelWrap(nn.Module):
 class MMDetectionCallback(fastai.Callback):
     def after_create(self):
         self.learn.model = _ModelWrap(self.model)
+        self.model.param_groups = self.model.model.param_groups
 
     def before_batch(self):
         self.learn.records = self.yb[0]
