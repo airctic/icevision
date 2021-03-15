@@ -2,7 +2,7 @@ import pytest
 from icevision.all import *
 
 
-@pytest.fixture()
+@pytest.fixture
 def data():
     return [
         {"id": 1, "filepath": __file__, "labels": ["a"], "bboxes": [[1, 2, 3, 4]]},
@@ -16,30 +16,35 @@ def data():
     ]
 
 
-class SimpleParser(
-    parsers.Parser, parsers.FilepathMixin, parsers.LabelsMixin, parsers.BBoxesMixin
-):
-    def __init__(self, data, class_map=None):
+class SimpleParser(parsers.Parser):
+    def __init__(self, data):
         self.data = data
-        super().__init__(class_map=class_map)
+        super().__init__(
+            record=BaseRecord(
+                (
+                    FilepathRecordComponent(),
+                    InstancesLabelsRecordComponent(),
+                    BBoxesRecordComponent(),
+                )
+            )
+        )
 
     def __iter__(self):
         yield from self.data
 
-    def imageid(self, o) -> Hashable:
+    def record_id(self, o) -> Hashable:
         return o["id"]
 
-    def filepath(self, o) -> Union[str, Path]:
-        return o["filepath"]
-
-    def image_width_height(self, o) -> Tuple[int, int]:
-        return (100, 100)
-
-    def labels(self, o) -> List[Hashable]:
+    def labels(self, o):
         return o["labels"]
 
-    def bboxes(self, o) -> List[BBox]:
-        return [BBox.from_xyxy(*pnts) for pnts in o["bboxes"]]
+    def parse_fields(self, o, record):
+        record.set_filepath(o["filepath"])
+        record.set_img_size(ImgSize(100, 100))
+
+        record.detection.set_class_map(ClassMap(["a", "b"]))
+        record.detection.add_labels(self.labels(o))
+        record.detection.add_bboxes([BBox.from_xyxy(*pnts) for pnts in o["bboxes"]])
 
 
 def test_parser(data, tmpdir):
@@ -55,20 +60,20 @@ def test_parser(data, tmpdir):
     assert len(records) == 2
 
     record = records[1]
-    assert set(record.keys()) == {
-        "class_map",
-        "imageid",
-        "filepath",
-        "height",
-        "width",
-        "labels",
-        "bboxes",
-    }
-    assert record["class_map"] == ClassMap(["a", "b"])
-    assert record["imageid"] == 1
-    assert record["filepath"] == Path(__file__)
-    assert record["labels"] == [1, 2]
-    assert record["bboxes"] == [
+    # assert set(record.keys()) == {
+    #     "class_map",
+    #     "record_id",
+    #     "filepath",
+    #     "height",
+    #     "width",
+    #     "labels",
+    #     "bboxes",
+    # }
+    assert record.record_id == 1
+    assert record.filepath == Path(__file__)
+    assert record.detection.class_map == ClassMap(["a", "b"])
+    assert record.detection.labels == [1, 2]
+    assert record.detection.bboxes == [
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),
     ]
@@ -80,7 +85,12 @@ def test_parser(data, tmpdir):
     )[0]
     assert parser._check_path(cache_filepath) == True
     assert cache_filepath.exists() == True
-    assert pickle.load(open(cache_filepath, "rb"))[0] == records
+    loaded_records = pickle.load(open(cache_filepath, "rb"))[0]
+    assert len(loaded_records) == len(records)
+    for loaded_record, record in zip(loaded_records, records):
+        assert loaded_record.filepath == record.filepath
+        assert loaded_record.detection.labels == record.detection.labels
+        assert loaded_record.detection.bboxes == record.detection.bboxes
 
     parser = SimpleParser(data, class_map=ClassMap(["a", "b"]))
     assert len(parser.class_map) == 3

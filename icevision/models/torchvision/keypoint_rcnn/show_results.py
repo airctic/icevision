@@ -20,22 +20,23 @@ from icevision.models.interpretation import Interpretation
 def show_results(
     model: nn.Module,
     dataset: Dataset,
-    class_map: Optional[ClassMap] = None,
+    detection_threshold: float = 0.5,
     num_samples: int = 6,
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     show: bool = True,
+    device: Optional[torch.device] = None,
 ) -> None:
     return base_show_results(
         predict_fn=predict,
-        build_infer_batch_fn=build_infer_batch,
         model=model,
         dataset=dataset,
-        class_map=class_map,
         num_samples=num_samples,
         ncols=ncols,
         denormalize_fn=denormalize_fn,
         show=show,
+        detection_threshold=detection_threshold,
+        device=device,
     )
 
 

@@ -38,8 +38,8 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
 
             self.eval()
             raw_preds = self(xb)
-            preds = self.convert_raw_predictions(raw_preds=raw_preds)
-            self.accumulate_metrics(records=records, preds=preds)
+            preds = self.convert_raw_predictions(raw_preds=raw_preds, records=records)
+            self.accumulate_metrics(preds=preds)
 
         self.log("val_loss", loss)
 

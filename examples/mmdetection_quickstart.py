@@ -4,7 +4,7 @@ data_dir = icedata.fridge.load_data()
 
 parser = icedata.fridge.parser(data_dir)
 
-train_records, valid_records = parser.parse(autofix=False, background_id=-1)
+train_records, valid_records = parser.parse(autofix=False)
 
 presize, size = 256, 128
 
@@ -16,8 +16,9 @@ valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size=size), tfms.A.Normalize
 train_ds = Dataset(train_records, train_tfms)
 valid_ds = Dataset(valid_records, valid_tfms)
 
-train_dl = mmdetection_models.train_dl(train_ds, batch_size=2, shuffle=True)
-valid_dl = mmdetection_models.valid_dl(valid_ds, batch_size=2, shuffle=False)
+model_type = models.mmdet.faster_rcnn
+train_dl = model_type.train_dl(train_ds, batch_size=2, shuffle=True)
+valid_dl = model_type.valid_dl(valid_ds, batch_size=2, shuffle=False)
 
 ### MODEL
 
@@ -26,13 +27,14 @@ from mmcv import Config
 cfg = Config.fromfile(
     "~/git/mmdetection/configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py"
 )
+cfg.model.roi_head.bbox_head.num_classes = len(parser.class_map) - 1
 
 from mmdet.models import build_detector
 
 model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
 
 
-class LitModel(mmdetection_models.lightning.ModelAdapter):
+class LitModel(model_type.lightning.ModelAdapter):
     def configure_optimizers(self):
         return SGD(self.parameters(), lr=1e-3)
 

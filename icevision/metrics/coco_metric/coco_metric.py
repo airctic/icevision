@@ -40,12 +40,14 @@ class COCOMetric(Metric):
         self._records.clear()
         self._preds.clear()
 
-    def accumulate(self, records, preds):
-        # to not store whole images and avoid excess memory use
-        for record in records:
-            record.pop("img", None)
-        self._records.extend(records)
-        self._preds.extend(preds)
+    def accumulate(self, preds):
+        # TODO, HACK: this modify all references of the record
+        for pred in preds:
+            pred.pred.unload()
+            pred.ground_truth.unload()
+
+            self._records.append(pred.ground_truth)
+            self._preds.append(pred.pred)
 
     def finalize(self) -> Dict[str, float]:
         with CaptureStdout():

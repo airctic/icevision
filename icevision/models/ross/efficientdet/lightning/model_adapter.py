@@ -43,10 +43,12 @@ class ModelAdapter(LightningModelAdapter, ABC):
 
         with torch.no_grad():
             raw_preds = self(xb, yb)
-            preds = efficientdet.convert_raw_predictions(raw_preds["detections"], 0)
+            preds = efficientdet.convert_raw_predictions(
+                raw_preds["detections"], records, 0
+            )
             loss = efficientdet.loss_fn(raw_preds, yb)
 
-        self.accumulate_metrics(records, preds)
+        self.accumulate_metrics(preds)
 
         for k, v in raw_preds.items():
             if "loss" in k:
