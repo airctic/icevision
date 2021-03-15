@@ -2,14 +2,12 @@ __all__ = ["MMDetectionCallback"]
 
 from icevision.imports import *
 from icevision.engines.fastai import *
-from icevision.models.mmdet.utils import *
 
 
 class _ModelWrap(nn.Module):
     def __init__(self, model: nn.Module):
         super().__init__()
         self.model = model
-        self.model.param_groups = MethodType(param_groups, model)
 
     def forward(self, xb):
         return self.model.train_step(data=xb, optimizer=None)
