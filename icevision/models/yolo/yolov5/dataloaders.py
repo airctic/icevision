@@ -35,9 +35,9 @@ def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 def _build_train_sample(
     record: RecordType,
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-    assert len(record["labels"]) == len(record["bboxes"])
+    assert len(record.detection.labels) == len(record.detection.bboxes)
 
-    image = im2tensor(record["img"])
+    image = im2tensor(record.img)
 
     # UNSURE WHETHER NEGATIVE SAMPLES ARE SUPPORTED
     # # If no labels and bboxes are present, use as negative samples as described in
@@ -47,10 +47,12 @@ def _build_train_sample(
     #     target["boxes"] = torch.zeros((0, 4), dtype=torch.float32)
     # else:
 
-    labels = tensor(record["labels"], dtype=torch.int64)
+    labels = tensor(record.detection.labels, dtype=torch.int64)
 
-    img_width, img_height = record["width"], record["height"]
-    xyxys = [bbox.relative_xcycwh(img_width, img_height) for bbox in record["bboxes"]]
+    img_width, img_height = record.width, record.height
+    xyxys = [
+        bbox.relative_xcycwh(img_width, img_height) for bbox in record.detection.bboxes
+    ]
     boxes = tensor(xyxys, dtype=torch.float32)
 
     target = torch.zeros((len(labels), 6))
@@ -180,7 +182,7 @@ def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
     """
     samples = common_build_batch(dataset, batch_tfms=batch_tfms)
 
-    tensor_imgs = [im2tensor(sample["img"]) for sample in samples]
+    tensor_imgs = [im2tensor(sample.img) for sample in samples]
     tensor_imgs = torch.stack(tensor_imgs)
 
     return (tensor_imgs,), samples
