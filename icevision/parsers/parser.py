@@ -42,14 +42,14 @@ class Parser(ParserInterface, ABC):
 
     def __init__(
         self,
-        record,
+        template_record,
         class_map: Optional[ClassMap] = None,
         idmap: Optional[IDMap] = None,
     ):
         # self.class_map = class_map or ClassMap()
         # if class_map is None:
         #     self.class_map.unlock()
-        self._record = record
+        self.template_record = template_record
         self.idmap = idmap or IDMap()
 
     @abstractmethod
@@ -61,7 +61,7 @@ class Parser(ParserInterface, ABC):
         pass
 
     def create_record(self) -> BaseRecord:
-        return deepcopy(self._record)
+        return deepcopy(self.template_record)
 
     def prepare(self, o):
         pass

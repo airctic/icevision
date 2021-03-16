@@ -44,7 +44,7 @@ class VocXmlParser(Parser):
         class_map: Optional[ClassMap] = None,
         idmap: Optional[IDMap] = None,
     ):
-        super().__init__(record=self.template_record(), idmap=idmap)
+        super().__init__(template_record=self.template_record(), idmap=idmap)
         self.class_map = class_map or ClassMap().unlock()
         self.images_dir = Path(images_dir)
 
