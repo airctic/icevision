@@ -4,6 +4,7 @@ from icevision.imports import *
 from mmcv import Config
 from mmdet.models import build_detector
 from mmcv.runner import load_checkpoint
+from icevision.models.mmdet.utils import *
 
 
 def model(
@@ -31,5 +32,7 @@ def model(
 
     if weights_path is not None:
         load_checkpoint(_model, str(weights_path))
+
+    _model.param_groups = MethodType(param_groups, _model)
 
     return _model
