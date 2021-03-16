@@ -157,8 +157,8 @@ class Parser(ParserInterface, ABC):
 
         template = CodeTemplate()
         template.add_line(f"class MyParser({cls.__name__}):", 0)
-        template.add_line(f"def __init__(self, record):", 1)
-        template.add_line(f"super().__init__(record=record)", 2)
+        template.add_line(f"def __init__(self, template_record):", 1)
+        template.add_line(f"super().__init__(template_record=template_record)", 2)
         template.add_line(f"def __iter__(self) -> Any:", 1)
         template.add_line(f"def __len__(self) -> int:", 1)
         # template.add_line("def create_record(self) -> BaseRecord:", 1)
