@@ -12,16 +12,6 @@ PAGES = {
     "parser.md": [
         "icevision.parsers.Parser",
         "icevision.parsers.Parser.parse",
-        "icevision.parsers.FasterRCNN",
-        "icevision.parsers.MaskRCNN",
-        "icevision.parsers.mixins.ImageidMixin",
-        "icevision.parsers.mixins.FilepathMixin",
-        "icevision.parsers.mixins.SizeMixin",
-        "icevision.parsers.mixins.LabelsMixin",
-        "icevision.parsers.mixins.BBoxesMixin",
-        "icevision.parsers.mixins.MasksMixin",
-        "icevision.parsers.mixins.AreasMixin",
-        "icevision.parsers.mixins.IsCrowdsMixin",
     ],
     "dataset.md": [
         "icevision.data.dataset.Dataset",
