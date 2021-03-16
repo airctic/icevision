@@ -27,20 +27,18 @@ def pretrained_state_dict():
 def _test_preds(preds):
     assert len(preds) == 2
 
-    pred = preds[0]
-    assert isinstance(pred["labels"], np.ndarray)
-    assert isinstance(pred["bboxes"][0], BBox)
-    assert isinstance(pred["masks"][0], MaskArray)
-    assert isinstance(pred["scores"], np.ndarray)
+    pred = preds[0].pred
+    assert isinstance(pred.detection.labels, list)
+    assert isinstance(pred.detection.bboxes[0], BBox)
+    assert isinstance(pred.detection.masks[0], MaskArray)
+    assert isinstance(pred.detection.scores, np.ndarray)
 
 
 def test_mantis_mask_rcnn_predict(sample_dataset, pretrained_state_dict):
     model = mask_rcnn.model(num_classes=91)
     model.load_state_dict(pretrained_state_dict)
 
-    batch, samples = mask_rcnn.build_infer_batch(dataset=sample_dataset)
-    preds = mask_rcnn.predict(model=model, batch=batch)
-
+    preds = mask_rcnn.predict(model=model, dataset=sample_dataset)
     _test_preds(preds)
 
 
@@ -49,10 +47,7 @@ def test_mantis_mask_rcnn_predict_dl(sample_dataset, pretrained_state_dict):
     model.load_state_dict(pretrained_state_dict)
 
     infer_dl = mask_rcnn.infer_dl(dataset=sample_dataset, batch_size=2)
-    samples, preds = mask_rcnn.predict_dl(
-        model=model, infer_dl=infer_dl, show_pbar=False
-    )
-
+    preds = mask_rcnn.predict_dl(model=model, infer_dl=infer_dl, show_pbar=False)
     _test_preds(preds)
 
 
@@ -61,11 +56,11 @@ def test_mantis_mask_rcnn_predict_dl_threshold(sample_dataset, pretrained_state_
     model.load_state_dict(pretrained_state_dict)
 
     infer_dl = mask_rcnn.infer_dl(dataset=sample_dataset, batch_size=2)
-    samples, preds = mask_rcnn.predict_dl(
+    preds = mask_rcnn.predict_dl(
         model=model,
         infer_dl=infer_dl,
         show_pbar=False,
         detection_threshold=1.0,
     )
 
-    assert len(preds[0]["labels"]) == 0
+    assert len(preds[0].pred.detection.labels) == 0

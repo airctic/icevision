@@ -28,7 +28,7 @@ from abc import (
     abstractstaticmethod,
 )
 from pathlib import Path
-from collections import defaultdict, OrderedDict
+from collections import defaultdict, OrderedDict, namedtuple
 from enum import Enum
 from tqdm.auto import tqdm
 from pycocotools import mask as mask_utils

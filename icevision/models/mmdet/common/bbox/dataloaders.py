@@ -96,34 +96,34 @@ def build_infer_batch(records, batch_tfms=None):
 
 def _img_tensor(record):
     # convert from RGB to BGR
-    img = record["img"][:, :, ::-1].copy()
+    img = record.img[:, :, ::-1].copy()
     return im2tensor(img)
 
 
 def _img_meta(record):
-    img_h, img_w, img_c = record["img"].shape
+    img_h, img_w, img_c = record.img.shape
 
     return {
         # height and width from sample is before padding
-        "img_shape": (record["height"], record["width"], img_c),
+        "img_shape": (record.img_size.height, record.img_size.width, img_c),
         "pad_shape": (img_h, img_w, img_c),
         "scale_factor": np.ones(4),  # TODO: is scale factor correct?
     }
 
 
 def _labels(record):
-    if len(record["labels"]) == 0:
+    if len(record.detection.labels) == 0:
         raise RuntimeError("Negative samples still needs to be implemented")
     else:
         # convert background from id 0 to last
-        labels = tensor(record["labels"], dtype=torch.int64) - 1
-        labels[labels == -1] = record["class_map"].num_classes - 1
+        labels = tensor(record.detection.labels, dtype=torch.int64) - 1
+        labels[labels == -1] = record.detection.class_map.num_classes - 1
         return labels
 
 
 def _bboxes(record):
-    if len(record["labels"]) == 0:
+    if len(record.detection.labels) == 0:
         raise RuntimeError("Negative samples still needs to be implemented")
     else:
-        xyxys = [bbox.xyxy for bbox in record["bboxes"]]
+        xyxys = [bbox.xyxy for bbox in record.detection.bboxes]
         return tensor(xyxys, dtype=torch.float32)

@@ -34,31 +34,29 @@ def test_mmdet_bbox_models_predict(ds, model_type, path, config, weights_path, r
     model = model_type.model(config_path, num_classes=5, weights_path=weights_path)
 
     infer_dl = model_type.infer_dl(valid_ds, batch_size=1, shuffle=False)
+    _, records = first(infer_dl)
+    pred = model_type.predict(model, records)
+    _test_preds(pred, pred_count=1)
 
-    batch, _ = first(infer_dl)
-    pred = model_type.predict(model, batch)
-    assert len(pred) == 1
-    assert set(pred[0].keys()) == {"bboxes", "labels", "scores"}
+    preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
+    _test_preds(preds, pred_count=1)
 
-    samps, preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
-    assert len(samps) == 1
-    assert len(preds) == 1
-    assert set(samps[0].keys()) == {
-        "bboxes",
-        "class_map",
-        "filepath",
-        "height",
-        "imageid",
-        "img",
-        "labels",
-        "width",
-    }
-    assert samps[0]["img"].shape == (384, 384, 3)
-    assert set(preds[0].keys()) == {"bboxes", "labels", "scores"}
+    assert preds[0].ground_truth.detection.img.shape == (384, 384, 3)
+
+
+def _test_preds(preds, pred_count=2, mask=False):
+    # assert len(preds) == pred_count
+
+    pred = preds[0].pred
+    assert isinstance(pred.detection.labels, list)
+    assert isinstance(pred.detection.bboxes, list)
+    assert isinstance(pred.detection.scores, np.ndarray)
+    if mask:
+        assert isinstance(pred.detection.masks, MaskArray)
 
 
 def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
-    _, valid_records = coco_mask_records[:2], coco_mask_records[:1]
+    valid_records, _ = coco_mask_records[:2], coco_mask_records[:1]
 
     size = 128
     valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size=size), tfms.A.Normalize()])
@@ -68,27 +66,12 @@ def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
     config_path = samples_source / "mmdet/configs/mask_rcnn_r50_fpn_1x_coco.py"
     model = model_type.model(config_path, num_classes=81)
 
-    infer_dl = model_type.infer_dl(valid_ds, batch_size=1, shuffle=False)
-    batch, _ = first(infer_dl)
-    pred = model_type.predict(model, batch)
-    assert len(pred) == 1
-    assert set(pred[0].keys()) == {"bboxes", "labels", "masks", "scores"}
+    infer_dl = model_type.infer_dl(valid_ds, batch_size=2, shuffle=False)
+    _, records = first(infer_dl)
+    pred = model_type.predict(model, [records[0]])
+    _test_preds(pred, pred_count=1, mask=True)
 
-    samps, preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
-    assert len(samps) == 1
-    assert len(preds) == 1
-    assert set(samps[0].keys()) == {
-        "areas",
-        "bboxes",
-        "class_map",
-        "filepath",
-        "height",
-        "imageid",
-        "img",
-        "iscrowds",
-        "labels",
-        "masks",
-        "width",
-    }
-    assert samps[0]["img"].shape == (128, 128, 3)
-    assert set(preds[0].keys()) == {"bboxes", "labels", "masks", "scores"}
+    preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
+    _test_preds(preds, mask=True)
+
+    assert preds[0].ground_truth.detection.img.shape == (128, 128, 3)

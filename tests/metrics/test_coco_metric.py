@@ -3,33 +3,35 @@ from icevision.all import *
 from copy import deepcopy
 
 
-@pytest.fixture()
-def records(fridge_class_map):
-    Record = create_mixed_record(
-        (
-            SizeRecordMixin,
-            FilepathRecordMixin,
-            LabelsRecordMixin,
-            BBoxesRecordMixin,
-            ClassMapRecordMixin,
+@pytest.fixture
+def records():
+    def _get_record():
+        return BaseRecord(
+            (
+                SizeRecordComponent(),
+                FilepathRecordComponent(),
+                InstancesLabelsRecordComponent(),
+                BBoxesRecordComponent(),
+            )
         )
-    )
 
-    record1 = Record()
-    record1.set_imageid(0)
+    class_map = ClassMap(["a", "b", "c"])
+
+    record1 = _get_record()
+    record1.set_record_id(0)
     record1.set_filepath("none")
-    record1.set_image_size(400, 400)
-    record1.set_class_map(fridge_class_map)
-    record1.add_labels([2])
-    record1.add_bboxes([BBox.from_xywh(10, 10, 200, 200)])
+    record1.set_img_size(ImgSize(400, 400), original=True)
+    record1.detection.set_class_map(class_map)
+    record1.detection.add_labels_by_id([2])
+    record1.detection.add_bboxes([BBox.from_xywh(10, 10, 200, 200)])
 
-    record2 = Record()
-    record2.set_imageid(1)
+    record2 = _get_record()
+    record2.set_record_id(1)
     record2.set_filepath("none")
-    record2.set_image_size(500, 500)
-    record2.set_class_map(fridge_class_map)
-    record2.add_labels([3, 2])
-    record2.add_bboxes(
+    record2.set_img_size(ImgSize(500, 500), original=True)
+    record2.detection.set_class_map(class_map)
+    record2.detection.add_labels_by_id([3, 2])
+    record2.detection.add_bboxes(
         [BBox.from_xywh(10, 10, 50, 50), BBox.from_xywh(10, 10, 400, 400)]
     )
 
@@ -38,15 +40,19 @@ def records(fridge_class_map):
 
 @pytest.fixture()
 def preds(records):
-    pred1 = deepcopy(records[0].as_dict())
-    pred1["scores"] = [0.9]
-    pred1.pop("imageid")
+    pred = deepcopy(records[0])
+    pred.add_component(ScoresRecordComponent())
 
-    pred2 = {
-        "labels": [3, 2],
-        "bboxes": [BBox.from_xywh(10, 10, 42, 70), BBox.from_xywh(10, 10, 450, 300)],
-        "scores": [0.8, 0.7],
-    }
+    pred1 = deepcopy(pred)
+    pred1.detection.set_scores([0.9])
+
+    pred2 = deepcopy(pred)
+    pred2.detection.set_labels_by_id([3, 2])
+    pred2.detection.set_bboxes(
+        [BBox.from_xywh(10, 10, 42, 70), BBox.from_xywh(10, 10, 450, 300)]
+    )
+    pred2.detection.set_scores([0.8, 0.7])
+
     return [pred1, pred2]
 
 
@@ -81,7 +87,8 @@ def test_coco_eval(records, preds, expected_coco_output):
 
 def test_coco_metric(records, preds, expected_coco_output):
     coco_metric = COCOMetric(print_summary=True)
-    coco_metric.accumulate(records, preds)
+    preds = [Prediction(pred, gt) for pred, gt in zip(preds, records)]
+    coco_metric.accumulate(preds)
 
     with CaptureStdout() as output:
         coco_metric.finalize()

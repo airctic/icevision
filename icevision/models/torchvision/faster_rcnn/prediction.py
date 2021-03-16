@@ -10,13 +10,14 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.models.utils import _predict_dl
 from icevision.data import *
-from icevision.models.torchvision.faster_rcnn.dataloaders import infer_dl
+from icevision.models.torchvision.faster_rcnn.dataloaders import *
 
 
 @torch.no_grad()
-def predict(
+def _predict_batch(
     model: nn.Module,
     batch: Sequence[torch.Tensor],
+    records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
     device: Optional[torch.device] = None,
 ):
@@ -26,7 +27,23 @@ def predict(
 
     raw_preds = model(*batch)
     return convert_raw_predictions(
-        raw_preds=raw_preds, detection_threshold=detection_threshold
+        raw_preds=raw_preds, records=records, detection_threshold=detection_threshold
+    )
+
+
+def predict(
+    model: nn.Module,
+    dataset: Dataset,
+    detection_threshold: float = 0.5,
+    device: Optional[torch.device] = None,
+) -> List[Prediction]:
+    batch, records = build_infer_batch(dataset)
+    return _predict_batch(
+        model=model,
+        batch=batch,
+        records=records,
+        detection_threshold=detection_threshold,
+        device=device,
     )
 
 
@@ -37,7 +54,7 @@ def predict_dl(
     **predict_kwargs,
 ):
     return _predict_dl(
-        predict_fn=predict,
+        predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
@@ -45,17 +62,22 @@ def predict_dl(
     )
 
 
-def convert_raw_predictions(raw_preds, detection_threshold: float):
+def convert_raw_predictions(
+    raw_preds, records: Sequence[BaseRecord], detection_threshold: float
+):
     return [
         convert_raw_prediction(
-            raw_pred,
+            raw_pred=raw_pred,
+            record=record,
             detection_threshold=detection_threshold,
         )
-        for raw_pred in raw_preds
+        for raw_pred, record in zip(raw_preds, records)
     ]
 
 
-def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
+def convert_raw_prediction(
+    raw_pred: dict, record: BaseRecord, detection_threshold: float
+):
     above_threshold = raw_pred["scores"] >= detection_threshold
 
     labels = raw_pred["labels"][above_threshold]
@@ -71,9 +93,18 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         bbox = BBox.from_xyxy(*xyxy)
         bboxes.append(bbox)
 
-    return {
-        "labels": labels,
-        "scores": scores,
-        "bboxes": bboxes,
-        "above_threshold": above_threshold,
-    }
+    pred = BaseRecord(
+        (
+            ScoresRecordComponent(),
+            ImageRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+        )
+    )
+    pred.detection.set_class_map(record.detection.class_map)
+    pred.detection.set_scores(scores)
+    pred.detection.set_labels_by_id(labels)
+    pred.detection.set_bboxes(bboxes)
+    pred.detection.above_threshold = above_threshold
+
+    return Prediction(pred=pred, ground_truth=record)

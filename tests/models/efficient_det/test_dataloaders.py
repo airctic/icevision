@@ -20,14 +20,20 @@ def bboxes():
 
 @pytest.fixture()
 def records(img, labels, bboxes):
-    Record = create_mixed_record(
-        (ImageRecordMixin, LabelsRecordMixin, BBoxesRecordMixin)
+    record = BaseRecord(
+        (
+            ImageRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+        )
     )
-    record = Record()
-    record.set_imageid(1)
+
+    record.set_record_id(1)
     record.set_img(img)
-    record.add_labels(labels)
-    record.add_bboxes(bboxes)
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id(labels)
+    record.detection.add_bboxes(bboxes)
+
     return [record] * 2
 
 
@@ -86,8 +92,7 @@ def test_efficient_det_valid_dataloader(records):
 @pytest.mark.parametrize(
     "batch_tfms", [None, tfms.batch.ImgPadStack(np.array(0, dtype=np.uint8))]
 )
-def test_efficient_det_build_infer_batch(img, batch_tfms):
-    records = [{"img": img, "height": 4, "width": 4}] * 2
+def test_efficient_det_build_infer_batch(records, batch_tfms, img):
     batch, records = efficientdet.build_infer_batch(records, batch_tfms=batch_tfms)
 
     tensor_img = torch.stack([im2tensor(img), im2tensor(img)])

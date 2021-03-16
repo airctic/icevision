@@ -12,39 +12,15 @@ def samples_source():
 
 
 @pytest.fixture(scope="session")
-def coco_imageid_map():
+def coco_record_id_map():
     return IDMap()
-
-
-@pytest.fixture()
-def fridge_efficientdet_records(samples_source):
-    IMG_SIZE = 384
-    filepath = samples_source / "fridge/odFridgeObjects/images/10.jpg"
-
-    img = open_img(filepath)
-    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
-    img = normalize_imagenet(img)
-
-    labels = [2, 3]
-    bboxes = [BBox.from_xyxy(66, 58, 165, 252), BBox.from_xyxy(114, 216, 342, 282)]
-
-    record = {
-        "filepath": filepath,
-        "imageid": 10,
-        "img": img,
-        "height": IMG_SIZE,
-        "width": IMG_SIZE,
-        "labels": labels,
-        "bboxes": bboxes,
-    }
-
-    return [record]
 
 
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
-    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5, img_size=384)
+    # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
+    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5 + 1, img_size=384)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")
@@ -70,31 +46,31 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
         class_map=fridge_class_map,
     )
 
-    data_splitter = RandomSplitter([0.8, 0.2])
+    data_splitter = RandomSplitter([0.5, 0.5], seed=42)
     train_records, valid_records = parser.parse(data_splitter)
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
-    train_ds = Dataset(train_records[:2], tfms_)
-    valid_ds = Dataset(valid_records[:2], tfms_)
+    train_ds = Dataset(train_records, tfms_)
+    valid_ds = Dataset(valid_records, tfms_)
 
     return train_ds, valid_ds
 
 
-@pytest.fixture()
-def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_efficientdet_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = efficientdet.train_dl(train_ds, batch_size=2)
-    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=2)
+    train_dl = efficientdet.train_dl(train_ds, batch_size=request.param)
+    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
 
-@pytest.fixture()
-def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_faster_rcnn_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = faster_rcnn.train_dl(train_ds, batch_size=2)
-    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2)
+    train_dl = faster_rcnn.train_dl(train_ds, batch_size=request.param)
+    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
@@ -143,23 +119,26 @@ def coco_dir():
 
 @pytest.fixture(scope="module")
 def coco_bbox_parser(coco_dir):
-    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=False)
+    return parsers.COCOBBoxParser(
+        annotations_filepath=coco_dir / "annotations.json",
+        img_dir=coco_dir / "images",
+    )
 
 
 @pytest.fixture(scope="module")
-def coco_mask_parser(coco_dir, coco_imageid_map):
-    return parsers.coco(
-        coco_dir / "annotations.json",
-        coco_dir / "images",
-        mask=True,
-        idmap=coco_imageid_map,
+def coco_mask_parser(coco_dir, coco_record_id_map):
+    return parsers.COCOMaskParser(
+        annotations_filepath=coco_dir / "annotations.json",
+        img_dir=coco_dir / "images",
+        idmap=coco_record_id_map,
     )
 
 
 @pytest.fixture(scope="module")
 def coco_keypoints_parser(coco_dir):
     return parsers.COCOKeyPointsParser(
-        coco_dir / "keypoints_annotations.json", coco_dir / "images"
+        annotations_filepath=coco_dir / "keypoints_annotations.json",
+        img_dir=coco_dir / "images",
     )
 
 
@@ -170,12 +149,12 @@ def coco_mask_records(coco_mask_parser):
 
 @pytest.fixture
 def coco_record(coco_mask_records):
-    return coco_mask_records[0].copy()
+    return deepcopy(coco_mask_records[0])
 
 
 @pytest.fixture
 def coco_sample(coco_record):
-    return coco_record.load().copy()
+    return deepcopy(coco_record.load())
 
 
 @pytest.fixture
@@ -275,17 +254,12 @@ class OCHumanKeypointsMetadata(KeypointsMetadata):
 
 @pytest.fixture(scope="module")
 def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
-    class OCHumanParser(
-        parsers.Parser,
-        parsers.FilepathMixin,
-        parsers.KeyPointsMixin,
-        parsers.LabelsMixin,
-        parsers.BBoxesMixin,
-    ):
+    class OCHumanParser(Parser):
         def __init__(self, annotations_filepath, img_dir):
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
-            super().__init__()
+            self.class_map = ClassMap(["person"])
+            super().__init__(record=self.template_record())
 
         def __iter__(self):
             yield from self.annotations_dict["images"]
@@ -293,8 +267,27 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def __len__(self):
             return len(self.annotations_dict["images"])
 
-        def imageid(self, o):
+        def template_record(self):
+            return BaseRecord(
+                (
+                    FilepathRecordComponent(),
+                    KeyPointsRecordComponent(),
+                    InstancesLabelsRecordComponent(),
+                    BBoxesRecordComponent(),
+                )
+            )
+
+        def record_id(self, o):
             return int(o["image_id"])
+
+        def parse_fields(self, o, record: BaseRecord) -> None:
+            record.set_filepath(self.filepath(o))
+            record.set_img_size(self.img_size(o))
+
+            record.detection.set_class_map(self.class_map)
+            record.detection.add_labels(self.labels(o))
+            record.detection.add_bboxes(self.bboxes(o))
+            record.detection.add_keypoints(self.keypoints(o))
 
         def filepath(self, o):
             return self.img_dir / o["file_name"]
@@ -306,8 +299,8 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
                 if kps["keypoints"] is not None
             ]
 
-        def image_width_height(self, o) -> Tuple[int, int]:
-            return get_image_size(self.filepath(o))
+        def img_size(self, o) -> Tuple[int, int]:
+            return get_img_size(self.filepath(o))
 
         def labels(self, o) -> List[Hashable]:
             return [
@@ -350,3 +343,80 @@ def ochuman_keypoints_dls(ochuman_ds) -> Tuple[DataLoader, DataLoader]:
     valid_dl = keypoint_rcnn.valid_dl(valid_ds, batch_size=2)
 
     return train_dl, valid_dl
+
+
+### New conftest ###
+@pytest.fixture
+def object_detection_record(samples_source):
+    record = ObjectDetectionRecord()
+
+    record.set_record_id(1)
+    record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
+    record.set_img_size(ImgSize(width=500, height=375))
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
+    )
+
+    return record
+
+
+@pytest.fixture
+def instance_segmentation_record(object_detection_record):
+    record = object_detection_record
+    record.add_component(MasksRecordComponent())
+
+    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+
+    return record
+
+
+@pytest.fixture
+def empty_annotations_record():
+    record = BaseRecord(
+        (
+            ImageRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+            MasksRecordComponent(),
+        )
+    )
+
+    img = 255 * np.ones((4, 4, 3), dtype=np.uint8)
+    record.set_record_id(1)
+    record.set_img(img)
+
+    return record
+
+
+@pytest.fixture
+def infer_dataset(samples_source):
+    img = open_img(samples_source / "voc/JPEGImages/2007_000063.jpg")
+    return Dataset.from_images([img] * 2)
+
+
+component_field = {
+    RecordIDRecordComponent: "record_id",
+    ClassMapRecordComponent: "class_map",
+    FilepathRecordComponent: "img",
+    ImageRecordComponent: "img",
+    SizeRecordComponent: "img_size",
+    InstancesLabelsRecordComponent: "labels",
+    BBoxesRecordComponent: "bboxes",
+    MasksRecordComponent: "masks",
+    KeyPointsRecordComponent: "keypoints",
+    AreasRecordComponent: "areas",
+    IsCrowdsRecordComponent: "iscrowds",
+}
+
+
+@pytest.fixture
+def check_attributes_on_component():
+    def _inner(record):
+        for component in record.components:
+            name = component_field[component.__class__]
+            task_subfield = getattr(record, component.task.name)
+            assert getattr(task_subfield, name) is getattr(component, name)
+
+    return _inner

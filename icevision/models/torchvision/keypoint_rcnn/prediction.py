@@ -4,16 +4,19 @@ from itertools import chain
 from icevision.imports import *
 from icevision.core import *
 from icevision.utils import *
+from icevision.data import *
 from icevision.models.utils import _predict_dl
+from icevision.models.torchvision.keypoint_rcnn.dataloaders import *
 from icevision.models.torchvision.faster_rcnn.prediction import (
     convert_raw_prediction as faster_convert_raw_prediction,
 )
 
 
 @torch.no_grad()
-def predict(
+def _predict_batch(
     model: nn.Module,
     batch: Sequence[torch.Tensor],
+    records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
     device: Optional[torch.device] = None,
 ):
@@ -23,7 +26,23 @@ def predict(
 
     raw_preds = model(*batch)
     return convert_raw_predictions(
-        raw_preds=raw_preds, detection_threshold=detection_threshold
+        raw_preds=raw_preds, records=records, detection_threshold=detection_threshold
+    )
+
+
+def predict(
+    model: nn.Module,
+    dataset: Dataset,
+    detection_threshold: float = 0.5,
+    device: Optional[torch.device] = None,
+) -> List[Prediction]:
+    batch, records = build_infer_batch(dataset)
+    return _predict_batch(
+        model=model,
+        batch=batch,
+        records=records,
+        detection_threshold=detection_threshold,
+        device=device,
     )
 
 
@@ -34,7 +53,7 @@ def predict_dl(
     **predict_kwargs,
 ):
     return _predict_dl(
-        predict_fn=predict,
+        predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
@@ -42,22 +61,25 @@ def predict_dl(
     )
 
 
-def convert_raw_predictions(raw_preds, detection_threshold: float):
+def convert_raw_predictions(raw_preds, records, detection_threshold: float):
     return [
         convert_raw_prediction(
             raw_pred,
+            record=record,
             detection_threshold=detection_threshold,
         )
-        for raw_pred in raw_preds
+        for raw_pred, record in zip(raw_preds, records)
     ]
 
 
-def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
-    preds = faster_convert_raw_prediction(
-        raw_pred=raw_pred, detection_threshold=detection_threshold
+def convert_raw_prediction(
+    raw_pred: dict, record: BaseRecord, detection_threshold: float
+):
+    pred = faster_convert_raw_prediction(
+        raw_pred=raw_pred, record=record, detection_threshold=detection_threshold
     )
 
-    above_threshold = preds["above_threshold"]
+    above_threshold = pred.detection.above_threshold
     kps = raw_pred["keypoints"][above_threshold]
     keypoints = []
     for k in kps:
@@ -68,9 +90,10 @@ def convert_raw_prediction(raw_pred: dict, detection_threshold: float):
         if sum(k) > 0:
             keypoints.append(KeyPoints.from_xyv(k, None))
 
-    preds["keypoints"] = keypoints
-    preds["keypoints_scores"] = (
+    pred.pred.add_component(KeyPointsRecordComponent())
+    pred.pred.detection.add_keypoints(keypoints)
+    pred.pred.detection.keypoints_scores = (
         raw_pred["keypoints_scores"][above_threshold].detach().cpu().numpy()
     )
 
-    return preds
+    return pred

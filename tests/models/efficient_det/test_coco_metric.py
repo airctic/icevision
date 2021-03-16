@@ -29,10 +29,12 @@ def test_efficientdet_coco_metric(
 
     raw_preds = fridge_efficientdet_model(*batch)
 
-    preds = efficientdet.convert_raw_predictions(raw_preds["detections"], 0)
+    preds = efficientdet.convert_raw_predictions(
+        raw_preds["detections"], fridge_efficientdet_records, 0
+    )
 
     coco_metric = COCOMetric(print_summary=True)
-    coco_metric.accumulate(records, preds)
+    coco_metric.accumulate(preds)
 
     with CaptureStdout() as output:
         coco_metric.finalize()

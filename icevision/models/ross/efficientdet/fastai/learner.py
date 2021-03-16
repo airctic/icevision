@@ -34,4 +34,14 @@ def learner(
         **learner_kwargs,
     )
 
+    # HACK: patch AvgLoss (in original, find_bs looks at the first element in dictionary and gives errors)
+    class EffDetAvgLoss(fastai.AvgLoss):
+        def accumulate(self, learn):
+            bs = len(first(learn.yb)["cls"])
+            self.total += learn.to_detach(learn.loss.mean()) * bs
+            self.count += bs
+
+    recorder = [cb for cb in learn.cbs if isinstance(cb, fastai.Recorder)][0]
+    recorder.loss = EffDetAvgLoss()
+
     return learn

@@ -110,9 +110,9 @@ def _img_meta_mask(record):
 
 
 def _masks(record):
-    if len(record["masks"]) == 0:
+    if len(record.detection.masks) == 0:
         raise RuntimeError("Negative samples still needs to be implemented")
     else:
-        mask = record["masks"].data
+        mask = record.detection.masks.data
         _, h, w = mask.shape
         return BitmapMasks(mask, height=h, width=w)
