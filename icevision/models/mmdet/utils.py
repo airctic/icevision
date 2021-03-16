@@ -1,6 +1,4 @@
-__all__ = [
-    "param_groups",
-]
+__all__ = ["param_groups"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -21,7 +19,7 @@ def param_groups(model):
         layers += [nn.Sequential(model.rpn_head, model.roi_head)]
     else:
         raise RuntimeError(
-            "{model} must inheret either from SingleStageDetector or TwoStageDetector class"
+            "{model} must inherit either from SingleStageDetector or TwoStageDetector class"
         )
 
     _param_groups = [list(layer.parameters()) for layer in layers]
