@@ -259,7 +259,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
             self.class_map = ClassMap(["person"])
-            super().__init__(record=self.template_record())
+            super().__init__(template_record=self.template_record())
 
         def __iter__(self):
             yield from self.annotations_dict["images"]

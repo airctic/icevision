@@ -42,7 +42,7 @@ class VIABaseParser(Parser):
         class_map: ClassMap,
         label_field: str = "label",
     ):
-        super().__init__(record=self.template_record())
+        super().__init__(template_record=self.template_record())
         self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
         self.label_field = label_field

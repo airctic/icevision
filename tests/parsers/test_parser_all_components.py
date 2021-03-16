@@ -19,7 +19,7 @@ def dummy_parser_all_components():
                     IsCrowdsRecordComponent(),
                 )
             )
-            super().__init__(record=record)
+            super().__init__(template_record=record)
 
         def __iter__(self) -> Any:
             raise NotImplementedError

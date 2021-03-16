@@ -20,7 +20,7 @@ class SimpleParser(parsers.Parser):
     def __init__(self, data):
         self.data = data
         super().__init__(
-            record=BaseRecord(
+            template_record=BaseRecord(
                 (
                     FilepathRecordComponent(),
                     InstancesLabelsRecordComponent(),

@@ -50,7 +50,7 @@ class COCOBaseParser(Parser):
             classes[i] = name
         self.class_map = ClassMap(classes)
 
-        super().__init__(record=self.template_record(), idmap=idmap)
+        super().__init__(template_record=self.template_record(), idmap=idmap)
 
     def __iter__(self):
         yield from self.annotations_dict["annotations"]
