@@ -70,10 +70,17 @@ def draw_sample(
         getattr(sample.detection, "bboxes", []),
         getattr(sample.detection, "masks", []),
         getattr(sample.detection, "keypoints", []),
+<<<<<<< HEAD
         # getattr(sample, tasks.detection.name, {}).get("labels", []),
         # getattr(sample, tasks.detection.name, {}).get("bboxes", []),
         # getattr(sample, tasks.detection.name, {}).get("masks", []),
         # getattr(sample, tasks.detection.name, {}).get("keypoints", []),
+=======
+        # getattr(sample, tasks.detect.name, {}).get("labels", []),
+        # getattr(sample, tasks.detect.name, {}).get("bboxes", []),
+        # getattr(sample, tasks.detect.name, {}).get("masks", []),
+        # getattr(sample, tasks.detect.name, {}).get("keypoints", []),
+>>>>>>> detect -> detection
     ):
         # random color by default
         color = (np.random.random(3) * 0.6 + 0.4) * 255
