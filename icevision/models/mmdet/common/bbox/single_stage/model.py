@@ -37,7 +37,7 @@ def model(
             download_url(weights_url, weights_path)
 
     if cfg_filepath:
-        cfg = Config.fromfile(cfg)
+        cfg = Config.fromfile(cfg_filepath)
     else:
         raise RuntimeError("model must have a valid configuration file")
 
