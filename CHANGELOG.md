@@ -7,8 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 **BREAKING:** API Refactor
 
 ## Changed
-**Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
-**Breaking:** Renamed `imageid` to `record_id`
+- **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
+- **Breaking:** Renamed `imageid` to `record_id`
+- Removed all dependencies on `cv2` for visualisation
+- Added a ton of visualisation goodies to `icevision.visualize.draw_data.draw_sample` - user can now
+  - use custom fonts
+  - control mask thickness
+  - control mask blending
+  - prettify labels -- show confidence score & capitalise label
+  - plot specific and/or exclude specific labels
+  - pass in a dictionary mapping labels to specific colors
 
 ## [0.6.0b1]
 ### Added
