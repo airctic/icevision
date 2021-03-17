@@ -1,3 +1,9 @@
+__all__ = [
+    "r50_fpn_1x",
+    "r101_fpn_1x",
+    "x101_64_4d_fpn_1x",
+]
+
 r50_fpn_1x = {
     "model_name": "retinanet",
     "cfg_filepath": "mmdetection/configs/_base_/models/retinanet_r50_fpn.py",
