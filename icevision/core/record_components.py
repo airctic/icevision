@@ -116,7 +116,8 @@ class ImageRecordComponent(RecordComponent):
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
     def _repr(self) -> List[str]:
-        return [f"Image: {self.img}"]
+        height, width, dims = self.img.shape
+        return [f"Image: {width}x{height}x{dims} <np.ndarray> Image"]
 
     def as_dict(self) -> dict:
         return {"img": self.img}
