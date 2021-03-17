@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Changed
 **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
 **Breaking:** Renamed `imageid` to `record_id`
+**Breaking:** Added parameter `is_new` to `Parser.parse_fields`
 
 ## [0.6.0b1]
 ### Added

@@ -39,7 +39,7 @@ class SimpleParser(parsers.Parser):
     def labels(self, o):
         return o["labels"]
 
-    def parse_fields(self, o, record):
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(o["filepath"])
         record.set_img_size(ImgSize(100, 100))
 

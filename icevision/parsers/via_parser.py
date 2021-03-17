@@ -66,7 +66,7 @@ class VIABaseParser(Parser):
     def record_id(self, o) -> Hashable:
         return o["filename"]
 
-    def parse_fields(self, o, record):
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(self.filepath(o))
         record.set_img_size(self.image_width_height(o))
         record.detection.set_class_map(self.class_map)
@@ -105,8 +105,8 @@ class VIABBoxParser(VIABaseParser):
     are converted into bboxes that surround the entire shape.
     """
 
-    def parse_fields(self, o, record):
-        super().parse_fields(o, record)
+    def parse_fields(self, o, record, is_new):
+        super().parse_fields(o, record, False)
         record.detection.add_bboxes(self.bboxes(o))
 
     def bboxes(self, o) -> List[BBox]:

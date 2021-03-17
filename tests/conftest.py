@@ -280,7 +280,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def record_id(self, o):
             return int(o["image_id"])
 
-        def parse_fields(self, o, record: BaseRecord) -> None:
+        def parse_fields(self, o, record: BaseRecord, is_new) -> None:
             record.set_filepath(self.filepath(o))
             record.set_img_size(self.img_size(o))
 

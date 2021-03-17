@@ -24,7 +24,7 @@ def dummy_parser_all_components():
         def __iter__(self) -> Any:
             raise NotImplementedError
 
-        def parse_fields(self, o, record: BaseRecord) -> None:
+        def parse_fields(self, o, record: BaseRecord, is_new) -> None:
             record.set_filepath(__file__)
             record.set_img_size(ImgSize(480, 420))
 
@@ -43,7 +43,7 @@ def test_parser_parse_fields(dummy_parser_all_components):
     parser = dummy_parser_all_components()
 
     record = parser.create_record()
-    parser.parse_fields(None, record)
+    parser.parse_fields(None, record, is_new=True)
 
     assert record.filepath == Path(__file__)
     assert record.height == 420

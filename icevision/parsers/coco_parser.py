@@ -89,7 +89,7 @@ class COCOBaseParser(Parser):
     def iscrowds(self, o) -> List[bool]:
         return [o["iscrowd"]]
 
-    def parse_fields(self, o, record):
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(self.filepath(o))
         record.set_img_size(self.img_size(o))
 
@@ -109,8 +109,8 @@ class COCOBBoxParser(COCOBaseParser):
         record.add_component(BBoxesRecordComponent())
         return record
 
-    def parse_fields(self, o, record):
-        super().parse_fields(o, record)
+    def parse_fields(self, o, record, is_new):
+        super().parse_fields(o, record, False)
         record.detection.add_bboxes(self.bboxes(o))
 
 
@@ -127,8 +127,8 @@ class COCOMaskParser(COCOBBoxParser):
         record.add_component(MasksRecordComponent())
         return record
 
-    def parse_fields(self, o, record):
-        super().parse_fields(o, record)
+    def parse_fields(self, o, record, is_new):
+        super().parse_fields(o, record, False)
         record.detection.add_masks(self.masks(o))
 
 
@@ -159,8 +159,8 @@ class COCOKeyPointsParser(COCOBBoxParser):
     def bboxes(self, o) -> List[BBox]:
         return [BBox.from_xywh(*o["bbox"])] if sum(o["keypoints"]) > 0 else []
 
-    def parse_fields(self, o, record):
-        super().parse_fields(o, record)
+    def parse_fields(self, o, record, is_new):
+        super().parse_fields(o, record, False)
         record.detection.add_keypoints(self.keypoints(o))
 
 
