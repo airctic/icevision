@@ -64,7 +64,7 @@ def get_default_font() -> Path:
 
     font_file = font_dir / "SpaceGrotesk-Medium.ttf"
     if not font_file.exists():
-        URL = "https://www.dropbox.com/s/m9vn5tsi3aqj9e4/SpaceGrotesk-Medium.ttf"
+        URL = "https://raw.githubusercontent.com/airctic/storage/master/SpaceGrotesk-Medium.ttf"
         print(
             f"Downloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from {URL} to {font_file}"
         )
