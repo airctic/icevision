@@ -60,16 +60,18 @@ def draw_sample(
     * include_only: (Optional) List of labels that must be exclusively plotted. Takes
                     precedence over `exclude_labels` (?)
     """
-    img = sample["img"].copy()
+    img = sample.img.copy()
+    class_map = sample.detection.class_map
     if denormalize_fn is not None:
         img = denormalize_fn(img)
-
     # TODO, HACK: temporary solution, draw will be refactored to record
-    for label, bbox, mask, keypoints in itertools.zip_longest(
+    for label, bbox, mask, keypoints, score in itertools.zip_longest(
         getattr(sample.detection, "labels", []),
         getattr(sample.detection, "bboxes", []),
         getattr(sample.detection, "masks", []),
         getattr(sample.detection, "keypoints", []),
+        # TODO, HACK: Scores are not stored in `sample.detection`...?
+        getattr(sample.detection, "scores", []),
         # getattr(sample, tasks.detection.name, {}).get("labels", []),
         # getattr(sample, tasks.detection.name, {}).get("bboxes", []),
         # getattr(sample, tasks.detection.name, {}).get("masks", []),
