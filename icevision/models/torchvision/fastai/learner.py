@@ -27,7 +27,7 @@ def rcnn_learner(
     # HACK: patch AvgLoss (in original, find_bs gives errors)
     class RCNNAvgLoss(fastai.AvgLoss):
         def accumulate(self, learn):
-            bs = len(learn.yb)
+            bs = len(first(learn.yb))
             self.total += fastai.to_detach(learn.loss.mean()) * bs
             self.count += bs
 

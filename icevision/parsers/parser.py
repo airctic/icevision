@@ -42,14 +42,14 @@ class Parser(ParserInterface, ABC):
 
     def __init__(
         self,
-        record,
+        template_record,
         class_map: Optional[ClassMap] = None,
         idmap: Optional[IDMap] = None,
     ):
         # self.class_map = class_map or ClassMap()
         # if class_map is None:
         #     self.class_map.unlock()
-        self._record = record
+        self.template_record = template_record
         self.idmap = idmap or IDMap()
 
     @abstractmethod
@@ -57,11 +57,11 @@ class Parser(ParserInterface, ABC):
         pass
 
     @abstractmethod
-    def parse_fields(self, o, record: BaseRecord) -> None:
+    def parse_fields(self, o, record: BaseRecord, is_new: bool) -> None:
         pass
 
     def create_record(self) -> BaseRecord:
-        return deepcopy(self._record)
+        return deepcopy(self.template_record)
 
     def prepare(self, o):
         pass
@@ -78,13 +78,15 @@ class Parser(ParserInterface, ABC):
 
                 try:
                     record = records[record_id]
+                    is_new = False
                 except KeyError:
                     record = self.create_record()
                     # HACK: fix record_id (needs to be transformed with idmap)
                     record.set_record_id(record_id)
                     records[record_id] = record
+                    is_new = True
 
-                self.parse_fields(sample, record)
+                self.parse_fields(sample, record=record, is_new=is_new)
 
             except AbortParseRecord as e:
                 logger.warning(
@@ -157,8 +159,8 @@ class Parser(ParserInterface, ABC):
 
         template = CodeTemplate()
         template.add_line(f"class MyParser({cls.__name__}):", 0)
-        template.add_line(f"def __init__(self, record):", 1)
-        template.add_line(f"super().__init__(record=record)", 2)
+        template.add_line(f"def __init__(self, template_record):", 1)
+        template.add_line(f"super().__init__(template_record=template_record)", 2)
         template.add_line(f"def __iter__(self) -> Any:", 1)
         template.add_line(f"def __len__(self) -> int:", 1)
         # template.add_line("def create_record(self) -> BaseRecord:", 1)

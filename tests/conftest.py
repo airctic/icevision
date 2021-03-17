@@ -46,7 +46,7 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
         class_map=fridge_class_map,
     )
 
-    data_splitter = RandomSplitter([0.8, 0.2], seed=42)
+    data_splitter = RandomSplitter([0.5, 0.5], seed=42)
     train_records, valid_records = parser.parse(data_splitter)
 
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
@@ -57,20 +57,20 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
     return train_ds, valid_ds
 
 
-@pytest.fixture()
-def fridge_efficientdet_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_efficientdet_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = efficientdet.train_dl(train_ds, batch_size=2)
-    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=2)
+    train_dl = efficientdet.train_dl(train_ds, batch_size=request.param)
+    valid_dl = efficientdet.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
 
-@pytest.fixture()
-def fridge_faster_rcnn_dls(fridge_ds) -> Tuple[DataLoader, DataLoader]:
+@pytest.fixture(params=[2, 3])
+def fridge_faster_rcnn_dls(fridge_ds, request) -> Tuple[DataLoader, DataLoader]:
     train_ds, valid_ds = fridge_ds
-    train_dl = faster_rcnn.train_dl(train_ds, batch_size=2)
-    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=2)
+    train_dl = faster_rcnn.train_dl(train_ds, batch_size=request.param)
+    valid_dl = faster_rcnn.valid_dl(valid_ds, batch_size=request.param)
 
     return train_dl, valid_dl
 
@@ -259,7 +259,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
             self.class_map = ClassMap(["person"])
-            super().__init__(record=self.template_record())
+            super().__init__(template_record=self.template_record())
 
         def __iter__(self):
             yield from self.annotations_dict["images"]
@@ -280,7 +280,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def record_id(self, o):
             return int(o["image_id"])
 
-        def parse_fields(self, o, record: BaseRecord) -> None:
+        def parse_fields(self, o, record: BaseRecord, is_new) -> None:
             record.set_filepath(self.filepath(o))
             record.set_img_size(self.img_size(o))
 

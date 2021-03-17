@@ -20,7 +20,7 @@ class SimpleParser(parsers.Parser):
     def __init__(self, data):
         self.data = data
         super().__init__(
-            record=BaseRecord(
+            template_record=BaseRecord(
                 (
                     FilepathRecordComponent(),
                     InstancesLabelsRecordComponent(),
@@ -28,6 +28,7 @@ class SimpleParser(parsers.Parser):
                 )
             )
         )
+        self.class_map = ClassMap(["a", "b"])
 
     def __iter__(self):
         yield from self.data
@@ -38,21 +39,17 @@ class SimpleParser(parsers.Parser):
     def labels(self, o):
         return o["labels"]
 
-    def parse_fields(self, o, record):
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(o["filepath"])
         record.set_img_size(ImgSize(100, 100))
 
-        record.detection.set_class_map(ClassMap(["a", "b"]))
+        record.detection.set_class_map(self.class_map)
         record.detection.add_labels(self.labels(o))
         record.detection.add_bboxes([BBox.from_xyxy(*pnts) for pnts in o["bboxes"]])
 
 
 def test_parser(data, tmpdir):
     parser = SimpleParser(data)
-    assert len(parser.class_map) == 1
-    assert parser.class_map._lock == False
-    assert parser.class_map.get_by_name("background") == 0
-    assert parser.class_map.get_by_id(0) == "background"
 
     cache_filepath = Path(tmpdir / "simple_parser.pkl")
     records = parser.parse(data_splitter=SingleSplitSplitter())[0]
@@ -71,7 +68,9 @@ def test_parser(data, tmpdir):
     # }
     assert record.record_id == 1
     assert record.filepath == Path(__file__)
-    assert record.detection.class_map == ClassMap(["a", "b"])
+    assert len(record.detection.class_map) == 3
+    assert record.detection.class_map.get_by_name("background") == 0
+    assert record.detection.class_map.get_by_id(0) == "background"
     assert record.detection.labels == [1, 2]
     assert record.detection.bboxes == [
         BBox.from_xyxy(1, 2, 3, 4),
@@ -92,7 +91,7 @@ def test_parser(data, tmpdir):
         assert loaded_record.detection.labels == record.detection.labels
         assert loaded_record.detection.bboxes == record.detection.bboxes
 
-    parser = SimpleParser(data, class_map=ClassMap(["a", "b"]))
+    parser = SimpleParser(data)
     assert len(parser.class_map) == 3
     assert parser.class_map._lock == True
 

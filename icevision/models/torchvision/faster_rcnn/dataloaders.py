@@ -75,7 +75,7 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 def _build_train_sample(
     record: RecordType,
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-    assert len(record.detection.labels) == len(record.detection.labels)
+    assert len(record.detection.labels) == len(record.detection.bboxes)
 
     image = im2tensor(record.img)
     target = {}
