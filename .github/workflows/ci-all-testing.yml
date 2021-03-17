@@ -27,6 +27,7 @@ jobs:
         pip install torch=="1.7.1+cpu" torchvision=="0.8.2+cpu" -f https://download.pytorch.org/whl/torch_stable.html
         pip install mmcv-full=="latest+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
         pip install mmdet
+        pip install git+git://github.com/airctic/yolov5.git --upgrade
         pip install -e ".[all,dev]"
 
     - name: Lint with flake8
