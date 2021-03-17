@@ -72,6 +72,9 @@ def show_pred(
     display_bbox: bool = True,
     display_mask: bool = True,
     show: bool = True,
+    ax: plt.Axes = None,
+    figsize=None,
+    annotation=None,
     **draw_sample_kwargs,
 ) -> None:
     actual = draw_sample(
