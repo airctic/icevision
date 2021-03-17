@@ -9,7 +9,7 @@ from icevision.utils.download_utils import *
 
 
 def model(
-    backbone_info,
+    backbone,
     num_classes: int,
     pretrained: bool = True,
     checkpoints_path: Optional[Union[str, Path]] = None,
@@ -18,9 +18,9 @@ def model(
 
     save_dir = None
 
-    model_name = backbone_info["model_name"]
-    cfg_filepath = backbone_info["cfg_filepath"]
-    weights_url = backbone_info["weights_url"]
+    model_name = backbone["model_name"]
+    cfg_filepath = backbone["cfg_filepath"]
+    weights_url = backbone["weights_url"]
 
     # download weights
     if pretrained and weights_url:
