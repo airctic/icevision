@@ -28,7 +28,7 @@ def test_draw_pred():
 
 
 def test_draw_keypoints(keypoints_img_128372):
-    img = np.zeros((427, 640, 3))
+    img = np.zeros((427, 640, 3)).astype(np.uint8)
     color = (np.random.random(3) * 0.6 + 0.4) * 255
     kps = KeyPoints.from_xyv(keypoints_img_128372, COCOKeypointsMetadata)
     img = draw_keypoints(img=img, kps=kps, color=color)

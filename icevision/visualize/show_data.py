@@ -26,6 +26,7 @@ def show_sample(
     show: bool = True,
     ax: plt.Axes = None,
     figsize: Tuple[int, int] = None,
+    **draw_sample_kwargs,
 ) -> None:
     img = draw_sample(
         sample=sample,
@@ -35,6 +36,7 @@ def show_sample(
         display_bbox=display_bbox,
         display_mask=display_mask,
         display_keypoints=display_keypoints,
+        **draw_sample_kwargs,
     )
     show_img(img=img, ax=ax, show=show, figsize=figsize)
 
@@ -49,6 +51,7 @@ def show_record(
     ax: plt.Axes = None,
     show: bool = False,
     figsize: Tuple[int, int] = None,
+    **draw_sample_kwargs,
 ) -> None:
     img = draw_record(
         record=record,
@@ -57,6 +60,7 @@ def show_record(
         display_bbox=display_bbox,
         display_mask=display_mask,
         display_keypoints=display_keypoints,
+        **draw_sample_kwargs,
     )
     show_img(img=img, ax=ax, show=show, figsize=figsize)
 
@@ -71,6 +75,7 @@ def show_pred(
     ax: plt.Axes = None,
     figsize=None,
     annotation=None,
+    **draw_sample_kwargs,
 ) -> None:
     actual = draw_sample(
         sample=pred.ground_truth,
@@ -86,6 +91,7 @@ def show_pred(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        **draw_sample_kwargs,
     )
 
     if ax is None:
@@ -123,6 +129,7 @@ def show_records(
     ncols: int = 1,
     figsize=None,
     show: bool = False,
+    **draw_sample_kwargs,
 ) -> None:
     partials = [
         partial(
@@ -133,6 +140,7 @@ def show_records(
             display_mask=display_mask,
             class_map=class_map,
             show=False,
+            **draw_sample_kwargs,
         )
         for record in records
     ]
@@ -149,6 +157,7 @@ def show_samples(
     ncols: int = 1,
     figsize=None,
     show=False,
+    **draw_sample_kwargs,
 ) -> None:
     partials = [
         partial(
@@ -160,6 +169,7 @@ def show_samples(
             display_mask=display_mask,
             class_map=class_map,
             show=False,
+            **draw_sample_kwargs,
         )
         for sample in samples
     ]
@@ -175,7 +185,8 @@ def show_preds(
     figsize=None,
     show=False,
     annotations=None,
-    ncols=None,  # TODO: Not used
+    ncols=None,  # TODO: Not used,
+    **draw_sample_kwargs,
 ) -> None:
     annotations = annotations or [None] * len(preds)
     partials = [
@@ -188,6 +199,7 @@ def show_preds(
             display_mask=display_mask,
             show=False,
             annotation=annotation,
+            **draw_sample_kwargs,
         )
         for pred, annotation in zip(preds, annotations)
     ]
