@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Changed
 - **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
 - **Breaking:** Renamed `imageid` to `record_id`
+- **Breaking:** Added parameter `is_new` to `Parser.parse_fields`
 - Removed all dependencies on `cv2` for visualisation
 - Added a ton of visualisation goodies to `icevision.visualize.draw_data.draw_sample` - user can now
   - use custom fonts

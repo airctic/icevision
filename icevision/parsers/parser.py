@@ -57,7 +57,7 @@ class Parser(ParserInterface, ABC):
         pass
 
     @abstractmethod
-    def parse_fields(self, o, record: BaseRecord) -> None:
+    def parse_fields(self, o, record: BaseRecord, is_new: bool) -> None:
         pass
 
     def create_record(self) -> BaseRecord:
@@ -78,13 +78,15 @@ class Parser(ParserInterface, ABC):
 
                 try:
                     record = records[record_id]
+                    is_new = False
                 except KeyError:
                     record = self.create_record()
                     # HACK: fix record_id (needs to be transformed with idmap)
                     record.set_record_id(record_id)
                     records[record_id] = record
+                    is_new = True
 
-                self.parse_fields(sample, record)
+                self.parse_fields(sample, record=record, is_new=is_new)
 
             except AbortParseRecord as e:
                 logger.warning(
