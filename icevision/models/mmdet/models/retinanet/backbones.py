@@ -7,7 +7,7 @@ __all__ = [
     "r101_fpn_2x",
     "x101_32x4d_fpn_1x",
     "x101_32x4d_fpn_2x",
-    "x101_64_4d_fpn_1x",
+    "x101_64x4d_fpn_1x",
     "x101_64x4d_fpn_2x",
 ]
 
