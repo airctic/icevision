@@ -48,7 +48,7 @@ def _test_preds(preds, pred_count=2, mask=False):
     # assert len(preds) == pred_count
 
     pred = preds[0].pred
-    assert isinstance(pred.detection.labels, list)
+    assert isinstance(pred.detection.label_ids, list)
     assert isinstance(pred.detection.bboxes, list)
     assert isinstance(pred.detection.scores, np.ndarray)
     if mask:

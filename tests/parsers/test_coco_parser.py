@@ -36,7 +36,7 @@ def test_bbox_parser(coco_dir, coco_bbox_parser):
 
     assert len(record.detection.class_map) == 91
     assert record.detection.class_map.get_by_id(90) == "toothbrush"
-    assert record.detection.labels == [4]
+    assert record.detection.label_ids == [4]
     assert pytest.approx(record.detection.bboxes[0].xyxy) == (
         175.14,
         175.68,

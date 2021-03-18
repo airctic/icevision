@@ -49,7 +49,7 @@ def test_parser_parse_fields(dummy_parser_all_components):
     assert record.height == 420
     assert record.width == 480
 
-    assert record.detection.labels == [1]
+    assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 4)]
     assert record.detection.masks.erles == [{"size": [420, 480], "counts": b"PlT6"}]
     assert record.detection.areas == [4.2]

@@ -131,7 +131,7 @@ def test_record_wrong_num_annotations(record_wrong_num_annotations):
 def test_record_autofix(record):
     success_dict = record.autofix()
 
-    assert record.detection.labels == [1]
+    assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 3)]
     assert len(record.detection.masks) == 1
 
@@ -154,6 +154,6 @@ def test_autofix_records(
 
     assert len(records) == 2
     record = records[0]
-    assert record.detection.labels == [1]
+    assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 3)]
     assert len(record.detection.masks) == 1

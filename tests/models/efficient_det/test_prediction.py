@@ -8,7 +8,7 @@ def _test_preds(preds):
     pred = preds[0].pred
     assert len(pred.detection.scores) == 2
 
-    np.testing.assert_equal(pred.detection.labels, [2, 1])
+    np.testing.assert_equal(pred.detection.label_ids, [2, 1])
 
     assert isinstance(pred.detection.bboxes[0], BBox)
     bboxes_np = np.array([bbox.xyxy for bbox in pred.detection.bboxes])
@@ -51,4 +51,4 @@ def test_efficient_det_predict_dl_threshold(
         detection_threshold=1.0,
     )
 
-    assert len(preds[0].pred.detection.labels) == 0
+    assert len(preds[0].pred.detection.label_ids) == 0

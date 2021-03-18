@@ -43,7 +43,7 @@ def test_crop_transform(records, check_attributes_on_component):
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.detection.labels) == 1
+    assert len(tfmed.detection.label_ids) == 1
     assert len(tfmed.detection.bboxes) == 1
     assert len(tfmed.detection.masks) == 1
     assert len(tfmed.detection.iscrowds) == 1
@@ -56,7 +56,7 @@ def test_crop_transform_empty(records, check_attributes_on_component):
     tfm_ds = Dataset(records, tfm=tfm)
     tfmed = tfm_ds[0]
     # assert "keypoints" not in tfm_ds.tfm.tfms.processors.keys()
-    assert len(tfmed.detection.labels) == 0
+    assert len(tfmed.detection.label_ids) == 0
     assert len(tfmed.detection.bboxes) == 0
     assert len(tfmed.detection.masks) == 0
     assert len(tfmed.detection.iscrowds) == 0
@@ -65,7 +65,7 @@ def test_crop_transform_empty(records, check_attributes_on_component):
 
     # assert orignal record was not changed
     record = records[0]
-    assert len(record.detection.labels) == 1
+    assert len(record.detection.label_ids) == 1
     assert len(record.detection.bboxes) == 1
     assert len(record.detection.masks) == 1
     assert len(record.detection.iscrowds) == 1

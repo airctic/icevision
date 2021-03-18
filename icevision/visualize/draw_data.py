@@ -66,7 +66,7 @@ def draw_sample(
         img = denormalize_fn(img)
     # TODO, HACK: temporary solution, draw will be refactored to record
     for label, bbox, mask, keypoints, score in itertools.zip_longest(
-        getattr(sample.detection, "labels", []),
+        getattr(sample.detection, "label_ids", []),
         getattr(sample.detection, "bboxes", []),
         getattr(sample.detection, "masks", []),
         getattr(sample.detection, "keypoints", []),
