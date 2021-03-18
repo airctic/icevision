@@ -23,36 +23,20 @@ class SimpleConfusionMatrix(Metric):
 
     def accumulate(self, records, preds):
         if self.class_map is None:
-            self.class_map = next(iter(records))["class_map"]
+            self.class_map = first(records).detection.class_map
         for image_targets, image_preds in zip(records, preds):
-            target_bboxes = image_targets["bboxes"]
-            target_labels = image_targets["labels"]
             # skip if empty ground_truths
-            if not target_bboxes:
+            if not image_targets.detection.bboxes:
                 continue
-            predicted_bboxes = [
-                DetectedBBox(*bbox.xyxy, score=score, label=label)
-                for bbox, score, label in zip(
-                    image_preds["bboxes"], image_preds["scores"], image_preds["labels"]
-                )
-            ]
-            # get torchvision iou scores (requires conversion to tensors)
-            iou_scores = pairwise_iou(predicted_bboxes, target_bboxes)
-            # TODO: see what happens if that_match is empty
-            that_match = torch.any(iou_scores > self._iou_threshold, dim=1)
-            iou_scores = iou_scores[that_match]
-            iou_scores = zeroify_items_below_threshold(
-                iou_scores, threshold=self._iou_threshold
+            targets, matched_preds = match_preds_with_targets(
+                image_preds,
+                image_targets,
+                self._iou_threshold,
+                self._confidence_threshold,
             )
 
-            # need to use compress cause list indexing with boolean tensor isn't supported
-            predicted_bboxes = list(itertools.compress(predicted_bboxes, that_match))
-            predicted_bboxes = couple_with_targets(predicted_bboxes, iou_scores)
-            predicted_labels = pick_best_score_labels(
-                predicted_bboxes, confidence_threshold=self._confidence_threshold
-            )
-
-            assert len(predicted_labels) == len(target_labels)
+            target_labels = [target_item[1] for target_item in targets]
+            predicted_labels = [pred_item[0].label for pred_item in matched_preds]
             # We need to store the entire list of gts/preds to support various CM logging methods
             self.ground_truths.extend(target_labels)
             self.predictions.extend(predicted_labels)
