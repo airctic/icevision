@@ -117,11 +117,11 @@ class ImageRecordComponent(RecordComponent):
 
     def _repr(self) -> List[str]:
         if self.img is not None:
-            ndims = len(img.shape)
+            ndims = len(self.img.shape)
             if ndims == 3:  # RGB, RGBA
-                height, width, channels = img.shape
+                height, width, channels = self.img.shape
             elif ndims == 2:  # Grayscale
-                height, width, channels = [*img.shape, 1]
+                height, width, channels = [*self.img.shape, 1]
             else:
                 raise ValueError(
                     f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
