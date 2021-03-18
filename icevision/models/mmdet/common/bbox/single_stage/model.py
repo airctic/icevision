@@ -16,8 +16,6 @@ def model(
     force_download=False,
 ) -> nn.Module:
 
-    save_dir = None
-
     model_name = backbone.model_name
     cfg_filepath = backbone.cfg_filepath
     weights_url = backbone.weights_url
