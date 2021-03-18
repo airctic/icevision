@@ -1,4 +1,7 @@
-__all__ = ["param_groups"]
+__all__ = [
+    "param_groups",
+    "MMDetBackboneConfig",
+]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -25,3 +28,10 @@ def param_groups(model):
     _param_groups = [list(layer.parameters()) for layer in layers]
     check_all_model_params_in_groups2(model, _param_groups)
     return _param_groups
+
+
+@dataclass
+class MMDetBackboneConfig:
+    model_name: str
+    cfg_filepath: str
+    weights_url: str
