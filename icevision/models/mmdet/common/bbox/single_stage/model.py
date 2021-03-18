@@ -16,29 +16,15 @@ def model(
     force_download=False,
 ) -> nn.Module:
 
-    model_name = backbone.model_name
-    cfg_filepath = backbone.cfg_filepath
-    weights_url = backbone.weights_url
-
-    # download weights
-    if pretrained and weights_url:
-        save_dir = Path("checkpoints") / model_name
-        save_dir.mkdir(exist_ok=True, parents=True)
-
-        fname = Path(weights_url).name
-        weights_path = save_dir / fname
-
-        if not weights_path.exists() or force_download:
-            download_url(url=weights_url, save_path=str(weights_path))
-
-    if cfg_filepath:
-        cfg = Config.fromfile(cfg_filepath)
-    else:
-        raise RuntimeError(
-            "cfg_filepath is empty. Model must have a valid configuration file"
-        )
+    cfg, weights_path = create_model_config(
+        backbone=backbone,
+        pretrained=pretrained,
+        checkpoints_path=checkpoints_path,
+        force_download=force_download,
+    )
 
     cfg.model.bbox_head.num_classes = num_classes - 1
+
     if pretrained and (weights_path is not None):
         cfg.model.pretrained = None
 

@@ -8,15 +8,19 @@ from icevision.models.mmdet.utils import *
 
 
 def model(
-    cfg: Union[str, Path, Config],
+    backbone: MMDetBackboneConfig,
     num_classes: int,
-    weights_path: Optional[Union[str, Path]] = None,
+    pretrained: bool = True,
+    checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
+    force_download=False,
 ) -> nn.Module:
 
-    # if `cfg` argument is a path (str, Path) create an Config object from the file
-    # otherwise cfg should be already an Config object
-    if isinstance(cfg, (str, Path)):
-        cfg = Config.fromfile(str(cfg))
+    cfg, weights_path = create_model_config(
+        backbone=backbone,
+        pretrained=pretrained,
+        checkpoints_path=checkpoints_path,
+        force_download=force_download,
+    )
 
     # Sparse-RCNN has a list of bbox_head whereas Faster-RCNN has only one
     if isinstance(cfg.model.roi_head.bbox_head, list):
