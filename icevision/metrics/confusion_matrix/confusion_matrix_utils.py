@@ -42,18 +42,16 @@ def couple_with_targets(predicted_bboxes, iou_scores) -> Sequence:
 def pick_best_score_labels(predicted_bboxes, confidence_threshold: float = 0.5):
     # fill with dummy if list of predicted labels is empty
     BACKGROUND_IDX = 0
-    dummy = DetectedBBox(0, 0, 0, 0, score=1.0, label=BACKGROUND_IDX)
+    dummy = (BBox.from_xyxy(0, 0, 0, 0), 1.0, BACKGROUND_IDX)
     best_labels = []
     # pick the label that fits best given ground truth
     for ground_truth_predictions in predicted_bboxes:
-        ground_truth_predictions = [
-            prediction if prediction.score > confidence_threshold else dummy
-            for prediction in ground_truth_predictions
+        filtered_predictions = [
+            (bbox, score, label) if score > confidence_threshold else dummy
+            for (bbox, score, label) in ground_truth_predictions
         ]
-        best_prediction = max(
-            ground_truth_predictions, key=lambda x: x.score, default=dummy
-        )
-        best_labels.append(best_prediction.label)
+        best_prediction = max(filtered_predictions, key=lambda x: x[1], default=dummy)
+        best_labels.append(best_prediction[2])
     return best_labels
 
 
@@ -119,11 +117,13 @@ def match_preds_with_targets(
     preds: BaseRecord,
     targets: BaseRecord,
     iou_threshold: float = 0.5,
-    confidence_threshold: float = 0.5,
 ) -> Tuple[BBox, Tuple[BBox, float, int]]:
+    """
+    Function that matches predictions with their targets primarily by iou score larger than set threshold.
+    Policy specifies the matching policy. Can be one of ALL, BEST_SCORE and BEST_IOU.
+    Will always return a list of predictions matching given target.
+    """
 
-    iou_threshold = 0.5
-    confidence_threshold = 0.5
     target_bboxes = targets.detection.bboxes
     target_labels = targets.detection.labels
     if not target_bboxes:
@@ -146,10 +146,9 @@ def match_preds_with_targets(
     # need to use compress cause list indexing with boolean tensor isn't supported
     predicted_bboxes = list(itertools.compress(predicted_bboxes, that_match))
     predicted_bboxes = couple_with_targets(predicted_bboxes, iou_scores)
-    predicted_labels = pick_best_score_labels(
-        predicted_bboxes, confidence_threshold=confidence_threshold
-    )
 
-    assert len(predicted_labels) == len(target_labels)
-    # FIXME: missing scores
+    dbbox_unfold = lambda dbbox: (BBox.from_xyxy(*dbbox.xyxy), dbbox.score, dbbox.label)
+    predicted_bboxes = [
+        [dbbox_unfold(dbbox) for dbbox in dbboxes] for dbboxes in predicted_bboxes
+    ]
     return (list(zip(target_bboxes, target_labels)), predicted_bboxes)

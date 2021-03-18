@@ -7,13 +7,24 @@ from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
 from pytorch_lightning import loggers as pl_loggers
 
 
+class MatchingPolicy(Enum):
+    BEST_SCORE = 1
+    BEST_IOU = 2
+
+
 class SimpleConfusionMatrix(Metric):
-    def __init__(self, confidence_threshold: float = 0.001, iou_threshold: float = 0.5):
+    def __init__(
+        self,
+        confidence_threshold: float = 0.001,
+        iou_threshold: float = 0.5,
+        policy: MatchingPolicy = MatchingPolicy.BEST_SCORE,
+    ):
         super(SimpleConfusionMatrix, self).__init__()
         self.ground_truths = []
         self.predictions = []
         self._confidence_threshold = confidence_threshold
         self._iou_threshold = iou_threshold
+        self._policy = policy
         self.class_map = None
         self.confusion_matrix: sklearn.metrics.confusion_matrix = None
 
@@ -29,14 +40,23 @@ class SimpleConfusionMatrix(Metric):
             if not image_targets.detection.bboxes:
                 continue
             targets, matched_preds = match_preds_with_targets(
-                image_preds,
-                image_targets,
-                self._iou_threshold,
-                self._confidence_threshold,
+                preds=image_preds,
+                targets=image_targets,
+                iou_threshold=self._iou_threshold,
             )
 
+            if self._policy == MatchingPolicy.BEST_SCORE:
+                predicted_labels = pick_best_score_labels(
+                    matched_preds, confidence_threshold=self._confidence_threshold
+                )
+            elif self._policy == MatchingPolicy.BEST_IOU:
+                raise NotImplementedError
+            else:
+                raise RuntimeError(f"policy must be one of {list(MatchingPolicy)}")
+
             target_labels = [target_item[1] for target_item in targets]
-            predicted_labels = [pred_item[0].label for pred_item in matched_preds]
+            assert len(predicted_labels) == len(target_labels)
+
             # We need to store the entire list of gts/preds to support various CM logging methods
             self.ground_truths.extend(target_labels)
             self.predictions.extend(predicted_labels)
@@ -66,7 +86,7 @@ class SimpleConfusionMatrix(Metric):
         values_format: str = None,
         cmap: str = "PuBu",
         figsize: int = 11,
-        **display_args
+        **display_args,
     ):
         """
         A handle to plot the matrix in a jupyter notebook, potentially this could also be passed to save_fig
@@ -87,7 +107,7 @@ class SimpleConfusionMatrix(Metric):
             xticks_rotation=xticks_rotation,
             cmap=cmap,
             values_format=values_format,
-            **display_args
+            **display_args,
         ).figure_
         figure.set_size_inches(figsize, figsize)
         return figure
