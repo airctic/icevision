@@ -7,6 +7,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.utils import *
 from mmdet.models.detectors import *
+from mmcv import Config
 
 
 def param_groups(model):
@@ -67,4 +68,4 @@ def create_model_config(
             "cfg_filepath is empty. Model must have a valid configuration file"
         )
 
-    return cfg, weights_path 
+    return cfg, weights_path
