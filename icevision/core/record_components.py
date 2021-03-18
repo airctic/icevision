@@ -116,7 +116,19 @@ class ImageRecordComponent(RecordComponent):
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
     def _repr(self) -> List[str]:
-        return [f"Image: {self.img}"]
+        if self.img is not None:
+            ndims = len(self.img.shape)
+            if ndims == 3:  # RGB, RGBA
+                height, width, channels = self.img.shape
+            elif ndims == 2:  # Grayscale
+                height, width, channels = [*self.img.shape, 1]
+            else:
+                raise ValueError(
+                    f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
+                )
+            return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+        else:
+            return [f"Image: {self.img}"]
 
     def as_dict(self) -> dict:
         return {"img": self.img}
