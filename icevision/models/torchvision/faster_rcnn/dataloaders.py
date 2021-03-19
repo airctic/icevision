@@ -75,18 +75,18 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 def _build_train_sample(
     record: RecordType,
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-    assert len(record.detection.labels) == len(record.detection.bboxes)
+    assert len(record.detection.label_ids) == len(record.detection.bboxes)
 
     image = im2tensor(record.img)
     target = {}
 
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
-    if len(record.detection.labels) == 0:
+    if len(record.detection.label_ids) == 0:
         target["labels"] = torch.zeros(0, dtype=torch.int64)
         target["boxes"] = torch.zeros((0, 4), dtype=torch.float32)
     else:
-        target["labels"] = tensor(record.detection.labels, dtype=torch.int64)
+        target["labels"] = tensor(record.detection.label_ids, dtype=torch.int64)
         xyxys = [bbox.xyxy for bbox in record.detection.bboxes]
         target["boxes"] = tensor(xyxys, dtype=torch.float32)
 

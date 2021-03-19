@@ -56,10 +56,10 @@ def test_bbox_dataloader(fridge_ds, fridge_class_map):
 
     assert set(data.keys()) == {"gt_bboxes", "gt_labels", "img", "img_metas"}
     assert (
-        (np.array(recs[0].detection.labels) - 1) == data["gt_labels"][0].numpy()
+        (np.array(recs[0].detection.label_ids) - 1) == data["gt_labels"][0].numpy()
     ).all()
     assert (
-        (np.array(recs[1].detection.labels) - 1) == data["gt_labels"][1].numpy()
+        (np.array(recs[1].detection.label_ids) - 1) == data["gt_labels"][1].numpy()
     ).all()
     assert data["img_metas"][0]["img_shape"] == (384, 384, 3)
     assert data["img_metas"][1]["pad_shape"] == (384, 384, 3)
@@ -82,7 +82,7 @@ def _test_common_mmdet_mask_batch(batch):
         "img_metas",
     }
     assert (
-        (np.array(recs[0].detection.labels) - 1) == data["gt_labels"][0].numpy()
+        (np.array(recs[0].detection.label_ids) - 1) == data["gt_labels"][0].numpy()
     ).all()
     assert data["img_metas"][0]["img_shape"] == (4, 4, 3)
     assert (
@@ -93,7 +93,7 @@ def _test_common_mmdet_mask_batch(batch):
     assert data["gt_masks"][0].height == data["gt_masks"][0].width == 4
 
     rec = recs[0]
-    assert isinstance(rec.detection.labels, list)
+    assert isinstance(rec.detection.label_ids, list)
     assert isinstance(rec.detection.bboxes[0], BBox)
     assert isinstance(rec.detection.masks, MaskArray)
     assert isinstance(rec.height, int)
@@ -120,14 +120,14 @@ def test_mmdet_mask_rcnn_build_infer_batch(mask_records):
         "img",
         "img_metas",
     }
-    assert recs[0].detection.labels == [1, 2]
+    assert recs[0].detection.label_ids == [1, 2]
     assert data["img_metas"][0][0]["img_shape"] == (4, 4, 3)
     assert (
         data["img_metas"][0][0]["scale_factor"] == np.array([1.0, 1.0, 1.0, 1.0])
     ).all()
 
     rec = recs[0]
-    assert isinstance(rec.detection.labels, list)
+    assert isinstance(rec.detection.label_ids, list)
     assert isinstance(rec.detection.bboxes[0], BBox)
     assert isinstance(rec.detection.masks, MaskArray)
     assert isinstance(rec.height, int)
