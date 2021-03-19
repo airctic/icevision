@@ -1,4 +1,5 @@
 __all__ = [
+    "mmdet_base_url",
     "param_groups",
     "MMDetBackboneConfig",
     "create_model_config",
@@ -8,6 +9,10 @@ from icevision.imports import *
 from icevision.utils import *
 from mmdet.models.detectors import *
 from mmcv import Config
+
+mmdet_base_url = Path(
+    "https://raw.githubusercontent.com/open-mmlab/mmdetection/v2.10.0"
+)
 
 
 def param_groups(model):
