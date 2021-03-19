@@ -275,8 +275,44 @@ class InstancesLabelsRecordComponent(BaseLabelsRecordComponent):
 
 
 class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
+    is_multilabel = False
+
     def __init__(self, task=tasks.classification):
         super().__init__(task=task)
+
+
+class MultiLabelClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
+    """Component for multi-label classification
+    * Doesn't allow you to `add_labels`
+    * One-hot encodes labels based on `class_map`
+    """
+
+    is_multilabel = True
+
+    def __init__(self, task=tasks.classif):
+        super().__init__(task=task)
+        self.is_one_hot_encoded = False
+
+    def to_one_hot(self):
+        # TODO: check if one-hot targets should be bools or ints
+        one_hot_labels = np.zeros(len(self.class_map))
+        one_hot_labels[self.labels] = 1
+        self.labels = one_hot_labels
+        self.is_one_hot_encoded = True
+
+    # def _autofix(self):
+    #     # Unnecessary?
+    #     if not self.is_one_hot_encoded:
+    #         self.to_one_hot()
+
+    def add_labels(self):
+        # TODO: Should we allow this to be used and fix in `_autofix`?
+        raise NotImplementedError(f"Use `set_labels` for multi-label classification")
+
+    def set_labels(self, labels_names: Sequence[Hashable]):
+        self.labels_names = list(labels_names)
+        self.labels = self._labels_names_to_ids(labels_names)
+        self.to_one_hot()
 
 
 class BBoxesRecordComponent(RecordComponent):
