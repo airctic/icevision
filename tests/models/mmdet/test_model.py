@@ -19,6 +19,7 @@ class TestBboxModels:
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
         backbone = model_type.backbones.r50_fpn_1x
+        backbone.cfg_url = path/backbone.cfg_url
 
         model = model_type.model(backbone=backbone, num_classes=5)
 
@@ -68,6 +69,8 @@ def mask_dls_model(coco_mask_records, samples_source):
     valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
     backbone = model_type.backbones.r50_fpn_1x
+    backbone.cfg_url = samples_source/backbone.cfg_url
+
     model = model_type.model(backbone=backbone, num_classes=81)
 
     return train_dl, valid_dl, model, model_type
