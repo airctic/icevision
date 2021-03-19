@@ -40,7 +40,7 @@ def param_groups(model):
 @dataclass
 class MMDetBackboneConfig:
     model_name: str
-    cfg_filepath: str
+    cfg_url: str
     weights_url: str
 
 
@@ -52,7 +52,7 @@ def create_model_config(
 ):
 
     model_name = backbone.model_name
-    cfg_filepath = backbone.cfg_filepath
+    cfg_url = backbone.cfg_url
     weights_url = backbone.weights_url
 
     # download weights
@@ -66,11 +66,11 @@ def create_model_config(
         if not weights_path.exists() or force_download:
             download_url(url=weights_url, save_path=str(weights_path))
 
-    if cfg_filepath:
-        cfg = Config.fromfile(cfg_filepath)
+    if cfg_url:
+        cfg = Config.fromfile(cfg_url)
     else:
         raise RuntimeError(
-            "cfg_filepath is empty. Model must have a valid configuration file"
+            "cfg_url is empty. Model must have a valid configuration file"
         )
 
     return cfg, weights_path
