@@ -6,6 +6,7 @@ from mmdet.models import build_detector
 from mmcv.runner import load_checkpoint
 from icevision.models.mmdet.utils import *
 from icevision.utils.download_utils import *
+from icevision.models.mmdet.common.utils import *
 
 
 def model(
@@ -16,23 +17,11 @@ def model(
     force_download=False,
 ) -> nn.Module:
 
-    cfg, weights_path = create_model_config(
+    return build_model(
+        model_type="one_stage_detector_bbox",
         backbone=backbone,
+        num_classes=num_classes,
         pretrained=pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
     )
-
-    cfg.model.bbox_head.num_classes = num_classes - 1
-
-    if pretrained and (weights_path is not None):
-        cfg.model.pretrained = None
-
-    _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
-
-    if pretrained and (weights_path is not None):
-        load_checkpoint(_model, str(weights_path))
-
-    _model.param_groups = MethodType(param_groups, _model)
-
-    return _model
