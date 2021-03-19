@@ -7,16 +7,6 @@ from icevision.all import *
     [
         (
             "fridge_ds",
-            models.mmdet.faster_rcnn,
-            "samples_source",
-        ),
-        (
-            "fridge_ds",
-            models.mmdet.fcos,
-            "samples_source",
-        ),
-        (
-            "fridge_ds",
             models.mmdet.retinanet,
             "samples_source",
         ),
