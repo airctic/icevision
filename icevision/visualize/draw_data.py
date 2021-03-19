@@ -74,69 +74,70 @@ def draw_sample(
 
     if denormalize_fn is not None:
         img = denormalize_fn(img)
-        for task, composite in sample.task_composites.items():
-            # Should break if no ClassMap found in composite.
-            #  Should be as the only composite without ClassMap should be
-            #  `sample.common`. This is a foundational assumption? #NOTE
-            class_map = getattr(composite, "class_map", None)
-            for label, bbox, mask, keypoints, score in itertools.zip_longest(
-                getattr(composite, "labels", []),  # list of strings
-                getattr(composite, "bboxes", []),
-                getattr(composite, "masks", []),
-                getattr(composite, "keypoints", []),
-                getattr(composite, "scores", []),
-            ):
-                # random color by default
-                color = (np.random.random(3) * 0.6 + 0.4) * 255
 
-                # logic for plotting specific labels only
-                # `include_only` > `exclude_labels`
-                if not label == []:
-                    label_str = (
-                        class_map.get_by_name(label) if class_map is not None else ""
-                    )
-                    if include_only is not None:
-                        if not label_str in include_only:
-                            continue
-                    elif label_str in exclude_labels:
+    for task, composite in sample.task_composites.items():
+        # Should break if no ClassMap found in composite.
+        #  Should be as the only composite without ClassMap should be
+        #  `sample.common`. This is a foundational assumption? #NOTE
+        class_map = getattr(composite, "class_map", None)
+        for label, bbox, mask, keypoints, score in itertools.zip_longest(
+            getattr(composite, "labels", []),  # list of strings
+            getattr(composite, "bboxes", []),
+            getattr(composite, "masks", []),
+            getattr(composite, "keypoints", []),
+            getattr(composite, "scores", []),
+        ):
+            # random color by default
+            color = (np.random.random(3) * 0.6 + 0.4) * 255
+
+            # logic for plotting specific labels only
+            # `include_only` > `exclude_labels`
+            if not label == []:
+                label_str = (
+                    class_map.get_by_name(label) if class_map is not None else ""
+                )
+                if include_only is not None:
+                    if not label_str in include_only:
                         continue
+                elif label_str in exclude_labels:
+                    continue
 
-                # if color-map is given and `labels` are predicted
-                # then set color accordingly
-                if color_map is not None:
-                    color = np.array(color_map[label_str]).astype(np.float)
+            # if color-map is given and `labels` are predicted
+            # then set color accordingly
+            if color_map is not None:
+                color = np.array(color_map[label_str]).astype(np.float)
 
-                if display_mask and mask is not None:
-                    img = draw_mask(
-                        img=img,
-                        mask=mask,
-                        color=color,
-                        blend=mask_blend,
-                        border_thickness=mask_border_thickness,
-                    )
-                if display_bbox and bbox is not None:
-                    img = draw_bbox(img=img, bbox=bbox, color=color)
-                if display_keypoints and keypoints is not None:
-                    img = draw_keypoints(img=img, kps=keypoints, color=color)
-                if display_label and label is not None:
-                    img = draw_label(
-                        img=img,
-                        label=label,
-                        score=score if display_score else None,
-                        bbox=bbox,
-                        mask=mask,
-                        class_map=class_map,
-                        color=label_color,
-                        border_color=label_border_color,
-                        pad_width_factor=label_pad_width_factor,
-                        pad_height_factor=label_pad_height_factor,
-                        thin_border=label_thin_border,
-                        font_size=font_size,
-                        font=font_path,
-                        prettify=prettify,
-                        prettify_func=prettify_func,
-                        return_as_pil_img=False,  # should this always be False??
-                    )
+            if display_mask and mask is not None:
+                img = draw_mask(
+                    img=img,
+                    mask=mask,
+                    color=color,
+                    blend=mask_blend,
+                    border_thickness=mask_border_thickness,
+                )
+            if display_bbox and bbox is not None:
+                img = draw_bbox(img=img, bbox=bbox, color=color)
+            if display_keypoints and keypoints is not None:
+                img = draw_keypoints(img=img, kps=keypoints, color=color)
+            if display_label and label is not None:
+                img = draw_label(
+                    img=img,
+                    label=label,
+                    score=score if display_score else None,
+                    bbox=bbox,
+                    mask=mask,
+                    class_map=class_map,
+                    color=label_color,
+                    border_color=label_border_color,
+                    pad_width_factor=label_pad_width_factor,
+                    pad_height_factor=label_pad_height_factor,
+                    thin_border=label_thin_border,
+                    font_size=font_size,
+                    font=font_path,
+                    prettify=prettify,
+                    prettify_func=prettify_func,
+                    return_as_pil_img=False,  # should this always be False??
+                )
     if return_as_pil_img:
         # may or may not be a PIL Image based on `display_label`
         return img if isinstance(img, PIL.Image.Image) else PIL.Image.fromarray(img)
