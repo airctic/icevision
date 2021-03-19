@@ -9,42 +9,36 @@ from icevision.all import *
             "fridge_ds",
             models.mmdet.faster_rcnn,
             "samples_source",
-            "mmdet/configs/faster_rcnn_r50_fpn_1x_coco.py",
-            None,
         ),
         (
             "fridge_ds",
             models.mmdet.fcos,
             "samples_source",
-            "mmdet/configs/fcos_r50_caffe_fpn_gn-head_1x_coco.py",
-            None,
         ),
         (
             "fridge_ds",
             models.mmdet.retinanet,
             "samples_source",
-            "mmdet/configs/retinanet_r50_fpn_1x_coco.py",
-            None,
         ),
     ],
 )
 class TestBboxModels:
-    def dls_model(self, ds, model_type, path, config, weights_path, request):
+    def dls_model(self, ds, model_type, path, request):
         train_ds, valid_ds = request.getfixturevalue(ds)
         train_dl = model_type.train_dl(train_ds, batch_size=2)
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
-        config_path = request.getfixturevalue(path) / config
+        backbone = model_type.backbones.r50_fpn_1x
 
-        model = model_type.model(config_path, num_classes=5, weights_path=weights_path)
+        model = model_type.model(backbone=backbone, num_classes=5)
 
         return train_dl, valid_dl, model
 
     def test_mmdet_bbox_models_fastai(
-        self, ds, model_type, path, config, weights_path, request
+        self, ds, model_type, path, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, path, config, weights_path, request
+            ds, model_type, path, request
         )
 
         learn = model_type.fastai.learner(
@@ -53,10 +47,10 @@ class TestBboxModels:
         learn.fine_tune(1, 3e-4)
 
     def test_mmdet_bbox_models_light(
-        self, ds, model_type, path, config, weights_path, request
+        self, ds, model_type, path, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, path, config, weights_path, request
+            ds, model_type, path, request
         )
 
         class LitModel(model_type.lightning.ModelAdapter):
@@ -91,8 +85,8 @@ def mask_dls_model(coco_mask_records, samples_source):
     train_dl = model_type.train_dl(train_ds, batch_size=2)
     valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
-    config_path = samples_source / "mmdet/configs/mask_rcnn_r50_fpn_1x_coco.py"
-    model = model_type.model(config_path, num_classes=81)
+    backbone = model_type.backbones.r50_fpn_1x
+    model = model_type.model(backbone=backbone, num_classes=81)
 
     return train_dl, valid_dl, model, model_type
 
