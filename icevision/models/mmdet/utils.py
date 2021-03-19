@@ -10,9 +10,11 @@ from icevision.utils import *
 from mmdet.models.detectors import *
 from mmcv import Config
 
-mmdet_base_url = Path(
-    "https://raw.githubusercontent.com/open-mmlab/mmdetection/v2.10.0"
-)
+# mmdet_base_url = Path(
+#     "https://raw.githubusercontent.com/open-mmlab/mmdetection/v2.10.0"
+# )
+
+mmdet_base_url = Path("mmdetection")
 
 
 def param_groups(model):
