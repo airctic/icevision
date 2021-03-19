@@ -35,6 +35,10 @@ def draw_sample(
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    label_border_color: Union[np.array, list, tuple, str] = "#020303",  # Black,
+    label_thin_border: bool = True,
+    label_pad_width_factor: float = 0.02,
+    label_pad_height_factor: float = 0.005,
     mask_blend: float = 0.5,
     mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
@@ -50,6 +54,12 @@ def draw_sample(
 
     * label_color: A <collection> of RGB values or a hex code string that defines
                    the color of all the plotted labels
+    * label_border_color: Color of the border around the label
+    * label_thin_border: Apply a thin border around the label. If false, applies
+                         a thick border. If None, applies no border
+    * label_pad_width_factor: Amount of padding to apply relative to the image's width.
+                              Applies padding to bbox coords if padding bbox
+                              labels else to the top-left of the image for classif labels
     * mask_blend: Degree of transparency of the mask. 1 = opaque, 0 = transparent
     * mask_border_thickness: Degree of thickness of the mask. Must be an odd number
     * color_map: An optional dictionary that maps the label => color-value
@@ -116,6 +126,10 @@ def draw_sample(
                 mask=mask,
                 class_map=class_map,
                 color=label_color,
+                border_color=label_border_color,
+                pad_width_factor=label_pad_width_factor,
+                pad_height_factor=label_pad_height_factor,
+                thin_border=label_thin_border,
                 font_size=font_size,
                 font=font_path,
                 prettify=prettify,
@@ -134,7 +148,8 @@ def draw_label(
     img: np.ndarray,
     label: int,
     score: Optional[float],
-    color,
+    color: Union[np.ndarray, list, tuple],
+    border_color: Union[np.ndarray, list, tuple],
     class_map: Optional[ClassMap] = None,
     bbox=None,
     mask=None,
@@ -143,6 +158,9 @@ def draw_label(
     prettify: bool = True,
     prettify_func: Callable = str.capitalize,
     return_as_pil_img=False,
+    pad_width_factor=0.02,
+    pad_height_factor=0.005,
+    thin_border=True,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
     if bbox is not None:
@@ -175,9 +193,13 @@ def draw_label(
         x=x,
         y=y,
         color=color,
+        border_color=border_color,
         font_path=font,
         font_size=int(font_size),
         return_as_pil_img=return_as_pil_img,
+        pad_width_factor=pad_width_factor,
+        pad_height_factor=pad_height_factor,
+        thin_border=thin_border,
     )
 
 
@@ -187,16 +209,44 @@ def _draw_label(
     x: int,
     y: int,
     color: Union[np.ndarray, list, tuple],
+    border_color: Union[np.ndarray, list, tuple],
     font_path=DEFAULT_FONT_PATH,
     font_size: int = 20,
     return_as_pil_img: bool = False,
+    pad_width_factor=0.02,
+    pad_height_factor=0.005,
+    thin_border=True,
 ) -> Union[PIL.Image.Image, np.ndarray]:
     """Draw labels on the image"""
     font = PIL.ImageFont.truetype(font_path, size=font_size)
-    xy = (x + 10, y + 5)
+    color = as_rgb_tuple(color)
+    border_color = as_rgb_tuple(border_color)
+
+    height, width = img.shape[:2]
+    x_pad = height * pad_width_factor
+    y_pad = width * pad_height_factor
+    x, y = x + x_pad, y + y_pad
+
     img = PIL.Image.fromarray(img)
     draw = ImageDraw.Draw(img)
-    draw.text(xy, caption, font=font, fill=as_rgb_tuple(color))
+
+    if thin_border is not None:
+        # Draw thin / thick border around text
+        draw.text(
+            (x - 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x + 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x - 1, y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x + 1, y + 1), caption, font=font, fill=border_color
+        )
+
+    # Now draw text over the border
+    draw.text((x, y), caption, font=font, fill=color)
     if return_as_pil_img:
         return img
     else:
