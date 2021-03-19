@@ -35,93 +35,154 @@ def draw_sample(
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    label_border_color: Union[np.array, tuple, str] = "#020303",  # Black
+    label_thin_border: bool = True,
+    label_pad_width_factor: float = 0.01,
+    label_pad_height_factor: float = 0.01,
     mask_blend: float = 0.5,
     mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
     prettify: bool = True,
-    prettify_func: Callable = str.capitalize,
+    prettify_funcs: Sequence[Callable] = [str.capitalize],
     return_as_pil_img=False,
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
     include_only: List[str] = None,
+    label_include_instances_task_name: bool = False,
+    label_include_classification_task_name: bool = False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     """
     Selected kwargs:
 
     * label_color: A <collection> of RGB values or a hex code string that defines
                    the color of all the plotted labels
+    * label_border_color: Color of the border around the label
+    * label_thin_border: Apply a thin border around the label. If false, applies
+                         a thick border. If None, applies no border
+    * label_pad_width_factor: Amount of padding to apply relative to the image's width.
+                              Applies padding to bbox coords if padding bbox
+                              labels else to the top-left of the image for classif labels
+    * label_pad_width_factor: Same as `label_pad_width_factor` but for height
     * mask_blend: Degree of transparency of the mask. 1 = opaque, 0 = transparent
     * mask_border_thickness: Degree of thickness of the mask. Must be an odd number
     * color_map: An optional dictionary that maps the label => color-value
-    * prettify: Format labels based on `prettify_func`
-    * prettify_func: A string -> string processing function
+    * prettify: Format labels based on `prettify_funcs`
+    * prettify_funcs: A Sequence of string -> string processing function
     * return_as_pil_image: If true, returns the sample as a PIL image, else np.array
     * exclude_labels: (Optional) List of labels that you'd like to exclude from being plotted
     * include_only: (Optional) List of labels that must be exclusively plotted. Takes
-                    precedence over `exclude_labels` (?)
+                    precedence over `exclude_labels`
+    * label_include_instances_task_name: Include the name of the task in the label (depends on
+                                         if the record has `InstancesLabelsRecordComponent`)
+    * label_include_classification_task_name: Same as `label_include_instances_task_name` but depends
+                                              on presence of `ClassificationLabelsRecordComponent`
     """
     img = sample.img.copy()
     class_map = sample.detection.class_map
     if denormalize_fn is not None:
         img = denormalize_fn(img)
-    # TODO, HACK: temporary solution, draw will be refactored to record
-    for label, bbox, mask, keypoints, score in itertools.zip_longest(
-        getattr(sample.detection, "labels", []),
-        getattr(sample.detection, "bboxes", []),
-        getattr(sample.detection, "masks", []),
-        getattr(sample.detection, "keypoints", []),
-        # TODO, HACK: Scores are not stored in `sample.detection`...?
-        getattr(sample.detection, "scores", []),
-        # getattr(sample, tasks.detection.name, {}).get("labels", []),
-        # getattr(sample, tasks.detection.name, {}).get("bboxes", []),
-        # getattr(sample, tasks.detection.name, {}).get("masks", []),
-        # getattr(sample, tasks.detection.name, {}).get("keypoints", []),
-    ):
-        # random color by default
-        color = (np.random.random(3) * 0.6 + 0.4) * 255
 
-        # logic for plotting specific labels only
-        # `include_only` > `exclude_labels`
-        if not label == []:
-            label_str = class_map.get_by_id(label) if class_map is not None else ""
-            if include_only is not None:
-                if not label_str in include_only:
-                    continue
-            elif label_str in exclude_labels:
-                continue
+    for task, composite in sample.task_composites.items():
+        # Should break if no ClassMap found in composite.
+        #  Should be as the only composite without ClassMap should be
+        #  `sample.common`. This is a foundational assumption? #NOTE
+        class_map = getattr(composite, "class_map", None)
 
-        # if color-map is given and `labels` are predicted
-        # then set color accordingly
-        if color_map is not None:
-            color = np.array(color_map[label_str]).astype(np.float)
+        # TODO: Implement label collection for classif tasks
+        # classification_tasks, classification_labels = [], []
 
-        if display_mask and mask is not None:
-            img = draw_mask(
-                img=img,
-                mask=mask,
-                color=color,
-                blend=mask_blend,
-                border_thickness=mask_border_thickness,
-            )
-        if display_bbox and bbox is not None:
-            img = draw_bbox(img=img, bbox=bbox, color=color)
-        if display_keypoints and keypoints is not None:
-            img = draw_keypoints(img=img, kps=keypoints, color=color)
-        if display_label and label is not None:
-            img = draw_label(
-                img=img,
-                label=label,
-                score=score if display_score else None,
-                bbox=bbox,
-                mask=mask,
-                class_map=class_map,
-                color=label_color,
-                font_size=font_size,
-                font=font_path,
-                prettify=prettify,
-                prettify_func=prettify_func,
-                return_as_pil_img=False,  # should this always be False??
-            )
+        if composite.get_component_by_type(ClassificationLabelsRecordComponent):
+            # Should work for audio or image classification
+            # We do this separately because we need to collect image labels across
+            #  multiple potential tasks and display them one below the other
+            for label in getattr(composite, "labels", []):
+                if label_include_classification_task_name:
+                    prettify_funcs.append(lambda label: f"{task}: {label}")
+
+                # TODO: Implement label collection for classif tasks
+                # The plotting should happen outside the for loop after having
+                #   collected all the labels
+                img = draw_label(
+                    img=img,
+                    label=label,
+                    score=score if display_score else None,
+                    bbox=None,
+                    mask=None,
+                    class_map=class_map,
+                    color=label_color,
+                    border_color=label_border_color,
+                    thin_border=label_thin_border,
+                    pad_width_factor=label_pad_width_factor,
+                    pad_height_factor=label_pad_height_factor,
+                    font_size=font_size,
+                    font=font_path,
+                    prettify=prettify,
+                    prettify_funcs=prettify_funcs,
+                    return_as_pil_img=False,  # should this always be False??
+                )
+
+        elif composite.get_component_by_type(InstancesLabelsRecordComponent):
+            for label, bbox, mask, keypoints, score in itertools.zip_longest(
+                getattr(composite, "labels", []),
+                getattr(composite, "bboxes", []),
+                getattr(composite, "masks", []),
+                getattr(composite, "keypoints", []),
+                getattr(composite, "scores", []),
+            ):
+                # random mask & bbox color by default
+                color = (np.random.random(3) * 0.6 + 0.4) * 255
+
+                # logic for plotting specific labels only
+                # `include_only` > `exclude_labels`
+                if not label == []:
+                    label_str = (
+                        class_map.get_by_id(label) if class_map is not None else ""
+                    )
+                    if include_only is not None:
+                        if not label_str in include_only:
+                            continue
+                    elif label_str in exclude_labels:
+                        continue
+
+                if label_include_instances_task_name:
+                    prettify_funcs.append(lambda label: f"{task}: {label}")
+
+                # if color-map is given and `labels` are predicted
+                # then set color accordingly
+                if color_map is not None:
+                    color = np.array(color_map[label_str]).astype(np.float)
+
+                if display_mask and mask is not None:
+                    img = draw_mask(
+                        img=img,
+                        mask=mask,
+                        color=color,
+                        blend=mask_blend,
+                        border_thickness=mask_border_thickness,
+                    )
+                if display_bbox and bbox is not None:
+                    img = draw_bbox(img=img, bbox=bbox, color=color)
+                if display_keypoints and keypoints is not None:
+                    img = draw_keypoints(img=img, kps=keypoints, color=color)
+                if display_label and label is not None:
+                    img = draw_label(
+                        img=img,
+                        label=label,
+                        score=score if display_score else None,
+                        bbox=bbox,
+                        mask=mask,
+                        class_map=class_map,
+                        color=label_color,
+                        border_color=label_border_color,
+                        thin_border=label_thin_border,
+                        pad_width_factor=label_pad_width_factor,
+                        pad_height_factor=label_pad_height_factor,
+                        font_size=font_size,
+                        font=font_path,
+                        prettify=prettify,
+                        prettify_funcs=prettify_funcs,
+                        return_as_pil_img=False,  # should this always be False??
+                    )
     if return_as_pil_img:
         # may or may not be a PIL Image based on `display_label`
         return img if isinstance(img, PIL.Image.Image) else PIL.Image.fromarray(img)
@@ -134,14 +195,18 @@ def draw_label(
     img: np.ndarray,
     label: int,
     score: Optional[float],
-    color,
+    color: Union[np.ndarray, list, tuple, str],
+    border_color: Union[np.ndarray, list, tuple, str],
+    thin_border: bool = True,
+    pad_width_factor: float = 0.01,
+    pad_height_factor: float = 0.01,
     class_map: Optional[ClassMap] = None,
     bbox=None,
     mask=None,
     font: Union[int, os.PathLike, None] = None,
     font_size: Union[int, float] = 12,
     prettify: bool = True,
-    prettify_func: Callable = str.capitalize,
+    prettify_funcs: Sequence[Callable] = [str.capitalize],
     return_as_pil_img=False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
@@ -158,7 +223,8 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
-        caption = prettify_func(caption)
+        for prettify_func in prettify_funcs:
+            caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
     if score is not None:
@@ -175,6 +241,10 @@ def draw_label(
         x=x,
         y=y,
         color=color,
+        border_color=border_color,
+        thin_border=thin_border,
+        pad_width_factor=pad_width_factor,
+        pad_height_factor=pad_height_factor,
         font_path=font,
         font_size=int(font_size),
         return_as_pil_img=return_as_pil_img,
@@ -187,16 +257,46 @@ def _draw_label(
     x: int,
     y: int,
     color: Union[np.ndarray, list, tuple],
+    border_color: Union[np.ndarray, list, tuple],
     font_path=DEFAULT_FONT_PATH,
     font_size: int = 20,
     return_as_pil_img: bool = False,
+    pad_width_factor=0.01,
+    pad_height_factor=0.01,
+    thin_border=True,
 ) -> Union[PIL.Image.Image, np.ndarray]:
     """Draw labels on the image"""
+    print(f"Img DIMS: {img.shape}")
+
     font = PIL.ImageFont.truetype(font_path, size=font_size)
-    xy = (x + 10, y + 5)
+    color = as_rgb_tuple(color)
+    border_color = as_rgb_tuple(border_color)
+
+    height, width = img.shape[:2]
+    x_pad = height * pad_width_factor
+    y_pad = width * pad_height_factor
+    x, y = x + x_pad, y + y_pad
+
     img = PIL.Image.fromarray(img)
     draw = ImageDraw.Draw(img)
-    draw.text(xy, caption, font=font, fill=as_rgb_tuple(color))
+
+    if thin_border is not None:
+        # Draw thin / thick border around text
+        draw.text(
+            (x - 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x + 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x - 1, y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x + 1, y + 1), caption, font=font, fill=border_color
+        )
+
+    # Now draw text over the border
+    draw.text((x, y), caption, font=font, fill=color)
     if return_as_pil_img:
         return img
     else:
@@ -213,16 +313,7 @@ def draw_record(
     display_keypoints: bool = True,
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
-    label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
-    mask_blend: float = 0.5,
-    mask_border_thickness: int = 7,
-    color_map: Optional[dict] = None,  # label -> color mapping
-    prettify: bool = True,
-    prettify_func: Callable = str.capitalize,
-    return_as_pil_img=False,
-    # Args for plotting specific labels
-    exclude_labels: List[str] = [],
-    include_only: List[str] = None,
+    **draw_sample_kwargs,
 ):
     sample = record.load()
     return draw_sample(
@@ -235,15 +326,7 @@ def draw_record(
         display_keypoints=display_keypoints,
         font_path=font_path,
         font_size=font_size,
-        label_color=label_color,
-        mask_blend=mask_blend,
-        mask_border_thickness=mask_border_thickness,
-        color_map=color_map,
-        prettify=prettify,
-        prettify_func=prettify_func,
-        return_as_pil_img=return_as_pil_img,
-        exclude_labels=exclude_labels,
-        include_only=include_only,
+        **draw_sample_kwargs,
     )
 
 
@@ -256,16 +339,7 @@ def draw_pred(
     display_mask: bool = True,
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
-    label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
-    mask_blend: float = 0.5,
-    mask_border_thickness: int = 7,
-    color_map: Optional[dict] = None,  # label -> color mapping
-    prettify: bool = True,
-    prettify_func: Callable = str.capitalize,
-    return_as_pil_img=False,
-    # Args for plotting specific labels
-    exclude_labels: List[str] = [],
-    include_only: List[str] = None,
+    **draw_sample_kwargs,
 ):
     return draw_sample(
         sample=pred.pred,
@@ -276,15 +350,7 @@ def draw_pred(
         display_mask=display_mask,
         font_path=font_path,
         font_size=font_size,
-        label_color=label_color,
-        mask_blend=mask_blend,
-        mask_border_thickness=mask_border_thickness,
-        color_map=color_map,
-        prettify=prettify,
-        prettify_func=prettify_func,
-        return_as_pil_img=return_as_pil_img,
-        exclude_labels=exclude_labels,
-        include_only=include_only,
+        **draw_sample_kwargs,
     )
 
 
