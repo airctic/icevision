@@ -14,7 +14,7 @@ from mmcv import Config
 #     "https://raw.githubusercontent.com/open-mmlab/mmdetection/v2.10.0"
 # )
 
-mmdet_base_url = Path("mmdetection")
+mmdet_base_url = Path("mmdet")
 
 
 def param_groups(model):
