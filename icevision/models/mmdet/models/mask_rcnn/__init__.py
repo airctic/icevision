@@ -1,4 +1,5 @@
 from icevision.models.mmdet.common.mask.two_stage import *
+from icevision.models.mmdet.models.mask_rcnn.backbones import *
 from icevision.models.interpretation import Interpretation
 from icevision.models.mmdet.common.interpretation_utils import (
     sum_losses_mmdet,
