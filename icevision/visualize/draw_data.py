@@ -95,6 +95,7 @@ def draw_sample(
             # Should work for audio or image classification
             # We do this separately because we need to collect image labels across
             #  multiple potential tasks and display them one below the other
+            # TODO: Prediction scores for classif labels?
             for label in getattr(composite, "labels", []):
                 if label_include_classification_task_name:
                     prettify_funcs.append(lambda label: f"{task}: {label}")
@@ -105,7 +106,7 @@ def draw_sample(
                 img = draw_label(
                     img=img,
                     label=label,
-                    score=score if display_score else None,
+                    score=None,
                     bbox=None,
                     mask=None,
                     class_map=class_map,
