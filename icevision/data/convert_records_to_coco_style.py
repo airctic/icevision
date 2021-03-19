@@ -75,7 +75,7 @@ def convert_record_to_coco_annotations(record):
         "iscrowd": [],
     }
     # build annotations field
-    for label in record.detection.labels:
+    for label in record.detection.label_ids:
         annotations_dict["image_id"].append(record.record_id)
         annotations_dict["category_id"].append(label)
 
@@ -132,7 +132,7 @@ def convert_record_to_coco_annotations(record):
 
     # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
     if not hasattr(record.detection, "iscrowds"):
-        record.detection.iscrowds = [0] * len(record.detection.labels)
+        record.detection.iscrowds = [0] * len(record.detection.label_ids)
     for iscrowd in record.detection.iscrowds:
         annotations_dict["iscrowd"].append(iscrowd)
 

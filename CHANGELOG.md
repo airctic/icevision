@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - prettify labels -- show confidence score & capitalise label
   - plot specific and/or exclude specific labels
   - pass in a dictionary mapping labels to specific colors
+**Breaking:**: Rename `labels->label_ids`, `labels_names->labels` in `LabelsRecordComponent`
 
 ## [0.6.0b1]
 ### Added

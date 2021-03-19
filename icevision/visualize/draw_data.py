@@ -81,7 +81,6 @@ def draw_sample(
     class_map = sample.detection.class_map
     if denormalize_fn is not None:
         img = denormalize_fn(img)
-
     for task, composite in sample.task_composites.items():
         # Should break if no ClassMap found in composite.
         #  Should be as the only composite without ClassMap should be
