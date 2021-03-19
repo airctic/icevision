@@ -172,10 +172,10 @@ def process_train_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet training"""
     image = im2tensor(record.img)
     # background and dummy if no label in record
-    classes = record.detection.labels if record.detection.labels else [0]
+    classes = record.detection.label_ids if record.detection.label_ids else [0]
     bboxes = (
         [bbox.yxyx for bbox in record.detection.bboxes]
-        if len(record.detection.labels) > 0
+        if len(record.detection.label_ids) > 0
         else [[0, 0, 0, 0]]
     )
     return image, bboxes, classes

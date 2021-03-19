@@ -71,7 +71,7 @@ class AlbumentationsInstancesLabelsComponent(AlbumentationsAdapterComponent):
 
     def setup_instances_labels(self, record_component):
         # TODO HACK: Will not work for multitask, will fail silently
-        self._original_labels = record_component.labels
+        self._original_labels = record_component.label_ids
         # Substitue labels with list of idxs, so we can also filter out iscrowds in case any bboxes are removed
         self.adapter._albu_in["labels"] = list(range(len(self._original_labels)))
 
