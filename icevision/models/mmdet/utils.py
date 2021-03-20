@@ -59,7 +59,7 @@ def create_model_config(
 
     # download weights
     if pretrained and weights_url:
-        save_dir = Path("checkpoints") / model_name
+        save_dir = Path(checkpoints_path) / model_name
         save_dir.mkdir(exist_ok=True, parents=True)
 
         fname = Path(weights_url).name
@@ -68,11 +68,6 @@ def create_model_config(
         if not weights_path.exists() or force_download:
             download_url(url=weights_url, save_path=str(weights_path))
 
-    if cfg_url:
-        cfg = Config.fromfile(cfg_url)
-    else:
-        raise RuntimeError(
-            "cfg_url is empty. Model must have a valid configuration file"
-        )
+    cfg = Config.fromfile(cfg_url)
 
     return cfg, weights_path
