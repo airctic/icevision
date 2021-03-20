@@ -34,16 +34,16 @@ def build_model(
         else:
             cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
 
-        if weights_path is not None:
-            cfg.model.pretrained = None
-
     if model_type == "two_stage_detector_mask":
         cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
         cfg.model.roi_head.mask_head.num_classes = num_classes - 1
 
+    if weights_path is not None:
+        cfg.model.pretrained = None
+
     _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
 
-    if weights_path is not None:
+    if pretrained and (weights_path is not None):
         load_checkpoint(_model, str(weights_path))
 
     _model.param_groups = MethodType(param_groups, _model)
