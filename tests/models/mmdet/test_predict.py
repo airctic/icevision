@@ -28,10 +28,23 @@ from icevision.all import *
         ),
     ],
 )
-def test_mmdet_bbox_models_predict(ds, model_type, path, config, weights_path, request):
+@pytest.mark.parametrize(
+    "ds, model_type, path",
+    [
+        (
+            "fridge_ds",
+            models.mmdet.retinanet,
+            "samples_source",
+        ),
+    ],
+)
+def test_mmdet_bbox_models_predict(ds, model_type, path, request):
     _, valid_ds = request.getfixturevalue(ds)
-    config_path = request.getfixturevalue(path) / config
-    model = model_type.model(config_path, num_classes=5, weights_path=weights_path)
+    backbone = model_type.backbones.r50_fpn_1x
+    cfg_file_path = f"mmdet/configs/{(backbone.cfg_url).name}"
+    backbone.cfg_url = path / cfg_file_path
+
+    model = model_type.model(backbone=backbone, num_classes=5)
 
     infer_dl = model_type.infer_dl(valid_ds, batch_size=1, shuffle=False)
     _, records = first(infer_dl)
@@ -63,8 +76,11 @@ def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
     valid_ds = Dataset(valid_records, valid_tfms)
     model_type = models.mmdet.mask_rcnn
 
-    config_path = samples_source / "mmdet/configs/mask_rcnn_r50_fpn_1x_coco.py"
-    model = model_type.model(config_path, num_classes=81)
+    backbone = model_type.backbones.r50_fpn_1x
+    cfg_file_path = f"mmdet/configs/{(backbone.cfg_url).name}"
+    backbone.cfg_url = samples_source / cfg_file_path
+
+    model = model_type.model(backbone=backbone, num_classes=81)
 
     infer_dl = model_type.infer_dl(valid_ds, batch_size=2, shuffle=False)
     _, records = first(infer_dl)
