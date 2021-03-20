@@ -1,33 +1,6 @@
 import pytest
 from icevision.all import *
 
-
-@pytest.mark.parametrize(
-    "ds, model_type, path, config, weights_path",
-    [
-        (
-            "fridge_ds",
-            models.mmdet.faster_rcnn,
-            "samples_source",
-            "mmdet/configs/faster_rcnn_r50_fpn_1x_coco.py",
-            None,
-        ),
-        (
-            "fridge_ds",
-            models.mmdet.fcos,
-            "samples_source",
-            "mmdet/configs/fcos_r50_caffe_fpn_gn-head_1x_coco.py",
-            None,
-        ),
-        (
-            "fridge_ds",
-            models.mmdet.retinanet,
-            "samples_source",
-            "mmdet/configs/retinanet_r50_fpn_1x_coco.py",
-            None,
-        ),
-    ],
-)
 @pytest.mark.parametrize(
     "ds, model_type, path",
     [
