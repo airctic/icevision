@@ -1,6 +1,7 @@
 import pytest
 from icevision.all import *
 
+
 @pytest.mark.parametrize(
     "ds, model_type, path",
     [
