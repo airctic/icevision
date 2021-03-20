@@ -19,7 +19,7 @@ class TestBboxModels:
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
         backbone = model_type.backbones.r50_fpn_1x
-        cfg_file_path = f"mmdet/configs{(backbone.cfg_url).name}"
+        cfg_file_path = f"mmdet/configs/{(backbone.cfg_url).name}"
         backbone.cfg_url = path / cfg_file_path
 
         model = model_type.model(backbone=backbone, num_classes=5)
@@ -70,7 +70,7 @@ def mask_dls_model(coco_mask_records, samples_source):
     valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
     backbone = model_type.backbones.r50_fpn_1x
-    cfg_file_path = f"mmdet/configs{(backbone.cfg_url).name}"
+    cfg_file_path = f"mmdet/configs/{(backbone.cfg_url).name}"
     backbone.cfg_url = samples_source / cfg_file_path
 
     model = model_type.model(backbone=backbone, num_classes=81)
