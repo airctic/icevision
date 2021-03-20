@@ -8,7 +8,7 @@ from icevision.all import *
         (
             "fridge_ds",
             models.mmdet.retinanet,
-            "samples_source",
+            samples_source,
         ),
     ],
 )
