@@ -3,19 +3,18 @@ from icevision.all import *
 
 
 @pytest.mark.parametrize(
-    "ds, model_type, path",
+    "ds, model_type",
     [
         (
             "fridge_ds",
             models.mmdet.retinanet,
-            samples_source,
         ),
     ],
 )
-def test_mmdet_bbox_models_predict(ds, model_type, path, request):
+def test_mmdet_bbox_models_predict(ds, model_type, samples_source, request):
     _, valid_ds = request.getfixturevalue(ds)
     backbone = model_type.backbones.r50_fpn_1x
-    backbone.cfg_url = path / backbone.cfg_url
+    backbone.cfg_url = samples_source / backbone.cfg_url
 
     model = model_type.model(backbone=backbone, num_classes=5)
 
