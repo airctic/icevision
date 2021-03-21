@@ -1,3 +1,4 @@
+from icevision.models.ross.efficientdet.utils import *
 from icevision.models.ross.efficientdet.model import *
 from icevision.models.ross.efficientdet.backbones import *
 from icevision.models.ross.efficientdet.dataloaders import *

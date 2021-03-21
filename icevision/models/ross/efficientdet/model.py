@@ -2,6 +2,7 @@ __all__ = ["model"]
 
 from icevision.imports import *
 from icevision.utils import *
+from icevision.models.ross.efficientdet.utils import *
 from icevision.models.ross.efficientdet.backbones import *
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain, unwrap_bench
 from effdet import create_model_from_config
