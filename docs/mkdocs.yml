@@ -47,7 +47,7 @@ nav:
   - Tutorials:
     - Getting Started: getting_started.md
     - Getting Started with MMDetection: getting_started_mmdetection.md
-    - Quickstart using EfficientDet: quickstart.md
+    - Quickstart using EfficientDet: getting_started_efficientdet.md
     - Quickstart using RetinaNet: retinanet.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
