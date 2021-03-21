@@ -2,13 +2,17 @@ __all__ = ["model"]
 
 from icevision.imports import *
 from icevision.utils import *
+from icevision.models.ross.efficientdet.backbones import *
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain, unwrap_bench
 from effdet import create_model_from_config
 from effdet.efficientdet import HeadNet
 
 
 def model(
-    model_name: str, num_classes: int, img_size: int, pretrained: bool = True
+    backbone: EfficientDetBackboneConfig,
+    num_classes: int,
+    img_size: int,
+    pretrained: bool = True,
 ) -> nn.Module:
     """Creates the efficientdet model specified by `model_name`.
 
@@ -16,7 +20,7 @@ def model(
     [here](https://github.com/rwightman/efficientdet-pytorch).
 
     # Arguments
-        model_name: Specifies the model to create. For pretrained models, check
+        backbone: Specifies the backbone to use create the model. For pretrained models, check
             [this](https://github.com/rwightman/efficientdet-pytorch#models) table.
         num_classes: Number of classes of your dataset (including background).
         img_size: Image size that will be fed to the model. Must be squared and
@@ -26,6 +30,7 @@ def model(
     # Returns
         A PyTorch model.
     """
+    model_name = backbone.model_name
     config = get_efficientdet_config(model_name=model_name)
     config.image_size = (img_size, img_size) if isinstance(img_size, int) else img_size
 

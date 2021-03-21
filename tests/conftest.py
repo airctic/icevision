@@ -3,6 +3,7 @@ from icevision import *
 from icevision.imports import *
 from icevision.models.torchvision import faster_rcnn
 from icevision.models.ross import efficientdet
+from icevision.models.ross.efficientdet.backbones import *
 import albumentations as A
 
 
@@ -20,7 +21,9 @@ def coco_record_id_map():
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
-    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5 + 1, img_size=384)
+    model = efficientdet.model(
+        backbone=tf_efficientdet_lite0, num_classes=5 + 1, img_size=384
+    )
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")
