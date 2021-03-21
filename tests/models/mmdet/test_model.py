@@ -25,7 +25,9 @@ class TestBboxModels:
         return train_dl, valid_dl, model
 
     def test_mmdet_bbox_models_fastai(self, ds, model_type, samples_source, request):
-        train_dl, valid_dl, model = self.dls_model(ds, model_type, samples_source, request)
+        train_dl, valid_dl, model = self.dls_model(
+            ds, model_type, samples_source, request
+        )
 
         learn = model_type.fastai.learner(
             dls=[train_dl, valid_dl], model=model, splitter=fastai.trainable_params
@@ -33,7 +35,9 @@ class TestBboxModels:
         learn.fine_tune(1, 3e-4)
 
     def test_mmdet_bbox_models_light(self, ds, model_type, samples_source, request):
-        train_dl, valid_dl, model = self.dls_model(ds, model_type, samples_source, request)
+        train_dl, valid_dl, model = self.dls_model(
+            ds, model_type, samples_source, request
+        )
 
         class LitModel(model_type.lightning.ModelAdapter):
             def configure_optimizers(self):
