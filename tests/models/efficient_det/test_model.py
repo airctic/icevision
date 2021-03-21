@@ -9,7 +9,7 @@ from icevision.models.ross.efficientdet.backbones import *
         efficientdet_d0,
         efficientdet_d1,
         tf_efficientdet_lite0,
-        tf_efficientdet_d2,
+        efficientdet_d2,
     ],
 )
 def test_efficient_det_param_groups(backbone):
