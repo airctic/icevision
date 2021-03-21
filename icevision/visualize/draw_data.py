@@ -35,6 +35,10 @@ def draw_sample(
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = "#C4C4C4",  # Mild Gray
+    label_border_color: Union[np.array, list, tuple, str] = "#020303",  # Black,
+    label_thin_border: bool = True,
+    label_pad_width_factor: float = 0.02,
+    label_pad_height_factor: float = 0.005,
     mask_blend: float = 0.5,
     mask_border_thickness: int = 7,
     color_map: Optional[dict] = None,  # label -> color mapping
@@ -50,6 +54,12 @@ def draw_sample(
 
     * label_color: A <collection> of RGB values or a hex code string that defines
                    the color of all the plotted labels
+    * label_border_color: Color of the border around the label
+    * label_thin_border: Apply a thin border around the label. If false, applies
+                         a thick border. If None, applies no border
+    * label_pad_width_factor: Amount of padding to apply relative to the image's width.
+                              Applies padding to bbox coords if padding bbox
+                              labels else to the top-left of the image for classif labels
     * mask_blend: Degree of transparency of the mask. 1 = opaque, 0 = transparent
     * mask_border_thickness: Degree of thickness of the mask. Must be an odd number
     * color_map: An optional dictionary that maps the label => color-value
@@ -61,67 +71,73 @@ def draw_sample(
                     precedence over `exclude_labels` (?)
     """
     img = sample.img.copy()
-    class_map = sample.detection.class_map
+
     if denormalize_fn is not None:
         img = denormalize_fn(img)
-    # TODO, HACK: temporary solution, draw will be refactored to record
-    for label, bbox, mask, keypoints, score in itertools.zip_longest(
-        getattr(sample.detection, "label_ids", []),
-        getattr(sample.detection, "bboxes", []),
-        getattr(sample.detection, "masks", []),
-        getattr(sample.detection, "keypoints", []),
-        # TODO, HACK: Scores are not stored in `sample.detection`...?
-        getattr(sample.detection, "scores", []),
-        # getattr(sample, tasks.detection.name, {}).get("labels", []),
-        # getattr(sample, tasks.detection.name, {}).get("bboxes", []),
-        # getattr(sample, tasks.detection.name, {}).get("masks", []),
-        # getattr(sample, tasks.detection.name, {}).get("keypoints", []),
-    ):
-        # random color by default
-        color = (np.random.random(3) * 0.6 + 0.4) * 255
 
-        # logic for plotting specific labels only
-        # `include_only` > `exclude_labels`
-        if not label == []:
-            label_str = class_map.get_by_id(label) if class_map is not None else ""
-            if include_only is not None:
-                if not label_str in include_only:
+    for task, composite in sample.task_composites.items():
+        # Should break if no ClassMap found in composite.
+        #  Should be as the only composite without ClassMap should be
+        #  `sample.common`. This is a foundational assumption? #NOTE
+        class_map = getattr(composite, "class_map", None)
+        for label, bbox, mask, keypoints, score in itertools.zip_longest(
+            getattr(composite, "labels", []),  # list of strings
+            getattr(composite, "bboxes", []),
+            getattr(composite, "masks", []),
+            getattr(composite, "keypoints", []),
+            getattr(composite, "scores", []),
+        ):
+            # random color by default
+            color = (np.random.random(3) * 0.6 + 0.4) * 255
+
+            # logic for plotting specific labels only
+            # `include_only` > `exclude_labels`
+            if not label == []:
+                label_str = (
+                    class_map.get_by_name(label) if class_map is not None else ""
+                )
+                if include_only is not None:
+                    if not label_str in include_only:
+                        continue
+                elif label_str in exclude_labels:
                     continue
-            elif label_str in exclude_labels:
-                continue
 
-        # if color-map is given and `labels` are predicted
-        # then set color accordingly
-        if color_map is not None:
-            color = np.array(color_map[label_str]).astype(np.float)
+            # if color-map is given and `labels` are predicted
+            # then set color accordingly
+            if color_map is not None:
+                color = np.array(color_map[label_str]).astype(np.float)
 
-        if display_mask and mask is not None:
-            img = draw_mask(
-                img=img,
-                mask=mask,
-                color=color,
-                blend=mask_blend,
-                border_thickness=mask_border_thickness,
-            )
-        if display_bbox and bbox is not None:
-            img = draw_bbox(img=img, bbox=bbox, color=color)
-        if display_keypoints and keypoints is not None:
-            img = draw_keypoints(img=img, kps=keypoints, color=color)
-        if display_label and label is not None:
-            img = draw_label(
-                img=img,
-                label=label,
-                score=score if display_score else None,
-                bbox=bbox,
-                mask=mask,
-                class_map=class_map,
-                color=label_color,
-                font_size=font_size,
-                font=font_path,
-                prettify=prettify,
-                prettify_func=prettify_func,
-                return_as_pil_img=False,  # should this always be False??
-            )
+            if display_mask and mask is not None:
+                img = draw_mask(
+                    img=img,
+                    mask=mask,
+                    color=color,
+                    blend=mask_blend,
+                    border_thickness=mask_border_thickness,
+                )
+            if display_bbox and bbox is not None:
+                img = draw_bbox(img=img, bbox=bbox, color=color)
+            if display_keypoints and keypoints is not None:
+                img = draw_keypoints(img=img, kps=keypoints, color=color)
+            if display_label and label is not None:
+                img = draw_label(
+                    img=img,
+                    label=label,
+                    score=score if display_score else None,
+                    bbox=bbox,
+                    mask=mask,
+                    class_map=class_map,
+                    color=label_color,
+                    border_color=label_border_color,
+                    pad_width_factor=label_pad_width_factor,
+                    pad_height_factor=label_pad_height_factor,
+                    thin_border=label_thin_border,
+                    font_size=font_size,
+                    font=font_path,
+                    prettify=prettify,
+                    prettify_func=prettify_func,
+                    return_as_pil_img=False,  # should this always be False??
+                )
     if return_as_pil_img:
         # may or may not be a PIL Image based on `display_label`
         return img if isinstance(img, PIL.Image.Image) else PIL.Image.fromarray(img)
@@ -134,7 +150,8 @@ def draw_label(
     img: np.ndarray,
     label: int,
     score: Optional[float],
-    color,
+    color: Union[np.ndarray, list, tuple],
+    border_color: Union[np.ndarray, list, tuple],
     class_map: Optional[ClassMap] = None,
     bbox=None,
     mask=None,
@@ -143,6 +160,9 @@ def draw_label(
     prettify: bool = True,
     prettify_func: Callable = str.capitalize,
     return_as_pil_img=False,
+    pad_width_factor=0.02,
+    pad_height_factor=0.005,
+    thin_border=True,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
     if bbox is not None:
@@ -153,7 +173,12 @@ def draw_label(
         x, y = 0, 0
 
     if class_map is not None:
-        caption = class_map.get_by_id(label)
+        if isinstance(label, int):
+            # TODO: This may never get triggered because we're looping
+            # over composite.labels which is a list of strings
+            caption = class_map.get_by_id(label)
+        else:
+            caption = label
     else:
         caption = str(label)
     if prettify:
@@ -175,9 +200,13 @@ def draw_label(
         x=x,
         y=y,
         color=color,
+        border_color=border_color,
         font_path=font,
         font_size=int(font_size),
         return_as_pil_img=return_as_pil_img,
+        pad_width_factor=pad_width_factor,
+        pad_height_factor=pad_height_factor,
+        thin_border=thin_border,
     )
 
 
@@ -187,16 +216,44 @@ def _draw_label(
     x: int,
     y: int,
     color: Union[np.ndarray, list, tuple],
+    border_color: Union[np.ndarray, list, tuple],
     font_path=DEFAULT_FONT_PATH,
     font_size: int = 20,
     return_as_pil_img: bool = False,
+    pad_width_factor=0.02,
+    pad_height_factor=0.005,
+    thin_border=True,
 ) -> Union[PIL.Image.Image, np.ndarray]:
     """Draw labels on the image"""
     font = PIL.ImageFont.truetype(font_path, size=font_size)
-    xy = (x + 10, y + 5)
+    color = as_rgb_tuple(color)
+    border_color = as_rgb_tuple(border_color)
+
+    height, width = img.shape[:2]
+    x_pad = height * pad_width_factor
+    y_pad = width * pad_height_factor
+    x, y = x + x_pad, y + y_pad
+
     img = PIL.Image.fromarray(img)
     draw = ImageDraw.Draw(img)
-    draw.text(xy, caption, font=font, fill=as_rgb_tuple(color))
+
+    if thin_border is not None:
+        # Draw thin / thick border around text
+        draw.text(
+            (x - 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x + 1, y if thin_border else y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x - 1, y - 1), caption, font=font, fill=border_color
+        )
+        draw.text(
+            (x if thin_border else x + 1, y + 1), caption, font=font, fill=border_color
+        )
+
+    # Now draw text over the border
+    draw.text((x, y), caption, font=font, fill=color)
     if return_as_pil_img:
         return img
     else:
