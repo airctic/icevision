@@ -38,7 +38,7 @@ def build_model(
         cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
         cfg.model.roi_head.mask_head.num_classes = num_classes - 1
 
-    if weights_path is not None:
+    if (pretrained == False) or (weights_path is not None):
         cfg.model.pretrained = None
 
     _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
