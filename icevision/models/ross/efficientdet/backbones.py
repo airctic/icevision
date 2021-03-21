@@ -11,10 +11,7 @@ __all__ = [
     "efficientdet_d7x",
 ]
 
-
-@dataclass
-class EfficientDetBackboneConfig:
-    model_name: str
+from icevision.models.ross.efficientdet.utils import *
 
 
 tf_efficientdet_lite0 = EfficientDetBackboneConfig(model_name="tf_efficientdet_lite0")
