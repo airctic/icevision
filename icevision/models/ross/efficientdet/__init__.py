@@ -1,4 +1,5 @@
 from icevision.models.ross.efficientdet.model import *
+from icevision.models.ross.efficientdet.backbones import *
 from icevision.models.ross.efficientdet.dataloaders import *
 from icevision.models.ross.efficientdet.loss_fn import *
 from icevision.models.ross.efficientdet.prediction import *
