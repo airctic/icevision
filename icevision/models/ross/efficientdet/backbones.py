@@ -1,35 +1,35 @@
 __all__ = [
-    "tf_efficientdet_lite0",
-    "efficientdet_d0",
-    "efficientdet_d1",
-    "efficientdet_d2",
-    "efficientdet_d3",
-    "efficientdet_d4",
-    "efficientdet_d5",
-    "efficientdet_d6",
-    "efficientdet_d7",
-    "efficientdet_d7x",
+    "tf_lite0",
+    "d0",
+    "d1",
+    "d2",
+    "d3",
+    "d4",
+    "d5",
+    "d6",
+    "d7",
+    "d7x",
 ]
 
 from icevision.models.ross.efficientdet.utils import *
 
 
-tf_efficientdet_lite0 = EfficientDetBackboneConfig(model_name="tf_efficientdet_lite0")
+tf_lite0 = EfficientDetBackboneConfig(model_name="tf_efficientdet_lite0")
 
-efficientdet_d0 = EfficientDetBackboneConfig(model_name="efficientdet_d0")
+d0 = EfficientDetBackboneConfig(model_name="efficientdet_d0")
 
-efficientdet_d1 = EfficientDetBackboneConfig(model_name="efficientdet_d1")
+d1 = EfficientDetBackboneConfig(model_name="efficientdet_d1")
 
-efficientdet_d2 = EfficientDetBackboneConfig(model_name="efficientdet_d2")
+d2 = EfficientDetBackboneConfig(model_name="efficientdet_d2")
 
-efficientdet_d3 = EfficientDetBackboneConfig(model_name="efficientdet_d3")
+d3 = EfficientDetBackboneConfig(model_name="efficientdet_d3")
 
-efficientdet_d4 = EfficientDetBackboneConfig(model_name="efficientdet_d4")
+d4 = EfficientDetBackboneConfig(model_name="efficientdet_d4")
 
-efficientdet_d5 = EfficientDetBackboneConfig(model_name="efficientdet_d5")
+d5 = EfficientDetBackboneConfig(model_name="efficientdet_d5")
 
-efficientdet_d6 = EfficientDetBackboneConfig(model_name="efficientdet_d6")
+d6 = EfficientDetBackboneConfig(model_name="efficientdet_d6")
 
-efficientdet_d7 = EfficientDetBackboneConfig(model_name="efficientdet_d7")
+d7 = EfficientDetBackboneConfig(model_name="efficientdet_d7")
 
-efficientdet_d7x = EfficientDetBackboneConfig(model_name="efficientdet_d7x")
+d7x = EfficientDetBackboneConfig(model_name="efficientdet_d7x")

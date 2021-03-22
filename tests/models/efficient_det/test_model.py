@@ -6,10 +6,10 @@ from icevision.models.ross.efficientdet.backbones import *
 @pytest.mark.parametrize(
     "backbone",
     [
-        tf_efficientdet_lite0,
-        efficientdet_d0,
-        efficientdet_d1,
-        efficientdet_d2,
+        tf_lite0,
+        d0,
+        d1,
+        d2,
     ],
 )
 def test_efficient_det_param_groups(backbone):
