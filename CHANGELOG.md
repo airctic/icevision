@@ -22,6 +22,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - control label height & width padding from bbox edge
   - add border around label for legibility (color is a parameter)
 **Breaking:**: Rename `labels->label_ids`, `labels_names->labels` in `LabelsRecordComponent`
+- Renamed torchvision resnet backbones:
+  - resnet_fpn.resnet18 -> resnet18_fpn
+  - resnest_fpn.resnest18 -> resnest18_fpn
+
 
 ## [0.6.0b1]
 ### Added
