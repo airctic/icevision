@@ -4,17 +4,17 @@ __all__ = [
     "resnet50",
     "resnet101",
     "resnet152",
-    "resnext50_32x4d",
+    "resnext50_32x4d_fpn",
     "resnext101_32x8d",
-    "wide_resnet50_2",
-    "wide_resnet101_2",
+    "wide_resnet50_2_fpn",
+    "wide_resnet101_2_fpn",
 ]
 
 from icevision.backbones.resnet import resnext101_32x8d
 from icevision.backbones.resnet_fpn import (
-    resnext50_32x4d,
-    wide_resnet101_2,
-    wide_resnet50_2,
+    resnext50_32x4d_fpn,
+    wide_resnet101_2_fpn,
+    wide_resnet50_2_fpn,
 )
 from icevision.backbones import resnet_fpn
 
@@ -27,7 +27,7 @@ def resnet18(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnet18(
+    return resnet_fpn.resnet18_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -41,7 +41,7 @@ def resnet34(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnet34(
+    return resnet_fpn.resnet34_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -55,7 +55,7 @@ def resnet50(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnet50(
+    return resnet_fpn.resnet50_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -69,7 +69,7 @@ def resnet101(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnet101(
+    return resnet_fpn.resnet101_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -83,7 +83,7 @@ def resnet152(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnet152(
+    return resnet_fpn.resnet152_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -97,7 +97,7 @@ def resnext50_32x4d(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnext50_32x4d(
+    return resnet_fpn.resnext50_32x4d_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -111,7 +111,7 @@ def resnext101_32x8d(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.resnext101_32x8d(
+    return resnet_fpn.resnext101_32x8d_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -125,7 +125,7 @@ def wide_resnet50_2(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.wide_resnet50_2(
+    return resnet_fpn.wide_resnet50_2_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,
@@ -139,7 +139,7 @@ def wide_resnet101_2(
     extra_blocks=LastLevelP6P7(256, 256),
     **kwargs,
 ):
-    return resnet_fpn.wide_resnet101_2(
+    return resnet_fpn.wide_resnet101_2_fpn(
         pretrained=pretrained,
         returned_layers=returned_layers,
         extra_blocks=extra_blocks,

@@ -32,7 +32,7 @@ def fridge_efficientdet_model() -> nn.Module:
 
 @pytest.fixture()
 def fridge_faster_rcnn_model() -> nn.Module:
-    backbone = faster_rcnn.backbones.resnet_fpn.resnet18(pretrained=False)
+    backbone = faster_rcnn.backbones.resnet_fpn.resnet18_fpn(pretrained=False)
     return faster_rcnn.model(num_classes=5, backbone=backbone)
 
 
