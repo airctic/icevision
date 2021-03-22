@@ -40,6 +40,7 @@ def _test_preds(preds, pred_count=2, mask=False):
         assert isinstance(pred.detection.masks, MaskArray)
 
 
+@pytest.mark.skip
 def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
     valid_records, _ = coco_mask_records[:2], coco_mask_records[:1]
 
