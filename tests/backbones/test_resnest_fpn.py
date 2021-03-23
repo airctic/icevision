@@ -3,10 +3,11 @@ from icevision.all import *
 
 
 @pytest.mark.parametrize(
-    "model_name", ["resnest50", "resnest101", "resnest200", "resnest269"]
+    "model_name",
+    ["resnest50_fpn", "resnest101_fpn", "resnest200_fpn", "resnest269_fpn"],
 )
 def test_resnet_fpn_param_groups(model_name):
-    model_fn = getattr(backbones.resnest_fpn, model_name)
+    model_fn = getattr(backbones, model_name)
     model = model_fn(pretrained=False)
 
     param_groups = model.param_groups()
