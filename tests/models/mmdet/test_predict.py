@@ -14,7 +14,7 @@ from icevision.all import *
 def test_mmdet_bbox_models_predict(ds, model_type, samples_source, request):
     _, valid_ds = request.getfixturevalue(ds)
     backbone = model_type.backbones.resnet50_fpn_1x
-    backbone.cfg_url = samples_source / backbone.cfg_url
+    backbone.config_path = samples_source / backbone.config_path
 
     model = model_type.model(backbone=backbone, num_classes=5)
 
@@ -50,7 +50,7 @@ def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
     model_type = models.mmdet.mask_rcnn
 
     backbone = model_type.backbones.resnet50_fpn_1x
-    backbone.cfg_url = samples_source / backbone.cfg_url
+    backbone.config_path = samples_source / backbone.config_path
 
     model = model_type.model(backbone=backbone, num_classes=81)
 
