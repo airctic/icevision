@@ -1,8 +1,8 @@
 __all__ = [
-    "resnest50",
-    "resnest101",
-    "resnest200",
-    "resnest269",
+    "resnest50_fpn",
+    "resnest101_fpn",
+    "resnest200_fpn",
+    "resnest269_fpn",
 ]
 
 from icevision.imports import *
@@ -107,17 +107,17 @@ def _resnest_fpn(name, pretrained: bool = True, **kwargs):
     return model
 
 
-def resnest50(pretrained: bool = True, **kwargs):
+def resnest50_fpn(pretrained: bool = True, **kwargs):
     return _resnest_fpn(resnest.torch.resnest50, pretrained=pretrained, **kwargs)
 
 
-def resnest101(pretrained: bool = True, **kwargs):
+def resnest101_fpn(pretrained: bool = True, **kwargs):
     return _resnest_fpn(resnest.torch.resnest101, pretrained=pretrained, **kwargs)
 
 
-def resnest200(pretrained: bool = True, **kwargs):
+def resnest200_fpn(pretrained: bool = True, **kwargs):
     return _resnest_fpn(resnest.torch.resnest200, pretrained=pretrained, **kwargs)
 
 
-def resnest269(pretrained: bool = True, **kwargs):
+def resnest269_fpn(pretrained: bool = True, **kwargs):
     return _resnest_fpn(resnest.torch.resnest269, pretrained=pretrained, **kwargs)
