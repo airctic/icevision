@@ -1,27 +1,22 @@
 __all__ = [
-    "resnet18",
-    "resnet34",
-    "resnet50",
-    "resnet101",
-    "resnet152",
+    "resnet18_fpn",
+    "resnet34_fpn",
+    "resnet50_fpn",
+    "resnet101_fpn",
+    "resnet152_fpn",
     "resnext50_32x4d_fpn",
-    "resnext101_32x8d",
+    "resnext101_32x8d_fpn",
     "wide_resnet50_2_fpn",
     "wide_resnet101_2_fpn",
 ]
 
 from icevision.backbones.resnet import resnext101_32x8d
-from icevision.backbones.resnet_fpn import (
-    resnext50_32x4d_fpn,
-    wide_resnet101_2_fpn,
-    wide_resnet50_2_fpn,
-)
 from icevision.backbones import resnet_fpn
 
 from torchvision.ops.feature_pyramid_network import LastLevelP6P7
 
 
-def resnet18(
+def resnet18_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -35,7 +30,7 @@ def resnet18(
     )
 
 
-def resnet34(
+def resnet34_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -49,7 +44,7 @@ def resnet34(
     )
 
 
-def resnet50(
+def resnet50_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -63,7 +58,7 @@ def resnet50(
     )
 
 
-def resnet101(
+def resnet101_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -77,7 +72,7 @@ def resnet101(
     )
 
 
-def resnet152(
+def resnet152_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -91,7 +86,7 @@ def resnet152(
     )
 
 
-def resnext50_32x4d(
+def resnext50_32x4d_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -105,7 +100,7 @@ def resnext50_32x4d(
     )
 
 
-def resnext101_32x8d(
+def resnext101_32x8d_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -119,7 +114,7 @@ def resnext101_32x8d(
     )
 
 
-def wide_resnet50_2(
+def wide_resnet50_2_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
@@ -133,7 +128,7 @@ def wide_resnet50_2(
     )
 
 
-def wide_resnet101_2(
+def wide_resnet101_2_fpn(
     pretrained: bool = True,
     returned_layers=(2, 3, 4),
     extra_blocks=LastLevelP6P7(256, 256),
