@@ -1,5 +1,5 @@
 __all__ = [
-    "mmdet_base_url",
+    "mmdet_configs_path",
     "param_groups",
     "MMDetBackboneConfig",
     "create_model_config",
@@ -12,9 +12,7 @@ from mmdet.models.detectors import *
 from mmcv import Config
 
 
-mmdet_base_url = download_mmdet_configs()
-# TODO: rename
-# mmdet_configs_path = download_mmdet_configs()
+mmdet_configs_path = download_mmdet_configs()
 
 
 def param_groups(model):
@@ -42,7 +40,7 @@ def param_groups(model):
 @dataclass
 class MMDetBackboneConfig:
     model_name: str
-    cfg_url: str
+    config_path: str
     weights_url: str
 
 
@@ -54,7 +52,7 @@ def create_model_config(
 ):
 
     model_name = backbone.model_name
-    cfg_url = backbone.cfg_url
+    config_path = backbone.config_path
     weights_url = backbone.weights_url
 
     # download weights
@@ -68,6 +66,6 @@ def create_model_config(
         if not weights_path.exists() or force_download:
             download_url(url=weights_url, save_path=str(weights_path))
 
-    cfg = Config.fromfile(cfg_url)
+    cfg = Config.fromfile(config_path)
 
     return cfg, weights_path
