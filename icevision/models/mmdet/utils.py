@@ -7,7 +7,7 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.utils import *
-from ._download_configs import download_mmdet_configs
+from .download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config
 

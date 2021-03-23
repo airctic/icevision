@@ -17,4 +17,4 @@ def download_mmdet_configs() -> Path:
 
         download_and_extract(f"{BASE_URL}/{VERSION}", download_path)
 
-    return save_dir / f"mmdetection_configs-{VERSION}"
+    return save_dir / f"mmdetection_configs-{VERSION}/configs"
