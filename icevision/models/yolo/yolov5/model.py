@@ -24,7 +24,7 @@ def model(
 
     device = (
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if device is not None
+        if device is None
         else device
     )
 
