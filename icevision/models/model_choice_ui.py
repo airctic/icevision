@@ -32,28 +32,28 @@ def get_model_info():
     return model_type, backbone
 
 
+# Creating dropdown widgets
+libraries_available = widgets.Dropdown(
+    options=["MMDetection", "Ross Wightman", "Torchvision"],
+    # options=[models.ross, models.torchvision],
+    description="Libraries",
+    disabled=False,
+)
+
+models_available = widgets.Dropdown(
+    options=[""],
+    description="Models",
+    disabled=False,
+)
+
+backbones_available = widgets.Dropdown(
+    options=[""],
+    description="Backbones",
+    disabled=False,
+)
+
+
 def display_model_choice_ui():
-
-    # Creat dropdown widgets
-    libraries_available = widgets.Dropdown(
-        options=["MMDetection", "Ross Wightman", "Torchvision"],
-        # options=[models.ross, models.torchvision],
-        description="Libraries",
-        disabled=False,
-    )
-
-    models_available = widgets.Dropdown(
-        options=[""],
-        description="Models",
-        disabled=False,
-    )
-
-    backbones_available = widgets.Dropdown(
-        options=[""],
-        description="Backbones",
-        disabled=False,
-    )
-
     # Observe dropdown widget changes
     libraries_available.observe(od_library_change, names="value")
     models_available.observe(od_model_change, names="value")
