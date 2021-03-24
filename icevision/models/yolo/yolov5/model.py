@@ -19,7 +19,14 @@ def model(
     img_size: int,  # must be multiple of 32
     model_name: str = "yolov5s",
     pretrained: bool = True,
+    device: Optional[torch.device] = None,
 ) -> nn.Module:
+
+    device = (
+        torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if device is not None
+        else device
+    )
 
     cfg_filepath = Path(yolov5.__file__).parent / f"models/{model_name}.yaml"
     if pretrained:
@@ -30,13 +37,13 @@ def model(
 
         attempt_download(weights_path)  # download if not found locally
         sys.path.insert(0, str(Path(yolov5.__file__).parent))
-        ckpt = torch.load(weights_path)  # , map_location=device)  # load checkpoint
+        ckpt = torch.load(weights_path, map_location=device)  # load checkpoint
         sys.path.remove(str(Path(yolov5.__file__).parent))
         if hyp.get("anchors"):
             ckpt["model"].yaml["anchors"] = round(hyp["anchors"])  # force autoanchor
-        model = Model(
-            cfg_filepath or ckpt["model"].yaml, ch=3, nc=num_classes
-        )  # .to(device)  # create
+        model = Model(cfg_filepath or ckpt["model"].yaml, ch=3, nc=num_classes).to(
+            device
+        )  # create
         exclude = []  # exclude keys
         state_dict = ckpt["model"].float().state_dict()  # to FP32
         state_dict = intersect_dicts(
@@ -49,7 +56,9 @@ def model(
 
         model = Model(
             cfg_filepath, ch=3, nc=num_classes, anchors=hyp.get("anchors")
-        )  # .to(device)  # create
+        ).to(
+            device
+        )  # create
 
     gs = int(model.stride.max())  # grid size (max stride)
     nl = model.model[-1].nl  # number of detection layers (used for scaling hyp['obj'])
