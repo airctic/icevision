@@ -80,6 +80,7 @@ def convert_raw_prediction(
     keep_scores = scores[keep_mask]
     keep_labels = labels[keep_mask]
     keep_bboxes = [BBox.from_xyxy(*o) for o in bboxes[keep_mask]]
+    set_trace()
     keep_masks = MaskArray(np.vstack(raw_masks)[keep_mask])
 
     pred = BaseRecord(

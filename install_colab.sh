@@ -2,6 +2,4 @@ pip install git+git://github.com/airctic/icevision.git\#egg=icevision[all] --upg
 pip install git+git://github.com/airctic/icedata.git --upgrade
 
 pip install mmcv-full=="1.2.5" -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.7.0/index.html --upgrade
-
-git clone "https://github.com/open-mmlab/mmdetection.git"
-pip install -e mmdetection -q
+pip install mmdet --upgrade
