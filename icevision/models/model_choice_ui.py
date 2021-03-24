@@ -71,11 +71,11 @@ def od_library_change(change):
 
     if lib_name == "Torchvision":
         lib_type = models.torchvision
-        model_list = ["retinanet", "faster_rcnn"]
+        model_list = ["faster_rcnn", "retinanet", "mask_rcnn", "keypoint_rcnn"]
 
     if lib_name == "MMDetection":
         lib_type = models.mmdet.models
-        model_list = ["retinanet", "fcos"]
+        model_list = ["retinanet"]
 
     if lib_name == "Ross Wightman":
         lib_type = models.ross
@@ -102,10 +102,9 @@ def od_model_change(change):
 
 def od_backbone_change(change):
     backbone_name = change.new
-    if backbone_name:
-        model_type = lib_info["model_type"]
-        backbone_type = lib_info["backbone_type"]
+    model_type = lib_info["model_type"]
+    backbone_type = lib_info["backbone_type"]
 
-        backbone = getattr(backbone_type, backbone_name)
+    backbone = getattr(backbone_type, backbone_name)
 
-        lib_info.update({"backbone": backbone})
+    lib_info.update({"backbone": backbone})
