@@ -122,13 +122,34 @@ def test_empty_iou(empty_detected_bboxes, target_bboxes):
     assert empty_result.shape == (0, 0)
 
 
-def test_couple_with_targets(target_bboxes, predicted_bboxes):
+def test_couple_with_targets(target_bboxes, predicted_bboxes, pred):
     predicted_bboxes = predicted_bboxes
+
     iou = pairwise_bboxes_iou(
         predicted_bboxes=predicted_bboxes, target_bboxes=target_bboxes
     )
     coupled_list = couple_with_targets(
         predicted_bboxes=predicted_bboxes, iou_scores=iou
+    )
+    expected_result = [
+        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
+        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
+        [BBox.from_xywh(700, 200, 200, 300)],
+    ]
+    assert len(coupled_list) == 3
+    assert [len(preds) for preds in coupled_list] == [2, 2, 1]
+    assert coupled_list == expected_result
+
+
+def test_couple_records(record, pred):
+    predicted_bboxes = record2predictions(pred)
+    target_bboxes = record2targets(record)
+
+    iou = pairwise_bboxes_iou(
+        predicted_bboxes=predicted_bboxes, target_bboxes=target_bboxes
+    )
+    coupled_list = couple_with_targets(
+        predicted_bboxes=record2predictions(pred), iou_scores=iou
     )
     expected_result = [
         [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
@@ -157,8 +178,10 @@ def test_couple_with_wrong_preds(target_bboxes, predicted_bboxes_wrong):
     assert coupled_list == [[], [], []]
 
 
-def test_pairwise_record_bboxes_iou(record, pred):
-    result = pairwise_record_bboxes_iou(record, pred)
+def test_pairwise_predictions_targets_iou(record, pred):
+    predictions = record2predictions(pred)
+    targets = record2targets(record)
+    result = pairwise_iou_predictions_targets(predictions, targets)
     assert isinstance(result, torch.Tensor)
 
 

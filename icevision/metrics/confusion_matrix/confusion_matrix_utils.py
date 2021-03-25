@@ -24,6 +24,33 @@ except ImportError:
             return cls(*bbox.xyxy, score, label)
 
 
+@dataclass(frozen=True)
+class Target:
+    bbox: BBox
+    label: int
+
+
+@dataclass(frozen=True)
+class Prediction(Target):
+    score: float
+
+
+def record2predictions(record: BaseRecord):
+    return [
+        Prediction(bbox=bbox, score=score, label=label)
+        for bbox, score, label in zip(
+            record.detection.bboxes, record.detection.scores, record.detection.labels
+        )
+    ]
+
+
+def record2targets(record: BaseRecord):
+    return [
+        Target(bbox=bbox, label=label)
+        for bbox, label in zip(record.detection.bboxes, record.detection.labels)
+    ]
+
+
 def zeroify_items_below_threshold(
     iou_scores: torch.Tensor, threshold: float
 ) -> torch.Tensor:
@@ -74,27 +101,23 @@ def pairwise_bboxes_iou(
     return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
-def pairwise_record_bboxes_iou(predictions: BaseRecord, targets: BaseRecord):
+def pairwise_iou_predictions_targets(
+    predictions: Collection[Prediction], targets: Collection[Target]
+):
     """
     Calculates pairwise iou on lists of bounding boxes. Uses torchvision implementation of `box_iou`.
-    :param predictions:
-    :param targets:
+    :param predicted_bboxes:
+    :param target_bboxes:
     :return:
     """
-    stacked_predictions_bboxes = [
-        bbox.to_tensor() for bbox in predictions.detection.bboxes
-    ]
-    stacked_predictions_bboxes = (
-        torch.stack(stacked_predictions_bboxes)
-        if stacked_predictions_bboxes
-        else torch.empty(0, 4)
-    )
+    stacked_preds = [prediction.bbox.to_tensor() for prediction in predictions]
+    stacked_preds = torch.stack(stacked_preds) if stacked_preds else torch.empty(0, 4)
 
-    stacked_targets = [bbox.to_tensor() for bbox in targets.detection.bboxes]
+    stacked_targets = [target.bbox.to_tensor() for target in targets]
     stacked_targets = (
         torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
     )
-    return torchvision.ops.box_iou(stacked_predictions_bboxes, stacked_targets)
+    return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
 def add_unknown_labels(ground_truths, predictions, class_map):
@@ -120,7 +143,6 @@ def match_preds_with_targets(
 ) -> Tuple[BBox, Tuple[BBox, float, int]]:
     """
     Function that matches predictions with their targets primarily by iou score larger than set threshold.
-    Policy specifies the matching policy. Can be one of ALL, BEST_SCORE and BEST_IOU.
     Will always return a list of predictions matching given target.
     """
 
