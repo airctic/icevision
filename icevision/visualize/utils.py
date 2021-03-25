@@ -7,6 +7,7 @@ __all__ = [
 ]
 
 from icevision.imports import *
+from icevision.utils import *
 from matplotlib import patches
 from PIL import Image, ImageFont, ImageDraw
 import PIL
@@ -53,20 +54,19 @@ def as_rgb_tuple(x: Union[np.ndarray, tuple, list, str]) -> tuple:
         raise ValueError(f"Expected {{np.ndarray|list|tuple}}, got {type(x)}")
 
 
-def get_default_font() -> Path:
+def get_default_font() -> str:
     import requests
 
-    icedir = Path.home() / ".icevision"
-    icedir.mkdir(exist_ok=True)
-
-    font_dir = icedir / "fonts"
+    font_dir = get_root_dir() / "fonts"
     font_dir.mkdir(exist_ok=True)
 
     font_file = font_dir / "SpaceGrotesk-Medium.ttf"
     if not font_file.exists():
         URL = "https://raw.githubusercontent.com/airctic/storage/master/SpaceGrotesk-Medium.ttf"
-        print(
-            f"Downloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from {URL} to {font_file}"
+        logger.info(
+            "Downloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from {} to {}",
+            URL,
+            font_file,
         )
         font_file.write_bytes(requests.get(URL).content)
     return str(font_file)
