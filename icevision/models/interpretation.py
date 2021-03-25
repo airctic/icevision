@@ -107,6 +107,8 @@ def _move_to_device(x, y, device):
                 ]
             else:
                 y[k] = y[k].to(device) if isinstance(y[k], torch.Tensor) else y[k]
+    else:
+        return x.to(device), y.to(device)
     return x, y
 
 
