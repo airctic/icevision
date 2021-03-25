@@ -51,7 +51,7 @@ def loop_yolo(dl, model, losses_stats, device):
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
             torch.manual_seed(0)
-            x, _ = _move_to_device(x, y, device)
+            x, y = _move_to_device(x, y, device)
             preds = model(x)
             loss = compute_loss(preds, y)[0]
             loss = {
