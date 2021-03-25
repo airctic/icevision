@@ -1,5 +1,6 @@
 from icevision.models.utils import *
 from icevision.models.interpretation import *
+from icevision.models.model_choice_ui import *
 
 # backwards compatibility
 from icevision.models.torchvision import (

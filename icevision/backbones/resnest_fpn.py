@@ -7,7 +7,7 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.utils import *
-from icevision.backbones.resnet_fpn import patch_param_groups
+from icevision.backbones.resnet_fpn_utils import patch_param_groups
 from torchvision.ops.feature_pyramid_network import LastLevelMaxPool
 from torchvision.models.detection.backbone_utils import (
     resnet_fpn_backbone,
