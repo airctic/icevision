@@ -33,8 +33,10 @@ def fridge_efficientdet_model() -> nn.Module:
 
 @pytest.fixture()
 def fridge_faster_rcnn_model() -> nn.Module:
-    backbone = models.torchvision.faster_rcnn.backbones.resnet18_fpn(pretrained=False)
-    return faster_rcnn.model(num_classes=5, backbone=backbone)
+    backbone = icevision.backbones.resnet_fpn.resnet50_fpn
+    return models.torchvision.faster_rcnn.model(
+        num_classes=5, backbone=backbone(pretrained=False)
+    )
 
 
 @pytest.fixture(scope="module")
