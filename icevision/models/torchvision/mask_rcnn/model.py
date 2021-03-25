@@ -49,7 +49,7 @@ def model(
 
         resnet_fpn.patch_param_groups(model.backbone)
     else:
-        model = MaskRCNN(backbone, num_classes=num_classes, **mask_rcnn_kwargs)
+        model = MaskRCNN(backbone(), num_classes=num_classes, **mask_rcnn_kwargs)
 
     patch_rcnn_param_groups(model=model)
 

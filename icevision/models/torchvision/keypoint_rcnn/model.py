@@ -57,7 +57,7 @@ def model(
         resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = KeypointRCNN(
-            backbone,
+            backbone(),
             num_classes=num_classes,
             num_keypoints=num_keypoints,
             **keypoint_rcnn_kwargs

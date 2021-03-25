@@ -45,7 +45,7 @@ def model(
 
         resnet_fpn.patch_param_groups(model.backbone)
     else:
-        model = FasterRCNN(backbone, num_classes=num_classes, **faster_rcnn_kwargs)
+        model = FasterRCNN(backbone(), num_classes=num_classes, **faster_rcnn_kwargs)
 
     patch_rcnn_param_groups(model=model)
 
