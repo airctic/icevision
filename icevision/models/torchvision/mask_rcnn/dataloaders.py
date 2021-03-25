@@ -61,7 +61,7 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 def _build_mask_train_sample(record: RecordType):
     assert (
-        len(record.detection.labels)
+        len(record.detection.label_ids)
         == len(record.detection.bboxes)
         == len(record.detection.bboxes)
     )

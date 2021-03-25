@@ -7,8 +7,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 **BREAKING:** API Refactor
 
 ## Changed
-**Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
-**Breaking:** Renamed `imageid` to `record_id`
+- **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
+- **Breaking:** Renamed `imageid` to `record_id`
+- **Breaking:** Added parameter `is_new` to `Parser.parse_fields`
+- Removed all dependencies on `cv2` for visualisation
+- Use new composite API for visualisation - covers user defined task names & multiple tasks
+- Added a ton of visualisation goodies to `icevision.visualize.draw_data.draw_sample` - user can now
+  - use custom fonts
+  - control mask thickness
+  - control mask blending
+  - prettify labels -- show confidence score & capitalise label
+  - plot specific and/or exclude specific labels
+  - pass in a dictionary mapping labels to specific colors
+  - control label height & width padding from bbox edge
+  - add border around label for legibility (color is a parameter)
+**Breaking:**: Rename `labels->label_ids`, `labels_names->labels` in `LabelsRecordComponent`
+- Renamed torchvision resnet backbones:
+  - resnet_fpn.resnet18 -> resnet18_fpn
+  - resnest_fpn.resnest18 -> resnest18_fpn
+
 
 ## [0.6.0b1]
 ### Added

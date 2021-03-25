@@ -20,7 +20,7 @@ class SimpleParser(parsers.Parser):
     def __init__(self, data):
         self.data = data
         super().__init__(
-            record=BaseRecord(
+            template_record=BaseRecord(
                 (
                     FilepathRecordComponent(),
                     InstancesLabelsRecordComponent(),
@@ -39,7 +39,7 @@ class SimpleParser(parsers.Parser):
     def labels(self, o):
         return o["labels"]
 
-    def parse_fields(self, o, record):
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(o["filepath"])
         record.set_img_size(ImgSize(100, 100))
 
@@ -71,7 +71,7 @@ def test_parser(data, tmpdir):
     assert len(record.detection.class_map) == 3
     assert record.detection.class_map.get_by_name("background") == 0
     assert record.detection.class_map.get_by_id(0) == "background"
-    assert record.detection.labels == [1, 2]
+    assert record.detection.label_ids == [1, 2]
     assert record.detection.bboxes == [
         BBox.from_xyxy(1, 2, 3, 4),
         BBox.from_xyxy(10, 20, 30, 40),
@@ -88,7 +88,7 @@ def test_parser(data, tmpdir):
     assert len(loaded_records) == len(records)
     for loaded_record, record in zip(loaded_records, records):
         assert loaded_record.filepath == record.filepath
-        assert loaded_record.detection.labels == record.detection.labels
+        assert loaded_record.detection.label_ids == record.detection.label_ids
         assert loaded_record.detection.bboxes == record.detection.bboxes
 
     parser = SimpleParser(data)

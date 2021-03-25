@@ -14,6 +14,7 @@ __all__ = [
     "denormalize",
     "normalize_imagenet",
     "denormalize_imagenet",
+    "denormalize_mask",
     "patch_class_to_main",
 ]
 
@@ -95,6 +96,11 @@ def denormalize_imagenet(img):
 def normalize_imagenet(img):
     mean, std = IMAGENET_STATS
     return normalize(img=img, mean=mean, std=std)
+
+
+def denormalize_mask(img):
+    mean, std = [0, 0, 0], [0, 0, 0]
+    return denormalize(img=img, mean=mean, std=std)
 
 
 def patch_class_to_main(cls):

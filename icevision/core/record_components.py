@@ -116,7 +116,19 @@ class ImageRecordComponent(RecordComponent):
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
     def _repr(self) -> List[str]:
-        return [f"Image: {self.img}"]
+        if self.img is not None:
+            ndims = len(self.img.shape)
+            if ndims == 3:  # RGB, RGBA
+                height, width, channels = self.img.shape
+            elif ndims == 2:  # Grayscale
+                height, width, channels = [*self.img.shape, 1]
+            else:
+                raise ValueError(
+                    f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
+                )
+            return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+        else:
+            return [f"Image: {self.img}"]
 
     def as_dict(self) -> dict:
         return {"img": self.img}
@@ -197,36 +209,31 @@ class SizeRecordComponent(RecordComponent):
 class BaseLabelsRecordComponent(ClassMapRecordComponent):
     def __init__(self, task=tasks.common):
         super().__init__(task=task)
-        self.labels: List[int] = []
-        self.labels_names: List[Hashable] = []
-
-    # TODO: Deprecate `labels`
-    @property
-    def labels_ids(self) -> List[int]:
-        return self.labels
+        self.label_ids: List[int] = []
+        self.labels: List[Hashable] = []
 
     # TODO: rename to labels_ids
     def set_labels_by_id(self, labels: Sequence[int]):
-        self.labels = list(labels)
+        self.label_ids = list(labels)
         # TODO, HACK: necessary because `Dataset.from_images` has no class_map
         if self.class_map is not None:
-            self.labels_names = self._labels_ids_to_names(labels)
+            self.labels = self._labels_ids_to_names(labels)
 
     def add_labels_by_id(self, labels: Sequence[int]):
-        self.labels.extend(labels)
+        self.label_ids.extend(labels)
         if self.class_map is not None:
-            self.labels_names.extend(self._labels_ids_to_names(labels))
+            self.labels.extend(self._labels_ids_to_names(labels))
 
     def set_labels(self, labels_names: Sequence[Hashable]):
-        self.labels_names = list(labels_names)
-        self.labels = self._labels_names_to_ids(labels_names)
+        self.labels = list(labels_names)
+        self.label_ids = self._labels_names_to_ids(labels_names)
 
     def add_labels(self, labels_names: Sequence[Hashable]):
-        self.labels_names.extend(labels_names)
-        self.labels.extend(self._labels_names_to_ids(labels_names))
+        self.labels.extend(labels_names)
+        self.label_ids.extend(self._labels_names_to_ids(labels_names))
 
     def is_valid(self) -> List[bool]:
-        return [True for _ in self.labels]
+        return [True for _ in self.label_ids]
 
     def _labels_ids_to_names(self, labels_ids):
         return [self.class_map.get_by_id(id) for id in labels_ids]
@@ -235,22 +242,22 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
         return [self.class_map.get_by_name(name) for name in labels_names]
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"labels": len(self.labels)}
+        return {"labels": len(self.label_ids)}
 
     def _autofix(self) -> Dict[str, bool]:
-        return {"labels": [True] * len(self.labels)}
+        return {"labels": [True] * len(self.label_ids)}
 
     def _remove_annotation(self, i):
-        self.labels.pop(i)
+        self.label_ids.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
-        return {**super()._aggregate_objects(), "labels": self.labels}
+        return {**super()._aggregate_objects(), "labels": self.label_ids}
 
     def _repr(self) -> List[str]:
-        return [*super()._repr(), f"Labels: {self.labels}"]
+        return [*super()._repr(), f"Labels: {self.label_ids}"]
 
     def as_dict(self) -> dict:
-        return {"labels": self.labels}
+        return {"labels": self.label_ids}
 
     def _builder_template(self) -> List[str]:
         return [

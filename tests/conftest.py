@@ -3,6 +3,7 @@ from icevision import *
 from icevision.imports import *
 from icevision.models.torchvision import faster_rcnn
 from icevision.models.ross import efficientdet
+from icevision.models.ross.efficientdet.backbones import *
 import albumentations as A
 
 
@@ -20,7 +21,7 @@ def coco_record_id_map():
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
-    model = efficientdet.model("tf_efficientdet_lite0", num_classes=5 + 1, img_size=384)
+    model = efficientdet.model(backbone=tf_lite0, num_classes=5 + 1, img_size=384)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")
@@ -32,7 +33,7 @@ def fridge_efficientdet_model() -> nn.Module:
 
 @pytest.fixture()
 def fridge_faster_rcnn_model() -> nn.Module:
-    backbone = faster_rcnn.backbones.resnet_fpn.resnet18(pretrained=False)
+    backbone = models.torchvision.faster_rcnn.backbones.resnet18_fpn(pretrained=False)
     return faster_rcnn.model(num_classes=5, backbone=backbone)
 
 
@@ -259,7 +260,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
             self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
             self.img_dir = Path(img_dir)
             self.class_map = ClassMap(["person"])
-            super().__init__(record=self.template_record())
+            super().__init__(template_record=self.template_record())
 
         def __iter__(self):
             yield from self.annotations_dict["images"]
@@ -280,7 +281,7 @@ def ochuman_ds(samples_source) -> Tuple[Dataset, Dataset]:
         def record_id(self, o):
             return int(o["image_id"])
 
-        def parse_fields(self, o, record: BaseRecord) -> None:
+        def parse_fields(self, o, record: BaseRecord, is_new) -> None:
             record.set_filepath(self.filepath(o))
             record.set_img_size(self.img_size(o))
 
