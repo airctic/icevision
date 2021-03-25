@@ -30,7 +30,7 @@ def model(
         resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = RetinaNet(
-            backbone=backbone, num_classes=num_classes, **retinanet_kwargs
+            backbone=backbone(), num_classes=num_classes, **retinanet_kwargs
         )
 
     patch_retinanet_param_groups(model)
