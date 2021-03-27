@@ -19,7 +19,7 @@ from torchvision.ops.feature_pyramid_network import LastLevelP6P7
 
 class BackboneConfig(ABC):
     @abstractmethod
-    def __call__(self, *args: Any, **kwds: Any) -> Any:
+    def __call__(self, *args: Any, **kwargs: Any) -> "BackboneConfig":
         ...
 
 
@@ -56,8 +56,8 @@ class RetinanetTorchvisionBackboneConfig(TorchvisionBackboneConfig):
         )
 
 
-resnet18_fpn = RetinanetTorchvisionBackbone(resnet_fpn.resnet18_fpn)
-resnet34_fpn = RetinanetTorchvisionBackbone(resnet_fpn.resnet34_fpn)
+resnet18_fpn = RetinanetTorchvisionBackboneConfig(resnet_fpn.resnet18_fpn)
+resnet34_fpn = RetinanetTorchvisionBackboneConfig(resnet_fpn.resnet34_fpn)
 # and so on
 
 
