@@ -9,17 +9,19 @@ from icevision.utils import *
 from torchvision.models.detection.generalized_rcnn import GeneralizedRCNN
 
 
+def _noop_normalize(image: Tensor) -> Tensor:
+    return image
+
+
+def _noop_resize(
+    image: Tensor, target: Optional[Dict[str, Tensor]]
+) -> Tuple[Tensor, Optional[Dict[str, Tensor]]]:
+    return image, target
+
+
 def remove_internal_model_transforms(model: GeneralizedRCNN):
-    def noop_normalize(image: Tensor) -> Tensor:
-        return image
-
-    def noop_resize(
-        image: Tensor, target: Optional[Dict[str, Tensor]]
-    ) -> Tuple[Tensor, Optional[Dict[str, Tensor]]]:
-        return image, target
-
-    model.transform.normalize = noop_normalize
-    model.transform.resize = noop_resize
+    model.transform.normalize = _noop_normalize
+    model.transform.resize = _noop_resize
 
 
 def patch_param_groups(
