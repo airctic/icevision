@@ -1,9 +1,9 @@
 __all__ = [
-    "sparse_rcnn_r50_fpn_1x",
-    "sparse_rcnn_r50_fpn_mstrain_480_800_3x",
-    "sparse_rcnn_r50_fpn_300_proposals_crop_mstrain_480_800_3x",
-    "sparse_rcnn_r101_fpn_mstrain_480_800_3x_coco",
-    "sparse_rcnn_r101_fpn_300_proposals_crop_mstrain_480_800_3x",
+    "resnet50_fpn_1x",
+    "resnet50_fpn_mstrain_480_800_3x",
+    "resnet50_fpn_300_proposals_crop_mstrain_480_800_3x",
+    "resnet101_fpn_mstrain_480_800_3x_coco",
+    "resnet101_fpn_300_proposals_crop_mstrain_480_800_3x",
 ]
 
 from icevision.imports import *
