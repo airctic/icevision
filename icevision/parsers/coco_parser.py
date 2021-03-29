@@ -90,8 +90,9 @@ class COCOBaseParser(Parser):
         return [o["iscrowd"]]
 
     def parse_fields(self, o, record, is_new):
-        record.set_filepath(self.filepath(o))
-        record.set_img_size(self.img_size(o))
+        if is_new:
+            record.set_filepath(self.filepath(o))
+            record.set_img_size(self.img_size(o))
 
         # TODO: is class_map still a issue here?
         record.detection.set_class_map(self.class_map)
@@ -110,7 +111,7 @@ class COCOBBoxParser(COCOBaseParser):
         return record
 
     def parse_fields(self, o, record, is_new):
-        super().parse_fields(o, record, False)
+        super().parse_fields(o, record, is_new=is_new)
         record.detection.add_bboxes(self.bboxes(o))
 
 
@@ -128,7 +129,7 @@ class COCOMaskParser(COCOBBoxParser):
         return record
 
     def parse_fields(self, o, record, is_new):
-        super().parse_fields(o, record, False)
+        super().parse_fields(o, record, is_new=is_new)
         record.detection.add_masks(self.masks(o))
 
 
@@ -160,7 +161,7 @@ class COCOKeyPointsParser(COCOBBoxParser):
         return [BBox.from_xywh(*o["bbox"])] if sum(o["keypoints"]) > 0 else []
 
     def parse_fields(self, o, record, is_new):
-        super().parse_fields(o, record, False)
+        super().parse_fields(o, record, is_new=is_new)
         record.detection.add_keypoints(self.keypoints(o))
 
 
