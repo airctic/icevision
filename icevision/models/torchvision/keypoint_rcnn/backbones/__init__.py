@@ -1,1 +1,1 @@
-from icevision.backbones.resnet_fpn import *
+from icevision.models.torchvision.backbones import *

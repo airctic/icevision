@@ -3,6 +3,9 @@ __all__ = ["model"]
 from icevision.imports import *
 from icevision.backbones import resnet_fpn
 from icevision.models.torchvision.utils import *
+from icevision.models.torchvision.backbones.backbone_config import (
+    TorchvisionBackboneConfig,
+)
 
 from torchvision.models.detection.faster_rcnn import (
     fasterrcnn_resnet50_fpn,
@@ -13,9 +16,8 @@ from torchvision.models.detection.faster_rcnn import (
 
 def model(
     num_classes: int,
-    backbone: Optional[nn.Module] = None,
+    backbone: Optional[TorchvisionBackboneConfig] = None,
     remove_internal_transforms: bool = True,
-    pretrained: bool = True,
     **faster_rcnn_kwargs
 ) -> nn.Module:
     """FasterRCNN model implemented by torchvision.
@@ -37,7 +39,7 @@ def model(
     """
     if backbone is None:
         model = fasterrcnn_resnet50_fpn(
-            pretrained=pretrained, pretrained_backbone=pretrained, **faster_rcnn_kwargs
+            pretrained=True, pretrained_backbone=True, **faster_rcnn_kwargs
         )
 
         in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -45,7 +47,9 @@ def model(
 
         resnet_fpn.patch_param_groups(model.backbone)
     else:
-        model = FasterRCNN(backbone, num_classes=num_classes, **faster_rcnn_kwargs)
+        model = FasterRCNN(
+            backbone.backbone, num_classes=num_classes, **faster_rcnn_kwargs
+        )
 
     patch_rcnn_param_groups(model=model)
 

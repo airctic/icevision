@@ -1,4 +1,5 @@
 __all__ = [
+    "MMDetBackboneConfig",
     "mmdet_configs_path",
     "param_groups",
     "MMDetBackboneConfig",
@@ -7,12 +8,25 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.utils import *
-from .download_configs import download_mmdet_configs
+from icevision.backbones import BackboneConfig
+from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config
 
 
 mmdet_configs_path = download_mmdet_configs()
+
+
+class MMDetBackboneConfig(BackboneConfig):
+    def __init__(self, model_name, config_path, weights_url):
+        self.model_name = model_name
+        self.config_path = config_path
+        self.weights_url = weights_url
+        self.pretrained: bool
+
+    def __call__(self, pretrained: bool = True) -> "MMDetBackboneConfig":
+        self.pretrained = pretrained
+        return self
 
 
 def param_groups(model):
@@ -35,13 +49,6 @@ def param_groups(model):
     _param_groups = [list(layer.parameters()) for layer in layers]
     check_all_model_params_in_groups2(model, _param_groups)
     return _param_groups
-
-
-@dataclass
-class MMDetBackboneConfig:
-    model_name: str
-    config_path: str
-    weights_url: str
 
 
 def create_model_config(
