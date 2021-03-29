@@ -12,7 +12,7 @@ from icevision.models.mmdet.utils import *
 
 class MMDetSparseRCNNBackboneConfig(MMDetBackboneConfig):
     def __init__(self, **kwargs):
-        super.__init__(model_name="sparse_rcnn", **kwargs)
+        super().__init__(model_name="sparse_rcnn", **kwargs)
 
 
 base_config_path = mmdet_configs_path / "sparse_rcnn"
