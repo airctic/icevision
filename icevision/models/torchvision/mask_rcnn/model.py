@@ -1,3 +1,5 @@
+__all__ = ["model"]
+
 from icevision.imports import *
 from icevision.backbones import resnet_fpn
 from icevision.models.torchvision.utils import *
