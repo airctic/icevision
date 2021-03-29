@@ -76,8 +76,9 @@ class VocXmlParser(Parser):
         self._size = self._root.find("size")
 
     def parse_fields(self, o, record, is_new):
-        record.set_filepath(self.filepath(o))
-        record.set_img_size(self.image_width_height(o))
+        if is_new:
+            record.set_filepath(self.filepath(o))
+            record.set_img_size(self.image_width_height(o))
 
         record.detection.set_class_map(self.class_map)
         record.detection.add_labels(self.labels(o))
@@ -159,7 +160,7 @@ class VocMaskParser(VocXmlParser):
         return str(Path(o).stem)
 
     def parse_fields(self, o, record, is_new):
-        super().parse_fields(o, record, False)
+        super().parse_fields(o, record, is_new=is_new)
         record.detection.add_masks(self.masks(o))
 
     def masks(self, o) -> List[Mask]:
