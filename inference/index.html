@@ -1,0 +1,1677 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+        <link rel="canonical" href="https://airctic.com/inference/">
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.14">
+    
+    
+      
+        <title>Inference - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d3202873.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ff0a5ce4.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2094f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+      <link rel="manifest" href="../manifest.webmanifest" crossorigin="use-credentials">
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#use-a-trained-model-for-inference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://airctic.com/" title="IceVision" class="md-header-nav__button md-logo" aria-label="IceVision">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            IceVision
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Inference
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://airctic.com/" title="IceVision" class="md-nav__button md-logo" aria-label="IceVision">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Tutorials
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting_started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting_started_mmdetection/" title="Getting Started with MMDetection" class="md-nav__link">
+      Getting Started with MMDetection
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting_started_efficientdet/" title="Quickstart using EfficientDet" class="md-nav__link">
+      Quickstart using EfficientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../retinanet/" title="Quickstart using RetinaNet" class="md-nav__link">
+      Quickstart using RetinaNet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../custom_parser/" title="Custom Parser" class="md-nav__link">
+      Custom Parser
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Inference
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="Inference" class="md-nav__link md-nav__link--active">
+      Inference
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision" class="md-nav__link">
+    Install IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-the-model" class="md-nav__link">
+    Loading the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transforms" class="md-nav__link">
+    Transforms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predict-all-at-once" class="md-nav__link">
+    Predict - All at once
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predict-in-batches" class="md-nav__link">
+    Predict - In batches
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualize" class="md-nav__link">
+    Visualize
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_pennfudan/" title="Mask RCNN" class="md-nav__link">
+      Mask RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ochuman_keypoint_detection/" title="Keypoints RCNN" class="md-nav__link">
+      Keypoints RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_pets/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataset_voc_nb/" title="Training a VOC dataset" class="md-nav__link">
+      Training a VOC dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../wandb_efficientdet/" title="Model Tracking Using Wandb" class="md-nav__link">
+      Model Tracking Using Wandb
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../negative_samples/" title="How to use negative samples" class="md-nav__link">
+      How to use negative samples
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../voc_predefined_splits/" title="Fixed Splitter" class="md-nav__link">
+      Fixed Splitter
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Examples
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/getting_started_exp/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/quickstart_exp/" title="Quickstart" class="md-nav__link">
+      Quickstart
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/inference_exp/" title="Inference" class="md-nav__link">
+      Inference
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/efficientdet_pets_exp/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/mask_rcnn_pennfudan_exp/" title="Mask RCNN" class="md-nav__link">
+      Mask RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/dataset_voc_exp/" title="Training a VOC dataset" class="md-nav__link">
+      Training a VOC dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/backbones_faster_rcnn/" title="Backbones - Faster RCNN" class="md-nav__link">
+      Backbones - Faster RCNN
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Transforms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        Transforms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../albumentations/" title="Albumentations" class="md-nav__link">
+      Albumentations
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Models
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Models" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Models
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_efficientdet/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_faster_rcnn/" title="Faster RCNN" class="md-nav__link">
+      Faster RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_comparison/" title="Models Comparison" class="md-nav__link">
+      Models Comparison
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Backbones
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Backbones" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        <span class="md-nav__icon md-icon"></span>
+        Backbones
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../backbones_effecientdet/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../backbones_faster_mask_rcnn/" title="Faster/Mask RCNN" class="md-nav__link">
+      Faster/Mask RCNN
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Deployment
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        <span class="md-nav__icon md-icon"></span>
+        Deployment
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../deployment/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8-2" type="checkbox" id="nav-8-2">
+    
+    <label class="md-nav__link" for="nav-8-2">
+      Gradio
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+      <label class="md-nav__title" for="nav-8-2">
+        <span class="md-nav__icon md-icon"></span>
+        Gradio
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_coco/" title="COCO" class="md-nav__link">
+      COCO
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_pets/" title="PETS" class="md-nav__link">
+      PETS
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_masks/" title="Masks" class="md-nav__link">
+      Masks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      API Documentation
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        <span class="md-nav__icon md-icon"></span>
+        API Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parser/" title="Parser" class="md-nav__link">
+      Parser
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataset/" title="Dataset" class="md-nav__link">
+      Dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
+    
+    <label class="md-nav__link" for="nav-9-3">
+      Transforms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-3">
+        <span class="md-nav__icon md-icon"></span>
+        Transforms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../albumentations_tfms/" title="Albumentations" class="md-nav__link">
+      Albumentations
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4" type="checkbox" id="nav-9-4">
+    
+    <label class="md-nav__link" for="nav-9-4">
+      Models
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Models" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-4">
+        <span class="md-nav__icon md-icon"></span>
+        Models
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-1" type="checkbox" id="nav-9-4-1">
+    
+    <label class="md-nav__link" for="nav-9-4-1">
+      Faster RCNN
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-1">
+        <span class="md-nav__icon md-icon"></span>
+        Faster RCNN
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-2" type="checkbox" id="nav-9-4-2">
+    
+    <label class="md-nav__link" for="nav-9-4-2">
+      Mask RCNN
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        Mask RCNN
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-3" type="checkbox" id="nav-9-4-3">
+    
+    <label class="md-nav__link" for="nav-9-4-3">
+      EfficientDet
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-3">
+        <span class="md-nav__icon md-icon"></span>
+        EfficientDet
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../data_splits/" title="Data Splitters" class="md-nav__link">
+      Data Splitters
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../how-to/" title="How-To" class="md-nav__link">
+      How-To
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../contributing/" title="Contributing Guide" class="md-nav__link">
+      Contributing Guide
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../readme_mkdocs/" title="Generating Docs" class="md-nav__link">
+      Generating Docs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13">
+    
+    <label class="md-nav__link" for="nav-13">
+      Preferences
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Preferences" data-md-level="1">
+      <label class="md-nav__title" for="nav-13">
+        <span class="md-nav__icon md-icon"></span>
+        Preferences
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../changing_the_colors/" title="Changing the colors" class="md-nav__link">
+      Changing the colors
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../code_of_conduct/" title="Code of Conduct" class="md-nav__link">
+      Code of Conduct
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision" class="md-nav__link">
+    Install IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-the-model" class="md-nav__link">
+    Loading the model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transforms" class="md-nav__link">
+    Transforms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data" class="md-nav__link">
+    Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predict-all-at-once" class="md-nav__link">
+    Predict - All at once
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predict-in-batches" class="md-nav__link">
+    Predict - In batches
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualize" class="md-nav__link">
+    Visualize
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/inference.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="use-a-trained-model-for-inference">Use a trained model for inference</h1>
+<h2 id="install-icevision">Install IceVision</h2>
+<p>We usually install IceVision with <code>[all]</code>, but you can also use <code>[inference]</code> to only install the dependencies necessary for inference.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all] icedata</span>
+</code></pre></div>
+<h2 id="imports">Imports</h2>
+<p>As always, import everything from IceVision:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<h2 id="loading-the-model">Loading the model</h2>
+<p>We're going to use the model trained on the getting started tutorial.  </p>
+<div class="admonition info">
+<p class="admonition-title">Saving/Loading a model</p>
+<p>Save your model with <code>torch.save(model.state_dict(), PATH)</code>. Take a look at <a href="https://pytorch.org/tutorials/beginner/saving_loading_models.html">this</a> tutorial for more info on how to save/load models.</p>
+</div>
+<p>The first thing we need is the <code>ClassMap</code> used during training. The model we're going to use was trained on the Pets dataset, so we can easily grab that:</p>
+<div class="highlight"><pre><span></span><code><span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+</code></pre></div>
+<p>Recreate the model used in training:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icedata.utils</span> <span class="kn">import</span> <span class="n">load_model_weights_from_url</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">weights_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip&#39;</span>
+<span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s1">&#39;tf_efficientdet_lite0&#39;</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
+<span class="n">load_model_weights_from_url</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weights_url</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/hub.py:483: UserWarning: Falling back to the old format &lt; 1.6. This support will be deprecated in favor of default zipfile format introduced in 1.6. Please redo torch.save() to save it in the new zipfile format.
+  warnings.warn(&#39;Falling back to the old format &lt; 1.6. This support will be &#39;
+
+---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+&lt;ipython-input-5-5fc8044970cf&gt; in &lt;module&gt;
+      2 NUM_CLASSES = 5
+      3 model = efficientdet.model(&#39;tf_efficientdet_lite0&#39;, num_classes=NUM_CLASSES, img_size=512)
+----&gt; 4 load_model_weights_from_url(model, weights_url)
+</code></pre></div>
+</div>
+
+<p><div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">trained_models</span><span class="o">.</span><span class="n">tf_efficientdet_lite0</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>~/git/icedata/icedata/utils/utils.py in load_model_weights_from_url(model, url, map_location, **kwargs)
+     10         url, map_location=map_location, **kwargs
+     11     )
+---&gt; 12     model.load_state_dict(state_dict)
+     13 
+     14 
+
+~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/nn/modules/module.py in load_state_dict(self, state_dict, strict)
+   1050         if len(error_msgs) &gt; 0:
+   1051             raise RuntimeError(&#39;Error(s) in loading state_dict for {}:\n\t{}&#39;.format(
+-&gt; 1052                                self.__class__.__name__, &quot;\n\t&quot;.join(error_msgs)))
+   1053         return _IncompatibleKeys(missing_keys, unexpected_keys)
+   1054 
+
+RuntimeError: Error(s) in loading state_dict for DetBenchTrain:
+    size mismatch for anchors.boxes: copying a param with shape torch.Size([27621, 4]) from checkpoint, the shape in current model is torch.Size([49104, 4]).
+</code></pre></div>
+</div>
+<p>And now load the model weights (commonly refered as <code>state_dict</code> in Pytorch).  </p>
+<p>In our case, the weights are stored in the cloud, Pytorch is amazing and provides us with a function to directly load model weights from an URL.</p>
+<div class="admonition info">
+<p class="admonition-title">Where to host your model</p>
+<p>You can save your model directly on github via a "release"<br />
+Simply go to <code>https://github.com/&lt;ACCOUNT&gt;/&lt;REPO&gt;/releases/new</code> and upload the model as a new release. This will generate a direct link for downloading the model.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="n">WEIGHTS_URL</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/airctic/model_zoo/releases/download/m3/pets_faster_resnetfpn50.zip&quot;</span>
+<span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">hub</span><span class="o">.</span><span class="n">load_state_dict_from_url</span><span class="p">(</span><span class="n">WEIGHTS_URL</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>If your weights are stored locally, you simply need to do: <code>state_dict = torch.load(&lt;PATH&gt;)</code></p>
+<div class="admonition info">
+<p class="admonition-title">Model device</p>
+<p>Notice that we're asking to load the weights on CPU with <code>map_location</code>. It's common to do inference in CPU, but you can easily change to GPU if you want.</p>
+</div>
+<p>Now, let's actually load the weights to the model:</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;All keys matched successfully&gt;
+</code></pre></div>
+</div>
+<h2 id="transforms">Transforms</h2>
+<p>Generally speaking, we normally use on inference the same transforms we used in the validation set.  </p>
+<p>A transform like <code>normalize</code> is always required, but for some models, a transform like <code>resize</code> is optional. For instance, the model used in this tutorial accepts any image resolution, try playing around with different transforms and observe how they change the model results.</p>
+<p>Let's use the same transforms used in the validation set:</p>
+<div class="highlight"><pre><span></span><code><span class="n">infer_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<h2 id="data">Data</h2>
+<p>Obviously we need some images to perform inference, how you get this images heavily depends on your use case.</p>
+<p>For this tutorial, let's grab an image from an URL:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">PIL</span><span class="o">,</span> <span class="nn">requests</span>
+<span class="k">def</span> <span class="nf">image_from_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">image_url</span> <span class="o">=</span> <span class="s2">&quot;https://petcaramelo.com/wp-content/uploads/2018/06/beagle-cachorro.jpg&quot;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">image_from_url</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+<span class="n">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+</code></pre></div>
+<p><img alt="png" src="../images/inference/inference_31_0.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">Try it out</p>
+<p>Try experimenting with new images, be sure to take one of the breeds from <code>class_map</code> (or not, if you are curious to see what happens).</p>
+</div>
+<p>Whenever we have images in memory (numpy arrays) we can use <code>Dataset.from_images</code> to easily create a <code>Dataset</code> from it:</p>
+<div class="highlight"><pre><span></span><code><span class="n">infer_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_images</span><span class="p">([</span><span class="n">img</span><span class="p">],</span> <span class="n">infer_tfms</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="predict-all-at-once">Predict - All at once</h2>
+<p>First build a batch with the entire dataset, and then simply call <code>predict</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">)</span>
+<span class="c1"># preds = efficientdet.predict(model=model, batch=batch)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">ground_truth</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">infer_ds</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>---------------------------------------------------------------------------
+
+RuntimeError                              Traceback (most recent call last)
+
+&lt;ipython-input-13-30bc124e6468&gt; in &lt;module&gt;
+----&gt; 1 ground_truth, preds = efficientdet.predict(model=model, dataset=infer_ds)
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/autograd/grad_mode.py in decorate_context(*args, **kwargs)
+     24         def decorate_context(*args, **kwargs):
+     25             with self.__class__():
+---&gt; 26                 return func(*args, **kwargs)
+     27         return cast(F, decorate_context)
+     28 
+
+~/git/icevision/icevision/models/ross/efficientdet/prediction.py in predict(model, dataset, detection_threshold, device)
+     28     bench = bench.eval().to(device)
+     29 
+---&gt; 30     raw_preds = bench(x=imgs, img_info=img_info)
+     31     preds = convert_raw_predictions(
+     32         raw_preds=raw_preds, records=records, detection_threshold=detection_threshold
+
+~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/nn/modules/module.py in _call_impl(self, *input, **kwargs)
+    725             result = self._slow_forward(*input, **kwargs)
+    726         else:
+--&gt; 727             result = self.forward(*input, **kwargs)
+    728         for hook in itertools.chain(
+    729                 _global_forward_hooks.values(),
+
+~/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/bench.py in forward(self, x, img_info)
+     91             img_scale, img_size = img_info[&#39;img_scale&#39;], img_info[&#39;img_size&#39;]
+     92         return _batch_detection(
+---&gt; 93             x.shape[0], class_out, box_out, self.anchors.boxes, indices, classes, img_scale, img_size)
+     94 
+     95 
+
+RuntimeError: The following operation failed in the TorchScript interpreter.
+Traceback of TorchScript (most recent call last):
+  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/bench.py&quot;, line 69, in _batch_detection
+        img_scale_i = None if img_scale is None else img_scale[i]
+        img_size_i = None if img_size is None else img_size[i]
+        detections = generate_detections(
+                     ~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+            class_out[i], box_out[i], anchor_boxes, indices[i], classes[i], img_scale_i, img_size_i)
+        batch_detections.append(detections)
+  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/anchors.py&quot;, line 138, in generate_detections
+    # Appply bounding box regression to anchors, boxes are converted to xyxy
+    # here since PyTorch NMS expects them in that form.
+    boxes = decode_box_outputs(box_outputs.float(), anchor_boxes, output_xyxy=True)
+            ~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+    if img_scale is not None and img_size is not None:
+        boxes = clip_boxes_xyxy(boxes, img_size / img_scale)  # clip before NMS better?
+  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/anchors.py&quot;, line 134, in decode_box_outputs
+    assert cls_outputs.shape[-1] == 1
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>    anchor_boxes = anchor_boxes[indices, :]
+                   ~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>    # Appply bounding box regression to anchors, boxes are converted to xyxy
+RuntimeError: index 48716 is out of bounds for dimension 0 with size 27621
+</code></pre></div>
+</div>
+<h2 id="predict-in-batches">Predict - In batches</h2>
+<p>If the memory is not enough to predict everything at once, break it down into smaller batches with <code>infer_dataloader</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="visualize">Visualize</h2>
+<p>This step will probably not be the same for your use case, but for quickly visualizing the predictions we can use <code>show_preds</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Show preds by grabbing the images from `samples`</span>
+<span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">]</span>
+<span class="n">show_preds</span><span class="p">(</span>
+    <span class="n">samples</span><span class="o">=</span><span class="n">imgs</span><span class="p">,</span>
+    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">,</span>
+    <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span>
+    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/inference/inference_44_0.png" /></p>
+<h2 id="happy-learning">Happy Learning!</h2>
+<p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../custom_parser/" title="Custom Parser" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Custom Parser
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../mask_rcnn_pennfudan/" title="Mask RCNN" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Mask RCNN
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.2d1db4bd.min.js"></script>
+      <script src="../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
