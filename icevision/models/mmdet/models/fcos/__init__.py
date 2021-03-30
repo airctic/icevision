@@ -1,3 +1,4 @@
+from icevision.models.mmdet.models.fcos import backbones
 from icevision.models.mmdet.common.bbox.single_stage import *
 from icevision.models.interpretation import Interpretation, _move_to_device
 from icevision.models.mmdet.common.interpretation_utils import (
@@ -6,7 +7,6 @@ from icevision.models.mmdet.common.interpretation_utils import (
 )
 
 _LOSSES_DICT = {
-    "loss_centerness": [],
     "loss_cls": [],
     "loss_bbox": [],
     "loss_total": [],
