@@ -35,7 +35,7 @@ resnet50_fpn_1x = MMDetRetinanetBackboneConfig(
 
 resnet50_fpn_2x = MMDetRetinanetBackboneConfig(
     config_path=base_config_path / "retinanet_r50_fpn_2x_coco.py",
-    weights_url=f"{base_weights_url}/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth",
+    weights_url=f"{base_weights_url}/retinanet_r50_fpn_2x_coco/retinanet_r50_fpn_2x_coco_20200131-fdb43119.pth",
 )
 
 resnet101_caffe_fpn_1x = MMDetRetinanetBackboneConfig(
