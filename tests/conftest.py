@@ -21,7 +21,8 @@ def coco_record_id_map():
 def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
-    model = efficientdet.model(backbone=tf_lite0, num_classes=5 + 1, img_size=384)
+    backbone = models.ross.efficientdet.backbones.tf_lite0(pretrained=False)
+    model = efficientdet.model(backbone=backbone, num_classes=5 + 1, img_size=384)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")

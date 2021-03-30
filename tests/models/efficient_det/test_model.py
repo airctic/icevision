@@ -14,10 +14,9 @@ from icevision.models.ross.efficientdet.backbones import *
 )
 def test_efficient_det_param_groups(backbone):
     model = efficientdet.model(
-        backbone=backbone,
+        backbone=backbone(pretrained=False),
         num_classes=42,
         img_size=256,
-        pretrained=False,
     )
 
     assert len(list(model.param_groups())) == 3

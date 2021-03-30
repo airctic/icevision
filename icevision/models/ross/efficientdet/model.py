@@ -13,7 +13,6 @@ def model(
     backbone: EfficientDetBackboneConfig,
     num_classes: int,
     img_size: int,
-    pretrained: bool = True,
 ) -> nn.Module:
     """Creates the efficientdet model specified by `model_name`.
 
@@ -26,7 +25,6 @@ def model(
         num_classes: Number of classes of your dataset (including background).
         img_size: Image size that will be fed to the model. Must be squared and
             divisible by 128.
-        pretrained: If True, use a pretrained backbone (on COCO).
 
     # Returns
         A PyTorch model.
@@ -40,7 +38,7 @@ def model(
         bench_task="train",
         bench_labeler=True,
         num_classes=num_classes - 1,
-        pretrained=pretrained,
+        pretrained=backbone.pretrained,
     )
 
     # TODO: Break down param groups for backbone

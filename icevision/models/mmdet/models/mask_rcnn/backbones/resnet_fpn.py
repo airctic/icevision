@@ -14,7 +14,12 @@ __all__ = [
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
 
-MaskRCNNMMDetBackboneConfig = partial(MMDetBackboneConfig, model_name="mask_rcnn")
+
+class MaskRCNNMMDetBackboneConfig(MMDetBackboneConfig):
+    def __init__(self, **kwargs):
+        super().__init__(model_name="mask_rcnn", **kwargs)
+
+
 base_config_path = mmdet_configs_path / "mask_rcnn"
 base_weights_url = "http://download.openmmlab.com/mmdetection/v2.0/mask_rcnn"
 

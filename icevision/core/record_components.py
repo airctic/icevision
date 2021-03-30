@@ -80,6 +80,9 @@ class ClassMapRecordComponent(RecordComponent):
     def set_class_map(self, class_map: ClassMap):
         self.class_map = class_map
 
+    def _repr(self) -> List[str]:
+        return [f"Class Map: {self.class_map}"]
+
     def as_dict(self) -> dict:
         return {"class_map": self.class_map}
 
@@ -130,6 +133,9 @@ class ImageRecordComponent(RecordComponent):
         else:
             return [f"Image: {self.img}"]
 
+    def _unload(self):
+        self.img = None
+
     def as_dict(self) -> dict:
         return {"img": self.img}
 
@@ -148,9 +154,6 @@ class FilepathRecordComponent(ImageRecordComponent):
     def _load(self):
         img = open_img(self.filepath)
         self.set_img(img)
-
-    def _unload(self):
-        self.img = None
 
     def _autofix(self) -> Dict[str, bool]:
         exists = self.filepath.exists()

@@ -1,3 +1,4 @@
+from icevision.backbones.backbone_config import *
 from icevision.backbones.vgg import *
 from icevision.backbones.resnet import *
 from icevision.backbones.resnet_fpn import *
