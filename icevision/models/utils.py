@@ -52,8 +52,17 @@ def freeze(params):
         p.requires_grad = False
 
 
+def _collate_fn(records, build_batch, batch_tfms):
+    batch, records = build_batch(records, batch_tfms=batch_tfms)
+
+    for record in records:
+        record.unload()
+
+    return batch, records
+
+
 def transform_dl(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
-    collate_fn = partial(build_batch, batch_tfms=batch_tfms)
+    collate_fn = partial(_collate_fn, build_batch=build_batch, batch_tfms=batch_tfms)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
 
