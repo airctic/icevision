@@ -54,6 +54,7 @@ def freeze(params):
 
 def transform_dl(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
     collate_fn = partial(build_batch, batch_tfms=batch_tfms)
+    collate_fn = unload_records(collate_fn)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
 
@@ -62,6 +63,18 @@ def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
         records = batch_tfms(records)
 
     return records
+
+
+def unload_records(build_batch):
+    """This decorator function unloads records to not carry them around after batch creation"""
+
+    def inner(records):
+        (batch_images, targets), records = build_batch(records)
+        for record in records:
+            record.unload()
+        return (batch_images, targets), records
+
+    return inner
 
 
 @torch.no_grad()
