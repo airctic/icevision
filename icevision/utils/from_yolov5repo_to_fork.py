@@ -167,14 +167,12 @@ def convert_repo_to_fork(path2repo):
             "import yolov5.models",
         ]
 
-        # Read in the file
         with open(path, "r") as file:
             filedata = file.read()
             if any(bad in filedata for bad in bads):
                 for bad, good in zip(bads, goods):
                     filedata = filedata.replace(bad, good)
 
-                # Write the file out again
                 with open(path, "w") as file:
                     file.write(filedata)
 
