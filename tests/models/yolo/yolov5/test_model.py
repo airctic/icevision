@@ -15,12 +15,14 @@ def test_yolo_model(model_name):
     assert model.nc == 5
 
 
-# @pytest.mark.parametrize(
-#     "model_name",
-#     ["yolov5s", "yolov5m", "yolov5l"],
-# )
-# def test_yolo_model_notpretrained(model_name):
-#     model = yolov5.model(num_classes=5, img_size=320, model_name=model_name, pretrained=False)
+@pytest.mark.parametrize(
+    "model_name",
+    ["yolov5s", "yolov5m", "yolov5l"],
+)
+def test_yolo_model_notpretrained(model_name):
+    model = yolov5.model(
+        num_classes=5, img_size=320, model_name=model_name, pretrained=False
+    )
 
-#     assert len(list(model.param_groups())) == 3
-#     assert model.nc == 5
+    assert len(list(model.param_groups())) == 3
+    assert model.nc == 5

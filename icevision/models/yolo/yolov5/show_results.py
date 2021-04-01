@@ -18,7 +18,7 @@ from icevision.models.interpretation import Interpretation
 
 from icevision.models.interpretation import _move_to_device
 from icevision.core.record_components import LossesRecordComponent
-from yolov5.utils.loss import ComputeLoss
+from yolov5.utils.loss import compute_loss
 
 
 def show_results(
@@ -46,14 +46,14 @@ def show_results(
 
 def loop_yolo(dl, model, losses_stats, device):
     samples_plus_losses = []
-    compute_loss = ComputeLoss(model)
+    # compute_loss = ComputeLoss(model)
 
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
             torch.manual_seed(0)
             x, y = _move_to_device(x, y, device)
             preds = model(x)
-            loss = compute_loss(preds, y)[0]
+            loss = compute_loss(preds, y, model)[0]
             loss = {
                 "loss_yolo": float(loss.cpu().numpy()),
                 "loss_total": float(loss.cpu().numpy()),

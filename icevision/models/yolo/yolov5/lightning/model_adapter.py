@@ -4,7 +4,7 @@ from icevision.imports import *
 from icevision.metrics import *
 from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
 from icevision.models.yolo import yolov5
-from yolov5.utils.loss import ComputeLoss
+from yolov5.utils.loss import compute_loss
 
 
 class ModelAdapter(LightningModelAdapter, ABC):
@@ -24,7 +24,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
     def __init__(self, model: nn.Module, metrics: List[Metric] = None):
         super().__init__(metrics=metrics)
         self.model = model
-        self.compute_loss = ComputeLoss(model)
+        # self.compute_loss = ComputeLoss(model)
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -33,7 +33,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
         (xb, yb), _ = batch
         preds = self(xb)
 
-        loss = self.compute_loss(preds, yb)[0]
+        loss = compute_loss(preds, yb, self.model)[0]
 
         self.log("train_loss", loss)
 
@@ -45,7 +45,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
         with torch.no_grad():
             inference_out, training_out = self(xb)
             preds = yolov5.convert_raw_predictions(inference_out, records, 0)
-            loss = self.compute_loss(training_out, yb)[0]
+            loss = compute_loss(training_out, yb, self.model)[0]
 
         self.accumulate_metrics(preds)
 
