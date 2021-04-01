@@ -216,7 +216,6 @@ class Interpretation:
             f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss').keys()) if l!='loss_total']}",
         )
 
-        dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
         samples, losses_stats = self.get_losses(model, dataset)
         samples = add_annotations(samples)
 
@@ -236,14 +235,19 @@ class Interpretation:
             ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
 
+        # reload only the displayed images
+        displayed_preds = [
+            Prediction(pred=p, ground_truth=s.load())
+            for s, p in zip(sorted_samples[:n_samples], sorted_preds[:n_samples])
+        ]
+
         sorted_preds = [
             Prediction(pred=p, ground_truth=s)
             for s, p in zip(sorted_samples, sorted_preds)
         ]
 
         show_preds(
-            preds=sorted_preds[:n_samples],
-            annotations=anns[:n_samples],
+            preds=displayed_preds, annotations=anns[:n_samples], denormalize_fn=None
         )
         model.train()
         return sorted_samples, sorted_preds, losses_stats
