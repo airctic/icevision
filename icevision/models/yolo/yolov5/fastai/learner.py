@@ -3,7 +3,7 @@ __all__ = ["learner"]
 from icevision.imports import *
 from icevision.engines.fastai import *
 from icevision.models.yolo.yolov5.fastai.callbacks import Yolov5Callback
-from yolov5.utils.loss import compute_loss
+from yolov5.utils.loss import ComputeLoss
 
 
 def learner(
@@ -26,12 +26,10 @@ def learner(
     """
     cbs = [Yolov5Callback()] + L(cbs)
 
-    # compute_loss = ComputeLoss(model)
-
-    compute_loss_with_model = partial(compute_loss, model=model)
+    compute_loss = ComputeLoss(model)
 
     def loss_fn(preds, targets) -> Tensor:
-        return compute_loss_with_model(preds, targets)[0]
+        return compute_loss(preds, targets)[0]
 
     learn = adapted_fastai_learner(
         dls=dls,
