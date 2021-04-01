@@ -149,7 +149,7 @@ def build_valid_batch(
     return build_train_batch(records=records)
 
 
-def build_infer_batch(dataset: Sequence[RecordType]):
+def build_infer_batch(records: Sequence[RecordType]):
     """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
@@ -168,7 +168,7 @@ def build_infer_batch(dataset: Sequence[RecordType]):
     outs = model(*batch)
     ```
     """
-    tensor_imgs = [im2tensor(sample.img) for sample in dataset]
+    tensor_imgs = [im2tensor(record.img) for record in records]
     tensor_imgs = torch.stack(tensor_imgs)
 
-    return (tensor_imgs,), dataset
+    return (tensor_imgs,), records
