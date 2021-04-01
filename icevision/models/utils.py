@@ -74,10 +74,10 @@ def unload_records(build_batch):
     """This decorator function unloads records to not carry them around after batch creation"""
 
     def inner(records):
-        (batch_images, targets), records = build_batch(records)
+        tupled_output, records = build_batch(records)
         for record in records:
             record.unload()
-        return (batch_images, targets), records
+        return tupled_output, records
 
     return inner
 
