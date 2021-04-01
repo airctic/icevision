@@ -11,7 +11,6 @@ from icevision.models.mmdet.common.utils import *
 def model(
     backbone: MMDetBackboneConfig,
     num_classes: int,
-    pretrained: bool = True,
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
 ) -> nn.Module:
@@ -20,7 +19,7 @@ def model(
         model_type="two_stage_detector_mask",
         backbone=backbone,
         num_classes=num_classes,
-        pretrained=pretrained,
+        pretrained=backbone.pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
     )

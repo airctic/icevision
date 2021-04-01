@@ -3,6 +3,9 @@ __all__ = ["model"]
 from icevision.imports import *
 from icevision.models.torchvision.utils import *
 from icevision.backbones import resnet_fpn
+from icevision.models.torchvision.backbones.backbone_config import (
+    TorchvisionBackboneConfig,
+)
 
 from torchvision.models.detection.retinanet import (
     retinanet_resnet50_fpn,
@@ -13,7 +16,7 @@ from torchvision.models.detection.retinanet import (
 
 def model(
     num_classes: int,
-    backbone: Optional[nn.Module] = None,
+    backbone: Optional[TorchvisionBackboneConfig] = None,
     remove_internal_transforms: bool = True,
     pretrained: bool = True,
     **retinanet_kwargs
@@ -30,7 +33,7 @@ def model(
         resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = RetinaNet(
-            backbone=backbone, num_classes=num_classes, **retinanet_kwargs
+            backbone=backbone.backbone, num_classes=num_classes, **retinanet_kwargs
         )
 
     patch_retinanet_param_groups(model)

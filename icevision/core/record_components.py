@@ -80,6 +80,9 @@ class ClassMapRecordComponent(RecordComponent):
     def set_class_map(self, class_map: ClassMap):
         self.class_map = class_map
 
+    def _repr(self) -> List[str]:
+        return [f"Class Map: {self.class_map}"]
+
     def as_dict(self) -> dict:
         return {"class_map": self.class_map}
 
