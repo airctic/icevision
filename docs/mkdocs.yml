@@ -40,7 +40,10 @@ extra_javascript:
 - js/custom.js
 - https://cdn.jsdelivr.net/npm/@widgetbot/crate@3
 - js/crate.js
-
+extra:
+  version:
+    provider: mike
+    
 nav:
   - Home: index.md
   - Installation: install.md
