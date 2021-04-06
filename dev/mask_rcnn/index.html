@@ -1447,7 +1447,7 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <hr />
 <p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/mask_rcnn/dataloaders.py#L82">[source]</a></span></p>
 <h3 id="build_train_batch">build_train_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when training.</p>
 <p><strong>Arguments</strong></p>
@@ -1457,17 +1457,17 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 </ul>
 <p><strong>Returns</strong></p>
 <p>A tuple with two items. The first will be a tuple like <code>(images, targets)</code>,
-in the input format required by the model. The second will be an updated list
-of the input records with <code>batch_tfms</code> applied.</p>
+in the input format required by the model. The second will be a list
+of the input records.</p>
 <p><strong>Examples</strong></p>
 <p>Use the result of this function to feed the model.
 <div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/mask_rcnn/dataloaders.py#L115">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/mask_rcnn/dataloaders.py#L113">[source]</a></span></p>
 <h3 id="build_valid_batch">build_valid_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when validating.</p>
 <p><strong>Arguments</strong></p>
@@ -1477,28 +1477,27 @@ of the input records with <code>batch_tfms</code> applied.</p>
 </ul>
 <p><strong>Returns</strong></p>
 <p>A tuple with two items. The first will be a tuple like <code>(images, targets)</code>,
-in the input format required by the model. The second will be an updated list
-of the input records with <code>batch_tfms</code> applied.</p>
+in the input format required by the model. The second will be a list
+of the input records.</p>
 <p><strong>Examples</strong></p>
 <p>Use the result of this function to feed the model.
 <div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L154">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L152">[source]</a></span></p>
 <h3 id="build_infer_batch">build_infer_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when doing inference.</p>
 <p><strong>Arguments</strong></p>
 <ul>
-<li><strong>records</strong>: A <code>Sequence</code> of records.</li>
-<li><strong>batch_tfms</strong>: Transforms to be applied at the batch level.</li>
+<li><strong>records</strong> <code>Sequence[Dict[str, Any]]</code>: A <code>Sequence</code> of records.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <p>A tuple with two items. The first will be a tuple like <code>(images, targets)</code>,
-in the input format required by the model. The second will be an updated list
-of the input records with <code>batch_tfms</code> applied.</p>
+in the input format required by the model. The second will be a list
+of the input records.</p>
 <p><strong>Examples</strong></p>
 <p>Use the result of this function to feed the model.
 <div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">build_infer_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
