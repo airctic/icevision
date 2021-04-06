@@ -128,9 +128,8 @@ class Interpretation:
         losses_dict["loss_total"] = sum(losses_dict.values())
         return losses_dict
 
-    def _loop(self, dl, model, losses_stats):
+    def _loop(self, dl, model, losses_stats, device):
         samples_plus_losses = []
-        device = model_device(model)
 
         with torch.no_grad():
             for (x, y), sample in pbar(dl):
@@ -174,10 +173,11 @@ class Interpretation:
                     for each one of the losses.
         """
         model.train()
+        device = model_device(model)
         losses_stats = self.losses_dict
         dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
 
-        samples_plus_losses, losses_stats = self._loop(dl, model, losses_stats)
+        samples_plus_losses, losses_stats = self._loop(dl, model, losses_stats, device)
 
         losses_stats = {k: get_stats(v) for k, v in losses_stats.items()}
         losses_stats = _prepend_str(losses_stats, "loss")
@@ -190,8 +190,6 @@ class Interpretation:
         sort_by: str = "loss_total",
         n_samples: int = 5,
         batch_size: int = 8,
-        device: Optional[torch.device] = None,
-        **predict_kwargs,
     ) -> Tuple[List[dict], List[dict], dict]:
         """
         Gets a dataset and a model as input. Calculates losses for each sample in the dataset.
@@ -217,14 +215,13 @@ class Interpretation:
         logger.info(
             f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss').keys()) if l!='loss_total']}",
         )
-        original_device = model_device(model)
-        if device:
-            model.to(device)
+
+        dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
         samples, losses_stats = self.get_losses(model, dataset)
         samples = add_annotations(samples)
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
-        preds = self.predict_dl(model=model, infer_dl=dl, **predict_kwargs)
+        preds = self.predict_dl(model=model, infer_dl=dl)
         preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(
@@ -239,23 +236,16 @@ class Interpretation:
             ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
 
-        # reload only the displayed images
-        displayed_preds = [
-            Prediction(pred=p, ground_truth=s.load())
-            for s, p in zip(sorted_samples[:n_samples], sorted_preds[:n_samples])
-        ]
-
         sorted_preds = [
             Prediction(pred=p, ground_truth=s)
             for s, p in zip(sorted_samples, sorted_preds)
         ]
 
         show_preds(
-            preds=displayed_preds, annotations=anns[:n_samples], denormalize_fn=None
+            preds=sorted_preds[:n_samples],
+            annotations=anns[:n_samples],
         )
-        # model.train()
-        if device:
-            model.to(original_device)
+        model.train()
         return sorted_samples, sorted_preds, losses_stats
 
 
