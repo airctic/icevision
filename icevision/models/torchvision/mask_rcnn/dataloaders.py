@@ -80,7 +80,7 @@ def _build_mask_train_sample(record: RecordType):
 
 
 def build_train_batch(
-    records: List[RecordType], batch_tfms=None
+    records: List[RecordType],
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     """Builds a batch in the format required by the model when training.
 
@@ -90,8 +90,8 @@ def build_train_batch(
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -101,8 +101,6 @@ def build_train_batch(
     outs = model(*batch)
     ```
     """
-    records = common_build_batch(records)
-
     images, targets = [], []
     for record in records:
         image, target = _build_mask_train_sample(record)
@@ -113,7 +111,7 @@ def build_train_batch(
 
 
 def build_valid_batch(
-    records: List[RecordType], batch_tfms=None
+    records: List[RecordType],
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     """Builds a batch in the format required by the model when validating.
 
@@ -123,8 +121,8 @@ def build_valid_batch(
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 

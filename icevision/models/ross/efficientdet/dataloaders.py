@@ -71,17 +71,16 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     )
 
 
-def build_train_batch(records, batch_tfms=None):
+def build_train_batch(records):
     """Builds a batch in the format required by the model when training.
 
     # Arguments
         records: A `Sequence` of records.
-        batch_tfms: Transforms to be applied at the batch level.
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -91,7 +90,6 @@ def build_train_batch(records, batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    records = common_build_batch(records, batch_tfms=batch_tfms)
     batch_images, batch_bboxes, batch_classes = zip(
         *(process_train_record(record) for record in records)
     )
@@ -107,17 +105,16 @@ def build_train_batch(records, batch_tfms=None):
     return (batch_images, targets), records
 
 
-def build_valid_batch(records, batch_tfms=None):
+def build_valid_batch(records):
     """Builds a batch in the format required by the model when validating.
 
     # Arguments
         records: A `Sequence` of records.
-        batch_tfms: Transforms to be applied at the batch level.
 
     # Returns
-        A tuple with two items. The first will be a tuple like `(batch_images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        A tuple with two items. The first will be a tuple like `(images, targets)`,
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -127,7 +124,7 @@ def build_valid_batch(records, batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    (batch_images, targets), records = build_train_batch(records, batch_tfms)
+    (batch_images, targets), records = build_train_batch(records)
 
     # convert to EffDet interface, when not training, dummy size and scale is required
     targets = dict(img_size=None, img_scale=None, **targets)
@@ -135,24 +132,22 @@ def build_valid_batch(records, batch_tfms=None):
     return (batch_images, targets), records
 
 
-def build_infer_batch(records, batch_tfms=None):
+def build_infer_batch(records):
     """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
         records: A `Sequence` of records.
-        batch_tfms: Transforms to be applied at the batch level.
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied. # Examples
+        in the input format required by the model. The second will be a list
+        of the input records.
     Use the result of this function to feed the model.
     ```python
     batch, records = build_infer_batch(records)
     outs = model(*batch)
     ```
     """
-    records = common_build_batch(records, batch_tfms=batch_tfms)
     batch_images, batch_sizes, batch_scales = zip(
         *(process_infer_record(record) for record in records)
     )
