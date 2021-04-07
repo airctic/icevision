@@ -4,6 +4,7 @@ import shutil
 from distutils.dir_util import copy_tree
 
 import keras_autodoc
+
 # from keras_autodoc.examples import copy_examples
 import tutobooks
 from loguru import logger
@@ -193,8 +194,8 @@ def py_to_nb_md(dest_dir):
             md_file.write(md_content)
 
 
-def nb_to_md(dest_dir):
-    notebooks_dir = icevision_dir / "notebooks"
+def nb_to_md(src_dir, nb_folder, dest_dir):
+    notebooks_dir = src_dir / nb_folder
     logger.opt(colors=True).log(
         "INFO",
         "️<green><bold>Notebooks folder: {}</></>",
@@ -213,7 +214,8 @@ def nb_to_md(dest_dir):
 
         # md_path = os.path.join(dest_dir, 'tutorial', file_name_no_ext + '.md')
         file_name_md = file_name_no_ext + ".md"
-        md_path = os.path.join(dest_dir, file_name_md)
+        # md_path = os.path.join(dest_dir, file_name_md)
+        md_path = os.path.join(dest_dir, file_name_no_ext + ".md")
         images_path = "images"
 
         tutobooks.nb_to_md(nb_path, md_path, images_path)
@@ -356,18 +358,6 @@ def generate(dest_dir: Path):
             from_to,
         )
 
-    ##
-    # Copy .md examples files to destination examples folder
-    dir_src = str(icevision_dir / "examples")
-    dir_dst = str(dest_dir / "examples")
-    copy_tree(dir_src, dir_dst)
-    from_to = f"{dir_src} -> {dir_dst}"
-    logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>\nCopying examples files: {}</></>",
-        from_to,
-    )
-
     # Copy images folder from the template folder to the destination folder
     # print("Template folder: ", template_images_dir)
     dest_images_dir = Path(dest_dir) / "images"
@@ -404,11 +394,29 @@ def generate(dest_dir: Path):
         from_to,
     )
 
-    # Generate .md files form Jupyter Notebooks located in the /ipynb folder
-    nb_to_md(dest_dir)
+    # Generate .md files form Jupyter Notebooks located in the /notebooks folder
+    nb_to_md(icevision_dir, "notebooks", dest_dir)
 
-    # Generate .md files form python files located in the /examples folder
-    # examples_to_md(dest_dir)
+    # Generate .md files form Jupyter Notebooks located in the /deployment folder
+    nb_to_md(icevision_dir / "docs", "deployment", dest_dir)
+
+    # albumentations
+    shutil.copyfile(
+        icevision_dir / "icevision/tfms/README.md",
+        dest_dir / "albumentations.md",
+    )
+
+    # Models
+    shutil.copyfile(
+        icevision_dir / "icevision/models/README.md",
+        dest_dir / "models.md",
+    )
+
+    # Backbones
+    shutil.copyfile(
+        icevision_dir / "icevision/backbones/README.md",
+        dest_dir / "backbones.md",
+    )
 
 
 if __name__ == "__main__":
