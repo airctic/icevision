@@ -48,27 +48,12 @@ nav:
   - Home: index.md
   - Installation: install.md
   - Tutorials:
-    - Getting Started: getting_started.md
-    - Getting Started with MMDetection: getting_started_mmdetection.md
-    - Quickstart using EfficientDet: getting_started_efficientdet.md
-    - Quickstart using RetinaNet: retinanet.md
-    - Custom Parser: custom_parser.md
-    - Inference: inference.md
-    - Mask RCNN: mask_rcnn_pennfudan.md
-    - Keypoints RCNN: ochuman_keypoint_detection.md
-    - EffecientDet: efficientdet_pets.md
-    - Training a VOC dataset: dataset_voc_nb.md
-    - Model Tracking Using Wandb: wandb_efficientdet.md
-    - How to use negative samples: negative_samples.md
-    - Fixed Splitter: voc_predefined_splits.md
-  - Examples:
-    - Getting Started: examples/getting_started_exp.md
-    - Quickstart: examples/quickstart_exp.md
-    - Inference: examples/inference_exp.md
-    - EffecientDet: examples/efficientdet_pets_exp.md
-    - Mask RCNN: examples/mask_rcnn_pennfudan_exp.md
-    - Training a VOC dataset: examples/dataset_voc_exp.md
-    - Backbones - Faster RCNN: examples/backbones_faster_rcnn.md
+    - Getting Started:
+      - Custom Parser: custom_parser.md
+    - Advanced:
+      - How to use negative samples: negative_samples.md
+      - Fixed Splitter: voc_predefined_splits.md
+      - Model Tracking Using Wandb: wandb_efficientdet.md
   - Transforms:
     - Albumentations: albumentations.md 
   - Models:
@@ -108,7 +93,5 @@ nav:
   - How-To: how-to.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
-  - Preferences:
-    - Changing the colors: changing_the_colors.md    
   - Code of Conduct: code_of_conduct.md
   - About: about.md
