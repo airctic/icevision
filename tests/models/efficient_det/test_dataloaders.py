@@ -89,11 +89,31 @@ def test_efficient_det_valid_dataloader(records):
     _test_batch_valid(images=xb, targets=yb)
 
 
+def test_efficient_det_build_infer_batch(records, img):
+    batch, records = efficientdet.build_infer_batch(records)
+
+    tensor_img = torch.stack([im2tensor(img), im2tensor(img)])
+    img_sizes = tensor([(4, 4), (4, 4)], dtype=torch.float)
+    img_scales = tensor([1, 1], dtype=torch.float)
+    img_info = {"img_size": img_sizes, "img_scale": img_scales}
+
+    batch_imgs, batch_info = batch
+
+    assert set(batch_info.keys()) == {"img_size", "img_scale"}
+    assert torch.equal(batch_imgs, tensor_img)
+    assert torch.equal(batch_info["img_size"], img_info["img_size"])
+    assert torch.equal(batch_info["img_scale"], img_info["img_scale"])
+
+
 @pytest.mark.parametrize(
     "batch_tfms", [None, tfms.batch.ImgPadStack(np.array(0, dtype=np.uint8))]
 )
-def test_efficient_det_build_infer_batch(records, batch_tfms, img):
-    batch, records = efficientdet.build_infer_batch(records, batch_tfms=batch_tfms)
+def test_efficient_det_infer_dl(records, batch_tfms, img):
+    batch, records = first(
+        efficientdet.infer_dl(
+            Dataset(records), batch_tfms=batch_tfms, batch_size=len(records)
+        )
+    )
 
     tensor_img = torch.stack([im2tensor(img), im2tensor(img)])
     img_sizes = tensor([(4, 4), (4, 4)], dtype=torch.float)

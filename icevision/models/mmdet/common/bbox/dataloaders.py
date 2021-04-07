@@ -51,10 +51,8 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def build_train_batch(
-    records: Sequence[RecordType], batch_tfms=None
+    records: Sequence[RecordType],
 ) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
-    records = common_build_batch(records=records, batch_tfms=batch_tfms)
-
     images, labels, bboxes, img_metas = [], [], [], []
     for record in records:
         images.append(_img_tensor(record))
@@ -73,14 +71,12 @@ def build_train_batch(
 
 
 def build_valid_batch(
-    records: Sequence[RecordType], batch_tfms=None
+    records: Sequence[RecordType],
 ) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
-    return build_train_batch(records=records, batch_tfms=batch_tfms)
+    return build_train_batch(records=records)
 
 
-def build_infer_batch(records, batch_tfms=None):
-    records = common_build_batch(records, batch_tfms=batch_tfms)
-
+def build_infer_batch(records):
     imgs, img_metas = [], []
     for record in records:
         imgs.append(_img_tensor(record))
