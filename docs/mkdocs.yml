@@ -108,7 +108,5 @@ nav:
   - How-To: how-to.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
-  - Preferences:
-    - Changing the colors: changing_the_colors.md    
   - Code of Conduct: code_of_conduct.md
   - About: about.md
