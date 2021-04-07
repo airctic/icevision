@@ -1,0 +1,60 @@
+{
+    "short_name": "IceVision",
+    "name": "IceVision: Object Detection, Ice Simple",
+    "description": "Agnostic Object Detection Framework",
+    "icons": [
+        {
+            "src": "https://airctic.github.io/icevision/images/icons-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "https://airctic.github.io/icevision/images/icons-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "https://airctic.github.io/icevision/",
+    "background_color": "white",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "white",
+    "shortcuts": [
+        {
+            "name": "IceVision: Overview",
+            "short_name": "Overview",
+            "description": "A general overview about IceVision",
+            "url": "/",
+            "icons": [
+                {
+                    "src": "https://airctic.github.io/icevision/images/icons-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Getting Started",
+            "short_name": "Getting Started",
+            "description": "Getting started guide - Notebook",
+            "url": "/getting_started",
+            "icons": [
+                {
+                    "src": "https://airctic.github.io/icevision/images/icons-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "How-To",
+            "short_name": "How-To",
+            "description": "How-To guide",
+            "url": "/how-to",
+            "icons": [
+                {
+                    "src": "https://airctic.github.io/icevision/images/icons-192.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}
