@@ -1,0 +1,2138 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.5.2/plot_top_losses/">
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.14">
+    
+    
+      
+        <title>Plot top losses - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d3202873.min.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ff0a5ce4.min.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2094f3">
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+      <link rel="manifest" href="../manifest.webmanifest" crossorigin="use-credentials">
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#install-icevision" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://airctic.com/0.5.2" title="IceVision" class="md-header-nav__button md-logo" aria-label="IceVision">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            IceVision
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Plot top losses
+            
+          </span>
+        </div>
+      
+    </div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://airctic.com/0.5.2" title="IceVision" class="md-nav__button md-logo" aria-label="IceVision">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Tutorials
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting_started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../quickstart/" title="Quickstart using EfficientDet" class="md-nav__link">
+      Quickstart using EfficientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../retinanet/" title="Quickstart using RetinaNet" class="md-nav__link">
+      Quickstart using RetinaNet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../custom_parser/" title="Custom Parser" class="md-nav__link">
+      Custom Parser
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../inference/" title="Inference" class="md-nav__link">
+      Inference
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_pennfudan/" title="Mask RCNN" class="md-nav__link">
+      Mask RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_pets/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataset_voc_nb/" title="Training a VOC dataset" class="md-nav__link">
+      Training a VOC dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../wandb_efficientdet/" title="Model Tracking Using Wandb" class="md-nav__link">
+      Model Tracking Using Wandb
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../negative_samples/" title="How to use negative samples" class="md-nav__link">
+      How to use negative samples
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../voc_predefined_splits/" title="Fixed Splitter" class="md-nav__link">
+      Fixed Splitter
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Examples
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Examples" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/getting_started_exp/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/quickstart_exp/" title="Quickstart" class="md-nav__link">
+      Quickstart
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/inference_exp/" title="Inference" class="md-nav__link">
+      Inference
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/efficientdet_pets_exp/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/mask_rcnn_pennfudan_exp/" title="Mask RCNN" class="md-nav__link">
+      Mask RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/dataset_voc_exp/" title="Training a VOC dataset" class="md-nav__link">
+      Training a VOC dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/backbones_faster_rcnn/" title="Backbones - Faster RCNN" class="md-nav__link">
+      Backbones - Faster RCNN
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      Transforms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        <span class="md-nav__icon md-icon"></span>
+        Transforms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../albumentations/" title="Albumentations" class="md-nav__link">
+      Albumentations
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Models
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Models" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        <span class="md-nav__icon md-icon"></span>
+        Models
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_efficientdet/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_faster_rcnn/" title="Faster RCNN" class="md-nav__link">
+      Faster RCNN
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../model_comparison/" title="Models Comparison" class="md-nav__link">
+      Models Comparison
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Backbones
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Backbones" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        <span class="md-nav__icon md-icon"></span>
+        Backbones
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../backbones_effecientdet/" title="EffecientDet" class="md-nav__link">
+      EffecientDet
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../backbones_faster_mask_rcnn/" title="Faster/Mask RCNN" class="md-nav__link">
+      Faster/Mask RCNN
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      Deployment
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        <span class="md-nav__icon md-icon"></span>
+        Deployment
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../deployment/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-8-2" type="checkbox" id="nav-8-2">
+    
+    <label class="md-nav__link" for="nav-8-2">
+      Gradio
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+      <label class="md-nav__title" for="nav-8-2">
+        <span class="md-nav__icon md-icon"></span>
+        Gradio
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_coco/" title="COCO" class="md-nav__link">
+      COCO
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_pets/" title="PETS" class="md-nav__link">
+      PETS
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../IceApp_masks/" title="Masks" class="md-nav__link">
+      Masks
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      API Documentation
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        <span class="md-nav__icon md-icon"></span>
+        API Documentation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parser/" title="Parser" class="md-nav__link">
+      Parser
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dataset/" title="Dataset" class="md-nav__link">
+      Dataset
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-3" type="checkbox" id="nav-9-3">
+    
+    <label class="md-nav__link" for="nav-9-3">
+      Transforms
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-3">
+        <span class="md-nav__icon md-icon"></span>
+        Transforms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../albumentations_tfms/" title="Albumentations" class="md-nav__link">
+      Albumentations
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4" type="checkbox" id="nav-9-4">
+    
+    <label class="md-nav__link" for="nav-9-4">
+      Models
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Models" data-md-level="2">
+      <label class="md-nav__title" for="nav-9-4">
+        <span class="md-nav__icon md-icon"></span>
+        Models
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-1" type="checkbox" id="nav-9-4-1">
+    
+    <label class="md-nav__link" for="nav-9-4-1">
+      Faster RCNN
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-1">
+        <span class="md-nav__icon md-icon"></span>
+        Faster RCNN
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../faster_rcnn_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-2" type="checkbox" id="nav-9-4-2">
+    
+    <label class="md-nav__link" for="nav-9-4-2">
+      Mask RCNN
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        Mask RCNN
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mask_rcnn_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-9-4-3" type="checkbox" id="nav-9-4-3">
+    
+    <label class="md-nav__link" for="nav-9-4-3">
+      EfficientDet
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+      <label class="md-nav__title" for="nav-9-4-3">
+        <span class="md-nav__icon md-icon"></span>
+        EfficientDet
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet/" title="common" class="md-nav__link">
+      common
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_fastai/" title="fastai" class="md-nav__link">
+      fastai
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../efficientdet_lightning/" title="lightning" class="md-nav__link">
+      lightning
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../data_splits/" title="Data Splitters" class="md-nav__link">
+      Data Splitters
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../how-to/" title="How-To" class="md-nav__link">
+      How-To
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../contributing/" title="Contributing Guide" class="md-nav__link">
+      Contributing Guide
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../readme_mkdocs/" title="Generating Docs" class="md-nav__link">
+      Generating Docs
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-13" type="checkbox" id="nav-13">
+    
+    <label class="md-nav__link" for="nav-13">
+      Preferences
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Preferences" data-md-level="1">
+      <label class="md-nav__title" for="nav-13">
+        <span class="md-nav__icon md-icon"></span>
+        Preferences
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../changing_the_colors/" title="Changing the colors" class="md-nav__link">
+      Changing the colors
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../code_of_conduct/" title="Code of Conduct" class="md-nav__link">
+      Code of Conduct
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/plot_top_losses.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<p>The purpose of this notebook is to showcase the newly added <code>plot_top_losses</code> functionality, which allows users to inspect models' results by plotting images sorted by various combinations of losses. This API makes it easy to immediately spot pictures the model struggles the most with, giving the practitioner the opportunity to take swift action to correct this behaviour (remove wrong samples, correct mis-labellings, etc).</p>
+<p><code>plot_top_losses</code> is available for all IceVision models, as the below notebook shows. </p>
+<h2 id="install-icevision">Install IceVision</h2>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span><span class="c1">#egg=icevision[all] icedata --upgrade</span>
+</code></pre></div>
+<h1 id="object-detection">Object Detection</h1>
+<h2 id="load-fridge-dataset">Load <code>fridge</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp.blob.core.windows.net/public/datasets/object_detection/odFridgeObjects.zip&quot;</span>
+<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">([</span><span class="s2">&quot;milk_bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;can&quot;</span><span class="p">,</span> <span class="s2">&quot;water_bottle&quot;</span><span class="p">])</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">voc</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
+                     <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">,</span>
+                     <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<span class="c1"># Records</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=20380998.0), HTML(value=&#39;&#39;)))
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=128.0), HTML(value=&#39;&#39;)))
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="train-faster_rcnn-model">Train <code>faster_rcnn</code> model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth&quot; to /root/.cache/torch/hub/checkpoints/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=167502836.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.929798</td>
+      <td>0.745340</td>
+      <td>0.110503</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.801614</td>
+      <td>0.534930</td>
+      <td>0.287367</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.683533</td>
+      <td>0.503273</td>
+      <td>0.254913</td>
+      <td>00:07</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>4.777527</td>
+      <td>0.727937</td>
+      <td>0.112012</td>
+      <td>00:11</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.675926</td>
+      <td>0.900404</td>
+      <td>0.087199</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.949393</td>
+      <td>0.676135</td>
+      <td>0.063974</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.550345</td>
+      <td>0.538352</td>
+      <td>0.075615</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.305145</td>
+      <td>0.539530</td>
+      <td>0.101115</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="run-top_plot_losses-on-faster_rcnn-model-results">Run <code>top_plot_losses</code> on <code>faster_rcnn</code> model results</h2>
+<p>Values allowed to pass to <code>sort_by</code> are (for <code>faster_rcnn</code>):</p>
+<ul>
+<li><code>"loss_classifier"</code></li>
+<li><code>"loss_box_reg"</code></li>
+<li><code>"loss_objectness"</code></li>
+<li><code>"loss_rpn_box_reg"</code></li>
+<li><code>"loss_total"</code> (sum of the previous 4 losses)</li>
+<li><code>{"method": "weighted", 
+  "weights": {"loss_box_reg": 0.25,
+  "loss_classifier": 0.25,
+  "loss_objectness": 0.25,
+  "loss_rpn_box_reg": 0.25,}}</code>
+  (calculates weighted sum of the 4 losses - <em>Note</em>: I have set weights to <code>0.25</code> for example purposes)</li>
+</ul>
+<p>Below we show several ways of invoking the same API on the trained model, sorting samples by different losses combinations.</p>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_19_5.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_classifier&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_20_5.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># in this case `loss_weighted` will be equal to `loss_box_reg`</span>
+<span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_box_reg&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;loss_classifier&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loss_objectness&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loss_rpn_box_reg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_21_5.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_box_reg&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_classifier&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_objectness&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_rpn_box_reg&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_22_5.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># `losses_stats` contains useful statistics for each computed loss in the dataset</span>
+<span class="n">losses_stats</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># we can easily extract losses per image and display them in a pandas DataFrame for further analysis</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">loss_per_image</span> <span class="o">=</span> <span class="n">get_samples_losses</span><span class="p">(</span><span class="n">samples_plus_losses</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">loss_per_image</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>{&#39;loss_box_reg&#39;: {&#39;1ile&#39;: 0.05190576612949371,
+  &#39;25ile&#39;: 0.2035452425479889,
+  &#39;50ile&#39;: 0.2641611248254776,
+  &#39;75ile&#39;: 0.3478182256221771,
+  &#39;99ile&#39;: 0.5161057710647583,
+  &#39;max&#39;: 0.5161057710647583,
+  &#39;mean&#39;: 0.2718363240934335,
+  &#39;min&#39;: 0.05190576612949371},
+ &#39;loss_classifier&#39;: {&#39;1ile&#39;: 0.0807231068611145,
+  &#39;25ile&#39;: 0.1814981997013092,
+  &#39;50ile&#39;: 0.25537528097629547,
+  &#39;75ile&#39;: 0.32677075266838074,
+  &#39;99ile&#39;: 0.4015304148197174,
+  &#39;max&#39;: 0.4015304148197174,
+  &#39;mean&#39;: 0.24639798099031815,
+  &#39;min&#39;: 0.0807231068611145},
+ &#39;loss_objectness&#39;: {&#39;1ile&#39;: 5.380709990276955e-05,
+  &#39;25ile&#39;: 0.0020654327236115932,
+  &#39;50ile&#39;: 0.006522084586322308,
+  &#39;75ile&#39;: 0.010207928717136383,
+  &#39;99ile&#39;: 0.030636457726359367,
+  &#39;max&#39;: 0.030636457726359367,
+  &#39;mean&#39;: 0.007866157029499075,
+  &#39;min&#39;: 5.380709990276955e-05},
+ &#39;loss_rpn_box_reg&#39;: {&#39;1ile&#39;: 0.0014084185240790248,
+  &#39;25ile&#39;: 0.008392253890633583,
+  &#39;50ile&#39;: 0.014501482248306274,
+  &#39;75ile&#39;: 0.017447534948587418,
+  &#39;99ile&#39;: 0.03517897427082062,
+  &#39;max&#39;: 0.03517897427082062,
+  &#39;mean&#39;: 0.013996926015422035,
+  &#39;min&#39;: 0.0014084185240790248},
+ &#39;loss_total&#39;: {&#39;1ile&#39;: 0.13555445312522352,
+  &#39;25ile&#39;: 0.4158565173856914,
+  &#39;50ile&#39;: 0.5547791894059628,
+  &#39;75ile&#39;: 0.7083070203661919,
+  &#39;99ile&#39;: 0.9351915549486876,
+  &#39;max&#39;: 0.9351915549486876,
+  &#39;mean&#39;: 0.5400973881286728,
+  &#39;min&#39;: 0.13555445312522352}}
+</code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>filepath</th>
+      <th>loss_classifier</th>
+      <th>loss_box_reg</th>
+      <th>loss_objectness</th>
+      <th>loss_rpn_box_reg</th>
+      <th>loss_total</th>
+      <th>loss_weighted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/70.jpg</td>
+      <td>0.401530</td>
+      <td>0.516106</td>
+      <td>0.003187</td>
+      <td>0.014368</td>
+      <td>0.935192</td>
+      <td>0.233798</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/65.jpg</td>
+      <td>0.361605</td>
+      <td>0.396446</td>
+      <td>0.004368</td>
+      <td>0.035179</td>
+      <td>0.797597</td>
+      <td>0.199399</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/69.jpg</td>
+      <td>0.325730</td>
+      <td>0.436458</td>
+      <td>0.007038</td>
+      <td>0.021536</td>
+      <td>0.790761</td>
+      <td>0.197690</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/82.jpg</td>
+      <td>0.336966</td>
+      <td>0.380997</td>
+      <td>0.030636</td>
+      <td>0.014635</td>
+      <td>0.763234</td>
+      <td>0.190809</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/76.jpg</td>
+      <td>0.344810</td>
+      <td>0.397597</td>
+      <td>0.007009</td>
+      <td>0.011474</td>
+      <td>0.760891</td>
+      <td>0.190223</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/91.jpg</td>
+      <td>0.347157</td>
+      <td>0.377784</td>
+      <td>0.013784</td>
+      <td>0.014169</td>
+      <td>0.752894</td>
+      <td>0.188223</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/73.jpg</td>
+      <td>0.334780</td>
+      <td>0.347818</td>
+      <td>0.008493</td>
+      <td>0.017216</td>
+      <td>0.708307</td>
+      <td>0.177077</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/63.jpg</td>
+      <td>0.326771</td>
+      <td>0.343447</td>
+      <td>0.003026</td>
+      <td>0.020271</td>
+      <td>0.693515</td>
+      <td>0.173379</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/125.jpg</td>
+      <td>0.284659</td>
+      <td>0.318850</td>
+      <td>0.008986</td>
+      <td>0.012640</td>
+      <td>0.625135</td>
+      <td>0.156284</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/51.jpg</td>
+      <td>0.253484</td>
+      <td>0.333823</td>
+      <td>0.006035</td>
+      <td>0.008696</td>
+      <td>0.602038</td>
+      <td>0.150509</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/66.jpg</td>
+      <td>0.282760</td>
+      <td>0.277893</td>
+      <td>0.008295</td>
+      <td>0.024600</td>
+      <td>0.593548</td>
+      <td>0.148387</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/42.jpg</td>
+      <td>0.257737</td>
+      <td>0.299093</td>
+      <td>0.016960</td>
+      <td>0.017189</td>
+      <td>0.590978</td>
+      <td>0.147745</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/59.jpg</td>
+      <td>0.257267</td>
+      <td>0.262500</td>
+      <td>0.021031</td>
+      <td>0.022185</td>
+      <td>0.562983</td>
+      <td>0.140746</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/90.jpg</td>
+      <td>0.260042</td>
+      <td>0.265823</td>
+      <td>0.004306</td>
+      <td>0.016405</td>
+      <td>0.546575</td>
+      <td>0.136644</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/109.jpg</td>
+      <td>0.248338</td>
+      <td>0.260444</td>
+      <td>0.018180</td>
+      <td>0.017427</td>
+      <td>0.544389</td>
+      <td>0.136097</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/16.jpg</td>
+      <td>0.221121</td>
+      <td>0.255459</td>
+      <td>0.002065</td>
+      <td>0.005470</td>
+      <td>0.484115</td>
+      <td>0.121029</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
+      <td>0.228037</td>
+      <td>0.208443</td>
+      <td>0.013820</td>
+      <td>0.018261</td>
+      <td>0.468562</td>
+      <td>0.117141</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/80.jpg</td>
+      <td>0.218763</td>
+      <td>0.217823</td>
+      <td>0.007633</td>
+      <td>0.017448</td>
+      <td>0.461667</td>
+      <td>0.115417</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/33.jpg</td>
+      <td>0.211880</td>
+      <td>0.199396</td>
+      <td>0.010208</td>
+      <td>0.016371</td>
+      <td>0.437855</td>
+      <td>0.109464</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/123.jpg</td>
+      <td>0.181498</td>
+      <td>0.219479</td>
+      <td>0.001994</td>
+      <td>0.012886</td>
+      <td>0.415857</td>
+      <td>0.103964</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/100.jpg</td>
+      <td>0.121183</td>
+      <td>0.203545</td>
+      <td>0.000172</td>
+      <td>0.001678</td>
+      <td>0.326578</td>
+      <td>0.081645</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/102.jpg</td>
+      <td>0.141722</td>
+      <td>0.161956</td>
+      <td>0.000054</td>
+      <td>0.002683</td>
+      <td>0.306415</td>
+      <td>0.076604</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/19.jpg</td>
+      <td>0.129916</td>
+      <td>0.137039</td>
+      <td>0.000416</td>
+      <td>0.007992</td>
+      <td>0.275363</td>
+      <td>0.068841</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/3.jpg</td>
+      <td>0.134473</td>
+      <td>0.104869</td>
+      <td>0.005156</td>
+      <td>0.008392</td>
+      <td>0.252891</td>
+      <td>0.063223</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/4.jpg</td>
+      <td>0.113395</td>
+      <td>0.092752</td>
+      <td>0.000150</td>
+      <td>0.003340</td>
+      <td>0.209638</td>
+      <td>0.052409</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>/root/.icevision/data/fridge/odFridgeObjects/images/1.jpg</td>
+      <td>0.080723</td>
+      <td>0.051906</td>
+      <td>0.001517</td>
+      <td>0.001408</td>
+      <td>0.135554</td>
+      <td>0.033889</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="run-top_plot_losses-on-a-retinanet-pretrained-but-not-finetuned-model">Run <code>top_plot_losses</code> on a <code>retinanet</code> pretrained (but not finetuned) model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">retinanet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/retinanet_resnet50_fpn_coco-eeacb38b.pth&quot; to /root/.cache/torch/hub/checkpoints/retinanet_resnet50_fpn_coco-eeacb38b.pth
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=136595076.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span> 
+      <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;loss_classification&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+                <span class="s2">&quot;loss_bbox_regression&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+
+<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">retinanet</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classification&#39;, &#39;loss_bbox_regression&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+
+/usr/local/lib/python3.6/dist-packages/torch/nn/_reduction.py:44: UserWarning: size_average and reduce args will be deprecated, please use reduction=&#39;sum&#39; instead.
+  warnings.warn(warning.format(ret))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_27_6.png" /></p>
+<h2 id="run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model">Run <code>top_plot_losses</code> on a <code>efficientdet</code> pretrained (but not finetuned) model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;tf_efficientdet_lite0&#39;</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">384</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;class_loss&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading: &quot;https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_lite0-f5f303a9.pth&quot; to /root/.cache/torch/hub/checkpoints/tf_efficientdet_lite0-f5f303a9.pth
+
+[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;effdet_total_loss&#39;, &#39;class_loss&#39;, &#39;box_loss&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_30_5.png" /></p>
+<h1 id="instance-segmentation">Instance Segmentation</h1>
+<h2 id="plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset"><code>plot_top_losses</code> in action with a <code>mask_rcnn</code> model on the <code>pennfudan</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=53723336.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+<span class="n">shift_scale_rotate</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">ShiftScaleRotate</span><span class="p">(</span><span class="n">rotate_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">crop_fn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">RandomSizedCrop</span><span class="p">,</span> <span class="n">min_max_height</span><span class="o">=</span><span class="p">(</span><span class="mi">384</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span> <span class="n">p</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">348</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">shift_scale_rotate</span><span class="o">=</span><span class="n">shift_scale_rotate</span><span class="p">,</span> <span class="n">crop_fn</span><span class="o">=</span><span class="n">crop_fn</span><span class="p">),</span>
+        <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=170.0), HTML(value=&#39;&#39;)))
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
+
+<span class="n">learn</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth&quot; to /root/.cache/torch/hub/checkpoints/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=178090079.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.702523</td>
+      <td>0.555716</td>
+      <td>00:18</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.657636</td>
+      <td>0.522894</td>
+      <td>00:14</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.551434</td>
+      <td>0.377621</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.469830</td>
+      <td>0.448473</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.472173</td>
+      <td>0.364438</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.437653</td>
+      <td>0.338397</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.375957</td>
+      <td>0.342569</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.385508</td>
+      <td>0.317213</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.371840</td>
+      <td>0.343802</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.356101</td>
+      <td>0.358258</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.484352</td>
+      <td>0.322044</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.339008</td>
+      <td>0.312049</td>
+      <td>00:19</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_mask&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_mask&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=34.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=5.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_36_5.png" /></p>
+<h1 id="keypoint-detection">Keypoint Detection</h1>
+<h2 id="plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset"><code>plot_top_losses</code> in action with a <code>keypoint_rcnn</code> model on the <code>biwi</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">240</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">120</span>
+
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">,</span> <span class="n">crop_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=593774.0), HTML(value=&#39;&#39;)))
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=200.0), HTML(value=&#39;&#39;)))
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">backbones</span><span class="o">.</span><span class="n">resnet_fpn</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_keypoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/resnet18-5c106cde.pth&quot; to /root/.cache/torch/hub/checkpoints/resnet18-5c106cde.pth
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=46827520.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>9.269516</td>
+      <td>8.537302</td>
+      <td>00:35</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>8.527759</td>
+      <td>7.503790</td>
+      <td>00:16</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>7.033783</td>
+      <td>6.651293</td>
+      <td>00:22</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>6.630652</td>
+      <td>5.782725</td>
+      <td>00:24</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>6.220629</td>
+      <td>5.254831</td>
+      <td>00:15</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.921734</td>
+      <td>5.051409</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>5.713860</td>
+      <td>4.953146</td>
+      <td>00:17</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_keypoint&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_keypoint&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=40.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=5.0), HTML(value=&#39;&#39;)))
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_42_5.png" /></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.2d1db4bd.min.js"></script>
+      <script src="../assets/javascripts/bundle.6627ddf3.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
