@@ -11,7 +11,6 @@ from icevision.models.torchvision import (
 )
 from icevision.models import torchvision
 
-
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies
 
@@ -22,3 +21,6 @@ if SoftDependencies.effdet:
 
 if SoftDependencies.mmdet:
     from icevision.models import mmdet
+
+if SoftDependencies.yolov5:
+    from icevision.models import ultralytics

@@ -31,6 +31,7 @@ jobs:
           pip install mmcv-full=="1.2.5+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
           pip install mmdet
           pip install -e ".[all,dev]"
+          pip install yolov5-icevision --upgrade
           # Below version is needed to work around a clash with ruamel-yaml. When v1.0 is released this can be removed.
           pip install git+git://github.com/jimporter/mike.git@2961733cbfef132e9d63752307443981ad02d1fc --upgrade
 
