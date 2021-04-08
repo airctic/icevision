@@ -14,8 +14,8 @@ def _predict_batch(
     batch: Sequence[torch.Tensor],
     records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
-    device: Optional[torch.device] = None,
     keep_images: bool = False,
+    device: Optional[torch.device] = None,
 ):
     device = device or model_device(model)
     batch["img"] = [img.to(device) for img in batch["img"]]
@@ -75,7 +75,7 @@ def convert_raw_predictions(
             detection_threshold=detection_threshold,
             keep_image=keep_images,
         )
-        for sample, raw_pred, record in zip(batch["img"]), raw_preds, records)
+        for sample, raw_pred, record in zip(batch["img"], raw_preds, records)
     ]
 
 
