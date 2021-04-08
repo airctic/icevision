@@ -60,55 +60,15 @@
      <lastmod>2021-04-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://airctic.com/dev/examples/getting_started_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/quickstart_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/inference_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/efficientdet_pets_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/mask_rcnn_pennfudan_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/dataset_voc_exp/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/examples/backbones_faster_rcnn/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
      <loc>https://airctic.com/dev/albumentations/</loc>
      <lastmod>2021-04-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://airctic.com/dev/model_efficientdet/</loc>
+     <loc>https://airctic.com/dev/models/</loc>
      <lastmod>2021-04-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://airctic.com/dev/model_faster_rcnn/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/model_comparison/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/backbones_effecientdet/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/backbones_faster_mask_rcnn/</loc>
+     <loc>https://airctic.com/dev/backbones/</loc>
      <lastmod>2021-04-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
@@ -185,14 +145,6 @@
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/contributing/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/readme_mkdocs/</loc>
-     <lastmod>2021-04-08</lastmod>
-     <changefreq>daily</changefreq>
-    </url><url>
-     <loc>https://airctic.com/dev/changing_the_colors/</loc>
      <lastmod>2021-04-08</lastmod>
      <changefreq>daily</changefreq>
     </url><url>

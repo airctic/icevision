@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/mmdetection_bbox/">
+        <link rel="canonical" href="https://airctic.com/dev/changelog/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.0">
     
     
       
-        <title>Mmdetection bbox - IceVision</title>
+        <title>Changelog - IceVision</title>
       
     
     
@@ -72,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -98,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Mmdetection bbox
+              Changelog
             
           </span>
         </div>
@@ -962,241 +967,716 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unreleased" class="md-nav__link">
+    Unreleased
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060b1" class="md-nav__link">
+    [0.6.0b1]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.6.0b1]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_1" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052" class="md-nav__link">
+    [0.5.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.5.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_1" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_2" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050" class="md-nav__link">
+    [0.5.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.5.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_2" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_3" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040" class="md-nav__link">
+    [0.4.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.4.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_3" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_4" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030" class="md-nav__link">
+    [0.3.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.3.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_4" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_5" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#022" class="md-nav__link">
+    [0.2.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_5" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_6" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#021" class="md-nav__link">
+    [0.2.1]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.1]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_7" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020" class="md-nav__link">
+    [0.2.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important" class="md-nav__link">
+    IMPORTANT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added_6" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_8" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_1" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#016" class="md-nav__link">
+    [0.1.6]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.6]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_7" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_9" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#015" class="md-nav__link">
+    [0.1.5]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.5]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_10" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#014" class="md-nav__link">
+    [0.1.4]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.4]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_8" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_11" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_2" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#013" class="md-nav__link">
+    [0.1.3]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.3]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_12" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#012" class="md-nav__link">
+    [0.1.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_9" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_13" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_3" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#009" class="md-nav__link">
+    [0.0.9]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.0.9]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_10" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_14" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#000-pre-release" class="md-nav__link">
+    [0.0.0-pre-release]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.0.0-pre-release]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_11" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_15" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    Removed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    Links
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>Mmdetection bbox</h1>
-                
-                <div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
-<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">fcos</span>
-<span class="c1"># model_type = models.mmdet.retinanet</span>
-<span class="c1"># model_type = models.mmdet.faster_rcnn</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">icedata</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=128.0), HTML(value=&#39;&#39;)))
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m135[0m
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">224</span>
-<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
-<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># cfg = &quot;~/git/mmdetection/configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py&quot;</span>
-<span class="c1"># weights_path = None</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># cfg = &quot;~/git/mmdetection/configs/retinanet/retinanet_r50_fpn_1x_coco.py&quot;</span>
-<span class="c1"># weights_path = &quot;/home/lgvaz/git/mmdetection/checkpoints/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth&quot;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># fcos</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="s2">&quot;/home/jeremy/Documents/code/oss/mmdetection/configs/fcos/fcos_r50_caffe_fpn_gn-head_4x4_1x_coco.py&quot;</span>
-<span class="n">weights_path</span> <span class="o">=</span> <span class="kc">None</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">weights_path</span><span class="o">=</span><span class="n">weights_path</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>2021-03-13 07:53:32,493 - mmdet - INFO - load model from: open-mmlab://detectron/resnet50_caffe
-2021-03-13 07:53:32,493 - mmdet - INFO - Use load_from_openmmlab loader
-2021-03-13 07:53:32,569 - mmdet - WARNING - The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>unexpected key in source state_dict: conv1.bias, layer1.0.conv1.bias, layer1.0.conv2.bias, layer1.0.conv3.bias, layer1.0.downsample.0.bias, layer1.1.conv1.bias, layer1.1.conv2.bias, layer1.1.conv3.bias, layer1.2.conv1.bias, layer1.2.conv2.bias, layer1.2.conv3.bias, layer2.0.conv1.bias, layer2.0.conv2.bias, layer2.0.conv3.bias, layer2.0.downsample.0.bias, layer2.1.conv1.bias, layer2.1.conv2.bias, layer2.1.conv3.bias, layer2.2.conv1.bias, layer2.2.conv2.bias, layer2.2.conv3.bias, layer2.3.conv1.bias, layer2.3.conv2.bias, layer2.3.conv3.bias, layer3.0.conv1.bias, layer3.0.conv2.bias, layer3.0.conv3.bias, layer3.0.downsample.0.bias, layer3.1.conv1.bias, layer3.1.conv2.bias, layer3.1.conv3.bias, layer3.2.conv1.bias, layer3.2.conv2.bias, layer3.2.conv3.bias, layer3.3.conv1.bias, layer3.3.conv2.bias, layer3.3.conv3.bias, layer3.4.conv1.bias, layer3.4.conv2.bias, layer3.4.conv3.bias, layer3.5.conv1.bias, layer3.5.conv2.bias, layer3.5.conv3.bias, layer4.0.conv1.bias, layer4.0.conv2.bias, layer4.0.conv3.bias, layer4.0.downsample.0.bias, layer4.1.conv1.bias, layer4.1.conv2.bias, layer4.1.conv3.bias, layer4.2.conv1.bias, layer4.2.conv2.bias, layer4.2.conv3.bias
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">splitter</span><span class="o">=</span><span class="n">fastai</span><span class="o">.</span><span class="n">trainable_params</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
-</code></pre></div>
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='0' class='' max='8' style='width:300px; height:20px; vertical-align: middle;'></progress>
-
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0007585775572806596, lr_steep=4.365158383734524e-05)
-</code></pre></div>
-</div>
-
-<p><img alt="svg" src="mmdetection_bbox_files/mmdetection_bbox_15_2.svg" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">)</span>
-</code></pre></div>
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='0' class='' max='1' style='width:300px; height:20px; vertical-align: middle;'></progress>
-
-</div>
-
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='0' class='' max='10' style='width:300px; height:20px; vertical-align: middle;'></progress>
-
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">)</span>
-</code></pre></div>
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='0' class='' max='1' style='width:300px; height:20px; vertical-align: middle;'></progress>
-
-</div>
-
-<div>
-    <style>
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    </style>
-  <progress value='0' class='' max='10' style='width:300px; height:20px; vertical-align: middle;'></progress>
-
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="svg" src="mmdetection_bbox_files/mmdetection_bbox_18_0.svg" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="svg" src="mmdetection_bbox_files/mmdetection_bbox_19_0.svg" /></p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LitModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
-
-<span class="n">lit_model</span> <span class="o">=</span> <span class="n">LitModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_sanity_val_steps</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">check_val_every_n_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">lr_finder</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">tuner</span><span class="o">.</span><span class="n">lr_find</span><span class="p">(</span><span class="n">lit_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>GPU available: True, used: True
-TPU available: False, using: 0 TPU cores
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">fig</span> <span class="o">=</span> <span class="n">lr_finder</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">suggest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  | Name  | Type | Params
--------------------------------
-0 | model | FCOS | 32 M  
-
-HBox(children=(HTML(value=&#39;Finding best initial lr&#39;), FloatProgress(value=0.0), HTML(value=&#39;&#39;)))
-
-&lt;ipython-input-24-e87f252efa22&gt;:2: UserWarning: Matplotlib is currently using module://ipykernel.pylab.backend_inline, which is a non-GUI backend, so cannot show the figure.
-  fig.show()
-</code></pre></div>
-</div>
-
-<p><img alt="svg" src="mmdetection_bbox_files/mmdetection_bbox_22_1.svg" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">lit_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  | Name  | Type | Params
--------------------------------
-0 | model | FCOS | 32 M  
-
-HBox(children=(HTML(value=&#39;Training&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), max…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-HBox(children=(HTML(value=&#39;Validating&#39;), FloatProgress(value=1.0, bar_style=&#39;info&#39;, layout=Layout(flex=&#39;2&#39;), m…
-
-1
-</code></pre></div>
-</div>
+                <h1 id="changelog">Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
+<h2 id="unreleased"><a href="https://github.com/airctic/mantisshrimp/tree/master">Unreleased</a></h2>
+<p><strong>BREAKING:</strong> API Refactor</p>
+<h2 id="changed">Changed</h2>
+<ul>
+<li><strong>Breaking:</strong> Renamed tasks <code>default,detect,classif</code> to <code>common,detection,classification</code></li>
+<li><strong>Breaking:</strong> Renamed <code>imageid</code> to <code>record_id</code></li>
+<li><strong>Breaking:</strong> Added parameter <code>is_new</code> to <code>Parser.parse_fields</code></li>
+<li>Removed all dependencies on <code>cv2</code> for visualisation</li>
+<li>Use new composite API for visualisation - covers user defined task names &amp; multiple tasks</li>
+<li>Added a ton of visualisation goodies to <code>icevision.visualize.draw_data.draw_sample</code> - user can now</li>
+<li>use custom fonts</li>
+<li>control mask thickness</li>
+<li>control mask blending</li>
+<li>prettify labels -- show confidence score &amp; capitalise label</li>
+<li>plot specific and/or exclude specific labels</li>
+<li>pass in a dictionary mapping labels to specific colors</li>
+<li>control label height &amp; width padding from bbox edge</li>
+<li>add border around label for legibility (color is a parameter)
+<strong>Breaking:</strong>: Rename <code>labels-&gt;label_ids</code>, <code>labels_names-&gt;labels</code> in <code>LabelsRecordComponent</code></li>
+<li>Renamed torchvision resnet backbones:</li>
+<li>resnet_fpn.resnet18 -&gt; resnet18_fpn</li>
+<li>resnest_fpn.resnest18 -&gt; resnest18_fpn</li>
+</ul>
+<h2 id="060b1">[0.6.0b1]</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li>mmdetection models</li>
+</ul>
+<h3 id="changed_1">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> All <code>Parser</code> subclasses need to call <code>super.__init__</code></li>
+<li><strong>Breaking:</strong> <code>LabelsMixin.labels</code> now needs to return <code>List[Hashable]</code> instead of <code>List[int]</code> (labels names instead of label ids)</li>
+<li><strong>Breaking:</strong> Model namespace changes e.g. <code>faster_rcnn</code> -&gt; <code>models.torchvision.faster_rcnn</code>, <code>efficientdet</code> -&gt; <code>models.ross.efficientdet</code></li>
+<li><strong>Breaking:</strong> Renamed <code>ClassMap.get_name/get_id</code> to <code>ClassMap.get_by_name/get_by_id</code></li>
+<li><strong>Breaking:</strong> Removes <code>idmap</code> argument from <code>Parser.parse</code>. Instead pass <code>idmap</code> to the constructor (<code>__init__</code>).</li>
+<li>ClassMap is not created inside of the parser, it's not required to instantiate it before</li>
+<li>class_map labels get automatically filled while parsing</li>
+<li>background for class_map is now always 0 (unless no background)</li>
+<li>adds <code>class_map</code> to <code>Record</code></li>
+</ul>
+<h3 id="deleted">Deleted</h3>
+<h2 id="052">[0.5.2]</h2>
+<h3 id="added_1">Added</h3>
+<ul>
+<li><code>aggregate_records_objects</code> function</li>
+</ul>
+<h3 id="changed_2">Changed</h3>
+<ul>
+<li>Added <code>label_field</code> to VIA parser to allow for alternate <code>region_attribute</code> names</li>
+</ul>
+<h2 id="050">[0.5.0]</h2>
+<h3 id="added_2">Added</h3>
+<ul>
+<li>Keypoints full support: data API, model and training</li>
+<li>VGG Image Annotator v2 JSON format parser for bboxes</li>
+<li><code>figsize</code> parameter to <code>show_record</code> and <code>show_sample</code></li>
+</ul>
+<h3 id="changed_3">Changed</h3>
+<ul>
+<li>improved visualisation for small bboxes</li>
+<li><code>COCOMetric</code> now returns all metrics from pycocotools</li>
+<li>makes torchvision models torchscriptable</li>
+</ul>
+<h2 id="040">[0.4.0]</h2>
+<h3 id="added_3">Added</h3>
+<ul>
+<li>retinanet: model, dataloaders, predict, ...</li>
+</ul>
+<h3 id="changed_4">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> models/rcnn renamed to models/torchvision_models</li>
+<li>tests/models/rcnn renamed to tests/models/torchvision_models</li>
+</ul>
+<h2 id="030">[0.3.0]</h2>
+<h3 id="added_4">Added</h3>
+<ul>
+<li>pytorch 1.7 support, all dependencies updated</li>
+<li>tutorial with hard negative samples</li>
+<li>ability to skip record while parsing</li>
+</ul>
+<h3 id="changed_5">Changed</h3>
+<ul>
+<li>show_preds visual improvement</li>
+</ul>
+<h2 id="022">[0.2.2]</h2>
+<h3 id="added_5">Added</h3>
+<ul>
+<li>Cache records after parsing with the new parameter <code>cache_filepath</code> added to <code>Parser.parse</code> (#504)</li>
+<li>Added <code>pretrained: bool = True</code> argument to both faster_rcnn and mask_rcnn <code>model()</code> methods. (#516)</li>
+<li>new class <code>EncodedRLEs</code></li>
+<li>all masks get converted to <code>EncodedRLEs</code> at parsing time</li>
+</ul>
+<h3 id="changed_6">Changed</h3>
+<ul>
+<li>Removed warning on autofixing masks</li>
+<li>RLE default counts is now COCO style</li>
+<li>renamed <code>Mask.to_erle</code> to <code>Mask.to_erles</code></li>
+</ul>
+<h2 id="021">[0.2.1]</h2>
+<h3 id="changed_7">Changed</h3>
+<ul>
+<li>updated matplotlib and ipykernel minimum version for colab compatibility</li>
+</ul>
+<h2 id="020">[0.2.0]</h2>
+<h3 id="important">IMPORTANT</h3>
+<ul>
+<li><strong>Switched from poetry to setuptools</strong></li>
+</ul>
+<h3 id="added_6">Added</h3>
+<ul>
+<li>Function <code>wandb_img_preds</code> to help logging bboxes to wandb</li>
+<li>wandb as a soft dependency</li>
+<li>Template code for <code>parsers.SizeMixin</code> if <code>parsers.FilepathMixin</code> is used</li>
+<li>Get image size without opening image with <code>get_image_size</code></li>
+<li>Ability to skip record while parsing with <code>AbortParseRecord</code></li>
+<li>Autofix for record: <code>autofix_records</code> function and <code>autofix:bool</code> parameter added to <code>Parser.parse</code></li>
+<li>Record class and mixins, <code>create_mixed_record</code> function to help creating Records</li>
+<li>InvalidDataError for BBox</li>
+<li>Catches InvalidDataError while parsing data</li>
+</ul>
+<h3 id="changed_8">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> Unified <code>parsers.SizeMixin</code> functions <code>image_width</code> and <code>image_height</code> into a single function <code>image_width_height</code></li>
+<li>Rename Parser <code>SizeMixin</code> fields from <code>width</code> <code>height</code> to <code>image_width</code> <code>image_height</code></li>
+</ul>
+<h3 id="deleted_1">Deleted</h3>
+<ul>
+<li>Removed <code>CombinedParser</code>, all parsing can be done with the standard <code>Parser</code></li>
+</ul>
+<h2 id="016">[0.1.6]</h2>
+<h3 id="added_7">Added</h3>
+<ul>
+<li>Efficientdet now support empty annotations</li>
+</ul>
+<h3 id="changed_9">Changed</h3>
+<ul>
+<li>Returns float instead of dict on <code>FastaiMetricAdapter</code></li>
+</ul>
+<h2 id="015">[0.1.5]</h2>
+<h3 id="changed_10">Changed</h3>
+<ul>
+<li>Updates fastai2 to the final release version</li>
+</ul>
+<h2 id="014">[0.1.4]</h2>
+<h3 id="added_8">Added</h3>
+<ul>
+<li>soft import <code>icedata</code> in <code>icevision.all</code></li>
+<li><code>show_pbar</code> parameter to <code>COCOMetric</code></li>
+</ul>
+<h3 id="changed_11">Changed</h3>
+<h3 id="deleted_2">Deleted</h3>
+<h2 id="013">[0.1.3]</h2>
+<h3 id="changed_12">Changed</h3>
+<ul>
+<li>Effdet as direct dependency</li>
+</ul>
+<h2 id="012">[0.1.2]</h2>
+<h3 id="added_9">Added</h3>
+<ul>
+<li><code>show_results</code> function for each model</li>
+</ul>
+<h3 id="changed_13">Changed</h3>
+<ul>
+<li>Default <code>data_splitter</code> for Parser changed to <code>RandomSplitter</code></li>
+<li>Renamed package from <code>mantisshrimp</code> to <code>icevision</code></li>
+</ul>
+<h3 id="deleted_3">Deleted</h3>
+<ul>
+<li>Removed <code>datasets</code> module to instead use the new <code>icedata</code> package</li>
+</ul>
+<h2 id="009">[0.0.9]</h2>
+<h3 id="added_10">Added</h3>
+<ul>
+<li><code>batch, samples = &lt;model_name&gt;.build_infer_batch(dataset)</code>  </li>
+<li><code>preds = &lt;model_name&gt;.predict(model, batch)</code> </li>
+<li><code>infer_dl = &lt;model_name&gt;.infer_dataloader(dataset)</code></li>
+<li><code>samples, preds = predict_dl(model, infer_dl)</code></li>
+<li><code>Dataset.from_images</code> Contructs a <code>Dataset</code> from a list of images (numpy arrays)</li>
+<li><code>tfms.A.aug_tfms</code> for easy access to common augmentation transforms with albumentations</li>
+<li><code>tfms.A.resize_and_pad</code>, useful as a validation transform</li>
+<li><code>**predict_kwargs</code> to <code>predict_dl</code> signature</li>
+<li><code>from mantisshrimp.all import *</code> to import internal modules and external imports</li>
+<li><code>show</code> parameter to <code>show_img</code></li>
+<li><code>download_gdrive</code> and <code>download_and_extract_gdrive</code></li>
+<li>New datasets <code>pennfundan</code> and <code>birds</code></li>
+</ul>
+<h3 id="changed_14">Changed</h3>
+<ul>
+<li>Renames <code>AlbuTransform</code> to <code>AlbumentationTransforms</code></li>
+<li>All <code>build_batch</code> method now returns <code>batch, samples</code>, the batch is always a tuple of inputs to the model</li>
+<li><code>batch_tfms</code> moved to <code>tfms.batch</code></li>
+<li><code>AlbumentationTransforms</code> moved to <code>tfms.A.Adapter</code></li>
+<li>All parsers function were moved to their own namespace <code>parsers</code> instead of being on the global namespace
+so, for example, instead of <code>Parser</code> now we have to do <code>parsers.Parser</code></li>
+<li>Removed <code>Parser</code> word from Mixins, e.g. <code>ImageidParserMixin</code> -&gt; <code>parsers.ImageidMixin</code></li>
+<li>Removed <code>Parser</code> word from parser default bundle, e.g. <code>FasterRCNNParser</code> -&gt; <code>parsers.FasterRCNN</code></li>
+<li>COCO and VOC parsers moved from <code>datasets</code> to <code>parsers</code></li>
+<li><code>DataSplitter</code>s moved from <code>parsers/splits.py</code> to <code>utils/data_splitter.py</code></li>
+<li>Renames <code>*_dataloader</code> to <code>*_dl</code>, e.g. <code>mask_rcnn.train_dataloader</code> to <code>mask_rcnn.train_dl</code></li>
+<li>Moves <code>RecordType</code> from <code>parsers</code> to <code>core</code></li>
+<li>Refactors <code>IDMap</code>, adds methods <code>get_name</code> and <code>get_id</code></li>
+<li>Moves <code>IDMap</code> from <code>utils</code> to <code>data</code></li>
+<li><code>DataSplitter.split</code> now receives <code>idmap</code> instead of <code>ids</code></li>
+</ul>
+<h2 id="000-pre-release">[0.0.0-pre-release]</h2>
+<h3 id="added_11">Added</h3>
+<ul>
+<li><code>CaptureStdout</code> for capturing writes to stdout (print), e.g. from COCOMetric</li>
+<li><code>mantisshrimp.models.&lt;model_name&gt;.convert_raw_predictions</code> to convert raw preds (tensors output from the model) to library standard dict</li>
+<li><code>COCOMetricType</code> for selecting what metric type to use (<code>bbox</code>, <code>mask</code>, <code>keypoints</code>)</li>
+<li><code>COCOMetric</code> fixed</li>
+<li><code>sort</code> parameter for <code>get_image_files</code></li>
+<li><code>ClassMap</code>: A class that handles the mapping between ids and names, with the optional insertion of the background class</li>
+</ul>
+<h3 id="changed_15">Changed</h3>
+<ul>
+<li>All dataloaders now return the batch and the records, e.g. <code>return (images, targets), records</code></li>
+<li><code>Metric.accumulate</code> signature changed to <code>(records, preds)</code>, reflects in <code>FastaiMetricAdapter</code> and <code>LightningModelAdapter</code></li>
+<li><code>datasets.&lt;name&gt;.CLASSES</code> substituted by a function <code>datasets.&lt;name&gt;.class_map</code> that returns a <code>ClassMap</code></li>
+<li><code>datasets.voc.VocXmlParser</code>, <code>show</code> methods: parameter <code>classes: Sequence[str]</code> substituted by <code>class_map: ClassMap</code></li>
+<li><code>datasets.fridge.parser</code>, <code>datasets.pets.parser</code>: additional required parameter <code>class_map</code></li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><code>MantisFasterRCNN</code>, <code>MantisMaskRCNN</code></li>
+<li><code>MantisEfficientDet</code></li>
+<li><code>CategoryMap</code>, <code>Category</code></li>
+<li><code>MantisModule</code></li>
+</ul>
+<h2 id="links">Links</h2>
                 
               
               
