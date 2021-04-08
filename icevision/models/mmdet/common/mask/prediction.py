@@ -24,7 +24,7 @@ def _predict_batch(
     device = device or model_device(model)
     batch["img"] = [img.to(device) for img in batch["img"]]
 
-    raw_pred = model(return_loss=False, rescale=False, **batch)
+    raw_preds = model(return_loss=False, rescale=False, **batch)
     return convert_raw_predictions(
         batch=batch,
         raw_preds=raw_preds,
