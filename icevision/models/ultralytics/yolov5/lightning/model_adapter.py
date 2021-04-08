@@ -3,7 +3,7 @@ __all__ = ["ModelAdapter"]
 from icevision.imports import *
 from icevision.metrics import *
 from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
-from icevision.models.yolo import yolov5
+from icevision.models.ultralytics import yolov5
 from yolov5.utils.loss import ComputeLoss
 
 

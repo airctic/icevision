@@ -15,8 +15,8 @@ def _test_preds(preds):
 )
 def test_yolo_predict(fridge_ds, model_name):
     _, valid_ds = fridge_ds
-    model = yolov5.model(5, img_size=384, model_name=model_name)
-    preds = yolov5.predict(model, valid_ds, detection_threshold=0.0)
+    model = models.ultralytics.yolov5.model(5, img_size=384, model_name=model_name)
+    preds = models.ultralytics.yolov5.predict(model, valid_ds, detection_threshold=0.0)
     _test_preds(preds)
 
 
@@ -26,7 +26,9 @@ def test_yolo_predict(fridge_ds, model_name):
 )
 def test_yolo_predict_dl(fridge_ds, model_name):
     _, valid_ds = fridge_ds
-    infer_dl = yolov5.infer_dl(valid_ds, batch_size=1, shuffle=False)
-    model = yolov5.model(5, img_size=384, model_name=model_name)
-    preds = yolov5.predict_dl(model, infer_dl, detection_threshold=0.0)
+    infer_dl = models.ultralytics.yolov5.infer_dl(valid_ds, batch_size=1, shuffle=False)
+    model = models.ultralytics.yolov5.model(5, img_size=384, model_name=model_name)
+    preds = models.ultralytics.yolov5.predict_dl(
+        model, infer_dl, detection_threshold=0.0
+    )
     _test_preds(preds)

@@ -5,12 +5,12 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.base_show_results import base_show_results
-from icevision.models.yolo.yolov5.dataloaders import (
+from icevision.models.ultralytics.yolov5.dataloaders import (
     build_infer_batch,
     valid_dl,
     infer_dl,
 )
-from icevision.models.yolo.yolov5.prediction import (
+from icevision.models.ultralytics.yolov5.prediction import (
     predict,
     predict_dl,
 )

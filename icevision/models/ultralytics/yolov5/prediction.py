@@ -5,7 +5,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_dl
-from icevision.models.yolo.yolov5.dataloaders import *
+from icevision.models.ultralytics.yolov5.dataloaders import *
 from yolov5.utils.general import non_max_suppression
 
 

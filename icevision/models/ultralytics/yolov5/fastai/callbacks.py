@@ -1,7 +1,7 @@
 __all__ = ["Yolov5Callback"]
 
 from icevision.engines.fastai import *
-from icevision.models.yolo import yolov5
+from icevision.models.ultralytics import yolov5
 
 
 class Yolov5Callback(fastai.Callback):

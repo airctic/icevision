@@ -4,7 +4,8 @@ from icevision.all import *
 
 def _test_dl(x, y, recs):
     assert len(recs) == 3
-    assert recs[0].img.shape == recs[1].img.shape == recs[2].img.shape == (384, 384, 3)
+    assert recs[0].img is None
+    # assert recs[0].img.shape == recs[1].img.shape == recs[2].img.shape == (384, 384, 3)
 
     assert x.shape == torch.Size([3, 3, 384, 384])
     if y is not None:
@@ -23,7 +24,9 @@ def _test_dl(x, y, recs):
 
 def test_train_dataloader(fridge_ds):
     train_ds, _ = fridge_ds
-    train_dl = yolov5.train_dl(train_ds, batch_size=3, num_workers=0, shuffle=False)
+    train_dl = models.ultralytics.yolov5.train_dl(
+        train_ds, batch_size=3, num_workers=0, shuffle=False
+    )
     (x, y), records = first(train_dl)
 
     _test_dl(x, y, records)
@@ -31,7 +34,9 @@ def test_train_dataloader(fridge_ds):
 
 def test_val_dataloader(fridge_ds):
     _, valid_ds = fridge_ds
-    valid_dl = yolov5.valid_dl(valid_ds, batch_size=3, num_workers=0, shuffle=False)
+    valid_dl = models.ultralytics.yolov5.valid_dl(
+        valid_ds, batch_size=3, num_workers=0, shuffle=False
+    )
     (x, y), records = first(valid_dl)
 
     _test_dl(x, y, records)
@@ -39,7 +44,9 @@ def test_val_dataloader(fridge_ds):
 
 def test_infer_dataloader(fridge_ds):
     _, valid_ds = fridge_ds
-    infer_dl = yolov5.infer_dl(valid_ds, batch_size=3, num_workers=0, shuffle=False)
+    infer_dl = models.ultralytics.yolov5.infer_dl(
+        valid_ds, batch_size=3, num_workers=0, shuffle=False
+    )
     (x,), records = first(infer_dl)
 
     _test_dl(x, None, records)
