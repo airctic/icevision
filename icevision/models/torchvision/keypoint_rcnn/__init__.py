@@ -7,6 +7,7 @@ from icevision.models.torchvision.keypoint_rcnn.model import *
 from icevision.models.torchvision.keypoint_rcnn.prediction import *
 
 from icevision.models.torchvision.keypoint_rcnn.show_results import *
+from icevision.models.torchvision.keypoint_rcnn.show_batch import *
 
 
 # Soft dependencies

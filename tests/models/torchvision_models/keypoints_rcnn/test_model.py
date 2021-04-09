@@ -8,7 +8,7 @@ def test_keypoints_rcnn_model():
     assert len(param_groups) == 8
     assert model.roi_heads.keypoint_predictor.kps_score_lowres.out_channels == 1
 
-    backbone = backbones.resnet_fpn.resnet18_fpn(pretrained=True)
+    backbone = models.torchvision.keypoint_rcnn.backbones.resnet18_fpn(pretrained=True)
     model = keypoint_rcnn.model(backbone=backbone, num_keypoints=10)
 
     assert len(param_groups) == 8
