@@ -9,18 +9,21 @@ from yolov5.models.yolo import Model
 from yolov5.utils.google_utils import attempt_download
 from yolov5.utils.torch_utils import intersect_dicts
 from yolov5.utils.general import check_img_size
+from icevision.models.ultralytics.yolov5.utils import *
+from icevision.models.ultralytics.yolov5.backbones import *
 
 yolo_dir = get_root_dir() / "yolo"
 yolo_dir.mkdir(exist_ok=True)
 
 
 def model(
+    backbone: YoloV5BackboneConfig,
     num_classes: int,
     img_size: int,  # must be multiple of 32
-    model_name: str = "yolov5s",
-    pretrained: bool = True,
     device: Optional[torch.device] = None,
 ) -> nn.Module:
+    model_name = backbone.model_name
+    pretrained = backbone.pretrained
 
     device = (
         torch.device("cuda" if torch.cuda.is_available() else "cpu")

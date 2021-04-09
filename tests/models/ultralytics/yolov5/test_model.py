@@ -1,16 +1,17 @@
 import pytest
 from icevision.all import *
+from icevision.models.ultralytics.yolov5.backbones import *
 
 
 @pytest.mark.parametrize(
-    "model_name",
-    ["yolov5s", "yolov5m", "yolov5l"],
+    "backbone",
+    [small, medium, large],
 )
-def test_yolo_model(model_name):
+def test_yolo_model(backbone):
     model = models.ultralytics.yolov5.model(
-        num_classes=5, img_size=320, model_name=model_name
+        num_classes=5, img_size=320, backbone=backbone(pretrained=True)
     )
-    weights_path = get_root_dir() / "yolo" / f"{model_name}.pt"
+    weights_path = get_root_dir() / "yolo" / f"{backbone.model_name}.pt"
 
     assert weights_path.is_file() == True
     assert len(list(model.param_groups())) == 3
@@ -18,12 +19,12 @@ def test_yolo_model(model_name):
 
 
 @pytest.mark.parametrize(
-    "model_name",
-    ["yolov5s", "yolov5m", "yolov5l"],
+    "backbone",
+    [small, medium, large],
 )
-def test_yolo_model_notpretrained(model_name):
+def test_yolo_model_notpretrained(backbone):
     model = models.ultralytics.yolov5.model(
-        num_classes=5, img_size=320, model_name=model_name, pretrained=False
+        num_classes=5, img_size=320, backbone=backbone(pretrained=False)
     )
 
     assert len(list(model.param_groups())) == 3

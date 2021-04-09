@@ -1,5 +1,6 @@
 import pytest
 from icevision.all import *
+from icevision.models.ultralytics.yolov5.backbones import *
 
 
 def _test_preds(preds):
@@ -10,24 +11,28 @@ def _test_preds(preds):
 
 
 @pytest.mark.parametrize(
-    "model_name",
-    ["yolov5s", "yolov5m", "yolov5l"],
+    "backbone",
+    [small, medium, large],
 )
-def test_yolo_predict(fridge_ds, model_name):
+def test_yolo_predict(fridge_ds, backbone):
     _, valid_ds = fridge_ds
-    model = models.ultralytics.yolov5.model(5, img_size=384, model_name=model_name)
+    model = models.ultralytics.yolov5.model(
+        num_classes=5, img_size=384, backbone=backbone(pretrained=True)
+    )
     preds = models.ultralytics.yolov5.predict(model, valid_ds, detection_threshold=0.0)
     _test_preds(preds)
 
 
 @pytest.mark.parametrize(
-    "model_name",
-    ["yolov5s", "yolov5m", "yolov5l"],
+    "backbone",
+    [small, medium, large],
 )
-def test_yolo_predict_dl(fridge_ds, model_name):
+def test_yolo_predict_dl(fridge_ds, backbone):
     _, valid_ds = fridge_ds
     infer_dl = models.ultralytics.yolov5.infer_dl(valid_ds, batch_size=1, shuffle=False)
-    model = models.ultralytics.yolov5.model(5, img_size=384, model_name=model_name)
+    model = models.ultralytics.yolov5.model(
+        num_classes=5, img_size=384, backbone=backbone(pretrained=True)
+    )
     preds = models.ultralytics.yolov5.predict_dl(
         model, infer_dl, detection_threshold=0.0
     )
