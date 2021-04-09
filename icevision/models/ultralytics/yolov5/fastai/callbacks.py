@@ -16,5 +16,11 @@ class Yolov5Callback(fastai.Callback):
         if not self.training:
             inference_out, training_out = self.pred[0], self.pred[1]
             self.learn.pred = training_out
-            preds = yolov5.convert_raw_predictions(inference_out, self.learn.records, 0)
+            batch = (*self.learn.xb, *self.learn.yb)
+            preds = yolov5.convert_raw_predictions(
+                batch=batch,
+                raw_preds=inference_out,
+                records=self.learn.records,
+                detection_threshold=0,
+            )
             self.learn.converted_preds = preds

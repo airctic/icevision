@@ -15,6 +15,7 @@ def _predict_batch(
     batch: Sequence[torch.Tensor],
     records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
     device = device or model_device(model)
@@ -23,17 +24,20 @@ def _predict_batch(
     model = model.eval().to(device)
 
     raw_preds = model(batch)[0]
-    preds = convert_raw_predictions(
-        raw_preds=raw_preds, records=records, detection_threshold=detection_threshold
+    return convert_raw_predictions(
+        batch=batch,
+        raw_preds=raw_preds,
+        records=records,
+        detection_threshold=detection_threshold,
+        keep_images=keep_images,
     )
-
-    return preds
 
 
 def predict(
     model: nn.Module,
     dataset: Dataset,
     detection_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
     batch, records = build_infer_batch(dataset)
@@ -42,6 +46,7 @@ def predict(
         batch=batch,
         records=records,
         detection_threshold=detection_threshold,
+        keep_images=keep_images,
         device=device,
     )
 
@@ -50,6 +55,7 @@ def predict_dl(
     model: nn.Module,
     infer_dl: DataLoader,
     show_pbar: bool = True,
+    keep_images: bool = False,
     **predict_kwargs,
 ):
     return _predict_dl(
@@ -57,19 +63,24 @@ def predict_dl(
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
+        keep_images=keep_images,
         **predict_kwargs,
     )
 
 
 def convert_raw_predictions(
-    raw_preds: torch.Tensor, records: Sequence[BaseRecord], detection_threshold: float
+    batch,
+    raw_preds: torch.Tensor,
+    records: Sequence[BaseRecord],
+    detection_threshold: float,
+    keep_images: bool = False,
 ) -> List[Prediction]:
     dets = non_max_suppression(
         raw_preds, conf_thres=detection_threshold, iou_thres=0.45
     )
     dets = [d.detach().cpu().numpy() for d in dets]
     preds = []
-    for det, record in zip(dets, records):
+    for det, record, tensor_image in zip(dets, records, batch):
 
         pred = BaseRecord(
             (
@@ -84,6 +95,9 @@ def convert_raw_predictions(
         pred.detection.set_labels_by_id(det[:, 5].astype(int))
         pred.detection.set_bboxes([BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]])
         pred.detection.set_scores(det[:, 4])
+
+        if keep_images:
+            record.set_img(tensor_to_image(tensor_image))
 
         preds.append(Prediction(pred=pred, ground_truth=record))
 
