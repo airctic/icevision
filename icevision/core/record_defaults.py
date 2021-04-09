@@ -23,3 +23,14 @@ def InstanceSegmentationRecord():
             MasksRecordComponent(),
         )
     )
+
+
+def KeypointsRecord():
+    return BaseRecord(
+        (
+            FilepathRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+            KeyPointsRecordComponent(),
+        )
+    )
