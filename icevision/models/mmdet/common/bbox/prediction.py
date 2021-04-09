@@ -38,6 +38,12 @@ def predict(
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
     batch, records = build_infer_batch(dataset)
+    # In inference, both "img" and "img_metas" are lists. Check out the `build_infer_batch()` definition
+    # We need to convert that to a batch similar to train and valid batches
+    batch = {
+        "img": batch['img'][0],
+        "img_metas": batch['img_metas'][0],
+    }
     return _predict_batch(
         model=model,
         batch=batch,
@@ -67,8 +73,7 @@ def convert_raw_predictions(
     detection_threshold: float,
     keep_images: bool = False,
 ):
-    list_imgs = [img for img in batch['img'][0][:]]
-    list_img_metas = [img_metas for img_metas in batch['img_metas'][0][:]]
+    batch_list = [dict(zip(batch, t)) for t in zipsafe(*batch.values())]
     return [
         convert_raw_prediction(
             sample=sample,
@@ -77,7 +82,7 @@ def convert_raw_predictions(
             detection_threshold=detection_threshold,
             keep_image=keep_images,
         )
-        for sample, raw_pred, record in zip(zip(list_imgs, list_img_metas), raw_preds, records)
+        for sample, raw_pred, record in zip(batch_list, raw_preds, records)
     ]
 
 
@@ -113,8 +118,8 @@ def convert_raw_prediction(
     pred.above_threshold = keep_mask
 
     if keep_image:
-        image, *_ = sample
-        image = image.cpu().numpy().transpose(1, 2, 0)
+        image = sample["img"]
+        image = image.detach().cpu().numpy().transpose(1, 2, 0)
 
         pred.set_img(image)
         record.set_img(image)
