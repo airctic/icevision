@@ -13,7 +13,7 @@ def show_batch(batch_and_records, ncols: int = 1, figsize=None, **show_samples_k
     tensor_images = [img for img in batch['img'][0][:]]
 
     for tensor_image, record in zip(tensor_images, records):
-        image = tensor_to_image(tensor_image)
+        image = tensor_image.cpu().numpy().transpose(1, 2, 0)
         record.set_img(image)
 
     return show_samples(records, ncols=ncols, figsize=figsize, **show_samples_kwargs)
