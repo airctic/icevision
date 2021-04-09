@@ -362,13 +362,13 @@ class MasksRecordComponent(RecordComponent):
         return [mask.to_erles(h=height, w=width) for mask in masks]
 
     def _load(self):
-        self._encoded_masks = self.masks
         self.masks = MaskArray.from_masks(
             self.masks, self.composite.height, self.composite.width
         )
 
     def _unload(self):
-        self.masks = self._encoded_masks
+        # TODO: SLOW: Maybe cause slowdowns?
+        self.masks = self.masks.to_erles(self.composite.height, self.composite.width)
 
     def _num_annotations(self) -> Dict[str, int]:
         return {"masks": len(self.masks)}
