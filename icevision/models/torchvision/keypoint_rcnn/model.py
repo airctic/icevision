@@ -3,6 +3,9 @@ __all__ = ["model"]
 from icevision.imports import *
 from icevision.backbones import resnet_fpn
 from icevision.models.torchvision.utils import *
+from icevision.models.torchvision.backbones.backbone_config import (
+    TorchvisionBackboneConfig,
+)
 
 from torchvision.models.detection.keypoint_rcnn import (
     keypointrcnn_resnet50_fpn,
@@ -15,7 +18,7 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 def model(
     num_keypoints: int,
     num_classes: int = 2,
-    backbone: Optional[nn.Module] = None,
+    backbone: Optional[TorchvisionBackboneConfig] = None,
     remove_internal_transforms: bool = True,
     **keypoint_rcnn_kwargs
 ) -> nn.Module:
@@ -51,7 +54,7 @@ def model(
         resnet_fpn.patch_param_groups(model.backbone)
     else:
         model = KeypointRCNN(
-            backbone,
+            backbone.backbone,
             num_classes=num_classes,
             num_keypoints=num_keypoints,
             **keypoint_rcnn_kwargs
