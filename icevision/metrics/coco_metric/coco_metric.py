@@ -41,11 +41,7 @@ class COCOMetric(Metric):
         self._preds.clear()
 
     def accumulate(self, preds):
-        # TODO, HACK: this modify all references of the record
         for pred in preds:
-            pred.pred.unload()
-            pred.ground_truth.unload()
-
             self._records.append(pred.ground_truth)
             self._preds.append(pred.pred)
 
