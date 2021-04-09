@@ -71,6 +71,8 @@ def convert_raw_predictions(
     detection_threshold: float,
     keep_images: bool = False,
 ):
+    list_imgs = [img for img in batch['img'][0][:]]
+    list_img_metas = [img_metas for img_metas in batch['img_metas'][0][:]]
     return [
         convert_raw_prediction(
             sample=sample,
@@ -79,8 +81,9 @@ def convert_raw_predictions(
             detection_threshold=detection_threshold,
             keep_image=keep_images,
         )
-        for sample, raw_pred, record in zip(batch["img"], raw_preds, records)
+        for sample, raw_pred, record in zip(zip(list_imgs, list_img_metas), raw_preds, records)
     ]
+
 
 
 def convert_raw_prediction(
