@@ -65,6 +65,7 @@ def loop_yolo(dl, model, losses_stats, device):
             loss_comp = LossesRecordComponent()
             loss_comp.set_losses(loss)
             sample[0].add_component(loss_comp)
+            sample[0].set_img(tensor_to_image(x[0]))
             samples_plus_losses.append(sample[0])
     return samples_plus_losses, losses_stats
 

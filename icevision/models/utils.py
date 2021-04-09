@@ -87,12 +87,19 @@ def _predict_dl(
     predict_fn,
     model: nn.Module,
     infer_dl: DataLoader,
+    keep_images: bool = False,
     show_pbar: bool = True,
     **predict_kwargs,
 ) -> List[Prediction]:
     all_preds = []
     for batch, records in pbar(infer_dl, show=show_pbar):
-        preds = predict_fn(model=model, batch=batch, records=records, **predict_kwargs)
+        preds = predict_fn(
+            model=model,
+            batch=batch,
+            records=records,
+            keep_images=keep_images,
+            **predict_kwargs,
+        )
         all_preds.extend(preds)
 
     return all_preds

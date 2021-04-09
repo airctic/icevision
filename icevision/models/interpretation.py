@@ -149,6 +149,7 @@ class Interpretation:
                 loss_comp = LossesRecordComponent()
                 loss_comp.set_losses(loss)
                 sample[0].add_component(loss_comp)
+                sample[0].set_img(tensor_to_image(x[0]))
                 samples_plus_losses.append(sample[0])
         return samples_plus_losses, losses_stats
 
@@ -218,7 +219,6 @@ class Interpretation:
             f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss').keys()) if l!='loss_total']}",
         )
 
-        dl = self.valid_dl(dataset, batch_size=1, num_workers=0, shuffle=False)
         samples, losses_stats = self.get_losses(model, dataset)
         samples = add_annotations(samples)
 

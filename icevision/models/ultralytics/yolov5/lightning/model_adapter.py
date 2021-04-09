@@ -44,7 +44,12 @@ class ModelAdapter(LightningModelAdapter, ABC):
 
         with torch.no_grad():
             inference_out, training_out = self(xb)
-            preds = yolov5.convert_raw_predictions(inference_out, records, 0)
+            preds = yolov5.convert_raw_predictions(
+                batch=xb,
+                raw_preds=inference_out,
+                records=records,
+                detection_threshold=0,
+            )
             loss = self.compute_loss(training_out, yb)[0]
 
         self.accumulate_metrics(preds)
