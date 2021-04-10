@@ -149,3 +149,5 @@ archives/
 # mkdocs documentation
 /docs/site
 /docs/sources
+
+*.pth
