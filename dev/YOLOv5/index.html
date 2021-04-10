@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/quickstart_RestNeSt/">
+        <link rel="canonical" href="https://airctic.com/dev/YOLOv5/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
     
     
       
-        <title>quickstart RestNeSt - IceVision</title>
+        <title>YOLOv5 - IceVision</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quickstart-using-resnest" class="md-skip">
+        <a href="#yolov5-from-ultralytics" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              quickstart RestNeSt
+              YOLOv5
             
           </span>
         </div>
@@ -985,15 +985,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-icevision-and-icedata" class="md-nav__link">
-    Installing IceVision and IceData
+  <a href="#installing-icevision-icedata-and-yolov5-icevision" class="md-nav__link">
+    Installing IceVision, IceData and yolov5-icevision
   </a>
   
 </li>
@@ -1006,130 +999,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
-    Datasets : Fridge Objects dataset
-  </a>
-  
-    <nav class="md-nav" aria-label="Datasets : Fridge Objects dataset">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visualization" class="md-nav__link">
-    Visualization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
-    Train and Validation Dataset Transforms
-  </a>
-  
-    <nav class="md-nav" aria-label="Train and Validation Dataset Transforms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
-    Displaying the same image with different transforms
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dataloader" class="md-nav__link">
-    DataLoader
+  <a href="#loading-the-fridge-dataset" class="md-nav__link">
+    Loading the Fridge dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#resnest-backbone" class="md-nav__link">
-    ResNeSt Backbone
+  <a href="#yolov5-dataloaders" class="md-nav__link">
+    YOLOv5 dataloaders
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#model" class="md-nav__link">
-    Model
+  <a href="#yolov5-model" class="md-nav__link">
+    YOLOv5 model
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#metrics" class="md-nav__link">
-    Metrics
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#training" class="md-nav__link">
-    Training
-  </a>
-  
-    <nav class="md-nav" aria-label="Training">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#training-using-fastai" class="md-nav__link">
-    Training using fastai
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#training-using-lightning" class="md-nav__link">
-    Training using Lightning
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
-  
-    <nav class="md-nav" aria-label="Inference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#predicting-a-batch-of-images" class="md-nav__link">
-    Predicting a batch of images
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#saving-model-on-google-drive" class="md-nav__link">
-    Saving Model on Google Drive
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#happy-learning" class="md-nav__link">
-    Happy Learning!
+  <a href="#training-a-fastai-learner" class="md-nav__link">
+    Training a fastai Learner
   </a>
   
 </li>
@@ -1147,134 +1039,116 @@
               
                 
                 
-                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/quickstart_RestNeSt.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="quickstart-using-resnest">Quickstart Using ResNeSt</h1>
-<p>Paper: <a href="https://arxiv.org/pdf/2004.08955.pdf">ResNeSt: Split-Attention Networks</a></p>
-<p>We added support of the ResNeSt backbones. You can read more about that model here: https://discordapp.com/channels/735877944085446747/735877944517591151/780303631738994700</p>
-<p>We created a RestNeSt FPN backbone from the published ResNest model (by adding this soft dependency: <code>resnest</code>). We support all the pretrained resnest backbones: resnest50, resnest101, resnest200, resnest269. Since we provide RestNeSt FPN backbones, we can use them in all the FPN compatible models such as Faster-RCNN, Mask-RCNN, and RetinaNet. Our RestNeSt FPN API is very similar to the RestNet FPN:</p>
-<p>With ResNet:
-<div class="highlight"><pre><span></span><code>backbone = backbones.resnet_fpn.resnet50(pretrained=True)
-</code></pre></div></p>
-<p>With ResNeSt: (Add just an "s" to resnet -&gt; resnest)
-<div class="highlight"><pre><span></span><code>backbone = backbones.resnest_fpn.resnest50(pretrained=True)
-</code></pre></div></p>
-<p>And this is the common part for  both ResNet and ResNeSt:
-<div class="highlight"><pre><span></span><code>model_type = faster_rcnn # faster_rcnn mask_rcnn retinanet
-
-model = model_type.model(backbone = backbone, num_classes=len(class_map))
-</code></pre></div></p>
-<p><img alt="" src="https://github.com/ai-fast-track/icevision/blob/fridge-tutorial/images/fridge-objects.png?raw=1" /></p>
-<h2 id="introduction">Introduction</h2>
-<p>This tutorial walk you through the different steps of training the fridge dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
-<p>For more information about how the fridge dataset as well as its corresponding parser check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/fridge">fridge folder</a> in icedata.</p>
-<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all] icedata</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span><span class="c1">#egg=icevision[all] icedata --upgrade</span>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="yolov5-from-ultralytics">YOLOv5 from Ultralytics</h1>
+<p>This notebook showcases the newly added <a href="https://github.com/ultralytics/yolov5">YOLOv5</a> suite of models to the IceVision library.</p>
+<h2 id="installing-icevision-icedata-and-yolov5-icevision">Installing IceVision, IceData and <code>yolov5-icevision</code></h2>
+<p><code>yolov5-icevision</code> is a tiny IceVision wrapper around the official YOLOv5 repo from Ultralytics, to make the code pip-installable.</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span><span class="c1">#egg=icevision[all] --upgrade -q</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icedata</span><span class="o">.</span><span class="n">git</span> <span class="o">-</span><span class="n">q</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">yolov5</span><span class="o">-</span><span class="n">icevision</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">-</span><span class="n">q</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.callback.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
+<span class="kn">import</span> <span class="nn">icedata</span>
 </code></pre></div>
-<h2 id="datasets-fridge-objects-dataset">Datasets : Fridge Objects dataset</h2>
-<p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
-- can, 
-- carton, 
-- milk bottle, 
-- water bottle.</p>
-<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
-<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mDownloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from https://raw.githubusercontent.com/airctic/storage/master/SpaceGrotesk-Medium.ttf to /root/.icevision/fonts/SpaceGrotesk-Medium.ttf[0m | [36micevision.visualize.utils[0m:[36mget_default_font[0m:[36m69[0m
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
+</div>
+<h2 id="loading-the-fridge-dataset">Loading the Fridge dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
 <span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">([</span><span class="s2">&quot;milk_bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;can&quot;</span><span class="p">,</span> <span class="s2">&quot;water_bottle&quot;</span><span class="p">])</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">voc</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VocXmlParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
                      <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">,</span>
                      <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
-<span class="c1"># Records</span>
+
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=20380998.0), HTML(value=&#39;&#39;)))
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=128.0), HTML(value=&#39;&#39;)))
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m124[0m
-</code></pre></div>
-</div>
-
-<h3 id="visualization">Visualization</h3>
-<p>Showing a batch of images with their corresponding boxes and labels</p>
-<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">train_records</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="../images/quickstart_RestNeSt/quickstart_RestNeSt_11_1.png" /></p>
-<h2 id="train-and-validation-dataset-transforms">Train and Validation Dataset Transforms</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
-<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
 <span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="displaying-the-same-image-with-different-transforms">Displaying the same image with different transforms</h3>
-<p>Note:</p>
-<blockquote>
-<p>Transforms are applied <strong>lazily</strong>, meaning they are only applied when we grab (get) an item.
-This means that, if you have augmentation (random) transforms, each time you get the <strong>same</strong> item from 
-the dataset you will get a slightly different version of it.</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="../images/quickstart_RestNeSt/quickstart_RestNeSt_16_0.png" /></p>
-<h2 id="dataloader">DataLoader</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">faster_rcnn</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="../images/quickstart_RestNeSt/quickstart_RestNeSt_20_0.png" /></p>
-<h2 id="resnest-backbone">ResNeSt Backbone</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get a pretrained ResNeSt FPN Backbone: e.g restnest50 </span>
-<span class="c1"># Existing pretrained resnest backbones are: resnest50, resnest101, resnest200, resnest269</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">backbones</span><span class="o">.</span><span class="n">resnest_fpn</span><span class="o">.</span><span class="n">resnest50</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://s3.us-west-1.wasabisys.com/resnest/torch/resnest50-528c19ca.pth&quot; to /root/.cache/torch/hub/checkpoints/resnest50-528c19ca.pth
+<div class="highlight"><pre><span></span><code>  0%|          | 0/20380998 [00:00&lt;?, ?B/s]
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=110273258.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m136[0m
+
+(102, 26)
+</code></pre></div>
+</div>
+<h2 id="yolov5-dataloaders">YOLOv5 dataloaders</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Showing what's inside a batch</p>
+<div class="highlight"><pre><span></span><code><span class="n">dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">dl</span><span class="p">)</span>
+<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_12_0.png" /></p>
+<h2 id="yolov5-model">YOLOv5 model</h2>
+<p>You can choose between a <code>small</code>, <code>medium</code> and <code>large</code> backbone.</p>
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#backbone = model_type.backbones.medium(pretrained=True)</span>
+<span class="c1">#backbone = model_type.backbones.large(pretrained=True)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">))</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading https://github.com/ultralytics/yolov5/releases/download/v4.0/yolov5s.pt to /root/.icevision/yolo/yolov5s.pt...
+
+  0%|          | 0.00/14.1M [00:00&lt;?, ?B/s]
 </code></pre></div>
 </div>
 
-<h2 id="model">Model</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span> <span class="o">=</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
-</code></pre></div>
-<h2 id="metrics">Metrics</h2>
+<h2 id="training-a-fastai-learner">Training a fastai Learner</h2>
 <div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+
+<span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="training">Training</h2>
-<p>IceVision is an agnostic framework meaning it can be plugged to other DL framework such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
-<p>You could also plug to oth DL framework using your own custom code.</p>
-<h3 id="training-using-fastai">Training using fastai</h3>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
-<span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.00043651582673192023, lr_steep=0.019054606556892395)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0033113110810518267, lr_steep=9.12010818865383e-07)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/quickstart_RestNeSt/quickstart_RestNeSt_30_2.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">2e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_17_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;5&#39; class=&#39;&#39; max=&#39;50&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  10.00% [5/50 00:16&lt;02:28]
+&lt;/div&gt;
+</code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1288,42 +1162,62 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=110273258.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.762670</td>
-      <td>1.127936</td>
-      <td>0.000555</td>
-      <td>00:07</td>
+      <td>0.819279</td>
+      <td>0.792441</td>
+      <td>0.003035</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>1.327857</td>
-      <td>0.991028</td>
-      <td>0.000120</td>
-      <td>00:06</td>
+      <td>0.788863</td>
+      <td>0.732729</td>
+      <td>0.012280</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.174690</td>
-      <td>1.015997</td>
-      <td>0.000048</td>
-      <td>00:06</td>
+      <td>0.787299</td>
+      <td>0.656644</td>
+      <td>0.030487</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.089509</td>
-      <td>0.957638</td>
-      <td>0.011715</td>
-      <td>00:06</td>
+      <td>0.754054</td>
+      <td>0.590940</td>
+      <td>0.067887</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.031818</td>
-      <td>0.890940</td>
-      <td>0.021980</td>
-      <td>00:06</td>
+      <td>0.706845</td>
+      <td>0.523452</td>
+      <td>0.099730</td>
+      <td>00:03</td>
     </tr>
   </tbody>
 </table>
+<p>
 
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;0&#39; class=&#39;&#39; max=&#39;7&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  0.00% [0/7 00:00&lt;00:00]
+&lt;/div&gt;
+</code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1337,400 +1231,553 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=110273258.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.872708</td>
-      <td>0.856233</td>
-      <td>0.066737</td>
-      <td>00:08</td>
+      <td>0.819279</td>
+      <td>0.792441</td>
+      <td>0.003035</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.910392</td>
-      <td>0.856490</td>
-      <td>0.095219</td>
-      <td>00:07</td>
+      <td>0.788863</td>
+      <td>0.732729</td>
+      <td>0.012280</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.923059</td>
-      <td>0.807127</td>
-      <td>0.102635</td>
-      <td>00:07</td>
+      <td>0.787299</td>
+      <td>0.656644</td>
+      <td>0.030487</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.893881</td>
-      <td>0.706737</td>
-      <td>0.181068</td>
-      <td>00:07</td>
+      <td>0.754054</td>
+      <td>0.590940</td>
+      <td>0.067887</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.846220</td>
-      <td>0.577118</td>
-      <td>0.206684</td>
-      <td>00:07</td>
+      <td>0.706845</td>
+      <td>0.523452</td>
+      <td>0.099730</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.770894</td>
-      <td>0.443069</td>
-      <td>0.226011</td>
-      <td>00:07</td>
+      <td>0.661492</td>
+      <td>0.513050</td>
+      <td>0.257225</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.690153</td>
-      <td>0.358363</td>
-      <td>0.231685</td>
-      <td>00:07</td>
+      <td>0.622621</td>
+      <td>0.455875</td>
+      <td>0.482885</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.614847</td>
-      <td>0.324193</td>
-      <td>0.306921</td>
-      <td>00:07</td>
+      <td>0.595726</td>
+      <td>0.436317</td>
+      <td>0.271832</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.547570</td>
-      <td>0.295342</td>
-      <td>0.349507</td>
-      <td>00:07</td>
+      <td>0.563349</td>
+      <td>0.419788</td>
+      <td>0.236814</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.499190</td>
-      <td>0.346569</td>
-      <td>0.388942</td>
-      <td>00:07</td>
+      <td>0.539367</td>
+      <td>0.387893</td>
+      <td>0.348432</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.463566</td>
-      <td>0.377226</td>
-      <td>0.395301</td>
-      <td>00:07</td>
+      <td>0.515677</td>
+      <td>0.375338</td>
+      <td>0.283068</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.440261</td>
-      <td>0.380914</td>
-      <td>0.429039</td>
-      <td>00:07</td>
+      <td>0.496582</td>
+      <td>0.369159</td>
+      <td>0.413665</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.419555</td>
-      <td>0.347445</td>
-      <td>0.490683</td>
-      <td>00:07</td>
+      <td>0.474011</td>
+      <td>0.326403</td>
+      <td>0.472587</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.408768</td>
-      <td>0.374569</td>
-      <td>0.435365</td>
-      <td>00:07</td>
+      <td>0.456676</td>
+      <td>0.332162</td>
+      <td>0.553740</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.395535</td>
-      <td>0.372383</td>
-      <td>0.535321</td>
-      <td>00:07</td>
+      <td>0.434918</td>
+      <td>0.298136</td>
+      <td>0.627820</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.376081</td>
-      <td>0.366716</td>
-      <td>0.542196</td>
-      <td>00:07</td>
+      <td>0.414545</td>
+      <td>0.272040</td>
+      <td>0.652365</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.362154</td>
-      <td>0.389555</td>
-      <td>0.492635</td>
-      <td>00:07</td>
+      <td>0.395862</td>
+      <td>0.329013</td>
+      <td>0.391859</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.346421</td>
-      <td>0.313668</td>
-      <td>0.538568</td>
-      <td>00:07</td>
+      <td>0.383311</td>
+      <td>0.271511</td>
+      <td>0.635272</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.334581</td>
-      <td>0.362932</td>
-      <td>0.547420</td>
-      <td>00:07</td>
+      <td>0.367031</td>
+      <td>0.303586</td>
+      <td>0.322467</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.322343</td>
-      <td>0.314747</td>
-      <td>0.618869</td>
-      <td>00:07</td>
+      <td>0.354010</td>
+      <td>0.271726</td>
+      <td>0.497521</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>20</td>
-      <td>0.306562</td>
-      <td>0.406998</td>
-      <td>0.461870</td>
-      <td>00:07</td>
+      <td>0.340034</td>
+      <td>0.226416</td>
+      <td>0.700743</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>21</td>
-      <td>0.295246</td>
-      <td>0.312923</td>
-      <td>0.612174</td>
-      <td>00:07</td>
+      <td>0.326033</td>
+      <td>0.225464</td>
+      <td>0.619431</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>22</td>
-      <td>0.285954</td>
-      <td>0.340467</td>
-      <td>0.580474</td>
-      <td>00:07</td>
+      <td>0.310925</td>
+      <td>0.203816</td>
+      <td>0.769183</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>23</td>
-      <td>0.274488</td>
-      <td>0.283455</td>
-      <td>0.684320</td>
-      <td>00:07</td>
+      <td>0.295661</td>
+      <td>0.189258</td>
+      <td>0.769431</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>24</td>
-      <td>0.268342</td>
-      <td>0.324935</td>
-      <td>0.651953</td>
-      <td>00:07</td>
+      <td>0.281358</td>
+      <td>0.195591</td>
+      <td>0.681807</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>25</td>
-      <td>0.262872</td>
-      <td>0.286207</td>
-      <td>0.641081</td>
-      <td>00:07</td>
+      <td>0.269978</td>
+      <td>0.190864</td>
+      <td>0.731312</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>26</td>
-      <td>0.252152</td>
-      <td>0.253029</td>
-      <td>0.686516</td>
-      <td>00:07</td>
+      <td>0.260026</td>
+      <td>0.189974</td>
+      <td>0.700495</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>27</td>
-      <td>0.248780</td>
-      <td>0.328883</td>
-      <td>0.609743</td>
-      <td>00:07</td>
+      <td>0.252257</td>
+      <td>0.180860</td>
+      <td>0.738119</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>28</td>
-      <td>0.239899</td>
-      <td>0.320969</td>
-      <td>0.628861</td>
-      <td>00:07</td>
+      <td>0.247666</td>
+      <td>0.165262</td>
+      <td>0.762871</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>29</td>
-      <td>0.234647</td>
-      <td>0.251311</td>
-      <td>0.706407</td>
-      <td>00:07</td>
+      <td>0.237585</td>
+      <td>0.172969</td>
+      <td>0.737624</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>30</td>
-      <td>0.227755</td>
-      <td>0.256202</td>
-      <td>0.720632</td>
-      <td>00:07</td>
+      <td>0.228174</td>
+      <td>0.156880</td>
+      <td>0.806559</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>31</td>
-      <td>0.221247</td>
-      <td>0.255702</td>
-      <td>0.704574</td>
-      <td>00:07</td>
+      <td>0.219802</td>
+      <td>0.149674</td>
+      <td>0.856312</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>32</td>
-      <td>0.214771</td>
-      <td>0.235117</td>
-      <td>0.731469</td>
-      <td>00:07</td>
+      <td>0.214853</td>
+      <td>0.147571</td>
+      <td>0.800248</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>33</td>
-      <td>0.209753</td>
-      <td>0.241401</td>
-      <td>0.734679</td>
-      <td>00:07</td>
+      <td>0.211070</td>
+      <td>0.139506</td>
+      <td>0.875248</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>34</td>
-      <td>0.206958</td>
-      <td>0.263137</td>
-      <td>0.748318</td>
-      <td>00:07</td>
+      <td>0.203329</td>
+      <td>0.139021</td>
+      <td>0.843936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>35</td>
-      <td>0.202806</td>
-      <td>0.249361</td>
-      <td>0.741839</td>
-      <td>00:07</td>
+      <td>0.195134</td>
+      <td>0.126844</td>
+      <td>0.856312</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>36</td>
-      <td>0.201422</td>
-      <td>0.254605</td>
-      <td>0.759009</td>
-      <td>00:07</td>
+      <td>0.188641</td>
+      <td>0.123761</td>
+      <td>0.881312</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>37</td>
-      <td>0.195052</td>
-      <td>0.248898</td>
-      <td>0.761324</td>
-      <td>00:07</td>
+      <td>0.183303</td>
+      <td>0.128407</td>
+      <td>0.875000</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>38</td>
-      <td>0.189870</td>
-      <td>0.235543</td>
-      <td>0.734376</td>
-      <td>00:07</td>
+      <td>0.177788</td>
+      <td>0.113928</td>
+      <td>0.868936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>39</td>
-      <td>0.187547</td>
-      <td>0.244468</td>
-      <td>0.743984</td>
-      <td>00:07</td>
+      <td>0.171578</td>
+      <td>0.126054</td>
+      <td>0.900248</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>40</td>
-      <td>0.185551</td>
-      <td>0.243460</td>
-      <td>0.757906</td>
-      <td>00:07</td>
+      <td>0.168272</td>
+      <td>0.113003</td>
+      <td>0.868936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>41</td>
-      <td>0.183169</td>
-      <td>0.240184</td>
-      <td>0.757863</td>
-      <td>00:07</td>
+      <td>0.166278</td>
+      <td>0.113589</td>
+      <td>0.906559</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>42</td>
-      <td>0.177280</td>
-      <td>0.219689</td>
-      <td>0.748292</td>
-      <td>00:07</td>
+      <td>0.161366</td>
+      <td>0.109419</td>
+      <td>0.893936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>43</td>
-      <td>0.174024</td>
-      <td>0.235657</td>
-      <td>0.770797</td>
-      <td>00:07</td>
+      <td>0.161012</td>
+      <td>0.107286</td>
+      <td>0.925248</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>44</td>
-      <td>0.173908</td>
-      <td>0.237733</td>
-      <td>0.762268</td>
-      <td>00:07</td>
+      <td>0.155416</td>
+      <td>0.107902</td>
+      <td>0.925248</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>45</td>
-      <td>0.171298</td>
-      <td>0.236662</td>
-      <td>0.750911</td>
-      <td>00:07</td>
+      <td>0.150046</td>
+      <td>0.104697</td>
+      <td>0.918936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>46</td>
-      <td>0.170103</td>
-      <td>0.237634</td>
-      <td>0.744570</td>
-      <td>00:07</td>
+      <td>0.145804</td>
+      <td>0.104805</td>
+      <td>0.918936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>47</td>
-      <td>0.169592</td>
-      <td>0.237385</td>
-      <td>0.764241</td>
-      <td>00:07</td>
+      <td>0.141888</td>
+      <td>0.104281</td>
+      <td>0.918936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>48</td>
-      <td>0.170311</td>
-      <td>0.230228</td>
-      <td>0.751326</td>
-      <td>00:07</td>
+      <td>0.137711</td>
+      <td>0.103718</td>
+      <td>0.918936</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>49</td>
-      <td>0.173960</td>
-      <td>0.239171</td>
-      <td>0.772328</td>
-      <td>00:07</td>
+      <td>0.135240</td>
+      <td>0.103554</td>
+      <td>0.918936</td>
+      <td>00:03</td>
     </tr>
   </tbody>
 </table>
 
-<h3 id="training-using-lightning">Training using Lightning</h3>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">)</span>
 
-<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="inference">Inference</h2>
-<h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
-<p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
-<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
+### Showing training results
 
-<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span>
-    <span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+![png](images/YOLOv5/YOLOv5_20_0.png)
+
+
+
+## Inference pipeline
+From a dataset...
+
+
+<div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">show_preds</span><span class="p">(</span>
     <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
-    <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span>
     <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
     <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/quickstart_RestNeSt/quickstart_RestNeSt_37_0.png" /></p>
-<h2 id="saving-model-on-google-drive">Saving Model on Google Drive</h2>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
-<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/gdrive&#39;</span><span class="p">,</span> <span class="n">force_remount</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">root_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/content/gdrive/My Drive/&#39;</span><span class="p">)</span>
+
+
+
+![png](images/YOLOv5/YOLOv5_22_0.png)
+
+
+
+... and from a Dataloader
+
+
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">show_preds</span><span class="p">(</span>
+    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">root_dir</span><span class="o">/</span><span class="s1">&#39;icevision/models/fridge/fridge_restnest_fpn50.pth&#39;</span><span class="p">)</span>
-</code></pre></div>
+
+
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Mounted at /content/gdrive
+<div class="highlight"><pre><span></span><code>  0%|          | 0/26 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
-<h2 id="happy-learning">Happy Learning!</h2>
-<p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
+
+![png](images/YOLOv5/YOLOv5_24_1.png)
+
+
+
+## Inspecting model predictions with `plot_top_losses`
+
+What are the images the model is having a hard time time with?
+
+
+<div class="highlight"><pre><span></span><code><span class="c1">#by = &quot;loss_total&quot;</span>
+<span class="c1">#by = &quot;loss_yolo&quot;</span>
+<span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_yolo&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_yolo&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m219[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+![png](images/YOLOv5/YOLOv5_26_3.png)
+
+
+
+## Training a PyTorch Lightning model
+
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>
+
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">medium</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading https://github.com/ultralytics/yolov5/releases/download/v4.0/yolov5m.pt to /root/.icevision/yolo/yolov5m.pt...
+
+  0%|          | 0.00/41.1M [00:00&lt;?, ?B/s]
+</code></pre></div>
+</div>
+
+
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>GPU available: True, used: True
+TPU available: None, using: 0 TPU cores
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  | Name  | Type  | Params
+--------------------------------
+0 | model | Model | 21.1 M
+--------------------------------
+21.1 M    Trainable params
+0         Non-trainable params
+21.1 M    Total params
+84.290    Total estimated model params size (MB)
+
+Validation sanity check: 0it [00:00, ?it/s]
+
+Training: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+1
+</code></pre></div>
+</div>
+## Happy Learning!
+
+If you need any assistance, feel free to join our [forum](https://discord.gg/JDBeZYK).
                 
               
               
