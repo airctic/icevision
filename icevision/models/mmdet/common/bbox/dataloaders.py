@@ -7,6 +7,7 @@ __all__ = [
     "infer_dl",
 ]
 
+from icevision.models.mmdet.common.utils import convert_background_from_zero_to_last
 from icevision.core import *
 from icevision.imports import *
 from icevision.models.utils import *
@@ -111,9 +112,10 @@ def _labels(record):
     if len(record.detection.label_ids) == 0:
         raise RuntimeError("Negative samples still needs to be implemented")
     else:
-        # convert background from id 0 to last
-        labels = tensor(record.detection.label_ids, dtype=torch.int64) - 1
-        labels[labels == -1] = record.detection.class_map.num_classes - 1
+        tensor_label_ids = tensor(record.detection.label_ids)
+        labels = convert_background_from_zero_to_last(
+            label_ids=tensor_label_ids, class_map=record.detection.class_map
+        )
         return labels
 
 
