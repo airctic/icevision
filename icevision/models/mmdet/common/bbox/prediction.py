@@ -5,7 +5,8 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_dl
-from icevision.models.mmdet.common.bbox.dataloaders import *
+from icevision.models.mmdet.common.bbox.dataloaders import build_infer_batch
+from icevision.models.mmdet.common.utils import convert_background_from_last_to_zero
 
 
 @torch.no_grad()
@@ -111,7 +112,10 @@ def convert_raw_prediction(
     keep_labels = labels[keep_mask]
     keep_bboxes = [BBox.from_xyxy(*o) for o in bboxes[keep_mask]]
 
-    # build prediction
+    keep_labels = convert_background_from_last_to_zero(
+        label_ids=keep_labels, class_map=record.detection.class_map
+    )
+
     pred = BaseRecord(
         (
             ScoresRecordComponent(),
