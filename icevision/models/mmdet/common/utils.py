@@ -1,10 +1,26 @@
-__all__ = ["build_model"]
+__all__ = [
+    "convert_background_from_zero_to_last",
+    "convert_background_from_last_to_zero",
+    "build_model",
+]
 
 from icevision.imports import *
 from mmcv import Config
 from mmdet.models import build_detector
 from mmcv.runner import load_checkpoint
 from icevision.models.mmdet.utils import *
+
+
+def convert_background_from_zero_to_last(label_ids, class_map):
+    label_ids = label_ids - 1
+    label_ids[label_ids == -1] = class_map.num_classes - 1
+    return label_ids
+
+
+def convert_background_from_last_to_zero(label_ids, class_map):
+    label_ids = label_ids + 1
+    label_ids[label_ids == len(class_map)] = 0
+    return label_ids
 
 
 def build_model(
