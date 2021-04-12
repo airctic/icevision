@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 **BREAKING:** API Refactor
 
+## Added
+- Metrics for mmdetection models
+
 ## Changed
 - **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
 - **Breaking:** Renamed `imageid` to `record_id`
