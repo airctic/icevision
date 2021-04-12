@@ -1136,7 +1136,6 @@
                 
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/quickstart_object_detection.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <h1 id="quickstart">Quickstart</h1>
-<p><a href="https://arxiv.org/pdf/1911.09070.pdf">EfficientDet: Scalable and Efficient Object Detection</a></p>
 <p><img alt="" src="https://github.com/ai-fast-track/icevision/blob/fridge-tutorial/images/fridge-objects.png?raw=1" /></p>
 <h2 id="introduction">Introduction</h2>
 <p>This tutorial walk you through the different steps of training the fridge dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
@@ -1164,22 +1163,15 @@
 <span class="n">model_ui</span> <span class="o">=</span> <span class="n">ModelChoiceUI</span><span class="p">(</span><span class="n">task</span><span class="o">=</span><span class="s2">&quot;object_detection&quot;</span><span class="p">)</span>
 <span class="n">model_ui</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </code></pre></div>
-<p><div class="highlight"><pre><span></span><code><span class="n">model_ui</span><span class="o">.</span><span class="n">task</span>
-</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_ui</span><span class="o">.</span><span class="n">get_model_info</span><span class="p">()</span>
 <span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">backbone_obj</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">backbone_obj</span>
-</code></pre></div></p>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>Dropdown(description=&#39;Libraries&#39;, options=(&#39;&#39;, &#39;MMDetection&#39;, &#39;Ross Wightman&#39;, &#39;Torchvision&#39;), value=&#39;&#39;)
 
 Dropdown(description=&#39;Models&#39;, options=(&#39;&#39;,), value=&#39;&#39;)
 
 Dropdown(description=&#39;Backbones&#39;, options=(&#39;&#39;,), value=&#39;&#39;)
-
-&#39;object_detection&#39;
 
 (&lt;module &#39;icevision.models.mmdet.models.fcos&#39; from &#39;/home/farid/repos/airctic/icevision/icevision/models/mmdet/models/fcos/__init__.py&#39;&gt;,
  &lt;icevision.models.mmdet.models.fcos.backbones.resnet_fpn.MMDetFCOSBackboneConfig at 0x7f42648d2880&gt;)
@@ -1228,18 +1220,18 @@ This means that, if you have augmentation (random) transforms, each time you get
 the dataset you will get a slightly different version of it.</p>
 </blockquote>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">)</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_21_0.png" /></p>
+<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_19_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
 <span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># show ba</span>
+<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_24_0.png" /></p>
+<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_22_0.png" /></p>
 <h2 id="model">Model</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># pretrained=True is a default setting, and can be omitted</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">))</span> 
@@ -1291,7 +1283,7 @@ size mismatch for roi_head.bbox_head.5.fc_cls.bias: copying a param with shape t
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_32_2.png" /></p>
+<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_30_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1459,7 +1451,7 @@ size mismatch for roi_head.bbox_head.5.fc_cls.bias: copying a param with shape t
 <h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_38_0.png" /></p>
+<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_36_0.png" /></p>
 <h2 id="inference">Inference</h2>
 <h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
 <p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
@@ -1471,7 +1463,7 @@ size mismatch for roi_head.bbox_head.5.fc_cls.bias: copying a param with shape t
     <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_41_0.png" /></p>
+<p><img alt="png" src="../images/quickstart_object_detection/quickstart_object_detection_39_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
