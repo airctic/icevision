@@ -47,17 +47,11 @@ extra:
 nav:
   - Home: index.md
   - Installation: install.md
-  - Tutorials:
-    - Getting Started: getting_started.md
-    - Getting Started with MMDetection: getting_started_mmdetection.md
-    - Quickstart using EfficientDet: getting_started_efficientdet.md
-    - Quickstart using RetinaNet: retinanet.md
+  - Getting Started:
+    - Object Detection: quickstart_object_detection.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
-    - Mask RCNN: mask_rcnn_pennfudan.md
-    - Keypoints RCNN: ochuman_keypoint_detection.md
-    - EffecientDet: efficientdet_pets.md
-    - Training a VOC dataset: dataset_voc_nb.md
+  - Other Tutorials:
     - Model Tracking Using Wandb: wandb_efficientdet.md
     - How to use negative samples: negative_samples.md
     - Fixed Splitter: voc_predefined_splits.md
