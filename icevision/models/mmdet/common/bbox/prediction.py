@@ -5,7 +5,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_dl
-from icevision.models.mmdet.common.mask.dataloaders import *
+from icevision.models.mmdet.common.bbox.dataloaders import *
 
 
 @torch.no_grad()
