@@ -17,6 +17,9 @@ class EfficientDetCallback(fastai.Callback):
 
         if not self.training:
             preds = efficientdet.convert_raw_predictions(
-                self.pred["detections"], self.learn.records, 0
+                batch=(*self.xb, *self.yb),
+                raw_preds=self.pred["detections"],
+                records=self.learn.records,
+                detection_threshold=0.0,
             )
             self.learn.converted_preds = preds
