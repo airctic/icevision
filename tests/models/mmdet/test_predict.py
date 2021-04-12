@@ -26,8 +26,6 @@ def test_mmdet_bbox_models_predict(ds, model_type, samples_source, request):
     preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
     _test_preds(preds, pred_count=1)
 
-    assert preds[0].ground_truth.detection.img.shape == (384, 384, 3)
-
 
 def _test_preds(preds, pred_count=2, mask=False):
     # assert len(preds) == pred_count
@@ -61,5 +59,3 @@ def test_mmdet_mask_models_predict(coco_mask_records, samples_source):
 
     preds = model_type.predict_dl(model, infer_dl, show_pbar=False)
     _test_preds(preds, mask=True)
-
-    assert preds[0].ground_truth.detection.img.shape == (128, 128, 3)
