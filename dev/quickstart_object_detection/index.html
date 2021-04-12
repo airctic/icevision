@@ -20,7 +20,7 @@
     
     
       
-        <title>Quickstart object detection - IceVision</title>
+        <title>Object Detection - IceVision</title>
       
     
     
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quickstart object detection
+              Object Detection
             
           </span>
         </div>
@@ -207,68 +207,202 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       <label class="md-nav__link" for="__nav_3">
-        Tutorials
+        Getting Started
         <span class="md-nav__icon md-icon"></span>
       </label>
-      <nav class="md-nav" aria-label="Tutorials" data-md-level="1">
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
         <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
-          Tutorials
+          Getting Started
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../getting_started/" class="md-nav__link">
-        Getting Started
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Object Detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Object Detection
       </a>
-    </li>
-  
-
-          
-            
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    <li class="md-nav__item">
-      <a href="../getting_started_mmdetection/" class="md-nav__link">
-        Getting Started with MMDetection
-      </a>
-    </li>
-  
-
-          
-            
+    
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
   
-    <li class="md-nav__item">
-      <a href="../getting_started_efficientdet/" class="md-nav__link">
-        Quickstart using EfficientDet
-      </a>
-    </li>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
   
-
-          
-            
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
   
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-your-model-and-backbone" class="md-nav__link">
+    Choose Your Model and Backbone
+  </a>
   
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
+    Datasets : Fridge Objects dataset
+  </a>
   
-    <li class="md-nav__item">
-      <a href="../retinanet/" class="md-nav__link">
-        Quickstart using RetinaNet
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
+    Train and Validation Dataset Transforms
+  </a>
+  
+    <nav class="md-nav" aria-label="Train and Validation Dataset Transforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
+    Displaying the same image with different transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-using-lightning" class="md-nav__link">
+    Training using Lightning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-results" class="md-nav__link">
+    Show Results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -297,53 +431,35 @@
   
 
           
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mask_rcnn_pennfudan/" class="md-nav__link">
-        Mask RCNN
-      </a>
+        </ul>
+      </nav>
     </li>
   
 
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ochuman_keypoint_detection/" class="md-nav__link">
-        Keypoints RCNN
-      </a>
-    </li>
-  
+    
+      
+      
+      
 
-          
-            
   
   
   
-    <li class="md-nav__item">
-      <a href="../efficientdet_pets/" class="md-nav__link">
-        EffecientDet
-      </a>
-    </li>
-  
-
-          
-            
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dataset_voc_nb/" class="md-nav__link">
-        Training a VOC dataset
-      </a>
-    </li>
-  
-
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Other Tutorials
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
             
   
@@ -398,14 +514,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
-      <label class="md-nav__link" for="__nav_4">
+      <label class="md-nav__link" for="__nav_5">
         Transforms
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Transforms" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Transforms
         </label>
@@ -470,14 +586,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
-      <label class="md-nav__link" for="__nav_7">
+      <label class="md-nav__link" for="__nav_8">
         Deployment
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Deployment" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Deployment
         </label>
@@ -503,14 +619,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
       
-      <label class="md-nav__link" for="__nav_7_2">
+      <label class="md-nav__link" for="__nav_8_2">
         Gradio
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Gradio" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Gradio
         </label>
@@ -575,14 +691,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
       
-      <label class="md-nav__link" for="__nav_8">
+      <label class="md-nav__link" for="__nav_9">
         API Documentation
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_9">
           <span class="md-nav__icon md-icon"></span>
           API Documentation
         </label>
@@ -620,14 +736,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
       
-      <label class="md-nav__link" for="__nav_8_3">
+      <label class="md-nav__link" for="__nav_9_3">
         Transforms
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Transforms" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_3">
+        <label class="md-nav__title" for="__nav_9_3">
           <span class="md-nav__icon md-icon"></span>
           Transforms
         </label>
@@ -659,14 +775,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
       
-      <label class="md-nav__link" for="__nav_8_4">
+      <label class="md-nav__link" for="__nav_9_4">
         Models
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Models" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_4">
+        <label class="md-nav__title" for="__nav_9_4">
           <span class="md-nav__icon md-icon"></span>
           Models
         </label>
@@ -680,14 +796,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_1" type="checkbox" id="__nav_8_4_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
       
-      <label class="md-nav__link" for="__nav_8_4_1">
+      <label class="md-nav__link" for="__nav_9_4_1">
         Faster RCNN
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_4_1">
+        <label class="md-nav__title" for="__nav_9_4_1">
           <span class="md-nav__icon md-icon"></span>
           Faster RCNN
         </label>
@@ -743,14 +859,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_2" type="checkbox" id="__nav_8_4_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
       
-      <label class="md-nav__link" for="__nav_8_4_2">
+      <label class="md-nav__link" for="__nav_9_4_2">
         Mask RCNN
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_4_2">
+        <label class="md-nav__title" for="__nav_9_4_2">
           <span class="md-nav__icon md-icon"></span>
           Mask RCNN
         </label>
@@ -806,14 +922,14 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_3" type="checkbox" id="__nav_8_4_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
       
-      <label class="md-nav__link" for="__nav_8_4_3">
+      <label class="md-nav__link" for="__nav_9_4_3">
         EfficientDet
         <span class="md-nav__icon md-icon"></span>
       </label>
       <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_4_3">
+        <label class="md-nav__title" for="__nav_9_4_3">
           <span class="md-nav__icon md-icon"></span>
           EfficientDet
         </label>
@@ -1481,6 +1597,39 @@ size mismatch for roi_head.bbox_head.5.fc_cls.bias: copying a param with shape t
       
         
 <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../install/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Installation
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../custom_parser/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Custom Parser
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
