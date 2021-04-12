@@ -54,13 +54,18 @@ def predict(
 
 
 def predict_dl(
-    model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True, **predict_kwargs
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    keep_images: bool = False,
+    **predict_kwargs,
 ):
     return _predict_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
+        keep_images=keep_images,
         **predict_kwargs,
     )
 

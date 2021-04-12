@@ -63,6 +63,7 @@ def predict_dl(
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
+        keep_images=keep_images,
         **predict_kwargs,
     )
 
