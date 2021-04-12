@@ -68,7 +68,6 @@ def test_bbox_dataloader(fridge_ds, fridge_class_map):
     ).all()
     assert recs[0].detection.class_map == fridge_class_map
     assert recs[1].detection.class_map == fridge_class_map
-    assert recs[1].detection.img.shape == data["img"][1].numpy().swapaxes(0, -1).shape
 
 
 def _test_common_mmdet_mask_batch(batch):

@@ -18,14 +18,19 @@ def _predict_batch(
     batch: Sequence[torch.Tensor],
     records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ):
     device = device or model_device(model)
     batch["img"] = [img.to(device) for img in batch["img"]]
 
-    raw_pred = model(return_loss=False, rescale=False, **batch)
+    raw_preds = model(return_loss=False, rescale=False, **batch)
     return convert_raw_predictions(
-        raw_pred, records=records, detection_threshold=detection_threshold
+        batch=batch,
+        raw_preds=raw_preds,
+        records=records,
+        keep_images=keep_images,
+        detection_threshold=detection_threshold,
     )
 
 
@@ -33,14 +38,17 @@ def predict(
     model: nn.Module,
     dataset: Dataset,
     detection_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
     batch, records = build_infer_batch(dataset)
+
     return _predict_batch(
         model=model,
         batch=batch,
         records=records,
         detection_threshold=detection_threshold,
+        keep_images=keep_images,
         device=device,
     )
 
@@ -58,21 +66,42 @@ def predict_dl(
 
 
 def convert_raw_predictions(
-    raw_preds: Sequence[Sequence[np.ndarray]],
+    batch,
+    raw_preds,
     records: Sequence[BaseRecord],
     detection_threshold: float,
+    keep_images: bool = False,
 ):
+
+    # In inference, both "img" and "img_metas" are lists. Check out the `build_infer_batch()` definition
+    # We need to convert that to a batch similar to train and valid batches
+    if isinstance(batch["img"], list):
+        batch = {
+            "img": batch["img"][0],
+            "img_metas": batch["img_metas"][0],
+        }
+
+    batch_list = [dict(zip(batch, t)) for t in zipsafe(*batch.values())]
     return [
         convert_raw_prediction(
-            raw_pred, record=record, detection_threshold=detection_threshold
+            sample=sample,
+            raw_pred=raw_pred,
+            record=record,
+            detection_threshold=detection_threshold,
+            keep_image=keep_images,
         )
-        for raw_pred, record in zip(raw_preds, records)
+        for sample, raw_pred, record in zip(batch_list, raw_preds, records)
     ]
 
 
 def convert_raw_prediction(
-    raw_pred: Sequence[np.ndarray], record: BaseRecord, detection_threshold: float
+    sample,
+    raw_pred: dict,
+    record: BaseRecord,
+    detection_threshold: float,
+    keep_image: bool = False,
 ):
+    # convert predictions
     raw_bboxes, raw_masks = raw_pred
     scores, labels, bboxes = _unpack_raw_bboxes(raw_bboxes)
 
@@ -83,6 +112,7 @@ def convert_raw_prediction(
     set_trace()
     keep_masks = MaskArray(np.vstack(raw_masks)[keep_mask])
 
+    # build prediction
     pred = BaseRecord(
         (
             ScoresRecordComponent(),
@@ -98,6 +128,13 @@ def convert_raw_prediction(
     pred.detection.set_bboxes(keep_bboxes)
     pred.detection.set_masks(keep_masks)
     pred.above_threshold = keep_mask
+
+    if keep_image:
+        image = sample["img"]
+        image = image.detach().cpu().numpy().transpose(1, 2, 0)
+
+        pred.set_img(image)
+        record.set_img(image)
 
     return Prediction(pred=pred, ground_truth=record)
 
