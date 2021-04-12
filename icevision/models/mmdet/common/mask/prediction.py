@@ -5,11 +5,11 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_dl
+from icevision.models.mmdet.common.utils import convert_background_from_last_to_zero
 from icevision.models.mmdet.common.mask.dataloaders import *
-
-# from icevision.models.mmdet.common.bbox.prediction import (
-#     _unpack_raw_bboxes,
-# )
+from icevision.models.mmdet.common.bbox.prediction import (
+    _unpack_raw_bboxes,
+)
 
 
 @torch.no_grad()
@@ -54,13 +54,18 @@ def predict(
 
 
 def predict_dl(
-    model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True, **predict_kwargs
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    keep_images: bool = False,
+    **predict_kwargs,
 ):
     return _predict_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
+        keep_images=keep_images,
         **predict_kwargs,
     )
 
@@ -109,10 +114,12 @@ def convert_raw_prediction(
     keep_scores = scores[keep_mask]
     keep_labels = labels[keep_mask]
     keep_bboxes = [BBox.from_xyxy(*o) for o in bboxes[keep_mask]]
-    set_trace()
     keep_masks = MaskArray(np.vstack(raw_masks)[keep_mask])
 
-    # build prediction
+    keep_labels = convert_background_from_last_to_zero(
+        label_ids=keep_labels, class_map=record.detection.class_map
+    )
+
     pred = BaseRecord(
         (
             ScoresRecordComponent(),
@@ -137,16 +144,3 @@ def convert_raw_prediction(
         record.set_img(image)
 
     return Prediction(pred=pred, ground_truth=record)
-
-
-def _unpack_raw_bboxes(raw_bboxes):
-    stack_raw_bboxes = np.vstack(raw_bboxes)
-
-    scores = stack_raw_bboxes[:, -1]
-    bboxes = stack_raw_bboxes[:, :-1]
-
-    # each item in raw_pred is an array of predictions of it's `i` class
-    labels = [np.full(o.shape[0], i, dtype=np.int32) for i, o in enumerate(raw_bboxes)]
-    labels = np.concatenate(labels)
-
-    return scores, labels, bboxes

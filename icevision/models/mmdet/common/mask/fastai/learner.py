@@ -1,18 +1,17 @@
-__all__ = ["mmdetection_learner"]
+__all__ = ["learner"]
 
 from icevision.imports import *
-from icevision.models.mmdet.common import loss_fn
-from icevision.models.mmdet.fastai.callbacks import *
-from icevision.engines.fastai import *
+from icevision.models.mmdet.fastai.learner import mmdetection_learner
+from icevision.models.mmdet.common.mask.fastai.callbacks import MaskMMDetectionCallback
 
 
-def mmdetection_learner(
+def learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
     **learner_kwargs,
 ):
-    """Fastai `Learner` adapted for MMDetection models.
+    """Fastai `Learner` adapted for MMDetection Object Detection models.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.
@@ -24,13 +23,5 @@ def mmdetection_learner(
     # Returns
         A fastai `Learner`.
     """
-
-    learn = adapted_fastai_learner(
-        dls=dls,
-        model=model,
-        cbs=cbs,
-        loss_func=loss_fn,
-        **learner_kwargs,
-    )
-
-    return learn
+    cbs = [MaskMMDetectionCallback] + L(cbs)
+    return mmdetection_learner(dls=dls, model=model, cbs=cbs, **learner_kwargs)
