@@ -53,7 +53,7 @@ class ModelChoiceUI:
     def populate_libraries(self):
         if self.task == "object_detection":
             libraries_list = ["", "MMDetection", "Ross Wightman", "Torchvision"]
-        elif self.task == "mask":
+        elif self.task == "instance_segmentation":
             libraries_list = ["", "MMDetection", "Torchvision"]
         elif self.task == "keypoints":
             libraries_list = ["", "Torchvision"]
@@ -76,7 +76,7 @@ class ModelChoiceUI:
                 lib_type = models.ross
                 model_list = ["efficientdet"]
 
-        elif self.task == "mask":
+        elif self.task == "instance_segmentation":
             if lib_name == "Torchvision":
                 lib_type = models.torchvision
                 model_list = ["mask_rcnn"]
