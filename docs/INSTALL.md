@@ -67,7 +67,7 @@ $ pip install icevision[all]
 
 ### MMDetection Installation
 
-We need to provide the appropriate version of `mmcv-full` package corresponding to `mmcv` version, `cuda` version, and `torch` version. Here are some examples for both **CUDA** and **CPU** versions  
+We need to provide the appropriate version of the `mmcv-full` package as well as the `cuda` and the `torch` versions. Here are some examples for both the **CUDA** and the **CPU** versions  
 
 
 #### CUDA-Version Installation Example
