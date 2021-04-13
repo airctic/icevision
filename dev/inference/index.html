@@ -1106,7 +1106,7 @@
 <h1 id="use-a-trained-model-for-inference">Use a trained model for inference</h1>
 <h2 id="install-icevision">Install IceVision</h2>
 <p>We usually install IceVision with <code>[all]</code>, but you can also use <code>[inference]</code> to only install the dependencies necessary for inference.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all] icedata</span>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">icevision</span><span class="p">[</span><span class="nb">all</span><span class="p">]</span> <span class="n">icedata</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <p>As always, import everything from IceVision:</p>
@@ -1119,54 +1119,16 @@
 <p>Save your model with <code>torch.save(model.state_dict(), PATH)</code>. Take a look at <a href="https://pytorch.org/tutorials/beginner/saving_loading_models.html">this</a> tutorial for more info on how to save/load models.</p>
 </div>
 <p>The first thing we need is the <code>ClassMap</code> used during training. The model we're going to use was trained on the Pets dataset, so we can easily grab that:</p>
-<div class="highlight"><pre><span></span><code><span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pets</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
 </code></pre></div>
 <p>Recreate the model used in training:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icedata.utils</span> <span class="kn">import</span> <span class="n">load_model_weights_from_url</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">weights_url</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip&#39;</span>
-<span class="n">NUM_CLASSES</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s1">&#39;tf_efficientdet_lite0&#39;</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">NUM_CLASSES</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span>
-<span class="n">load_model_weights_from_url</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weights_url</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span><span class="p">()</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/hub.py:483: UserWarning: Falling back to the old format &lt; 1.6. This support will be deprecated in favor of default zipfile format introduced in 1.6. Please redo torch.save() to save it in the new zipfile format.
-  warnings.warn(&#39;Falling back to the old format &lt; 1.6. This support will be &#39;
-
----------------------------------------------------------------------------
-
-RuntimeError                              Traceback (most recent call last)
-
-&lt;ipython-input-5-5fc8044970cf&gt; in &lt;module&gt;
-      2 NUM_CLASSES = 5
-      3 model = efficientdet.model(&#39;tf_efficientdet_lite0&#39;, num_classes=NUM_CLASSES, img_size=512)
-----&gt; 4 load_model_weights_from_url(model, weights_url)
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
 </code></pre></div>
-</div>
-
-<p><div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">trained_models</span><span class="o">.</span><span class="n">tf_efficientdet_lite0</span><span class="p">()</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
-</code></pre></div></p>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>~/git/icedata/icedata/utils/utils.py in load_model_weights_from_url(model, url, map_location, **kwargs)
-     10         url, map_location=map_location, **kwargs
-     11     )
----&gt; 12     model.load_state_dict(state_dict)
-     13 
-     14 
-
-~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/nn/modules/module.py in load_state_dict(self, state_dict, strict)
-   1050         if len(error_msgs) &gt; 0:
-   1051             raise RuntimeError(&#39;Error(s) in loading state_dict for {}:\n\t{}&#39;.format(
--&gt; 1052                                self.__class__.__name__, &quot;\n\t&quot;.join(error_msgs)))
-   1053         return _IncompatibleKeys(missing_keys, unexpected_keys)
-   1054 
-
-RuntimeError: Error(s) in loading state_dict for DetBenchTrain:
-    size mismatch for anchors.boxes: copying a param with shape torch.Size([27621, 4]) from checkpoint, the shape in current model is torch.Size([49104, 4]).
-</code></pre></div>
-</div>
 <p>And now load the model weights (commonly refered as <code>state_dict</code> in Pytorch).  </p>
 <p>In our case, the weights are stored in the cloud, Pytorch is amazing and provides us with a function to directly load model weights from an URL.</p>
 <div class="admonition info">
@@ -1174,26 +1136,19 @@ RuntimeError: Error(s) in loading state_dict for DetBenchTrain:
 <p>You can save your model directly on github via a "release"<br />
 Simply go to <code>https://github.com/&lt;ACCOUNT&gt;/&lt;REPO&gt;/releases/new</code> and upload the model as a new release. This will generate a direct link for downloading the model.</p>
 </div>
-<div class="highlight"><pre><span></span><code><span class="n">WEIGHTS_URL</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/airctic/model_zoo/releases/download/m3/pets_faster_resnetfpn50.zip&quot;</span>
-<span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">hub</span><span class="o">.</span><span class="n">load_state_dict_from_url</span><span class="p">(</span><span class="n">WEIGHTS_URL</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">WEIGHTS_URL</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m3/pets_faster_resnetfpn50.zip&#39;</span>
+<span class="n">load_model_weights_from_url</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">WEIGHTS_URL</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">))</span>
 </code></pre></div>
 <p>If your weights are stored locally, you simply need to do: <code>state_dict = torch.load(&lt;PATH&gt;)</code></p>
 <div class="admonition info">
 <p class="admonition-title">Model device</p>
 <p>Notice that we're asking to load the weights on CPU with <code>map_location</code>. It's common to do inference in CPU, but you can easily change to GPU if you want.</p>
 </div>
-<p>Now, let's actually load the weights to the model:</p>
-<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>&lt;All keys matched successfully&gt;
-</code></pre></div>
-</div>
 <h2 id="transforms">Transforms</h2>
 <p>Generally speaking, we normally use on inference the same transforms we used in the validation set.  </p>
 <p>A transform like <code>normalize</code> is always required, but for some models, a transform like <code>resize</code> is optional. For instance, the model used in this tutorial accepts any image resolution, try playing around with different transforms and observe how they change the model results.</p>
 <p>Let's use the same transforms used in the validation set:</p>
-<div class="highlight"><pre><span></span><code><span class="n">infer_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<div class="highlight"><pre><span></span><code><span class="n">infer_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 </code></pre></div>
 <h2 id="data">Data</h2>
 <p>Obviously we need some images to perform inference, how you get this images heavily depends on your use case.</p>
@@ -1208,7 +1163,7 @@ Simply go to <code>https://github.com/&lt;ACCOUNT&gt;/&lt;REPO&gt;/releases/new<
 <span class="n">img</span> <span class="o">=</span> <span class="n">image_from_url</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
 <span class="n">show_img</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_31_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_28_0.png" /></p>
 <div class="admonition info">
 <p class="admonition-title">Try it out</p>
 <p>Try experimenting with new images, be sure to take one of the breeds from <code>class_map</code> (or not, if you are curious to see what happens).</p>
@@ -1217,101 +1172,23 @@ Simply go to <code>https://github.com/&lt;ACCOUNT&gt;/&lt;REPO&gt;/releases/new<
 <div class="highlight"><pre><span></span><code><span class="n">infer_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_images</span><span class="p">([</span><span class="n">img</span><span class="p">],</span> <span class="n">infer_tfms</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="predict-all-at-once">Predict - All at once</h2>
-<p>First build a batch with the entire dataset, and then simply call <code>predict</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">)</span>
-<span class="c1"># preds = efficientdet.predict(model=model, batch=batch)</span>
+<p>Simply call <code>predict</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_ds</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">ground_truth</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">infer_ds</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>---------------------------------------------------------------------------
-
-RuntimeError                              Traceback (most recent call last)
-
-&lt;ipython-input-13-30bc124e6468&gt; in &lt;module&gt;
-----&gt; 1 ground_truth, preds = efficientdet.predict(model=model, dataset=infer_ds)
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/autograd/grad_mode.py in decorate_context(*args, **kwargs)
-     24         def decorate_context(*args, **kwargs):
-     25             with self.__class__():
----&gt; 26                 return func(*args, **kwargs)
-     27         return cast(F, decorate_context)
-     28 
-
-~/git/icevision/icevision/models/ross/efficientdet/prediction.py in predict(model, dataset, detection_threshold, device)
-     28     bench = bench.eval().to(device)
-     29 
----&gt; 30     raw_preds = bench(x=imgs, img_info=img_info)
-     31     preds = convert_raw_predictions(
-     32         raw_preds=raw_preds, records=records, detection_threshold=detection_threshold
-
-~/miniconda3/envs/mmlab/lib/python3.7/site-packages/torch/nn/modules/module.py in _call_impl(self, *input, **kwargs)
-    725             result = self._slow_forward(*input, **kwargs)
-    726         else:
---&gt; 727             result = self.forward(*input, **kwargs)
-    728         for hook in itertools.chain(
-    729                 _global_forward_hooks.values(),
-
-~/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/bench.py in forward(self, x, img_info)
-     91             img_scale, img_size = img_info[&#39;img_scale&#39;], img_info[&#39;img_size&#39;]
-     92         return _batch_detection(
----&gt; 93             x.shape[0], class_out, box_out, self.anchors.boxes, indices, classes, img_scale, img_size)
-     94 
-     95 
-
-RuntimeError: The following operation failed in the TorchScript interpreter.
-Traceback of TorchScript (most recent call last):
-  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/bench.py&quot;, line 69, in _batch_detection
-        img_scale_i = None if img_scale is None else img_scale[i]
-        img_size_i = None if img_size is None else img_size[i]
-        detections = generate_detections(
-                     ~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
-            class_out[i], box_out[i], anchor_boxes, indices[i], classes[i], img_scale_i, img_size_i)
-        batch_detections.append(detections)
-  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/anchors.py&quot;, line 138, in generate_detections
-    # Appply bounding box regression to anchors, boxes are converted to xyxy
-    # here since PyTorch NMS expects them in that form.
-    boxes = decode_box_outputs(box_outputs.float(), anchor_boxes, output_xyxy=True)
-            ~~~~~~~~~~~~~~~~~~ &lt;--- HERE
-    if img_scale is not None and img_size is not None:
-        boxes = clip_boxes_xyxy(boxes, img_size / img_scale)  # clip before NMS better?
-  File &quot;/home/lgvaz/miniconda3/envs/mmlab/lib/python3.7/site-packages/effdet/anchors.py&quot;, line 134, in decode_box_outputs
-    assert cls_outputs.shape[-1] == 1
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>    anchor_boxes = anchor_boxes[indices, :]
-                   ~~~~~~~~~~~~~~~~~~~~~ &lt;--- HERE
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>    # Appply bounding box regression to anchors, boxes are converted to xyxy
-RuntimeError: index 48716 is out of bounds for dimension 0 with size 27621
-</code></pre></div>
-</div>
 <h2 id="predict-in-batches">Predict - In batches</h2>
 <p>If the memory is not enough to predict everything at once, break it down into smaller batches with <code>infer_dataloader</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/1 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
 <h2 id="visualize">Visualize</h2>
 <p>This step will probably not be the same for your use case, but for quickly visualizing the predictions we can use <code>show_preds</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Show preds by grabbing the images from `samples`</span>
-<span class="n">imgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sample</span><span class="p">[</span><span class="s2">&quot;img&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">]</span>
-<span class="n">show_preds</span><span class="p">(</span>
-    <span class="n">samples</span><span class="o">=</span><span class="n">imgs</span><span class="p">,</span>
-    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">,</span>
-    <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span>
-    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
-    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_44_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_40_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
