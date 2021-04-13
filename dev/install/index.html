@@ -270,29 +270,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mmdetection" class="md-nav__link">
-    MMDetection
+  <a href="#mmdetection-installation" class="md-nav__link">
+    MMDetection Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="MMDetection Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda-version-installation-example" class="md-nav__link">
+    CUDA-Version Installation Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-version-installation" class="md-nav__link">
+    CPU-Version Installation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yolov5-installation" class="md-nav__link">
+    YOLOv5 Installation
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#fixing-the-error-failed-building-wheel-for-pycocotools" class="md-nav__link">
-    Fixing the Error: Failed building wheel for pycocotools
-  </a>
   
 </li>
         
@@ -1086,29 +1093,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mmdetection" class="md-nav__link">
-    MMDetection
+  <a href="#mmdetection-installation" class="md-nav__link">
+    MMDetection Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="MMDetection Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda-version-installation-example" class="md-nav__link">
+    CUDA-Version Installation Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-version-installation" class="md-nav__link">
+    CPU-Version Installation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yolov5-installation" class="md-nav__link">
+    YOLOv5 Installation
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    Troubleshooting
-  </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#fixing-the-error-failed-building-wheel-for-pycocotools" class="md-nav__link">
-    Fixing the Error: Failed building wheel for pycocotools
-  </a>
   
 </li>
         
@@ -1137,6 +1151,18 @@
 <p>We currently only support Linux/MacOS installations</p>
 </div>
 <h2 id="a-installation-using-pip">A- Installation using pip</h2>
+<div class="admonition info">
+<p class="admonition-title">Note</p>
+<p>Please do not forget to install the other optional dependencies if you would like to use them:</p>
+<ul>
+<li>
+<p>MMCV+MMDetection, and/or </p>
+</li>
+<li>
+<p>YOLOv5 </p>
+</li>
+</ul>
+</div>
 <h3 id="option-1-installing-from-pypi-repository-stable-version"><strong>Option 1:</strong> Installing from pypi repository <strong>[Stable Version]</strong></h3>
 <p>To install icevision package together with almost all dependencies:</p>
 <div class="termy">
@@ -1161,7 +1187,7 @@
 <div class="termy">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/airctic/icevision.git
 <span class="gp">$ </span><span class="nb">cd</span> icevision
-<span class="gp">$ </span>pip install -e <span class="s2">&quot;.[all,dev]&quot;</span>
+<span class="gp">$ </span>pip install -e .<span class="o">[</span>all,dev<span class="o">]</span>
 <span class="gp">$ </span>pre-commit install
 </code></pre></div>
 </div>
@@ -1175,7 +1201,7 @@ for example, where you might install the icevision latest version (from the <cod
 </div>
 
 <h2 id="b-installation-using-conda">B- Installation using conda</h2>
-<p>Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called <strong>ice</strong></p>
+<p>Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called <strong>icevision</strong></p>
 <div class="termy">
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>conda create -n icevision <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8 anaconda
 <span class="gp">$ </span>conda activate icevision
@@ -1184,21 +1210,26 @@ for example, where you might install the icevision latest version (from the <cod
 </div>
 
 <h2 id="optional-dependencies">Optional dependencies</h2>
-<h3 id="mmdetection">MMDetection</h3>
-<p>Follow the instructions <a href="https://mmdetection.readthedocs.io/en/latest/get_started.html#installation">here</a> to install and enable mmdetection support.</p>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<h3 id="fixing-the-error-failed-building-wheel-for-pycocotools">Fixing the Error: Failed building wheel for pycocotools</h3>
-<p>If you encounter the <strong>Failed building wheel for pycocotools error</strong> (see screenshoot here below), you can easily fix it by installing  <code>gcc</code> from your linux terminal as shown in the following steps:</p>
+<h3 id="mmdetection-installation">MMDetection Installation</h3>
+<p>We need to provide the appropriate version of the <code>mmcv-full</code> package as well as the <code>cuda</code> and the <code>torch</code> versions. Here are some examples for both the <strong>CUDA</strong> and the <strong>CPU</strong> versions  </p>
+<h4 id="cuda-version-installation-example">CUDA-Version Installation Example</h4>
 <div class="termy">
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>sudo apt update
-<span class="gp">$ </span>sudo apt install gcc
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install mmcv-full<span class="o">==</span><span class="s2">&quot;1.2.5&quot;</span> -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.7.0/index.html --upgrade
+<span class="gp">$ </span>pip install mmdet
 </code></pre></div>
 </div>
 
-<p><img alt="image" src="../images/pycoco-installation-issue.png" /></p>
-<div class="admonition info">
-<p class="admonition-title">Note</p>
-<p>You can check out the following blog post: <a href="https://ai-fast-track.github.io/blog/python/2020/03/17/how-to-pip-install-package.html">3 ways to pip install a package </a> for more a detailed explantion on how to choose the most convenient installation option for you. </p>
+<h4 id="cpu-version-installation">CPU-Version Installation</h4>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install mmcv-full<span class="o">==</span><span class="s2">&quot;1.2.5+torch.1.7.0+cpu&quot;</span> -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
+<span class="gp">$ </span>pip install mmdet
+</code></pre></div>
+</div>
+
+<h4 id="yolov5-installation">YOLOv5 Installation</h4>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>pip install yolov5-icevision --upgrade
+</code></pre></div>
 </div>
                 
               
