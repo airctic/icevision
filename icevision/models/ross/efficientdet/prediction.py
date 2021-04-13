@@ -105,9 +105,9 @@ def convert_raw_predictions(
         pred.detection.set_bboxes([BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]])
         pred.detection.set_scores(det[:, 4])
 
-        preds.append(Prediction(pred=pred, ground_truth=record))
-
         if keep_images:
             record.set_img(tensor_to_image(tensor_image))
+
+        preds.append(Prediction(pred=pred, ground_truth=record))
 
     return preds
