@@ -15,7 +15,7 @@ To install icevision package together with almost all dependencies:
 
 <div class="termy">
 ```console
-$ pip install -e icevision[all]
+$ pip install icevision[all]
 ```
 </div>
 
