@@ -7,6 +7,7 @@ __all__ = [
     "infer_dl",
 ]
 
+from icevision.models.mmdet.common.utils import convert_background_from_zero_to_last
 from icevision.core import *
 from icevision.imports import *
 from icevision.models.utils import *
@@ -51,10 +52,8 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
 
 def build_train_batch(
-    records: Sequence[RecordType], batch_tfms=None
+    records: Sequence[RecordType],
 ) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
-    records = common_build_batch(records=records, batch_tfms=batch_tfms)
-
     images, labels, bboxes, img_metas = [], [], [], []
     for record in records:
         images.append(_img_tensor(record))
@@ -73,14 +72,12 @@ def build_train_batch(
 
 
 def build_valid_batch(
-    records: Sequence[RecordType], batch_tfms=None
+    records: Sequence[RecordType],
 ) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
-    return build_train_batch(records=records, batch_tfms=batch_tfms)
+    return build_train_batch(records=records)
 
 
-def build_infer_batch(records, batch_tfms=None):
-    records = common_build_batch(records, batch_tfms=batch_tfms)
-
+def build_infer_batch(records):
     imgs, img_metas = [], []
     for record in records:
         imgs.append(_img_tensor(record))
@@ -104,8 +101,9 @@ def _img_meta(record):
     img_h, img_w, img_c = record.img.shape
 
     return {
-        # height and width from sample is before padding
-        "img_shape": (record.img_size.height, record.img_size.width, img_c),
+        # TODO: height and width from sample should be before padding
+        # "img_shape": (record.img_size.height, record.img_size.width, img_c),
+        "img_shape": (img_h, img_w, img_c),
         "pad_shape": (img_h, img_w, img_c),
         "scale_factor": np.ones(4),  # TODO: is scale factor correct?
     }
@@ -115,9 +113,10 @@ def _labels(record):
     if len(record.detection.label_ids) == 0:
         raise RuntimeError("Negative samples still needs to be implemented")
     else:
-        # convert background from id 0 to last
-        labels = tensor(record.detection.label_ids, dtype=torch.int64) - 1
-        labels[labels == -1] = record.detection.class_map.num_classes - 1
+        tensor_label_ids = tensor(record.detection.label_ids)
+        labels = convert_background_from_zero_to_last(
+            label_ids=tensor_label_ids, class_map=record.detection.class_map
+        )
         return labels
 
 

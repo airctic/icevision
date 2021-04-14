@@ -28,6 +28,7 @@ jobs:
         pip install mmcv-full=="1.2.5+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
         pip install mmdet
         pip install -e ".[all,dev]"
+        pip install yolov5-icevision --upgrade
 
     - name: Lint with flake8
       run: |

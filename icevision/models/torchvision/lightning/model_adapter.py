@@ -13,7 +13,7 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         self.model = model
 
     @abstractmethod
-    def convert_raw_predictions(self, raw_preds):
+    def convert_raw_predictions(self, batch, raw_preds, records):
         """Convert raw predictions from the model to library standard."""
 
     def forward(self, *args, **kwargs):
@@ -38,7 +38,9 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
 
             self.eval()
             raw_preds = self(xb)
-            preds = self.convert_raw_predictions(raw_preds=raw_preds, records=records)
+            preds = self.convert_raw_predictions(
+                batch=batch, raw_preds=raw_preds, records=records
+            )
             self.accumulate_metrics(preds=preds)
 
         self.log("val_loss", loss)

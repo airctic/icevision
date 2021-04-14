@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 **BREAKING:** API Refactor
 
+## Added
+- Metrics for mmdetection models
+
 ## Changed
 - **Breaking:** Renamed tasks `default,detect,classif` to `common,detection,classification`
 - **Breaking:** Renamed `imageid` to `record_id`
@@ -25,6 +28,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Renamed torchvision resnet backbones:
   - resnet_fpn.resnet18 -> resnet18_fpn
   - resnest_fpn.resnest18 -> resnest18_fpn
+**Breaking:** Added parameters `sample` and `keep_image` to `convert_raw_prediction`
 
 
 ## [0.6.0b1]

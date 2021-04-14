@@ -5,6 +5,11 @@ on:
     branches: [ master ]
   push:
     branches: [ master ]
+  release:
+    types: [ created ]    
+
+env:
+  SITE_BRANCH: ${{ 'gh-pages-ver' }}
 
 jobs:
   build:
@@ -12,11 +17,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
+          python-version: 3.8
 
       - name: Install package
         run: |
@@ -24,13 +31,52 @@ jobs:
           pip install mmcv-full=="1.2.5+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
           pip install mmdet
           pip install -e ".[all,dev]"
+          pip install yolov5-icevision --upgrade
+          # Below version is needed to work around a clash with ruamel-yaml. When v1.0 is released this can be removed.
+          pip install git+git://github.com/jimporter/mike.git@2961733cbfef132e9d63752307443981ad02d1fc --upgrade
 
-      - name: Build the docs
+      - name: Prepare the docs
         run:  |
           cd docs
           python autogen.py
-          mkdocs build
 
-      - name: Deploy docs (if pushing to master)
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "bot@airctic.com"
+
+      - name: Build the docs locally only
+        if: github.event_name == 'pull_request'
+        run:  |
+          cd docs
+          mike deploy dev -b ${{ env.SITE_BRANCH }} 
+
+      - name: Deploy dev docs
+        id: deploy_dev
         if: github.repository == 'airctic/icevision' && github.event_name == 'push'
-        run: cd docs && mkdocs gh-deploy --force
+        run: |
+          cd docs
+          mike deploy dev -b ${{ env.SITE_BRANCH }} -p
+          echo '::set-output name=MIKE_VERSIONS::'$(mike list -b ${{ env.SITE_BRANCH }} | wc -l)     
+
+      - name: Set dev as default
+        if: steps.deploy_dev.outputs.MIKE_VERSIONS == 1
+        run: |
+          cd docs
+          mike set-default -b ${{ env.SITE_BRANCH }} dev -p
+
+      - name: Get latest release tag
+        if: github.event_name == 'release' && !github.event.release.prerelease
+        id: latest
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          excludes: prerelease
+          repository: ${{ github.repository }}
+
+      - name: Release docs
+        if: github.event_name == 'release' && !github.event.release.prerelease
+        run: |
+          cd docs
+          echo Deploy as ${{ steps.latest.outputs.release }} 
+          mike deploy -b ${{ env.SITE_BRANCH }} ${{ steps.latest.outputs.release }} -p
+          mike set-default -b ${{ env.SITE_BRANCH }} ${{ steps.latest.outputs.release }} -p     

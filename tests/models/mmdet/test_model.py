@@ -79,6 +79,7 @@ def mask_dls_model(coco_mask_records, samples_source):
     return train_dl, valid_dl, model, model_type
 
 
+@pytest.mark.skip
 def test_mmdet_mask_models_fastai(mask_dls_model):
     train_dl, valid_dl, model, model_type = mask_dls_model
 
@@ -88,6 +89,7 @@ def test_mmdet_mask_models_fastai(mask_dls_model):
     learn.fine_tune(1, 3e-4)
 
 
+@pytest.mark.skip
 def test_mmdet_mask_models_light(mask_dls_model):
     train_dl, valid_dl, model, model_type = mask_dls_model
 

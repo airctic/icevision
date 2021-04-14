@@ -18,6 +18,7 @@ def _predict_batch(
     records: Sequence[BaseRecord],
     detection_threshold: float = 0.5,
     mask_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ):
     model.eval()
@@ -26,10 +27,12 @@ def _predict_batch(
 
     raw_preds = model(*batch)
     return convert_raw_predictions(
+        batch=batch,
         raw_preds=raw_preds,
         records=records,
         detection_threshold=detection_threshold,
         mask_threshold=mask_threshold,
+        keep_images=keep_images,
     )
 
 
@@ -37,6 +40,8 @@ def predict(
     model: nn.Module,
     dataset: Dataset,
     detection_threshold: float = 0.5,
+    mask_threshold: float = 0.5,
+    keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
     batch, records = build_infer_batch(dataset)
@@ -45,47 +50,64 @@ def predict(
         batch=batch,
         records=records,
         detection_threshold=detection_threshold,
+        mask_threshold=mask_threshold,
+        keep_images=keep_images,
         device=device,
     )
 
 
 def predict_dl(
-    model: nn.Module, infer_dl: DataLoader, show_pbar: bool = True, **predict_kwargs
+    model: nn.Module,
+    infer_dl: DataLoader,
+    show_pbar: bool = True,
+    keep_images: bool = False,
+    **predict_kwargs
 ):
     return _predict_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
+        keep_images=keep_images,
         **predict_kwargs,
     )
 
 
 def convert_raw_predictions(
+    batch,
     raw_preds: List[dict],
     records: Sequence[BaseRecord],
     detection_threshold: float,
     mask_threshold: float,
+    keep_images: bool = False,
 ):
     return [
         convert_raw_prediction(
+            sample=sample,
             raw_pred=raw_pred,
             record=record,
             detection_threshold=detection_threshold,
             mask_threshold=mask_threshold,
+            keep_image=keep_images,
         )
-        for raw_pred, record in zip(raw_preds, records)
+        for sample, raw_pred, record in zip(zip(*batch), raw_preds, records)
     ]
 
 
 def convert_raw_prediction(
+    sample,
     raw_pred: dict,
     record: Sequence[BaseRecord],
     detection_threshold: float,
     mask_threshold: float,
+    keep_image: bool = False,
 ):
     pred = faster_convert_raw_prediction(
-        raw_pred=raw_pred, record=record, detection_threshold=detection_threshold
+        sample=sample,
+        raw_pred=raw_pred,
+        record=record,
+        detection_threshold=detection_threshold,
+        keep_image=keep_image,
     )
 
     above_threshold = pred.detection.above_threshold

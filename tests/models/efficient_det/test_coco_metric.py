@@ -30,7 +30,10 @@ def test_efficientdet_coco_metric(
     raw_preds = fridge_efficientdet_model(*batch)
 
     preds = efficientdet.convert_raw_predictions(
-        raw_preds["detections"], fridge_efficientdet_records, 0
+        batch=batch,
+        raw_preds=raw_preds["detections"],
+        records=fridge_efficientdet_records,
+        detection_threshold=0.0,
     )
 
     coco_metric = COCOMetric(print_summary=True)

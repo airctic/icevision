@@ -1,4 +1,4 @@
-__all__ = ["learner"]
+__all__ = ["mmdetection_learner"]
 
 from icevision.imports import *
 from icevision.models.mmdet.common import loss_fn
@@ -6,7 +6,7 @@ from icevision.models.mmdet.fastai.callbacks import *
 from icevision.engines.fastai import *
 
 
-def learner(
+def mmdetection_learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
@@ -24,7 +24,6 @@ def learner(
     # Returns
         A fastai `Learner`.
     """
-    cbs = [MMDetectionCallback()] + L(cbs)
 
     learn = adapted_fastai_learner(
         dls=dls,

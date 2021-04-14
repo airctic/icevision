@@ -3,7 +3,7 @@ __all__ = [
     "unfreeze",
     "freeze",
     "transform_dl",
-    "common_build_batch",
+    "apply_batch_tfms",
     "_predict_dl",
 ]
 
@@ -53,15 +53,33 @@ def freeze(params):
 
 
 def transform_dl(dataset, build_batch, batch_tfms=None, **dataloader_kwargs):
-    collate_fn = partial(build_batch, batch_tfms=batch_tfms)
+    """Creates collate_fn from build_batch by decorating it with apply_batch_tfms and unload_records"""
+    collate_fn = apply_batch_tfms(build_batch, batch_tfms=batch_tfms)
+    collate_fn = unload_records(collate_fn)
     return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
 
 
-def common_build_batch(records: Sequence[RecordType], batch_tfms=None):
-    if batch_tfms is not None:
-        records = batch_tfms(records)
+def apply_batch_tfms(build_batch, batch_tfms=None):
+    """This decorator function applies batch_tfms to records before passing them to build_batch"""
 
-    return records
+    def inner(records):
+        if batch_tfms is not None:
+            records = batch_tfms(records)
+        return build_batch(records)
+
+    return inner
+
+
+def unload_records(build_batch):
+    """This decorator function unloads records to not carry them around after batch creation"""
+
+    def inner(records):
+        tupled_output, records = build_batch(records)
+        for record in records:
+            record.unload()
+        return tupled_output, records
+
+    return inner
 
 
 @torch.no_grad()
@@ -69,12 +87,19 @@ def _predict_dl(
     predict_fn,
     model: nn.Module,
     infer_dl: DataLoader,
+    keep_images: bool = False,
     show_pbar: bool = True,
     **predict_kwargs,
 ) -> List[Prediction]:
     all_preds = []
     for batch, records in pbar(infer_dl, show=show_pbar):
-        preds = predict_fn(model=model, batch=batch, records=records, **predict_kwargs)
+        preds = predict_fn(
+            model=model,
+            batch=batch,
+            records=records,
+            keep_images=keep_images,
+            **predict_kwargs,
+        )
         all_preds.extend(preds)
 
     return all_preds

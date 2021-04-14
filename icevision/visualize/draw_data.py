@@ -80,10 +80,17 @@ def draw_sample(
         #  Should be as the only composite without ClassMap should be
         #  `sample.common`. This is a foundational assumption? #NOTE
         class_map = getattr(composite, "class_map", None)
+
+        # HACK
+        if hasattr(composite, "masks"):
+            masks = composite.masks.to_mask(h=sample.height, w=sample.width)
+        else:
+            masks = []
+
         for label, bbox, mask, keypoints, score in itertools.zip_longest(
             getattr(composite, "labels", []),  # list of strings
             getattr(composite, "bboxes", []),
-            getattr(composite, "masks", []),
+            masks,
             getattr(composite, "keypoints", []),
             getattr(composite, "scores", []),
         ):

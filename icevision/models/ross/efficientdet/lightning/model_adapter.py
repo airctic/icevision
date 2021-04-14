@@ -44,7 +44,10 @@ class ModelAdapter(LightningModelAdapter, ABC):
         with torch.no_grad():
             raw_preds = self(xb, yb)
             preds = efficientdet.convert_raw_predictions(
-                raw_preds["detections"], records, 0
+                batch=(xb, yb),
+                raw_preds=raw_preds["detections"],
+                records=records,
+                detection_threshold=0.0,
             )
             loss = efficientdet.loss_fn(raw_preds, yb)
 

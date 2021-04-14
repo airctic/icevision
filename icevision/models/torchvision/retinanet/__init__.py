@@ -5,6 +5,7 @@ from icevision.models.torchvision.retinanet.dataloaders import *
 from icevision.models.torchvision.retinanet.model import *
 from icevision.models.torchvision.retinanet.prediction import *
 from icevision.models.torchvision.retinanet.show_results import *
+from icevision.models.torchvision.retinanet.show_batch import *
 
 # Soft dependencies
 from icevision.soft_dependencies import SoftDependencies

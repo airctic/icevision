@@ -94,7 +94,7 @@ def _build_train_sample(
 
 
 def build_train_batch(
-    records: Sequence[RecordType], batch_tfms=None
+    records: Sequence[RecordType],
 ) -> Tuple[List[torch.Tensor], List[Dict[str, torch.Tensor]]]:
     """Builds a batch in the format required by the model when training.
 
@@ -104,8 +104,8 @@ def build_train_batch(
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -115,8 +115,6 @@ def build_train_batch(
     outs = model(*batch)
     ```
     """
-    records = common_build_batch(records=records, batch_tfms=batch_tfms)
-
     images, targets = [], []
     for record in records:
         image, target = _build_train_sample(record)
@@ -127,7 +125,7 @@ def build_train_batch(
 
 
 def build_valid_batch(
-    records: List[RecordType], batch_tfms=None
+    records: List[RecordType],
 ) -> Tuple[List[torch.Tensor], Dict[str, torch.Tensor]]:
     """Builds a batch in the format required by the model when validating.
 
@@ -137,8 +135,8 @@ def build_valid_batch(
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -148,20 +146,19 @@ def build_valid_batch(
     outs = model(*batch)
     ```
     """
-    return build_train_batch(records=records, batch_tfms=batch_tfms)
+    return build_train_batch(records=records)
 
 
-def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
+def build_infer_batch(records: Sequence[RecordType]):
     """Builds a batch in the format required by the model when doing inference.
 
     # Arguments
         records: A `Sequence` of records.
-        batch_tfms: Transforms to be applied at the batch level.
 
     # Returns
         A tuple with two items. The first will be a tuple like `(images, targets)`,
-        in the input format required by the model. The second will be an updated list
-        of the input records with `batch_tfms` applied.
+        in the input format required by the model. The second will be a list
+        of the input records.
 
     # Examples
 
@@ -171,9 +168,7 @@ def build_infer_batch(dataset: Sequence[RecordType], batch_tfms=None):
     outs = model(*batch)
     ```
     """
-    samples = common_build_batch(dataset, batch_tfms=batch_tfms)
-
-    tensor_imgs = [im2tensor(sample.img) for sample in samples]
+    tensor_imgs = [im2tensor(record.img) for record in records]
     tensor_imgs = torch.stack(tensor_imgs)
 
-    return (tensor_imgs,), samples
+    return (tensor_imgs,), records

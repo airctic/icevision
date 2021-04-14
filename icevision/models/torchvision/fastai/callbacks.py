@@ -30,5 +30,6 @@ class RCNNCallback(fastai.Callback, ABC):
             self.learn.pred = self.model(*self.xb)
             self.model.train()
 
-            preds = self.convert_raw_predictions(raw_preds=self.pred)
+            batch = (*self.xb, *self.yb)
+            preds = self.convert_raw_predictions(batch=batch, raw_preds=self.pred)
             self.learn.converted_preds = preds

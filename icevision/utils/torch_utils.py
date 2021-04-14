@@ -1,5 +1,6 @@
 __all__ = [
     "to_np",
+    "tensor_to_image",
     "requires_grad",
     "model_device",
     "params",
@@ -12,6 +13,10 @@ from icevision.imports import *
 
 def to_np(t):
     return t.detach().cpu().numpy()
+
+
+def tensor_to_image(t: Tensor) -> np.ndarray:
+    return t.detach().cpu().numpy().transpose(1, 2, 0)
 
 
 def requires_grad(model, layer):
