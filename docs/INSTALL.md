@@ -3,6 +3,12 @@
 
 ## A- Installation using pip
 
+!!! info "Note"  
+    Please do not forget to install the other optional dependencies if you would like to use them:
+    
+    - MMCV+MMDetection, and/or 
+
+    - YOLOv5 
 ### **Option 1:** Installing from pypi repository **[Stable Version]**
  
 To install icevision package together with almost all dependencies:
@@ -12,6 +18,7 @@ To install icevision package together with almost all dependencies:
 $ pip install icevision[all]
 ```
 </div>
+
 
 ### **Option 2:** Installing an editable package locally **[For Developers]**
 
@@ -27,10 +34,11 @@ Then, clone the repo and install the package:
 ```console
 $ git clone --depth=1 https://github.com/airctic/icevision.git
 $ cd icevision
-$ pip install -e ".[all,dev]"
+$ pip install -e .[all,dev]
 $ pre-commit install
 ```
 </div>
+
 
 ### **Option 3:** Installing a non-editable package from GitHub:
 
@@ -43,8 +51,9 @@ $ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --up
 ```
 </div>
 
+
 ## B- Installation using conda
-Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **ice**
+Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **icevision**
 
 <div class="termy">
 ```console
@@ -56,24 +65,30 @@ $ pip install icevision[all]
 
 ## Optional dependencies
 
-### MMDetection
-Follow the instructions [here](https://mmdetection.readthedocs.io/en/latest/get_started.html#installation) to install and enable mmdetection support.
+### MMDetection Installation
 
-## Troubleshooting
+We need to provide the appropriate version of the `mmcv-full` package as well as the `cuda` and the `torch` versions. Here are some examples for both the **CUDA** and the **CPU** versions  
 
-### Fixing the Error: Failed building wheel for pycocotools
-If you encounter the **Failed building wheel for pycocotools error** (see screenshoot here below), you can easily fix it by installing  `gcc` from your linux terminal as shown in the following steps:
 
+#### CUDA-Version Installation Example
 <div class="termy">
 ```console
-$ sudo apt update
-$ sudo apt install gcc
+$ pip install mmcv-full=="1.2.5" -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.7.0/index.html --upgrade
+$ pip install mmdet
 ```
 </div>
 
-![image](images/pycoco-installation-issue.png)
+#### CPU-Version Installation
+<div class="termy">
+```console
+$ pip install mmcv-full=="1.2.5+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
+$ pip install mmdet
+```
+</div>
 
-
-!!! info "Note" 
-    You can check out the following blog post: [3 ways to pip install a package ](https://ai-fast-track.github.io/blog/python/2020/03/17/how-to-pip-install-package.html) for more a detailed explantion on how to choose the most convenient installation option for you. 
-
+#### YOLOv5 Installation
+<div class="termy">
+```console
+$ pip install yolov5-icevision --upgrade
+```
+</div>
