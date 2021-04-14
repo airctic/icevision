@@ -1077,7 +1077,7 @@
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/voc_predefined_splits.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <h1 id="how-to-parse-a-voc-dataset-using-predefined-splits">How to parse a voc dataset using predefined splits</h1>
 <h2 id="install-and-import-icevision-and-icedata">Install and import IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all] icedata</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span> 
 </code></pre></div>
@@ -1094,7 +1094,7 @@
 </code></pre></div>
 <h2 id="split-data-using-imagesets">Split data using imagesets</h2>
 <p>ImageSets directory contains text files containing subsets of the dataset. We will split our dataset using the train and validation sets for aeroplanes.</p>
-<p>ImageSets directory contains multiple text files containing subsets of images from JPEGImages. We can use these files to select subsets of our data ie aeroplanes. The values we need to pass to FixedSplitter are the values returned by imageid in our parser rather than the filenames.</p>
+<p>ImageSets directory contains multiple text files containing subsets of images from JPEGImages. We can use these files to select subsets of our data ie aeroplanes. The values we need to pass to FixedSplitter are the values returned by <code>record_id</code> in our parser rather than the filenames.</p>
 <div class="highlight"><pre><span></span><code><span class="n">train</span> <span class="o">=</span> <span class="p">[(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">imagesets_dir</span> <span class="o">/</span> <span class="s2">&quot;aeroplane_train.txt&quot;</span><span class="p">)]</span>
 <span class="n">val</span> <span class="o">=</span> <span class="p">[(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">imagesets_dir</span> <span class="o">/</span> <span class="s2">&quot;aeroplane_val.txt&quot;</span><span class="p">)]</span>
 </code></pre></div>
@@ -1102,15 +1102,19 @@
 <span class="n">data_splitter</span> <span class="o">=</span> <span class="n">FixedSplitter</span><span class="p">(</span><span class="n">presplits</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="parser-use-icevision-predefined-voc-parser">Parser: use icevision predefined VOC parser</h2>
-<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">voc</span><span class="p">(</span>
-    <span class="n">annotations_dir</span><span class="o">=</span><span class="n">annotations_dir</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">images_dir</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VocXmlParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">annotations_dir</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">images_dir</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="train-and-validation-records">Train and validation records</h2>
-<div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data_splitter</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data_splitter</span><span class="p">,</span> <span class="n">autofix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">train_records</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">train_records</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/17125 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/voc_predefined_splits/voc_predefined_splits_19_0.png" /></p>
                 
               
               
