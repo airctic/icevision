@@ -12,7 +12,7 @@ def _test_preds(preds):
 
     assert isinstance(pred.detection.bboxes[0], BBox)
     bboxes_np = np.array([bbox.xyxy for bbox in pred.detection.bboxes])
-    bboxes_expected = np.array([[66, 57, 169, 257], [114, 222, 350, 285]])
+    bboxes_expected = np.array([[65, 59, 170, 261], [123, 212, 341, 292]])
     np.testing.assert_allclose(bboxes_np, bboxes_expected, atol=1)
 
 
