@@ -48,7 +48,7 @@ nav:
   - Home: index.md
   - Installation: install.md
   - Getting Started:
-    - Object Detection: quickstart_object_detection.md
+    - Object Detection: getting_started_object_detection.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
   - Other Tutorials:
