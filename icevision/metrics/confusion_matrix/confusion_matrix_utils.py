@@ -57,15 +57,6 @@ def zeroify_items_below_threshold(
     return iou_scores * (iou_scores > threshold).byte()
 
 
-def couple_with_targets(predicted_bboxes, iou_scores) -> Sequence:
-    """Connects detected bounding boxes with ground truths by iou > 0"""
-    ious_per_target = iou_scores.split(1, dim=1)
-    return [
-        list(itertools.compress(predicted_bboxes, iou.bool()))
-        for iou in ious_per_target
-    ]
-
-
 def pick_best_score_labels(predicted_bboxes, confidence_threshold: float = 0.5):
     # fill with dummy if list of predicted labels is empty
     BACKGROUND_IDX = 0
@@ -101,7 +92,7 @@ def pairwise_bboxes_iou(
     return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
-def pairwise_iou_record_record(prediction: BaseRecord, target: BaseRecord):
+def pairwise_iou_record_record(target: BaseRecord, prediction: BaseRecord):
     """
     Calculates pairwise iou on prediction and target BaseRecord. Uses torchvision implementation of `box_iou`.
     """
@@ -113,6 +104,42 @@ def pairwise_iou_record_record(prediction: BaseRecord, target: BaseRecord):
         torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
     )
     return torchvision.ops.box_iou(stacked_preds, stacked_targets)
+
+
+def match_records(
+    target: BaseRecord, prediction: BaseRecord, iou_threshold: float = 0.5
+) -> Collection:
+    """
+    matches bboxes, labels from targets with their predictions by iou threshold
+    """
+    # here we get a tensor of indices that match iou criteria (order is (pred_id, target_id))
+    iou_table = pairwise_iou_record_record(target=target, prediction=prediction)
+    pairs_indices = torch.nonzero(iou_table > iou_threshold)
+
+    # creating a list of [target, matching_predictions]
+    target_list = [
+        [dict(target_bbox=bbox, target_label=label), []]
+        for bbox, label in zip(target.detection.bboxes, target.detection.labels)
+    ]
+    prediction_list = [
+        dict(predicted_bbox=bbox, predicted_label=label, score=score)
+        for bbox, label, score in zip(
+            prediction.detection.bboxes,
+            prediction.detection.labels,
+            prediction.detection.scores,
+        )
+    ]
+
+    # appending matches to targets
+    for pred_id, target_id in pairs_indices:
+        single_prediction = deepcopy(prediction_list[pred_id])
+        # python value casting needs rounding cause otherwise there are 0.69999991 values
+        iou_score = round(iou_table[pred_id, target_id].item(), 4)
+        single_prediction["iou_score"] = iou_score
+        # seems like a magic number, but we want to append to the list of target's matching_predictions
+        target_list[target_id][1].append(single_prediction)
+
+    return target_list
 
 
 def add_unknown_labels(ground_truths, predictions, class_map):
@@ -129,6 +156,15 @@ def add_unknown_labels(ground_truths, predictions, class_map):
     for missing_idx in ground_truth_idxs.union(prediction_idxs) - class_map_idxs:
         class_map.add_name(f"unknown_id_{missing_idx}")
     return class_map
+
+
+def couple_with_targets(predicted_bboxes, iou_scores) -> Sequence:
+    """Connects detected bounding boxes with ground truths by iou > 0"""
+    ious_per_target = iou_scores.split(1, dim=1)
+    return [
+        list(itertools.compress(predicted_bboxes, iou.bool()))
+        for iou in ious_per_target
+    ]
 
 
 def match_preds_with_targets(

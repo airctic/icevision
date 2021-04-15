@@ -36,7 +36,7 @@ def predicted_bboxes():
     return [
         BBox.from_xywh(100, 100, 300, 300),
         BBox.from_xywh(190, 100, 320, 300),
-        BBox.from_xywh(700, 200, 200, 300),
+        BBox.from_xywh(400, 200, 200, 300),
     ]
 
 
@@ -50,7 +50,7 @@ def predicted_bboxes_wrong():
 
 
 @pytest.fixture
-def record(target_bboxes):
+def target(target_bboxes):
     record = record_template()
     record.detection.set_labels_by_id([1, 2, 2])
     record.detection.set_bboxes(target_bboxes)
@@ -64,18 +64,7 @@ def prediction(predicted_bboxes, predicted_bboxes_wrong):
     pred.add_component(ScoresRecordComponent())
     pred.detection.set_labels_by_id([1, 2, 2, 1, 0, 2])
     pred.detection.set_bboxes(predicted_bboxes + predicted_bboxes_wrong)
-    pred.detection.set_scores([0.8, 0.7, 0.5, 0.6, 0.2])
-    return pred
-
-
-@pytest.fixture()
-def wrong_prediction(predicted_bboxes_wrong):
-    pred = record_template()
-
-    pred.add_component(ScoresRecordComponent())
-    pred.detection.set_labels_by_id([1, 1, 2])
-    pred.detection.set_bboxes(predicted_bboxes_wrong)
-    pred.detection.set_scores([0.8, 0.7, 1.0])
+    pred.detection.set_scores([0.8, 0.7, 0.5, 0.6, 0.2, 0.4])
     return pred
 
 
@@ -98,110 +87,66 @@ def test_zeroify():
     assert torch.equal(zeroify_items_below_threshold(t, 1000), expected_result_1)
 
 
-# todo: refactor below 3 to pairwise record record
-def test_pairwise_iou_matching(predicted_bboxes, target_bboxes):
-    result = pairwise_bboxes_iou(predicted_bboxes, target_bboxes)
-    expected_result = torch.tensor(
-        [[1.0000, 0.2000, 0.0000], [0.5122, 0.5122, 0.0000], [0.0000, 0.0000, 1.0000]]
+def test_pairwise_iou_empty(target, empty_prediction):
+    result = pairwise_iou_record_record(target=target, prediction=empty_prediction)
+    empty_result = pairwise_iou_record_record(
+        prediction=empty_prediction, target=empty_prediction
     )
-    assert torch.allclose(result, expected_result)
-    return result
-
-
-def test_pairwise_iou_not_matching(predicted_bboxes_wrong, target_bboxes):
-    result = pairwise_bboxes_iou(predicted_bboxes_wrong, target_bboxes)
-    expected_result = torch.tensor(
-        [[0.1026, 0.0000, 0.0000], [0.1246, 0.0000, 0.0000], [0.1026, 0.0000, 0.0000]]
-    )
-    assert torch.isclose(result, expected_result, 1e-3).all()
-
-
-def test_pairwise_iou_empty(target_bboxes):
-    result = pairwise_bboxes_iou([], target_bboxes)
-    empty_result = pairwise_bboxes_iou([], [])
     assert result.numel() == 0
     assert result.shape == (0, 3)
     assert empty_result.numel() == 0
     assert empty_result.shape == (0, 0)
 
 
-def test_pairwise_iou_record_record(records, preds):
-    for prediction, target in zip(preds, records):
-        result = pairwise_iou_record_record(prediction=prediction, target=target)
-        assert isinstance(result, torch.Tensor)
-
-
-def test_couple_with_targets(target_bboxes, predicted_bboxes):
-    predicted_bboxes = predicted_bboxes
-
-    iou = pairwise_bboxes_iou(
-        predicted_bboxes=predicted_bboxes, target_bboxes=target_bboxes
-    )
-    coupled_list = couple_with_targets(
-        predicted_bboxes=predicted_bboxes, iou_scores=iou
-    )
-    expected_result = [
-        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
-        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
-        [BBox.from_xywh(700, 200, 200, 300)],
-    ]
-    assert len(coupled_list) == 3
-    assert [len(preds) for preds in coupled_list] == [2, 2, 1]
-    assert coupled_list == expected_result
-
-
-def test_couple_records(record, prediction):
-    predicted_bboxes = record2predictions(prediction)
-    target_bboxes = record2targets(record)
-
-    iou = pairwise_bboxes_iou(
-        predicted_bboxes=predicted_bboxes, target_bboxes=target_bboxes
-    )
-    coupled_list = couple_with_targets(
-        predicted_bboxes=record2predictions(prediction), iou_scores=iou
-    )
-    expected_result = [
-        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
-        [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
-        [BBox.from_xywh(700, 200, 200, 300)],
-    ]
-    assert len(coupled_list) == 3
-    assert [len(preds) for preds in coupled_list] == [2, 2, 1]
-    assert coupled_list == expected_result
-
-
-def test_couple_with_wrong_preds(target_bboxes, predicted_bboxes_wrong):
-    iou_scores = pairwise_bboxes_iou(
-        predicted_bboxes=predicted_bboxes_wrong, target_bboxes=target_bboxes
-    )
-
-    that_match = torch.any(iou_scores > 0.5, dim=1)
-    iou_scores = iou_scores[that_match]
-    predicted_bboxes_wrong = list(
-        itertools.compress(predicted_bboxes_wrong, that_match)
-    )
-
-    coupled_list = couple_with_targets(
-        predicted_bboxes=predicted_bboxes_wrong, iou_scores=iou_scores
-    )
-    assert coupled_list == [[], [], []]
-
-
-def test_match_preds_with_targets(prediction, record):
-    targets, matched_preds = match_preds_with_targets(prediction, record)
-    assert len(targets) == len(matched_preds)
-    assert targets == [
-        (BBox.from_xyxy(100, 100, 400, 400), 1),
-        (BBox.from_xyxy(300, 100, 600, 400), 2),
-        (BBox.from_xyxy(700, 200, 900, 500), 2),
-    ]
-    assert matched_preds == [
+def test_pairwise_iou_matching(target, prediction):
+    result = pairwise_iou_record_record(target=target, prediction=prediction)
+    expected_result = torch.tensor(
         [
-            (BBox.from_xyxy(100, 100, 400, 400), 0.8, 1),
-            (BBox.from_xyxy(190, 100, 510, 400), 0.7, 2),
+            [1.0000, 0.2000, 0.0000],
+            [0.5122, 0.5122, 0.0000],
+            [0.0000, 0.3636, 0.0000],
+            [0.1026, 0.0000, 0.0000],
+            [0.1246, 0.0000, 0.0000],
+            [0.1026, 0.0000, 0.0000],
+        ]
+    )
+    assert torch.allclose(result, expected_result, atol=1e-4)
+
+
+def test_match_prediction(target, prediction):
+    result = match_records(target, prediction, iou_threshold=0.5)
+    expected_result = [
+        [
+            {"target_bbox": BBox.from_xyxy(100, 100, 400, 400), "target_label": "a"},
+            [
+                {
+                    "predicted_bbox": BBox.from_xyxy(100, 100, 400, 400),
+                    "predicted_label": "a",
+                    "score": 0.8,
+                    "iou_score": 1.0,
+                },
+                {
+                    "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
+                    "predicted_label": "b",
+                    "score": 0.7,
+                    "iou_score": 0.5122,
+                },
+            ],
         ],
         [
-            (BBox.from_xyxy(190, 100, 510, 400), 0.7, 2),
+            {"target_bbox": BBox.from_xyxy(300, 100, 600, 400), "target_label": "b"},
+            [
+                {
+                    "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
+                    "predicted_label": "b",
+                    "score": 0.7,
+                    "iou_score": 0.5122,
+                },
+            ],
         ],
-        [(BBox.from_xyxy(700, 200, 900, 500), 0.5, 2)],
+        [{"target_bbox": BBox.from_xyxy(700, 200, 900, 500), "target_label": "b"}, []],
     ]
+    assert result == expected_result
+
+
+# TODO: add tests for confusion matrix based on pure record matching
