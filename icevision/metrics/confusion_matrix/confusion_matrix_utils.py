@@ -101,19 +101,14 @@ def pairwise_bboxes_iou(
     return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
-def pairwise_iou_predictions_targets(
-    predictions: Collection[Prediction], targets: Collection[Target]
-):
+def pairwise_iou_record_record(prediction: BaseRecord, target: BaseRecord):
     """
-    Calculates pairwise iou on lists of bounding boxes. Uses torchvision implementation of `box_iou`.
-    :param predicted_bboxes:
-    :param target_bboxes:
-    :return:
+    Calculates pairwise iou on prediction and target BaseRecord. Uses torchvision implementation of `box_iou`.
     """
-    stacked_preds = [prediction.bbox.to_tensor() for prediction in predictions]
+    stacked_preds = [bbox.to_tensor() for bbox in prediction.detection.bboxes]
     stacked_preds = torch.stack(stacked_preds) if stacked_preds else torch.empty(0, 4)
 
-    stacked_targets = [target.bbox.to_tensor() for target in targets]
+    stacked_targets = [bbox.to_tensor() for bbox in target.detection.bboxes]
     stacked_targets = (
         torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
     )

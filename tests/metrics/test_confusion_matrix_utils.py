@@ -3,7 +3,23 @@ import pytest
 from icevision.all import *
 from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
 
-# from .test_coco_metric import records, preds
+
+def record_template():
+    record = BaseRecord(
+        (
+            SizeRecordComponent(),
+            FilepathRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+        )
+    )
+
+    class_map = ClassMap(["a", "b", "c"])
+    record.set_record_id(0)
+    record.set_filepath("none")
+    record.set_img_size(ImgSize(700, 700), original=True)
+    record.detection.set_class_map(class_map)
+    return record
 
 
 @pytest.fixture()
@@ -24,43 +40,6 @@ def predicted_bboxes():
     ]
 
 
-@pytest.fixture
-def record(target_bboxes):
-    def _get_record():
-        return BaseRecord(
-            (
-                SizeRecordComponent(),
-                FilepathRecordComponent(),
-                InstancesLabelsRecordComponent(),
-                BBoxesRecordComponent(),
-            )
-        )
-
-    class_map = ClassMap(["a", "b", "c"])
-
-    record = _get_record()
-    record.set_record_id(0)
-    record.set_filepath("none")
-    record.set_img_size(ImgSize(700, 700), original=True)
-    record.detection.set_class_map(class_map)
-    record.detection.add_labels_by_id([1, 2, 2])
-    record.detection.add_bboxes(target_bboxes)
-
-    return record
-
-
-@pytest.fixture()
-def pred(record, predicted_bboxes, predicted_bboxes_wrong):
-    pred = deepcopy(record)
-    pred.add_component(ScoresRecordComponent())
-
-    pred = deepcopy(pred)
-    pred.detection.set_labels_by_id([1, 2, 2, 1, 0, 2])
-    pred.detection.set_bboxes(predicted_bboxes + predicted_bboxes_wrong)
-    pred.detection.set_scores([0.8, 0.7, 0.5, 0.6, 0.2])
-    return pred
-
-
 @pytest.fixture()
 def predicted_bboxes_wrong():
     return [
@@ -70,12 +49,30 @@ def predicted_bboxes_wrong():
     ]
 
 
-@pytest.fixture()
-def wrong_preds(record, predicted_bboxes_wrong):
-    pred = deepcopy(record)
-    pred.add_component(ScoresRecordComponent())
+@pytest.fixture
+def record(target_bboxes):
+    record = record_template()
+    record.detection.set_labels_by_id([1, 2, 2])
+    record.detection.set_bboxes(target_bboxes)
+    return record
 
-    pred = deepcopy(pred)
+
+@pytest.fixture()
+def prediction(predicted_bboxes, predicted_bboxes_wrong):
+    pred = record_template()
+
+    pred.add_component(ScoresRecordComponent())
+    pred.detection.set_labels_by_id([1, 2, 2, 1, 0, 2])
+    pred.detection.set_bboxes(predicted_bboxes + predicted_bboxes_wrong)
+    pred.detection.set_scores([0.8, 0.7, 0.5, 0.6, 0.2])
+    return pred
+
+
+@pytest.fixture()
+def wrong_prediction(predicted_bboxes_wrong):
+    pred = record_template()
+
+    pred.add_component(ScoresRecordComponent())
     pred.detection.set_labels_by_id([1, 1, 2])
     pred.detection.set_bboxes(predicted_bboxes_wrong)
     pred.detection.set_scores([0.8, 0.7, 1.0])
@@ -83,8 +80,13 @@ def wrong_preds(record, predicted_bboxes_wrong):
 
 
 @pytest.fixture()
-def empty_detected_bboxes():
-    return []
+def empty_prediction():
+    pred = record_template()
+    pred.add_component(ScoresRecordComponent())
+    pred.detection.set_labels_by_id([])
+    pred.detection.set_bboxes([])
+    pred.detection.set_scores([])
+    return pred
 
 
 def test_zeroify():
@@ -96,6 +98,7 @@ def test_zeroify():
     assert torch.equal(zeroify_items_below_threshold(t, 1000), expected_result_1)
 
 
+# todo: refactor below 3 to pairwise record record
 def test_pairwise_iou_matching(predicted_bboxes, target_bboxes):
     result = pairwise_bboxes_iou(predicted_bboxes, target_bboxes)
     expected_result = torch.tensor(
@@ -113,16 +116,22 @@ def test_pairwise_iou_not_matching(predicted_bboxes_wrong, target_bboxes):
     assert torch.isclose(result, expected_result, 1e-3).all()
 
 
-def test_empty_iou(empty_detected_bboxes, target_bboxes):
-    result = pairwise_bboxes_iou(empty_detected_bboxes, target_bboxes)
-    empty_result = pairwise_bboxes_iou(empty_detected_bboxes, empty_detected_bboxes)
+def test_pairwise_iou_empty(target_bboxes):
+    result = pairwise_bboxes_iou([], target_bboxes)
+    empty_result = pairwise_bboxes_iou([], [])
     assert result.numel() == 0
     assert result.shape == (0, 3)
     assert empty_result.numel() == 0
     assert empty_result.shape == (0, 0)
 
 
-def test_couple_with_targets(target_bboxes, predicted_bboxes, pred):
+def test_pairwise_iou_record_record(records, preds):
+    for prediction, target in zip(preds, records):
+        result = pairwise_iou_record_record(prediction=prediction, target=target)
+        assert isinstance(result, torch.Tensor)
+
+
+def test_couple_with_targets(target_bboxes, predicted_bboxes):
     predicted_bboxes = predicted_bboxes
 
     iou = pairwise_bboxes_iou(
@@ -141,15 +150,15 @@ def test_couple_with_targets(target_bboxes, predicted_bboxes, pred):
     assert coupled_list == expected_result
 
 
-def test_couple_records(record, pred):
-    predicted_bboxes = record2predictions(pred)
+def test_couple_records(record, prediction):
+    predicted_bboxes = record2predictions(prediction)
     target_bboxes = record2targets(record)
 
     iou = pairwise_bboxes_iou(
         predicted_bboxes=predicted_bboxes, target_bboxes=target_bboxes
     )
     coupled_list = couple_with_targets(
-        predicted_bboxes=record2predictions(pred), iou_scores=iou
+        predicted_bboxes=record2predictions(prediction), iou_scores=iou
     )
     expected_result = [
         [BBox.from_xywh(100, 100, 300, 300), BBox.from_xywh(190, 100, 320, 300)],
@@ -178,15 +187,8 @@ def test_couple_with_wrong_preds(target_bboxes, predicted_bboxes_wrong):
     assert coupled_list == [[], [], []]
 
 
-def test_pairwise_predictions_targets_iou(record, pred):
-    predictions = record2predictions(pred)
-    targets = record2targets(record)
-    result = pairwise_iou_predictions_targets(predictions, targets)
-    assert isinstance(result, torch.Tensor)
-
-
-def test_match_preds_with_targets(pred, record):
-    targets, matched_preds = match_preds_with_targets(pred, record)
+def test_match_preds_with_targets(prediction, record):
+    targets, matched_preds = match_preds_with_targets(prediction, record)
     assert len(targets) == len(matched_preds)
     assert targets == [
         (BBox.from_xyxy(100, 100, 400, 400), 1),

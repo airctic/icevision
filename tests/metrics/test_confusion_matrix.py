@@ -1,6 +1,5 @@
 import pytest
 from icevision.all import *
-from .test_coco_metric import records, preds
 
 
 def test_confusion_matrix(records, preds):
