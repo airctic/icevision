@@ -15,7 +15,7 @@ def _predict_batch(
     batch: Sequence[torch.Tensor],
     records: Sequence[BaseRecord],
     detection_threshold: float = 0.25,
-    iou_threshold: float = 0.45,
+    nms_iou_threshold: float = 0.45,
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
@@ -30,7 +30,7 @@ def _predict_batch(
         raw_preds=raw_preds,
         records=records,
         detection_threshold=detection_threshold,
-        iou_threshold=iou_threshold,
+        nms_iou_threshold=nms_iou_threshold,
         keep_images=keep_images,
     )
 
@@ -39,7 +39,7 @@ def predict(
     model: nn.Module,
     dataset: Dataset,
     detection_threshold: float = 0.25,
-    iou_threshold: float = 0.45,
+    nms_iou_threshold: float = 0.45,
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
@@ -49,7 +49,7 @@ def predict(
         batch=batch,
         records=records,
         detection_threshold=detection_threshold,
-        iou_threshold=iou_threshold,
+        nms_iou_threshold=nms_iou_threshold,
         keep_images=keep_images,
         device=device,
     )
@@ -77,11 +77,11 @@ def convert_raw_predictions(
     raw_preds: torch.Tensor,
     records: Sequence[BaseRecord],
     detection_threshold: float,
-    iou_threshold: float,
+    nms_iou_threshold: float,
     keep_images: bool = False,
 ) -> List[Prediction]:
     dets = non_max_suppression(
-        raw_preds, conf_thres=detection_threshold, iou_thres=iou_threshold
+        raw_preds, conf_thres=detection_threshold, iou_thres=nms_iou_threshold
     )
     dets = [d.detach().cpu().numpy() for d in dets]
     preds = []
