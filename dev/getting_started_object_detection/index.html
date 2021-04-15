@@ -1284,7 +1284,7 @@
 <p>This tutorial walk you through the different steps of training the fridge dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
 <p>For more information about how the fridge dataset as well as its corresponding parser check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/fridge">fridge folder</a> in icedata.</p>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection Installation</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 <span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
@@ -1314,11 +1314,14 @@
 <li><strong>Ross Wightman</strong>: EfficientDet model</li>
 </ul>
 <p><code>model_type = models.ross.efficientdet</code></p>
-<div class="highlight"><pre><span></span><code><span class="c1"># model_type = models.torchvision.retinanet</span>
-<span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+<ul>
+<li><strong>Ultralytics</strong>: YOLO v5 model</li>
+</ul>
+<p><code>model_type = models.ultralytics.yolov5</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+<span class="c1"># model_type = models.torchvision.retinanet</span>
 <span class="c1"># model_type = models.ross.efficientdet</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>
+<span class="c1"># model_type = models.ultralytics.yolov5</span>
 </code></pre></div>
 <h2 id="choose-a-backbone">Choose a backbone</h2>
 <p>You can choose any supported backbone. IceVision gives access to numerous pretrained backbones. You can access to any supported backbone by following the IceVision unified API. You can use `code completion.</p>
@@ -1336,7 +1339,11 @@
 <ul>
 <li><strong>Ross Wightman</strong>: EfficientDet model</li>
 </ul>
-<p><code>backbone = model_type.ross.efficientdet</code></p>
+<p><code>backbone = model_type.backbones.tf_d2</code></p>
+<ul>
+<li><strong>Ultralytics</strong>: YOLO v5 model</li>
+</ul>
+<p><code>model_type = model_type.backbones.small</code></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Backbone for MMDetection Example</span>
 <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
 
@@ -1344,7 +1351,10 @@
 <span class="c1"># backbone = model_type.backbones.resnet50_fpn</span>
 
 <span class="c1"># Backbone for EfficientDet Example</span>
-<span class="c1"># backbone = model_type.backbones.d3</span>
+<span class="c1"># backbone = model_type.backbones.tf_d2</span>
+
+<span class="c1"># Backbone for YOLOv5</span>
+<span class="c1"># backbone = model_type.backbones.small</span>
 </code></pre></div>
 <h2 id="datasets-fridge-objects-dataset">Datasets : Fridge Objects dataset</h2>
 <p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
@@ -1358,14 +1368,9 @@
 <span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
 <span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/20380998 [00:00&lt;?, ?B/s]
-</code></pre></div>
-</div>
 <h2 id="parsing-a-dataset">Parsing a dataset</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VocXmlParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
-                     <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VocXmlParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parsing</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
@@ -1373,11 +1378,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/128 [00:00&lt;?, ?it/s]
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m136[0m
-
-&lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
+<div class="highlight"><pre><span></span><code>&lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
 </code></pre></div>
 </div>
 <h2 id="train-and-validation-dataset-transforms">Train and Validation Dataset Transforms</h2>
@@ -1400,16 +1401,16 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_22_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_21_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
 <span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># show ba</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_25_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_24_0.png" /></p>
 <h2 id="model_1">Model</h2>
 <p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object. We create a <code>backbone</code> object on-the-fly, and we can pass the <code>pretrained</code> argument. <code>pretrained=True</code> is a default argument. Therefore, we don't need to pass it. We are doing it, here below, for illustration purposes.</p>
 <blockquote>
@@ -1418,21 +1419,9 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># pretrained=True is a default setting, and can be omitted</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">))</span> 
 
-<span class="c1"># EfficietDet requires img_size</span>
+<span class="c1"># EfficietDet and YOLOv5 requires img_size</span>
 <span class="c1"># model = model_type.model(backbone=backbone(), num_classes=len(parser.class_map), img_size=384)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/152149505 [00:00&lt;?, ?B/s]
-
-The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>size mismatch for bbox_head.retina_cls.weight: copying a param with shape torch.Size([720, 256, 3, 3]) from checkpoint, the shape in current model is torch.Size([36, 256, 3, 3]).
-size mismatch for bbox_head.retina_cls.bias: copying a param with shape torch.Size([720]) from checkpoint, the shape in current model is torch.Size([36]).
-</code></pre></div>
-</div>
 <h2 id="metrics">Metrics</h2>
 <div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
 </code></pre></div>
@@ -1447,191 +1436,10 @@ size mismatch for bbox_head.retina_cls.bias: copying a param with shape torch.Si
 <span class="c1"># For Sparse-RCNN, use lower `end_lr`</span>
 <span class="c1"># learn.lr_find(end_lr=0.005)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=8.317637839354575e-05, lr_steep=9.120108734350652e-05)
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_33_2.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: left;">
-      <th>epoch</th>
-      <th>train_loss</th>
-      <th>valid_loss</th>
-      <th>COCOMetric</th>
-      <th>time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>1.297759</td>
-      <td>1.000517</td>
-      <td>0.215561</td>
-      <td>00:06</td>
-    </tr>
-  </tbody>
-</table>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: left;">
-      <th>epoch</th>
-      <th>train_loss</th>
-      <th>valid_loss</th>
-      <th>COCOMetric</th>
-      <th>time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>0.933891</td>
-      <td>0.758630</td>
-      <td>0.261361</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>0.824971</td>
-      <td>0.595900</td>
-      <td>0.342773</td>
-      <td>00:06</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>0.729179</td>
-      <td>0.473592</td>
-      <td>0.417635</td>
-      <td>00:06</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>0.645506</td>
-      <td>0.401591</td>
-      <td>0.555457</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>0.582668</td>
-      <td>0.344303</td>
-      <td>0.646777</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>0.523502</td>
-      <td>0.278436</td>
-      <td>0.770471</td>
-      <td>00:06</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>0.473686</td>
-      <td>0.232508</td>
-      <td>0.832334</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>0.433547</td>
-      <td>0.219104</td>
-      <td>0.819552</td>
-      <td>00:06</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>0.392727</td>
-      <td>0.201648</td>
-      <td>0.845338</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>0.359266</td>
-      <td>0.187493</td>
-      <td>0.838019</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td>0.334705</td>
-      <td>0.175224</td>
-      <td>0.861713</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>0.311823</td>
-      <td>0.159452</td>
-      <td>0.877455</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>12</td>
-      <td>0.294175</td>
-      <td>0.153165</td>
-      <td>0.886854</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td>0.280054</td>
-      <td>0.152422</td>
-      <td>0.882916</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>14</td>
-      <td>0.262864</td>
-      <td>0.147622</td>
-      <td>0.890688</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>15</td>
-      <td>0.252524</td>
-      <td>0.150507</td>
-      <td>0.890065</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>16</td>
-      <td>0.240473</td>
-      <td>0.145106</td>
-      <td>0.893887</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td>0.231188</td>
-      <td>0.142719</td>
-      <td>0.884477</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>18</td>
-      <td>0.223580</td>
-      <td>0.141264</td>
-      <td>0.887677</td>
-      <td>00:05</td>
-    </tr>
-    <tr>
-      <td>19</td>
-      <td>0.221578</td>
-      <td>0.141085</td>
-      <td>0.888600</td>
-      <td>00:05</td>
-    </tr>
-  </tbody>
-</table>
-
 <h3 id="training-using-lightning">Training using Lightning</h3>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">efficientdet</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
 
@@ -1643,7 +1451,7 @@ size mismatch for bbox_head.retina_cls.bias: copying a param with shape torch.Si
 <h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_39_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_38_0.png" /></p>
 <h2 id="inference">Inference</h2>
 <h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
 <p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
@@ -1655,7 +1463,7 @@ size mismatch for bbox_head.retina_cls.bias: copying a param with shape torch.Si
     <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_42_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_41_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
