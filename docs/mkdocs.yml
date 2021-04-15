@@ -48,7 +48,7 @@ nav:
   - Home: index.md
   - Installation: install.md
   - Getting Started:
-    - Object Detection: quickstart_object_detection.md
+    - Object Detection: getting_started_object_detection.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
   - Other Tutorials:
@@ -86,7 +86,6 @@ nav:
       # - Metrics:
       #   - COCOMetric: coco_metric.md
     - Data Splitters: data_splits.md
-  - How-To: how-to.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md
   - Code of Conduct: code_of_conduct.md

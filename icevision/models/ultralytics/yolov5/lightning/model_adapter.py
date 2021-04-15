@@ -48,7 +48,8 @@ class ModelAdapter(LightningModelAdapter, ABC):
                 batch=xb,
                 raw_preds=inference_out,
                 records=records,
-                detection_threshold=0,
+                detection_threshold=0.001,
+                nms_iou_threshold=0.6,
             )
             loss = self.compute_loss(training_out, yb)[0]
 
