@@ -7,7 +7,7 @@ from icevision.models.ultralytics.yolov5.backbones import *
     "backbone",
     [small, medium, large],
 )
-def test_fastai_yolo_train(fridge_ds, backbone):
+def test_lightning_yolo_train(fridge_ds, backbone):
     train_ds, valid_ds = fridge_ds
     train_dl = models.ultralytics.yolov5.train_dl(
         train_ds, batch_size=3, num_workers=0, shuffle=False
