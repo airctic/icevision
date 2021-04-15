@@ -24,7 +24,8 @@ from yolov5.utils.loss import ComputeLoss
 def show_results(
     model: nn.Module,
     dataset: Dataset,
-    detection_threshold: float = 0.5,
+    detection_threshold: float = 0.25,
+    iou_threshold: float = 0.45,
     num_samples: int = 6,
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
