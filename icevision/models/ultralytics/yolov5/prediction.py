@@ -19,7 +19,17 @@ def _predict_batch(
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
-    device = device or model_device(model)
+    # device issue addressed on discord: https://discord.com/channels/735877944085446747/770279401791160400/832361687855923250
+    if device is not None:
+        raise ValueError(
+            "For YOLOv5 device can only be specified during model creation, "
+            "for more info take a look at the discussion here: "
+            "https://discord.com/channels/735877944085446747/770279401791160400/832361687855923250"
+        )
+    grid = model.model[-1].grid[-1]
+    # if `grid.numel() == 1` it means the grid isn't initialized yet and we can't
+    # trust it's device (will always be CPU)
+    device = grid.device if grid.numel() > 1 else model_device(model)
 
     batch = batch[0].to(device)
     model = model.eval().to(device)
