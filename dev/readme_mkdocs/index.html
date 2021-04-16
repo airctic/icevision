@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/deployment/">
+        <link rel="canonical" href="https://airctic.com/dev/readme_mkdocs/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
     
     
       
-        <title>Overview - IceVision</title>
+        <title>Generating Docs - IceVision</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#deployment" class="md-skip">
+        <a href="#icevision-documentation" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Generating Docs
             
           </span>
         </div>
@@ -435,14 +435,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       <label class="md-nav__link" for="__nav_8">
         Deployment
@@ -458,20 +456,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
         Overview
       </a>
-      
     </li>
   
 
@@ -887,11 +876,49 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../readme_mkdocs/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Generating Docs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Generating Docs
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-documentation" class="md-nav__link">
+    Building the documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -944,6 +971,21 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-documentation" class="md-nav__link">
+    Building the documentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -955,9 +997,18 @@
               
                 
                 
-                <h1 id="deployment">Deployment</h1>
-<p>We offer some easy-to-use options to deploy models trained using IceVision framework. Please, check out the <a href="https://airctic.com/deployment/">deployment</a> section in our documentation or the <a href="https://github.com/airctic/icevision-gradio">icevision-gradio</a> repository. </p>
-<p>We are using <a href="https://www.gradio.app/">gradio</a> because it is a powerful yet to easy-to-use deployment option. </p>
+                <h1 id="icevision-documentation">IceVision Documentation</h1>
+<p>The source for IceVision documentation is in the <code>docs/</code> folder.
+Our documentation uses extended Markdown, as implemented by <a href="http://mkdocs.org">MkDocs</a>.</p>
+<h2 id="building-the-documentation">Building the documentation</h2>
+<ul>
+<li>Locally install the package as described <a href="https://airctic.com/install/#option-2-installing-an-editable-package-locally-for-developers">here</a></li>
+<li>From the root directory, <code>cd</code> into the <code>docs/</code> folder and run:<ul>
+<li><code>python autogen.py</code></li>
+<li><code>mkdocs serve</code>    # Starts a local webserver:  <a href="http://localhost:8000">localhost:8000</a></li>
+</ul>
+</li>
+</ul>
                 
               
               
@@ -976,7 +1027,7 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../backbones/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../contributing/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -985,19 +1036,19 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Backbones
+              Contributing Guide
             </div>
           </div>
         </a>
       
       
-        <a href="../IceApp_coco/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../code_of_conduct/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              COCO
+              Code of Conduct
             </div>
           </div>
           <div class="md-footer__button md-icon">
