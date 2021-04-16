@@ -1242,7 +1242,10 @@
 <h2 id="introduction">Introduction</h2>
 <p>In this tutorial, we walk you through the different steps of training the fridge dataset. Thanks to W&amp;B, we can easily track the performance of the EfficientDet model using different backbones. In this example, we are using the <a href="https://github.com/fastai/fastai">fastai</a> library training loop.</p>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">icevision</span><span class="p">[</span><span class="nb">all</span><span class="p">]</span> <span class="n">icedata</span>
+<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>

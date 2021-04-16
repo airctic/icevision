@@ -365,8 +365,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
   </a>
   
 </li>
@@ -1056,8 +1056,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    Installation
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
   </a>
   
 </li>
@@ -1161,24 +1161,27 @@
 <p class="admonition-title">Supported models</p>
 <p>At this moment only <code>models.torchvision</code> and <code>models.ross</code> support negative sampling.</p>
 </div>
-<h2 id="installation">Installation</h2>
-<div class="highlight"><pre><span></span><code>!pip install icevision[all] icedata
+<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
-<div class="highlight"><pre><span></span><code>from icevision.all import *
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
 <h2 id="raccoon-dataset">Raccoon dataset</h2>
 <p>The dataset is stored on github, so a simple <code>git clone</code> will do.</p>
-<div class="highlight"><pre><span></span><code>!git clone https://github.com/datitran/raccoon_dataset
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">datitran</span><span class="o">/</span><span class="n">raccoon_dataset</span>
 </code></pre></div>
 <p>The raccoon dataset uses the VOC annotation format, icevision natively supports this format:</p>
-<div class="highlight"><pre><span></span><code>raccoon_data_dir = Path(&#39;raccoon_dataset&#39;)
-raccoon_parser = parsers.VOCBBoxParser(annotations_dir=raccoon_data_dir /&#39;annotations&#39;, images_dir=raccoon_data_dir /&#39;images&#39;)
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;raccoon_dataset&#39;</span><span class="p">)</span>
+<span class="n">raccoon_parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">raccoon_data_dir</span> <span class="o">/</span><span class="s1">&#39;annotations&#39;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">raccoon_data_dir</span> <span class="o">/</span><span class="s1">&#39;images&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p>Let's go ahead and parse our data with the default 80% train, 20% valid, split.</p>
-<div class="highlight"><pre><span></span><code>raccoon_train_records, raccoon_valid_records = raccoon_parser.parse()
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_train_records</span><span class="p">,</span> <span class="n">raccoon_valid_records</span> <span class="o">=</span> <span class="n">raccoon_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>show_records(random.choices(raccoon_train_records, k=3), ncols=3, class_map=class_map)
+<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">raccoon_train_records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>  0%|          | 0/200 [00:00&lt;?, ?it/s]
@@ -1190,13 +1193,13 @@ raccoon_parser = parsers.VOCBBoxParser(annotations_dir=raccoon_data_dir /&#39;an
 <p><img alt="png" src="../images/negative_samples/negative_samples_16_0.png" /></p>
 <h2 id="pets-dataset">Pets dataset</h2>
 <p>With icedata we can easily download the pets dataset:</p>
-<div class="highlight"><pre><span></span><code>pets_data_dir = icedata.pets.load_data() / &#39;images&#39;
+<div class="highlight"><pre><span></span><code><span class="n">pets_data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pets</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;images&#39;</span>
 </code></pre></div>
 <p>Here we have a twist, instead of using the standard parser (<code>icedata.pets.parser</code>) which would parse all annotations, we will instead create a custom parser that only parsers the images.</p>
 <p>Remember the steps for generating a custom parser (check <a href="https://airctic.com/custom_parser/">this</a> tutorial for more information).</p>
-<div class="highlight"><pre><span></span><code>pets_template_record = ObjectDetectionRecord()
+<div class="highlight"><pre><span></span><code><span class="n">pets_template_record</span> <span class="o">=</span> <span class="n">ObjectDetectionRecord</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>Parser.generate_template(pets_template_record)
+<div class="highlight"><pre><span></span><code><span class="n">Parser</span><span class="o">.</span><span class="n">generate_template</span><span class="p">(</span><span class="n">pets_template_record</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>class MyParser(Parser):
@@ -1214,30 +1217,30 @@ raccoon_parser = parsers.VOCBBoxParser(annotations_dir=raccoon_data_dir /&#39;an
 </code></pre></div>
 </div>
 <p>And now we use that to fill the required methods. We don't have to use the <code>.detection</code> methods since we don't want bboxes for these images.</p>
-<div class="highlight"><pre><span></span><code>class PetsImageParser(Parser):
-    def __init__(self, template_record, data_dir):
-        super().__init__(template_record=template_record)
-        self.image_filepaths = get_image_files(data_dir)
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PetsImageParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_record</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">template_record</span><span class="o">=</span><span class="n">template_record</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_filepaths</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
 
-    def __iter__(self) -&gt; Any:
-        yield from self.image_filepaths
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_filepaths</span>
 
-    def __len__(self) -&gt; int:
-        return len(self.image_filepaths)
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_filepaths</span><span class="p">)</span>
 
-    def record_id(self, o) -&gt; Hashable:
-        return o.stem
+    <span class="k">def</span> <span class="nf">record_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hashable</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">stem</span>
 
-    def parse_fields(self, o, record, is_new):
-        if is_new:
-            record.set_img_size(get_img_size(o))
-            record.set_filepath(o)
+    <span class="k">def</span> <span class="nf">parse_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">record</span><span class="p">,</span> <span class="n">is_new</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_new</span><span class="p">:</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">set_img_size</span><span class="p">(</span><span class="n">get_img_size</span><span class="p">(</span><span class="n">o</span><span class="p">))</span>
+            <span class="n">record</span><span class="o">.</span><span class="n">set_filepath</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
 </code></pre></div>
 <p>Now we're ready to instantiate the parser and parse the data:</p>
-<div class="highlight"><pre><span></span><code>pets_parser = PetsImageParser(pets_template_record, pets_data_dir)
-pets_train_records, pets_valid_records = pets_parser.parse()
+<div class="highlight"><pre><span></span><code><span class="n">pets_parser</span> <span class="o">=</span> <span class="n">PetsImageParser</span><span class="p">(</span><span class="n">pets_template_record</span><span class="p">,</span> <span class="n">pets_data_dir</span><span class="p">)</span>
+<span class="n">pets_train_records</span><span class="p">,</span> <span class="n">pets_valid_records</span> <span class="o">=</span> <span class="n">pets_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>show_records(random.choices(pets_train_records, k=3), ncols=3)
+<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">pets_train_records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>  0%|          | 0/7390 [00:00&lt;?, ?it/s]
@@ -1249,45 +1252,45 @@ pets_train_records, pets_valid_records = pets_parser.parse()
 <p><img alt="png" src="../images/negative_samples/negative_samples_28_0.png" /></p>
 <h2 id="transforms">Transforms</h2>
 <p>Let's define a simple list of transforms, they are the same for both datasets.</p>
-<div class="highlight"><pre><span></span><code>presize = 512
-size = 384
+<div class="highlight"><pre><span></span><code><span class="n">presize</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">384</span>
 
-train_tfms = tfms.A.Adapter([*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()])
-valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size=size), tfms.A.Normalize()])
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 </code></pre></div>
 <h2 id="datasets-and-dataloaders">Datasets and DataLoaders</h2>
 <p>We create the raccoon dataset and dataloader as normal:</p>
-<div class="highlight"><pre><span></span><code>raccoon_train_ds = Dataset(raccoon_train_records, train_tfms)
-raccoon_valid_ds = Dataset(raccoon_valid_records, valid_tfms)
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">raccoon_valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 
-raccoon_train_dl = efficientdet.train_dl(raccoon_train_ds, batch_size=16, num_workers=4, shuffle=True)
-raccoon_valid_dl = efficientdet.valid_dl(raccoon_valid_ds, batch_size=16, num_workers=4, shuffle=False)
+<span class="n">raccoon_train_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">raccoon_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">raccoon_valid_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">raccoon_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <p>For adding the pets data, we simply have to combine the list of records. Note that the pets dataset contains a lot more images than the raccoon dataset, so we'll get only 100 images for train and 30 for valid, feel free to change these numbers and explore the results!</p>
-<div class="highlight"><pre><span></span><code>combined_train_ds = Dataset(raccoon_train_records + pets_train_records[:100], train_tfms)
-combined_valid_ds = Dataset(raccoon_valid_records + pets_valid_records[:30], valid_tfms)
+<div class="highlight"><pre><span></span><code><span class="n">combined_train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_train_records</span> <span class="o">+</span> <span class="n">pets_train_records</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">combined_valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_valid_records</span> <span class="o">+</span> <span class="n">pets_valid_records</span><span class="p">[:</span><span class="mi">30</span><span class="p">],</span> <span class="n">valid_tfms</span><span class="p">)</span>
 
-combined_train_dl = efficientdet.train_dl(combined_train_ds, batch_size=16, num_workers=4, shuffle=True)
-combined_valid_dl = efficientdet.valid_dl(combined_valid_ds, batch_size=16, num_workers=4, shuffle=False)
+<span class="n">combined_train_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">combined_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">combined_valid_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">combined_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <p>Let's take a look at the combined dataset:</p>
-<div class="highlight"><pre><span></span><code>show_samples(random.choices(combined_train_ds, k=6), class_map=class_map, ncols=3)
+<div class="highlight"><pre><span></span><code><span class="n">show_samples</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">combined_train_ds</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="png" src="../images/negative_samples/negative_samples_38_0.png" /></p>
 <h2 id="metrics">Metrics</h2>
 <p>As usual, let's stick with our <code>COCOMetric</code>:</p>
-<div class="highlight"><pre><span></span><code>metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
 </code></pre></div>
 <h2 id="models">Models</h2>
 <p>We're now ready to train a separate model for each dataset and see how the results change!</p>
 <h3 id="raccoons-only">Raccoons only</h3>
-<div class="highlight"><pre><span></span><code>model_type = models.ross.efficientdet
-backbone = model_type.backbones.tf_lite0()
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>raccoon_model = efficientdet.model(backbone, num_classes=len(raccoon_parser.class_map), img_size=size)
-raccoon_learn = efficientdet.fastai.learner(dls=[raccoon_train_dl, raccoon_valid_dl], model=raccoon_model, metrics=metrics)
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">raccoon_learn</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">raccoon_train_dl</span><span class="p">,</span> <span class="n">raccoon_valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">raccoon_model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>raccoon_learn.fine_tune(30, 1e-2, freeze_epochs=5)
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1563,14 +1566,14 @@ raccoon_learn = efficientdet.fastai.learner(dls=[raccoon_train_dl, raccoon_valid
 </table>
 
 <p>If only raccoon photos are showed during training, everything is a raccoon!</p>
-<div class="highlight"><pre><span></span><code>efficientdet.show_results(raccoon_model, combined_valid_ds)
+<div class="highlight"><pre><span></span><code><span class="n">efficientdet</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">raccoon_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="png" src="../images/negative_samples/negative_samples_49_0.png" /></p>
 <h3 id="raccoons-pets">Raccoons + pets</h3>
-<div class="highlight"><pre><span></span><code>combined_model = efficientdet.model(backbone, num_classes=len(raccoon_parser.class_map), img_size=size)
-combined_learn = efficientdet.fastai.learner(dls=[combined_train_dl, combined_valid_dl], model=combined_model, metrics=metrics)
+<div class="highlight"><pre><span></span><code><span class="n">combined_model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">combined_learn</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">combined_train_dl</span><span class="p">,</span> <span class="n">combined_valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">combined_model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>combined_learn.fine_tune(30, 1e-2, freeze_epochs=5)
+<div class="highlight"><pre><span></span><code><span class="n">combined_learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1846,7 +1849,7 @@ combined_learn = efficientdet.fastai.learner(dls=[combined_train_dl, combined_va
 </table>
 
 <p>When negative samples are used during training, the model get's way better understading what <strong>is not</strong> a raccoon.</p>
-<div class="highlight"><pre><span></span><code>efficientdet.show_results(combined_model, combined_valid_ds)
+<div class="highlight"><pre><span></span><code><span class="n">efficientdet</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">combined_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
 </code></pre></div>
 <p><img alt="png" src="../images/negative_samples/negative_samples_54_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>

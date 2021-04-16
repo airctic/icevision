@@ -377,8 +377,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-and-import-icevision-and-icedata" class="md-nav__link">
-    Install and import IceVision and IceData
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
   </a>
   
 </li>
@@ -1022,8 +1029,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#install-and-import-icevision-and-icedata" class="md-nav__link">
-    Install and import IceVision and IceData
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
   </a>
   
 </li>
@@ -1085,9 +1099,13 @@
                 
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/voc_predefined_splits.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <h1 id="how-to-parse-a-voc-dataset-using-predefined-splits">How to parse a voc dataset using predefined splits</h1>
-<h2 id="install-and-import-icevision-and-icedata">Install and import IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all] icedata</span>
+<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
+<h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span> 
 </code></pre></div>
 <h2 id="load-pascal-voc-2012-dataset">Load Pascal VOC 2012 dataset</h2>
@@ -1123,7 +1141,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/voc_predefined_splits/voc_predefined_splits_19_0.png" /></p>
+<p><img alt="png" src="../images/voc_predefined_splits/voc_predefined_splits_20_0.png" /></p>
                 
               
               

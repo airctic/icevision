@@ -299,8 +299,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#instaling-icevision" class="md-nav__link">
-    Instaling icevision
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
   </a>
   
 </li>
@@ -1029,8 +1029,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#instaling-icevision" class="md-nav__link">
-    Instaling icevision
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
   </a>
   
 </li>
@@ -1099,9 +1099,11 @@
                 
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/custom_parser.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <h1 id="custom-parser-simple">Custom Parser - Simple</h1>
-<h2 id="instaling-icevision">Instaling icevision</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># !pip install icevision[all]</span>
-<span class="c1"># !pip install icedata</span>
+<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <p>As always, let's import everything from <code>icevision</code>. Additionally, we will also need <code>pandas</code> (you might need to install it with <code>pip install pandas</code>).</p>
@@ -1156,7 +1158,7 @@
   <tbody>
     <tr>
       <th>0</th>
-      <td>4de23afff63bc169b4ebe547a9c9b692_jpg.rf.0cf789652d85886de3d00b05bef061eb.jpg</td>
+      <td>0.jpg</td>
       <td>416</td>
       <td>416</td>
       <td>black-bishop</td>
@@ -1167,7 +1169,7 @@
     </tr>
     <tr>
       <th>1</th>
-      <td>4de23afff63bc169b4ebe547a9c9b692_jpg.rf.0cf789652d85886de3d00b05bef061eb.jpg</td>
+      <td>0.jpg</td>
       <td>416</td>
       <td>416</td>
       <td>black-king</td>
@@ -1178,7 +1180,7 @@
     </tr>
     <tr>
       <th>2</th>
-      <td>4de23afff63bc169b4ebe547a9c9b692_jpg.rf.0cf789652d85886de3d00b05bef061eb.jpg</td>
+      <td>0.jpg</td>
       <td>416</td>
       <td>416</td>
       <td>black-queen</td>
@@ -1189,7 +1191,7 @@
     </tr>
     <tr>
       <th>3</th>
-      <td>4de23afff63bc169b4ebe547a9c9b692_jpg.rf.0cf789652d85886de3d00b05bef061eb.jpg</td>
+      <td>0.jpg</td>
       <td>416</td>
       <td>416</td>
       <td>black-rook</td>
@@ -1200,7 +1202,7 @@
     </tr>
     <tr>
       <th>4</th>
-      <td>4de23afff63bc169b4ebe547a9c9b692_jpg.rf.0cf789652d85886de3d00b05bef061eb.jpg</td>
+      <td>0.jpg</td>
       <td>416</td>
       <td>416</td>
       <td>black-rook</td>
@@ -1234,12 +1236,12 @@
     def __iter__(self) -&gt; Any:
     def __len__(self) -&gt; int:
     def record_id(self, o) -&gt; Hashable:
-    def parse_fields(self, o, record):
-        record.set_img_size(&lt;ImgSize&gt;)
+    def parse_fields(self, o, record, is_new):
         record.set_filepath(&lt;Union[str, Path]&gt;)
+        record.set_img_size(&lt;ImgSize&gt;)
+        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
         record.detection.set_class_map(&lt;ClassMap&gt;)
         record.detection.add_labels(&lt;Sequence[Hashable]&gt;)
-        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
 </code></pre></div>
 </div>
 <p>We can copy the template and use it as our starting point. Let's go over each of the methods we have to define:</p>
@@ -1296,12 +1298,6 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/109 [00:00&lt;?, ?it/s]
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m136[0m
-</code></pre></div>
-</div>
 <p>Let's take a look at one record:</p>
 <div class="highlight"><pre><span></span><code><span class="n">show_record</span><span class="p">(</span><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">display_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </code></pre></div>
@@ -1315,13 +1311,14 @@
 
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>common: 
-    - Filepath: /home/lgvaz/.icevision/data/chess_sample/chess_sample-master/images/36066ba85572ce99198f1a21c2c8bbff_jpg.rf.1bb4689be2417ff995fbd5e22876c353.jpg
+    - Filepath: /home/lgvaz/.icevision/data/chess_sample/chess_sample-master/images/0.jpg
     - Image: None
+    - Image ID: 0
     - Image size ImgSize(width=416, height=416)
-    - Image ID: 1
 detection: 
-    - BBoxes: [&lt;BBox (xmin:298, ymin:38, xmax:318, ymax:93)&gt;, &lt;BBox (xmin:207, ymin:109, xmax:227, ymax:163)&gt;, &lt;BBox (xmin:284, ymin:137, xmax:305, ymax:206)&gt;, &lt;BBox (xmin:306, ymin:85, xmax:336, ymax:163)&gt;, &lt;BBox (xmin:339, ymin:297, xmax:369, ymax:355)&gt;, &lt;BBox (xmin:291, ymin:10, xmax:313, ymax:59)&gt;, &lt;BBox (xmin:325, ymin:199, xmax:354, ymax:255)&gt;, &lt;BBox (xmin:275, ymin:121, xmax:293, ymax:164)&gt;, &lt;BBox (xmin:240, ymin:115, xmax:264, ymax:172)&gt;, &lt;BBox (xmin:264, ymin:18, xmax:281, ymax:59)&gt;, &lt;BBox (xmin:231, ymin:53, xmax:249, ymax:95)&gt;, &lt;BBox (xmin:205, ymin:88, xmax:223, ymax:131)&gt;, &lt;BBox (xmin:210, ymin:165, xmax:231, ymax:208)&gt;, &lt;BBox (xmin:299, ymin:302, xmax:320, ymax:349)&gt;, &lt;BBox (xmin:240, ymin:205, xmax:260, ymax:249)&gt;, &lt;BBox (xmin:215, ymin:254, xmax:237, ymax:300)&gt;, &lt;BBox (xmin:134, ymin:109, xmax:158, ymax:164)&gt;, &lt;BBox (xmin:131, ymin:295, xmax:158, ymax:352)&gt;, &lt;BBox (xmin:72, ymin:14, xmax:93, ymax:62)&gt;, &lt;BBox (xmin:66, ymin:33, xmax:89, ymax:92)&gt;, &lt;BBox (xmin:46, ymin:246, xmax:73, ymax:305)&gt;, &lt;BBox (xmin:53, ymin:129, xmax:83, ymax:211)&gt;, &lt;BBox (xmin:165, ymin:81, xmax:183, ymax:124)&gt;, &lt;BBox (xmin:100, ymin:57, xmax:128, ymax:127)&gt;, &lt;BBox (xmin:163, ymin:16, xmax:181, ymax:57)&gt;, &lt;BBox (xmin:105, ymin:48, xmax:122, ymax:88)&gt;, &lt;BBox (xmin:98, ymin:120, xmax:118, ymax:162)&gt;, &lt;BBox (xmin:98, ymin:159, xmax:119, ymax:205)&gt;, &lt;BBox (xmin:94, ymin:257, xmax:113, ymax:299)&gt;, &lt;BBox (xmin:170, ymin:207, xmax:189, ymax:255)&gt;, &lt;BBox (xmin:176, ymin:306, xmax:199, ymax:351)&gt;]
-    - Labels: [1, 1, 3, 6, 4, 4, 6, 5, 6, 5, 5, 5, 5, 5, 5, 5, 11, 8, 8, 10, 10, 9, 12, 7, 12, 12, 12, 12, 12, 12, 12]
+    - BBoxes: [&lt;BBox (xmin:280, ymin:227, xmax:310, ymax:284)&gt;, &lt;BBox (xmin:311, ymin:110, xmax:345, ymax:195)&gt;, &lt;BBox (xmin:237, ymin:85, xmax:262, ymax:159)&gt;, &lt;BBox (xmin:331, ymin:277, xmax:366, ymax:333)&gt;, &lt;BBox (xmin:235, ymin:3, xmax:255, ymax:51)&gt;, &lt;BBox (xmin:267, ymin:38, xmax:286, ymax:82)&gt;, &lt;BBox (xmin:271, ymin:72, xmax:291, ymax:116)&gt;, &lt;BBox (xmin:280, ymin:145, xmax:303, ymax:190)&gt;, &lt;BBox (xmin:283, ymin:188, xmax:305, ymax:233)&gt;, &lt;BBox (xmin:254, ymin:284, xmax:278, ymax:333)&gt;, &lt;BBox (xmin:206, ymin:5, xmax:225, ymax:50)&gt;, &lt;BBox (xmin:207, ymin:103, xmax:226, ymax:147)&gt;, &lt;BBox (xmin:235, ymin:27, xmax:256, ymax:84)&gt;, &lt;BBox (xmin:172, ymin:134, xmax:196, ymax:195)&gt;, &lt;BBox (xmin:138, ymin:87, xmax:165, ymax:158)&gt;, &lt;BBox (xmin:91, ymin:280, xmax:119, ymax:335)&gt;, &lt;BBox (xmin:73, ymin:0, xmax:98, ymax:46)&gt;, &lt;BBox (xmin:56, ymin:111, xmax:87, ymax:191)&gt;, &lt;BBox (xmin:52, ymin:174, xmax:79, ymax:231)&gt;, &lt;BBox (xmin:141, ymin:53, xmax:163, ymax:106)&gt;, &lt;BBox (xmin:52, ymin:221, xmax:83, ymax:281)&gt;, &lt;BBox (xmin:172, ymin:103, xmax:192, ymax:147)&gt;, &lt;BBox (xmin:109, ymin:3, xmax:129, ymax:46)&gt;, &lt;BBox (xmin:110, ymin:69, xmax:130, ymax:112)&gt;, &lt;BBox (xmin:101, ymin:148, xmax:126, ymax:192)&gt;, &lt;BBox (xmin:98, ymin:192, xmax:121, ymax:235)&gt;, &lt;BBox (xmin:97, ymin:233, xmax:121, ymax:279)&gt;, &lt;BBox (xmin:176, ymin:282, xmax:199, ymax:332)&gt;]
+    - Class Map: &lt;ClassMap: {&#39;background&#39;: 0, &#39;black-bishop&#39;: 1, &#39;black-king&#39;: 2, &#39;black-queen&#39;: 3, &#39;black-rook&#39;: 4, &#39;black-pawn&#39;: 5, &#39;black-knight&#39;: 6, &#39;white-queen&#39;: 7, &#39;white-rook&#39;: 8, &#39;white-king&#39;: 9, &#39;white-bishop&#39;: 10, &#39;white-knight&#39;: 11, &#39;white-pawn&#39;: 12}&gt;
+    - Labels: [1, 2, 3, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 11, 12, 12, 12, 12, 12, 12, 12]
 </code></pre></div>
 </div>
 <h2 id="next-steps">Next steps</h2>
