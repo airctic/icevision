@@ -37,9 +37,6 @@ IceVision is the first agnostic computer vision framework to offer a curated col
 
 - Multi-task training to efficiently combine object detection, segmentation, and classification models 
 
-
-![image](images/icevision-end-to-end-training.gif)
-
 <!-- Not included in docs - start -->
 
 ## Installation
@@ -53,11 +50,11 @@ For more installation options, check our [docs](https://airctic.github.io/icevis
 **Important:** We currently only support Linux/MacOS.
 <!-- Not included in docs - end -->
 
-
-## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://airctic.github.io/icevision/examples/training/)
+## Quick Example: How to train the **Fridge Objects Dataset**
+<a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_object_detection.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 ![image](images/icevision-readme.png)
 
+![image](images/icevision-end-to-end-training.gif)
 
 ## Happy Learning!
 If you need any assistance, feel free to:

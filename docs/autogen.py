@@ -418,6 +418,12 @@ def generate(dest_dir: Path):
         dest_dir / "backbones.md",
     )
 
+    # README DOCS
+    shutil.copyfile(
+        icevision_dir / "docs/README.md",
+        dest_dir / "readme_mkdocs.md",
+    )
+
 
 if __name__ == "__main__":
     generate(icevision_dir / "docs" / "sources")
