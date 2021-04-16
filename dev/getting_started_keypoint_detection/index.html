@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/wandb_efficientdet/">
+        <link rel="canonical" href="https://airctic.com/dev/getting_started_keypoint_detection/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
     
     
       
-        <title>Model Tracking Using Wandb - IceVision</title>
+        <title>Keypoint Detection - IceVision</title>
       
     
     
@@ -73,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#icevision-meets-wb" class="md-skip">
+        <a href="#getting-started-with-keypoint-detection-using-icevision" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Model Tracking Using Wandb
+              Keypoint Detection
             
           </span>
         </div>
@@ -207,12 +207,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       <label class="md-nav__link" for="__nav_3">
         Getting Started
@@ -252,11 +254,179 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Keypoint Detection
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Keypoint Detection
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-model-and-backbone" class="md-nav__link">
+    Choose a model and backbone
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-biwi" class="md-nav__link">
+    Datasets : Biwi
+  </a>
+  
+    <nav class="md-nav" aria-label="Datasets : Biwi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
+    Displaying the same image with different transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model_1" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-using-lightning" class="md-nav__link">
+    Training using Lightning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-results" class="md-nav__link">
+    Show Results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -297,14 +467,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       <label class="md-nav__link" for="__nav_4">
         Other Tutorials
@@ -320,165 +488,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Model Tracking Using Wandb
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
         Model Tracking Using Wandb
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-icevision-and-icedata" class="md-nav__link">
-    Installing IceVision and IceData
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#imports" class="md-nav__link">
-    Imports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
-    Datasets : Fridge Objects dataset
-  </a>
-  
-    <nav class="md-nav" aria-label="Datasets : Fridge Objects dataset">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visualization" class="md-nav__link">
-    Visualization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
-    Train and Validation Dataset Transforms
-  </a>
-  
-    <nav class="md-nav" aria-label="Train and Validation Dataset Transforms">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
-    Displaying the same image with different transforms
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dataloader" class="md-nav__link">
-    DataLoader
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#model" class="md-nav__link">
-    Model
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#metrics" class="md-nav__link">
-    Metrics
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#training" class="md-nav__link">
-    Training
-  </a>
-  
-    <nav class="md-nav" aria-label="Training">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#training-using-fastai" class="md-nav__link">
-    Training using fastai
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#show-results" class="md-nav__link">
-    Show results
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#happy-learning" class="md-nav__link">
-    Happy Learning!
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1117,31 +1131,25 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
-    Datasets : Fridge Objects dataset
+  <a href="#model" class="md-nav__link">
+    Model
   </a>
-  
-    <nav class="md-nav" aria-label="Datasets : Fridge Objects dataset">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visualization" class="md-nav__link">
-    Visualization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
-    Train and Validation Dataset Transforms
+  <a href="#choose-a-model-and-backbone" class="md-nav__link">
+    Choose a model and backbone
   </a>
   
-    <nav class="md-nav" aria-label="Train and Validation Dataset Transforms">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-biwi" class="md-nav__link">
+    Datasets : Biwi
+  </a>
+  
+    <nav class="md-nav" aria-label="Datasets : Biwi">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1164,7 +1172,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#model" class="md-nav__link">
+  <a href="#model_1" class="md-nav__link">
     Model
   </a>
   
@@ -1192,6 +1200,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#training-using-lightning" class="md-nav__link">
+    Training using Lightning
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1199,7 +1214,7 @@
       
         <li class="md-nav__item">
   <a href="#show-results" class="md-nav__link">
-    Show results
+    Show Results
   </a>
   
 </li>
@@ -1208,6 +1223,19 @@
   <a href="#inference" class="md-nav__link">
     Inference
   </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1231,58 +1259,51 @@
               
                 
                 
-                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/wandb_efficientdet.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="icevision-meets-wb"><a href="https://airctic.com/">IceVision</a> meets <a href="https://wandb.ai/">W&amp;B</a></h1>
-<p>IceVision + W&amp;B = Agnostic Object Detection Framework with Outstanding Experiments Tracking </p>
-<p>For more information check the following <a href="https://wandb.ai/ai-fast-track/icevision-fridge/reports/IceVision-meets-W-B--VmlldzoyODQxNjg">Report</a></p>
-<p>IceVision fully supports W&amp;B by providing a one-liner API that enables users to track their trained models and display both the predicted and ground truth bounding boxes.</p>
-<p>W&amp;B makes visualizing and tracking different models performance a highly enjoyable task. Indeed, we are able to monitor the performance of several EfficientDet backbones by changing few lines of code and obtaining very intuitive and easy-to-interpret figures that highlights both the similarities and differences between the different backbones.</p>
-<p>In this example, we are using the fastai training loop, it offers a slick integration with wandb through the use of  the <code>WandbCallback()</code> callback.</p>
-<p><img alt="" src="https://airctic.github.io/icevision/images/fridge-objects.png" /></p>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_keypoint_detection.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="getting-started-with-keypoint-detection-using-icevision">Getting Started with Keypoint Detection using IceVision</h1>
 <h2 id="introduction">Introduction</h2>
-<p>In this tutorial, we walk you through the different steps of training the fridge dataset. Thanks to W&amp;B, we can easily track the performance of the EfficientDet model using different backbones. In this example, we are using the <a href="https://github.com/fastai/fastai">fastai</a> library training loop.</p>
+<p>This tutorial walk you through the different steps of training the biwi dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
+<p>For more information about how the biwi dataset as well as its corresponding parser check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/biwi">biwi folder</a> in icedata.</p>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
-<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">icevision</span><span class="p">[</span><span class="nb">all</span><span class="p">]</span> <span class="n">icedata</span>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.callback.wandb</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.callback.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
 </code></pre></div>
-<h2 id="datasets-fridge-objects-dataset">Datasets : Fridge Objects dataset</h2>
-<p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
-- can, 
-- carton, 
-- milk bottle, 
-- water bottle.</p>
-<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
+<h2 id="model">Model</h2>
+<p>To create a model, we need to:</p>
+<ul>
+<li>Choose one of the <strong>models</strong> supported by IceVision</li>
+<li>Choose one of the <strong>backbones</strong> corresponding to a chosen model</li>
+<li>Determine the <strong>number of the object classes</strong>: This will be done after parsing a dataset. Check out the Parsing Section </li>
+</ul>
+<h2 id="choose-a-model-and-backbone">Choose a model and backbone</h2>
+<p><strong>TorchVision</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">keypoint_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet34_fpn</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="datasets-biwi">Datasets : Biwi</h2>
+<p>Biwi dataset is tiny dataset that contains 200 images of 1 class <code>Nose</code>.</p>
+<p>We will use <code>icedata</code> to download the dataset and get it with pre-defined transforms for training and validation.</p>
+<blockquote>
+<p>Note: If you want a more challenging dataset take a look at <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/ochuman">OCHuman</a>.</p>
+</blockquote>
 <div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
-<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">,</span> <span class="n">force_download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
-<span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">([</span><span class="s2">&quot;milk_bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;can&quot;</span><span class="p">,</span> <span class="s2">&quot;water_bottle&quot;</span><span class="p">])</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">voc</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
-                     <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">,</span>
-                     <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
-<span class="c1"># Records</span>
-<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="visualization">Visualization</h3>
-<p>Showing a batch of images with their corresponding boxes and labels</p>
-<div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">train_records</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/200 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m136[0m
 </code></pre></div>
-<p><img alt="png" src="../images/wandb_efficientdet/wandb_efficientdet_11_1.png" /></p>
-<h2 id="train-and-validation-dataset-transforms">Train and Validation Dataset Transforms</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
-<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
-<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
-<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
-</code></pre></div>
+</div>
 <h3 id="displaying-the-same-image-with-different-transforms">Displaying the same image with different transforms</h3>
 <p>Note:</p>
 <blockquote>
@@ -1291,66 +1312,160 @@ This means that, if you have augmentation (random) transforms, each time you get
 the dataset you will get a slightly different version of it.</p>
 </blockquote>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/wandb_efficientdet/wandb_efficientdet_16_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_keypoint_detection/getting_started_keypoint_detection_17_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">samples</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
-<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/wandb_efficientdet/wandb_efficientdet_19_0.png" /></p>
-<h2 id="model">Model</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># EfficientDet D2 </span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s1">&#39;tf_efficientdet_d2&#39;</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">384</span><span class="p">)</span> 
+<p><img alt="png" src="../images/getting_started_keypoint_detection/getting_started_keypoint_detection_20_0.png" /></p>
+<h2 id="model_1">Model</h2>
+<p>Now that we determined the number of classes (<code>num_classes</code>) and number of keypoints (<code>num_keypoints</code>), we can create our <code>model</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_keypoints</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
 </code></pre></div>
 <h2 id="metrics">Metrics</h2>
-<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+<p>Metrics for keypoint are a work in progress</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># metrics = [COCOMetric(metric_type=COCOMetricType.keypoint)]</span>
 </code></pre></div>
 <h2 id="training">Training</h2>
 <p>IceVision is an agnostic framework meaning it can be plugged to other DL framework such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
 <p>You could also plug to oth DL framework using your own custom code.</p>
 <h3 id="training-using-fastai">Training using fastai</h3>
-<div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;icevision-fridge&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;efficientdet_d2-1&quot;</span><span class="p">,</span> <span class="n">reinit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
-
-[34m[1mwandb[0m: Appending key for api.wandb.ai to your netrc file: /root/.netrc
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=8.317637839354575e-05, lr_steep=0.00010964782268274575)
 </code></pre></div>
 </div>
-<p>Tracking run with wandb version 0.10.8<br/>
-Syncing run <strong style="color:#cdcd00">efficientdet_d2-1</strong> to <a href="https://wandb.ai" target="_blank">Weights &amp; Biases</a> <a href="https://docs.wandb.com/integrations/jupyter.html" target="_blank">(Documentation)</a>.<br/>
-Project page: <a href="https://wandb.ai/ai-fast-track/icevision-fridge" target="_blank">https://wandb.ai/ai-fast-track/icevision-fridge</a><br/>
-Run page: <a href="https://wandb.ai/ai-fast-track/icevision-fridge/runs/m4mz59fz" target="_blank">https://wandb.ai/ai-fast-track/icevision-fridge/runs/m4mz59fz</a><br/>
-Run data is saved locally in <code>wandb/run-20201027_134038-m4mz59fz</code><br/><br/></p>
-<h1>Run(m4mz59fz)</h1>
-<p></p>
-<iframe src="https://wandb.ai/ai-fast-track/icevision-fridge/runs/m4mz59fz" style="border:none;width:100%;height:400px"></iframe>
 
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">WandbCallback</span><span class="p">(),</span> <span class="n">SaveModelCallback</span><span class="p">()])</span>
+<p><img alt="png" src="../images/getting_started_keypoint_detection/getting_started_keypoint_detection_29_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3e-5</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>8.645806</td>
+      <td>7.013292</td>
+      <td>00:28</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>6.684147</td>
+      <td>6.487582</td>
+      <td>00:26</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>6.277197</td>
+      <td>5.731036</td>
+      <td>00:26</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.836541</td>
+      <td>5.114465</td>
+      <td>00:26</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.408250</td>
+      <td>4.583161</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.996461</td>
+      <td>4.225419</td>
+      <td>00:23</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>4.657006</td>
+      <td>3.987719</td>
+      <td>00:21</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>4.335581</td>
+      <td>3.832931</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>4.114164</td>
+      <td>3.862228</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>3.902603</td>
+      <td>3.697594</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>3.768973</td>
+      <td>3.694008</td>
+      <td>00:21</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="training-using-lightning">Training using Lightning</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-5</span><span class="p">)</span>
+
+<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="show-results">Show results</h2>
-<div class="highlight"><pre><span></span><code><span class="n">efficientdet</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/wandb_efficientdet/wandb_efficientdet_30_0.png" /></p>
+<h2 id="show-results">Show Results</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/getting_started_keypoint_detection/getting_started_keypoint_detection_35_0.png" /></p>
 <h2 id="inference">Inference</h2>
-<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+<h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
+<p>Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. </p>
+<blockquote>
+<p>NOTE: For a more detailed look at inference check out the <a href="https://airctic.com/dev/inference/">inference tutorial</a></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># from icevision.visualize.wandb_img import *</span>
-<span class="n">wandb_images</span> <span class="o">=</span> <span class="n">wandb_img_preds</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">class_map</span><span class="p">,</span> <span class="n">add_ground_truth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;Predicted images&quot;</span><span class="p">:</span> <span class="n">wandb_images</span><span class="p">})</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># optional: mark the run as completed</span>
-<span class="n">wandb</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-</code></pre></div>
+<p><img alt="png" src="../images/getting_started_keypoint_detection/getting_started_keypoint_detection_39_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
@@ -1371,7 +1486,7 @@ Run data is saved locally in <code>wandb/run-20201027_134038-m4mz59fz</code><br/
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../inference/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../getting_started_instance_segmentation/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1380,19 +1495,19 @@ Run data is saved locally in <code>wandb/run-20201027_134038-m4mz59fz</code><br/
               <span class="md-footer__direction">
                 Previous
               </span>
-              Inference
+              Instance Segmentation
             </div>
           </div>
         </a>
       
       
-        <a href="../negative_samples/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../custom_parser/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              How to use negative samples
+              Custom Parser
             </div>
           </div>
           <div class="md-footer__button md-icon">

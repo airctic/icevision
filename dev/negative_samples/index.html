@@ -242,6 +242,30 @@
   
   
     <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../custom_parser/" class="md-nav__link">
         Custom Parser
       </a>
@@ -1149,7 +1173,7 @@
 </code></pre></div>
 <p>The raccoon dataset uses the VOC annotation format, icevision natively supports this format:</p>
 <div class="highlight"><pre><span></span><code>raccoon_data_dir = Path(&#39;raccoon_dataset&#39;)
-raccoon_parser = parsers.VocXmlParser(annotations_dir=raccoon_data_dir /&#39;annotations&#39;, images_dir=raccoon_data_dir /&#39;images&#39;)
+raccoon_parser = parsers.VOCBBoxParser(annotations_dir=raccoon_data_dir /&#39;annotations&#39;, images_dir=raccoon_data_dir /&#39;images&#39;)
 </code></pre></div>
 <p>Let's go ahead and parse our data with the default 80% train, 20% valid, split.</p>
 <div class="highlight"><pre><span></span><code>raccoon_train_records, raccoon_valid_records = raccoon_parser.parse()

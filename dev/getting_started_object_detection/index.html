@@ -298,13 +298,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#choose-a-backbone" class="md-nav__link">
-    Choose a backbone
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
     Datasets : Fridge Objects dataset
   </a>
@@ -424,6 +417,30 @@
   
 </nav>
       
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
     </li>
   
 
@@ -1142,13 +1159,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#choose-a-backbone" class="md-nav__link">
-    Choose a backbone
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
     Datasets : Fridge Objects dataset
   </a>
@@ -1299,62 +1309,25 @@
 <li>Determine the <strong>number of the object classes</strong>: This will be done after parsing a dataset. Check out the Parsing Section </li>
 </ul>
 <h2 id="choose-a-model">Choose a model</h2>
-<p>You can choose your model from 3 model libraries:</p>
-<p>You can access to any supported models by following the IceVision unified API. You might find it more convenient to use <code>code completion</code></p>
-<p><strong><code>models.{models_library}.{model_name}</code></strong></p>
-<ul>
-<li><strong>MMDetection</strong>: RetinaNet model example</li>
-</ul>
-<p><code>model_type = models.torchvision.retinanet</code></p>
-<ul>
-<li><strong>Torchvision</strong>: RetinaNet model example</li>
-</ul>
-<p><code>model_type = models.mmdet.retinanet</code></p>
-<ul>
-<li><strong>Ross Wightman</strong>: EfficientDet model</li>
-</ul>
-<p><code>model_type = models.ross.efficientdet</code></p>
-<ul>
-<li><strong>Ultralytics</strong>: YOLO v5 model</li>
-</ul>
-<p><code>model_type = models.ultralytics.yolov5</code></p>
+<p>You can access any supported models by following the IceVision unified API, use code completion to explore the available models for each library.</p>
+<blockquote>
+<p>NOTE: Run only the cell of the desired model</p>
+</blockquote>
+<p><strong>MMDetection</strong></p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
-<span class="c1"># model_type = models.torchvision.retinanet</span>
-<span class="c1"># model_type = models.ross.efficientdet</span>
-<span class="c1"># model_type = models.ultralytics.yolov5</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="choose-a-backbone">Choose a backbone</h2>
-<p>You can choose any supported backbone. IceVision gives access to numerous pretrained backbones. You can access to any supported backbone by following the IceVision unified API. You can use `code completion.</p>
-<p><strong><code>models.{models_library}.{model_name}.backbones.{backbone_name}</code></strong></p>
-<p>Or if you already declared a <code>model_type</code> variable like shown here above, you can create a backbone like here below. As a best practive, We will use that compact annototaion:</p>
-<p><strong><code>model_type.backbones.{backbone_name}</code></strong></p>
-<ul>
-<li><strong>MMDetection</strong>: RetinaNet model example</li>
-</ul>
-<p><code>backbone = model_type.backbones.resnet50_fpn_1x</code></p>
-<ul>
-<li><strong>Torchvision</strong>: RetinaNet model example (note the <code>torchvision</code> and the <code>mmdetection</code> backbone names are a slightly different)</li>
-</ul>
-<p><code>backbone = model_type.backbones.resnet50_fpn</code></p>
-<ul>
-<li><strong>Ross Wightman</strong>: EfficientDet model</li>
-</ul>
-<p><code>backbone = model_type.backbones.tf_d2</code></p>
-<ul>
-<li><strong>Ultralytics</strong>: YOLO v5 model</li>
-</ul>
-<p><code>model_type = model_type.backbones.small</code></p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Backbone for MMDetection Example</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
-
-<span class="c1"># Backbone for Torchvision Example</span>
-<span class="c1"># backbone = model_type.backbones.resnet50_fpn</span>
-
-<span class="c1"># Backbone for EfficientDet Example</span>
-<span class="c1"># backbone = model_type.backbones.tf_d2</span>
-
-<span class="c1"># Backbone for YOLOv5</span>
-<span class="c1"># backbone = model_type.backbones.small</span>
+<p><strong>TorchVision</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Ross (for EfficientDet)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Ultralytics (for YOLOv5)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="datasets-fridge-objects-dataset">Datasets : Fridge Objects dataset</h2>
 <p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
@@ -1370,7 +1343,7 @@
 </code></pre></div>
 <h2 id="parsing-a-dataset">Parsing a dataset</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VocXmlParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parsing</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
@@ -1401,7 +1374,7 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_21_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_28_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
 <span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1410,7 +1383,7 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_24_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_31_0.png" /></p>
 <h2 id="model_1">Model</h2>
 <p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object. We create a <code>backbone</code> object on-the-fly, and we can pass the <code>pretrained</code> argument. <code>pretrained=True</code> is a default argument. Therefore, we don't need to pass it. We are doing it, here below, for illustration purposes.</p>
 <blockquote>
@@ -1451,19 +1424,19 @@ the dataset you will get a slightly different version of it.</p>
 <h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_38_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_45_0.png" /></p>
 <h2 id="inference">Inference</h2>
 <h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
-<p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
-<div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<p>Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. </p>
+<blockquote>
+<p>NOTE: For a more detailed look at inference check out the <a href="https://airctic.com/dev/inference/">inference tutorial</a></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span>
-    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span>
-    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
-    <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_41_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_49_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
@@ -1499,13 +1472,13 @@ the dataset you will get a slightly different version of it.</p>
         </a>
       
       
-        <a href="../custom_parser/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../getting_started_instance_segmentation/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Custom Parser
+              Instance Segmentation
             </div>
           </div>
           <div class="md-footer__button md-icon">
