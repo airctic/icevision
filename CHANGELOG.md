@@ -28,8 +28,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Renamed torchvision resnet backbones:
   - resnet_fpn.resnet18 -> resnet18_fpn
   - resnest_fpn.resnest18 -> resnest18_fpn
+
 **Breaking:** Added parameters `sample` and `keep_image` to `convert_raw_prediction`
 **Breaking:** Renamed `VocXmlParser` to `VOCBBoxParser` and `VocMaskParser` to `VOCMaskParser`
+**Breaking:** Renamed `predict_dl` to `predict_from_dl`
 
 
 ## [0.6.0b1]

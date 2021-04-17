@@ -85,7 +85,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
     # Inference
     infer_dl = efficientdet.infer_dl(valid_ds, batch_size=16)
     # Predict
-    samples, preds = efficientdet.predict_dl(model, infer_dl)
+    samples, preds = efficientdet.predict_from_dl(model, infer_dl)
 
     # Show some samples
     imgs = [sample["img"] for sample in samples]
@@ -181,7 +181,7 @@ This notebook shows a special use case of training a VOC compatible dataset usin
     # Inference
     infer_dl = efficientdet.infer_dl(valid_ds, batch_size=16)
     # Predict
-    samples, preds = efficientdet.predict_dl(model, infer_dl)
+    samples, preds = efficientdet.predict_from_dl(model, infer_dl)
 
     # Show some samples
     imgs = [sample["img"] for sample in samples]

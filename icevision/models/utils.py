@@ -4,7 +4,7 @@ __all__ = [
     "freeze",
     "transform_dl",
     "apply_batch_tfms",
-    "_predict_dl",
+    "_predict_from_dl",
 ]
 
 from icevision.imports import *
@@ -83,7 +83,7 @@ def unload_records(build_batch):
 
 
 @torch.no_grad()
-def _predict_dl(
+def _predict_from_dl(
     predict_fn,
     model: nn.Module,
     infer_dl: DataLoader,

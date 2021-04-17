@@ -12,7 +12,7 @@ from icevision.models.ultralytics.yolov5.dataloaders import (
 )
 from icevision.models.ultralytics.yolov5.prediction import (
     predict,
-    predict_dl,
+    predict_from_dl,
 )
 from icevision.models.interpretation import Interpretation
 
@@ -81,7 +81,7 @@ interp = Interpretation(
     losses_dict=_LOSSES_DICT,
     valid_dl=valid_dl,
     infer_dl=infer_dl,
-    predict_dl=predict_dl,
+    predict_from_dl=predict_from_dl,
 )
 
 interp._loop = loop_yolo
