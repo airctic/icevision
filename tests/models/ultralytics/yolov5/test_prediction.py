@@ -27,13 +27,13 @@ def test_yolo_predict(fridge_ds, backbone):
     "backbone",
     [small, medium, large],
 )
-def test_yolo_predict_dl(fridge_ds, backbone):
+def test_yolo_predict_from_dl(fridge_ds, backbone):
     _, valid_ds = fridge_ds
     infer_dl = models.ultralytics.yolov5.infer_dl(valid_ds, batch_size=1, shuffle=False)
     model = models.ultralytics.yolov5.model(
         num_classes=5, img_size=384, backbone=backbone(pretrained=True)
     )
-    preds = models.ultralytics.yolov5.predict_dl(
+    preds = models.ultralytics.yolov5.predict_from_dl(
         model, infer_dl, detection_threshold=0.0
     )
     _test_preds(preds)

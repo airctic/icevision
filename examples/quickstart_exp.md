@@ -48,7 +48,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     # DataLoader
     infer_dl = efficientdet.infer_dl(valid_ds, batch_size=8)
     # Predict
-    samples, preds = efficientdet.predict_dl(model, infer_dl)
+    samples, preds = efficientdet.predict_from_dl(model, infer_dl)
     # Show samples
     imgs = [sample["img"] for sample in samples]
     show_preds(
@@ -110,7 +110,7 @@ In this example, we are training the Fridge Objects dataset using either [Fastai
     # DataLoader
     infer_dl = efficientdet.infer_dl(valid_ds, batch_size=8)
     # Predict
-    samples, preds = efficientdet.predict_dl(model, infer_dl)
+    samples, preds = efficientdet.predict_from_dl(model, infer_dl)
     # Show samples
     imgs = [sample["img"] for sample in samples]
     show_preds(

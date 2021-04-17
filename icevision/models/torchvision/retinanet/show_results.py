@@ -7,7 +7,7 @@ from icevision.models.torchvision.retinanet.dataloaders import (
     infer_dl,
 )
 from icevision.models.torchvision.retinanet.prediction import (
-    predict_dl,
+    predict_from_dl,
 )
 
 _LOSSES_DICT = {
@@ -20,5 +20,5 @@ interp = Interpretation(
     losses_dict=_LOSSES_DICT,
     valid_dl=valid_dl,
     infer_dl=infer_dl,
-    predict_dl=predict_dl,
+    predict_from_dl=predict_from_dl,
 )
