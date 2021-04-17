@@ -1571,7 +1571,7 @@ From a dataset...
 
 
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">show_preds</span><span class="p">(</span>
     <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>

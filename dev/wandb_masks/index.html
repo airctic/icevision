@@ -1288,7 +1288,7 @@ Better model found at epoch 8 with valid_loss value: 0.3132163882255554.
 </code></pre></div>
 <p><img alt="png" src="../images/wandb_masks/wandb_masks_40_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=5.0), HTML(value=&#39;&#39;)))

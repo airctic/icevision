@@ -1364,7 +1364,7 @@ Better model found at epoch 19 with valid_loss value: 3.9320456981658936.
 </div>
 <h2 id="running-inference-on-validation-set">Running inference on validation set</h2>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">predict_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
 </code></pre></div>
 <p><div class="highlight"><pre><span></span><code><span class="n">preds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </code></pre></div>
