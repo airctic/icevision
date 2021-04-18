@@ -76,3 +76,15 @@ def test_add_annotations(fridge_faster_rcnn_model, fridge_ds):
     samples = add_annotations(samples)
     assert "loss_classifier" in samples[0].losses["text"]
     assert "IMG" in samples[0].losses["text"]
+
+
+def test_get_samples_losses(fridge_faster_rcnn_model, fridge_ds, monkeypatch):
+    monkeypatch.setattr(plt, "show", lambda: None)
+    model = fridge_faster_rcnn_model
+    ds, _ = fridge_ds
+
+    samples_plus_losses, _, _ = faster_rcnn.interp.plot_top_losses(
+        model=model, dataset=ds, n_samples=2
+    )
+    loss_per_image = get_samples_losses(samples_plus_losses)
+    assert "filepath" in loss_per_image[0].keys()
