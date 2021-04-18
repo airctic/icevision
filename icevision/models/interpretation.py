@@ -266,7 +266,9 @@ def add_annotations(samples: List[dict]) -> List[dict]:
 
 
 def get_samples_losses(samples_plus_losses):
-    return [
-        {k: v for k, v in l.items() if "loss" in k or "file" in k}
-        for l in samples_plus_losses
-    ]
+    def _get_info(sample):
+        d = {k: v for k, v in sample.losses.items() if "loss" in k}
+        d["filepath"] = sample.filepath
+        return d
+
+    return [_get_info(l) for l in samples_plus_losses]
