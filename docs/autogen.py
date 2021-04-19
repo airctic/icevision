@@ -169,7 +169,7 @@ def py_to_nb_md(dest_dir):
 
         tutobooks.py_to_md(py_path, nb_path, md_path, "templates/img")
 
-        github_repo_dir = "airctic/icedata/blob/master/docs/"
+        github_repo_dir = "airctic/icevision/blob/master/docs/"
         with open(md_path, "r") as md_file:
             button_lines = [
                 ":material-link: "
@@ -285,7 +285,7 @@ def generate(dest_dir: Path):
     # Generate APIs Documentation
     doc_generator = keras_autodoc.DocumentationGenerator(
         pages=PAGES,
-        project_url="https://github.com/airctic/icedata/blob/master",
+        project_url="https://github.com/airctic/icevision/blob/master",
         template_dir=template_dir,
         examples_dir=icevision_dir / "examples",
     )
