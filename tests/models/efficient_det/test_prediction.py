@@ -12,7 +12,7 @@ def _test_preds(preds):
 
     assert isinstance(pred.detection.bboxes[0], BBox)
     bboxes_np = np.array([bbox.xyxy for bbox in pred.detection.bboxes])
-    bboxes_expected = np.array([[66, 57, 169, 257], [114, 222, 350, 285]])
+    bboxes_expected = np.array([[65, 59, 170, 261], [123, 212, 341, 292]])
     np.testing.assert_allclose(bboxes_np, bboxes_expected, atol=1)
 
 
@@ -25,26 +25,26 @@ def test_efficient_det_predict(fridge_efficientdet_model, fridge_efficientdet_re
     _test_preds(preds)
 
 
-def test_efficient_det_predict_dl(
+def test_efficient_det_predict_from_dl(
     fridge_efficientdet_model, fridge_efficientdet_records
 ):
     fridge_efficientdet_model.eval()
 
     infer_dl = efficientdet.infer_dl(fridge_efficientdet_records, batch_size=1)
-    preds = efficientdet.predict_dl(
+    preds = efficientdet.predict_from_dl(
         model=fridge_efficientdet_model, infer_dl=infer_dl, show_pbar=False
     )
 
     _test_preds(preds)
 
 
-def test_efficient_det_predict_dl_threshold(
+def test_efficient_det_predict_from_dl_threshold(
     fridge_efficientdet_model, fridge_efficientdet_records
 ):
     fridge_efficientdet_model.eval()
 
     infer_dl = efficientdet.infer_dl(fridge_efficientdet_records, batch_size=1)
-    preds = efficientdet.predict_dl(
+    preds = efficientdet.predict_from_dl(
         model=fridge_efficientdet_model,
         infer_dl=infer_dl,
         show_pbar=False,

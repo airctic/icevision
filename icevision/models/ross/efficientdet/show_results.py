@@ -12,7 +12,7 @@ from icevision.models.ross.efficientdet.dataloaders import (
 )
 from icevision.models.ross.efficientdet.prediction import (
     predict,
-    predict_dl,
+    predict_from_dl,
 )
 from icevision.models.interpretation import Interpretation
 
@@ -64,7 +64,7 @@ interp = Interpretation(
     losses_dict=_LOSSES_DICT,
     valid_dl=valid_dl,
     infer_dl=infer_dl,
-    predict_dl=predict_dl,
+    predict_from_dl=predict_from_dl,
 )
 
 interp._rename_losses = _rename_losses_effdet

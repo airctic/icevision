@@ -19,10 +19,10 @@ def coco_record_id_map():
 
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
-    WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.zip"
+    WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.pt"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
     backbone = models.ross.efficientdet.backbones.tf_lite0(pretrained=False)
-    model = efficientdet.model(backbone=backbone, num_classes=5 + 1, img_size=384)
+    model = efficientdet.model(backbone=backbone, num_classes=5, img_size=384)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")
@@ -42,7 +42,7 @@ def fridge_faster_rcnn_model() -> nn.Module:
 def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
     IMG_SIZE = 384
 
-    parser = parsers.VocXmlParser(
+    parser = parsers.VOCBBoxParser(
         annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
         images_dir=samples_source / "fridge/odFridgeObjects/images",
         class_map=fridge_class_map,

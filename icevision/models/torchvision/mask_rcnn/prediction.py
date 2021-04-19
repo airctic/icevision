@@ -1,10 +1,15 @@
-__all__ = ["predict", "predict_dl", "convert_raw_prediction", "convert_raw_predictions"]
+__all__ = [
+    "predict",
+    "predict_from_dl",
+    "convert_raw_prediction",
+    "convert_raw_predictions",
+]
 
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
-from icevision.models.utils import _predict_dl
+from icevision.models.utils import _predict_from_dl
 from icevision.models.torchvision.mask_rcnn.dataloaders import *
 from icevision.models.torchvision.faster_rcnn.prediction import (
     convert_raw_prediction as faster_convert_raw_prediction,
@@ -56,14 +61,14 @@ def predict(
     )
 
 
-def predict_dl(
+def predict_from_dl(
     model: nn.Module,
     infer_dl: DataLoader,
     show_pbar: bool = True,
     keep_images: bool = False,
     **predict_kwargs
 ):
-    return _predict_dl(
+    return _predict_from_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,

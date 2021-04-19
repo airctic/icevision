@@ -84,7 +84,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     # Inference
     infer_dl = faster_rcnn.infer_dl(valid_ds, batch_size=16)
     # Predict
-    samples, preds = faster_rcnn.predict_dl(model, infer_dl)
+    samples, preds = faster_rcnn.predict_from_dl(model, infer_dl)
 
     # Show some samples
     imgs = [sample["img"] for sample in samples]
@@ -176,7 +176,7 @@ In this example, we are training the Raccoon dataset using either [Fastai](https
     # Inference
     infer_dl = faster_rcnn.infer_dl(valid_ds, batch_size=16)
     # Predict
-    samples, preds = faster_rcnn.predict_dl(model, infer_dl)
+    samples, preds = faster_rcnn.predict_from_dl(model, infer_dl)
 
     # Show some samples
     imgs = [sample["img"] for sample in samples]

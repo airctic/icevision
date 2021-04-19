@@ -1,15 +1,10 @@
 <div align="center">
-  <img src="images/icevision-logo-slogan.png" alt="logo" width="400px" style="display: block; margin-left: auto; margin-right: auto"/>
+  <img src="images/icevision-logo-slogan.png" alt="logo" width="320px" style="display: block; margin-left: auto; margin-right: auto"/>
   <h2><b>An Agnostic Object Detection Framework</b></h2>
 </div>
 
 * * * * *
->**Note: "We Need Your Help"**
-    If you find this work useful, please let other people know by **starring** it,
-    and sharing it. 
-    Thank you!
-    
-<div align="center">
+
     
 [![tests](https://github.com/airctic/icevision/workflows/tests/badge.svg?event=push)](https://github.com/airctic/icevision/actions?query=workflow%3Atests)
 [![docs](https://github.com/airctic/icevision/workflows/docs/badge.svg)](https://airctic.com)
@@ -26,7 +21,21 @@
 
 * * * * *
 
-![image](images/icevision-end-to-end-training.gif)
+IceVision is the first agnostic computer vision framework to offer a curated collection with hundreds of high-quality pre-trained models from torchvision, MMLabs, and soon Pytorch Image Models. It orchestrates the end-to-end deep learning workflow allowing to train networks with easy-to-use robust high-performance libraries such as Pytorch-Lightning and Fastai
+
+**IceVision Unique Features:**
+
+- Data curation/cleaning with auto-fix
+
+- Access to an exploratory data analysis dashboard
+
+- Pluggable transforms for better model generalization 
+
+- Access to hundreds of neural net models
+
+- Access to multiple training loop libraries
+
+- Multi-task training to efficiently combine object detection, segmentation, and classification models 
 
 <!-- Not included in docs - start -->
 
@@ -41,26 +50,11 @@ For more installation options, check our [docs](https://airctic.github.io/icevis
 **Important:** We currently only support Linux/MacOS.
 <!-- Not included in docs - end -->
 
-
-## Why IceVision?
-
-- IceVision is an Object-Detection Framework that connects to different libraries/frameworks such as Fastai, Pytorch Lightning, and Pytorch with more to come.
-
-- Features a Unified Data API with out-of-the-box support for common annotation formats (COCO, VOC, etc.)
-
-- The [IceData repo](https://github.com/airctic/icedata) hosts community maintained parsers and custom datasets 
-
-- Provides flexible model implementations with pluggable backbones
-
-- Helps researchers reproduce, replicate, and go beyond published models
-
-- Enables practioners to get moving with object detection technology quickly
-
-
-## Quick Example: How to train the **PETS Dataset**
-[**Source Code**](https://airctic.github.io/icevision/examples/training/)
+## Quick Example: How to train the **Fridge Objects Dataset**
+<a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_object_detection.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 ![image](images/icevision-readme.png)
 
+![image](images/icevision-end-to-end-training.gif)
 
 ## Happy Learning!
 If you need any assistance, feel free to:

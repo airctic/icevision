@@ -4,7 +4,7 @@ from icevision.all import *
 def test_voc_annotation_parser(
     samples_source, voc_class_map, check_attributes_on_component
 ):
-    annotation_parser = parsers.VocXmlParser(
+    annotation_parser = parsers.VOCBBoxParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         class_map=voc_class_map,
@@ -41,7 +41,7 @@ def test_voc_annotation_parser(
 
 
 def test_voc_mask_parser(samples_source, voc_class_map):
-    parser = parsers.VocMaskParser(
+    parser = parsers.VOCMaskParser(
         annotations_dir=samples_source / "voc/Annotations",
         images_dir=samples_source / "voc/JPEGImages",
         class_map=voc_class_map,

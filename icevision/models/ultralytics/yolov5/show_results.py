@@ -12,7 +12,7 @@ from icevision.models.ultralytics.yolov5.dataloaders import (
 )
 from icevision.models.ultralytics.yolov5.prediction import (
     predict,
-    predict_dl,
+    predict_from_dl,
 )
 from icevision.models.interpretation import Interpretation
 
@@ -24,7 +24,8 @@ from yolov5.utils.loss import ComputeLoss
 def show_results(
     model: nn.Module,
     dataset: Dataset,
-    detection_threshold: float = 0.5,
+    detection_threshold: float = 0.25,
+    nms_iou_threshold: float = 0.45,
     num_samples: int = 6,
     ncols: int = 3,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
@@ -40,6 +41,7 @@ def show_results(
         denormalize_fn=denormalize_fn,
         show=show,
         detection_threshold=detection_threshold,
+        nms_iou_threshold=nms_iou_threshold,
         device=device,
     )
 
@@ -79,7 +81,7 @@ interp = Interpretation(
     losses_dict=_LOSSES_DICT,
     valid_dl=valid_dl,
     infer_dl=infer_dl,
-    predict_dl=predict_dl,
+    predict_from_dl=predict_from_dl,
 )
 
 interp._loop = loop_yolo

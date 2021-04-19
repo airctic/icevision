@@ -1,4 +1,4 @@
-__all__ = ["voc", "VocXmlParser", "VocMaskParser"]
+__all__ = ["voc", "VOCBBoxParser", "VOCMaskParser"]
 
 import xml.etree.ElementTree as ET
 from icevision.imports import *
@@ -16,17 +16,17 @@ def voc(
 ):
     logger.warning(
         "This function will be deprecated, instantiate the concrete "
-        "classes instead: `VocXmlParser`, `VocMaskParser`"
+        "classes instead: `VOCBBoxParser`, `VOCMaskParser`"
     )
     if not masks_dir:
-        return VocXmlParser(
+        return VOCBBoxParser(
             annotations_dir=annotations_dir,
             images_dir=images_dir,
             class_map=class_map,
             idmap=idmap,
         )
     else:
-        return VocMaskParser(
+        return VOCMaskParser(
             annotations_dir=annotations_dir,
             images_dir=images_dir,
             masks_dir=masks_dir,
@@ -36,7 +36,7 @@ def voc(
 
 
 # TODO: Rename to VOCBBoxParser?
-class VocXmlParser(Parser):
+class VOCBBoxParser(Parser):
     def __init__(
         self,
         annotations_dir: Union[str, Path],
@@ -116,7 +116,7 @@ class VocXmlParser(Parser):
         return bboxes
 
 
-class VocMaskParser(VocXmlParser):
+class VOCMaskParser(VOCBBoxParser):
     def __init__(
         self,
         annotations_dir: Union[str, Path],

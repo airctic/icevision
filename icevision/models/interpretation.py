@@ -117,11 +117,11 @@ def _prepend_str(d: dict, s: str):
 
 
 class Interpretation:
-    def __init__(self, losses_dict, valid_dl, infer_dl, predict_dl):
+    def __init__(self, losses_dict, valid_dl, infer_dl, predict_from_dl):
         self.losses_dict = losses_dict
         self.valid_dl = valid_dl
         self.infer_dl = infer_dl
-        self.predict_dl = predict_dl
+        self.predict_from_dl = predict_from_dl
 
     def _rename_losses(self, losses_dict):
         return losses_dict
@@ -223,7 +223,7 @@ class Interpretation:
         samples = add_annotations(samples)
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
-        preds = self.predict_dl(model=model, infer_dl=dl)
+        preds = self.predict_from_dl(model=model, infer_dl=dl)
         preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(
@@ -266,7 +266,9 @@ def add_annotations(samples: List[dict]) -> List[dict]:
 
 
 def get_samples_losses(samples_plus_losses):
-    return [
-        {k: v for k, v in l.items() if "loss" in k or "file" in k}
-        for l in samples_plus_losses
-    ]
+    def _get_info(sample):
+        d = {k: v for k, v in sample.losses.items() if "loss" in k}
+        d["filepath"] = sample.filepath
+        return d
+
+    return [_get_info(l) for l in samples_plus_losses]

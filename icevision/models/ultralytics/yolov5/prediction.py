@@ -1,10 +1,10 @@
-__all__ = ["predict", "predict_dl", "convert_raw_predictions"]
+__all__ = ["predict", "predict_from_dl", "convert_raw_predictions"]
 
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
-from icevision.models.utils import _predict_dl
+from icevision.models.utils import _predict_from_dl
 from icevision.models.ultralytics.yolov5.dataloaders import *
 from yolov5.utils.general import non_max_suppression
 
@@ -14,11 +14,22 @@ def _predict_batch(
     model: nn.Module,
     batch: Sequence[torch.Tensor],
     records: Sequence[BaseRecord],
-    detection_threshold: float = 0.5,
+    detection_threshold: float = 0.25,
+    nms_iou_threshold: float = 0.45,
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
-    device = device or model_device(model)
+    # device issue addressed on discord: https://discord.com/channels/735877944085446747/770279401791160400/832361687855923250
+    if device is not None:
+        raise ValueError(
+            "For YOLOv5 device can only be specified during model creation, "
+            "for more info take a look at the discussion here: "
+            "https://discord.com/channels/735877944085446747/770279401791160400/832361687855923250"
+        )
+    grid = model.model[-1].grid[-1]
+    # if `grid.numel() == 1` it means the grid isn't initialized yet and we can't
+    # trust it's device (will always be CPU)
+    device = grid.device if grid.numel() > 1 else model_device(model)
 
     batch = batch[0].to(device)
     model = model.eval().to(device)
@@ -29,6 +40,7 @@ def _predict_batch(
         raw_preds=raw_preds,
         records=records,
         detection_threshold=detection_threshold,
+        nms_iou_threshold=nms_iou_threshold,
         keep_images=keep_images,
     )
 
@@ -36,7 +48,8 @@ def _predict_batch(
 def predict(
     model: nn.Module,
     dataset: Dataset,
-    detection_threshold: float = 0.5,
+    detection_threshold: float = 0.25,
+    nms_iou_threshold: float = 0.45,
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
@@ -46,19 +59,20 @@ def predict(
         batch=batch,
         records=records,
         detection_threshold=detection_threshold,
+        nms_iou_threshold=nms_iou_threshold,
         keep_images=keep_images,
         device=device,
     )
 
 
-def predict_dl(
+def predict_from_dl(
     model: nn.Module,
     infer_dl: DataLoader,
     show_pbar: bool = True,
     keep_images: bool = False,
     **predict_kwargs,
 ):
-    return _predict_dl(
+    return _predict_from_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
@@ -73,10 +87,11 @@ def convert_raw_predictions(
     raw_preds: torch.Tensor,
     records: Sequence[BaseRecord],
     detection_threshold: float,
+    nms_iou_threshold: float,
     keep_images: bool = False,
 ) -> List[Prediction]:
     dets = non_max_suppression(
-        raw_preds, conf_thres=detection_threshold, iou_thres=0.45
+        raw_preds, conf_thres=detection_threshold, iou_thres=nms_iou_threshold
     )
     dets = [d.detach().cpu().numpy() for d in dets]
     preds = []

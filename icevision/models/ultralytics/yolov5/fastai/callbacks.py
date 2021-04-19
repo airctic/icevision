@@ -21,6 +21,7 @@ class Yolov5Callback(fastai.Callback):
                 batch=batch,
                 raw_preds=inference_out,
                 records=self.learn.records,
-                detection_threshold=0,
+                detection_threshold=0.001,
+                nms_iou_threshold=0.6,
             )
             self.learn.converted_preds = preds

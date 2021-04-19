@@ -42,21 +42,23 @@ def test_mantis_mask_rcnn_predict(sample_dataset, pretrained_state_dict):
     _test_preds(preds)
 
 
-def test_mantis_mask_rcnn_predict_dl(sample_dataset, pretrained_state_dict):
+def test_mantis_mask_rcnn_predict_from_dl(sample_dataset, pretrained_state_dict):
     model = mask_rcnn.model(num_classes=91)
     model.load_state_dict(pretrained_state_dict)
 
     infer_dl = mask_rcnn.infer_dl(dataset=sample_dataset, batch_size=2)
-    preds = mask_rcnn.predict_dl(model=model, infer_dl=infer_dl, show_pbar=False)
+    preds = mask_rcnn.predict_from_dl(model=model, infer_dl=infer_dl, show_pbar=False)
     _test_preds(preds)
 
 
-def test_mantis_mask_rcnn_predict_dl_threshold(sample_dataset, pretrained_state_dict):
+def test_mantis_mask_rcnn_predict_from_dl_threshold(
+    sample_dataset, pretrained_state_dict
+):
     model = mask_rcnn.model(num_classes=91)
     model.load_state_dict(pretrained_state_dict)
 
     infer_dl = mask_rcnn.infer_dl(dataset=sample_dataset, batch_size=2)
-    preds = mask_rcnn.predict_dl(
+    preds = mask_rcnn.predict_from_dl(
         model=model,
         infer_dl=infer_dl,
         show_pbar=False,
