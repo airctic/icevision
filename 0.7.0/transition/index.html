@@ -1,0 +1,1130 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.7.0/transition/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+    
+    
+      
+        <title>How to transition - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-transition" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How to transition
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Other Tutorials
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      <label class="md-nav__link" for="__nav_8">
+        Deployment
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Gradio
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      <label class="md-nav__link" for="__nav_9">
+        API Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      <label class="md-nav__link" for="__nav_9_3">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      <label class="md-nav__link" for="__nav_9_4">
+        Models
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      <label class="md-nav__link" for="__nav_9_4_1">
+        Faster RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      <label class="md-nav__link" for="__nav_9_4_2">
+        Mask RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      <label class="md-nav__link" for="__nav_9_4_3">
+        EfficientDet
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parser" class="md-nav__link">
+    Parser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#record" class="md-nav__link">
+    Record
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="how-to-transition">How to transition</h1>
+<h2 id="parser">Parser</h2>
+<p>The major modification was in the <code>Parser</code> API, the concept of a <code>ParserMixin</code> was completely removed. Now, instead of starting by defining the parser, we start by defining the record:</p>
+<p><strong>Before:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MyParser</span><span class="p">(</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">Parser</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">FilepathMixin</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">LabelsMixin</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">BBoxesMixins</span><span class="p">,</span>
+<span class="p">):</span>
+</code></pre></div></p>
+<p><strong>After:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">template_record</span> <span class="o">=</span> <span class="n">BaseRecord</span><span class="p">(</span>
+    <span class="p">(</span>
+        <span class="n">FilepathRecordComponent</span><span class="p">(),</span>
+        <span class="n">InstancesLabelsRecordComponent</span><span class="p">(),</span>
+        <span class="n">BBoxesRecordComponent</span><span class="p">(),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div></p>
+<p>We then continue to generate the parser template:</p>
+<p><strong>Before:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">MyParser</span><span class="o">.</span><span class="n">generate_template</span><span class="p">()</span>
+</code></pre></div></p>
+<p><strong>After:</strong>
+<div class="highlight"><pre><span></span><code><span class="n">Parser</span><span class="o">.</span><span class="n">generate_template</span><span class="p">(</span><span class="n">template_record</span><span class="p">)</span>
+</code></pre></div></p>
+<p>And here's how the parser class looks:</p>
+<p><strong>Before:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ChessParser</span><span class="p">(</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">Parser</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">FilepathMixin</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">LabelsMixin</span><span class="p">,</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">BBoxesMixins</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;annotations.csv&quot;</span><span class="p">)</span>
+
+        <span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">imageid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hashable</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">filename</span>
+
+    <span class="k">def</span> <span class="nf">filepath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;images&#39;</span> <span class="o">/</span> <span class="n">o</span><span class="o">.</span><span class="n">filename</span>
+
+    <span class="k">def</span> <span class="nf">image_width_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">height</span>
+
+    <span class="k">def</span> <span class="nf">labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BBox</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">BBox</span><span class="o">.</span><span class="n">from_xyxy</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">ymin</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">ymax</span><span class="p">)]</span>
+</code></pre></div></p>
+<p><strong>After:</strong>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ChessParser</span><span class="p">(</span><span class="n">Parser</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template_record</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">template_record</span><span class="o">=</span><span class="n">template_record</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;annotations.csv&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">imageid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Hashable</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">filename</span>
+
+    <span class="k">def</span> <span class="nf">parse_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">set_filepath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s1">&#39;images&#39;</span> <span class="o">/</span> <span class="n">o</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">set_img_size</span><span class="p">(</span><span class="n">ImgSize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">o</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+
+        <span class="n">record</span><span class="o">.</span><span class="n">detect</span><span class="o">.</span><span class="n">set_class_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">class_map</span><span class="p">)</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">detect</span><span class="o">.</span><span class="n">add_bboxes</span><span class="p">([</span><span class="n">BBox</span><span class="o">.</span><span class="n">from_xyxy</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">ymin</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">xmax</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">ymax</span><span class="p">)])</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">detect</span><span class="o">.</span><span class="n">add_labels</span><span class="p">([</span><span class="n">o</span><span class="o">.</span><span class="n">label</span><span class="p">])</span>
+</code></pre></div></p>
+<h2 id="record">Record</h2>
+<p>The attributes on the record are now separated by task, to access <code>bboxes</code> you now have to do <code>record.detection.bboxes</code> instead of <code>record.bboxes</code>. Common attributes (not specific to one task) can still be accessed directly: <code>record.filepath</code>.</p>
+<p>You can use <code>print</code> to check the attributes on the record and how to access them:</p>
+<div class="highlight"><pre><span></span><code><span class="n">BaseRecord</span>
+
+<span class="n">common</span><span class="p">:</span> 
+    <span class="o">-</span> <span class="n">Image</span> <span class="n">size</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">416</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">416</span><span class="p">)</span>
+    <span class="o">-</span> <span class="n">Image</span> <span class="n">ID</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="o">-</span> <span class="n">Filepath</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">lgvaz</span><span class="o">/.</span><span class="n">icevision</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">chess_sample</span><span class="o">/</span><span class="n">chess_sample</span><span class="o">-</span><span class="n">master</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">e79deba8fe520409790b601ad61da4ee_jpg</span><span class="o">.</span><span class="n">rf</span><span class="o">.</span><span class="mi">016</span><span class="n">bc04dee292f80d1f975931f32bc21</span><span class="o">.</span><span class="n">jpg</span>
+    <span class="o">-</span> <span class="n">Image</span><span class="p">:</span> <span class="kc">None</span>
+<span class="n">detection</span><span class="p">:</span> 
+    <span class="o">-</span> <span class="n">BBoxes</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">BBox</span> <span class="p">(</span><span class="n">xmin</span><span class="p">:</span><span class="mi">208</span><span class="p">,</span> <span class="n">ymin</span><span class="p">:</span><span class="mi">88</span><span class="p">,</span> <span class="n">xmax</span><span class="p">:</span><span class="mi">226</span><span class="p">,</span> <span class="n">ymax</span><span class="p">:</span><span class="mi">128</span><span class="p">)</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="o">-</span> <span class="n">Labels</span><span class="p">:</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</code></pre></div>
+<p>All fields under <code>common</code> can be accessed directly, the others have to be specifified by it's corresponding task.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
