@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://airctic.com/0.7.0/getting_started_object_detection/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.9299cb39.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
@@ -237,7 +237,6 @@
       
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
-      
         
       
       
@@ -252,7 +251,6 @@
       
         
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
   
   
     
@@ -1108,7 +1106,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
     
   
   
@@ -1285,11 +1282,11 @@
 <p>It enables you to select from many possible models and backbones from these libraries.</p>
 <p>IceVision lets you switch between them with ease. This means that you can pick the engine, library, model, and data format that work for you now and easily change them in the future. You can experiment with with them to see which ones meet your requirements.</p>
 <p>In this tutorial, you will learn how to 
-1. Install IceVision. This will include the IceData package that provides easy access to several sample datasets, as well as the engines and libraries that IceVision works with.
-2. Download and prepare a dataset to work with.
-3. Select an object detection library, model, and backbone.
-4. Instantiate the model, and then train it with both the fastai and pytorch lightning engines.
-5. And finally, use the model to identify objects in images.</p>
+1. Install IceVision. This will include the IceData package that provides easy access to several sample datasets, as well as the engines and libraries that IceVision works with.<br />
+2. Download and prepare a dataset to work with.<br />
+3. Select an object detection library, model, and backbone.<br />
+4. Instantiate the model, and then train it with both the fastai and pytorch lightning engines.<br />
+5. And finally, use the model to identify objects in images.  </p>
 <p>The notebook is set up so that you can easily select different libraries, models, and backbones to try.</p>
 <h2 id="install-icevision-and-icedata">Install IceVision and IceData</h2>
 <p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
@@ -1363,44 +1360,39 @@ as the fastai and pytorch lightning engines.</p>
 <p>Selections only take two simple lines of code. For example, to try the mmdet library using the retinanet model and the resnet50_fpn_1x backbone  could be specified by:
 <div class="highlight"><pre><span></span><code>model_type = models.mmdet.retinanet
 backbone = model_type.backbones.resnet50_fpn_1x(pretrained=True)
-  ```
-As pretrained models are used by default, we typically leave this out of the backbone creation step.
+</code></pre></div>
+As pretrained models are used by default, we typically leave this out of the backbone creation step.</p>
+<p>We've selected a few of the many options below. You can easily pick which option you want to try by setting the value of <code>selection</code>. This shows you how easy it is to try new libraries, models, and backbones.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
 
-We&#39;ve selected a few of the many options below. You can easily pick which option you want to try by setting the value of `selection`. This shows you how easy it is to try new libraries, models, and backbones.
-
-
-
-```python
-# Just change the value of selection to try another model
-
-selection = 0
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
 
 
-extra_args = {}
+<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
 
-if selection == 0:
-  model_type = models.mmdet.retinanet
-  backbone = model_type.backbones.resnet50_fpn_1x
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
 
-elif selection == 1:
-  # The Retinanet model is also implemented in the torchvision library
-  model_type = models.torchvision.retinanet
-  backbone = model_type.backbones.resnet50_fpn
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
 
-elif selection == 2:
-  model_type = models.ross.efficientdet
-  backbone = model_type.backbones.tf_lite0
-  # The efficientdet model requires an img_size parameter
-  extra_args[&#39;img_size&#39;] = image_size
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
+  <span class="c1"># The efficientdet model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
 
-elif selection == 3:
-  model_type = models.ultralytics.yolov5
-  backbone = model_type.backbones.small
-  # The yolov5 model requires an img_size parameter
-  extra_args[&#39;img_size&#39;] = image_size
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
+  <span class="c1"># The yolov5 model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
 
-model_type, backbone, extra_args
-</code></pre></div></p>
+<span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">extra_args</span>
+</code></pre></div>
 <p>Now it is just a one-liner to instantiate the model. If you want to try another <em>option</em>, just edit the line at the top of the previous cell.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the mdoel</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
@@ -1431,9 +1423,10 @@ model_type, backbone, extra_args
 <span class="c1"># For Sparse-RCNN, use lower `end_lr`</span>
 <span class="c1"># learn.lr_find(end_lr=0.005)</span>
 </code></pre></div>
-<div class="codehilite"><pre><span></span><code>SuggestedLRs(lr_min=6.918309954926372e-05, lr_steep=9.120108734350652e-05)
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=6.918309954926372e-05, lr_steep=9.120108734350652e-05)
 </code></pre></div>
-
+</div>
 <p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_30_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
@@ -1638,11 +1631,12 @@ model_type, backbone, extra_args
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="codehilite"><pre><span></span><code>  <span class="mf">0</span><span class="o">%|</span>          <span class="o">|</span> <span class="mf">0</span><span class="o">/</span><span class="mf">7</span> <span class="p">[</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="cp">&lt;?</span><span class="p">,</span> <span class="o">?</span><span class="nx">it</span><span class="o">/</span><span class="nx">s</span><span class="p">]</span>
-</code></pre></div>
-
 <div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/7 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
 <p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_40_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
@@ -1721,7 +1715,7 @@ model_type, backbone, extra_args
     <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.7353b375.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
       

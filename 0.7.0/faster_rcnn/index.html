@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://airctic.com/0.7.0/faster_rcnn/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.2">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6f955dcd.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.9299cb39.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
@@ -680,7 +680,6 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-      
         <label class="md-nav__link md-nav__link--active" for="__toc">
           common
           <span class="md-nav__icon md-icon"></span>
@@ -692,7 +691,6 @@
       
         
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
   
   
   
@@ -1015,7 +1013,6 @@
   
   
   
-  
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
       Table of contents
@@ -1086,7 +1083,7 @@
                 
                   <h1>common</h1>
                 
-                <p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/model.py#L17">[source]</a></span></p>
+                <p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/model.py#L17">[source]</a></span></p>
 <h3 id="model">model</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
     <span class="n">num_classes</span><span class="p">,</span> <span class="n">backbone</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">remove_internal_transforms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">faster_rcnn_kwargs</span>
@@ -1109,7 +1106,7 @@ so it's safe to remove those internal transforms.</li>
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>nn.Module</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L15">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L15">[source]</a></span></p>
 <h3 id="train_dl">train_dl</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
@@ -1126,7 +1123,7 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L35">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L35">[source]</a></span></p>
 <h3 id="valid_dl">valid_dl</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
@@ -1143,7 +1140,7 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L55">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L55">[source]</a></span></p>
 <h3 id="infer_dl">infer_dl</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span>
     <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
@@ -1160,7 +1157,7 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L96">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L96">[source]</a></span></p>
 <h3 id="build_train_batch">build_train_batch</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
@@ -1180,7 +1177,7 @@ of the input records.</p>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L127">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L127">[source]</a></span></p>
 <h3 id="build_valid_batch">build_valid_batch</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
@@ -1200,7 +1197,7 @@ of the input records.</p>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icedata/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L152">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L152">[source]</a></span></p>
 <h3 id="build_infer_batch">build_infer_batch</h3>
 <div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
@@ -1294,7 +1291,7 @@ of the input records.</p>
     <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.7353b375.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
       
