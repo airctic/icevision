@@ -368,7 +368,7 @@ def draw_bbox(
     # Calculate image dimensions
     dims = sorted(img.shape, reverse=True)
     color = as_rgb_tuple(color)
-    img = PIL.Image.fromarray(img.squeeze())
+    img = PIL.Image.fromarray(img.squeeze()).convert("RGB")
     draw = PIL.ImageDraw.Draw(img)
 
     # corner thickness is linearly correlated with the smaller image dimension.
