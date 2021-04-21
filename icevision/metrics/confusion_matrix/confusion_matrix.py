@@ -1,6 +1,8 @@
 __all__ = ["SimpleConfusionMatrix"]
 
 import sklearn, PIL
+
+from icevision import Prediction
 from icevision.imports import *
 from icevision.metrics.metric import *
 from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
@@ -15,13 +17,15 @@ class MatchingPolicy(Enum):
 class SimpleConfusionMatrix(Metric):
     def __init__(
         self,
-        confidence_threshold: float = 0.001,
+        confidence_threshold: float = 0.001,  # todo: maybe remove
         iou_threshold: float = 0.5,
         policy: MatchingPolicy = MatchingPolicy.BEST_SCORE,
+        print_summary: bool = False,
     ):
         super(SimpleConfusionMatrix, self).__init__()
-        self.ground_truths = []
-        self.predictions = []
+        self.print_summary = print_summary
+        self.target_labels = []
+        self.predicted_labels = []
         self._confidence_threshold = confidence_threshold
         self._iou_threshold = iou_threshold
         self._policy = policy
@@ -29,54 +33,64 @@ class SimpleConfusionMatrix(Metric):
         self.confusion_matrix: sklearn.metrics.confusion_matrix = None
 
     def _reset(self):
-        self.ground_truths = []
-        self.predictions = []
+        self.target_labels = []
+        self.predicted_labels = []
 
-    def accumulate(self, records, preds):
-        if self.class_map is None:
-            self.class_map = first(records).detection.class_map
-        for image_targets, image_preds in zip(records, preds):
+    def accumulate(self, preds: Collection[Prediction]):
+        for pred in preds:
+            target_record = pred.ground_truth
+            prediction_record = pred.pred
             # skip if empty ground_truths
-            if not image_targets.detection.bboxes:
-                continue
-            targets, matched_preds = match_preds_with_targets(
-                preds=image_preds,
-                targets=image_targets,
+            # if not target_record.detection.bboxes:
+            #     continue
+            # create matches based on iou
+            matches = match_records(
+                target=target_record,
+                prediction=prediction_record,
                 iou_threshold=self._iou_threshold,
             )
 
-            if self._policy == MatchingPolicy.BEST_SCORE:
-                predicted_labels = pick_best_score_labels(
-                    matched_preds, confidence_threshold=self._confidence_threshold
-                )
-            elif self._policy == MatchingPolicy.BEST_IOU:
-                raise NotImplementedError
-            else:
-                raise RuntimeError(f"policy must be one of {list(MatchingPolicy)}")
+            target_labels, predicted_labels = [], []
+            # iterate over multiple targets and preds in a record
+            for target_item, prediction_items in matches:
+                if self._policy == MatchingPolicy.BEST_SCORE:
+                    predicted_item = get_best_score_item(
+                        prediction_items=prediction_items,
+                    )
+                elif self._policy == MatchingPolicy.BEST_IOU:
+                    raise NotImplementedError
+                else:
+                    raise RuntimeError(f"policy must be one of {list(MatchingPolicy)}")
 
-            target_labels = [target_item[1] for target_item in targets]
-            assert len(predicted_labels) == len(target_labels)
+                # using label_id instead of named label to save memory
+                target_label = target_item["target_label_id"]
+                predicted_label = predicted_item["predicted_label_id"]
+                target_labels.append(target_label)
+                predicted_labels.append(predicted_label)
 
             # We need to store the entire list of gts/preds to support various CM logging methods
-            self.ground_truths.extend(target_labels)
-            self.predictions.extend(predicted_labels)
+            assert len(predicted_labels) == len(target_labels)
+            self.target_labels.extend(target_labels)
+            self.predicted_labels.extend(predicted_labels)
 
     def finalize(self):
         """Convert preds to numpy arrays and calculate the CM"""
-        assert len(self.ground_truths) == len(self.predictions)
-        self.class_map = add_unknown_labels(
-            self.ground_truths, self.predictions, self.class_map
-        )
-        # this needs to be hacked, cause it may happen that we dont have all gts/preds classes in a batch.
-        # This results in missing values and class_map / gts shape mismatch
-        dummy_labels = [i for i in range(self.class_map.num_classes)]
-        dummy_diagonal = np.eye(self.class_map.num_classes)
-        self.ground_truths = np.array(self.ground_truths + dummy_labels)
-        self.predictions = np.array(self.predictions + dummy_labels)
+        assert len(self.target_labels) == len(self.predicted_labels)
+        # self.class_map = add_unknown_labels(
+        #     self.target_labels, self.predicted_labels, self.class_map
+        # )
+        # # this needs to be hacked, cause it may happen that we dont have all gts/preds classes in a batch.
+        # # This results in missing values and class_map / gts shape mismatch
+        # dummy_labels = [i for i in range(self.class_map.num_classes)]
+        # dummy_diagonal = np.eye(self.class_map.num_classes)
+        # self.target_labels = np.array(self.target_labels + dummy_labels)
+        # self.predicted_labels = np.array(self.predicted_labels + dummy_labels)
         self.confusion_matrix = sklearn.metrics.confusion_matrix(
-            y_true=self.ground_truths, y_pred=self.predictions
+            y_true=self.target_labels, y_pred=self.predicted_labels
         )
-        self.confusion_matrix = self.confusion_matrix - dummy_diagonal
+        # self.confusion_matrix = self.confusion_matrix - dummy_diagonal
+        if self.print_summary:
+            print(self.confusion_matrix)
         return {"dummy_value_for_fastai": -1}
 
     def plot(
