@@ -1,10 +1,12 @@
 __all__ = [
     "convert_background_from_zero_to_last",
     "convert_background_from_last_to_zero",
+    "mmdet_tensor_to_image",
     "build_model",
 ]
 
 from icevision.imports import *
+from icevision.utils import *
 from mmcv import Config
 from mmdet.models import build_detector
 from mmcv.runner import load_checkpoint
@@ -21,6 +23,10 @@ def convert_background_from_last_to_zero(label_ids, class_map):
     label_ids = label_ids + 1
     label_ids[label_ids == len(class_map)] = 0
     return label_ids
+
+
+def mmdet_tensor_to_image(tensor_image):
+    return tensor_to_image(tensor_image)[:, :, ::-1].copy()
 
 
 def build_model(

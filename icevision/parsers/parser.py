@@ -165,8 +165,10 @@ class Parser(ParserInterface, ABC):
         template.add_line(f"def __len__(self) -> int:", 1)
         # template.add_line("def create_record(self) -> BaseRecord:", 1)
         # template.add_line(f"return {record.__class__.__name__}({components_names})", 2)
-        template.add_line("def record_id(self, o) -> Hashable:", 1)
-        template.add_line("def parse_fields(self, o, record, is_new):", 1)
+        template.add_line("def record_id(self, o: Any) -> Hashable:", 1)
+        template.add_line(
+            "def parse_fields(self, o: Any, record: BaseRecord, is_new: bool):", 1
+        )
         template.add_lines(record_builder_template, 2)
 
         template.display()

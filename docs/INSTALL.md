@@ -1,14 +1,17 @@
 !!! danger "Important"  
     We currently only support Linux/MacOS installations
 
-## A- Installation using pip
-
 !!! info "Note"  
     Please do not forget to install the other optional dependencies if you would like to use them:
     
     - MMCV+MMDetection, and/or 
 
     - YOLOv5 
+
+## Pre-requirements
+Before proceeding with the installation, install numpy: `pip install numpy`
+## A- Installation using pip
+
 ### **Option 1:** Installing from pypi repository **[Stable Version]**
  
 To install icevision package together with almost all dependencies:
