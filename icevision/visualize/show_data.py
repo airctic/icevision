@@ -25,7 +25,7 @@ def show_sample(
     display_keypoints: bool = True,
     show: bool = True,
     ax: plt.Axes = None,
-    figsize: Tuple[int, int] = None,
+    figsize: Tuple[int, int] = None, 
     **draw_sample_kwargs,
 ) -> None:
     img = draw_sample(
