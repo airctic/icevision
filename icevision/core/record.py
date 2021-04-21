@@ -7,6 +7,7 @@ from icevision.core import tasks
 from icevision.core.exceptions import *
 from icevision.core.components import *
 from icevision.core.record_components import *
+from concurrent.futures import ProcessPoolExecutor
 
 
 # TODO: MutableMapping because of backwards compatability
@@ -106,25 +107,33 @@ class BaseRecord(TaskComposite):
     #     return len(self.as_dict())
 
 
-def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
-    keep_records = []
-    for record in records:
+def _autofix_record(record: BaseRecord) -> BaseRecord:
+    def _pre_replay():
+        logger.log(
+            "AUTOFIX-START",
+            "️🔨  Autofixing record with record_id: {}  ️🔨",
+            record.record_id,
+        )
 
-        def _pre_replay():
-            logger.log(
-                "AUTOFIX-START",
-                "️🔨  Autofixing record with record_id: {}  ️🔨",
-                record.record_id,
+    with ReplaySink(_pre_replay) as sink:
+        try:
+            record.autofix()
+            return record
+        except AutofixAbort as e:
+            logger.warning(
+                "🚫 Record could not be autofixed and will be removed because: {}",
+                str(e),
             )
 
-        with ReplaySink(_pre_replay) as sink:
-            try:
-                record.autofix()
-                keep_records.append(record)
-            except AutofixAbort as e:
-                logger.warning(
-                    "🚫 Record could not be autofixed and will be removed because: {}",
-                    str(e),
-                )
 
-    return keep_records
+def autofix_records(
+    records: Sequence[BaseRecord], num_workers: Optional[int] = None
+) -> Sequence[BaseRecord]:
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        return [
+            record
+            for record in tqdm(
+                executor.map(_autofix_record, records), total=len(records)
+            )
+            if record is not None
+        ]
