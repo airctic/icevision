@@ -41,7 +41,7 @@ class Dataset:
         return f"<{self.__class__.__name__} with {len(self.records)} items>"
 
     @classmethod
-    def from_images(cls, images: Sequence[np.array], tfm: Transform = None):
+    def from_images(cls, images: Sequence[np.array], tfm: Transform = None, class_map: ClassMap = None):
         """Creates a `Dataset` from a list of images.
 
         # Arguments
@@ -57,5 +57,6 @@ class Dataset:
 
             # TODO, HACK: adding class map because of `convert_raw_prediction`
             record.add_component(ClassMapRecordComponent(task=tasks.detection))
+            record.detection.set_class_map(class_map)
 
         return cls(records=records, tfm=tfm)
