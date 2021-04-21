@@ -78,15 +78,6 @@ def empty_prediction():
     return pred
 
 
-def test_zeroify():
-    t = torch.tensor([0.1, 0.0, -10.0, 1000])
-    expected_result_0 = torch.tensor([0.1, 0.0, 0.0, 1000])
-    expected_result_1 = torch.tensor([0.0, 0.0, 0.0, 0.0])
-    assert torch.equal(zeroify_items_below_threshold(t, 0.0), expected_result_0)
-    assert torch.equal(zeroify_items_below_threshold(t, -1.0), expected_result_0)
-    assert torch.equal(zeroify_items_below_threshold(t, 1000), expected_result_1)
-
-
 def test_pairwise_iou_empty(target, empty_prediction):
     result = pairwise_iou_record_record(target=target, prediction=empty_prediction)
     empty_result = pairwise_iou_record_record(
@@ -117,34 +108,52 @@ def test_match_prediction(target, prediction):
     result = match_records(target, prediction, iou_threshold=0.5)
     expected_result = [
         [
-            {"target_bbox": BBox.from_xyxy(100, 100, 400, 400), "target_label": "a"},
+            {
+                "target_bbox": BBox.from_xyxy(100, 100, 400, 400),
+                "target_label": "a",
+                "target_label_id": 1,
+            },
             [
                 {
                     "predicted_bbox": BBox.from_xyxy(100, 100, 400, 400),
                     "predicted_label": "a",
+                    "predicted_label_id": 1,
                     "score": 0.8,
                     "iou_score": 1.0,
                 },
                 {
                     "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
                     "predicted_label": "b",
+                    "predicted_label_id": 2,
                     "score": 0.7,
                     "iou_score": 0.5122,
                 },
             ],
         ],
         [
-            {"target_bbox": BBox.from_xyxy(300, 100, 600, 400), "target_label": "b"},
+            {
+                "target_bbox": BBox.from_xyxy(300, 100, 600, 400),
+                "target_label": "b",
+                "target_label_id": 2,
+            },
             [
                 {
                     "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
                     "predicted_label": "b",
+                    "predicted_label_id": 2,
                     "score": 0.7,
                     "iou_score": 0.5122,
                 },
             ],
         ],
-        [{"target_bbox": BBox.from_xyxy(700, 200, 900, 500), "target_label": "b"}, []],
+        [
+            {
+                "target_bbox": BBox.from_xyxy(700, 200, 900, 500),
+                "target_label": "b",
+                "target_label_id": 2,
+            },
+            [],
+        ],
     ]
     assert result == expected_result
 
@@ -179,6 +188,6 @@ def test_confusion_matrix_value(records, preds):
     confusion_matrix.accumulate(predictions)
     dummy_result = confusion_matrix.finalize()
     cm_result = confusion_matrix.confusion_matrix
-    expected_result = np.diagflat([2, 1])
+    expected_result = np.diagflat([0, 0, 2, 1])
     assert dummy_result["dummy_value_for_fastai"] == -1
     assert np.equal(cm_result, expected_result).all()

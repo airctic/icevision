@@ -2,12 +2,6 @@ from icevision.imports import *
 from icevision import BBox, BaseRecord
 
 
-def zeroify_items_below_threshold(
-    iou_scores: torch.Tensor, threshold: float
-) -> torch.Tensor:
-    return iou_scores * (iou_scores > threshold).byte()
-
-
 def get_best_score_item(prediction_items: Collection[Dict]):
     # fill with dummy if list of prediction_items is empty
     dummy = dict(
@@ -18,25 +12,6 @@ def get_best_score_item(prediction_items: Collection[Dict]):
     )
     best_item = max(prediction_items, key=lambda x: x["score"], default=dummy)
     return best_item
-
-
-def pairwise_bboxes_iou(
-    predicted_bboxes: Sequence[BBox], target_bboxes: Sequence[BBox]
-):
-    """
-    Calculates pairwise iou on lists of bounding boxes. Uses torchvision implementation of `box_iou`.
-    :param predicted_bboxes:
-    :param target_bboxes:
-    :return:
-    """
-    stacked_preds = [bbox.to_tensor() for bbox in predicted_bboxes]
-    stacked_preds = torch.stack(stacked_preds) if stacked_preds else torch.empty(0, 4)
-
-    stacked_targets = [bbox.to_tensor() for bbox in target_bboxes]
-    stacked_targets = (
-        torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
-    )
-    return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
 def pairwise_iou_record_record(target: BaseRecord, prediction: BaseRecord):
@@ -95,19 +70,3 @@ def match_records(
         target_list[target_id][1].append(single_prediction)
 
     return target_list
-
-
-def add_unknown_labels(ground_truths, predictions, class_map):
-    """
-    Add Missing labels to the class map by turning gt and preds to sets and then checking which idxs are missing
-    :param ground_truths:
-    :param predictions:
-    :param class_map:
-    :return class_map with added missing keys:
-    """
-    ground_truth_idxs = set(ground_truths)
-    prediction_idxs = set(predictions)
-    class_map_idxs = set(class_map._class2id.values())
-    for missing_idx in ground_truth_idxs.union(prediction_idxs) - class_map_idxs:
-        class_map.add_name(f"unknown_id_{missing_idx}")
-    return class_map

@@ -17,7 +17,6 @@ class MatchingPolicy(Enum):
 class SimpleConfusionMatrix(Metric):
     def __init__(
         self,
-        confidence_threshold: float = 0.001,  # todo: maybe remove
         iou_threshold: float = 0.5,
         policy: MatchingPolicy = MatchingPolicy.BEST_SCORE,
         print_summary: bool = False,
@@ -26,7 +25,6 @@ class SimpleConfusionMatrix(Metric):
         self.print_summary = print_summary
         self.target_labels = []
         self.predicted_labels = []
-        self._confidence_threshold = confidence_threshold
         self._iou_threshold = iou_threshold
         self._policy = policy
         self.class_map = None
@@ -40,6 +38,7 @@ class SimpleConfusionMatrix(Metric):
         for pred in preds:
             target_record = pred.ground_truth
             prediction_record = pred.pred
+            self.class_map = target_record.detection.class_map
             # skip if empty ground_truths
             # if not target_record.detection.bboxes:
             #     continue
@@ -76,21 +75,15 @@ class SimpleConfusionMatrix(Metric):
     def finalize(self):
         """Convert preds to numpy arrays and calculate the CM"""
         assert len(self.target_labels) == len(self.predicted_labels)
-        # self.class_map = add_unknown_labels(
-        #     self.target_labels, self.predicted_labels, self.class_map
-        # )
-        # # this needs to be hacked, cause it may happen that we dont have all gts/preds classes in a batch.
-        # # This results in missing values and class_map / gts shape mismatch
-        # dummy_labels = [i for i in range(self.class_map.num_classes)]
-        # dummy_diagonal = np.eye(self.class_map.num_classes)
-        # self.target_labels = np.array(self.target_labels + dummy_labels)
-        # self.predicted_labels = np.array(self.predicted_labels + dummy_labels)
+        label_ids = list(self.class_map._class2id.values())
         self.confusion_matrix = sklearn.metrics.confusion_matrix(
-            y_true=self.target_labels, y_pred=self.predicted_labels
+            y_true=self.target_labels,
+            y_pred=self.predicted_labels,
+            labels=label_ids,
         )
-        # self.confusion_matrix = self.confusion_matrix - dummy_diagonal
         if self.print_summary:
             print(self.confusion_matrix)
+        self._reset()
         return {"dummy_value_for_fastai": -1}
 
     def plot(
@@ -114,8 +107,9 @@ class SimpleConfusionMatrix(Metric):
             values_format = ".2f" if normalize else "d"
 
         cm = self._maybe_normalize(self.confusion_matrix, normalize)
+        labels_named = self.class_map._id2class
         cm_display = sklearn.metrics.ConfusionMatrixDisplay(
-            cm, display_labels=self.class_map._id2class
+            cm, display_labels=labels_named
         )
         figure = cm_display.plot(
             xticks_rotation=xticks_rotation,
@@ -124,9 +118,11 @@ class SimpleConfusionMatrix(Metric):
             **display_args,
         ).figure_
         figure.set_size_inches(figsize, figsize)
+        plt.close()
         return figure
 
     def _fig2img(self, fig):
+        # TODO: start using fi2img from icevision utils
         """Converts matplotlib figure object to PIL Image for easier logging. Writing to buffer is necessary
         to avoid wandb cutting our labels off. Wandb autoconvert doesn't pass the `bbox_inches` parameter so we need
         to do this manually."""
@@ -153,5 +149,5 @@ class SimpleConfusionMatrix(Metric):
             fig = self.plot()
             image = self._fig2img(fig)
             logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
-        self._reset()
+        # self._reset()
         return

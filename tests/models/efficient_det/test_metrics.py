@@ -22,7 +22,13 @@ def expected_coco_metric_output():
 
 @pytest.fixture()
 def expected_confusion_matrix_output():
-    return ["[[0 0 0]", " [0 1 0]", " [1 0 0]]"]
+    return [
+        "[[0 0 0 0 0]",
+        " [0 0 0 0 0]",
+        " [0 0 1 0 0]",
+        " [0 1 0 0 0]",
+        " [0 0 0 0 0]]",
+    ]
 
 
 @pytest.mark.parametrize(
@@ -59,3 +65,23 @@ def test_efficientdet_metrics(
         metric.finalize()
 
     assert output == expected_output
+
+
+def test_plot_confusion_matrix(fridge_efficientdet_model, fridge_efficientdet_records):
+    fridge_efficientdet_model.eval()
+
+    batch, records = efficientdet.build_valid_batch(fridge_efficientdet_records)
+
+    raw_preds = fridge_efficientdet_model(*batch)
+
+    preds = efficientdet.convert_raw_predictions(
+        batch=batch,
+        raw_preds=raw_preds["detections"],
+        records=fridge_efficientdet_records,
+        detection_threshold=0.0,
+    )
+
+    cm = SimpleConfusionMatrix()
+    cm.accumulate(preds)
+    cm.finalize()
+    cm.plot()
