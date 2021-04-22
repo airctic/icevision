@@ -67,7 +67,6 @@ def show_record(
 
 def show_pred(
     pred: Prediction,
-    class_map: Optional[ClassMap] = None,
     denormalize_fn: Optional[callable] = denormalize_imagenet,
     display_label: bool = True,
     display_bbox: bool = True,
