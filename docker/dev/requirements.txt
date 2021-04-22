@@ -1,0 +1,16 @@
+# DL libs
+icevision[all]
+icedata[dev]
+yolov5-icevision
+
+# DS libs
+pyarrow
+
+# Other
+cython
+black
+fire
+requests
+
+# Jupyter
+jupyter_contrib_nbextensions
