@@ -439,6 +439,47 @@
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
+        <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmdetection" class="md-nav__link">
+    MMDetection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#torchvision" class="md-nav__link">
+    Torchvision
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficientdet" class="md-nav__link">
+    EfficientDet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yolov5" class="md-nav__link">
+    YOLOv5
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -973,6 +1014,47 @@
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
+        <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mmdetection" class="md-nav__link">
+    MMDetection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#torchvision" class="md-nav__link">
+    Torchvision
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efficientdet" class="md-nav__link">
+    EfficientDet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yolov5" class="md-nav__link">
+    YOLOv5
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -996,9 +1078,40 @@
 </ul>
 <p>You will enjoy using our unified API while having access to a large repertoire of SOTA models. Switching models is as easy as 
 changing one word. There is no need to be familiar with all the quirks that new models and implementations introduce. </p>
-<p>Thanks to IceVision Unified API, model are created in a very similar way.</p>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">))</span>
+<h2 id="creating-a-model">Creating a model</h2>
+<p>In order to create a model, we need to:
+* Choose one of the <strong>libraries</strong> supported by IceVision
+* Choose one of the <strong>models</strong> supported by the library
+* Choose one of the <strong>backbones</strong> corresponding to a chosen model</p>
+<p>You can access any supported models by following the IceVision unified API, use code completion to explore the available models for each library.</p>
+<p>Selecting a model only takes two simple lines of code. Check out the following examples illustrating some of the models libraries we support:</p>
+<h3 id="mmdetection">MMDetection</h3>
+<div class="highlight"><pre><span></span><code>model_type = models.mmdet.retinanet
+backbone = model_type.backbones.resnet50_fpn_1x(pretrained=True)
+# Instantiate the mdoel
+model = model_type.model(backbone=backbone(pretrained=True), num_classes=len(parser.class_map))
 </code></pre></div>
+<h3 id="torchvision">Torchvision</h3>
+<div class="highlight"><pre><span></span><code>model_type = models.torchvision.retinanet
+backbone = model_type.backbones.resnet50_fpn
+# Instantiate the mdoel
+model = model_type.model(backbone=backbone(pretrained=True), num_classes=len(parser.class_map))
+</code></pre></div>
+<h3 id="efficientdet">EfficientDet</h3>
+<div class="highlight"><pre><span></span><code>model_type = models.ross.efficientdet
+backbone = model_type.backbones.tf_lite0
+# The efficientdet model requires an img_size parameter
+# Instantiate the mdoel
+model = model_type.model(backbone=backbone(pretrained=True), num_classes=len(parser.class_map), img_size=img_size)
+</code></pre></div>
+<h3 id="yolov5">YOLOv5</h3>
+<div class="highlight"><pre><span></span><code>model_type = models.ultralytics.yolov5
+backbone = model_type.backbones.small
+# The yolov5 model requires an img_size parameter
+# Instantiate the mdoel
+model = model_type.model(backbone=backbone(pretrained=True), num_classes=len(parser.class_map), img_size=img_size)
+</code></pre></div>
+<p>As pretrained models are used by default, we typically leave this out.</p>
                 
               
               
