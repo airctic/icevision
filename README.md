@@ -45,7 +45,7 @@ IceVision is the first agnostic computer vision framework to offer a curated col
 pip install icevision[all]
 ```
 
-For more installation options, check our [docs](https://airctic.github.io/icevision/install/).
+For more installation options, check our [docs](https://airctic.com/0.7.0/install/).
 
 **Important:** We currently only support Linux/MacOS.
 <!-- Not included in docs - end -->
