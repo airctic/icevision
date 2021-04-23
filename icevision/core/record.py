@@ -57,7 +57,6 @@ class BaseRecord(TaskComposite):
 
     # TODO: Might have weird interaction with task_components
     def remove_annotation(self, i: int, task_name: str):
-        print(self.record_id)
         self.reduce_on_task_components("_remove_annotation", task_name=task_name, i=i)
 
     def aggregate_objects(self):
