@@ -44,7 +44,7 @@ class BaseRecord(TaskComposite):
             keep_mask = reduce(np.logical_and, success_list)
             discard_idxs = np.where(keep_mask == False)[0]
 
-            for i in discard_idxs:
+            for i in discard_idxs[::-1]:
                 logger.log(
                     "AUTOFIX-REPORT",
                     "Removed annotation with index: {}, "
