@@ -66,6 +66,9 @@ if SoftDependencies.pytorch_lightning:
 if SoftDependencies.wandb:
     import wandb
 
+if SoftDependencies.sklearn:
+    import sklearn
+
 
 # TODO: Stop importing partial from fastcore and move this to utils
 class partial:
