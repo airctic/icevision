@@ -283,7 +283,6 @@ class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
         self.is_multilabel = is_multilabel
 
     def _load(self):
-        if isinstance(self.labels)
         if not self.is_multilabel and len(self.labels) > 1:
             raise ValueError(
                 f"Expected a single label, got {len(self.labels)} instead"
