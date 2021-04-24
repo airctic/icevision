@@ -278,8 +278,14 @@ class InstancesLabelsRecordComponent(BaseLabelsRecordComponent):
 
 
 class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
-    def __init__(self, task=tasks.classification):
+    def __init__(self, is_multilabel: bool = False, task=tasks.classification):
         super().__init__(task=task)
+
+    def one_hot_encoded(self) -> np.array:
+        "Get labels as a one-hot encoded array"
+        one_hot_labels = np.zeros(len(self.class_map))
+        one_hot_labels[self.label_ids] = 1
+        return one_hot_labels
 
 
 class BBoxesRecordComponent(RecordComponent):
