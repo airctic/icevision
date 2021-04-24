@@ -280,6 +280,16 @@ class InstancesLabelsRecordComponent(BaseLabelsRecordComponent):
 class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
     def __init__(self, is_multilabel: bool = False, task=tasks.classification):
         super().__init__(task=task)
+        self.is_multilabel = is_multilabel
+
+    def _load(self):
+        if isinstance(self.labels)
+        if not self.is_multilabel and len(self.labels) > 1:
+            raise ValueError(
+                f"Expected a single label, got {len(self.labels)} instead"
+                f"If you want to do multi-label classification, initiate the record"
+                f"with `is_multilabel=True`"
+            )
 
     def one_hot_encoded(self) -> np.array:
         "Get labels as a one-hot encoded array"
