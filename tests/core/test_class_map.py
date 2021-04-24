@@ -26,3 +26,6 @@ def test_class_map_safety(classes):
     class_map = ClassMap(classes, background=None)
     classes.insert(0, "x")
     assert class_map.get_by_id(0) == "a"
+
+    with pytest.raises(ValueError):
+        class_map.add_name(class_map._id2class[0])
