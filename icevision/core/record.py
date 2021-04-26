@@ -7,7 +7,7 @@ from icevision.core import tasks
 from icevision.core.exceptions import *
 from icevision.core.components import *
 from icevision.core.record_components import *
-from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 
 # TODO: MutableMapping because of backwards compatability
@@ -127,13 +127,19 @@ def _autofix_record(record: BaseRecord) -> BaseRecord:
 
 
 def autofix_records(
-    records: Sequence[BaseRecord], num_workers: Optional[int] = None
+    records: Sequence[BaseRecord],
+    num_workers: Optional[int] = None,
+    show_pbar: bool = True,
 ) -> Sequence[BaseRecord]:
-    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+    def _apply(iterator):
         return [
-            record
-            for record in tqdm(
-                executor.map(_autofix_record, records), total=len(records)
-            )
-            if record is not None
+            o
+            for o in pbar(iterator, total=len(records), show=show_pbar)
+            if o is not None
         ]
+
+    if num_workers == 0:
+        return _apply(map(_autofix_record, records))
+    else:
+        with multiprocessing.Pool(processes=num_workers) as pool:
+            return _apply(pool.imap(_autofix_record, records))
