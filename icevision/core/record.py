@@ -108,41 +108,20 @@ class BaseRecord(TaskComposite):
     #     return len(self.as_dict())
 
 
-def _autofix_record(record: BaseRecord) -> BaseRecord:
-    def _pre_replay():
-        logger.log(
-            "AUTOFIX-START",
-            "️🔨  Autofixing record with record_id: {}  ️🔨",
-            record.record_id,
-        )
-
-    # with ReplaySink(_pre_replay) as sink:
-    try:
-        record.autofix()
-        return record
-    except AutofixAbort as e:
-        logger.warning(
-            "(record_id: {})"
-            "🚫 Record could not be autofixed and will be removed because: {}",
-            record.record_id,
-            str(e),
-        )
-
-
 def autofix_records(
-    records: Sequence[BaseRecord],
-    num_workers: Optional[int] = None,
-    show_pbar: bool = True,
+    records: Sequence[BaseRecord], show_pbar: bool = True
 ) -> Sequence[BaseRecord]:
-    def _apply(iterator):
-        return [
-            o
-            for o in pbar(iterator, total=len(records), show=show_pbar)
-            if o is not None
-        ]
+    keep_records = []
+    for record in pbar(records, show=show_pbar):
+        try:
+            record.autofix()
+            keep_records.append(record)
+        except AutofixAbort as e:
+            logger.warning(
+                "(record_id: {}) - "
+                "🚫 Record could not be autofixed and will be removed because: {}",
+                record.record_id,
+                str(e),
+            )
 
-    if num_workers == 0:
-        return _apply(map(_autofix_record, records))
-    else:
-        with multiprocessing.Pool(processes=num_workers) as pool:
-            return _apply(pool.imap(_autofix_record, records))
+    return keep_records

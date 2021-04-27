@@ -106,7 +106,6 @@ class Parser(ParserInterface, ABC):
     def parse(
         self,
         data_splitter: DataSplitter = None,
-        num_workers: Optional[int] = None,
         autofix: bool = True,
         show_pbar: bool = True,
         cache_filepath: Union[str, Path] = None,
@@ -139,9 +138,7 @@ class Parser(ParserInterface, ABC):
                 split_records = [records[i] for i in ids if i in records]
 
                 if autofix:
-                    split_records = autofix_records(
-                        split_records, num_workers=num_workers
-                    )
+                    split_records = autofix_records(split_records, show_pbar=show_pbar)
 
                 all_splits_records.append(split_records)
 

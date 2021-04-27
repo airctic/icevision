@@ -304,7 +304,9 @@ class BBoxesRecordComponent(RecordComponent):
                 )
                 success.append(True)
             except InvalidDataError as e:
-                logger.log("AUTOFIX-FAIL", "{}", str(e))
+                autofix_log(
+                    "AUTOFIX-FAIL", "{}", str(e), record_id=self.composite.record_id
+                )
                 success.append(False)
 
         return {"bboxes": success}
