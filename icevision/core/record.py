@@ -48,8 +48,9 @@ class BaseRecord(TaskComposite):
             for i in discard_idxs:
                 logger.log(
                     "AUTOFIX-REPORT",
-                    "Removed annotation with index: {}, "
+                    "(record_id: {}) Removed annotation with index: {}, "
                     "for more info check the AUTOFIX-FAIL messages above",
+                    self.record_id,
                     i,
                 )
                 self.remove_annotation(task_name=task_name, i=i)
@@ -115,15 +116,17 @@ def _autofix_record(record: BaseRecord) -> BaseRecord:
             record.record_id,
         )
 
-    with ReplaySink(_pre_replay) as sink:
-        try:
-            record.autofix()
-            return record
-        except AutofixAbort as e:
-            logger.warning(
-                "🚫 Record could not be autofixed and will be removed because: {}",
-                str(e),
-            )
+    # with ReplaySink(_pre_replay) as sink:
+    try:
+        record.autofix()
+        return record
+    except AutofixAbort as e:
+        logger.warning(
+            "(record_id: {})"
+            "🚫 Record could not be autofixed and will be removed because: {}",
+            record.record_id,
+            str(e),
+        )
 
 
 def autofix_records(
