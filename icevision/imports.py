@@ -62,9 +62,13 @@ if SoftDependencies.fastai:
 
 if SoftDependencies.pytorch_lightning:
     import pytorch_lightning as pl
+    from pytorch_lightning import loggers as pl_loggers
 
 if SoftDependencies.wandb:
     import wandb
+
+if SoftDependencies.sklearn:
+    import sklearn
 
 
 # TODO: Stop importing partial from fastcore and move this to utils
