@@ -282,9 +282,9 @@ class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
         super().__init__(task=task)
         self.is_multilabel = is_multilabel
 
-    def _load(self):
+    def _autofix(self):
         if not self.is_multilabel and len(self.labels) > 1:
-            raise ValueError(
+            raise AutofixAbort(
                 f"Expected a single label, got {len(self.labels)} instead. "
                 f"If you want to do multi-label classification, initiate the record "
                 f"with `is_multilabel=True`"
