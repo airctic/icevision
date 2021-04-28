@@ -48,6 +48,10 @@ def draw_sample(
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
     include_only: List[str] = None,
+    multiple_classification_spacing_factor: float = 1.05,
+    dynamic_font_size_div_factor: float = 20.0,
+    include_classification_task_names: bool = True,
+    include_instances_task_names: bool = False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     """
     Selected kwargs:
@@ -71,6 +75,11 @@ def draw_sample(
                     precedence over `exclude_labels` (?)
     """
     img = sample.img.copy()
+    num_classification_plotted = 0
+
+    # Dynamic font size based on image height
+    if font_size is None:
+        font_size = sample.img_size.height / dynamic_font_size_div_factor
 
     if denormalize_fn is not None:
         img = denormalize_fn(img)
@@ -80,6 +89,17 @@ def draw_sample(
         #  Should be as the only composite without ClassMap should be
         #  `sample.common`. This is a foundational assumption? #NOTE
         class_map = getattr(composite, "class_map", None)
+
+        if composite.get_component_by_type(ClassificationLabelsRecordComponent):
+            x = 0
+            y = (
+                font_size
+                * num_classification_plotted
+                * multiple_classification_spacing_factor
+            )
+            num_classification_plotted += 1
+        else:
+            x, y = None, None
 
         # HACK
         if hasattr(composite, "masks"):
@@ -127,6 +147,16 @@ def draw_sample(
             if display_keypoints and keypoints is not None:
                 img = draw_keypoints(img=img, kps=keypoints, color=color)
             if display_label and label is not None:
+                prefix = ""
+                if include_classification_task_names:
+                    if composite.get_component_by_type(
+                        ClassificationLabelsRecordComponent
+                    ):
+                        prefix = prettify_func(task) + ": "
+                if include_instances_task_names:
+                    if composite.get_component_by_type(InstancesLabelsRecordComponent):
+                        prefix = prettify_func(task) + ": "
+
                 img = draw_label(
                     img=img,
                     label=label,
@@ -144,6 +174,9 @@ def draw_sample(
                     prettify=prettify,
                     prettify_func=prettify_func,
                     return_as_pil_img=False,  # should this always be False??
+                    prefix=prefix,
+                    x=x,
+                    y=y,
                 )
     if return_as_pil_img:
         # may or may not be a PIL Image based on `display_label`
@@ -155,7 +188,7 @@ def draw_sample(
 
 def draw_label(
     img: np.ndarray,
-    label: int,
+    label: Union[int, str],
     score: Optional[float],
     color: Union[np.ndarray, list, tuple],
     border_color: Union[np.ndarray, list, tuple],
@@ -170,14 +203,19 @@ def draw_label(
     pad_width_factor=0.02,
     pad_height_factor=0.005,
     thin_border=True,
+    x: Optional[int] = None,
+    y: Optional[int] = None,
+    prefix: str = "",
 ) -> Union[np.ndarray, PIL.Image.Image]:
     # finds label position based on bbox or mask
-    if bbox is not None:
-        x, y, _, _ = bbox.xyxy
-    elif mask is not None:
-        y, x = np.unravel_index(mask.data.argmax(), mask.data.shape)
-    else:
-        x, y = 0, 0
+    if x is None or y is None:
+        # print(f"X: {x}, Y: {y}")
+        if bbox is not None:
+            x, y, _, _ = bbox.xyxy
+        elif mask is not None:
+            y, x = np.unravel_index(mask.data.argmax(), mask.data.shape)
+        else:
+            x, y = 0, 0
 
     if class_map is not None:
         if isinstance(label, int):
@@ -190,6 +228,7 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
+        caption = prefix + caption
         caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
