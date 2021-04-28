@@ -7,11 +7,16 @@ def dummy_class_map():
     return ClassMap(["dummy-1", "dummy-2"], background=None)
 
 
+@pytest.fixture
+def dummy_class_map_elaborate():
+    return ClassMap(["dummy-1", "dummy-2", "dummy-3", "dummy-4"], background=None)
+
+
 def test_classification_multilabel(dummy_class_map):
     rec = BaseRecord([ClassificationLabelsRecordComponent(is_multilabel=True)])
-
     rec.classification.set_class_map(dummy_class_map)
     rec.classification.set_labels_by_id([0, 1])
+
     assert rec.classification.label_ids == [0, 1]
     assert (rec.classification.one_hot_encoded() == np.array([1, 1])).all()
 
@@ -29,9 +34,12 @@ def test_classification_single_label(dummy_class_map, label_ids):
     rec.classification.set_labels_by_id(label_ids)
 
     if len(label_ids) > 1:
-        with pytest.raises(ValueError):
-            rec.classification._load()
+        # label_ids == [0, 1]
+        # Setting two labels when `is_multilabel=False` raises an error
+        with pytest.raises(AutofixAbort):
+            rec.classification._autofix()
     else:
+        # label_ids == [0]
         # Only one label must be assigned
-        rec.classification._load()
+        assert all(rec.classification._autofix().values())
         assert rec.classification.one_hot_encoded().sum() == 1

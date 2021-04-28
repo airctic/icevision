@@ -289,6 +289,7 @@ class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
                 f"If you want to do multi-label classification, initiate the record "
                 f"with `is_multilabel=True`"
             )
+        return super()._autofix()
 
     def one_hot_encoded(self) -> np.array:
         "Get labels as a one-hot encoded array"
