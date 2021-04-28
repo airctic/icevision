@@ -47,7 +47,7 @@ def _build_train_sample(
     #     target["boxes"] = torch.zeros((0, 4), dtype=torch.float32)
     # else:
 
-    labels = tensor(record.detection.label_ids, dtype=torch.int64)
+    labels = tensor(record.detection.label_ids, dtype=torch.int64) - 1
 
     img_width, img_height = record.width, record.height
     xyxys = [
