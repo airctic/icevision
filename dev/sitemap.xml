@@ -1,139 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://airctic.com/dev/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/install/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/getting_started_object_detection/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/getting_started_instance_segmentation/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/getting_started_keypoint_detection/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/custom_parser/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/inference/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/wandb_efficientdet/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/negative_samples/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/voc_predefined_splits/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/albumentations/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/models/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/backbones/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/deployment/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/IceApp_coco/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/IceApp_pets/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/IceApp_masks/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/parser/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/dataset/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/albumentations_tfms/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/faster_rcnn/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/faster_rcnn_fastai/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/faster_rcnn_lightning/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/mask_rcnn/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/mask_rcnn_fastai/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/mask_rcnn_lightning/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/efficientdet/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/efficientdet_fastai/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/efficientdet_lightning/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/data_splits/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/contributing/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/readme_mkdocs/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/code_of_conduct/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://airctic.com/dev/about/</loc>
-     <lastmod>2021-04-25</lastmod>
+     <lastmod>2021-04-28</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
