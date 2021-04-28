@@ -278,15 +278,15 @@ class InstancesLabelsRecordComponent(BaseLabelsRecordComponent):
 
 
 class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
-    def __init__(self, is_multilabel: bool = False, task=tasks.classification):
+    def __init__(self, task=tasks.classification, is_multilabel: bool = False):
         super().__init__(task=task)
         self.is_multilabel = is_multilabel
 
     def _load(self):
         if not self.is_multilabel and len(self.labels) > 1:
             raise ValueError(
-                f"Expected a single label, got {len(self.labels)} instead"
-                f"If you want to do multi-label classification, initiate the record"
+                f"Expected a single label, got {len(self.labels)} instead. "
+                f"If you want to do multi-label classification, initiate the record "
                 f"with `is_multilabel=True`"
             )
 
