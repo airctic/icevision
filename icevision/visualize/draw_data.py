@@ -48,10 +48,10 @@ def draw_sample(
     # Args for plotting specific labels
     exclude_labels: List[str] = [],
     include_only: List[str] = None,
-    _multiple_classification_spacing_factor: float = 1.05,
-    _dynamic_font_size_div_factor: float = 20.0,
-    _include_classification_task_names: bool = True,
-    _include_instances_task_names: bool = False,
+    multiple_classification_spacing_factor: float = 1.05,
+    dynamic_font_size_div_factor: float = 20.0,
+    include_classification_task_names: bool = True,
+    include_instances_task_names: bool = False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     """
     Selected kwargs:
@@ -79,7 +79,7 @@ def draw_sample(
 
     # Dynamic font size based on image height
     if font_size is None:
-        font_size = sample.img_size.height / _dynamic_font_size_div_factor
+        font_size = sample.img_size.height / dynamic_font_size_div_factor
 
     if denormalize_fn is not None:
         img = denormalize_fn(img)
@@ -95,7 +95,7 @@ def draw_sample(
             y = (
                 font_size
                 * num_classification_plotted
-                * _multiple_classification_spacing_factor
+                * multiple_classification_spacing_factor
             )
             num_classification_plotted += 1
         else:
@@ -148,12 +148,12 @@ def draw_sample(
                 img = draw_keypoints(img=img, kps=keypoints, color=color)
             if display_label and label is not None:
                 prefix = ""
-                if _include_classification_task_names:
+                if include_classification_task_names:
                     if composite.get_component_by_type(
                         ClassificationLabelsRecordComponent
                     ):
                         prefix = prettify_func(task) + ": "
-                if _include_instances_task_names:
+                if include_instances_task_names:
                     if composite.get_component_by_type(InstancesLabelsRecordComponent):
                         prefix = prettify_func(task) + ": "
 
