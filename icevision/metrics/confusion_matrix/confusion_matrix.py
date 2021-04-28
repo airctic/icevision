@@ -143,8 +143,9 @@ class SimpleConfusionMatrix(Metric):
         return cm
 
     def log(self, logger_object) -> None:
-        if isinstance(logger_object, pl_loggers.WandbLogger):
-            fig = self.plot()
-            image = self._fig2img(fig)
-            logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
+        # TODO: Disabled for now, need to design for metric logging for this to work + pl dependency
+        # if isinstance(logger_object, pl_loggers.WandbLogger):
+        #     fig = self.plot()
+        #     image = self._fig2img(fig)
+        #     logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
         return
