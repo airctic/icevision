@@ -107,7 +107,7 @@ def convert_raw_predictions(
         )
 
         pred.detection.set_class_map(record.detection.class_map)
-        pred.detection.set_labels_by_id(det[:, 5].astype(int))
+        pred.detection.set_labels_by_id(det[:, 5].astype(int) + 1)
         pred.detection.set_bboxes([BBox.from_xyxy(*xyxy) for xyxy in det[:, :4]])
         pred.detection.set_scores(det[:, 4])
 

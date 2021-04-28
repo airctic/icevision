@@ -15,7 +15,7 @@ def test_yolo_model(backbone):
 
     assert weights_path.is_file() == True
     assert len(list(model.param_groups())) == 3
-    assert model.nc == 5
+    assert model.nc == 4
 
 
 @pytest.mark.parametrize(
@@ -28,4 +28,4 @@ def test_yolo_model_notpretrained(backbone):
     )
 
     assert len(list(model.param_groups())) == 3
-    assert model.nc == 5
+    assert model.nc == 4

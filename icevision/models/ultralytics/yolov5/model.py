@@ -25,6 +25,12 @@ def model(
     model_name = backbone.model_name
     pretrained = backbone.pretrained
 
+    # this is to remove background from ClassMap as discussed
+    # here: https://github.com/ultralytics/yolov5/issues/2950
+    # and here: https://discord.com/channels/735877944085446747/782062040168267777/836692604224536646
+    # so we should pass `num_classes=parser.class_map.num_classes`
+    num_classes -= 1
+
     device = (
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if device is None
