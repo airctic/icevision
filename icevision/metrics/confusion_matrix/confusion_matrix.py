@@ -4,7 +4,6 @@ from icevision.data.prediction import Prediction
 from icevision.metrics.metric import Metric
 from icevision.imports import *
 from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
-from pytorch_lightning import loggers as pl_loggers
 import PIL
 
 
@@ -145,9 +144,7 @@ class SimpleConfusionMatrix(Metric):
 
     def log(self, logger_object) -> None:
         if isinstance(logger_object, pl_loggers.WandbLogger):
-
             fig = self.plot()
             image = self._fig2img(fig)
             logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
-        # self._reset()
         return
