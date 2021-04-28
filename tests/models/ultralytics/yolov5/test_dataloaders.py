@@ -16,8 +16,8 @@ def _test_dl(x, y, recs):
 
         labels_in_batch = np.unique(y[:, 1].numpy().astype(int))
         possible_labels = np.arange(
-            1, 5 + 1
-        )  # 5 = number of classes in parser.class_map
+            0, 4 + 1
+        )  # 4 = number of classes in parser.class_map - 1 (given we don't have background)
         # is labels_in_batch a subset of possible_labels?
         assert len(np.setdiff1d(labels_in_batch, possible_labels)) == 0
 
