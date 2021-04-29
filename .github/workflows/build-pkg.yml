@@ -20,3 +20,9 @@ jobs:
 
       - name: Build package
         run: python setup.py sdist
+
+      - name: Install package
+        run: |
+          pip install numpy
+          pip install -e .
+          python -c "from icevision.all import *"
