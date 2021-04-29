@@ -24,8 +24,14 @@ def aug_tfms(
     size: Union[int, Tuple[int, int]],
     presize: Optional[Union[int, Tuple[int, int]]] = None,
     horizontal_flip: Optional[A.HorizontalFlip] = A.HorizontalFlip(),
-    shift_scale_rotate: Optional[A.ShiftScaleRotate] = A.ShiftScaleRotate(),
-    rgb_shift: Optional[A.RGBShift] = A.RGBShift(),
+    shift_scale_rotate: Optional[A.ShiftScaleRotate] = A.ShiftScaleRotate(
+        rotate_limit=15,
+    ),
+    rgb_shift: Optional[A.RGBShift] = A.RGBShift(
+        r_shift_limit=10,
+        g_shift_limit=10,
+        b_shift_limit=10,
+    ),
     lightning: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
     blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),
     crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
