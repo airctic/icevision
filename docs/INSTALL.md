@@ -76,12 +76,12 @@ We need to provide the appropriate version of the `mmcv-full` package as well as
     For the torch version use `torch.__version__` and replace the last number with 0.
     For the cuda version use: `torch.version.cuda`.
 
-    Example: `TORCH_VERSION = torch1.7.0`; `CUDA_VERSION = cuda101`
+    Example: `TORCH_VERSION = torch1.8.0`; `CUDA_VERSION = cu101`
 
 #### CUDA-Version Installation Example
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.2.5" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
+$ pip install mmcv-full=="1.3.1" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
