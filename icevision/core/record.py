@@ -2,15 +2,11 @@ __all__ = ["BaseRecord", "autofix_records"]
 
 from icevision.imports import *
 from icevision.utils import *
-from collections.abc import MutableMapping
-from icevision.core import tasks
 from icevision.core.exceptions import *
 from icevision.core.components import *
 from icevision.core.record_components import *
-import multiprocessing
 
 
-# TODO: MutableMapping because of backwards compatability
 # TODO: Rename to Record
 class BaseRecord(TaskComposite):
     base_components = {RecordIDRecordComponent, SizeRecordComponent}
@@ -90,22 +86,6 @@ class BaseRecord(TaskComposite):
         repr = "\n".join(reprs)
 
         return f"{self.__class__.__name__}\n\n{repr}"
-
-    # # backwards compatiblity: implemented method to behave like a dict
-    # def __getitem__(self, key):
-    #     return self.as_dict()[key]
-
-    # def __setitem__(self, key, value):
-    #     setattr(self, key, value)
-
-    # def __delitem__(self, key):
-    #     delattr(self, key)
-
-    # def __iter__(self):
-    #     yield from self.as_dict()
-
-    # def __len__(self):
-    #     return len(self.as_dict())
 
 
 def autofix_records(
