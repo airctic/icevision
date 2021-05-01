@@ -138,7 +138,7 @@ class Parser(ParserInterface, ABC):
                 split_records = [records[i] for i in ids if i in records]
 
                 if autofix:
-                    split_records = autofix_records(split_records)
+                    split_records = autofix_records(split_records, show_pbar=show_pbar)
 
                 all_splits_records.append(split_records)
 

@@ -44,7 +44,13 @@ class ClassMap:
             else:
                 raise e
 
-    def add_name(self, name) -> int:
+    def add_name(self, name: str) -> int:
+        # Raise error if trying to add duplicate value
+        if name in self._id2class:
+            raise ValueError(
+                f"'{name}' already exists in the ClassMap. You can only add new labels that are unique"
+            )
+
         self._id2class.append(name)
         id = len(self._class2id)
         self._class2id[name] = id

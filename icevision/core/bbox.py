@@ -1,6 +1,7 @@
 __all__ = ["BBox"]
 
 from icevision.imports import *
+from icevision.utils import *
 from .exceptions import *
 
 
@@ -50,7 +51,7 @@ class BBox:
     def to_tensor(self):
         return tensor(self.xyxy, dtype=torch.float)
 
-    def autofix(self, img_w, img_h) -> bool:
+    def autofix(self, img_w, img_h, record_id: Optional[Any] = None) -> bool:
         """Tries to automatically fix invalid coordinates.
 
         # Returns
@@ -60,30 +61,34 @@ class BBox:
         """
         # conditions where data can be fixed
         if self.xmin < 0:
-            logger.log(
+            autofix_log(
                 "AUTOFIX-SUCCESS",
                 f"Clipping bbox xmin from {self.xmin} to 0 (Before: {self})",
+                record_id=record_id,
             )
             self.xmin = max(self.xmin, 0)
 
         if self.ymin < 0:
-            logger.log(
+            autofix_log(
                 "AUTOFIX-SUCCESS",
                 f"Clipping bbox ymin from {self.ymin} to 0 (Before: ({self}))",
+                record_id=record_id,
             )
             self.ymin = max(self.ymin, 0)
 
         if self.xmax > img_w:
-            logger.log(
+            autofix_log(
                 "AUTOFIX-SUCCESS",
                 f"Clipping bbox xmax from {self.xmax} to image width {img_w} (Before: {self})",
+                record_id=record_id,
             )
             self.xmax = min(self.xmax, img_w)
 
         if self.ymax > img_h:
-            logger.log(
+            autofix_log(
                 "AUTOFIX-SUCCESS",
                 f"Clipping bbox ymax from {self.ymax} to image height {img_h} (Before: {self})",
+                record_id=record_id,
             )
             self.ymax = min(self.ymax, img_h)
 
