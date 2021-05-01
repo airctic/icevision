@@ -28,10 +28,12 @@ class COCOMetric(Metric):
     def __init__(
         self,
         metric_type: COCOMetricType = COCOMetricType.bbox,
+        iou_thresholds: Optional[Sequence[float]] = None,
         print_summary: bool = False,
         show_pbar: bool = False,
     ):
         self.metric_type = metric_type
+        self.iou_thresholds = iou_thresholds
         self.print_summary = print_summary
         self.show_pbar = show_pbar
         self._records, self._preds = [], []
@@ -51,6 +53,7 @@ class COCOMetric(Metric):
                 records=self._records,
                 preds=self._preds,
                 metric_type=self.metric_type.value,
+                iou_thresholds=self.iou_thresholds,
                 show_pbar=self.show_pbar,
             )
             coco_eval.evaluate()

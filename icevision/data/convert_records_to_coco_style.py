@@ -41,7 +41,11 @@ def coco_api_from_records(records, show_pbar: bool = False) -> COCO:
 
 
 def create_coco_eval(
-    records, preds, metric_type: str, show_pbar: bool = False
+    records,
+    preds,
+    metric_type: str,
+    iou_thresholds: Optional[Sequence[float]] = None,
+    show_pbar: bool = False,
 ) -> COCOeval:
     assert len(records) == len(preds)
 
@@ -54,7 +58,12 @@ def create_coco_eval(
 
     target_ds = coco_api_from_records(records, show_pbar=show_pbar)
     pred_ds = coco_api_from_preds(preds, show_pbar=show_pbar)
-    return COCOeval(target_ds, pred_ds, metric_type)
+
+    coco_eval = COCOeval(target_ds, pred_ds, metric_type)
+    if iou_thresholds is not None:
+        coco_eval.iouThrs = iou_thresholds
+
+    return coco_eval
 
 
 def convert_record_to_coco_image(record) -> dict:
