@@ -314,11 +314,15 @@ class BBoxesRecordComponent(RecordComponent):
         for bbox in self.bboxes:
             try:
                 autofixed = bbox.autofix(
-                    img_w=self.composite.width, img_h=self.composite.height
+                    img_w=self.composite.width,
+                    img_h=self.composite.height,
+                    record_id=self.composite.record_id,
                 )
                 success.append(True)
             except InvalidDataError as e:
-                logger.log("AUTOFIX-FAIL", "{}", str(e))
+                autofix_log(
+                    "AUTOFIX-FAIL", "{}", str(e), record_id=self.composite.record_id
+                )
                 success.append(False)
 
         return {"bboxes": success}

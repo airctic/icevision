@@ -2,14 +2,11 @@ __all__ = ["BaseRecord", "autofix_records"]
 
 from icevision.imports import *
 from icevision.utils import *
-from collections.abc import MutableMapping
-from icevision.core import tasks
 from icevision.core.exceptions import *
 from icevision.core.components import *
 from icevision.core.record_components import *
 
 
-# TODO: MutableMapping because of backwards compatability
 # TODO: Rename to Record
 class BaseRecord(TaskComposite):
     base_components = {RecordIDRecordComponent, SizeRecordComponent}
@@ -47,8 +44,9 @@ class BaseRecord(TaskComposite):
             for i in discard_idxs[::-1]:
                 logger.log(
                     "AUTOFIX-REPORT",
-                    "Removed annotation with index: {}, "
+                    "(record_id: {}) Removed annotation with index: {}, "
                     "for more info check the AUTOFIX-FAIL messages above",
+                    self.record_id,
                     i,
                 )
                 self.remove_annotation(task_name=task_name, i=i)
@@ -89,42 +87,21 @@ class BaseRecord(TaskComposite):
 
         return f"{self.__class__.__name__}\n\n{repr}"
 
-    # # backwards compatiblity: implemented method to behave like a dict
-    # def __getitem__(self, key):
-    #     return self.as_dict()[key]
 
-    # def __setitem__(self, key, value):
-    #     setattr(self, key, value)
-
-    # def __delitem__(self, key):
-    #     delattr(self, key)
-
-    # def __iter__(self):
-    #     yield from self.as_dict()
-
-    # def __len__(self):
-    #     return len(self.as_dict())
-
-
-def autofix_records(records: Sequence[BaseRecord]) -> Sequence[BaseRecord]:
+def autofix_records(
+    records: Sequence[BaseRecord], show_pbar: bool = True
+) -> Sequence[BaseRecord]:
     keep_records = []
-    for record in records:
-
-        def _pre_replay():
-            logger.log(
-                "AUTOFIX-START",
-                "️🔨  Autofixing record with record_id: {}  ️🔨",
+    for record in pbar(records, show=show_pbar):
+        try:
+            record.autofix()
+            keep_records.append(record)
+        except AutofixAbort as e:
+            logger.warning(
+                "(record_id: {}) - "
+                "🚫 Record could not be autofixed and will be removed because: {}",
                 record.record_id,
+                str(e),
             )
-
-        with ReplaySink(_pre_replay) as sink:
-            try:
-                record.autofix()
-                keep_records.append(record)
-            except AutofixAbort as e:
-                logger.warning(
-                    "🚫 Record could not be autofixed and will be removed because: {}",
-                    str(e),
-                )
 
     return keep_records
