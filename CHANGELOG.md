@@ -13,6 +13,7 @@ Supports pytorch 1.8
 - **Breaking:** Albumentations `aug_tfms` defaults.
   - rotate_limit changed from 45 to 15
   - rgb_shift_limit changed from 20 to 10
+  - VOC parser uses image sizes from annotation file instead of image
 ### Deleted
 
 ## [0.7.0]
