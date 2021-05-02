@@ -12,7 +12,7 @@ def _test_preds(preds):
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_yolo_predict(fridge_ds, backbone):
     _, valid_ds = fridge_ds
@@ -25,7 +25,7 @@ def test_yolo_predict(fridge_ds, backbone):
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_yolo_predict_from_dl(fridge_ds, backbone):
     _, valid_ds = fridge_ds
