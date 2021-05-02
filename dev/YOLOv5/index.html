@@ -1059,6 +1059,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1">#backbone = model_type.backbones.medium(pretrained=True)</span>
 <span class="c1">#backbone = model_type.backbones.large(pretrained=True)</span>
+<span class="c1">#backbone = model_type.backbones.extra_large(pretrained=True)</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">))</span>
 </code></pre></div>
