@@ -15,7 +15,10 @@ ImgSize = namedtuple("ImgSize", "width,height")
 
 def open_img(fn, gray=False):
     color = "L" if gray else "RGB"
-    return np.array(PIL.Image.open(str(fn)).convert(color))
+    image = PIL.Image.open(str(fn))
+    image = PIL.ImageOps.exif_transpose(image)
+    image = image.convert(color)
+    return np.array(image)
 
 
 # TODO: Deprecated
