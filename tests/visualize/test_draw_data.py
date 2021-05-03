@@ -9,11 +9,54 @@ def test_draw_record(coco_record, monkeypatch):
     show_img(img, show=True)
 
 
-def test_draw_sample(fridge_ds, fridge_class_map, monkeypatch):
+@pytest.mark.parametrize(
+    [
+        "color_map",
+        "include_only",
+        "exclude_labels",
+        "include_instances_task_names",
+        "include_classification_task_names",
+    ],
+    [
+        (None, None, [], False, False),
+        (None, ["fridge"], [], False, False),
+        (None, None, ["fridge"], False, False),
+        (None, None, [], True, False),
+        (None, None, [], False, True),
+        (
+            {
+                "background": "#fff",
+                "can": "#faa",
+                "carton": "black",
+                "milk_bottle": [255, 255, 255],
+                "water_bottle": (255, 255, 255),
+            },
+            None,
+            [],
+            False,
+            False,
+        ),
+    ],
+)
+def test_draw_sample(
+    fridge_ds,
+    fridge_class_map,
+    monkeypatch,
+    color_map,
+    include_only,
+    exclude_labels,
+    include_instances_task_names,
+    include_classification_task_names,
+):
     monkeypatch.setattr(plt, "show", lambda: None)
     sample = fridge_ds[0][0]
     img = draw_sample(
-        sample, class_map=fridge_class_map, denormalize_fn=denormalize_imagenet
+        sample,
+        class_map=fridge_class_map,
+        denormalize_fn=denormalize_imagenet,
+        color_map=color_map,
+        include_only=include_only,
+        exclude_labels=exclude_labels,
     )
     show_img(img, show=True)
 
