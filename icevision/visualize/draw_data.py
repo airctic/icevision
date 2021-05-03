@@ -120,17 +120,20 @@ def draw_sample(
             # logic for plotting specific labels only
             # `include_only` > `exclude_labels`
             if not label == []:
-                label_str = class_map.get_by_id(label) if class_map is not None else ""
+                # label_str = (
+                #     class_map.get_by_name(label) if class_map is not None else ""
+                # )
                 if include_only is not None:
-                    if not label_str in include_only:
+                    if not label in include_only:
                         continue
-                elif label_str in exclude_labels:
+                elif label in exclude_labels:
                     continue
 
             # if color-map is given and `labels` are predicted
             # then set color accordingly
             if color_map is not None:
-                color = as_rgb_tuple(color_map[label_str]).astype(np.float)
+                color = as_rgb_tuple(color_map[label])
+                color = np.array(color).astype(np.float)
 
             if display_mask and mask is not None:
                 img = draw_mask(
