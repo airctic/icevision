@@ -8,8 +8,6 @@
 
     - YOLOv5 
 
-## Pre-requirements
-Before proceeding with the installation, install numpy: `pip install numpy`
 ## A- Installation using pip
 
 ### **Option 1:** Installing from pypi repository **[Stable Version]**
