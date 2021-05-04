@@ -6,7 +6,7 @@ from icevision.all import *
     "fn,expected",
     [
         ("voc/JPEGImages/2007_000063.jpg", (375, 500, 3)),
-        ("images2/flies.jpeg", (2592, 3888, 3)),
+        ("images2/flies.jpeg", (3888, 2592, 3)),
     ],
 )
 def test_open_img(samples_source, fn, expected):
@@ -18,7 +18,7 @@ def test_open_img(samples_source, fn, expected):
     "fn,expected",
     [
         ("voc/JPEGImages/2007_000063.jpg", (500, 375)),
-        ("images2/flies.jpeg", (3888, 2592)),
+        ("images2/flies.jpeg", (2592, 3888)),
     ],
 )
 def test_get_image_size(samples_source, fn, expected):
