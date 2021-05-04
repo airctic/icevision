@@ -1,6 +1,4 @@
-__all__ = [
-    "wandb_img_preds", "wandb_image"
-]
+__all__ = ["wandb_img_preds", "wandb_image"]
 
 
 from typing import List
@@ -9,14 +7,17 @@ import wandb
 from icevision import BaseRecord, BBox
 from icevision.data.prediction import Prediction
 
-#from icevision.core.record import BaseRecord
-#from icevision.imports import *
-#from icevision.data import *
-#from icevision.core import *
+# from icevision.core.record import BaseRecord
+# from icevision.imports import *
+# from icevision.data import *
+# from icevision.core import *
 
-def wandb_img_preds(preds: List[Prediction], add_ground_truth: bool =False) -> List[wandb.Image]:
-    return [wandb_image(pred, add_ground_truth=add_ground_truth) 
-             for pred in preds]
+
+def wandb_img_preds(
+    preds: List[Prediction], add_ground_truth: bool = False
+) -> List[wandb.Image]:
+    return [wandb_image(pred, add_ground_truth=add_ground_truth) for pred in preds]
+
 
 def bbox_wandb(bbox: BBox, label_id: int, label_name: str, score=None) -> dict:
     """Return a wandb compatible dictionary with bbox, label and score"""
@@ -39,40 +40,44 @@ def bbox_wandb(bbox: BBox, label_id: int, label_name: str, score=None) -> dict:
 
     return box_data
 
-def wandb_image(pred: Prediction, add_ground_truth: bool =False) -> wandb.Image:
+
+def wandb_image(pred: Prediction, add_ground_truth: bool = False) -> wandb.Image:
     """Return a wandb image corresponding to the a prediction.
 
     Args:
-        pred (Prediction): A prediction to log with WandB. 
+        pred (Prediction): A prediction to log with WandB.
             Must have been created with keep_image = True.
-        add_ground_truth (bool, optional): Add ground_truth information to the  
+        add_ground_truth (bool, optional): Add ground_truth information to the
             the WandB image. Defaults to False.
 
     Returns:
-        wandb.Image: Specifying the image, but also the predictions and  possibly ground_truth. 
+        wandb.Image: Specifying the image, but also the predictions and  possibly ground_truth.
     """
     # FIXME: if pred does not have an img, then we lose.
     # FIXME: Not handling masks
-    
-    
+
     # Check if "masks" key is the sample dictionnary
     # if "masks" in sample:     true_masks = sample["masks"]
 
     # Check if "masks" key is the pred dictionnary
-    #if "masks" in pred: pred_masks = pred["masks"]
+    # if "masks" in pred: pred_masks = pred["masks"]
 
-    class_id_to_label = {id : label for id, label in enumerate(pred.detection.class_map._id2class)}
+    class_id_to_label = {
+        id: label for id, label in enumerate(pred.detection.class_map._id2class)
+    }
 
     # Prediction
-    box_data = list(map(bbox_wandb,
-                        pred.detection.bboxes, 
-                        pred.detection.label_ids, 
-                        pred.detection.labels, 
-                        pred.detection.scores))
+    box_data = list(
+        map(
+            bbox_wandb,
+            pred.detection.bboxes,
+            pred.detection.label_ids,
+            pred.detection.labels,
+            pred.detection.scores,
+        )
+    )
 
-    boxes = {
-        "predictions": {"box_data": box_data, "class_labels": class_id_to_label}
-    }
+    boxes = {"predictions": {"box_data": box_data, "class_labels": class_id_to_label}}
 
     # Predicted Masks
     # Check if "masks" key is the pred dictionnary
@@ -85,14 +90,17 @@ def wandb_image(pred: Prediction, add_ground_truth: bool =False) -> wandb.Image:
     #         masks = None
     masks = None
 
-    
     # Ground Truth
     if add_ground_truth:
-        box_data = list(map(bbox_wandb,
-                            pred.ground_truth.detection.bboxes, 
-                            pred.ground_truth.detection.label_ids, 
-                            pred.ground_truth.detection.labels))
-       
+        box_data = list(
+            map(
+                bbox_wandb,
+                pred.ground_truth.detection.bboxes,
+                pred.ground_truth.detection.label_ids,
+                pred.ground_truth.detection.labels,
+            )
+        )
+
         boxes["ground_truth"] = {
             "box_data": box_data,
             "class_labels": class_id_to_label,
@@ -108,4 +116,3 @@ def wandb_image(pred: Prediction, add_ground_truth: bool =False) -> wandb.Image:
         #                 "class_labels": class_id_to_label,
         #             }
     return wandb.Image(pred.img, boxes=boxes, masks=masks)
-
