@@ -1,107 +1,111 @@
 __all__ = [
-    "wandb_img_preds",
+    "wandb_img_preds", "wandb_image"
 ]
 
-from icevision.imports import *
-from icevision.data import *
-from icevision.core import *
 
+from typing import List
 
-def bbox_wandb(bbox: BBox, label: int, class_id_to_label, pred_score=None):
-    """Creates a wandb compatible dictionary with bbox, label and score"""
+import wandb
+from icevision import BaseRecord, BBox
+from icevision.data.prediction import Prediction
+
+#from icevision.core.record import BaseRecord
+#from icevision.imports import *
+#from icevision.data import *
+#from icevision.core import *
+
+def wandb_img_preds(preds: List[Prediction], add_ground_truth: bool =False) -> List[wandb.Image]:
+    return [wandb_image(pred, add_ground_truth=add_ground_truth) 
+             for pred in preds]
+
+def bbox_wandb(bbox: BBox, label_id: int, label_name: str, score=None) -> dict:
+    """Return a wandb compatible dictionary with bbox, label and score"""
     xmin, ymin, xmax, ymax = map(int, bbox.xyxy)
 
     box_data = {
         "position": {"minX": xmin, "maxX": xmax, "minY": ymin, "maxY": ymax},
-        "class_id": label,
+        "class_id": int(label_id),
         "domain": "pixel",
     }
 
-    if pred_score:
-        score = int(pred_score * 100)
-        box_caption = f"{class_id_to_label[label]} ({score}%)"
+    if score:
+        score = int(score * 100)
+        box_caption = f"{label_name} ({score}%)"
         box_data["score"] = score
     else:
-        box_caption = f"{class_id_to_label[label]}"
+        box_caption = label_name
 
     box_data["box_caption"] = box_caption
 
     return box_data
 
+def wandb_image(pred: Prediction, add_ground_truth: bool =False) -> wandb.Image:
+    """Return a wandb image corresponding to the a prediction.
 
-def wandb_image(sample, pred, class_id_to_label, add_ground_truth=False):
-    raw_image = sample["img"]
-    true_bboxes = sample["bboxes"]
-    true_labels = sample["labels"]
+    Args:
+        pred (Prediction): A prediction to log with WandB. 
+            Must have been created with keep_image = True.
+        add_ground_truth (bool, optional): Add ground_truth information to the  
+            the WandB image. Defaults to False.
+
+    Returns:
+        wandb.Image: Specifying the image, but also the predictions and  possibly ground_truth. 
+    """
+    # FIXME: if pred does not have an img, then we lose.
+    # FIXME: Not handling masks
+    
+    
     # Check if "masks" key is the sample dictionnary
-    if "masks" in sample:
-        true_masks = sample["masks"]
+    # if "masks" in sample:     true_masks = sample["masks"]
 
-    pred_bboxes = pred["bboxes"]
-    pred_labels = pred["labels"].tolist()
-    pred_scores = pred["scores"]
     # Check if "masks" key is the pred dictionnary
-    if "masks" in pred:
-        pred_masks = pred["masks"]
+    #if "masks" in pred: pred_masks = pred["masks"]
 
-    # Predicted Boxes
-    pred_all_boxes = []
-    # Collect predicted bounding boxes for this image
-    for b_i, bbox in enumerate(pred_bboxes):
-        box_data = bbox_wandb(
-            bbox, pred_labels[b_i], class_id_to_label, pred_score=pred_scores[b_i]
-        )
-        pred_all_boxes.append(box_data)
+    class_id_to_label = {id : label for id, label in enumerate(pred.detection.class_map._id2class)}
 
-    # log to wandb: raw image, predictions, and dictionary of class labels for each class id
+    # Prediction
+    box_data = list(map(bbox_wandb,
+                        pred.detection.bboxes, 
+                        pred.detection.label_ids, 
+                        pred.detection.labels, 
+                        pred.detection.scores))
+
     boxes = {
-        "predictions": {"box_data": pred_all_boxes, "class_labels": class_id_to_label}
+        "predictions": {"box_data": box_data, "class_labels": class_id_to_label}
     }
 
     # Predicted Masks
     # Check if "masks" key is the pred dictionnary
-    if "masks" in pred:
-        mask_data = (pred_masks.data * pred["labels"][:, None, None]).max(0)
-        masks = {
-            "predictions": {"mask_data": mask_data, "class_labels": class_id_to_label}
-        }
-    else:
-        masks = None
+    #     if "masks" in pred:
+    #         mask_data = (pred_masks.data * pred["labels"][:, None, None]).max(0)
+    #         masks = {
+    #             "predictions": {"mask_data": mask_data, "class_labels": class_id_to_label}
+    #         }
+    #     else:
+    #         masks = None
+    masks = None
 
+    
     # Ground Truth
     if add_ground_truth:
-        # Ground Truth Boxes
-        true_all_boxes = []
-        # Collect ground truth bounding boxes for this image
-        for b_i, bbox in enumerate(true_bboxes):
-            box_data = bbox_wandb(bbox, true_labels[b_i], class_id_to_label)
-            true_all_boxes.append(box_data)
-
+        box_data = list(map(bbox_wandb,
+                            pred.ground_truth.detection.bboxes, 
+                            pred.ground_truth.detection.label_ids, 
+                            pred.ground_truth.detection.labels))
+       
         boxes["ground_truth"] = {
-            "box_data": true_all_boxes,
+            "box_data": box_data,
             "class_labels": class_id_to_label,
         }
 
         # # Ground Truth Masks
         # Check if "masks" key is the sample dictionnary
-        if "masks" in sample:
-            labels_arr = np.array(sample["labels"])
-            mask_data = (true_masks.data * labels_arr[:, None, None]).max(0)
-            masks["ground_truth"] = {
-                "mask_data": mask_data,
-                "class_labels": class_id_to_label,
-            }
+        #         if "masks" in sample:
+        #             labels_arr = np.array(sample["labels"])
+        #             mask_data = (true_masks.data * labels_arr[:, None, None]).max(0)
+        #             masks["ground_truth"] = {
+        #                 "mask_data": mask_data,
+        #                 "class_labels": class_id_to_label,
+        #             }
+    return wandb.Image(pred.img, boxes=boxes, masks=masks)
 
-    return wandb.Image(raw_image, boxes=boxes, masks=masks)
-
-
-def wandb_img_preds(samples, preds, class_map, add_ground_truth=False):
-    class_id_to_label = {int(v): k for k, v in class_map.class2id.items()}
-
-    wandb_imgs = []
-    for (sample, pred) in zip(samples, preds):
-        img_wandb = wandb_image(
-            sample, pred, class_id_to_label, add_ground_truth=add_ground_truth
-        )
-        wandb_imgs.append(img_wandb)
-    return wandb_imgs
