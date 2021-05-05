@@ -7,11 +7,6 @@ import wandb
 from icevision import BaseRecord, BBox
 from icevision.data.prediction import Prediction
 
-# from icevision.core.record import BaseRecord
-# from icevision.imports import *
-# from icevision.data import *
-# from icevision.core import *
-
 
 def wandb_img_preds(
     preds: List[Prediction], add_ground_truth: bool = False
