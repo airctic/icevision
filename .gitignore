@@ -143,6 +143,7 @@ checklink/cookies.txt
 logs/
 lightning_logs/
 examples/wandb
+notebooks/wandb
 
 archives/
 
@@ -151,3 +152,4 @@ archives/
 /docs/sources
 
 *.pth
+notebooks/wandb/latest-run
