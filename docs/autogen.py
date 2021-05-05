@@ -248,7 +248,7 @@ def examples_to_md(dest_dir):
         # md_path = os.path.join(dest_dir, 'tutorial', file_name_no_ext + '.md')
         md_path = os.path.join(dest_dir, file_name_no_ext + ".md")
 
-        copy_examples(examples_dir, dest_dir / "examples")
+        # copy_examples(examples_dir, dest_dir / "examples")
 
         from_to = f"{nb_path} -> {md_path}"
         logger.opt(colors=True).log(
