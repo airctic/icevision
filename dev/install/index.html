@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://airctic.com/dev/install/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.e35208c4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.bde7dde4.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
@@ -321,6 +321,13 @@
           <li class="md-nav__item">
   <a href="#mmcv-is-not-installing-with-cuda-support" class="md-nav__link">
     MMCV is not installing with cuda support
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-failed-building-wheel-for-pycocotools" class="md-nav__link">
+    Error: Failed building wheel for pycocotools
   </a>
   
 </li>
@@ -1178,6 +1185,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#error-failed-building-wheel-for-pycocotools" class="md-nav__link">
+    Error: Failed building wheel for pycocotools
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1304,6 +1318,24 @@ Try installing it with:
 Check the installation by running:
 <div class="highlight"><pre><span></span><code>nvcc --version
 </code></pre></div></p>
+<h3 id="error-failed-building-wheel-for-pycocotools">Error: Failed building wheel for pycocotools</h3>
+<p>If you encounter the following error, when installation process is building wheel for pycocotools:
+<div class="highlight"><pre><span></span><code>unable to execute &#39;gcc&#39;: No such file or directory
+error: command &#39;gcc&#39; failed with exit status 1
+</code></pre></div>
+Try installing gcc with:
+<div class="highlight"><pre><span></span><code>sudo apt install gcc
+</code></pre></div>
+Check the installation by running:
+<div class="highlight"><pre><span></span><code>gcc --version
+</code></pre></div>
+It should return something similar:
+<div class="highlight"><pre><span></span><code>gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</code></pre></div>
+After that try installing icevision again.</p>
                 
               
               
@@ -1376,10 +1408,10 @@ Check the installation by running:
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": {"provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
       
         <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
       
