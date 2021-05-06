@@ -5,3 +5,6 @@ pip install mmcv-full=="1.3.1" -f https://download.openmmlab.com/mmcv/dist/cu101
 pip install mmdet=="2.11.0" --upgrade
 
 pip install yolov5-icevision --upgrade
+
+# restart notebook
+kill -9 -1
