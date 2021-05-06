@@ -119,3 +119,26 @@ Check the installation by running:
 ```
 nvcc --version
 ```
+
+### Error: Failed building wheel for pycocotools
+If you encounter the following error, when installation process is building wheel for pycocotools:
+```
+unable to execute 'gcc': No such file or directory
+error: command 'gcc' failed with exit status 1
+```
+Try installing gcc with:
+```
+sudo apt install gcc
+```
+Check the installation by running:
+```
+gcc --version
+```
+It should return something similar:
+```
+gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+After that try installing icevision again.
