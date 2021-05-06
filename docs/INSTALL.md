@@ -120,7 +120,7 @@ Check the installation by running:
 nvcc --version
 ```
 
-## Error: Failed building wheel for pycocotools
+### Error: Failed building wheel for pycocotools
 If you encounter the following error, when installation process is building wheel for pycocotools:
 ```
 unable to execute 'gcc': No such file or directory
