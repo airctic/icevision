@@ -17,6 +17,13 @@ from mmcv import Config
 mmdet_configs_path = download_mmdet_configs()
 
 
+class MMDetTimmBackboneConfig(BackboneConfig):
+    def __init__(self, backbone):
+        self.backbone = backbone
+        self.feature_channels = [o["num_chs"] for o in list(backbone.feature_info)]
+        self.type = backbone.__class__.__name__
+
+
 class MMDetBackboneConfig(BackboneConfig):
     def __init__(self, model_name, config_path, weights_url):
         self.model_name = model_name
@@ -74,5 +81,12 @@ def create_model_config(
             download_url(url=weights_url, save_path=str(weights_path))
 
     cfg = Config.fromfile(config_path)
+
+    if isinstance(backbone, MMDetTimmBackboneConfig):
+        cfg.model.backbone = {
+            "type": backbone.type,
+        }
+
+        cfg.model.neck.in_channels = backbone.feature_channels
 
     return cfg, weights_path
