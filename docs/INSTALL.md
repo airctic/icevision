@@ -8,8 +8,6 @@
 
     - YOLOv5 
 
-## Pre-requirements
-Before proceeding with the installation, install numpy: `pip install numpy`
 ## A- Installation using pip
 
 ### **Option 1:** Installing from pypi repository **[Stable Version]**
@@ -81,7 +79,7 @@ We need to provide the appropriate version of the `mmcv-full` package as well as
 #### CUDA-Version Installation Example
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.3.1" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
+$ pip install mmcv-full=="1.3.3" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
@@ -89,7 +87,7 @@ $ pip install mmdet
 #### CPU-Version Installation
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.2.5+torch.1.7.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
+$ pip install mmcv-full=="1.3.3+torch.1.8.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
@@ -100,3 +98,47 @@ $ pip install mmdet
 $ pip install yolov5-icevision --upgrade
 ```
 </div>
+
+## Troubleshooting
+
+### MMCV is not installing with cuda support
+If you are installing MMCV from the wheel like described above and still are having problems with CUDA you will probably have to compile it locally. Do that by running:
+```
+pip install mmcv-full
+```
+
+If you encounter the following error it means you will have to install CUDA manually (the one that comes with conda installation will not do).
+```
+OSError: CUDA_HOME environment variable is not set. Please set it to your CUDA install root.
+```
+Try installing it with:
+```
+sudo apt install nvidia-cuda-toolkit
+```
+Check the installation by running:
+```
+nvcc --version
+```
+
+### Error: Failed building wheel for pycocotools
+If you encounter the following error, when installation process is building wheel for pycocotools:
+```
+unable to execute 'gcc': No such file or directory
+error: command 'gcc' failed with exit status 1
+```
+Try installing gcc with:
+```
+sudo apt install gcc
+```
+Check the installation by running:
+```
+gcc --version
+```
+It should return something similar:
+```
+gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+After that try installing icevision again.

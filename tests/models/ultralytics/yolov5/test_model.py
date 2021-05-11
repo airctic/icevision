@@ -5,7 +5,7 @@ from icevision.models.ultralytics.yolov5.backbones import *
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_yolo_model(backbone):
     model = models.ultralytics.yolov5.model(
@@ -20,7 +20,7 @@ def test_yolo_model(backbone):
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_yolo_model_notpretrained(backbone):
     model = models.ultralytics.yolov5.model(

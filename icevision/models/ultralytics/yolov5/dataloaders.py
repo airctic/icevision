@@ -39,24 +39,21 @@ def _build_train_sample(
 
     image = im2tensor(record.img)
 
-    # UNSURE WHETHER NEGATIVE SAMPLES ARE SUPPORTED
-    # # If no labels and bboxes are present, use as negative samples as described in
-    # # https://github.com/pytorch/vision/releases/tag/v0.6.0
-    # if len(record["labels"]) == 0:
-    #     target["labels"] = torch.zeros(0, dtype=torch.int64)
-    #     target["boxes"] = torch.zeros((0, 4), dtype=torch.float32)
-    # else:
+    # If no labels and bboxes are present, use as negative samples
+    if len(record.detection.label_ids) == 0:
+        target = torch.zeros((0, 6))
+    else:
+        labels = tensor(record.detection.label_ids, dtype=torch.int64) - 1
 
-    labels = tensor(record.detection.label_ids, dtype=torch.int64) - 1
+        img_width, img_height = record.width, record.height
+        xyxys = [
+            bbox.relative_xcycwh(img_width, img_height)
+            for bbox in record.detection.bboxes
+        ]
+        boxes = tensor(xyxys, dtype=torch.float32)
 
-    img_width, img_height = record.width, record.height
-    xyxys = [
-        bbox.relative_xcycwh(img_width, img_height) for bbox in record.detection.bboxes
-    ]
-    boxes = tensor(xyxys, dtype=torch.float32)
-
-    target = torch.zeros((len(labels), 6))
-    target[:, 1:] = torch.cat([labels.unsqueeze(1), boxes], 1)
+        target = torch.zeros((len(labels), 6))
+        target[:, 1:] = torch.cat([labels.unsqueeze(1), boxes], 1)
 
     return image, target
 
@@ -86,7 +83,10 @@ def build_train_batch(
     for i, record in enumerate(records):
         image, target = _build_train_sample(record)
         images.append(image)
-        target[:, 0] = i
+
+        if target.numel() > 0:
+            target[:, 0] = i
+
         targets.append(target)
 
     return (torch.stack(images, 0), torch.cat(targets, 0)), records

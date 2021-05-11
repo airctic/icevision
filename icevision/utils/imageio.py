@@ -8,14 +8,22 @@ __all__ = [
 ]
 
 from icevision.imports import *
-import PIL, imagesize
+from PIL import ExifTags
 
 ImgSize = namedtuple("ImgSize", "width,height")
+
+# get exif tag
+for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
+    if PIL.ExifTags.TAGS[_EXIF_ORIENTATION_TAG] == "Orientation":
+        break
 
 
 def open_img(fn, gray=False):
     color = "L" if gray else "RGB"
-    return np.array(PIL.Image.open(str(fn)).convert(color))
+    image = PIL.Image.open(str(fn))
+    image = PIL.ImageOps.exif_transpose(image)
+    image = image.convert(color)
+    return np.array(image)
 
 
 # TODO: Deprecated
@@ -24,14 +32,26 @@ def get_image_size(filepath: Union[str, Path]) -> Tuple[int, int]:
     Returns image (width, height)
     """
     logger.warning("get_image_size is deprecated, use get_img_size instead")
-    return imagesize.get(filepath)
+    image_size = get_img_size(filepath=filepath)
+    return image_size.width, image_size.height
 
 
 def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     Returns image (width, height)
     """
-    return ImgSize(*imagesize.get(filepath))
+    with PIL.Image.open(filepath) as image:
+        image_size = image.size
+
+    try:
+        exif = image._getexif()
+        if exif is not None and exif[_EXIF_ORIENTATION_TAG] in [6, 8]:
+            image_size = image_size[::-1]
+    except (AttributeError, KeyError, IndexError):
+        # cases: image don't have getexif
+        pass
+
+    return ImgSize(*image_size)
 
 
 def show_img(img, ax=None, show: bool = False, **kwargs):

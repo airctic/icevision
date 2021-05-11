@@ -6,12 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 Supports pytorch 1.8
 ### Added
+- `iou_thresholds` parameter to `COCOMetric`
 - `SimpleConfusionMatrix` Metric
 - Negative samples support for mmdetection object detection models
+
 ### Changed
 - **Breaking:** Albumentations `aug_tfms` defaults.
   - rotate_limit changed from 45 to 15
   - rgb_shift_limit changed from 20 to 10
+  - VOC parser uses image sizes from annotation file instead of image
 ### Deleted
 
 ## [0.7.0]

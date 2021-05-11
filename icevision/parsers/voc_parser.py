@@ -78,7 +78,7 @@ class VOCBBoxParser(Parser):
     def parse_fields(self, o, record, is_new):
         if is_new:
             record.set_filepath(self.filepath(o))
-            record.set_img_size(self.image_width_height(o))
+            record.set_img_size(self.img_size(o))
 
         record.detection.set_class_map(self.class_map)
         record.detection.add_labels(self.labels(o))
@@ -87,8 +87,10 @@ class VOCBBoxParser(Parser):
     def filepath(self, o) -> Union[str, Path]:
         return self.images_dir / self._filename
 
-    def image_width_height(self, o) -> Tuple[int, int]:
-        return get_img_size(self.filepath(o))
+    def img_size(self, o) -> ImgSize:
+        width = int(self._size.find("width").text)
+        height = int(self._size.find("height").text)
+        return ImgSize(width=width, height=height)
 
     def labels(self, o) -> List[Hashable]:
         labels = []

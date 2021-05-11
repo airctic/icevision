@@ -5,7 +5,7 @@ from icevision.models.ultralytics.yolov5.backbones import *
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_show_results(fridge_ds, backbone, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
@@ -18,7 +18,7 @@ def test_show_results(fridge_ds, backbone, monkeypatch):
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_plot_losses(fridge_ds, backbone, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)

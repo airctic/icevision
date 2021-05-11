@@ -5,7 +5,7 @@ from icevision.models.ultralytics.yolov5.backbones import *
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large],
+    [small, medium, large, extra_large],
 )
 def test_lightning_yolo_train(fridge_ds, backbone):
     train_ds, valid_ds = fridge_ds

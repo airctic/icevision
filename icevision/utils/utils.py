@@ -59,8 +59,8 @@ def zipsafe(*its):
     return zip(*its)
 
 
-def pbar(iter, show=True):
-    return tqdm(iter) if show else iter
+def pbar(iter, show=True, total: Optional[int] = None):
+    return tqdm(iter, total=total) if show else iter
 
 
 @contextmanager

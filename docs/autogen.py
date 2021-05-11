@@ -248,14 +248,14 @@ def examples_to_md(dest_dir):
         # md_path = os.path.join(dest_dir, 'tutorial', file_name_no_ext + '.md')
         md_path = os.path.join(dest_dir, file_name_no_ext + ".md")
 
-        copy_examples(examples_dir, dest_dir / "examples")
+        # copy_examples(examples_dir, dest_dir / "examples")
 
-        from_to = f"{nb_path} -> {md_path}"
-        logger.opt(colors=True).log(
-            "INFO",
-            "️<green><bold>Copying Examples: {}</></>",
-            from_to,
-        )
+        # from_to = f"{nb_path} -> {md_path}"
+        # logger.opt(colors=True).log(
+        #     "INFO",
+        #     "️<green><bold>Copying Examples: {}</></>",
+        #     from_to,
+        # )
 
 
 def generate(dest_dir: Path):
@@ -287,7 +287,7 @@ def generate(dest_dir: Path):
         pages=PAGES,
         project_url="https://github.com/airctic/icevision/blob/master",
         template_dir=template_dir,
-        examples_dir=icevision_dir / "examples",
+        # examples_dir=icevision_dir / "examples",
     )
     doc_generator.generate(dest_dir)
 
