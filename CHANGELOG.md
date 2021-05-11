@@ -15,6 +15,7 @@ Supports pytorch 1.8
   - rotate_limit changed from 45 to 15
   - rgb_shift_limit changed from 20 to 10
   - VOC parser uses image sizes from annotation file instead of image
+  - bumps fastai to latest version (<2.4)
 ### Deleted
 
 ## [0.7.0]
