@@ -8,6 +8,7 @@ Supports pytorch 1.8
 ### Added
 - `iou_thresholds` parameter to `COCOMetric`
 - `SimpleConfusionMatrix` Metric
+- Negative samples support for mmdetection object detection models
 
 ### Changed
 - **Breaking:** Albumentations `aug_tfms` defaults.
