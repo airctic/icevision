@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 Supports pytorch 1.8
 ### Added
 - `SimpleConfusionMatrix` Metric
+- Negative samples support for mmdetection object detection models
 ### Changed
 - **Breaking:** Albumentations `aug_tfms` defaults.
   - rotate_limit changed from 45 to 15
