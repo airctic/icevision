@@ -12,6 +12,7 @@ from icevision.backbones import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config
+from mmdet.models.backbones.ssd_vgg import SSDVGG
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -33,9 +34,13 @@ def param_groups(model):
     body = model.backbone
 
     layers = []
-    layers += [nn.Sequential(body.conv1, body.bn1)]
-    layers += [getattr(body, l) for l in body.res_layers]
-    layers += [model.neck]
+    if isinstance(body, SSDVGG):
+        layers += [body.features]
+        layers += [body.extra, body.l2_norm]
+    else:
+        layers += [nn.Sequential(body.conv1, body.bn1)]
+        layers += [getattr(body, l) for l in body.res_layers]
+        layers += [model.neck]
 
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
