@@ -1,0 +1,1792 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.8.0/YOLOv5/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>YOLOv5 - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#yolov5-from-ultralytics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              YOLOv5
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Other Tutorials
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      <label class="md-nav__link" for="__nav_8">
+        Deployment
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Gradio
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      <label class="md-nav__link" for="__nav_9">
+        API Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      <label class="md-nav__link" for="__nav_9_3">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      <label class="md-nav__link" for="__nav_9_4">
+        Models
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      <label class="md-nav__link" for="__nav_9_4_1">
+        Faster RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      <label class="md-nav__link" for="__nav_9_4_2">
+        Mask RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      <label class="md-nav__link" for="__nav_9_4_3">
+        EfficientDet
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-icedata-and-yolov5-icevision" class="md-nav__link">
+    Installing IceVision, IceData and yolov5-icevision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-the-fridge-dataset" class="md-nav__link">
+    Loading the Fridge dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yolov5-dataloaders" class="md-nav__link">
+    YOLOv5 dataloaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yolov5-model" class="md-nav__link">
+    YOLOv5 model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-a-fastai-learner" class="md-nav__link">
+    Training a fastai Learner
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/YOLOv5.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="yolov5-from-ultralytics">YOLOv5 from Ultralytics</h1>
+<p>This notebook showcases the newly added <a href="https://github.com/ultralytics/yolov5">YOLOv5</a> suite of models to the IceVision library.</p>
+<h2 id="installing-icevision-icedata-and-yolov5-icevision">Installing IceVision, IceData and <code>yolov5-icevision</code></h2>
+<p><code>yolov5-icevision</code> is a tiny IceVision wrapper around the official YOLOv5 repo from Ultralytics, to make the code pip-installable.</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span><span class="c1">#egg=icevision[all] --upgrade -q</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icedata</span><span class="o">.</span><span class="n">git</span> <span class="o">-</span><span class="n">q</span>
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">yolov5</span><span class="o">-</span><span class="n">icevision</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">-</span><span class="n">q</span>
+</code></pre></div>
+<h2 id="imports">Imports</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">icedata</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mDownloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from https://raw.githubusercontent.com/airctic/storage/master/SpaceGrotesk-Medium.ttf to /root/.icevision/fonts/SpaceGrotesk-Medium.ttf[0m | [36micevision.visualize.utils[0m:[36mget_default_font[0m:[36m69[0m
+</code></pre></div>
+</div>
+<h2 id="loading-the-fridge-dataset">Loading the Fridge dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">([</span><span class="s2">&quot;milk_bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;can&quot;</span><span class="p">,</span> <span class="s2">&quot;water_bottle&quot;</span><span class="p">])</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
+                     <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">,</span>
+                     <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/20380998 [00:00&lt;?, ?B/s]
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m136[0m
+
+(102, 26)
+</code></pre></div>
+</div>
+<h2 id="yolov5-dataloaders">YOLOv5 dataloaders</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Showing what's inside a batch</p>
+<div class="highlight"><pre><span></span><code><span class="n">dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">dl</span><span class="p">)</span>
+<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_12_0.png" /></p>
+<h2 id="yolov5-model">YOLOv5 model</h2>
+<p>You can choose between a <code>small</code>, <code>medium</code> and <code>large</code> backbone.</p>
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#backbone = model_type.backbones.medium(pretrained=True)</span>
+<span class="c1">#backbone = model_type.backbones.large(pretrained=True)</span>
+<span class="c1">#backbone = model_type.backbones.extra_large(pretrained=True)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">))</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading https://github.com/ultralytics/yolov5/releases/download/v4.0/yolov5s.pt to /root/.icevision/yolo/yolov5s.pt...
+
+  0%|          | 0.00/14.1M [00:00&lt;?, ?B/s]
+</code></pre></div>
+</div>
+
+<h2 id="training-a-fastai-learner">Training a fastai Learner</h2>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+
+<span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0033113110810518267, lr_steep=9.12010818865383e-07)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_17_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;5&#39; class=&#39;&#39; max=&#39;50&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  10.00% [5/50 00:16&lt;02:28]
+&lt;/div&gt;
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.819279</td>
+      <td>0.792441</td>
+      <td>0.003035</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.788863</td>
+      <td>0.732729</td>
+      <td>0.012280</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.787299</td>
+      <td>0.656644</td>
+      <td>0.030487</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.754054</td>
+      <td>0.590940</td>
+      <td>0.067887</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.706845</td>
+      <td>0.523452</td>
+      <td>0.099730</td>
+      <td>00:03</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;0&#39; class=&#39;&#39; max=&#39;7&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  0.00% [0/7 00:00&lt;00:00]
+&lt;/div&gt;
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.819279</td>
+      <td>0.792441</td>
+      <td>0.003035</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.788863</td>
+      <td>0.732729</td>
+      <td>0.012280</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.787299</td>
+      <td>0.656644</td>
+      <td>0.030487</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.754054</td>
+      <td>0.590940</td>
+      <td>0.067887</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.706845</td>
+      <td>0.523452</td>
+      <td>0.099730</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.661492</td>
+      <td>0.513050</td>
+      <td>0.257225</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.622621</td>
+      <td>0.455875</td>
+      <td>0.482885</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.595726</td>
+      <td>0.436317</td>
+      <td>0.271832</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.563349</td>
+      <td>0.419788</td>
+      <td>0.236814</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.539367</td>
+      <td>0.387893</td>
+      <td>0.348432</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>0.515677</td>
+      <td>0.375338</td>
+      <td>0.283068</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>0.496582</td>
+      <td>0.369159</td>
+      <td>0.413665</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>0.474011</td>
+      <td>0.326403</td>
+      <td>0.472587</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>0.456676</td>
+      <td>0.332162</td>
+      <td>0.553740</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>0.434918</td>
+      <td>0.298136</td>
+      <td>0.627820</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>0.414545</td>
+      <td>0.272040</td>
+      <td>0.652365</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>0.395862</td>
+      <td>0.329013</td>
+      <td>0.391859</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>0.383311</td>
+      <td>0.271511</td>
+      <td>0.635272</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>0.367031</td>
+      <td>0.303586</td>
+      <td>0.322467</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>0.354010</td>
+      <td>0.271726</td>
+      <td>0.497521</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>0.340034</td>
+      <td>0.226416</td>
+      <td>0.700743</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>0.326033</td>
+      <td>0.225464</td>
+      <td>0.619431</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>0.310925</td>
+      <td>0.203816</td>
+      <td>0.769183</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>0.295661</td>
+      <td>0.189258</td>
+      <td>0.769431</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>0.281358</td>
+      <td>0.195591</td>
+      <td>0.681807</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>0.269978</td>
+      <td>0.190864</td>
+      <td>0.731312</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>0.260026</td>
+      <td>0.189974</td>
+      <td>0.700495</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>0.252257</td>
+      <td>0.180860</td>
+      <td>0.738119</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>0.247666</td>
+      <td>0.165262</td>
+      <td>0.762871</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>0.237585</td>
+      <td>0.172969</td>
+      <td>0.737624</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>0.228174</td>
+      <td>0.156880</td>
+      <td>0.806559</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>0.219802</td>
+      <td>0.149674</td>
+      <td>0.856312</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>0.214853</td>
+      <td>0.147571</td>
+      <td>0.800248</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>0.211070</td>
+      <td>0.139506</td>
+      <td>0.875248</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>0.203329</td>
+      <td>0.139021</td>
+      <td>0.843936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>0.195134</td>
+      <td>0.126844</td>
+      <td>0.856312</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>0.188641</td>
+      <td>0.123761</td>
+      <td>0.881312</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>37</td>
+      <td>0.183303</td>
+      <td>0.128407</td>
+      <td>0.875000</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>38</td>
+      <td>0.177788</td>
+      <td>0.113928</td>
+      <td>0.868936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>0.171578</td>
+      <td>0.126054</td>
+      <td>0.900248</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>0.168272</td>
+      <td>0.113003</td>
+      <td>0.868936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>41</td>
+      <td>0.166278</td>
+      <td>0.113589</td>
+      <td>0.906559</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>42</td>
+      <td>0.161366</td>
+      <td>0.109419</td>
+      <td>0.893936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>43</td>
+      <td>0.161012</td>
+      <td>0.107286</td>
+      <td>0.925248</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>44</td>
+      <td>0.155416</td>
+      <td>0.107902</td>
+      <td>0.925248</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>45</td>
+      <td>0.150046</td>
+      <td>0.104697</td>
+      <td>0.918936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>46</td>
+      <td>0.145804</td>
+      <td>0.104805</td>
+      <td>0.918936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>47</td>
+      <td>0.141888</td>
+      <td>0.104281</td>
+      <td>0.918936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>48</td>
+      <td>0.137711</td>
+      <td>0.103718</td>
+      <td>0.918936</td>
+      <td>00:03</td>
+    </tr>
+    <tr>
+      <td>49</td>
+      <td>0.135240</td>
+      <td>0.103554</td>
+      <td>0.918936</td>
+      <td>00:03</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### Showing training results
+
+
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+![png](images/YOLOv5/YOLOv5_20_0.png)
+
+
+
+## Inference pipeline
+From a dataset...
+
+
+<div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="n">show_preds</span><span class="p">(</span>
+    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+
+![png](images/YOLOv5/YOLOv5_22_0.png)
+
+
+
+... and from a Dataloader
+
+
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">show_preds</span><span class="p">(</span>
+    <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="n">denormalize_fn</span><span class="o">=</span><span class="n">denormalize_imagenet</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/26 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+![png](images/YOLOv5/YOLOv5_24_1.png)
+
+
+
+## Inspecting model predictions with `plot_top_losses`
+
+What are the images the model is having a hard time time with?
+
+
+<div class="highlight"><pre><span></span><code><span class="c1">#by = &quot;loss_total&quot;</span>
+<span class="c1">#by = &quot;loss_yolo&quot;</span>
+<span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_yolo&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_yolo&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m219[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+![png](images/YOLOv5/YOLOv5_26_3.png)
+
+
+
+## Training a PyTorch Lightning model
+
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">)</span>
+
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">medium</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Downloading https://github.com/ultralytics/yolov5/releases/download/v4.0/yolov5m.pt to /root/.icevision/yolo/yolov5m.pt...
+
+  0%|          | 0.00/41.1M [00:00&lt;?, ?B/s]
+</code></pre></div>
+</div>
+
+
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>GPU available: True, used: True
+TPU available: None, using: 0 TPU cores
+</code></pre></div>
+</div>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  | Name  | Type  | Params
+--------------------------------
+0 | model | Model | 21.1 M
+--------------------------------
+21.1 M    Trainable params
+0         Non-trainable params
+21.1 M    Total params
+84.290    Total estimated model params size (MB)
+
+Validation sanity check: 0it [00:00, ?it/s]
+
+Training: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+1
+</code></pre></div>
+</div>
+## Happy Learning!
+
+If you need any assistance, feel free to join our [forum](https://discord.gg/JDBeZYK).
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
