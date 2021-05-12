@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [0.8.0]
 Supports pytorch 1.8
 ### Added
 - `iou_thresholds` parameter to `COCOMetric`
@@ -16,7 +18,6 @@ Supports pytorch 1.8
   - rgb_shift_limit changed from 20 to 10
   - VOC parser uses image sizes from annotation file instead of image
   - bumps fastai to latest version (<2.4)
-### Deleted
 
 ## [0.7.0]
 **BREAKING:** API Refactor
