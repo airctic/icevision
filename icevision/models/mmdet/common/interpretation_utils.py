@@ -6,6 +6,7 @@ from icevision.core import *
 from icevision.data import *
 from icevision.models.interpretation import _move_to_device
 from icevision.core.record_components import LossesRecordComponent
+from icevision.models.mmdet.common.utils import mmdet_tensor_to_image
 
 
 def sum_losses_mmdet(losses_dict):
@@ -37,7 +38,7 @@ def loop_mmdet(dl, model, losses_stats, device):
             loss_comp = LossesRecordComponent()
             loss_comp.set_losses(loss)
             sample[0].add_component(loss_comp)
-            sample[0].set_img(tensor_to_image(data["img"][0]))
+            sample[0].set_img(mmdet_tensor_to_image(data["img"][0]))
             samples_plus_losses.append(sample[0])
 
     return samples_plus_losses, losses_stats
