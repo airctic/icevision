@@ -15,6 +15,7 @@ from mmdet.models.detectors import *
 from mmdet.models.builder import *
 from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
+from copy import copy, deepcopy
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -33,13 +34,13 @@ class MMDetBackboneConfig(BackboneConfig):
 
 
 class MMDetTimmBackboneConfig(MMDetBackboneConfig):
-    def __init__(self, model_name, config_path, weights_url, backbone_dict):
-        super().__init__(model_name, config_path, weights_url)
+    def __init__(self, model_name, config_path, backbone_dict, weights_url=None):
+        super().__init__(model_name, config_path, weights_url=weights_url)
         self.backbone_dict = backbone_dict
 
         # build a backbone without loading pretrained weights
         # it's used to only get the features info
-        backbone_dict_tmp = backbone_dict
+        backbone_dict_tmp = deepcopy(backbone_dict)
         backbone_dict_tmp.pretrained = False
         backbone = build_backbone(cfg=backbone_dict_tmp)
         self.feature_channels = [o["num_chs"] for o in list(backbone.feature_info)]
