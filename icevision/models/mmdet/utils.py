@@ -41,7 +41,7 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
         # build a backbone without loading pretrained weights
         # it's used to only get the features info
         backbone_dict_tmp = deepcopy(backbone_dict)
-        backbone_dict_tmp.pretrained = False
+        backbone_dict_tmp["pretrained"] = False
         backbone = build_backbone(cfg=backbone_dict_tmp)
         self.feature_channels = [o["num_chs"] for o in list(backbone.feature_info)]
 

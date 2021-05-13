@@ -5,6 +5,7 @@ __all__ = [
 import icevision
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
+from icevision.models.mmdet.backbones.timm import *
 
 base_config_path = Path(icevision.__file__) / "models/mmdet/models/retinanet"
 
