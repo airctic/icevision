@@ -4,7 +4,7 @@ from icevision.imports import *
 from icevision.utils import *
 
 VERSION = "v2.10.0"
-BASE_URL = "https://codeload.github.com/lgvaz/mmdetection_configs/zip/refs/tags"
+BASE_URL = "https://codeload.github.com/airctic/mmdetection_configs/zip/refs/tags"
 
 
 def download_mmdet_configs() -> Path:
