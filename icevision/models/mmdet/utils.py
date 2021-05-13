@@ -43,7 +43,7 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
         backbone_dict_tmp = deepcopy(backbone_dict)
         backbone_dict_tmp["pretrained"] = False
         backbone = build_backbone(cfg=backbone_dict_tmp)
-        self.feature_channels = [o["num_chs"] for o in list(backbone.feature_info)]
+        self.feature_channels = [o["num_chs"] for o in list(backbone.model.feature_info)]
 
 
 
