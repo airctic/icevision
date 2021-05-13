@@ -1,5 +1,6 @@
 __all__ = [
     "MMDetBackboneConfig",
+    "MMDetTimmBackboneConfig",
     "mmdet_configs_path",
     "param_groups",
     "MMDetBackboneConfig",
@@ -11,6 +12,7 @@ from icevision.utils import *
 from icevision.backbones import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
+from mmdet.models.builder import *
 from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 
@@ -30,30 +32,18 @@ class MMDetBackboneConfig(BackboneConfig):
         return self
 
 
-def param_groups(model):
-    body = model.backbone
+class MMDetTimmBackboneConfig(MMDetBackboneConfig):
+    def __init__(self, model_name, config_path, weights_url, backbone_dict):
+        super().__init__(model_name, config_path, weights_url)
+        self.backbone_dict = backbone_dict
 
-    layers = []
-    if isinstance(body, SSDVGG):
-        layers += [body.features]
-        layers += [body.extra, body.l2_norm]
-    else:
-        layers += [nn.Sequential(body.conv1, body.bn1)]
-        layers += [getattr(body, l) for l in body.res_layers]
-        layers += [model.neck]
+        # build a backbone without loading pretrained weights
+        # it's used to only get the features info
+        backbone_dict_tmp = backbone_dict
+        backbone_dict_tmp.pretrained = False
+        backbone = build_backbone(cfg=backbone_dict_tmp)
+        self.feature_channels = [o["num_chs"] for o in list(backbone.feature_info)]
 
-    if isinstance(model, SingleStageDetector):
-        layers += [model.bbox_head]
-    elif isinstance(model, TwoStageDetector):
-        layers += [nn.Sequential(model.rpn_head, model.roi_head)]
-    else:
-        raise RuntimeError(
-            "{model} must inherit either from SingleStageDetector or TwoStageDetector class"
-        )
-
-    _param_groups = [list(layer.parameters()) for layer in layers]
-    check_all_model_params_in_groups2(model, _param_groups)
-    return _param_groups
 
 
 def create_model_config(
@@ -80,4 +70,30 @@ def create_model_config(
 
     cfg = Config.fromfile(config_path)
 
+    if isinstance(backbone, MMDetTimmBackboneConfig):
+        cfg.model.backbone = backbone.backbone_dict
+        cfg.model.neck.in_channels = backbone.feature_channels
+
     return cfg, weights_path
+
+
+def param_groups(model):
+    body = model.backbone
+
+    layers = []
+    layers += [nn.Sequential(body.conv1, body.bn1)]
+    layers += [getattr(body, l) for l in body.res_layers]
+    layers += [model.neck]
+
+    if isinstance(model, SingleStageDetector):
+        layers += [model.bbox_head]
+    elif isinstance(model, TwoStageDetector):
+        layers += [nn.Sequential(model.rpn_head, model.roi_head)]
+    else:
+        raise RuntimeError(
+            "{model} must inherit either from SingleStageDetector or TwoStageDetector class"
+        )
+
+    _param_groups = [list(layer.parameters()) for layer in layers]
+    check_all_model_params_in_groups2(model, _param_groups)
+    return _param_groups
