@@ -1,5 +1,6 @@
 from icevision.backbones.timm.mobilenet import *
 from mmdet.models.builder import BACKBONES
+import torch.nn as nn
 
 
 @BACKBONES.register_module(force=True)
