@@ -47,6 +47,9 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
             o["num_chs"] for o in list(backbone.model.feature_info)
         ]
 
+    def __call__(self, pretrained: bool = True) -> "MMDetTimmBackboneConfig":
+        self.pretrained = pretrained
+        return self
 
 
 def create_model_config(
