@@ -58,22 +58,25 @@ def create_model_config(
     config_path = backbone.config_path
     weights_url = backbone.weights_url
 
-    # download weights
-    if pretrained and weights_url:
-        save_dir = Path(checkpoints_path) / model_name
-        save_dir.mkdir(exist_ok=True, parents=True)
-
-        fname = Path(weights_url).name
-        weights_path = save_dir / fname
-
-        if not weights_path.exists() or force_download:
-            download_url(url=weights_url, save_path=str(weights_path))
-
-    cfg = Config.fromfile(config_path)
-
+    # timm backbones
     if isinstance(backbone, MMDetTimmBackboneConfig):
+        cfg = Config.fromfile(config_path)
         cfg.model.backbone = backbone.backbone_dict
         cfg.model.neck.in_channels = backbone.feature_channels
+        weights_path = None
+    else: #MMDetection backbones
+        # download weights
+        if pretrained and weights_url:
+            save_dir = Path(checkpoints_path) / model_name
+            save_dir.mkdir(exist_ok=True, parents=True)
+
+            fname = Path(weights_url).name
+            weights_path = save_dir / fname
+
+            if not weights_path.exists() or force_download:
+                download_url(url=weights_url, save_path=str(weights_path))
+
+          cfg = Config.fromfile(config_path)
 
     return cfg, weights_path
 
