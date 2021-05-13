@@ -43,7 +43,9 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
         backbone_dict_tmp = deepcopy(backbone_dict)
         backbone_dict_tmp["pretrained"] = False
         backbone = build_backbone(cfg=backbone_dict_tmp)
-        self.feature_channels = [o["num_chs"] for o in list(backbone.model.feature_info)]
+        self.feature_channels = [
+            o["num_chs"] for o in list(backbone.model.feature_info)
+        ]
 
 
 
@@ -58,13 +60,14 @@ def create_model_config(
     config_path = backbone.config_path
     weights_url = backbone.weights_url
 
+    cfg = Config.fromfile(config_path)
     # timm backbones
     if isinstance(backbone, MMDetTimmBackboneConfig):
-        cfg = Config.fromfile(config_path)
         cfg.model.backbone = backbone.backbone_dict
         cfg.model.neck.in_channels = backbone.feature_channels
         weights_path = None
-    else: #MMDetection backbones
+    else:
+        # MMDetection backbones
         # download weights
         if pretrained and weights_url:
             save_dir = Path(checkpoints_path) / model_name
@@ -75,8 +78,6 @@ def create_model_config(
 
             if not weights_path.exists() or force_download:
                 download_url(url=weights_url, save_path=str(weights_path))
-
-          cfg = Config.fromfile(config_path)
 
     return cfg, weights_path
 
