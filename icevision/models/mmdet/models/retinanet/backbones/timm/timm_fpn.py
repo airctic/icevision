@@ -14,7 +14,7 @@ class MMDetTimmRetinanetBackboneConfig(MMDetTimmBackboneConfig):
     def __init__(self, backbone_dict, **kwargs):
         super().__init__(
             model_name="retinanet",
-            config_path=base_config_path / "model_dict_fpn_no_backbone.py",
+            config_path=base_config_path / "retinanet_no_backbone_fpn.py",
             backbone_dict=backbone_dict,
             **kwargs
         )
