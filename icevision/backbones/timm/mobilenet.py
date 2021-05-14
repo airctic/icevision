@@ -8,6 +8,12 @@ __all__ = [
     "ice_mobilenetv3_rw",
     "ice_mobilenetv3_small_075",
     "ice_mobilenetv3_small_100",
+    "ice_tf_mobilenetv3_large_075",
+    "ice_tf_mobilenetv3_large_100",
+    "ice_tf_mobilenetv3_large_minimal_100",
+    "ice_tf_mobilenetv3_small_075",
+    "ice_tf_mobilenetv3_small_100",
+    "ice_tf_mobilenetv3_small_minimal_100",
 ]
 
 import timm
@@ -56,9 +62,7 @@ def ice_mobilenetv3_rw(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
     )
 
 
-def ice_mobilenetv3_small_075(
-    premobilenetv3_small_075trained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
-):
+def ice_mobilenetv3_small_075(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
     return mobilenetv3_small_075(
         pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
     )
@@ -66,5 +70,51 @@ def ice_mobilenetv3_small_075(
 
 def ice_mobilenetv3_small_100(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
     return mobilenetv3_small_100(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_large_075(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
+    return tf_mobilenetv3_large_075(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_large_100(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
+    return tf_mobilenetv3_large_100(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_large_minimal_100(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
+    return tf_mobilenetv3_large_100(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_small_075(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
+    return tf_mobilenetv3_small_075(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_small_100(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
+    return tf_mobilenetv3_small_100(
+        pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
+    )
+
+
+def ice_tf_mobilenetv3_small_minimal_100(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
+    return tf_mobilenetv3_small_100(
         pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
     )
