@@ -1,4 +1,4 @@
-from icevision.backbones.timm.mobilenet import *
+from icevision.backbones.timm.resnest import *
 from icevision.models.mmdet.backbones.timm.common import *
 from mmdet.models.builder import BACKBONES
 

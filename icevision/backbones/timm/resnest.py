@@ -13,7 +13,7 @@ from timm.models.resnest import *
 
 
 def ice_resnest14d(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
-    return resnest50d(
+    return resnest14d(
         pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
     )
 
