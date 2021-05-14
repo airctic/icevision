@@ -34,7 +34,7 @@ from mmdet.models.builder import BACKBONES
 #         )
 
 # @BACKBONES.register_module(force=True)
-# class MobileNetv2_140(MMDetTimmBase):
+# class MobileNetV2_140(MMDetTimmBase):
 #     def __init__(self, pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
 #         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
 #         self.model = ice_mobilenetv2_140(
@@ -56,7 +56,7 @@ class MobileNetV3_Large_075(MMDetTimmBase):
 
 
 @BACKBONES.register_module(force=True)
-class MobileNetv3_Large_100(MMDetTimmBase):
+class MobileNetV3_Large_100(MMDetTimmBase):
     def __init__(self, pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
         self.model = ice_mobilenetv3_large_100(
