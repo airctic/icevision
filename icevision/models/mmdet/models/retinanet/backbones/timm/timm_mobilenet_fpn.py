@@ -1,8 +1,8 @@
 __all__ = [
-    "mobilenetv2_100",
-    "mobilenetv2_110d",
-    "mobilenetv2_120d",
-    "mobilenetv2_140",
+    # "mobilenetv2_100",
+    # "mobilenetv2_110d",
+    # "mobilenetv2_120d",
+    # "mobilenetv2_140",
     "mobilenetv3_large_075",
     "mobilenetv3_large_100",
     "mobilenetv3_rw",
@@ -22,29 +22,29 @@ from icevision.models.mmdet.backbones.timm.mobilenet import *
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
 
-mobilenetv2_100 = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "MobileNetV2_100",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
+# mobilenetv2_100 = MMDetTimmRetinanetBackboneConfig(
+#     backbone_dict={
+#         "type": "MobileNetV2_100",
+#         "pretrained": True,
+#         "out_indices": (0, 1, 2, 3, 4),
+#     },
+# )
 
-mobilenetv2_110d = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "MobileNetV2_110D",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
+# mobilenetv2_110d = MMDetTimmRetinanetBackboneConfig(
+#     backbone_dict={
+#         "type": "MobileNetV2_110D",
+#         "pretrained": True,
+#         "out_indices": (0, 1, 2, 3, 4),
+#     },
+# )
 
-mobilenetv2_140 = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "MobileNetV2_140",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
+# mobilenetv2_140 = MMDetTimmRetinanetBackboneConfig(
+#     backbone_dict={
+#         "type": "MobileNetV2_140",
+#         "pretrained": True,
+#         "out_indices": (0, 1, 2, 3, 4),
+#     },
+# )
 
 mobilenetv3_large_075 = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
