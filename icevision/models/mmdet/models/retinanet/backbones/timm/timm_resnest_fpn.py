@@ -63,6 +63,14 @@ resnest101e = MMDetTimmRetinanetBackboneConfig(
     },
 )
 
+resnest200e = MMDetTimmRetinanetBackboneConfig(
+    backbone_dict={
+        "type": "ResNest200E",
+        "pretrained": True,
+        "out_indices": (0, 1, 2, 3, 4),
+    },
+)
+
 resnest269e = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
         "type": "ResNest269E",
