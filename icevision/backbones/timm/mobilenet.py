@@ -98,7 +98,9 @@ def ice_tf_mobilenetv3_large_minimal_100(
     )
 
 
-def ice_tf_mobilenetv3_small_075(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
+def ice_tf_mobilenetv3_small_075(
+    pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs
+):
     return tf_mobilenetv3_small_075(
         pretrained=pretrained, features_only=True, out_indices=out_indices, **kwargs
     )

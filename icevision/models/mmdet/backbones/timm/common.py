@@ -1,11 +1,9 @@
-__all__= [
-    "MMDetTimmBackbone"
-]
+__all__ = ["MMDetTimmBase"]
 
 import torch.nn as nn
 
 
-class MMDetTimmBackbone(nn.Module):
+class MMDetTimmBase(nn.Module):
     def __init__(self, pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
         super().__init__()
         self.pretrained = pretrained

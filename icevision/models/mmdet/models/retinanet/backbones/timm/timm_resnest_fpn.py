@@ -1,12 +1,13 @@
-__all__ = ["resnest14d",
+__all__ = [
+    "resnest14d",
     "resnest26d",
     "resnest50d",
     "resnest50d_1s4x24d",
     "resnest50d_4s2x40d",
     "resnest101e",
     "resnest200e",
-    "resnest269e"
- ]
+    "resnest269e",
+]
 
 from icevision.models.mmdet.models.retinanet.backbones.timm.common import *
 from icevision.models.mmdet.backbones.timm.resnest import *
@@ -35,7 +36,7 @@ resnest50d = MMDetTimmRetinanetBackboneConfig(
     },
 )
 
-"resnest50d_1s4x24d = MMDetTimmRetinanetBackboneConfig(
+resnest50d_1s4x24d = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
         "type": "ResNest50D_1S4x24D",
         "pretrained": True,
@@ -66,4 +67,3 @@ resnest269e = MMDetTimmRetinanetBackboneConfig(
         "out_indices": (0, 1, 2, 3, 4),
     },
 )
-
