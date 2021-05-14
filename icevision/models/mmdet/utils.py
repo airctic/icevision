@@ -11,6 +11,7 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.backbones import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
+from icevision.models.mmdet.models.retinanet.backbones.timm import *
 from mmdet.models.detectors import *
 from mmdet.models.builder import *
 from mmcv import Config

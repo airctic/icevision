@@ -15,7 +15,7 @@ class MobileNetV2_100(MMDetTimmBase):
 
 
 @BACKBONES.register_module(force=True)
-class MobileNetV2_110d(MMDetTimmBase):
+class MobileNetV2_110D(MMDetTimmBase):
     def __init__(self, pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
         self.model = ice_mobilenetv2_110d(
@@ -26,7 +26,7 @@ class MobileNetV2_110d(MMDetTimmBase):
 
 
 @BACKBONES.register_module(force=True)
-class MobileNetV2_120d(MMDetTimmBase):
+class MobileNetV2_120D(MMDetTimmBase):
     def __init__(self, pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):
         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
         self.model = ice_mobilenetv2_120d(
