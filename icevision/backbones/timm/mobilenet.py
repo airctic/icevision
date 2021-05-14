@@ -17,7 +17,7 @@ __all__ = [
 ]
 
 import timm
-from timm.models.mobilenetv3 import *
+from timm.models.mobilenetv3 import *, mobilenetv2_100
 
 
 def ice_mobilenetv2_100(pretrained=True, out_indices=(0, 1, 2, 3, 4), **kwargs):

@@ -12,6 +12,9 @@ __all__ = [
 from icevision.models.mmdet.models.retinanet.backbones.timm.common import *
 from icevision.models.mmdet.backbones.timm.resnest import *
 
+from icevision.imports import *
+from icevision.models.mmdet.utils import *
+
 resnest14d = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
         "type": "ResNest14D",

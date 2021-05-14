@@ -18,7 +18,9 @@ __all__ = [
 
 from icevision.models.mmdet.models.retinanet.backbones.timm.common import *
 from icevision.models.mmdet.backbones.timm.mobilenet import *
-icevision/models/mmdet/backbones/timm/mobilenet.py
+
+from icevision.imports import *
+from icevision.models.mmdet.utils import *
 
 mobilenetv2_100 = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
