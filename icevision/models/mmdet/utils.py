@@ -13,7 +13,7 @@ from icevision.backbones import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmdet.models.builder import *
-from mmcv import Config
+from mmcv import Config, ConfigDict
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from copy import copy, deepcopy
 
@@ -66,7 +66,7 @@ def create_model_config(
     cfg = Config.fromfile(config_path)
     # timm backbones
     if isinstance(backbone, MMDetTimmBackboneConfig):
-        cfg.model.backbone = backbone.backbone_dict
+        cfg.model.backbone = ConfigDict(backbone.backbone_dict)
         cfg.model.neck.in_channels = backbone.feature_channels
         weights_path = None
     else:
