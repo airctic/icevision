@@ -85,12 +85,17 @@ def create_model_config(
     return cfg, weights_path
 
 
-def param_groups(model):
+def param_groups(model, backbone: MMDetBackboneConfig):
     body = model.backbone
 
     layers = []
-    layers += [nn.Sequential(body.conv1, body.bn1)]
-    layers += [getattr(body, l) for l in body.res_layers]
+
+    if isinstance(backbone, MMDetTimmBackboneConfig):
+        layers = [model.backbone]
+    else:
+        layers += [nn.Sequential(body.conv1, body.bn1)]
+        layers += [getattr(body, l) for l in body.res_layers]
+
     layers += [model.neck]
 
     if isinstance(model, SingleStageDetector):
