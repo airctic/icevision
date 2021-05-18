@@ -9,6 +9,8 @@ __all__ = [
     "ice_resnest269e",
 ]
 
+from icevision.soft_dependencies import SoftDependencies
+
 from timm.models.resnest import *
 
 

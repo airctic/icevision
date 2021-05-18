@@ -16,6 +16,8 @@ __all__ = [
     "ice_tf_mobilenetv3_small_minimal_100",
 ]
 
+from icevision.soft_dependencies import SoftDependencies
+
 import timm
 from timm.models.mobilenetv3 import *
 
