@@ -3,6 +3,7 @@ __all__ = [
     "MMDetTimmBackboneConfig",
     "mmdet_configs_path",
     "param_groups",
+    "param_groups_timm",
     "MMDetBackboneConfig",
     "create_model_config",
 ]
@@ -89,13 +90,29 @@ def param_groups(model, backbone: MMDetBackboneConfig):
     body = model.backbone
 
     layers = []
+    layers += [nn.Sequential(body.conv1, body.bn1)]
+    layers += [getattr(body, l) for l in body.res_layers]
 
-    if isinstance(backbone, MMDetTimmBackboneConfig):
-        layers = [model.backbone]
+    layers += [model.neck]
+
+    if isinstance(model, SingleStageDetector):
+        layers += [model.bbox_head]
+    elif isinstance(model, TwoStageDetector):
+        layers += [nn.Sequential(model.rpn_head, model.roi_head)]
     else:
-        layers += [nn.Sequential(body.conv1, body.bn1)]
-        layers += [getattr(body, l) for l in body.res_layers]
+        raise RuntimeError(
+            "{model} must inherit either from SingleStageDetector or TwoStageDetector class"
+        )
 
+    _param_groups = [list(layer.parameters()) for layer in layers]
+    check_all_model_params_in_groups2(model, _param_groups)
+    return _param_groups
+
+
+def param_groups_timm(model):
+    layers = []
+
+    layers = [model.backbone]
     layers += [model.neck]
 
     if isinstance(model, SingleStageDetector):

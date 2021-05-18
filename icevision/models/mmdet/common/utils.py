@@ -69,6 +69,9 @@ def build_model(
     if pretrained and (weights_path is not None):
         load_checkpoint(_model, str(weights_path))
 
-    model.param_groups = MethodType(param_groups, _model, backbone)
+    if isinstance(backbone, MMDetTimmBackboneConfig):
+        model.param_groups = MethodType(param_groups_timm, _model)
+    else:
+        model.param_groups = MethodType(param_groups, _model)
 
     return _model
