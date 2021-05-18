@@ -70,8 +70,8 @@ def build_model(
         load_checkpoint(_model, str(weights_path))
 
     if isinstance(backbone, MMDetTimmBackboneConfig):
-        model.param_groups = MethodType(param_groups_timm, _model)
+        _model.param_groups = MethodType(param_groups_timm, _model)
     else:
-        model.param_groups = MethodType(param_groups, _model)
+        _model.param_groups = MethodType(param_groups, _model)
 
     return _model
