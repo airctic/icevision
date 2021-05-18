@@ -18,7 +18,6 @@ __all__ = [
 
 from icevision.soft_dependencies import SoftDependencies
 
-import timm
 from timm.models.mobilenetv3 import *
 
 
