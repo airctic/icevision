@@ -10,8 +10,17 @@ from icevision.all import *
     ],
 )
 def test_open_img(samples_source, fn, expected):
+    # When returning np arrays
     assert open_img(samples_source / fn).shape == expected
     assert open_img(samples_source / fn, gray=True).shape == expected[:-1]
+    assert isinstance(open_img(samples_source / fn), np.ndarray)
+
+    # When returning PIL Images; returns only (W,H) for size, not num. channels
+    assert open_img(samples_source / fn, as_array=False).shape == expected[:2]
+    assert (
+        open_img(samples_source / fn, gray=True, as_array=False).shape == expected[:-1]
+    )
+    assert isinstance(open_img(samples_source / fn, as_array=False), PIL.Image.Image)
 
 
 @pytest.mark.parametrize(
