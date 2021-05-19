@@ -111,10 +111,10 @@ class ImageRecordComponent(RecordComponent):
         super().__init__(task=task)
         self.img = None
 
-    def set_img(self, img: Union[Image.Image, np.ndarray]):
-        assert isinstance(img, (Image.Image, np.ndarray))
+    def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
+        assert isinstance(img, (PIL.Image.Image, np.ndarray))
         self.img = img
-        if isinstance(img, Image.Image):
+        if isinstance(img, PIL.Image.Image):
             height, width = img.shape
         elif isinstance(img, np.ndarray):
             # else:
@@ -133,7 +133,9 @@ class ImageRecordComponent(RecordComponent):
                 raise ValueError(
                     f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
                 )
-            _type = "PIL.Image" if isinstance(self.img, Image.Image) else "np.ndarray"
+            _type = (
+                "PIL.Image" if isinstance(self.img, PIL.Image.Image) else "np.ndarray"
+            )
             return [f"Image: {width}x{height}x{channels} <{_type}> Image"]
         else:
             return [f"Image: {self.img}"]
