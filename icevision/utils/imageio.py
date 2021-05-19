@@ -18,12 +18,14 @@ for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
         break
 
 
-def open_img(fn, gray=False):
+def open_img(fn, gray=False, as_array=True):
     color = "L" if gray else "RGB"
     image = PIL.Image.open(str(fn))
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert(color)
-    return np.array(image)
+    if as_array:
+        return np.array(image)
+    return image
 
 
 # TODO: Deprecated

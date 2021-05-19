@@ -106,15 +106,19 @@ class RecordIDRecordComponent(RecordComponent):
 
 
 # TODO: we need a way to combine filepath and image mixin
-# TODO: rename to ImageArrayRecordComponent
 class ImageRecordComponent(RecordComponent):
     def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.img = None
 
-    def set_img(self, img: np.ndarray):
+    def set_img(self, img: Union[Image.Image, np.ndarray]):
+        assert isinstance(img, (Image.Image, np.ndarray))
         self.img = img
-        height, width, _ = self.img.shape
+        if isinstance(img, Image.Image):
+            height, width = img.shape
+        elif isinstance(img, np.ndarray):
+            # else:
+            height, width, _ = self.img.shape
         # this should set on SizeRecordComponent
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
@@ -129,7 +133,8 @@ class ImageRecordComponent(RecordComponent):
                 raise ValueError(
                     f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
                 )
-            return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+            _type = "PIL.Image" if isinstance(self.img, Image.Image) else "np.ndarray"
+            return [f"Image: {width}x{height}x{channels} <{_type}> Image"]
         else:
             return [f"Image: {self.img}"]
 
@@ -144,15 +149,16 @@ class ImageRecordComponent(RecordComponent):
 
 
 class FilepathRecordComponent(ImageRecordComponent):
-    def __init__(self, task=tasks.common):
+    def __init__(self, task=tasks.common, as_array=True):
         super().__init__(task=task)
         self.filepath = None
+        self.as_array = as_array
 
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
     def _load(self):
-        img = open_img(self.filepath)
+        img = open_img(self.filepath, as_array=self.as_array)
         self.set_img(img)
 
     def _autofix(self) -> Dict[str, bool]:
