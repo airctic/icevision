@@ -124,19 +124,20 @@ class ImageRecordComponent(RecordComponent):
 
     def _repr(self) -> List[str]:
         if self.img is not None:
-            ndims = len(self.img.shape)
-            if ndims == 3:  # RGB, RGBA
-                height, width, channels = self.img.shape
-            elif ndims == 2:  # Grayscale
-                height, width, channels = [*self.img.shape, 1]
-            else:
-                raise ValueError(
-                    f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
-                )
-            _type = (
-                "PIL.Image" if isinstance(self.img, PIL.Image.Image) else "np.ndarray"
-            )
-            return [f"Image: {width}x{height}x{channels} <{_type}> Image"]
+            if isinstance(self.img, np.ndarray):
+                ndims = len(self.img.shape)
+                if ndims == 3:  # RGB, RGBA
+                    height, width, channels = self.img.shape
+                elif ndims == 2:  # Grayscale
+                    height, width, channels = [*self.img.shape, 1]
+                else:
+                    raise ValueError(
+                        f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
+                    )
+                return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+            elif isinstance(self.img, PIL.Image.Image):
+                height, width = self.img.shape
+                return [f"Image: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
         else:
             return [f"Image: {self.img}"]
 
