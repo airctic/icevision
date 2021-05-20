@@ -1,22 +1,19 @@
 __all__ = ["model"]
 
 from icevision.imports import *
-from fastai.vision.learner import model_meta, _default_meta
-
-from fastai.vision.all import *
-
-unet_learner
-CrossEntropyLossFlat
-aug_transforms
+from icevision.backbones.backbone_config import BackboneConfig
+from icevision.models.torchvision.utils import patch_param_groups
 
 
-def model(backbone, num_classes, img_size, channels_in=3):
+# TODO: img_size
+def model(backbone: BackboneConfig, num_classes: int, img_size, channels_in=3):
     img_size = (img_size, img_size) if isinstance(img_size, int) else img_size
 
-    pretrained = True  # will come from backbone config
-
-    meta = model_meta.get(backbone, _default_meta)
-    body = fastai.create_body(backbone, channels_in, pretrained, meta["cut"])
-    model = fastai.models.unet.DynamicUnet(body, num_classes, img_size)
+    model = fastai.models.unet.DynamicUnet(backbone.backbone, num_classes, img_size)
+    patch_param_groups(
+        model=model,
+        head_layers=[model[1:]],
+        backbone_param_groups=backbone.backbone.param_groups(),
+    )
 
     return model
