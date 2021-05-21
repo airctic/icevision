@@ -258,12 +258,18 @@ class SemanticMaskFile(Mask):
         filepath: Path to the mask image file.
     """
 
-    def __init__(self, filepath: Union[str, Path]):
+    def __init__(self, filepath: Union[str, Path], binary=False):
         self.filepath = Path(filepath)
+        self.binary = binary
 
     def to_mask(self, h, w):
         # TODO: convert the 255 masks
         mask = open_img(self.filepath, gray=True)
+
+        # convert 255 pixels to 1
+        if self.binary:
+            mask[mask == 255] = 1
+
         return MaskArray(mask[None])
 
     def to_coco_rle(self, h, w) -> List[dict]:
