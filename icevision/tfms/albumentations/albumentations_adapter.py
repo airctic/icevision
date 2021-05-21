@@ -42,7 +42,8 @@ class AlbumentationsAdapterComponent(Component):
 
 class AlbumentationsImgComponent(AlbumentationsAdapterComponent):
     def setup_img(self, record):
-        self.adapter._albu_in["image"] = record.img
+        # NOTE - assumed that `record.img` is a PIL.Image
+        self.adapter._albu_in["image"] = np.array(record.img)
 
         self.adapter._collect_ops.append(CollectOp(self.collect))
 

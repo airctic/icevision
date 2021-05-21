@@ -17,14 +17,18 @@ for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
     if PIL.ExifTags.TAGS[_EXIF_ORIENTATION_TAG] == "Orientation":
         break
 
+# from enum import Enum
 
-def open_img(fn, gray=False, as_array=True):
+# class PILMode(Enum):
+#     blah
+
+# FIXME
+def open_img(fn, gray=False) -> PIL.Image.Image:
+    "Open an image from disk `fn` as a PIL Image"
     color = "L" if gray else "RGB"
     image = PIL.Image.open(str(fn))
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert(color)
-    if as_array:
-        return np.array(image)
     return image
 
 
