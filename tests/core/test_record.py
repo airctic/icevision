@@ -70,7 +70,7 @@ def record_wrong_num_annotations(samples_source):
 def test_record_load(record):
     record_loaded = record.load()
 
-    assert isinstance(record_loaded.img, np.ndarray)
+    assert isinstance(record_loaded.img, PIL.Image.Image)
     assert isinstance(record_loaded.detection.masks, MaskArray)
 
     # test original record is not modified

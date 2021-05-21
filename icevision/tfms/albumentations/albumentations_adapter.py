@@ -299,7 +299,7 @@ class Adapter(Transform, Composite):
         height, width, _ = self._albu_out["image"].shape
 
         if get_transform(self.tfms_list, "Pad") is not None:
-            after_pad_h, after_pad_w, _ = record.img.shape
+            after_pad_h, after_pad_w, _ = np.array(record.img).shape
 
             t = get_transform(self.tfms_list, "SmallestMaxSize")
             if t is not None:
