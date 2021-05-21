@@ -6,6 +6,7 @@ __all__ = [
     "RLE",
     "Polygon",
     "EncodedRLEs",
+    "SemanticMaskFile",
 ]
 
 from icevision.imports import *
@@ -248,3 +249,27 @@ class Polygon(Mask):
         erles = mask_utils.frPyObjects(self.points, h, w)
         erle = mask_utils.merge(erles)  # make unconnected polygons a single mask
         return EncodedRLEs([erle])
+
+
+class SemanticMaskFile(Mask):
+    """Holds the path to mask image file.
+
+    # Arguments
+        filepath: Path to the mask image file.
+    """
+
+    def __init__(self, filepath: Union[str, Path]):
+        self.filepath = Path(filepath)
+
+    def to_mask(self, h, w):
+        # TODO: convert the 255 masks
+        mask = open_img(self.filepath, gray=True)
+        return MaskArray(mask[None])
+
+    def to_coco_rle(self, h, w) -> List[dict]:
+        raise NotImplementedError
+        return self.to_mask(h=h, w=w).to_coco_rle(h=h, w=w)
+
+    def to_erles(self, h, w) -> EncodedRLEs:
+        # HACK: Doesn't make sense to convert to ERLE?
+        return self
