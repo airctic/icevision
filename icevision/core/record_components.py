@@ -99,7 +99,7 @@ class RecordIDRecordComponent(RecordComponent):
         self.record_id = record_id
 
     def _repr(self) -> List[str]:
-        return [f"Image ID: {self.record_id}"]
+        return [f"Record ID: {self.record_id}"]
 
     def as_dict(self) -> dict:
         return {"record_id": self.record_id}
@@ -134,12 +134,12 @@ class ImageRecordComponent(RecordComponent):
                     raise ValueError(
                         f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
                     )
-                return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+                return [f"Img: {width}x{height}x{channels} <np.ndarray> Image"]
             elif isinstance(self.img, PIL.Image.Image):
                 height, width = self.img.shape
-                return [f"Image: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
+                return [f"Img: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
         else:
-            return [f"Image: {self.img}"]
+            return [f"Img: {self.img}"]
 
     def _unload(self):
         self.img = None
