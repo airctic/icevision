@@ -1,4 +1,4 @@
-__all__ = ["train_dl", "valid_dl", "build_train_batch"]
+__all__ = ["train_dl", "valid_dl", "infer_dl", "build_train_batch", "build_infer_batch"]
 
 from icevision.imports import *
 from icevision.core import *
@@ -40,6 +40,15 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     return train_dl(dataset, batch_tfms=None, **dataloader_kwargs)
 
 
+def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    return transform_dl(
+        dataset=dataset,
+        build_batch=build_infer_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
+
+
 def build_train_batch(records: Sequence[BaseRecord]):
     tensor_images, tensor_masks = [], []
     for record in records:
@@ -51,3 +60,12 @@ def build_train_batch(records: Sequence[BaseRecord]):
     tensor_masks = torch.stack(tensor_masks)
 
     return (tensor_images, tensor_masks), records
+
+
+def build_infer_batch(records: Sequence[BaseRecord]):
+    tensor_images = []
+    for record in records:
+        tensor_images.append(im2tensor(record.img))
+
+    tensor_images = torch.stack(tensor_images)
+    return (tensor_images,), records
