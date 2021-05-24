@@ -10,12 +10,14 @@ __all__ = [
     "draw_mask",
     "draw_keypoints",
     "draw_label",
+    "draw_segmentation_mask",
 ]
 
 from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
 from icevision.visualize.utils import *
+from matplotlib.colors import LinearSegmentedColormap
 
 # This should probably move elsewhere
 from PIL import Image, ImageFont, ImageDraw
@@ -85,7 +87,13 @@ def draw_sample(
     if denormalize_fn is not None:
         img = denormalize_fn(img)
 
+    # HACK to visualize segmentation mask
     for task, composite in sample.task_composites.items():
+        if task == "segmentation":
+            cm = rand_cmap(sample.detection.class_map.num_classes, verbose=False)
+            mask = composite.masks[0].to_mask(0, 0)
+            return draw_segmentation_mask(img, mask, cm)
+
         # Should break if no ClassMap found in composite.
         #  Should be as the only composite without ClassMap should be
         #  `sample.common`. This is a foundational assumption? #NOTE
@@ -548,6 +556,26 @@ def draw_mask(
     img.putalpha(255)
     img = PIL.Image.alpha_composite(img, mask_pil)
 
+    return np.array(img)
+
+
+def draw_segmentation_mask(
+    img: np.ndarray,
+    mask: MaskArray,
+    cmap: LinearSegmentedColormap,
+    alpha: float = 0.5,
+):
+    img = PIL.Image.fromarray(img)
+    w, h = img.sizes
+    mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
+    mask = mask.data.squeeze()
+
+    for class_idx in np.unique(mask):
+        mask_idxs = mask == class_idx
+        mask_arr[mask_idxs] = np.array(cmap(class_idx)[:3]) * 255
+
+    mask_pil = PIL.Image.fromarray(mask_arr)
+    img = PIL.Image.blend(img, mask_pil, alpha=alpha)
     return np.array(img)
 
 
