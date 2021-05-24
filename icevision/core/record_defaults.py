@@ -36,7 +36,7 @@ def SemanticSegmentationRecord():
         (
             FilepathRecordComponent(),
             ClassMapRecordComponent(task=tasks.detection),
-            MasksRecordComponent(),
+            SemanticMasksRecordComponent(),
         )
     )
 
