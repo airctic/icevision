@@ -24,7 +24,7 @@ def test_inference_transform(records, check_attributes_on_component):
     ds = Dataset.from_images([img], tfm)
 
     tfmed = ds[0]
-    assert (tfmed.img == img[:, ::-1, :]).all()
+    assert (tfmed.img == np.array(img)[:, ::-1, :]).all()
     check_attributes_on_component(tfmed)
 
 

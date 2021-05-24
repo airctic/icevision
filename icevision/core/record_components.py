@@ -99,39 +99,47 @@ class RecordIDRecordComponent(RecordComponent):
         self.record_id = record_id
 
     def _repr(self) -> List[str]:
-        return [f"Image ID: {self.record_id}"]
+        return [f"Record ID: {self.record_id}"]
 
     def as_dict(self) -> dict:
         return {"record_id": self.record_id}
 
 
 # TODO: we need a way to combine filepath and image mixin
-# TODO: rename to ImageArrayRecordComponent
 class ImageRecordComponent(RecordComponent):
     def __init__(self, task=tasks.common):
         super().__init__(task=task)
         self.img = None
 
-    def set_img(self, img: np.ndarray):
+    def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
+        assert isinstance(img, (PIL.Image.Image, np.ndarray))
         self.img = img
-        height, width, _ = self.img.shape
+        if isinstance(img, PIL.Image.Image):
+            height, width = img.shape
+        elif isinstance(img, np.ndarray):
+            # else:
+            height, width, _ = self.img.shape
         # this should set on SizeRecordComponent
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
     def _repr(self) -> List[str]:
         if self.img is not None:
-            ndims = len(self.img.shape)
-            if ndims == 3:  # RGB, RGBA
-                height, width, channels = self.img.shape
-            elif ndims == 2:  # Grayscale
-                height, width, channels = [*self.img.shape, 1]
-            else:
-                raise ValueError(
-                    f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
-                )
-            return [f"Image: {width}x{height}x{channels} <np.ndarray> Image"]
+            if isinstance(self.img, np.ndarray):
+                ndims = len(self.img.shape)
+                if ndims == 3:  # RGB, RGBA
+                    height, width, channels = self.img.shape
+                elif ndims == 2:  # Grayscale
+                    height, width, channels = [*self.img.shape, 1]
+                else:
+                    raise ValueError(
+                        f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
+                    )
+                return [f"Img: {width}x{height}x{channels} <np.ndarray> Image"]
+            elif isinstance(self.img, PIL.Image.Image):
+                height, width = self.img.shape
+                return [f"Img: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
         else:
-            return [f"Image: {self.img}"]
+            return [f"Img: {self.img}"]
 
     def _unload(self):
         self.img = None

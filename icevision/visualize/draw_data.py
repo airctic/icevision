@@ -74,7 +74,7 @@ def draw_sample(
     * include_only: (Optional) List of labels that must be exclusively plotted. Takes
                     precedence over `exclude_labels` (?)
     """
-    img = sample.img.copy()
+    img = np.asarray(sample.img).copy()  # HACK
     num_classification_plotted = 0
 
     # Dynamic font size based on image height

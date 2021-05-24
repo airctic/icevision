@@ -35,6 +35,9 @@ class Dataset:
         record = self.records[i].load()
         if self.tfm is not None:
             record = self.tfm(record)
+        else:
+            # HACK FIXME
+            record.set_img(np.array(record.img))
         return record
 
     def __repr__(self):
