@@ -92,7 +92,7 @@ def draw_sample(
         if task == "segmentation":
             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
             mask = composite.masks[0].to_mask(0, 0)
-            return draw_segmentation_mask(img, mask, cm)
+            return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
 
         # Should break if no ClassMap found in composite.
         #  Should be as the only composite without ClassMap should be
@@ -563,19 +563,23 @@ def draw_segmentation_mask(
     img: np.ndarray,
     mask: MaskArray,
     cmap: LinearSegmentedColormap,
+    display_mask: bool = True,
     alpha: float = 0.5,
 ):
     img = PIL.Image.fromarray(img)
-    w, h = img.size
-    mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
-    mask = mask.data.squeeze()
 
-    for class_idx in np.unique(mask):
-        mask_idxs = mask == class_idx
-        mask_arr[mask_idxs] = np.array(cmap(class_idx)[:3]) * 255
+    if display_mask:
+        w, h = img.size
+        mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
+        mask = mask.data.squeeze()
 
-    mask_pil = PIL.Image.fromarray(mask_arr)
-    img = PIL.Image.blend(img, mask_pil, alpha=alpha)
+        for class_idx in np.unique(mask):
+            mask_idxs = mask == class_idx
+            mask_arr[mask_idxs] = np.array(cmap(class_idx)[:3]) * 255
+
+        mask_pil = PIL.Image.fromarray(mask_arr)
+        img = PIL.Image.blend(img, mask_pil, alpha=alpha)
+
     return np.array(img)
 
 
