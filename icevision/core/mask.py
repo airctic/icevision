@@ -265,6 +265,8 @@ class SemanticMaskFile(Mask):
     def to_mask(self, h, w):
         # TODO: convert the 255 masks
         mask = open_img(self.filepath, gray=True)
+        # HACK: because open_img now return PIL
+        mask = np.array(mask)
 
         # convert 255 pixels to 1
         if self.binary:

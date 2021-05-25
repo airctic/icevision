@@ -90,7 +90,7 @@ def draw_sample(
     # HACK to visualize segmentation mask
     for task, composite in sample.task_composites.items():
         if task == "segmentation":
-            cm = rand_cmap(sample.detection.class_map.num_classes, verbose=False)
+            cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
             mask = composite.masks[0].to_mask(0, 0)
             return draw_segmentation_mask(img, mask, cm)
 
@@ -566,7 +566,7 @@ def draw_segmentation_mask(
     alpha: float = 0.5,
 ):
     img = PIL.Image.fromarray(img)
-    w, h = img.sizes
+    w, h = img.size
     mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
     mask = mask.data.squeeze()
 

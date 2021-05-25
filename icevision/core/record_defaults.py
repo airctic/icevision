@@ -38,7 +38,7 @@ def SemanticSegmentationRecord():
     return BaseRecord(
         (
             FilepathRecordComponent(),
-            ClassMapRecordComponent(task=tasks.detection),
+            ClassMapRecordComponent(task=tasks.segmentation),
             SemanticMasksRecordComponent(),
         )
     )

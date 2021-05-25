@@ -49,19 +49,20 @@ def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
         **dataloader_kwargs
     )
 
+
 def build_train_batch(records: Sequence[BaseRecord]):
     tensor_images, tensor_masks = [], []
     for record in records:
         # can be optimzed to be converted to tensor once at the end
         tensor_images.append(im2tensor(record.img))
-        tensor_masks.append(tensor(record.detection.masks.data).long().squeeze())
+        tensor_masks.append(tensor(record.segmentation.masks.data).long().squeeze())
 
     tensor_images = torch.stack(tensor_images)
     tensor_masks = torch.stack(tensor_masks)
 
     return (tensor_images, tensor_masks), records
-  
-  
+
+
 def build_infer_batch(records: Sequence[BaseRecord]):
     tensor_images = []
     for record in records:
