@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `end2end_detect()`: Run Object Detection inference (only `bboxes`) on a single image, and return predicted boxes corresponding to original image size
 -**Breaking:** BaseLabelsRecordComponent `as_dict()` now returns both `labels` `and labels_ids`. `labels` are now strings instead of integers.
  
+### Changed
+- **Breaking:** Parameter `size` and `presize` changed from order (height, width) to (width, height)
+
 ## [0.8.0]
 Supports pytorch 1.8
 ### Added
