@@ -1,7 +1,6 @@
 # model settings
 model = dict(
     type="RetinaNet",
-    pretrained=None,  # 'torchvision://resnet50'
     backbone=None,
     neck=dict(
         type="FPN",
