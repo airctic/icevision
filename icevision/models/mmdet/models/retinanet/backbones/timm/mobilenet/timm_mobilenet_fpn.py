@@ -59,11 +59,8 @@ mobilenetv3_large_100 = MMDetTimmRetinanetBackboneConfig(
         "type": "MobileNetV3_Large_100",
         "pretrained": True,
         "out_indices": (0, 1, 2, 3, 4),
-        "init_cfg": {
-            "type": "Pretrained",
-            "checkpoint": "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth",
-        },
     },
+    weights_url="https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth",
 )
 
 mobilenetv3_rw = MMDetTimmRetinanetBackboneConfig(

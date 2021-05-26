@@ -38,6 +38,7 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
     def __init__(self, model_name, config_path, backbone_dict, weights_url=None):
         super().__init__(model_name, config_path, weights_url=weights_url)
         self.backbone_dict = backbone_dict
+        self.weights_url = weights_url
 
         # build a backbone without loading pretrained weights
         # it's used to only get the features info
@@ -69,7 +70,6 @@ def create_model_config(
     if isinstance(backbone, MMDetTimmBackboneConfig):
         cfg.model.backbone = ConfigDict(backbone.backbone_dict)
         cfg.model.neck.in_channels = backbone.feature_channels
-        weights_path = backbone.init_cfg.checkpoint
     else:
         # MMDetection backbones
         # download weights
