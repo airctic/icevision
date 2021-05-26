@@ -30,17 +30,16 @@ def download_and_extract(
     shutil.unpack_archive(filename=str(save_path), extract_dir=str(save_dir))
 
 
-def download_gdrive(url, save_path):
+def download_gdrive(url):
     """Download from gdrive, passing virus scan for big files."""
     import gdown
 
-    gdown.download(url=str(url), output=str(save_path), quiet=False)
+    return gdown.download(url=str(url), quiet=False)
 
 
-def download_and_extract_gdrive(url, filename, extract_dir):
+def download_and_extract_gdrive(url, extract_dir):
     extract_dir = Path(extract_dir)
-    save_path = extract_dir / filename
     extract_dir.mkdir(exist_ok=True, parents=True)
 
-    download_gdrive(url=url, save_path=save_path)
-    shutil.unpack_archive(filename=str(save_path), extract_dir=str(extract_dir))
+    filename = download_gdrive(url=url)
+    shutil.unpack_archive(filename=filename, extract_dir=str(extract_dir))
