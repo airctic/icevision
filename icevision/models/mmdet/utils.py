@@ -69,7 +69,7 @@ def create_model_config(
     if isinstance(backbone, MMDetTimmBackboneConfig):
         cfg.model.backbone = ConfigDict(backbone.backbone_dict)
         cfg.model.neck.in_channels = backbone.feature_channels
-        weights_path = None
+        weights_path = backbone.init_cfg.checkpoint
     else:
         # MMDetection backbones
         # download weights
