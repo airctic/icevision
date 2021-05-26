@@ -44,6 +44,7 @@ def build_model(
         checkpoints_path=checkpoints_path,
         force_download=force_download,
     )
+    
 
     if model_type == "one_stage_detector_bbox":
         cfg.model.bbox_head.num_classes = num_classes - 1
@@ -60,7 +61,9 @@ def build_model(
         cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
         cfg.model.roi_head.mask_head.num_classes = num_classes - 1
 
-    if (pretrained == False) or (weights_path is not None):
+    if (pretrained == True):
+        cfg.model.pretrained = True
+    elif (pretrained == False) or (weights_path is not None):
         cfg.model.pretrained = None
 
     _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
