@@ -38,7 +38,6 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
     def __init__(self, model_name, config_path, backbone_dict, weights_url=None):
         super().__init__(model_name, config_path, weights_url=weights_url)
         self.backbone_dict = backbone_dict
-        self.weights_url = weights_url
 
         # build a backbone without loading pretrained weights
         # it's used to only get the features info
@@ -70,18 +69,18 @@ def create_model_config(
     if isinstance(backbone, MMDetTimmBackboneConfig):
         cfg.model.backbone = ConfigDict(backbone.backbone_dict)
         cfg.model.neck.in_channels = backbone.feature_channels
-    else:
-        # MMDetection backbones
-        # download weights
-        if pretrained and weights_url:
-            save_dir = Path(checkpoints_path) / model_name
-            save_dir.mkdir(exist_ok=True, parents=True)
 
-            fname = Path(weights_url).name
-            weights_path = save_dir / fname
+    # MMDetection backbones
+    # download weights
+    if pretrained and weights_url:
+        save_dir = Path(checkpoints_path) / model_name
+        save_dir.mkdir(exist_ok=True, parents=True)
 
-            if not weights_path.exists() or force_download:
-                download_url(url=weights_url, save_path=str(weights_path))
+        fname = Path(weights_url).name
+        weights_path = save_dir / fname
+
+        if not weights_path.exists() or force_download:
+            download_url(url=weights_url, save_path=str(weights_path))
 
     return cfg, weights_path
 
