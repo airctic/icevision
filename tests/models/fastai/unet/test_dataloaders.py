@@ -5,13 +5,13 @@ from icevision.all import *
 def _test_dl(x, y, recs):
     assert len(recs) == 1
     assert recs[0].img is None
-    assert x.shape == torch.Size([1, 3, 384, 384])
+    assert x.shape == torch.Size([1, 3, 64, 64])
 
     assert recs[0].segmentation.class_map is not None
     assert recs[0].segmentation.class_map.num_classes == 32
 
     if y is not None:
-        assert y.shape == torch.Size([1, 384, 384])
+        assert y.shape == torch.Size([1, 64, 64])
 
         # check maximum value in y is not higher than 31, given we have 32 classes in total
         assert y.max() < 32
