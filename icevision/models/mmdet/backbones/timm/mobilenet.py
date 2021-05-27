@@ -127,15 +127,15 @@ class BaseMobileNetV3(MMDetTimmBase):
 #         )
 
 
-@BACKBONES.register_module(force=True)
-class MobileNetV3_Large_075(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_mobilenetv3_large_075(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class MobileNetV3_Large_075(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_mobilenetv3_large_075(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
 @BACKBONES.register_module(force=True)
@@ -167,110 +167,110 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
         self.post_init_setup()
 
 
-@BACKBONES.register_module(force=True)
-class MobileNetV3_RW(MMDetTimmBase):
-    def __init__(
-        self,
-        pretrained: bool = True,  # doesn't matter
-        out_indices: Collection[int] = (1, 2, 3, 4),
-        norm_eval: bool = True,
-        frozen_stages: int = 1,
-        frozen_stem: bool = True,
-    ):
-        "MobileNetV3_RW with hardcoded `pretrained=True`"
-        super(MobileNetV3Large100, self).__init__(
-            model_name="mobilenetv3_rw",
-            pretrained=pretrained,
-            out_indices=out_indices,
-            norm_eval=norm_eval,
-            frozen_stages=frozen_stages,
-            frozen_stem=frozen_stem,
-        )
+# @BACKBONES.register_module(force=True)
+# class MobileNetV3_RW(MMDetTimmBase):
+#     def __init__(
+#         self,
+#         pretrained: bool = True,  # doesn't matter
+#         out_indices: Collection[int] = (1, 2, 3, 4),
+#         norm_eval: bool = True,
+#         frozen_stages: int = 1,
+#         frozen_stem: bool = True,
+#     ):
+#         "MobileNetV3_RW with hardcoded `pretrained=True`"
+#         super(MobileNetV3Large100, self).__init__(
+#             model_name="mobilenetv3_rw",
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             norm_eval=norm_eval,
+#             frozen_stages=frozen_stages,
+#             frozen_stem=frozen_stem,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class MobileNetV3_Small_075(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_mobilenetv3_small_075(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class MobileNetV3_Small_075(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_mobilenetv3_small_075(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class MobileNetV3_Small_100(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_mobilenetv3_small_100(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class MobileNetV3_Small_100(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_mobilenetv3_small_100(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Large_075(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_large_075(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Large_075(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_large_075(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Large_100(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_large_100(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Large_100(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_large_100(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Large_Minimal_100(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_large_minimal_100(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Large_Minimal_100(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_large_minimal_100(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Small_075(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_small_075(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Small_075(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_small_075(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Small_100(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_small_100(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Small_100(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_small_100(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
 
 
-@BACKBONES.register_module(force=True)
-class TF_MobileNetV3_Small_Minimal_100(MMDetTimmBase):
-    def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
-        super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
-        self.model = ice_tf_mobilenetv3_small_minimal_100(
-            pretrained=pretrained,
-            out_indices=out_indices,
-            **kwargs,
-        )
+# @BACKBONES.register_module(force=True)
+# class TF_MobileNetV3_Small_Minimal_100(MMDetTimmBase):
+#     def __init__(self, pretrained=True, out_indices=(1, 2, 3, 4), **kwargs):
+#         super().__init__(pretrained=pretrained, out_indices=out_indices, **kwargs)
+#         self.model = ice_tf_mobilenetv3_small_minimal_100(
+#             pretrained=pretrained,
+#             out_indices=out_indices,
+#             **kwargs,
+#         )
