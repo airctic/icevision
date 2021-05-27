@@ -80,6 +80,8 @@ def camvid_ds(camvid_records) -> Tuple[Dataset, Dataset]:
 
     train_ds = Dataset(train_records, tfms_)
     valid_ds = Dataset(valid_records, tfms_)
+    assert len(train_ds) == 4
+    assert len(valid_ds) == 1
 
     return train_ds, valid_ds
 
