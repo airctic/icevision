@@ -2,7 +2,8 @@ __all__ = ["MMDetTimmBase"]
 
 import torch.nn as nn
 from timm.models.registry import *
-
+from typing import Tuple, Collection, List
+from torch import Tensor
 
 class MMDetTimmBase(nn.Module):
     def __init__(
