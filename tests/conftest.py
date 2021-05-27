@@ -75,7 +75,7 @@ def camvid_ds(camvid_records) -> Tuple[Dataset, Dataset]:
         RandomSplitter([0.8, 0.2], seed=0)
     )
 
-    IMG_SIZE = 384
+    IMG_SIZE = 64
     tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
 
     train_ds = Dataset(train_records, tfms_)
