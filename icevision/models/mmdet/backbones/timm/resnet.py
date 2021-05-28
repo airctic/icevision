@@ -3,13 +3,11 @@ __all__ = [
     "ResNet50_TIMM",
 ]
 
-from icevision.backbones.timm.mobilenet import *
 from icevision.models.mmdet.backbones.timm.common import *
 from mmdet.models.builder import BACKBONES
 
 from typing import Optional, Collection
 from torch.nn.modules.batchnorm import _BatchNorm
-from abc import ABCMeta, abstractmethod
 from typing import Tuple, Collection, List
 
 import timm
@@ -48,7 +46,7 @@ class BaseResNet(MMDetTimmBase):
         # Get model method from the timm registry by model name
         model_fn = model_entrypoint(self.model_name)
         model = model_fn(pretrained=self.pretrained)
-        assert torch.equal(self.model.conv_stem.weight, model.conv_stem.weight)
+        assert torch.equal(self.model.conv1.weight, model.conv1.weight)
 
     def post_init_setup(self):
         self.freeze(
@@ -70,13 +68,11 @@ class BaseResNet(MMDetTimmBase):
                     param.requires_grad = False
 
         # `freeze_blocks=1` freezes the first block, and so on
-        for i, block in enumerate(m.blocks, start=1):
-            if i > freeze_blocks:
-                break
-            else:
-                block.eval()
-                for param in block.parameters():
-                    param.requires_grad = False
+        for i in range(1, self.frozen_stages + 1):
+            l = getattr(m, f"layer{i}")
+            l.eval()
+            for param in l.parameters():
+                param.requires_grad = False
 
     def train(self, mode=True):
         "Convert the model to training mode while optionally freezing BatchNorm"

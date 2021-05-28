@@ -3,13 +3,11 @@ __all__ = [
     "MobileNetV3_Large_100",   
 ]
 
-from icevision.backbones.timm.mobilenet import *
 from icevision.models.mmdet.backbones.timm.common import *
 from mmdet.models.builder import BACKBONES
 
 from typing import Optional, Collection
 from torch.nn.modules.batchnorm import _BatchNorm
-from abc import ABCMeta, abstractmethod
 from typing import Tuple, Collection, List
 
 import timm
@@ -173,7 +171,7 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
 
 
 # @BACKBONES.register_module(force=True)
-# class MobileNetV3_RW(MMDetTimmBase):
+# class MobileNetV3_RW(BaseMobileNetV3):
 #     def __init__(
 #         self,
 #         pretrained: bool = True,  # doesn't matter
@@ -182,8 +180,8 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
 #         frozen_stages: int = 1,
 #         frozen_stem: bool = True,
 #     ):
-#         "MobileNetV3_RW with hardcoded `pretrained=True`"
-#         super(MobileNetV3Large100, self).__init__(
+#         "register_module Large with hardcoded `pretrained=True`"
+#         super().__init__(
 #             model_name="mobilenetv3_rw",
 #             pretrained=pretrained,
 #             out_indices=out_indices,
@@ -191,6 +189,14 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
 #             frozen_stages=frozen_stages,
 #             frozen_stem=frozen_stem,
 #         )
+#         self.model_name = "mobilenetv3_rw"
+#         self.norm_eval = norm_eval
+#         self.frozen_stages = frozen_stages
+#         self.frozen_stem = frozen_stem
+#         self.model = mobilenetv3_rw(
+#             pretrained=True, features_only=True, out_indices=out_indices
+#         )
+#         self.post_init_setup()
 
 
 # @BACKBONES.register_module(force=True)
