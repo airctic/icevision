@@ -58,7 +58,7 @@ mobilenetv3_large_100 = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
         "type": "MobileNetV3_Large_100",
         "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
+        "out_indices": (2, 3, 4),
     },
     weights_url="https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth",
 )
