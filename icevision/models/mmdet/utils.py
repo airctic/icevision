@@ -6,6 +6,7 @@ __all__ = [
     "param_groups_timm",
     "MMDetBackboneConfig",
     "create_model_config",
+    "get_feature_channels",
 ]
 
 from icevision.imports import *
@@ -39,18 +40,20 @@ class MMDetTimmBackboneConfig(MMDetBackboneConfig):
         super().__init__(model_name, config_path, weights_url=weights_url)
         self.backbone_dict = backbone_dict
 
-        # build a backbone without loading pretrained weights
-        # it's used to only get the features info
-        backbone_dict_tmp = deepcopy(backbone_dict)
-        backbone_dict_tmp["pretrained"] = False
-        backbone = build_backbone(cfg=backbone_dict_tmp)
-        self.feature_channels = [
-            o["num_chs"] for o in list(backbone.model.feature_info)
-        ]
-
     def __call__(self, pretrained: bool = True) -> "MMDetTimmBackboneConfig":
         self.pretrained = pretrained
         return self
+
+
+def get_feature_channels(backbone: MMDetTimmBackboneConfig):
+    # build a backbone without loading pretrained weights
+    # it's used to only get the features info
+
+    backbone_dict = deepcopy(backbone.backbone_dict)
+    backbone_dict["pretrained"] = False
+    backbone = build_backbone(cfg=backbone_dict)
+    feature_channels = [o["num_chs"] for o in list(backbone.model.feature_info)]
+    return feature_channels
 
 
 def create_model_config(
@@ -68,7 +71,7 @@ def create_model_config(
     # timm backbones
     if isinstance(backbone, MMDetTimmBackboneConfig):
         cfg.model.backbone = ConfigDict(backbone.backbone_dict)
-        cfg.model.neck.in_channels = backbone.feature_channels
+        cfg.model.neck.in_channels = get_feature_channels(backbone)
 
     # MMDetection backbones
     # download weights
