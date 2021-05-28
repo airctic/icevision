@@ -106,11 +106,5 @@ class ResNest50D_TIMM(BaseResNet):
             frozen_stages=frozen_stages,
             frozen_stem=frozen_stem,
         )
-        self.model_name = "resnest50d"
-        self.norm_eval = norm_eval
-        self.frozen_stages = frozen_stages
-        self.frozen_stem = frozen_stem
-        self.model = resnest50d(
-            pretrained=True, features_only=True, out_indices=out_indices
-        )
+
         self.post_init_setup()
