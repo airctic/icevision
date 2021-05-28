@@ -1,80 +1,20 @@
 __all__ = [
-    "resnest14d",
-    "resnest26d",
     "resnest50d",
-    "resnest50d_1s4x24d",
-    "resnest50d_4s2x40d",
-    "resnest101e",
-    "resnest200e",
-    "resnest269e",
+
 ]
 
 from icevision.models.mmdet.models.retinanet.backbones.timm.common import *
-from icevision.models.mmdet.backbones.timm.resnest import *
+from icevision.models.mmdet.backbones.timm.resnet import *
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
 
-resnest14d = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest14D",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
-
-resnest26d = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest26D",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
 
 resnest50d = MMDetTimmRetinanetBackboneConfig(
     backbone_dict={
-        "type": "ResNest50D",
+        "type": "ResNest50D_TIMM",
         "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
+        "out_indices": (2, 3, 4),
     },
-)
-
-resnest50d_1s4x24d = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest50D_1S4x24D",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
-
-resnest50d_4s2x40d = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest50D_4S2x40D",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
-
-resnest101e = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest101E",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
-
-resnest200e = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest200E",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
-)
-
-resnest269e = MMDetTimmRetinanetBackboneConfig(
-    backbone_dict={
-        "type": "ResNest269E",
-        "pretrained": True,
-        "out_indices": (0, 1, 2, 3, 4),
-    },
+    weights_url="https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-resnest/resnest50-528c19ca.pth",
 )
