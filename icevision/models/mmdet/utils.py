@@ -52,7 +52,12 @@ def get_feature_channels(backbone: MMDetTimmBackboneConfig):
     backbone_dict = deepcopy(backbone.backbone_dict)
     backbone_dict["pretrained"] = False
     backbone = build_backbone(cfg=backbone_dict)
-    feature_channels = [o["num_chs"] for o in list(backbone.model.feature_info)]
+    all_feature_channels = [o["num_chs"] for o in list(backbone.model.feature_info)]
+    
+    # return all the feature channels corresponding to the out_indices
+    indices = backbone_dict["out_indices"]
+    feature_channels = [chs for i,chs in enumerate(all_feature_channels) if i in indices]
+
     return feature_channels
 
 
