@@ -413,7 +413,7 @@ class MasksRecordComponent(RecordComponent):
 
     def _builder_template(self) -> List[str]:
         return ["record{task}add_masks(<Sequence[Mask]>)"]
-      
+
 
 class SemanticMasksRecordComponent(RecordComponent):
     def __init__(self, task=tasks.segmentation):
@@ -429,18 +429,18 @@ class SemanticMasksRecordComponent(RecordComponent):
 
     # HACK: only here because it's what albumentations call
     def set_masks(self, masks: Mask):
-        self.masks = masks
+        assert len(masks) == 1, "can only be a single mask for segmentation"
+        self.set_mask(masks[0])
 
     def setup_transform(self, tfm) -> None:
         tfm.setup_masks(self)
 
     def _load(self):
         self.masks = MaskArray.from_masks(
-            self.masks, self.composite.height, self.composite.width
+            self._unloaded_mask, self.composite.height, self.composite.width
         )
 
     def _unload(self):
-        # TODO: SLOW: Maybe cause slowdowns?
         self.masks = None
 
     # def _num_annotations(self) -> Dict[str, int]:
@@ -454,7 +454,7 @@ class SemanticMasksRecordComponent(RecordComponent):
 
     def _builder_template(self) -> List[str]:
         return ["record{task}set_masks(<Sequence[Mask]>)"]
-      
+
 
 class AreasRecordComponent(RecordComponent):
     def __init__(self, task=tasks.detection):
