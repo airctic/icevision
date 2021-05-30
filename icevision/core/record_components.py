@@ -423,14 +423,14 @@ class SemanticMasksRecordComponent(RecordComponent):
         self.masks: Sequence[Mask] = None
 
     def set_mask(self, mask: Mask):
-        self._unloaded_mask = mask
+        self._unloaded_mask = [mask]
         # HACK: list here just because is what we need on instance segmentation
         self.masks = [mask]
 
     # HACK: only here because it's what albumentations call
     def set_masks(self, masks: Mask):
         assert len(masks) == 1, "can only be a single mask for segmentation"
-        self.set_mask(masks[0])
+        self.masks = masks
 
     def setup_transform(self, tfm) -> None:
         tfm.setup_masks(self)
