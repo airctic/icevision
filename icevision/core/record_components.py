@@ -423,7 +423,7 @@ class SemanticMasksRecordComponent(RecordComponent):
         self.masks: Sequence[Mask] = None
 
     def set_mask(self, mask: Mask):
-        self._unloaded_mask = mask
+        self._unloaded_mask = [mask]
         # HACK: list here just because is what we need on instance segmentation
         self.masks = [mask]
 
