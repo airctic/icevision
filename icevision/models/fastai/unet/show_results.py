@@ -43,7 +43,6 @@ def loop_unet(dl, model, losses_stats, device):
 
     with torch.no_grad():
         for (x, y), sample in pbar(dl):
-            print(sample)
             torch.manual_seed(0)
             x, y = _move_to_device(x, y, device)
             preds = model(x)
