@@ -61,7 +61,7 @@ def camvid_records(samples_source, camvid_class_map) -> RecordCollection:
             record.segmentation.set_class_map(camvid_class_map)
 
         mask_file = SemanticMaskFile(labels_dir / f"{image_file.stem}_P.png")
-        record.segmentation.set_masks([mask_file])
+        record.segmentation.set_mask(mask_file)
 
     records = records.autofix()
     # list of 5 records
