@@ -108,3 +108,26 @@ class ResNet50_TIMM(BaseResNet):
         )
 
         self.post_init_setup()
+
+
+@BACKBONES.register_module(force=True)
+class ResNetRS50_TIMM(BaseResNet):
+    def __init__(
+        self,
+        pretrained: bool = True,  # doesn't matter
+        out_indices: Collection[int] = (2, 3, 4),
+        norm_eval: bool = True,
+        frozen_stages: int = 1,
+        frozen_stem: bool = True,
+    ):
+        "ResNetRS50 with hardcoded `pretrained=True`"
+        super().__init__(
+            model_name="resnetrs50",
+            pretrained=pretrained,
+            out_indices=out_indices,
+            norm_eval=norm_eval,
+            frozen_stages=frozen_stages,
+            frozen_stem=frozen_stem,
+        )
+
+        self.post_init_setup()
