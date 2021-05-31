@@ -5,6 +5,7 @@ from timm.models.registry import *
 from typing import Tuple, Collection, List
 from torch import Tensor
 
+
 class MMDetTimmBase(nn.Module):
     def __init__(
         self,
@@ -15,7 +16,6 @@ class MMDetTimmBase(nn.Module):
     ):
 
         super().__init__()
-        print(model_name)
         self.model_name = model_name
         self.pretrained = pretrained
         self.out_indices = out_indices
