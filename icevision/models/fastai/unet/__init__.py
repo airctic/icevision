@@ -8,3 +8,6 @@ from icevision.soft_dependencies import SoftDependencies
 
 if SoftDependencies.fastai:
     from icevision.models.fastai.unet import fastai
+
+if SoftDependencies.pytorch_lightning:
+    from icevision.models.fastai.unet import lightning
