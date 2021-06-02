@@ -429,15 +429,16 @@ class SemanticMasksRecordComponent(RecordComponent):
 
     # HACK: only here because it's what albumentations call
     def set_masks(self, masks: Mask):
-        assert len(masks) == 1, "can only be a single mask for segmentation"
-        self.set_mask(masks[0])
+        self.masks = masks
+        # assert len(masks) == 1, "can only be a single mask for segmentation"
+        # self.set_mask(masks[0])
 
     def setup_transform(self, tfm) -> None:
         tfm.setup_masks(self)
 
     def _load(self):
         self.masks = MaskArray.from_masks(
-            self._unloaded_mask, self.composite.height, self.composite.width
+            self.masks, self.composite.height, self.composite.width
         )
 
     def _unload(self):
