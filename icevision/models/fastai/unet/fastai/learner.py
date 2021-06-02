@@ -10,6 +10,7 @@ def learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
+    loss_func=fastai.CrossEntropyLossFlat(axis=1),
     **kwargs,
 ):
     cbs = L(UnetCallback()) + L(cbs)
@@ -18,7 +19,7 @@ def learner(
         dls=dls,
         model=model,
         cbs=cbs,
-        loss_func=fastai.CrossEntropyLossFlat(axis=1),
+        loss_func=loss_func,
         **kwargs,
     )
 
