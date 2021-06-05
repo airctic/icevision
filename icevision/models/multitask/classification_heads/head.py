@@ -41,6 +41,7 @@ class ClassifierConfig:
     activation: Optional[nn.Module] = None
     multilabel: bool = False
     loss_func_wts: Optional[Tensor] = None
+    loss_weight: float = 1.0
     # Post activation processing
     thresh: Optional[float] = None
     topk: Optional[int] = None
@@ -84,6 +85,7 @@ class ImageClassificationHead(nn.Module):
         activation: Optional[nn.Module] = None,
         multilabel: bool = False,
         loss_func_wts: Optional[Tensor] = None,
+        loss_weight: float = 1.0,
         # Final postprocessing args
         thresh: Optional[float] = None,
         topk: Optional[int] = None,
@@ -91,12 +93,13 @@ class ImageClassificationHead(nn.Module):
         super().__init__()
 
         # Setup loss function & activation
-        self.multilabel, self.loss_func, self.loss_func_wts, self.activation = (
-            multilabel,
+        self.multilabel = multilabel
+        self.loss_func, self.loss_func_wts, self.loss_weight = (
             loss_func,
             loss_func_wts,
-            activation,
+            loss_weight,
         )
+        self.activation = activation
         self.thresh, self.topk = thresh, topk
 
         # Setup head
@@ -169,7 +172,7 @@ class ImageClassificationHead(nn.Module):
 
     # TorchVision style API
     def compute_loss(self, predictions, targets):
-        return self.loss_func(predictions, targets)
+        return self.loss_weight * self.loss_func(predictions, targets)
 
     def postprocess(self, predictions):
         return self.activation(predictions)
@@ -177,7 +180,7 @@ class ImageClassificationHead(nn.Module):
     # MMDet style API
     def forward_train(self, x, gt_label) -> Tensor:
         preds = self(x)
-        return self.loss_func(preds, gt_label)
+        return self.loss_weight * self.loss_func(preds, gt_label)
 
     def forward_activate(self, x):
         "Run forward pass with activation function"
