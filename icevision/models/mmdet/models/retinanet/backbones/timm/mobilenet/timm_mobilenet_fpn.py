@@ -22,8 +22,10 @@ from icevision.models.mmdet.backbones.timm.mobilenet import *
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
 
+base_config_path = mmdet_configs_path / "retinanet"
 
 mobilenetv3_large_100 = MMDetTimmRetinanetBackboneConfig(
+    config_path=base_config_path / "retinanet_r50_caffe_fpn_1x_coco.py",
     backbone_dict={
         "type": "MobileNetV3_Large_100",
         "pretrained": True,
@@ -36,6 +38,7 @@ mobilenetv3_large_100 = MMDetTimmRetinanetBackboneConfig(
 )
 
 mobilenetv3_rw = MMDetTimmRetinanetBackboneConfig(
+    config_path=base_config_path / "retinanet_r50_caffe_fpn_1x_coco.py",
     backbone_dict={
         "type": "MobileNetV3_Large_100",
         "pretrained": True,

@@ -10,10 +10,10 @@ base_config_path = Path(icevision.__file__).parent / "models/mmdet/models/retina
 
 
 class MMDetTimmRetinanetBackboneConfig(MMDetTimmBackboneConfig):
-    def __init__(self, backbone_dict, weights_url=None, **kwargs):
+    def __init__(self, config_path, backbone_dict, weights_url=None, **kwargs):
         super().__init__(
             model_name="retinanet",
-            config_path=base_config_path / "retinanet_no_backbone_fpn.py",
+            config_path=base_config_path,
             backbone_dict=backbone_dict,
             weights_url=weights_url,
             **kwargs

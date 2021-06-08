@@ -8,9 +8,12 @@ from icevision.models.mmdet.backbones.timm.resnet import *
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
+from icevision.models.mmdet.utils import *
 
+base_config_path = mmdet_configs_path / "retinanet"
 
 resnet50 = MMDetTimmRetinanetBackboneConfig(
+    config_path=base_config_path / "retinanet_r50_caffe_fpn_1x_coco.py",
     backbone_dict={
         "type": "ResNet50_TIMM",
         "pretrained": True,
@@ -23,6 +26,7 @@ resnet50 = MMDetTimmRetinanetBackboneConfig(
 )
 
 resnetrs50 = MMDetTimmRetinanetBackboneConfig(
+    config_path=base_config_path / "retinanet_r50_caffe_fpn_1x_coco.py",
     backbone_dict={
         "type": "ResNetRS50_TIMM",
         "pretrained": True,
