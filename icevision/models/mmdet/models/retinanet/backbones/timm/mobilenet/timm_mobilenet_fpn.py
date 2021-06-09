@@ -40,12 +40,9 @@ mobilenetv3_large_100 = MMDetTimmRetinanetBackboneConfig(
 mobilenetv3_rw = MMDetTimmRetinanetBackboneConfig(
     config_path=base_config_path / "retinanet_r50_caffe_fpn_1x_coco.py",
     backbone_dict={
-        "type": "MobileNetV3_Large_100",
+        "type": "MobileNetV3_RW",
         "pretrained": True,
         "out_indices": (2, 3, 4),
-        "norm_eval": True,
-        "frozen_stem": True,
-        "frozen_stages": 1,
         "norm_eval": True,
         "frozen_stem": True,
         "frozen_stages": 1,
