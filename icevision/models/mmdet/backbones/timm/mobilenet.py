@@ -134,5 +134,6 @@ class MobileNetV3_RW(BaseMobileNetV3):
             frozen_stages=frozen_stages,
             frozen_stem=frozen_stem,
         )
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_100-35495452.pth"
 
         self.post_init_setup()
