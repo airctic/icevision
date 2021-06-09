@@ -39,6 +39,22 @@ class MMDetBackboneConfig(BackboneConfig):
 class MMDetTimmBackboneConfig(MMDetBackboneConfig):
     def __init__(self, model_name, config_path, backbone_dict, weights_url=None):
         super().__init__(model_name, config_path, weights_url=weights_url)
+
+        assert (
+            "type" in backbone_dict
+        ), f"Backbone dictionary must have a least a `type` key"
+
+        if not ("pretrained" in backbone_dict):
+            backbone_dict["pretrained"] = True
+        if not ("out_indices" in backbone_dict):
+            backbone_dict["out_indices"] = (2, 3, 4)
+        if not ("norm_eval" in backbone_dict):
+            backbone_dict["norm_eval"] = True
+        if not ("frozen_stem" in backbone_dict):
+            backbone_dict["frozen_stem"] = True
+        if not ("frozen_stages" in backbone_dict):
+            backbone_dict["frozen_stages"] = 1
+
         self.backbone_dict = backbone_dict
 
     def __call__(self, pretrained: bool = True) -> "MMDetTimmBackboneConfig":

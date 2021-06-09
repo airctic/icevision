@@ -72,7 +72,9 @@ def build_model(
         if weights_path is not None:
             load_checkpoint(_model, str(weights_path))
         elif _model.backbone.weights_url is not None:
-            weights_path = download_weights(backbone.model_name, _model.backbone.weights_url)
+            weights_url = _model.backbone.weights_url
+            print(f"loading default pretrained weights: {weights_url}")
+            weights_path = download_weights(backbone.model_name, weights_url)
             load_checkpoint(_model, str(weights_path))
 
     if isinstance(backbone, MMDetTimmBackboneConfig):
