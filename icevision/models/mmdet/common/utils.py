@@ -70,6 +70,9 @@ def build_model(
 
     if pretrained:
         if weights_path is not None:
+            print(
+                f"loading pretrained weights from user-provided url: {backbone.weights_url}"
+            )
             load_checkpoint(_model, str(weights_path))
         elif _model.backbone.weights_url is not None:
             weights_url = _model.backbone.weights_url
