@@ -68,8 +68,12 @@ def build_model(
     _model = build_detector(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
     _model.init_weights()
 
-    if pretrained and (weights_path is not None):
-        load_checkpoint(_model, str(weights_path))
+    if pretrained:
+        if weights_path is not None:
+            load_checkpoint(_model, str(weights_path))
+        elif _model.backbone.weights_url is not None:
+            weights_path = download_weights(backbone.model_name, _model.backbone.weights_url)
+            load_checkpoint(_model, str(weights_path))
 
     if isinstance(backbone, MMDetTimmBackboneConfig):
         _model.param_groups = MethodType(param_groups_timm, _model)

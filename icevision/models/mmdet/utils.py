@@ -7,6 +7,7 @@ __all__ = [
     "MMDetBackboneConfig",
     "create_model_config",
     "get_feature_channels",
+    "download_weights",
 ]
 
 from icevision.imports import *
@@ -63,6 +64,24 @@ def get_feature_channels(backbone: MMDetTimmBackboneConfig):
     return feature_channels
 
 
+def download_weights(
+    model_name: str,
+    weights_url: str,
+    checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
+    force_download=False,
+):
+    save_dir = Path(checkpoints_path) / model_name
+    save_dir.mkdir(exist_ok=True, parents=True)
+
+    fname = Path(weights_url).name
+    weights_path = save_dir / fname
+
+    if not weights_path.exists() or force_download:
+        download_url(url=weights_url, save_path=str(weights_path))
+
+    return weights_path
+
+
 def create_model_config(
     backbone: MMDetBackboneConfig,
     pretrained: bool = True,
@@ -82,15 +101,9 @@ def create_model_config(
 
     # MMDetection backbones
     # download weights
+    weights_path = None
     if pretrained and weights_url:
-        save_dir = Path(checkpoints_path) / model_name
-        save_dir.mkdir(exist_ok=True, parents=True)
-
-        fname = Path(weights_url).name
-        weights_path = save_dir / fname
-
-        if not weights_path.exists() or force_download:
-            download_url(url=weights_url, save_path=str(weights_path))
+        weights_path = download_weights(model_name, weights_url)
 
     return cfg, weights_path
 
