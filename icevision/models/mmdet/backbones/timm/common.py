@@ -11,7 +11,7 @@ class MMDetTimmBase(nn.Module):
         self,
         model_name: str = None,
         pretrained: bool = True,  # doesn't matter
-        out_indices: Collection[int] = (1, 2, 3, 4),
+        out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
     ):
 

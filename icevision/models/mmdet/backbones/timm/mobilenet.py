@@ -28,7 +28,7 @@ class BaseMobileNetV3(MMDetTimmBase):
         self,
         model_name: str = None,
         pretrained: bool = True,  # doesn't matter
-        out_indices: Collection[int] = (1, 2, 3, 4),
+        out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
@@ -95,7 +95,7 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
     def __init__(
         self,
         pretrained: bool = True,  # doesn't matter
-        out_indices: Collection[int] = (1, 2, 3, 4),
+        out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
@@ -110,9 +110,8 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
             frozen_stem=frozen_stem,
         )
 
-        self.weights_url = (
-            "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth",
-        )
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/mobilenetv3_large_100_ra-f55367f5.pth",
+
 
         self.post_init_setup()
 
@@ -122,7 +121,7 @@ class MobileNetV3_RW(BaseMobileNetV3):
     def __init__(
         self,
         pretrained: bool = True,  # doesn't matter
-        out_indices: Collection[int] = (1, 2, 3, 4),
+        out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
