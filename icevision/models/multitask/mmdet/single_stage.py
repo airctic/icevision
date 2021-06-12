@@ -286,6 +286,27 @@ class HybridSingleStageDetector(SingleStageDetector):
             "classification_results": classification_results,
         }
 
+    # NOTE: This is experimental
+    def forward_onnx(self, one_img: Tensor, one_img_metas: List[ImgMetadataDict]):
+        """ """
+        # assert torch.onnx.is_in_onnx_export()
+        assert len(one_img) == len(one_img_metas) == 1
+
+        img, img_metas = one_img, one_img_metas
+
+        features = self.extract_feat(img)
+        bbox_outs = self.bbox_head(features)
+        classification_results = {
+            name: head.forward_activate(features)
+            for name, head in self.classifier_heads.items()
+        }
+
+        img_shape = torch._shape_as_tensor(img)[2:]  # Gets (H, W)
+        img_metas[0]["img_shape_for_onnx"] = img_shape
+        bbox_list = self.bbox_head.get_bboxes(*bbox_outs, img_metas, rescale=False)
+
+        return bbox_list, list(classification_results.values())
+
     def _parse_losses(
         self, losses: Dict[str, Union[Tensor, TensorDict, TensorList]]
     ) -> tuple:
