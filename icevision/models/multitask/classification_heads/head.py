@@ -19,7 +19,7 @@ TensorDict = Dict[str, Tensor]
 MODELS = Registry("models", parent=MMCV_MODELS)
 CLASSIFICATION_HEADS = MODELS
 
-__all__ = ["ImageClassificationHead"]
+__all__ = ["ImageClassificationHead", "ClassifierConfig"]
 
 
 class Passthrough(nn.Module):
@@ -27,14 +27,22 @@ class Passthrough(nn.Module):
         return x
 
 
-# NOTE: We aren't using `ClassifierConfig` anymore, and are sticking to `mmdet`'s
-# regular python `dict` convention
+"""
+`ClassifierConfig` is useful to instantiate `ImageClassificationHead`
+in different settings. If using `mmdet`, we don't use this as the config
+is then a regular dictionary.
+
+When using yolov5, we can easily pass around this config to create the model
+Often, it'll be used inside a dictionary of configs
+"""
+
+
 @dataclass
 class ClassifierConfig:
     # classifier_name: str
     out_classes: int
-    fpn_keys: Union[List[str], List[int], None] = None
     num_fpn_features: int = 512
+    fpn_keys: Union[List[str], List[int], None] = None
     dropout: Optional[float] = 0.2
     # Loss function args
     loss_func: Optional[nn.Module] = None
@@ -47,6 +55,9 @@ class ClassifierConfig:
     topk: Optional[int] = None
 
     def __post_init__(self):
+        if isinstance(self.fpn_keys, int):
+            self.fpn_keys = [fpn_keys]
+
         if self.multilabel:
             if self.topk is None and self.thresh is None:
                 self.thresh = 0.5
@@ -167,8 +178,12 @@ class ImageClassificationHead(nn.Module):
             raise TypeError(
                 f"Expected TensorList|TensorDict|Tensor|tuple, got {type(features)}"
             )
-
-        return self.classifier(pooled_features)
+        if self.training:
+            # Return raw predictions in training mode
+            return self.classifier(pooled_features)
+        else:
+            # Return predictions -> sigmoid / softmax in eval mode
+            return self.postprocess(self.classifier(pooled_features))
 
     # TorchVision style API
     def compute_loss(self, predictions, targets):
