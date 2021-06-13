@@ -116,6 +116,8 @@ def patch_class_to_main(cls):
 
 
 def flatten(x: Any) -> List[Any]:
+    import pandas as pd
+
     flattened_list = []
     for item in x:
         if isinstance(item, (tuple, list, np.ndarray, pd.Series)):
