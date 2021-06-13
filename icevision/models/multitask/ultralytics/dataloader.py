@@ -29,17 +29,15 @@ def build_single_aug_batch(
     outs = model(*batch)
     ```
     """
-    images, targets = [], []
+    images, detection_targets = [], []
     classification_targets = defaultdict(list)
 
     for i, record in enumerate(records):
-        image, target = _build_train_detection_sample(record)
+        image, detection_target = _build_train_detection_sample(record)
         images.append(image)
 
-        if target.numel() > 0:
-            target[:, 0] = i
-
-        targets.append(target)
+        detection_target[:, 0] = i if detection_target.numel() > 0 else None
+        detection_targets.append(target)
 
         # Classification
         for comp in record.components:
@@ -56,10 +54,6 @@ def build_single_aug_batch(
 
     return (
         torch.stack(images, 0),
-        torch.cat(targets, 0),
+        torch.cat(detection_targets, 0),
         classification_targets,
     ), records
-
-
-def build_multi_aug_batch():
-    raise NotImplementedError
