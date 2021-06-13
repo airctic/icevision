@@ -1,3 +1,13 @@
+"""
+YOLO-V5 dataloaders for multitask training.
+
+The model uses a peculiar format for bounding box annotations where the
+  length of the tensor is the total number of bounding boxes for that batch
+The first dimension is the index of the image that the box belongs to/
+See https://discord.com/channels/735877944085446747/770279401791160400/853691059338084372
+  for a more thorough explanation
+"""
+
 from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
@@ -36,6 +46,7 @@ def build_single_aug_batch(
         image, detection_target = _build_train_detection_sample(record)
         images.append(image)
 
+        # See file header for more info on why this is done
         detection_target[:, 0] = i if detection_target.numel() > 0 else None
         detection_targets.append(detection_target)
 
@@ -71,6 +82,7 @@ def build_multi_aug_batch(
         detection_image, detection_target = _build_train_detection_sample(record)
         detection_images.append(detection_image)
 
+        # See file header for more info on why this is done
         detection_target[:, 0] = i if detection_target.numel() > 0 else None
         detection_targets.append(detection_target)
 

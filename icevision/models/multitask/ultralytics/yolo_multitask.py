@@ -1,3 +1,13 @@
+"""
+Multitask implementation of YOLO-V5.
+Supports the following tasks:
+    * Object Detection
+    * Image Classification
+
+See https://discord.com/channels/735877944085446747/770279401791160400/853698548750745610
+  for a more detailed discussion
+"""
+
 __all__ = ["HybridYOLOV5", "ClassifierConfig"]
 
 import torch
