@@ -37,7 +37,7 @@ def build_single_aug_batch(
         images.append(image)
 
         detection_target[:, 0] = i if detection_target.numel() > 0 else None
-        detection_targets.append(target)
+        detection_targets.append(detection_target)
 
         # Classification
         for comp in record.components:
@@ -57,3 +57,51 @@ def build_single_aug_batch(
         torch.cat(detection_targets, 0),
         classification_targets,
     ), records
+
+
+def build_multi_aug_batch(
+    records: Sequence[RecordType], classification_transform_groups: dict
+):
+    detection_images = []
+    detection_targets = []
+    classification_data = defaultdict(lambda: defaultdict(list))
+    classification_targets = defaultdict(list)
+
+    for i, record in enumerate(records):
+        detection_image, detection_target = _build_train_detection_sample(record)
+        detection_images.append(detection_image)
+
+        detection_target[:, 0] = i if detection_target.numel() > 0 else None
+        detection_targets.append(detection_target)
+
+        for key, group in classification_transform_groups.items():
+            task = getattr(record, group["tasks"][0])
+            classification_data[key]["tasks"] = group["tasks"]
+            classification_data[key]["images"].append(im2tensor(task.img))
+
+        for comp in record.components:
+            name = comp.task.name
+            if isinstance(comp, ClassificationLabelsRecordComponent):
+                if comp.is_multilabel:
+                    labels = comp.one_hot_encoded()
+                    classification_targets[name].append(labels)
+                else:
+                    labels = comp.label_ids
+                    classification_targets[name].extend(labels)
+
+    # Massage data
+    for group in classification_data.values():
+        group["targets"] = {
+            task: tensor(classification_targets[task]) for task in group["tasks"]
+        }
+        group["images"] = torch.stack(group["images"])
+    classification_data = {k: dict(v) for k, v in classification_data.items()}
+
+    detection_data = dict(
+        images=torch.stack(detection_images, 0),
+        targets=torch.cat(detection_targets, 0),
+    )
+
+    return (detection_data, classification_data)
+    # return (detection_data, classification_data), records
+    # return dict(detection=detection_data, classification=classification_data)
