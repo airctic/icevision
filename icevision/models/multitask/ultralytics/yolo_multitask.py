@@ -58,7 +58,16 @@ class HybridYOLOV5(nn.Module):
         Create a multitask variant of any YOLO model from ultralytics
         Currently, multitasking detection + classification is supported. An
           arbitrary number of classification heads can be created by passing
-          in a list of `ClassifierConfig`s
+          in a dictionary of `ClassifierConfig`s where the keys are names of tasks
+
+    Sample Usage:
+        HybridYOLOV5(
+            cfg="models/yolov5s.yaml",
+            classifier_configs=dict(
+                classifier_head_1=ClassifierConfig(out_classes=10),
+                classifier_head_2=ClassifierConfig(out_classes=20, multilabel=True),
+            ),
+        )
     """
 
     # HACK sort of... as subclassing is a bit problematic with super(...).__init__()
