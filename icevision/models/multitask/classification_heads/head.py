@@ -56,7 +56,7 @@ class ClassifierConfig:
 
     def __post_init__(self):
         if isinstance(self.fpn_keys, int):
-            self.fpn_keys = [fpn_keys]
+            self.fpn_keys = [self.fpn_keys]
 
         if self.multilabel:
             if self.topk is None and self.thresh is None:
