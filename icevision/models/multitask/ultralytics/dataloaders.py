@@ -15,7 +15,7 @@ from icevision.models.ultralytics.yolov5.dataloaders import (
     _build_train_sample as _build_train_detection_sample,
 )
 from torch import Tensor
-from icevision.models.multitask.data.dtypes import *
+from icevision.models.multitask.utils.dtypes import *
 
 
 def build_single_aug_batch(
