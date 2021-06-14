@@ -57,11 +57,9 @@ class BaseResNet(MMDetTimmBase):
 
     def freeze(self, freeze_stem: bool = True, freeze_blocks: int = 1):
         "Optionally freeze the stem and/or Inverted Residual blocks of the model"
-        if( 0 <= freeze_blocks <= 3):
-            raise ValueError(
-                "freeze_blocks values must between 0 and 3 included"
-            )
-            
+        if 0 > freeze_blocks > 4:
+            raise ValueError("freeze_blocks values must between 0 and 3 included")
+
         m = self.model
 
         # Stem freezing logic
