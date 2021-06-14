@@ -1,6 +1,11 @@
 # from icevision.all import *
+from icevision.imports import *
 from icevision.core import *
-from icevision.models.multitask.data.dtypes import *
+from icevision.models.multitask.utils.dtypes import *
+from icevision.models.multitask.utils.dtypes import (
+    DataDictClassification,  # Not imported in __all__ as they are mmdet specific
+    DataDictDetection,
+)
 from icevision.models.mmdet.common.utils import convert_background_from_zero_to_last
 from icevision.models.utils import unload_records
 from icevision.models.mmdet.common.bbox.dataloaders import (
@@ -93,14 +98,14 @@ def build_multi_aug_batch(
                     "group1": dict(
                         tasks = ["shot_composition"],
                         images: Tensor = ...,
-                        gt_classification_labels=dict(
+                        classification_labels=dict(
                             "shot_composition": Tensor = ...,
                         )
                     ),
                     "group2": dict(
                         tasks = ["color_saturation", "shot_framing"],
                         images: Tensor = ...,
-                        gt_classification_labels=dict(
+                        classification_labels=dict(
                             "color_saturation": Tensor = ...,
                             "shot_framing": Tensor = ...,
                         )
