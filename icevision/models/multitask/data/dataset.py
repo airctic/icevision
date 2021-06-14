@@ -13,22 +13,116 @@ __all__ = ["HybridAugmentationsRecordDataset", "RecordDataset"]
 
 class HybridAugmentationsRecordDataset(Dataset):
     """
-    Dataset that stores records internally and dynamically attaches an `img` component
-    to each task when being fetched
+    A Dataset that allows you to apply different augmentations to different tasks in your
+      record. `detection_transforms` are applied to the `detection` task specifically, and
+      `classification_transforms_groups` describe how to group and apply augmentations to
+      the classification tasks in the record.
+
+    This object stores the records internally and dynamically attaches an `img` component
+      to each task when being fetched. Some basic validation is done on init to ensure that
+      the given transforms cover all tasks described in the record.
+
+    Important NOTE: All images are returned as normalised numpy arrays upon fetching. If
+      running in `debug` mode, normalisation is skipped and PIL Images are returned inside
+      the record instead. This is done to facilitate visual inspection of the transforms
+      applied to the images
 
     Arguments:
-        * records: A list of records.
+        * records: A list of records where only the `common` attribute has an `img`. Upon fetching,
+                   _each_ task in the record will have an `img` attribute added to it based on the
+                   `classification_transforms_groups`
         * classification_transforms_groups <Dict[str, Dict[str, Union[Tfms.Compose, List[str]]]] : a dict
             that creates groups of tasks, where each task receives the same transforms and gets a dedicated
-            forward pass in the network. For example:
-                dict(
-                    tasks=["shot_framing", "color_tones"],
-                    transforms=Tfms.Compose([Tfms.Resize(224), Tfms.ToTensor()])
-                )
-        * detection_transforms <tfms.A.Adapter> - Icevision albumentations adapter for detection transforms
+            forward pass in the network. See below for an example.
+        * detection_transforms <tfms.A.Adapter> - Icevision albumentations adapter for detection transforms.
         * norm_mean <List[float]> : norm mean stats
         * norm_std <List[float]> : norm stdev stats
         * debug <bool> : If true, prints info & unnormalised `PIL.Image`s are returned on fetching items
+
+    Usage:
+        Sample record:
+            BaseRecord
+
+            common:
+                - Image ID: 4
+                - Filepath: sample_image.png
+                - Image: 640x640x3 <np.ndarray> Image
+                - Image size ImgSize(width=640, height=640)
+            color_saturation:
+                - Class Map: <ClassMap: {'desaturated': 0, 'neutral': 1}>
+                - Labels: [1]
+            shot_composition:
+                - Class Map: <ClassMap: {'balanced': 0, 'center': 1}>
+                - Labels: [1]
+            detection:
+                - BBoxes: [<BBox (xmin:29, ymin:91, xmax:564, ymax:625)>]
+                - Class Map: <ClassMap: {'background': 0, 'person': 1}>
+                - Labels: [1]
+            shot_framing:
+                - Class Map: <ClassMap: {'01-wide': 0, '02-medium': 1, '03-closeup': 2}>
+                - Labels: [3]
+
+        classification_transforms_groups = {
+                "group1": dict(
+                    tasks=["shot_composition"],
+                    transforms=Tfms.Compose([
+                        Tfms.Resize((IMG_HEIGHT, IMG_WIDTH)),
+                        Tfms.RandomPerspective(),
+                    ])
+                ),
+                "group2": dict(
+                    tasks=["color_saturation", "shot_framing"],
+                    transforms=Tfms.Compose([
+                        Tfms.Resize((IMG_HEIGHT, IMG_WIDTH)),
+                        Tfms.RandomPerspective(),
+                        Tfms.RandomHorizontalFlip(),
+                        Tfms.RandomVerticalFlip(),
+                    ])
+                )
+            }
+        import icevision.tfms as tfms
+        detection_transforms = tfms.A.Adapter([
+                tfms.A.Normalize(),
+                tfms.A.Resize(height=IMG_HEIGHT, width=IMG_WIDTH),
+                tfms.A.PadIfNeeded(img_H, img_W, border_mode=cv2.BORDER_CONSTANT),
+            ])
+
+        dset = HybridAugmentationsRecordDataset(
+            records=records,
+            classification_transforms_groups=classification_transforms_groups,
+            detection_transforms=detection_transforms,
+        )
+
+    Returned Record Example:
+        Note that unlike the input record, each task has an `Image` attribute which
+        is after the transforms have been applied. In the dataloader, these task specific
+        images must be used, and the `record.common.img` is just the original image
+        untransformed that shouldn't be used to train the model
+
+        BaseRecord
+
+        common:
+            - Image ID: 4
+            - Filepath: sample_image.png
+            - Image: 640x640x3 <np.ndarray> Image
+            - Image size ImgSize(width=640, height=640)
+        color_saturation:
+            - Image: 640x640x3 <np.ndarray> Image
+            - Class Map: <ClassMap: {'desaturated': 0, 'neutral': 1}>
+            - Labels: [1]
+        shot_composition:
+            - Class Map: <ClassMap: {'balanced': 0, 'center': 1}>
+            - Labels: [1]
+            - Image: 640x640x3 <np.ndarray> Image
+        detection:
+            - BBoxes: [<BBox (xmin:29, ymin:91, xmax:564, ymax:625)>]
+            - Image: 640x640x3 <np.ndarray> Image
+            - Class Map: <ClassMap: {'background': 0, 'person': 1}>
+            - Labels: [1]
+        shot_framing:
+            - Class Map: <ClassMap: {'01-wide': 0, '02-medium': 1, '03-closeup': 2}>
+            - Labels: [3]
+            - Image: 640x640x3 <np.ndarray> Image
     """
 
     def __init__(
