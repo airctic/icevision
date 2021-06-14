@@ -17,10 +17,10 @@ from yolov5.utils.torch_utils import intersect_dicts
 from yolov5.utils.general import check_img_size
 
 # from icevision.models.ultralytics.yolov5.utils import *
-from icevision.models.multitask.ultralytics.utils import *
+from icevision.models.multitask.ultralytics.yolov5.utils import *
 from icevision.models.ultralytics.yolov5.backbones import *
 
-from icevision.models.multitask.ultralytics.yolo_multitask import HybridYOLOV5
+from icevision.models.multitask.ultralytics.yolov5.yolo_hybrid import HybridYOLOV5
 from icevision.models.multitask.classification_heads import ClassifierConfig
 
 yolo_dir = get_root_dir() / "yolo"

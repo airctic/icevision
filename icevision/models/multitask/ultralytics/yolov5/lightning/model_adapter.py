@@ -11,7 +11,7 @@ from icevision.metrics import *
 from icevision.core import *
 
 from loguru import logger
-from icevision.models.multitask.ultralytics.yolo_multitask import HybridYOLOV5
+from icevision.models.multitask.ultralytics.yolov5.yolo_hybrid import HybridYOLOV5
 from icevision.models.multitask.utils.model import ForwardType
 from yolov5.utils.loss import ComputeLoss
 
