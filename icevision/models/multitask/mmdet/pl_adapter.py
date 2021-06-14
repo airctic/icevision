@@ -15,7 +15,7 @@ __all__ = ["HybridSingleStageDetectorLightningAdapter"]
 
 
 class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
-    """Lightning module specialized for MultiTask training, with metrics support.
+    """Lightning module specialized for EfficientDet, with metrics support.
 
     The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
     are already overriden.
@@ -23,7 +23,6 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
     # Arguments
         model: The pytorch model to use.
         metrics: `Sequence` of metrics to use.
-        debug: Whether to run in `debug` mode. Prints out useful info
 
     # Returns
         A `LightningModule`.
@@ -40,8 +39,7 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
         self.model = model
         self.debug = debug
 
-        # TODO: Make `self.classification_metrics` a `nn.ModuleDict`
-        # self.classification_metrics = {}
+        self.classification_metrics = {}
         for name, head in model.classifier_heads.items():
             if head.multilabel:
                 thresh = head.thresh if head.thresh is not None else 0.5
@@ -77,7 +75,8 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
         # Log losses
         self._log_vars(outputs["log_vars"], "train")
 
-        # Return loss for PL to do its thing
+        # NOTE: outputs["loss"] is not scaled in distributed training... ?
+        # Maybe we should return `outputs["log_vars"]["loss"]` instead?
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
@@ -100,7 +99,7 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
             batch=data, raw_preds=raw_preds, records=records
         )
         self.accumulate_metrics(preds)
-        # self._log_vars(outputs["log_vars"], "valid")
+        self._log_vars(outputs["log_vars"], "valid")
 
         # TODO: is train and eval model automatically set by lighnting?
         self.model.train()
@@ -143,7 +142,7 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
 
     def _log_vars(self, log_vars: dict, mode: str):
         for k, v in log_vars.items():
-            self.log(f"{mode}/{k}", v)
+            self.log(f"{mode}/{k}", v.item() if isinstance(v, torch.Tensor) else v)
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
