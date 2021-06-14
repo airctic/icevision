@@ -133,9 +133,11 @@ def build_multi_aug_batch(
             name = comp.task.name
             if isinstance(comp, ClassificationLabelsRecordComponent):
                 if comp.is_multilabel:
-                    classification_labels[name].append(comp.one_hot_encoded())
+                    labels = comp.one_hot_encoded()
+                    classification_targets[name].append(labels)
                 else:
-                    classification_labels[name].extend(comp.label_ids)
+                    labels = comp.label_ids
+                    classification_targets[name].extend(labels)
 
     # Massage data
     for group in classification_data.values():
