@@ -1,6 +1,5 @@
 from typing import Dict, List
 from collections import OrderedDict
-from icevision.models.multitask.data.dtypes import *
 from icevision.models.multitask.classification_heads import *
 
 
@@ -17,30 +16,24 @@ from mmdet.models.detectors.single_stage import SingleStageDetector
 from mmdet.core.bbox import *
 from typing import Union, List, Dict, Tuple
 
-from ...data.dataloader import (
+from icevision.models.multitask.mmdet.dataloaders import (
     TensorDict,
     ClassificationGroupDataDict,
     DataDictClassification,
     DataDictDetection,
 )
 import numpy as np
-from enum import Enum
+from icevision.models.multitask.utils.model import *
+from icevision.models.multitask.utils.dtypes import *
 
 
 __all__ = [
-    "ForwardType",
     "HybridSingleStageDetector",
     "build_backbone",
     "build_detector",
     "build_head",
     "build_neck",
 ]
-
-
-class ForwardType(Enum):
-    TRAIN_MULTI_AUG = 1
-    TRAIN = 2
-    EVAL = 3
 
 
 @DETECTORS.register_module(name="HybridSingleStageDetector")

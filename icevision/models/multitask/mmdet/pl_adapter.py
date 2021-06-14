@@ -2,6 +2,7 @@
 # NOTE `torchmetrics` comes installed with `pytorch-lightning`
 # We could in theory also do `pl.metrics`
 
+# import pytorch_lightning.metrics as tm
 import torchmetrics as tm
 from icevision.all import *
 from mmcv.utils import ConfigDict
