@@ -25,6 +25,7 @@ from icevision.models.multitask.classification_heads.head import (
 from icevision.models.multitask.classification_heads.builder import (
     build_classifier_heads_from_configs,
 )
+from icevision.models.multitask.utils.model import ForwardType
 
 # from .yolo import *
 from yolov5.models.yolo import *
@@ -185,8 +186,18 @@ class HybridYOLOV5(nn.Module):
         )
         logger.success(f"Built classifier heads successfully")
 
-    def forward(self, x, profile=False):
-        return self.forward_once(x=x, profile=profile)
+    def forward(self, x, profile=False, step_type=ForwardType.TRAIN):
+        if step_type is ForwardType.TRAIN:
+            return self.forward_once(x=x, profile=profile)
+        elif step_type is ForwardType.TRAIN_MULTI_AUG:
+            return self.forward_multi_augment(x=x, profile=profile)
+        elif step_type is ForwardType.EVAL:
+            self.eval()
+            return self.forward_once(x=x, profile=False)
+        else:
+            raise RuntimeError(
+                f"Invalid `step_type`. Received: {type(step_type.__class__)}; Expected: {ForwardType.__class__}"
+            )
 
     # This is here for API compatibility with the main repo; will likely not be used
     def forward_augment(self, x):
