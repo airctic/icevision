@@ -107,4 +107,30 @@ class ResNest50D_TIMM(BaseResNet):
             frozen_stem=frozen_stem,
         )
 
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-resnest/resnest50-528c19ca.pth"
+
+        self.post_init_setup()
+
+@BACKBONES.register_module(force=True)
+class ResNest101E_TIMM(BaseResNet):
+    def __init__(
+        self,
+        pretrained: bool = True,  # doesn't matter
+        out_indices: Collection[int] = (2, 3, 4),
+        norm_eval: bool = True,
+        frozen_stages: int = 1,
+        frozen_stem: bool = True,
+    ):
+        "ResNe(s)t101 with hardcoded `pretrained=True`"
+        super().__init__(
+            model_name="resnest101e",
+            pretrained=pretrained,
+            out_indices=out_indices,
+            norm_eval=norm_eval,
+            frozen_stages=frozen_stages,
+            frozen_stem=frozen_stem,
+        )
+
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-resnest/resnest101-22405ba7.pth"
+
         self.post_init_setup()
