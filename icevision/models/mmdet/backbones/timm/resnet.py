@@ -107,6 +107,8 @@ class ResNet50_TIMM(BaseResNet):
             frozen_stem=frozen_stem,
         )
 
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnet50_ram-a26f946b.pth"
+
         self.post_init_setup()
 
 
@@ -129,5 +131,7 @@ class ResNetRS50_TIMM(BaseResNet):
             frozen_stages=frozen_stages,
             frozen_stem=frozen_stem,
         )
+
+        self.weights_url = "https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-rs-weights/resnetrs50_ema-6b53758b.pth"
 
         self.post_init_setup()
