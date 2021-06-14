@@ -73,6 +73,76 @@ def build_single_aug_batch(
 def build_multi_aug_batch(
     records: Sequence[RecordType], classification_transform_groups: dict
 ):
+    """
+    Docs:
+        Take as inputs `records` and `classification_transform_groups` and return
+        a tuple of dictionaries, one for detection data and the other for classification.
+
+        Each `record` is expected to have a specific structure. For example:
+
+            BaseRecord
+
+            common:
+                - Image ID: 4
+                - Filepath: sample_image.png
+                - Image: 640x640x3 <np.ndarray> Image
+                - Image size ImgSize(width=640, height=640)
+            color_saturation:
+                - Image: 640x640x3 <np.ndarray> Image
+                - Class Map: <ClassMap: {'desaturated': 0, 'neutral': 1}>
+                - Labels: [1]
+            shot_composition:
+                - Class Map: <ClassMap: {'balanced': 0, 'center': 1}>
+                - Labels: [1]
+                - Image: 640x640x3 <np.ndarray> Image
+            detection:
+                - BBoxes: [<BBox (xmin:29, ymin:91, xmax:564, ymax:625)>]
+                - Image: 640x640x3 <np.ndarray> Image
+                - Class Map: <ClassMap: {'background': 0, 'person': 1}>
+                - Labels: [1]
+            shot_framing:
+                - Class Map: <ClassMap: {'01-wide': 0, '02-medium': 1, '03-closeup': 2}>
+                - Labels: [3]
+                - Image: 640x640x3 <np.ndarray> Image
+
+        `classification_transform_groups` describes how to group classification data. For example:
+            {
+                "group1": dict(tasks=["shot_composition"]),
+                "group2": dict(tasks=["color_saturation", "shot_framing"])
+            }
+
+
+    Returns:
+        A tuple with two items:
+        1. A tuple with two dictionaries - (`detection_data`, `classification_data`)
+            `detection_data`:
+                {
+                    "detection": dict(
+                        images: Tensor = ...,  # (N,C,H,W)
+                        targets: Tensor = ..., # of shape (num_boxes, 6)
+                                               # (img_idx, box_class_idx, **bbox_relative_coords)
+                    )
+                }
+            `classification_data`:
+                {
+                    "group1": dict(
+                        tasks = ["shot_composition"],
+                        images: Tensor = ...,
+                        targets=dict(
+                            "shot_composition": Tensor = ...,
+                        )
+                    ),
+                    "group2": dict(
+                        tasks = ["color_saturation", "shot_framing"],
+                        images: Tensor = ...,
+                        targets=dict(
+                            "color_saturation": Tensor = ...,
+                            "shot_framing": Tensor = ...,
+                        )
+                    )
+                }
+        2. Loaded records
+    """
     detection_images = []
     detection_targets = []
     classification_data = defaultdict(lambda: defaultdict(list))
@@ -114,6 +184,4 @@ def build_multi_aug_batch(
         targets=torch.cat(detection_targets, 0),
     )
 
-    return (detection_data, classification_data)
-    # return (detection_data, classification_data), records
-    # return dict(detection=detection_data, classification=classification_data)
+    return (detection_data, classification_data), records
