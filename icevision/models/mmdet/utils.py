@@ -37,12 +37,18 @@ class MMDetBackboneConfig(BackboneConfig):
 
 
 class MMDetTimmBackboneConfig(MMDetBackboneConfig):
-    def __init__(self, model_name, config_path, backbone_dict, weights_url=None):
-        super().__init__(model_name, config_path, weights_url=weights_url)
+    def __init__(self, model_name, backbone_dict, config_path=None, weights_url=None):
+        if not (model_name):
+            raise ValueError("The config must have a model name passed to the `model_name` argument")
+        
+        if not ("type" in backbone_dict):
+            raise ValueError("Backbone dictionary must have a least a `type` key")
 
-        assert (
-            "type" in backbone_dict
-        ), f"Backbone dictionary must have a least a `type` key"
+        if config_path is None:
+            config_path = mmdet_configs_path/model_name
+
+        super().__init__(model_name=model_name, config_path=config_path, weights_url=weights_url)
+
 
         if not ("pretrained" in backbone_dict):
             backbone_dict["pretrained"] = True
