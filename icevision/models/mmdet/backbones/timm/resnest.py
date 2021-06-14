@@ -1,6 +1,6 @@
 __all__ = [
     "BaseResNet",
-    "ResNest50D_TIMM",
+    "ResNest50D_Timm",
 ]
 
 from icevision.models.mmdet.backbones.timm.common import *
@@ -57,7 +57,11 @@ class BaseResNet(MMDetTimmBase):
 
     def freeze(self, freeze_stem: bool = True, freeze_blocks: int = 1):
         "Optionally freeze the stem and/or Inverted Residual blocks of the model"
-        assert 0 <= freeze_blocks <= 3, f"Can freeze 0-3 blocks only"
+        if( 0 <= freeze_blocks <= 3):
+            raise ValueError(
+                "freeze_blocks values must between 0 and 3 included"
+            )
+        
         m = self.model
 
         # Stem freezing logic
@@ -88,7 +92,7 @@ class BaseResNet(MMDetTimmBase):
 
 
 @BACKBONES.register_module(force=True)
-class ResNest50D_TIMM(BaseResNet):
+class ResNest50D_Timm(BaseResNet):
     def __init__(
         self,
         pretrained: bool = True,  # doesn't matter
@@ -111,8 +115,9 @@ class ResNest50D_TIMM(BaseResNet):
 
         self.post_init_setup()
 
+
 @BACKBONES.register_module(force=True)
-class ResNest101E_TIMM(BaseResNet):
+class ResNest101E_Timm(BaseResNet):
     def __init__(
         self,
         pretrained: bool = True,  # doesn't matter

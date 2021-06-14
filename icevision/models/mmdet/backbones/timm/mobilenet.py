@@ -58,7 +58,11 @@ class BaseMobileNetV3(MMDetTimmBase):
 
     def freeze(self, freeze_stem: bool = True, freeze_blocks: int = 1):
         "Optionally freeze the stem and/or Inverted Residual blocks of the model"
-        assert 0 <= freeze_blocks <= 7, f"Can freeze 0-7 blocks only"
+        if( 0 <= freeze_blocks <= 7):
+            raise ValueError(
+                "freeze_blocks values must between 0 and 7 included"
+            )
+
         m = self.model
 
         # Stem freezing logic
