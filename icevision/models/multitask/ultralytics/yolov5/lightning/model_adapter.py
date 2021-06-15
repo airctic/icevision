@@ -2,6 +2,7 @@
 # NOTE `torchmetrics` comes installed with `pytorch-lightning`
 # We could in theory also do `pl.metrics`
 
+
 from icevision.models.multitask.classification_heads.head import TensorDict
 import torchmetrics as tm
 import pytorch_lightning as pl
@@ -12,6 +13,10 @@ from icevision.core import *
 
 from loguru import logger
 from icevision.models.multitask.ultralytics.yolov5.yolo_hybrid import HybridYOLOV5
+from icevision.models.multitask.utils.prediction import *
+from icevision.models.multitask.ultralytics.yolov5.prediction import (
+    convert_raw_predictions,
+)
 from icevision.models.multitask.utils.model import ForwardType
 from yolov5.utils.loss import ComputeLoss
 
@@ -91,13 +96,15 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             (inference_det_preds, training_det_preds), classification_preds = self(
                 xb, step_type=ForwardType.EVAL
             )
-
-            # Use head.postprocess(classificatio_preds) here
-            # classification_preds_postprocessed = {
-            #     name: head.postprocess(classification_preds[name])
-            #     for name, head in self.model.classifier_heads.items()
-            # }
-            # preds = convert_raw_predictions(inference_det_preds)
+            preds = convert_raw_predictions(
+                batch=xb,
+                raw_detection_preds=inference_det_preds,
+                raw_classification_preds=inference_det_preds,
+                classification_configs=extract_classifier_pred_cfgs(self.model),
+                detection_threshold=0.001,
+                nms_iou_threshold=0.6,
+                keep_images=False,
+            )
 
             detection_loss = self.compute_loss(training_det_preds, detection_targets)[0]
             classification_losses = {
@@ -109,14 +116,13 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             }
             total_classification_loss = sum(classification_losses.values())
 
-        # self.accumulate_metrics(preds)
+        self.accumulate_metrics(preds)
         self.log_losses(
             "valid", detection_loss, total_classification_loss, classification_losses
         )
 
     def validation_epoch_end(self, outs):
-        pass
-        # self.finalize_metrics()
+        self.finalize_metrics()
 
     # ======================== LOGGING METHODS ======================== #
 
@@ -131,7 +137,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             detection_loss=detection_loss,
             classification_total_loss=classification_total_loss,
             **{
-                f"classification_{name}": loss
+                f"classification_loss_{name}": loss
                 for name, loss in classification_losses.items()
             },
         )
