@@ -23,33 +23,7 @@ from icevision.models.utils import _predict_from_dl
 from icevision.models.mmdet.common.utils import *
 from icevision.models.mmdet.common.bbox.dataloaders import build_infer_batch
 from icevision.models.mmdet.common.utils import convert_background_from_last_to_zero
-
-
-def finalize_classifier_preds(pred, cfg: dict, record: RecordType, task: str) -> tuple:
-    """
-    Analyse preds post-activations based on `cfg` arguments; return the
-    relevant scores and string labels derived from `record`
-
-    Can compute the following:
-        * top-k (`cfg` defaults to 1 for single-label problems)
-        * filter preds by threshold
-    """
-
-    # pred = np.array(pred)
-    pred = pred.detach().cpu().numpy()
-
-    if cfg.topk is not None:
-        index = np.argsort(pred)[-cfg.topk :]  # argsort gives idxs in ascending order
-        value = pred[index]
-
-    elif cfg.thresh is not None:
-        index = np.where(pred > cfg.thresh)[0]  # index into the tuple
-        value = pred[index]
-
-    labels = [getattr(record, task).class_map._id2class[i] for i in index]
-    scores = pred[index].tolist()
-
-    return labels, scores
+from icevision.models.multitask.utils.prediction import finalize_classifier_preds
 
 
 @torch.no_grad()
@@ -214,6 +188,7 @@ def convert_raw_prediction(
         label_ids=keep_labels, class_map=record.detection.class_map
     )
 
+    # TODO: Refactor with functions from `...multitask.utils.prediction`
     pred = BaseRecord(
         [
             FilepathRecordComponent(),
@@ -236,7 +211,7 @@ def convert_raw_prediction(
     pred.detection.set_bboxes(keep_bboxes)
     pred.above_threshold = keep_mask
 
-    # TODO: Refactor classification loop into `common`
+    # TODO: Refactor with functions from `...multitask.utils.prediction`
     for task, classification_pred in raw_classification_pred.items():
         labels, scores = finalize_classifier_preds(
             pred=classification_pred,
