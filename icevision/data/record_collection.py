@@ -29,8 +29,13 @@ class RecordCollection:
 
     def make_splits(self, data_splitter: DataSplitter):
         record_id_splits = data_splitter.split(self)
-        for record_ids in record_id_splits:
-            yield self.new([self._records[record_id] for record_id in record_ids])
+        return [
+            self.new([self._records[record_id] for record_id in record_ids])
+            for record_ids in record_id_splits
+        ]
+
+        # for record_ids in record_id_splits:
+        #     yield self.new([self._records[record_id] for record_id in record_ids])
 
     def autofix(self, show_pbar: int = True):
         records = autofix_records(self._records.values())
