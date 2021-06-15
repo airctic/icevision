@@ -14,22 +14,8 @@ from icevision.models.mmdet.common.bbox.dataloaders import (
     _labels,
     _bboxes,
 )
+from icevision.models.multitask.data.dataloading_utils import *
 from collections import defaultdict
-
-
-def unload_records(build_batch, **build_batch_kwargs):
-    """
-    This decorator function unloads records to not carry them around after batch creation
-      and will also accept any additional args required by the `build_batch`` function
-    """
-
-    def inner(records):
-        tupled_output, records = build_batch(records, **build_batch_kwargs)
-        for record in records:
-            record.unload()
-        return tupled_output, records
-
-    return inner
 
 
 def build_multi_aug_batch(
@@ -109,10 +95,10 @@ def build_multi_aug_batch(
             if isinstance(comp, ClassificationLabelsRecordComponent):
                 if comp.is_multilabel:
                     labels = comp.one_hot_encoded()
-                    classification_targets[name].append(labels)
+                    classification_labels[name].append(labels)
                 else:
                     labels = comp.label_ids
-                    classification_targets[name].extend(labels)
+                    classification_labels[name].extend(labels)
 
     # Massage data
     for group in classification_data.values():
