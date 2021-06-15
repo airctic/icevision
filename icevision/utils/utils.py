@@ -126,6 +126,36 @@ def flatten(x: Any) -> List[Any]:
     return flattened_list
 
 
+def unroll_dict(x: dict) -> List[dict]:
+    """
+    Unroll a dictionary into a list of dictionaries where the key is repeated.
+    Useful when you want to throw a dictionary into a for loop
+
+    Args:
+        x (dict)
+
+    Returns:
+        List[dict]
+
+    Example:
+        x = dict(
+            location=[[0.8, 0.2], [0.9, 0.1]],
+            lighting=[[0.6, 0.4], [0.2, 0.8]]
+        )
+        unroll_dict(x) == [
+            {"location": [0.8, 0.2], "lighting": [0.6, 0.4]},
+            {"location": [0.9, 0.1], "lighting": [0.2, 0.8]},
+        ]
+    """
+    return [dict(zip(x, t)) for t in zipsafe(*x.values())]
+
+
+[
+    {"location": [0.8, 0.2], "lighting": [0.6, 0.4]},
+    {"location": [0.9, 0.1], "lighting": [0.2, 0.8]},
+]
+
+
 class Dictionary(_Dict):
     def __missing__(self, key):
         raise KeyError(key)
