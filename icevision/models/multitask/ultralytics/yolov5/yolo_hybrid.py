@@ -188,12 +188,9 @@ class HybridYOLOV5(nn.Module):
         logger.success(f"Built classifier heads successfully")
 
     def forward(self, x, profile=False, step_type=ForwardType.TRAIN):
-        if step_type is ForwardType.TRAIN:
-            return self.forward_once(x=x, profile=profile)
-
-        elif step_type is ForwardType.EVAL:
+        if step_type is ForwardType.TRAIN or step_type is ForwardType.EVAL:
             # Assume that model is set to `.eval()` mode before calling this function...?
-            return self.forward_eval(x)
+            return self.forward_once(x=x, profile=profile)
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x=x, profile=profile)
@@ -201,14 +198,14 @@ class HybridYOLOV5(nn.Module):
         elif step_type is ForwardType.EXPORT_COREML:
             self.train()
             self.classifier_heads.eval()
-            return self.forward_eval(x)
+            return self.forward_inference(x)
 
         elif (
             step_type is ForwardType.EXPORT_ONNX
             or step_type is ForwardType.EXPORT_TORCHSCRIPT
         ):
             self.eval()
-            self.forward_eval(x)
+            self.forward_inference(x)
 
         else:
             raise RuntimeError(
@@ -223,7 +220,7 @@ class HybridYOLOV5(nn.Module):
     def forward_multi_augment(self, x: Dict[str, Tensor]):
         raise NotImplementedError
 
-    def forward_eval(self, x: Tensor):
+    def forward_inference(self, x: Tensor):
         "No nonsense forward method for inference / when exporting the model"
         y = []
         classification_preds: Dict[str, Tensor] = {}

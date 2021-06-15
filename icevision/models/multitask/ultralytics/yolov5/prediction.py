@@ -43,7 +43,7 @@ def _predict_batch(
     batch = batch[0].to(device)
     model = model.eval().to(device)
 
-    (det_preds, _), classif_preds = model(batch, step_type=ForwardType.EVAL)
+    (det_preds, _), classif_preds = model(batch, step_type=ForwardType.EXPORT_ONNX)
     classification_configs = extract_classifier_pred_cfgs(model)
 
     return convert_raw_predictions(

@@ -93,17 +93,9 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         (xb, detection_targets, classification_targets) = batch
 
         with torch.no_grad():
+            # Get bbox preds and unactivated classifier preds, ready to feed to loss funcs
             (inference_det_preds, training_det_preds), classification_preds = self(
                 xb, step_type=ForwardType.EVAL
-            )
-            preds = convert_raw_predictions(
-                batch=xb,
-                raw_detection_preds=inference_det_preds,
-                raw_classification_preds=inference_det_preds,
-                classification_configs=extract_classifier_pred_cfgs(self.model),
-                detection_threshold=0.001,
-                nms_iou_threshold=0.6,
-                keep_images=False,
             )
 
             detection_loss = self.compute_loss(training_det_preds, detection_targets)[0]
@@ -115,6 +107,22 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
                 for name, head in self.model.classifier_heads.items()
             }
             total_classification_loss = sum(classification_losses.values())
+
+            # Run activation function on classification predictions
+            classification_preds = {
+                name: head.postprocess(classification_preds[name])
+                for name, head in self.model.classifier_heads.items()
+            }
+
+            preds = convert_raw_predictions(
+                batch=xb,
+                raw_detection_preds=inference_det_preds,
+                raw_classification_preds=classification_preds,
+                classification_configs=extract_classifier_pred_cfgs(self.model),
+                detection_threshold=0.001,
+                nms_iou_threshold=0.6,
+                keep_images=False,
+            )
 
         self.accumulate_metrics(preds)
         self.log_losses(
