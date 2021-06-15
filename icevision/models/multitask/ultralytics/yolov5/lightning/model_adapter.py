@@ -70,7 +70,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
 
         # Iterate through each head and compute classification losses
         classification_losses = {
-            head.compute_loss(
+            name: head.compute_loss(
                 predictions=classification_preds[name],
                 targets=classification_targets[name],
             )
@@ -95,7 +95,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             # preds = convert_raw_predictions(...)
             detection_loss = self.compute_loss(detection_preds, yb)[0]
             classification_losses = {
-                head.compute_loss(
+                name: head.compute_loss(
                     predictions=classification_preds[name],
                     targets=classification_targets[name],
                 )
