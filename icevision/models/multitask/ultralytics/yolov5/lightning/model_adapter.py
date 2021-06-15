@@ -116,6 +116,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
 
             preds = convert_raw_predictions(
                 batch=xb,
+                records=records,
                 raw_detection_preds=inference_det_preds,
                 raw_classification_preds=classification_preds,
                 classification_configs=extract_classifier_pred_cfgs(self.model),
