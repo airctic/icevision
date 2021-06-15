@@ -133,6 +133,35 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         self.finalize_metrics()
 
     # ======================== LOGGING METHODS ======================== #
+    def compute_and_log_classification_metrics(
+        self,
+        classification_preds: TensorDict,  # activated predictions
+        yb: TensorDict,
+        on_step: bool = False,
+        # prefix: str = "valid",
+    ):
+        # prefix = f"{prefix}/" if not prefix == "" else ""
+        prefix = "valid/"
+        for (name, metric), (_, preds) in zip(
+            self.classification_metrics.items(), classification_preds.items()
+        ):
+            self.log(
+                f"{prefix}{metric.__class__.__name__.lower()}_{name}",  # accuracy_{task_name}
+                metric(preds, yb.type(torch.int)),
+                on_step=on_step,
+                on_epoch=True,
+            )
+
+        for name in self.model.classifier_heads.keys():
+            # for name, metric in self.classification_metrics.items():
+            metric = getattr(self, f"{name}_accuracy")
+            self.log(
+                f"{prefix}{metric.__class__.__name__.lower()}__{name}",  # accuracy__shot_framing
+                # metric(classification_preds[name], yb_classif[name]),
+                metric(classification_preds[name], yb_classif[name].type(torch.int)),
+                on_step=on_step,
+                on_epoch=True,
+            )
 
     def log_losses(
         self,
