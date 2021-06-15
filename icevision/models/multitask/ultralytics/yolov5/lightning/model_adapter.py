@@ -39,7 +39,6 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             else:
                 metric = tm.Accuracy(threshold=0.01, top_k=1)
             self.classification_metrics[name] = metric
-            setattr(self, f"{name}_accuracy", metric)
         self.post_init()
 
     def post_init(self):
@@ -89,11 +88,18 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         (xb, detection_targets, classification_targets) = batch
 
         with torch.no_grad():
-            inference_out, (detection_preds, classification_preds) = self(
+            (inference_det_preds, training_det_preds), classification_preds = self(
                 xb, step_type=ForwardType.EVAL
             )
-            # preds = convert_raw_predictions(...)
-            detection_loss = self.compute_loss(detection_preds, yb)[0]
+
+            # Use head.postprocess(classificatio_preds) here
+            # classification_preds_postprocessed = {
+            #     name: head.postprocess(classification_preds[name])
+            #     for name, head in self.model.classifier_heads.items()
+            # }
+            # preds = convert_raw_predictions(inference_det_preds)
+
+            detection_loss = self.compute_loss(training_det_preds, detection_targets)[0]
             classification_losses = {
                 name: head.compute_loss(
                     predictions=classification_preds[name],
