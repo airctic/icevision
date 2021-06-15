@@ -14,7 +14,7 @@ from mmdet.models.builder import DETECTORS
 from mmdet.models.builder import build_backbone, build_detector, build_head, build_neck
 from mmdet.models.detectors.single_stage import SingleStageDetector
 from mmdet.core.bbox import *
-from typing import Union, List, Dict, Tuple
+from typing import Union, List, Dict, Tuple, Optional
 
 from icevision.models.multitask.mmdet.dataloaders import (
     TensorDict,
@@ -44,12 +44,12 @@ class HybridSingleStageDetector(SingleStageDetector):
         backbone: Union[dict, ConfigDict],
         neck: Union[dict, ConfigDict],
         bbox_head: Union[dict, ConfigDict],
-        classification_heads: Optional[dict, ConfigDict] = None,
+        classification_heads: Union[None, dict, ConfigDict] = None,
         # keypoint_heads=None,  # TODO Someday SOON.
-        train_cfg: Optional[dict, ConfigDict] = None,
-        test_cfg: Optional[dict, ConfigDict] = None,
+        train_cfg: Union[None, dict, ConfigDict] = None,
+        test_cfg: Union[None, dict, ConfigDict] = None,
         pretrained=None,
-        init_cfg: Optional[dict, ConfigDict] = None,
+        init_cfg: Union[None, dict, ConfigDict] = None,
     ):
         super(HybridSingleStageDetector, self).__init__(
             # Use `init_cfg` post mmdet 2.12
@@ -83,7 +83,7 @@ class HybridSingleStageDetector(SingleStageDetector):
                 * `log_vars` <TensorDict> : variables to be logged
                 * `num_samples` <int> : batch size per GPU when using DDP
         """
-        losses = self(data=data, forward_type=step_type)
+        losses = self(data=data, step_type=step_type)
         loss, log_vars = self._parse_losses(losses)
 
         outputs = dict(
@@ -96,21 +96,26 @@ class HybridSingleStageDetector(SingleStageDetector):
         return outputs
 
     # @auto_fp16(apply_to=("img",))
-    def forward(self, data: dict, forward_type: ForwardType):
+    def forward(self, data: dict, step_type: ForwardType):
         """
         Calls either `self.forward_train`, `self.forward_eval` or
-        `self.forward_multi_aug_train` depending on the value of `forward_type`
+        `self.forward_multi_aug_train` depending on the value of `step_type`
 
         No TTA supported unlike all other mmdet models
         """
-        if forward_type.value == ForwardType.TRAIN_MULTI_AUG.value:
+        if step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_aug_train(data)
-        elif forward_type.value == ForwardType.TRAIN.value:
+
+        elif step_type is ForwardType.TRAIN:
             return self.forward_train(data, gt_bboxes_ignore=None)
-        elif forward_type.value == ForwardType.EVAL.value:
+
+        elif step_type is ForwardType.EVAL:
             return self.forward_eval(data, rescale=False)
+
         else:
-            raise ValueError(f"{type(ForwardType)}, {type(forward_type)}")
+            raise RuntimeError(
+                f"Invalid `step_type`. Received: {type(step_type.__class__)}; Expected: {ForwardType.__class__}"
+            )
 
     fwd_multi_aug_train_data_keys = ["detection", "classification"]
     fwd_train_data_keys = [

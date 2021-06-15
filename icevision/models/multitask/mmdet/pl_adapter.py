@@ -7,8 +7,12 @@ import torchmetrics as tm
 from icevision.all import *
 from mmcv.utils import ConfigDict
 from loguru import logger
-from icevision.models.multitask.mmdet.single_stage import ForwardType
+from icevision.models.multitask.mmdet.single_stage import (
+    ForwardType,
+    HybridSingleStageDetector,
+)
 from icevision.models.multitask.mmdet.prediction import *
+from icevision.models.multitask.utils.dtypes import *
 
 
 __all__ = ["HybridSingleStageDetectorLightningAdapter"]
@@ -30,7 +34,7 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
 
     def __init__(
         self,
-        model: nn.Module,
+        model: HybridSingleStageDetector,
         metrics: List[Metric] = None,
         debug: bool = False,
     ):
@@ -39,15 +43,14 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
         self.model = model
         self.debug = debug
 
-        # TODO: Convert to nn.ModuleDict
-        self.classification_metrics = {}
+        self.classification_metrics = nn.ModuleDict()
         for name, head in model.classifier_heads.items():
             if head.multilabel:
                 thresh = head.thresh if head.thresh is not None else 0.5
                 metric = tm.Accuracy(threshold=thresh, subset_accuracy=True)
             else:
                 metric = tm.Accuracy(threshold=0.01, top_k=1)
-            setattr(self, f"{name}_accuracy", metric)
+            self.classification_metrics[name] = metric
         self.post_init()
 
     def post_init(self):
@@ -76,8 +79,6 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
         # Log losses
         self._log_vars(outputs["log_vars"], "train")
 
-        # NOTE: outputs["loss"] is not scaled in distributed training... ?
-        # Maybe we should return `outputs["log_vars"]["loss"]` instead?
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
@@ -91,16 +92,16 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
             # get losses
             outputs = self.model.train_step(data=data, step_type=ForwardType.TRAIN)
             raw_preds = self.model(data=data, forward_type=ForwardType.EVAL)
-            self.log_classification_metrics(
+            self.compute_and_log_classification_metrics(
                 classification_preds=raw_preds["classification_results"],
-                yb_classif=data["gt_classification_labels"],
+                yb=data["gt_classification_labels"],
             )
 
         preds = self.convert_raw_predictions(
             batch=data, raw_preds=raw_preds, records=records
         )
         self.accumulate_metrics(preds)
-        self._log_vars(outputs["log_vars"], "valid")
+        self.log_losses(outputs["log_vars"], "valid")
 
         # TODO: is train and eval model automatically set by lighnting?
         self.model.train()
@@ -122,28 +123,26 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
             classification_configs=classification_configs,
         )
 
-    # TODO rename to `compute_and_log_classification_metrics`
-    # TODO refactor with dict, zip
-    def log_classification_metrics(
+    def compute_and_log_classification_metrics(
         self,
-        classification_preds: Dict[str, Tensor],
-        yb_classif: Dict[str, Tensor],
+        classification_preds: TensorDict,  # activated predictions
+        yb: TensorDict,
         on_step: bool = False,
-        prefix: str = "valid",
+        # prefix: str = "valid",
     ):
-        prefix = f"{prefix}_" if not prefix == "" else ""
-        for name in self.model.classifier_heads.keys():
-            # for name, metric in self.classification_metrics.items():
-            metric = getattr(self, f"{name}_accuracy")
+        # prefix = f"{prefix}/" if not prefix == "" else ""
+        prefix = "valid/"
+        for (name, metric), (_, preds) in zip(
+            self.classification_metrics.items(), classification_preds.items()
+        ):
             self.log(
-                f"{prefix}{metric.__class__.__name__.lower()}__{name}",  # accuracy__shot_framing
-                # metric(classification_preds[name], yb_classif[name]),
-                metric(classification_preds[name], yb_classif[name].type(torch.int)),
+                f"{prefix}{metric.__class__.__name__.lower()}_{name}",  # accuracy_{task_name}
+                metric(preds, yb[name].type(torch.int)),
                 on_step=on_step,
                 on_epoch=True,
             )
 
-    def _log_vars(self, log_vars: dict, mode: str):
+    def log_losses(self, log_vars: dict, mode: str):
         for k, v in log_vars.items():
             self.log(f"{mode}/{k}", v.item() if isinstance(v, torch.Tensor) else v)
 
