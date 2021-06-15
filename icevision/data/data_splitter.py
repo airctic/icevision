@@ -13,11 +13,11 @@ from icevision.core import *
 class DataSplitter(ABC):
     """Base class for all data splitters."""
 
-    def __call__(self, idmap: IDMap):
-        return self.split(idmap=idmap)
+    def __call__(self, records: Sequence[BaseRecord]):
+        return self.split(records=records)
 
     @abstractmethod
-    def split(self, idmap: IDMap):
+    def split(self, records: Sequence[BaseRecord]):
         """Splits `ids` into groups.
 
         # Arguments
@@ -29,13 +29,13 @@ class DataSplitter(ABC):
 class SingleSplitSplitter(DataSplitter):
     """Return all items in a single group, without shuffling."""
 
-    def split(self, idmap: IDMap):
+    def split(self, records: Sequence[BaseRecord]):
         """Puts all `ids` in a single group.
 
         # Arguments
             idmap: idmap used for getting ids.
         """
-        return [idmap.get_ids()]
+        return [[record.record_id for record in records]]
 
 
 class RandomSplitter(DataSplitter):
@@ -108,10 +108,10 @@ class FixedSplitter(DataSplitter):
     def __init__(self, splits: Sequence[Sequence[Hashable]]):
         self.splits = splits
 
-    def split(self, idmap: IDMap):
+    def split(self, records: Sequence[BaseRecord]):
         """Execute the split
 
         # Arguments
             idmap: idmap used for getting ids.
         """
-        return [[idmap.get_name(name) for name in names] for names in self.splits]
+        return self.splits
