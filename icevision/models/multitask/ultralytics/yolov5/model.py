@@ -29,19 +29,33 @@ yolo_dir.mkdir(exist_ok=True)
 
 def model(
     backbone: YoloV5BackboneConfig,
-    num_classes: int,
+    num_detection_classes: int,
     img_size: int,  # must be multiple of 32
     device: Optional[torch.device] = None,
     classifier_configs: Dict[str, ClassifierConfig] = None,
-) -> nn.Module:
+) -> HybridYOLOV5:
+    """
+    Build a `HybridYOLOV5` Multitask Model with detection & classification heads.
+
+    Args:
+        backbone (YoloV5BackboneConfig): Config from `icevision.models.ultralytics.yolov5.backbones.{}`
+        num_detection_classes (int): Number of object detection classes (including background)
+        img_size (int): Size of input images (assumes square inputs)
+        classifier_configs (Dict[str, ClassifierConfig], optional): A dictionary mapping of `ClassifierConfig`s
+        where each key corresponds to the name of the task in the input records. Defaults to None.
+
+    Returns:
+        HybridYOLOV5: A multitask YOLO-V5 model with one detection head and `len(classifier_configs)`
+        classification heads
+    """
     model_name = backbone.model_name
     pretrained = backbone.pretrained
 
     # this is to remove background from ClassMap as discussed
     # here: https://github.com/ultralytics/yolov5/issues/2950
     # and here: https://discord.com/channels/735877944085446747/782062040168267777/836692604224536646
-    # so we should pass `num_classes=parser.class_map.num_classes`
-    num_classes -= 1
+    # so we should pass `num_detection_classes=parser.class_map.num_detection_classes`
+    num_detection_classes -= 1
 
     device = (
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -65,7 +79,7 @@ def model(
         model = HybridYOLOV5(
             cfg_filepath or ckpt["model"].yaml,
             ch=3,
-            nc=num_classes,
+            nc=num_detection_classes,
             classifier_configs=classifier_configs,
         ).to(device)
         exclude = []  # exclude keys
@@ -81,7 +95,7 @@ def model(
         model = HybridYOLOV5(
             cfg_filepath,
             ch=3,
-            nc=num_classes,
+            nc=num_detection_classes,
             anchors=hyp.get("anchors"),
             classifier_configs=classifier_configs,
         ).to(device)
@@ -91,9 +105,9 @@ def model(
     imgsz = check_img_size(img_size, gs)  # verify imgsz are gs-multiples
 
     hyp["box"] *= 3.0 / nl  # scale to layers
-    hyp["cls"] *= num_classes / 80.0 * 3.0 / nl  # scale to classes and layers
+    hyp["cls"] *= num_detection_classes / 80.0 * 3.0 / nl  # scale to classes and layers
     hyp["obj"] *= (imgsz / 640) ** 2 * 3.0 / nl  # scale to image size and layers
-    model.nc = num_classes  # attach number of classes to model
+    model.nc = num_detection_classes  # attach number of classes to model
     model.hyp = hyp  # attach hyperparameters to model
     model.gr = 1.0  # iou loss ratio (obj_loss = 1.0 or iou)
 
