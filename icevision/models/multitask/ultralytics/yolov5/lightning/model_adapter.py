@@ -45,6 +45,11 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
     def post_init(self):
         pass
 
+    # ======================== TRAINING METHODS ======================== #
+
+    def forward(self, *args, **kwargs):
+        return self.model(*args, **kwargs)
+
     def training_step(self, batch: Tuple[dict, Sequence[RecordType]], batch_idx):
         batch, _ = batch
         if isinstance(batch[0], torch.Tensor):
@@ -52,8 +57,10 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             step_type = ForwardType.TRAIN
 
         elif isinstance(batch[0], dict):
+            # TODO: Model method not yet implemented
             (detection_data, classification_data) = batch
             detection_targets = detection_data["targets"]
+            classification_targets = classification_data["targets"]
 
             step_type = ForwardType.TRAIN_MULTI_AUG
             raise RuntimeError
@@ -77,6 +84,36 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
 
         return detection_loss + total_classification_loss
 
+    def validation_step(self, batch, batch_idx):
+        batch, records = batch
+        (xb, detection_targets, classification_targets) = batch
+
+        with torch.no_grad():
+            inference_out, (detection_preds, classification_preds) = self(
+                xb, step_type=ForwardType.EVAL
+            )
+            # preds = convert_raw_predictions(...)
+            detection_loss = self.compute_loss(detection_preds, yb)[0]
+            classification_losses = {
+                head.compute_loss(
+                    predictions=classification_preds[name],
+                    targets=classification_targets[name],
+                )
+                for name, head in self.model.classifier_heads.items()
+            }
+            total_classification_loss = sum(classification_losses.values())
+
+        # self.accumulate_metrics(preds)
+        self.log_losses(
+            "valid", detection_loss, total_classification_loss, classification_losses
+        )
+
+    def validation_epoch_end(self, outs):
+        pass
+        # self.finalize_metrics()
+
+    # ======================== LOGGING METHODS ======================== #
+
     def log_losses(
         self,
         mode: str,
@@ -94,16 +131,6 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         )
         for k, v in log_vars.items():
             self.log(f"{mode}/{k}", v.item() if isinstance(v, torch.Tensor) else v)
-
-    def validation_step(self, batch, batch_idx):
-        raise NotImplementedError
-
-    # ======================== TRAINING METHODS ======================== #
-
-    def forward(self, *args, **kwargs):
-        return self.model(*args, **kwargs)
-
-    # ======================== LOGGING METHODS ======================== #
 
     def accumulate_metrics(self, preds):
         for metric in self.metrics:
