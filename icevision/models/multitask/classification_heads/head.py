@@ -178,12 +178,8 @@ class ImageClassificationHead(nn.Module):
             raise TypeError(
                 f"Expected TensorList|TensorDict|Tensor|tuple, got {type(features)}"
             )
-        if self.training:
-            # Return raw predictions in training mode
-            return self.classifier(pooled_features)
-        else:
-            # Return predictions -> sigmoid / softmax in eval mode
-            return self.postprocess(self.classifier(pooled_features))
+
+        return self.classifier(pooled_features)
 
     # TorchVision style API
     def compute_loss(self, predictions, targets):
