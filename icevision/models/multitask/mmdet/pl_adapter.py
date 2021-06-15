@@ -39,6 +39,7 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
         self.model = model
         self.debug = debug
 
+        # TODO: Convert to nn.ModuleDict
         self.classification_metrics = {}
         for name, head in model.classifier_heads.items():
             if head.multilabel:
@@ -121,6 +122,8 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
             classification_configs=classification_configs,
         )
 
+    # TODO rename to `compute_and_log_classification_metrics`
+    # TODO refactor with dict, zip
     def log_classification_metrics(
         self,
         classification_preds: Dict[str, Tensor],
