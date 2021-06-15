@@ -205,7 +205,7 @@ class HybridYOLOV5(nn.Module):
             or step_type is ForwardType.EXPORT_TORCHSCRIPT
         ):
             self.eval()
-            self.forward_inference(x)
+            return self.forward_inference(x)
 
         else:
             raise RuntimeError(
