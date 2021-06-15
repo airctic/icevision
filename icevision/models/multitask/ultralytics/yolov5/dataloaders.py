@@ -14,8 +14,23 @@ from icevision.models.utils import *
 from icevision.models.ultralytics.yolov5.dataloaders import (
     _build_train_sample as _build_train_detection_sample,
 )
-from torch import Tensor
+from icevision.models.ultralytics.yolov5.dataloaders import build_infer_batch, infer_dl
 from icevision.models.multitask.utils.dtypes import *
+from icevision.models.multitask.data.dataset import HybridAugmentationsRecordDataset
+from icevision.models.multitask.data.dataloading_utils import *
+from torch.utils.data import Dataset
+
+transform_dl()
+
+__all__ = [
+    "build_single_aug_batch",  # <- build_train_batch, build_valid_batch
+    "build_multi_aug_batch",  # <- build_train_batch
+    "build_infer_batch",
+    "train_dl",
+    "train_dl_multi_aug",
+    "valid_dl",
+    "infer_dl",
+]
 
 
 def build_single_aug_batch(
@@ -155,3 +170,70 @@ def build_multi_aug_batch(
     )
 
     return (detection_data, classification_data), records
+
+
+def train_dl(dataset: Dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    """
+    A `DataLoader` with a custom `collate_fn` that batches records as required for feeding a YOLO-V5 model.
+
+    Args:
+        dataset (Dataset): A `Dataset` that returns a transformed record upon indexing
+        batch_tfms: ...  # TODO
+        **dataloader_kwargs: Keyword arguments that will be internally passed to a Pytorch `DataLoader`.
+        The parameter `collate_fn` is already defined internally and cannot be passed here.
+
+    Returns:
+        DataLoader: A PyTorch `DataLoader`
+    """
+    return transform_dl(
+        dataset=dataset,
+        build_batch=build_single_aug_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs,
+    )
+
+
+def valid_dl(dataset: Dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    """
+    A `DataLoader` with a custom `collate_fn` that batches items as required for validating the YOLO-V5 model.
+
+    Args:
+        dataset (Dataset): A `Dataset` that returns a transformed record upon indexing
+        batch_tfms: ...  # TODO
+        **dataloader_kwargs: Keyword arguments that will be internally passed to a Pytorch `DataLoader`.
+        The parameter `collate_fn` is already defined internally and cannot be passed here.
+
+    Returns:
+        DataLoader: A PyTorch `DataLoader`
+    """
+    return train_dl(dataset=dataset, batch_tfms=batch_tfms, **dataloader_kwargs)
+
+
+def train_dl_multi_aug(
+    dataset: HybridAugmentationsRecordDataset,
+    classification_transform_groups: dict,
+    **dataloader_kwargs,
+) -> DataLoader:
+    """
+    A `DataLoader` meant to work with `HybridAugmentationsRecordDataset`, a multitasking
+        dataset, where individual or groups of tasks receive their own unique transforms.
+        `batch_tfms` is not yet implemented for this DataLoader.
+
+    Args:
+        dataset (HybridAugmentationsRecordDataset): A custom dataset that groups tasks and returns
+        records where _each_ task has its own `img`
+
+        classification_transform_groups (dict): The exact same dictionary that is passed to
+        HybridAugmentationsRecordDataset`, describing how to group and transform classification tasks.
+        See the dataset's docs for more details.
+
+    Returns:
+        DataLoader: A PyTorch `DataLoader`
+    """
+    collate_fn = unload_records(
+        build_batch=build_multi_aug_batch,
+        build_batch_kwargs=dict(
+            classification_transform_groups=classification_transform_groups
+        ),
+    )
+    return DataLoader(dataset=dataset, collate_fn=collate_fn, **dataloader_kwargs)
