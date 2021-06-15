@@ -17,12 +17,11 @@ __all__ = [
     "denormalize_mask",
     "patch_class_to_main",
     "flatten",
-    # "Dictionary",
+    "Dictionary",
 ]
 
 from icevision.imports import *
-
-# from addict import Dict as _Dict
+from addict import Dict as _Dict
 
 
 def notnone(x):
@@ -127,6 +126,6 @@ def flatten(x: Any) -> List[Any]:
     return flattened_list
 
 
-# class Dictionary(_Dict):
-#     def __missing__(self, key):
-#         raise KeyError(key)
+class Dictionary(_Dict):
+    def __missing__(self, key):
+        raise KeyError(key)
