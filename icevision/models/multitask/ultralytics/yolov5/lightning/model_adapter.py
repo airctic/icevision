@@ -107,6 +107,10 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
                 for name, head in self.model.classifier_heads.items()
             }
             total_classification_loss = sum(classification_losses.values())
+            self.compute_and_log_classification_metrics(
+                classification_preds=classification_preds,
+                yb=classification_targets,
+            )
 
             # Run activation function on classification predictions
             classification_preds = {
