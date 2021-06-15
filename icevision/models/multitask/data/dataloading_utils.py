@@ -8,8 +8,6 @@ __all__ = ["unload_records"]
 
 from typing import Dict, Optional, Callable
 
-from numpy.lib.arraysetops import isin
-
 
 def unload_records(build_batch: Callable, build_batch_kwargs: Optional[Dict] = None):
     """
