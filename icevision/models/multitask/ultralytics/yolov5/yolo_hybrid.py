@@ -22,6 +22,7 @@ from icevision.models.multitask.classification_heads.head import (
     ImageClassificationHead,
     Passthrough,
 )
+from icevision.models.multitask.utils.dtypes import *
 from icevision.models.multitask.classification_heads.builder import (
     build_classifier_heads_from_configs,
 )
@@ -30,7 +31,7 @@ from icevision.models.multitask.utils.model import ForwardType
 # from .yolo import *
 from yolov5.models.yolo import *
 
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List, Tuple, Union
 from copy import deepcopy
 from loguru import logger
 
@@ -187,13 +188,25 @@ class HybridYOLOV5(nn.Module):
         logger.success(f"Built classifier heads successfully")
 
     def forward(self, x, profile=False, step_type=ForwardType.TRAIN):
-        if step_type is ForwardType.TRAIN:
+        if step_type is ForwardType.TRAIN or step_type is ForwardType.EVAL:
+            # Assume that model is set to `.eval()` mode before calling this function
             return self.forward_once(x=x, profile=profile)
+
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x=x, profile=profile)
-        elif step_type is ForwardType.EVAL:
+
+        elif step_type is ForwardType.EXPORT_COREML:
+            self.train()
+            self.classifier_heads.eval()
+            return self.forward_export(x=x)
+
+        elif (
+            step_type is ForwardType.EXPORT_ONNX
+            or step_type is ForwardType.EXPORT_TORCHSCRIPT
+        ):
             self.eval()
-            return self.forward_once(x=x, profile=False)
+            self.forward_export(x=x)
+
         else:
             raise RuntimeError(
                 f"Invalid `step_type`. Received: {type(step_type.__class__)}; Expected: {ForwardType.__class__}"
@@ -207,7 +220,38 @@ class HybridYOLOV5(nn.Module):
     def forward_multi_augment(self, x: Dict[str, Tensor]):
         raise NotImplementedError
 
-    def forward_once(self, x, profile=False) -> Tuple[Tensor, Dict[str, Tensor]]:
+    def forward_export(self, x: Tensor):
+        "No nonsense forward method for inference / when exporting the model"
+        y = []
+        classification_preds: Dict[str, Tensor] = {}
+        for m in self.model:
+            if m.f != -1:  # if not from previous layer
+                x = (
+                    y[m.f]
+                    if isinstance(m.f, int)
+                    else [x if j == -1 else y[j] for j in m.f]
+                )  # from earlier layers
+
+            if isinstance(m, Detect):
+                for name, head in self.classifier_heads.items():
+                    classification_preds[name] = head.forward_activate(x)
+
+            x = m(x)
+            y.append(x if m.i in self.save else None)  # save output
+
+        return x, classification_preds
+
+    def forward_once(
+        self, x, profile=False
+    ) -> Tuple[Union[TensorList, Tuple[Tensor, TensorList]], TensorDict]:
+        """
+        Returns:
+            A tuple of 2 elements:
+            1) A TensorList in training mode, and a Tuple[Tensor, TensorList] in
+            eval mode where the first element (Tensor) is the inference output and
+            second is the training output (for loss computation)
+            2) A TensorDict of classification predictions
+        """
         y, dt = [], []  # outputs
         classification_preds: Dict[str, Tensor] = {}
         for m in self.model:
