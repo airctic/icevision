@@ -20,7 +20,6 @@ from icevision.models.multitask.data.dataset import HybridAugmentationsRecordDat
 from icevision.models.multitask.data.dataloading_utils import *
 from torch.utils.data import Dataset
 
-transform_dl()
 
 __all__ = [
     "build_single_aug_batch",  # <- build_train_batch, build_valid_batch
