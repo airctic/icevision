@@ -224,4 +224,4 @@ class HybridAugmentationsRecordDataset(Dataset):
         return record
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} with {len(self.records)} items and {len(self.group_tfms)+1} groups>"
+        return f"<{self.__class__.__name__} with {len(self.records)} items and {len(self.classification_transforms_groups)+1} groups>"
