@@ -89,7 +89,6 @@ class HybridYOLOV5(nn.Module):
     _print_biases = Model._print_biases
     autoshape = Model.autoshape
     info = Model.info
-    in_export_mode = False
 
     def __init__(
         self,
@@ -154,9 +153,6 @@ class HybridYOLOV5(nn.Module):
     def post_init(self):
         pass
 
-    def set_export_mode(self, mode: bool):
-        self.in_export_mode = mode
-
     def build_classifier_heads(self):
         """
         Description:
@@ -187,10 +183,23 @@ class HybridYOLOV5(nn.Module):
         )
         logger.success(f"Built classifier heads successfully")
 
-    def forward(self, x, profile=False, step_type=ForwardType.TRAIN):
+    def forward(
+        self,
+        x: Tensor,
+        profile=False,
+        forward_detection: bool = True,
+        forward_classification: bool = True,
+        step_type=ForwardType.TRAIN,
+    ) -> Tuple[Union[Tensor, TensorList], TensorDict]:
+
         if step_type is ForwardType.TRAIN or step_type is ForwardType.EVAL:
             # Assume that model is set to `.eval()` mode before calling this function...?
-            return self.forward_once(x=x, profile=profile)
+            return self.forward_once(
+                x,
+                profile=profile,
+                forward_detection=forward_detection,
+                forward_classification=forward_classification,
+            )
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x=x, profile=profile)
@@ -217,11 +226,26 @@ class HybridYOLOV5(nn.Module):
         raise NotImplementedError
 
     # TODO: multi-task multi-augmentation training
-    def forward_multi_augment(self, x: Dict[str, Tensor]):
+    def forward_multi_augment(self, x: TensorDict) -> Tuple[TensorList, TensorDict]:
         raise NotImplementedError
 
-    def forward_inference(self, x: Tensor):
-        "No nonsense forward method for inference / when exporting the model"
+    def forward_inference(
+        self, x: Tensor
+    ) -> Tuple[Union[Tensor, TensorList], TensorTuple]:
+        """
+        No nonsense method for inference / exporting a model. Returns ONNX / CoreML /
+        TorchScript friendly outputs.
+
+        Args:
+            x (Tensor): Input (N,C,H,W) tensor
+
+        Returns:
+            Tuple[Union[Tensor, TensorList], TensorTuple]: A tuple of two elements -
+            `(detection_preds, classification_preds)`
+            1) `detection_preds`: A TensorList if in training mode, else a Tuple[Tensor, TensorList]
+            where the first element is the inference output and the second the training output
+            2) `classification_preds`: A TensorTuple of all the classification heads' predictions
+        """
         y = []
         classification_preds: Dict[str, Tensor] = {}
         for m in self.model:
@@ -239,18 +263,25 @@ class HybridYOLOV5(nn.Module):
             x = m(x)
             y.append(x if m.i in self.save else None)  # save output
 
-        return x, classification_preds
+        return x, tuple(classification_preds.values())
 
     def forward_once(
-        self, x, profile=False
+        self,
+        x,
+        profile=False,  # Will fail
+        forward_detection: bool = True,
+        forward_classification: bool = True,
     ) -> Tuple[Union[TensorList, Tuple[Tensor, TensorList]], TensorDict]:
         """
         Returns:
-            A tuple of 2 elements:
+            A tuple of two elements `(detection_preds, classification_preds)`:
             1) A TensorList in training mode, and a Tuple[Tensor, TensorList] in
             eval mode where the first element (Tensor) is the inference output and
-            second is the training output (for loss computation)
-            2) A TensorDict of classification predictions
+            second is the training output (for loss computation). If `forward_detection` is
+            False, the list of FPN features are returned right before feeding into the bbox
+            head i.e. the `Detect` module which can be accessed via `self.model[-1]`
+            2) A TensorDict of classification predictions. If `forward_classification` is
+            False, an empty dictionary is returned
         """
         y, dt = [], []  # outputs
         classification_preds: Dict[str, Tensor] = {}
@@ -286,8 +317,14 @@ class HybridYOLOV5(nn.Module):
               safe to do.
             """
             if isinstance(m, Detect):
-                for name, head in self.classifier_heads.items():
-                    classification_preds[name] = head(x)
+                if forward_classification:
+                    for name, head in self.classifier_heads.items():
+                        classification_preds[name] = head(x)
+
+                if not forward_detection:
+                    if profile:
+                        logger.info("%.1fms total" % sum(dt))
+                    return x, classification_preds
 
             x = m(x)  # run
             y.append(x if m.i in self.save else None)  # save output
@@ -295,9 +332,4 @@ class HybridYOLOV5(nn.Module):
         if profile:
             logger.info("%.1fms total" % sum(dt))
 
-        # TODO: Replace with `torch.jit.is_scripting()` if that works for tracing too
-        if self.in_export_mode:
-            # Return tuple in export mode
-            return x, tuple(classification_preds.values())
-        else:
-            return x, classification_preds
+        return x, classification_preds
