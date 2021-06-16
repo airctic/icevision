@@ -270,12 +270,12 @@ class HybridYOLOV5(nn.Module):
 
         # Classification forward pass
         classification_preds = {}
-        for group, data in data["classification"].items():
-            xb = data["images"]
+        for group, datum in data["classification"].items():
+            xb = datum["images"]
             features, _ = self.forward_once(
                 xb, forward_detection=False, forward_classification=False
             )
-            for name in data["tasks"]:
+            for name in datum["tasks"]:
                 head = self.classifier_heads[name]
                 classification_preds[name] = head(features)
 

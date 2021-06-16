@@ -55,20 +55,27 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         return self.model(*args, **kwargs)
 
     def training_step(self, batch: Tuple[dict, Sequence[RecordType]], batch_idx):
-        batch, _ = batch
-        if isinstance(batch[0], torch.Tensor):
-            (xb, detection_targets, classification_targets) = batch
+        # batch will ALWAYS return a tuple of 2 elements - batched inputs, records
+        tupled_inputs, _ = batch
+        if isinstance(tupled_inputs[0], torch.Tensor):
+            (xb, detection_targets, classification_targets) = tupled_inputs
             detection_preds, classification_preds = self(
                 xb, step_type=ForwardType.TRAIN
             )
 
-        elif isinstance(batch[0], dict):
+        elif isinstance(tupled_inputs[0], dict):
             # TODO: Model method not yet implemented
-            detection_targets = batch["detection"]["targets"]
-            classification_targets = batch["classification"]["targets"]
+            data = dict(detection=tupled_inputs[0], classification=tupled_inputs[1])
+            detection_targets = data["detection"]["targets"]
+
+            # Go through (a nested dict) each task inside each group and fetch targets
+            classification_targets = {}
+            for group, datum in data["classification"].items():
+                for task in datum["tasks"]:
+                    classification_targets[task] = datum["targets"]
 
             detection_preds, classification_preds = self(
-                batch, step_type=ForwardType.TRAIN_MULTI_AUG
+                data, step_type=ForwardType.TRAIN_MULTI_AUG
             )
 
         detection_loss = self.compute_loss(detection_preds, detection_targets)[0]
@@ -90,8 +97,8 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         return detection_loss + total_classification_loss
 
     def validation_step(self, batch, batch_idx):
-        batch, records = batch
-        (xb, detection_targets, classification_targets) = batch
+        tupled_inputs, records = batch
+        (xb, detection_targets, classification_targets) = tupled_inputs
 
         with torch.no_grad():
             # Get bbox preds and unactivated classifier preds, ready to feed to loss funcs
