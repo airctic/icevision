@@ -58,18 +58,19 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         batch, _ = batch
         if isinstance(batch[0], torch.Tensor):
             (xb, detection_targets, classification_targets) = batch
-            step_type = ForwardType.TRAIN
+            detection_preds, classification_preds = self(
+                xb, step_type=ForwardType.TRAIN
+            )
 
         elif isinstance(batch[0], dict):
             # TODO: Model method not yet implemented
-            (detection_data, classification_data) = batch
-            detection_targets = detection_data["targets"]
-            classification_targets = classification_data["targets"]
+            detection_targets = batch["detection"]["targets"]
+            classification_targets = batch["classification"]["targets"]
 
-            step_type = ForwardType.TRAIN_MULTI_AUG
-            raise RuntimeError
+            detection_preds, classification_preds = self(
+                batch, step_type=ForwardType.TRAIN_MULTI_AUG
+            )
 
-        detection_preds, classification_preds = self(xb, step_type=step_type)
         detection_loss = self.compute_loss(detection_preds, detection_targets)[0]
 
         # Iterate through each head and compute classification losses

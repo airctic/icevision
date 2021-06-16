@@ -185,7 +185,7 @@ class HybridYOLOV5(nn.Module):
 
     def forward(
         self,
-        x: Tensor,
+        x: Union[Tensor, dict],
         profile=False,
         forward_detection: bool = True,
         forward_classification: bool = True,
@@ -202,7 +202,7 @@ class HybridYOLOV5(nn.Module):
             )
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
-            return self.forward_multi_augment(x=x, profile=profile)
+            return self.forward_multi_augment(x)
 
         elif step_type is ForwardType.EXPORT_COREML:
             self.train()
@@ -225,9 +225,61 @@ class HybridYOLOV5(nn.Module):
     def forward_augment(self, x):
         raise NotImplementedError
 
-    # TODO: multi-task multi-augmentation training
-    def forward_multi_augment(self, x: TensorDict) -> Tuple[TensorList, TensorDict]:
-        raise NotImplementedError
+    def forward_multi_augment(self, data: dict) -> Tuple[TensorList, TensorDict]:
+        """
+        Description:
+            Multi augmentation training where we do multiple forward passes over the
+            same batch, going through different parts of the network each time.
+
+            Detection and classification are treated separately, and within classification,
+            you can group together different tasks. A `group` has multiple `tasks`, so we
+            extract features once per group, then iterate over each head for that group's
+            `tasks`, and compute the outputs from these features
+
+        Args:
+            data (dict): Input container with the following structure:
+            ```python
+            xb = torch.zeros(1, 3, 224, 224)
+            multi_aug_data = dict(
+                detection={"images": xb},
+                classification={
+                    "group_1": dict(
+                        tasks=["framing", "saturation"],
+                        images=x,
+                    )
+                }
+            )
+            ```
+            Each group in data["classification"]'s `tasks` must correspond to
+            a key in `self.classifier_heads`
+
+        Raises:
+            RuntimeError: If model is not in `training` mode (as a safety check)
+
+        Returns:
+            Tuple[TensorList, TensorDict]: Tuple of `(detection_preds, classification_preds)`
+        """
+        if not self.training:
+            raise RuntimeError(f"Can only run `forward_multi_augment` in training mode")
+
+        # Detection forward pass
+        xb = data["detection"]["images"]
+        detection_preds, _ = self.forward_once(
+            xb, forward_detection=True, forward_classification=False
+        )
+
+        # Classification forward pass
+        classification_preds = {}
+        for group, data in data["classification"].items():
+            xb = data["images"]
+            features, _ = self.forward_once(
+                xb, forward_detection=False, forward_classification=False
+            )
+            for name in data["tasks"]:
+                head = self.classifier_heads[name]
+                classification_preds[name] = head(features)
+
+        return detection_preds, classification_preds
 
     def forward_inference(
         self, x: Tensor
