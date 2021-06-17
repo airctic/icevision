@@ -1,6 +1,4 @@
-__all__ = [
-    "process_bbox_predictions",
-]
+__all__ = ["process_bbox_predictions", "_end2end_detect"]
 
 from icevision.imports import *
 from icevision.core import *
@@ -8,6 +6,23 @@ from icevision.data import *
 from icevision.tfms.albumentations.albumentations_helpers import (
     get_size_without_padding,
 )
+from icevision.tfms.albumentations import albumentations_adapter
+
+
+def _end2end_detect(
+    img: Union[PIL.Image.Image, Path, str],
+    transforms: albumentations_adapter.Adapter,
+    model: torch.nn.Module,
+    detection_threshold: float = 0.5,
+    predict_fn: Callable = None,
+):
+    if not isinstance(img, PIL.Image.Image):
+        img = PIL.Image.open(Path(img))
+
+    infer_ds = Dataset.from_images([np.array(img)], transforms)
+    pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
+    bboxes = process_bbox_predictions(pred, img, transforms.tfms_list)
+    return bboxes
 
 
 def process_bbox_predictions(

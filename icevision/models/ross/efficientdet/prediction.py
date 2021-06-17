@@ -1,4 +1,4 @@
-__all__ = ["predict", "predict_from_dl", "convert_raw_predictions"]
+__all__ = ["predict", "predict_from_dl", "convert_raw_predictions", "end2end_detect"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -7,6 +7,7 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.ross.efficientdet.dataloaders import *
 from effdet import DetBenchTrain, DetBenchPredict, unwrap_bench
+from icevision.models.inference import *
 
 
 @torch.no_grad()
@@ -111,3 +112,6 @@ def convert_raw_predictions(
         preds.append(Prediction(pred=pred, ground_truth=record))
 
     return preds
+
+
+end2end_detect = partial(_end2end_detect, predict_fn=predict)
