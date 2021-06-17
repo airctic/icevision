@@ -31,7 +31,7 @@ from icevision.models.multitask.utils.model import ForwardType
 # from .yolo import *
 from yolov5.models.yolo import *
 
-from typing import Dict, Optional, List, Tuple, Union
+from typing import Collection, Dict, Optional, List, Tuple, Union
 from copy import deepcopy
 from loguru import logger
 
@@ -124,6 +124,7 @@ class HybridYOLOV5(nn.Module):
         self.names = [str(i) for i in range(self.yaml["nc"])]  # default names
         self.inplace = self.yaml.get("inplace", True)
         # logger.info([x.shape for x in self.forward(torch.zeros(1, ch, 64, 64))])
+        self.post_layers_init()
 
         # Build strides, anchors
         m = self.model[-1]  # Detect()
@@ -149,6 +150,13 @@ class HybridYOLOV5(nn.Module):
         logger.success(f"Built *{Path(self.yaml_file).stem}* model successfully")
 
         self.post_init()
+
+    def post_layers_init(self):
+        """
+        Run before doing test forward passes for determining the `Detect` (bbox_head) hparams.
+        If you want to inject custom modules into the model, this is the place to do it
+        """
+        pass
 
     def post_init(self):
         pass
@@ -187,34 +195,33 @@ class HybridYOLOV5(nn.Module):
         self,
         x: Union[Tensor, dict],
         profile=False,
-        forward_detection: bool = True,
-        forward_classification: bool = True,
+        # forward_detection: bool = True,
+        # forward_classification: bool = True,
+        # activate_classification: bool = False,
         step_type=ForwardType.TRAIN,
     ) -> Tuple[Union[Tensor, TensorList], TensorDict]:
 
         if step_type is ForwardType.TRAIN or step_type is ForwardType.EVAL:
             # Assume that model is set to `.eval()` mode before calling this function...?
-            return self.forward_once(
-                x,
-                profile=profile,
-                forward_detection=forward_detection,
-                forward_classification=forward_classification,
-            )
+            return self.forward_once(x, profile=profile)
+
+        elif step_type is ForwardType.INFERENCE:
+            return self.forward_once(x, activate_classification=True)
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x)
 
-        elif step_type is ForwardType.EXPORT_COREML:
-            self.train()
-            self.classifier_heads.eval()
-            return self.forward_inference(x)
+        # elif step_type is ForwardType.EXPORT_COREML:
+        #     self.train()
+        #     self.classifier_heads.eval()
+        #     return self.forward_inference(x)
 
-        elif (
-            step_type is ForwardType.EXPORT_ONNX
-            or step_type is ForwardType.EXPORT_TORCHSCRIPT
-        ):
-            self.eval()
-            return self.forward_inference(x)
+        # elif (
+        #     step_type is ForwardType.EXPORT_ONNX
+        #     or step_type is ForwardType.EXPORT_TORCHSCRIPT
+        # ):
+        #     self.eval()
+        #     return self.forward_inference(x)
 
         else:
             raise RuntimeError(
@@ -281,48 +288,13 @@ class HybridYOLOV5(nn.Module):
 
         return detection_preds, classification_preds
 
-    def forward_inference(
-        self, x: Tensor
-    ) -> Tuple[Union[Tensor, TensorList], TensorTuple]:
-        """
-        No nonsense method for inference / exporting a model. Returns ONNX / CoreML /
-        TorchScript friendly outputs.
-
-        Args:
-            x (Tensor): Input (N,C,H,W) tensor
-
-        Returns:
-            Tuple[Union[Tensor, TensorList], TensorTuple]: A tuple of two elements -
-            `(detection_preds, classification_preds)`
-            1) `detection_preds`: A TensorList if in training mode, else a Tuple[Tensor, TensorList]
-            where the first element is the inference output and the second the training output
-            2) `classification_preds`: A TensorTuple of all the classification heads' predictions
-        """
-        y = []
-        classification_preds: Dict[str, Tensor] = {}
-        for m in self.model:
-            if m.f != -1:  # if not from previous layer
-                x = (
-                    y[m.f]
-                    if isinstance(m.f, int)
-                    else [x if j == -1 else y[j] for j in m.f]
-                )  # from earlier layers
-
-            if isinstance(m, Detect):
-                for name, head in self.classifier_heads.items():
-                    classification_preds[name] = head.forward_activate(x)
-
-            x = m(x)
-            y.append(x if m.i in self.save else None)  # save output
-
-        return x, tuple(classification_preds.values())
-
     def forward_once(
         self,
         x,
         profile=False,  # Will fail
         forward_detection: bool = True,
         forward_classification: bool = True,
+        activate_classification: bool = False,
     ) -> Tuple[Union[TensorList, Tuple[Tensor, TensorList]], TensorDict]:
         """
         Returns:
@@ -371,7 +343,11 @@ class HybridYOLOV5(nn.Module):
             if isinstance(m, Detect):
                 if forward_classification:
                     for name, head in self.classifier_heads.items():
-                        classification_preds[name] = head(x)
+                        classification_preds[name] = (
+                            head.forward_activate(x)
+                            if activate_classification
+                            else head(x)
+                        )
 
                 if not forward_detection:
                     if profile:
