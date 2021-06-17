@@ -111,23 +111,4 @@ def model(
     model.hyp = hyp  # attach hyperparameters to model
     model.gr = 1.0  # iou loss ratio (obj_loss = 1.0 or iou)
 
-    def param_groups_fn(model: nn.Module) -> List[List[nn.Parameter]]:
-        spp_index = [
-            i + 2
-            for i, layer in enumerate(model.model.children())
-            if layer._get_name() == "SPP"
-        ][0]
-        backbone = list(model.model.children())[:spp_index]
-        neck = list(model.model.children())[spp_index:-1]
-        head = list(model.model.children())[-1]
-
-        layers = [nn.Sequential(*backbone), nn.Sequential(*neck), nn.Sequential(head)]
-
-        param_groups = [list(group.parameters()) for group in layers]
-        check_all_model_params_in_groups2(model.model, param_groups)
-
-        return param_groups
-
-    model.param_groups = MethodType(param_groups_fn, model)
-
     return model

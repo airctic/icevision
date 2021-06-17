@@ -10,6 +10,7 @@ See https://discord.com/channels/735877944085446747/770279401791160400/853698548
 
 __all__ = ["HybridYOLOV5", "ClassifierConfig"]
 
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -17,6 +18,7 @@ import numpy as np
 
 from pathlib import Path
 from torch import Tensor
+from torch.nn.parameter import Parameter
 from icevision.models.multitask.classification_heads.head import (
     ClassifierConfig,
     ImageClassificationHead,
@@ -27,6 +29,8 @@ from icevision.models.multitask.classification_heads.builder import (
     build_classifier_heads_from_configs,
 )
 from icevision.models.multitask.utils.model import ForwardType
+from icevision.utils.torch_utils import params, check_all_model_params_in_groups2
+from icevision.utils.utils import flatten
 
 # from .yolo import *
 from yolov5.models.yolo import *
@@ -190,6 +194,74 @@ class HybridYOLOV5(nn.Module):
             self.classifier_configs
         )
         logger.success(f"Built classifier heads successfully")
+
+    def param_groups(self) -> List[List[Parameter]]:
+        param_groups = [
+            flatten(self._get_params_stem()),
+            flatten(self._get_params_backbone()),
+            flatten(self._get_params_neck()),
+            flatten(self._get_params_bbox_head()),
+            flatten(self._get_params_classifier_heads()),
+        ]
+        check_all_model_params_in_groups2(self, param_groups=param_groups)
+        return param_groups
+
+    def _get_params_stem(self) -> List[nn.Parameter]:
+        return params(self.model[0])
+
+    def _get_params_backbone(self) -> List[List[Parameter]]:
+        return [params(m) for m in self.model[1:10]]
+
+    def _get_params_neck(self) -> List[List[Parameter]]:
+        return [params(m) for m in self.model[10:][:-1]]
+
+    def _get_params_bbox_head(self) -> List[List[Parameter]]:
+        return params(self.model[-1])
+
+    def _get_params_classifier_heads(self) -> List[List[Parameter]]:
+        return [params(self.classifier_heads)]
+
+    def freeze(
+        self,
+        freeze_stem: bool = True,
+        freeze_bbone_blocks_until: int = 0,  # between 0-9
+        freeze_neck: bool = False,
+        freeze_bbox_head: bool = False,
+        freeze_classifier_heads: bool = False,
+    ):
+        """
+        Freeze selected parts of the network
+
+        Args:
+            freeze_stem (bool, optional): Freeze the first conv layer. Defaults to True.
+            freeze_bbone_blocks_until (int, optional): Number of blocks to freeze. If 0, none are frozen; if 9, all are frozen. Defaults to 0.
+            freeze_neck (bool, optional): Freeze the neck (FPN). Defaults to False.
+            freeze_bbox_head (bool, optional): Freeze the bounding box head (the `Detect` module). Defaults to False.
+            freeze_classifier_heads (bool, optional): Freeze all the classification heads. Defaults to False.
+        """
+        if freeze_stem:
+            for p in flatten(self._get_params_stem()):
+                p.requires_grad = False
+
+        assert 1 <= freeze_bbone_blocks_until <= 9
+        for i, pg in enumerate(self._get_params_backbone(), start=1):
+            if i > freeze_bbone_blocks_until:
+                break
+            else:
+                for p in pg:
+                    p.requires_grad = False
+
+        if freeze_neck:
+            for p in flatten(self._get_params_neck()):
+                p.requires_grad = False
+
+        if freeze_bbox_head:
+            for p in flatten(self._get_params_bbox_head()):
+                p.requires_grad = False
+
+        if freeze_classifier_heads:
+            for p in flatten(self._get_params_classifier_heads()):
+                p.requires_grad = False
 
     def forward(
         self,
