@@ -71,8 +71,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
             # Go through (a nested dict) each task inside each group and fetch targets
             classification_targets = {}
             for group, datum in data["classification"].items():
-                for task in datum["tasks"]:
-                    classification_targets[task] = datum["targets"]
+                classification_targets.update(datum["targets"])
 
             detection_preds, classification_preds = self(
                 data, step_type=ForwardType.TRAIN_MULTI_AUG
