@@ -3,11 +3,8 @@ from icevision.all import *
 from icevision.models.fastai.unet.backbones import *
 
 
-@pytest.mark.parametrize(
-    "backbone",
-    [resnet18, resnet50, resnet101],
-)
-def test_fastai_yolo_train(camvid_ds, backbone):
+@pytest.mark.parametrize("backbone", [resnet18])
+def test_fastai_unet_train(camvid_ds, backbone):
     train_ds, valid_ds = camvid_ds
     train_dl = models.fastai.unet.train_dl(
         train_ds, batch_size=4, num_workers=0, shuffle=False
