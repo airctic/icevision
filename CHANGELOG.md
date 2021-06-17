@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
  
 ### Changed
 - **Breaking:** Parameter `size` and `presize` changed from order (height, width) to (width, height)
+- Added `RecordCollection`
 
 ## [0.8.0]
 Supports pytorch 1.8
