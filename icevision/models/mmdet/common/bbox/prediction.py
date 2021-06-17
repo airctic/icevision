@@ -3,6 +3,7 @@ __all__ = [
     "predict_from_dl",
     "convert_raw_prediction",
     "convert_raw_predictions",
+    "end2end_detect",
 ]
 
 from icevision.imports import *
@@ -13,6 +14,7 @@ from icevision.models.utils import _predict_from_dl
 from icevision.models.mmdet.common.utils import *
 from icevision.models.mmdet.common.bbox.dataloaders import build_infer_batch
 from icevision.models.mmdet.common.utils import convert_background_from_last_to_zero
+from icevision.models.inference import *
 
 
 @torch.no_grad()
@@ -54,6 +56,9 @@ def predict(
         keep_images=keep_images,
         device=device,
     )
+
+
+end2end_detect = partial(_end2end_detect, predict_fn=predict)
 
 
 def predict_from_dl(

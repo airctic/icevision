@@ -229,8 +229,6 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
         # TODO, HACK: necessary because `Dataset.from_images` has no class_map
         if self.class_map is not None:
             self.labels = self._labels_ids_to_names(labels)
-        else:
-            self.labels = list(labels)
 
     def add_labels_by_id(self, labels: Sequence[int]):
         self.label_ids.extend(labels)

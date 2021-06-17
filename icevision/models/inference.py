@@ -13,13 +13,29 @@ def _end2end_detect(
     img: Union[PIL.Image.Image, Path, str],
     transforms: albumentations_adapter.Adapter,
     model: torch.nn.Module,
+    class_map: ClassMap,
     detection_threshold: float = 0.5,
     predict_fn: Callable = None,
 ):
-    if not isinstance(img, PIL.Image.Image):
+    """
+    Run Object Detection inference (only `bboxes`) on a single image.
+
+    Parameters
+    ----------
+    img: image to run inference on. Can be a string, Path or PIL.Image
+    transforms: icevision albumentations transforms
+    model: model to run inference with
+    class_map: ClassMap with the available categories
+    detection_threshold: confidence threshold below which boxes are discarded
+
+    Returns
+    -------
+    List of dicts with category, score and bbox coordinates adjusted to original image size and aspect ratio
+    """
+    if isinstance(img, (str, Path)):
         img = PIL.Image.open(Path(img))
 
-    infer_ds = Dataset.from_images([np.array(img)], transforms)
+    infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
     bboxes = process_bbox_predictions(pred, img, transforms.tfms_list)
     return bboxes
