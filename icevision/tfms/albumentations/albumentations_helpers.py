@@ -104,7 +104,7 @@ def get_size_without_padding(
     height and width of the image coming out of the inference pipeline, after removing padding
     """
     if get_transform(tfms_list, "Pad") is not None:
-        before_pad_w, before_pad_h = before_tfm_img.size
+        before_pad_h, before_pad_w, _ = np.array(before_tfm_img).shape
 
         t = get_transform(tfms_list, "SmallestMaxSize")
         if t is not None:
