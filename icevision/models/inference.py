@@ -1,0 +1,100 @@
+__all__ = [
+    "process_bbox_predictions",
+]
+
+from icevision.imports import *
+from icevision.core import *
+from icevision.data import *
+from icevision.tfms.albumentations.albumentations_helpers import (
+    get_size_without_padding,
+)
+
+
+def process_bbox_predictions(
+    pred: Prediction,
+    img: PIL.Image.Image,
+    transforms: List[Any],
+) -> List[Dict[str, Any]]:
+    """
+    Postprocess prediction.
+
+    Parameters
+    ----------
+    pred: icevision prediction object
+    img: original image, before any model-pre-processing done
+    transforms: list of model-pre-processing transforms
+
+    Returns
+    -------
+    List of dicts with class, score and bbox coordinates
+    """
+    bboxes = []
+    for bbox, score, label in zip(
+        pred.pred.detection.bboxes,
+        pred.pred.detection.scores,
+        pred.pred.detection.labels,
+    ):
+        xmin, ymin, xmax, ymax = postprocess_bbox(
+            img, bbox, transforms, pred.pred.height, pred.pred.width
+        )
+        result = {
+            "class": label,
+            "score": score,
+            "bbox": [xmin, ymin, xmax, ymax],
+        }
+        bboxes.append(result)
+    return bboxes
+
+
+def postprocess_bbox(
+    img: PIL.Image.Image, bbox: BBox, transforms: List[Any], h_after: int, w_after: int
+) -> Tuple[int, int, int, int]:
+    """
+    Post-process predicted bbox to adjust coordinates to input image size.
+
+    Parameters
+    ----------
+    img: original image, before any model-pre-processing done
+    bbox: predicted bbox
+    transforms: list of model-pre-processing transforms
+    h_after: height of image after model-pre-processing transforms
+    w_after: width of image after model-pre-processing transforms
+
+    Returns
+    -------
+    Tuple with (xmin, ymin, xmax, ymax) rescaled and re-adjusted to match the original image size
+    """
+    w_before, h_before = img.size
+    h_after, w_after = get_size_without_padding(transforms, img, h_after, w_after)
+    pad = np.abs(h_after - w_after) // 2
+
+    h_scale, w_scale = h_after / h_before, w_after / w_before
+    if h_after < w_after:
+        xmin, xmax, ymin, ymax = (
+            int(bbox.xmin),
+            int(bbox.xmax),
+            int(bbox.ymin) - pad,
+            int(bbox.ymax) - pad,
+        )
+    else:
+        xmin, xmax, ymin, ymax = (
+            int(bbox.xmin) - pad,
+            int(bbox.xmax) - pad,
+            int(bbox.ymin),
+            int(bbox.ymax),
+        )
+
+    xmin, xmax, ymin, ymax = (
+        max(xmin, 0),
+        min(xmax, w_after),
+        max(ymin, 0),
+        min(ymax, h_after),
+    )
+    xmin, xmax, ymin, ymax = (
+        int(xmin / h_scale),
+        int(xmax / h_scale),
+        int(ymin / w_scale),
+        int(ymax / w_scale),
+    )
+
+    return xmin, ymin, xmax, ymax

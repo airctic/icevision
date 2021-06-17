@@ -1,4 +1,4 @@
-__all__ = ["predict", "predict_from_dl", "convert_raw_predictions"]
+__all__ = ["predict", "predict_from_dl", "convert_raw_predictions", "end2end_detect"]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -7,6 +7,8 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.ultralytics.yolov5.dataloaders import *
 from yolov5.utils.general import non_max_suppression
+from icevision.models.inference import *
+from icevision.tfms.albumentations import albumentations_adapter
 
 
 @torch.no_grad()
@@ -117,3 +119,18 @@ def convert_raw_predictions(
         preds.append(Prediction(pred=pred, ground_truth=record))
 
     return preds
+
+
+def end2end_detect(
+    img: Union[PIL.Image.Image, Path, str],
+    transforms: albumentations_adapter.Adapter,
+    model: torch.nn.Module,
+    detection_threshold: float = 0.25,
+):
+    if not isinstance(img, PIL.Image.Image):
+        img = PIL.Image.open(Path(img))
+
+    infer_ds = Dataset.from_images([np.array(img)], transforms)
+    pred = predict(model, infer_ds, detection_threshold=detection_threshold)[0]
+    bboxes = process_bbox_predictions(pred, img, transforms.tfms_list)
+    return bboxes
