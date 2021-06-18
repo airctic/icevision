@@ -114,7 +114,7 @@ class HybridYOLOV5(nn.Module):
                 self.yaml = yaml.safe_load(f)  # model dict
 
         self.classifier_configs = classifier_configs
-        self.build_classifier_heads()
+        self.build_classification_modules()
 
         # Define model
         ch = self.yaml["ch"] = self.yaml.get("ch", ch)  # input channels
@@ -165,7 +165,7 @@ class HybridYOLOV5(nn.Module):
     def post_init(self):
         pass
 
-    def build_classifier_heads(self):
+    def build_classification_modules(self):
         """
         Description:
             Build classifier heads from `self.classifier_configs`.
