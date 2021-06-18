@@ -3,6 +3,15 @@ from icevision.tfms.albumentations.albumentations_adapter import (
 )
 import pytest
 from icevision.all import *
+from albumentations.augmentations.transforms import (
+    LongestMaxSize,
+    Normalize,
+    PadIfNeeded,
+)
+from icevision.tfms.albumentations.albumentations_helpers import (
+    get_size_without_padding,
+    get_transform,
+)
 
 # TODO: Check that attributes are being set on components
 @pytest.fixture
@@ -139,3 +148,28 @@ def test_filter_boxes():
 
     res = tfms.A.AlbumentationsBBoxesComponent._clip_bboxes(inp, h, w)
     assert out == res
+
+
+def test_get_size_without_padding() -> None:
+    """Test get_size_without_padding."""
+    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 15, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, 20, 20) == (20, 20)
+
+    img = PIL.Image.fromarray(np.uint8(np.zeros((20, 15, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, 20, 20) == (20, 15)
+
+    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 10, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, 20, 20) == (20, 13)
+
+
+def test_get_transform() -> None:
+    """Test get_transform."""
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+
+    assert get_transform(transforms, "not there") is None
+    assert isinstance(get_transform(transforms, "Normalize"), Normalize)
+    assert isinstance(get_transform(transforms, "Pad"), PadIfNeeded)
+    assert isinstance(get_transform(transforms, "Longest"), LongestMaxSize)

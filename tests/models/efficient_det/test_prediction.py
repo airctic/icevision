@@ -1,5 +1,15 @@
 import pytest
 from icevision.all import *
+import albumentations as A
+
+
+def test_e2e_detect(samples_source, fridge_efficientdet_model, fridge_class_map):
+    img_path = samples_source / "fridge/odFridgeObjects/images/10.jpg"
+    tfms_ = tfms.A.Adapter([A.Resize(384, 384), A.Normalize()])
+    bboxes = efficientdet.end2end_detect(
+        img_path, tfms_, fridge_efficientdet_model, fridge_class_map
+    )
+    assert len(bboxes) == 2
 
 
 def _test_preds(preds):

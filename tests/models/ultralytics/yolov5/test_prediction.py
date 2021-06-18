@@ -1,6 +1,23 @@
 import pytest
 from icevision.all import *
 from icevision.models.ultralytics.yolov5.backbones import *
+import albumentations as A
+
+
+@pytest.mark.parametrize(
+    "backbone",
+    [small, medium, large, extra_large],
+)
+def test_e2e_detect(samples_source, fridge_class_map, backbone):
+    img_path = samples_source / "fridge/odFridgeObjects/images/10.jpg"
+    tfms_ = tfms.A.Adapter([A.Resize(384, 384), A.Normalize()])
+    model = models.ultralytics.yolov5.model(
+        num_classes=5, img_size=384, backbone=backbone(pretrained=True)
+    )
+    bboxes = models.ultralytics.yolov5.end2end_detect(
+        img_path, tfms_, model, fridge_class_map
+    )
+    assert len(bboxes) == 0
 
 
 def _test_preds(preds):
