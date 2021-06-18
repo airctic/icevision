@@ -113,9 +113,6 @@ class HybridYOLOV5(nn.Module):
             with open(cfg) as f:
                 self.yaml = yaml.safe_load(f)  # model dict
 
-        self.classifier_configs = classifier_configs
-        self.build_classification_modules()
-
         # Define model
         ch = self.yaml["ch"] = self.yaml.get("ch", ch)  # input channels
         if nc and nc != self.yaml["nc"]:
@@ -128,6 +125,9 @@ class HybridYOLOV5(nn.Module):
         self.names = [str(i) for i in range(self.yaml["nc"])]  # default names
         self.inplace = self.yaml.get("inplace", True)
         # logger.info([x.shape for x in self.forward(torch.zeros(1, ch, 64, 64))])
+
+        self.classifier_configs = classifier_configs
+        self.build_classification_modules()
         self.post_layers_init()
 
         # Build strides, anchors
@@ -165,7 +165,7 @@ class HybridYOLOV5(nn.Module):
     def post_init(self):
         pass
 
-    def build_classification_modules(self):
+    def build_classification_modules(self, verbose: bool = True):
         """
         Description:
             Build classifier heads from `self.classifier_configs`.
@@ -184,16 +184,18 @@ class HybridYOLOV5(nn.Module):
                 cfg.num_fpn_features = num_fpn_features
 
             elif cfg.num_fpn_features != num_fpn_features:
-                logger.warning(
-                    f"Incompatible `num_fpn_features={cfg.num_fpn_features}` detected in task '{task}'. "
-                    f"Replacing with the correct dimensions: {num_fpn_features}"
-                )
+                if verbose:
+                    logger.warning(
+                        f"Incompatible `num_fpn_features={cfg.num_fpn_features}` detected in task '{task}'. "
+                        f"Replacing with the correct dimensions: {num_fpn_features}"
+                    )
                 cfg.num_fpn_features = num_fpn_features
 
         self.classifier_heads = build_classifier_heads_from_configs(
             self.classifier_configs
         )
-        logger.success(f"Built classifier heads successfully")
+        if verbose:
+            logger.success(f"Built classifier heads successfully")
 
     def param_groups(self) -> List[List[Parameter]]:
         param_groups = [
