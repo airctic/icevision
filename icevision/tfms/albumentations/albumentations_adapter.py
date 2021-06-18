@@ -135,7 +135,7 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
     def collect(self, record):
         masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
         masks = MaskArray(np.array(masks))
-        self._record_component.set_masks(masks)
+        self._record_component.set_mask_array(masks)
         # HACK: Not sure if necessary
         self._record_component = None
 

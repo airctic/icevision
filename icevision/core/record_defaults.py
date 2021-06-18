@@ -29,7 +29,7 @@ def InstanceSegmentationRecord():
             FilepathRecordComponent(),
             InstancesLabelsRecordComponent(),
             BBoxesRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
 
@@ -39,7 +39,7 @@ def SemanticSegmentationRecord():
         (
             FilepathRecordComponent(),
             ClassMapRecordComponent(task=tasks.segmentation),
-            SemanticMasksRecordComponent(),
+            SemanticMaskRecordComponent(),
         )
     )
 
