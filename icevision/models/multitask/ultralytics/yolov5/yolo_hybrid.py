@@ -243,7 +243,7 @@ class HybridYOLOV5(nn.Module):
             for p in flatten(self._get_params_stem()):
                 p.requires_grad = False
 
-        assert 1 <= freeze_bbone_blocks_until <= 9
+        assert 0 <= freeze_bbone_blocks_until <= 9, "Num blocks must be between 0-9"
         for i, pg in enumerate(self._get_params_backbone(), start=1):
             if i > freeze_bbone_blocks_until:
                 break
@@ -272,13 +272,21 @@ class HybridYOLOV5(nn.Module):
         # activate_classification: bool = False,
         step_type=ForwardType.TRAIN,
     ) -> Tuple[Union[Tensor, TensorList], TensorDict]:
+        "Forward method that is dispatched based on `step_type`"
 
         if step_type is ForwardType.TRAIN or step_type is ForwardType.EVAL:
             # Assume that model is set to `.eval()` mode before calling this function...?
             return self.forward_once(x, profile=profile)
 
         elif step_type is ForwardType.INFERENCE:
-            return self.forward_once(x, activate_classification=True)
+            # You may export model in training mode?
+            if not self.training:
+                (det_out, _), clf_out = self.forward_once(
+                    x, activate_classification=True
+                )
+            if self.training:
+                det_out, clf_out = self.forward_once(x, activate_classification=True)
+            return det_out, tuple(clf_out.values())
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x)
@@ -303,6 +311,11 @@ class HybridYOLOV5(nn.Module):
     # This is here for API compatibility with the main repo; will likely not be used
     def forward_augment(self, x):
         raise NotImplementedError
+
+    def extract_features(self, x: Tensor):
+        return self.forward_once(
+            x, forward_detection=False, forward_classification=False
+        )[0]
 
     def forward_multi_augment(self, data: dict) -> Tuple[TensorList, TensorDict]:
         """
