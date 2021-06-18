@@ -281,14 +281,7 @@ class HybridYOLOV5(nn.Module):
             return self.forward_once(x, profile=profile)
 
         elif step_type is ForwardType.INFERENCE:
-            # You may export model in training mode?
-            if not self.training:
-                (det_out, _), clf_out = self.forward_once(
-                    x, activate_classification=True
-                )
-            if self.training:
-                det_out, clf_out = self.forward_once(x, activate_classification=True)
-            return det_out, tuple(clf_out.values())
+            return self.forward_inference(x)
 
         elif step_type is ForwardType.TRAIN_MULTI_AUG:
             return self.forward_multi_augment(x)
@@ -309,6 +302,15 @@ class HybridYOLOV5(nn.Module):
             raise RuntimeError(
                 f"Invalid `step_type`. Received: {type(step_type.__class__)}; Expected: {ForwardType.__class__}"
             )
+
+    def forward_inference(self, x):
+        # You may export model in training mode?
+        if not self.training:
+            (det_out, _), clf_out = self.forward_once(x, activate_classification=True)
+        if self.training:
+            self.classifier_heads.eval()  # Turn off dropout
+            det_out, clf_out = self.forward_once(x, activate_classification=True)
+        return det_out, tuple(clf_out.values())
 
     # This is here for API compatibility with the main repo; will likely not be used
     def forward_augment(self, x):
