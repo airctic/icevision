@@ -44,6 +44,7 @@ class ClassifierConfig:
     num_fpn_features: int = 512
     fpn_keys: Union[List[str], List[int], None] = None
     dropout: Optional[float] = 0.2
+    pool_inputs: bool = True
     # Loss function args
     loss_func: Optional[nn.Module] = None
     activation: Optional[nn.Module] = None
@@ -91,6 +92,7 @@ class ImageClassificationHead(nn.Module):
         num_fpn_features: int,
         fpn_keys: Union[List[str], List[int], None] = None,
         dropout: Optional[float] = 0.2,
+        pool_inputs: bool = True,  # ONLY for advanced use cases where input feature maps are already pooled
         # Loss function args
         loss_func: Optional[nn.Module] = None,
         activation: Optional[nn.Module] = None,
@@ -111,15 +113,19 @@ class ImageClassificationHead(nn.Module):
             loss_weight,
         )
         self.activation = activation
+        self.pool_inputs = pool_inputs
         self.thresh, self.topk = thresh, topk
 
         # Setup head
         self.fpn_keys = fpn_keys
-        self.classifier = nn.Sequential(
-            nn.Flatten(1),
+
+        layers = [
             nn.Dropout(dropout) if dropout else Passthrough(),
             nn.Linear(num_fpn_features, out_classes),
-        )
+        ]
+        layers.insert(0, nn.Flatten(1)) if self.pool_inputs else None
+        self.classifier = nn.Sequential(*layers)
+
         self.setup_loss_function()
         self.setup_postprocessing()
 
@@ -173,7 +179,9 @@ class ImageClassificationHead(nn.Module):
         # If doing regular (non-FPN) feature extraction, we don't need `fpn_keys` and
         # just avg. pool the last layer's features
         elif isinstance(features, Tensor):
-            pooled_features = F.adaptive_avg_pool2d(features, 1)
+            pooled_features = (
+                F.adaptive_avg_pool2d(features, 1) if self.pool_inputs else features
+            )
         else:
             raise TypeError(
                 f"Expected TensorList|TensorDict|Tensor|tuple, got {type(features)}"
