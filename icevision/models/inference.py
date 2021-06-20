@@ -122,10 +122,10 @@ def postprocess_bbox(
         min(ymax, h_after),
     )
     xmin, xmax, ymin, ymax = (
-        int(xmin / h_scale),
-        int(xmax / h_scale),
-        int(ymin / w_scale),
-        int(ymax / w_scale),
+        int(xmin / w_scale),
+        int(xmax / w_scale),
+        int(ymin / h_scale),
+        int(ymax / h_scale),
     )
 
     return xmin, ymin, xmax, ymax
