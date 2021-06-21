@@ -21,7 +21,7 @@ from icevision.models.multitask.ultralytics.yolov5.model import *
 from icevision.models.multitask.ultralytics.yolov5.prediction import *
 from icevision.models.multitask.ultralytics.yolov5.utils import *
 from icevision.models.multitask.ultralytics.yolov5.backbones import *
-from icevision.models.multitask.ultralytics.yolov5.yolo_hybrid import *
+from icevision.models.multitask.ultralytics.yolov5.arch.yolo_hybrid import *
 
 
 from icevision.soft_dependencies import SoftDependencies
