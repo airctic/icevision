@@ -7,7 +7,7 @@ case ${cuda_version_major} in
       pip install torchtext==0.9.0 --upgrade -q
       pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.8.0/index.html --upgrade -q
       echo "- Installing mmdet"
-      pip install mmdet==2.12.0 --upgrade -q
+      pip install mmdet==2.13.0 --upgrade -q
       echo "- Installing fastai"
       pip install fastai==2.3.1 --upgrade -q
       echo "- Installing icevision from master"
@@ -26,7 +26,7 @@ case ${cuda_version_major} in
       echo "- Installing mmcv"
       pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.8.0/index.html --upgrade -q
       echo "- Installing mmdet"
-      pip install mmdet==2.12.0 --upgrade -q
+      pip install mmdet==2.13.0 --upgrade -q
       echo "- Installing fastai"
       pip install fastai==2.3.1 --upgrade -q
       echo "- Installing icevision from master"
