@@ -17,6 +17,8 @@ __all__ = ["FreezingInterfaceExtension"]
 class FreezingInterfaceExtension:
     """
     Model freezing and unfreezing extensions for `HybridYOLOV5`
+    Note that the BatchNorm layers are also frozen, but that part is not
+    defined here, but in the main module's `.train()` method directly
     """
 
     def _get_params_stem(self) -> List[nn.Parameter]:
@@ -99,7 +101,7 @@ class FreezingInterfaceExtension:
     ):
         "Freeze all, one or a few classifier heads"
         if isinstance(names, str):
-            names = []
+            names = [names]
         if names is None:
             names = list(self.classifier_heads.keys())
 

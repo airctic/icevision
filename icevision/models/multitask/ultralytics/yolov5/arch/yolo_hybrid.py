@@ -28,7 +28,7 @@ from icevision.models.multitask.utils.dtypes import *
 from icevision.models.multitask.classification_heads.builder import (
     build_classifier_heads_from_configs,
 )
-from icevision.models.multitask.utils.model import ForwardType
+from icevision.models.multitask.utils.model import ForwardType, set_bn_eval
 from icevision.models.multitask.ultralytics.yolov5.arch.model_freezing import *
 from icevision.models.multitask.ultralytics.yolov5.arch.param_groups import *
 
@@ -168,6 +168,11 @@ class HybridYOLOV5(
 
     def post_init(self):
         pass
+
+    def train(self, mode: bool = True):
+        "Set model to training mode, while freezing non trainable layers' BN statistics"
+        super(HybridYOLOV5, self).train(mode)
+        set_bn_eval(self)
 
     def build_classification_modules(self, verbose: bool = True):
         """
