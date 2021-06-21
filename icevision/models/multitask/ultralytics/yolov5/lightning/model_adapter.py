@@ -12,7 +12,7 @@ from icevision.metrics import *
 from icevision.core import *
 
 from loguru import logger
-from icevision.models.multitask.ultralytics.yolov5.yolo_hybrid import HybridYOLOV5
+from icevision.models.multitask.ultralytics.yolov5.arch.yolo_hybrid import HybridYOLOV5
 from icevision.models.multitask.utils.prediction import *
 from icevision.models.multitask.ultralytics.yolov5.prediction import (
     convert_raw_predictions,
