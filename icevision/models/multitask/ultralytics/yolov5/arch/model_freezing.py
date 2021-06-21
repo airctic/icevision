@@ -54,6 +54,7 @@ class FreezingInterfaceExtension:
             freeze_neck (bool, optional): Freeze the neck (FPN). Defaults to False.
             freeze_bbox_head (bool, optional): Freeze the bounding box head (the `Detect` module). Defaults to False.
             freeze_classifier_heads (bool, optional): Freeze all the classification heads. Defaults to False.
+            _grad (bool): DO NOT MODIFY this argument. It is used internally for `.unfreeze()`
         """
         if freeze_stem:
             for p in flatten(self._get_params_stem()):
