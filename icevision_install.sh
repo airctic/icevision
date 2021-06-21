@@ -3,7 +3,8 @@ case ${cuda_version_major} in
    10)  
       echo "Installing icevision + dependencices for CUDA ${1}"
       echo "- Installing torch and its dependencies"
-      pip install torch==1.8.1+cu102 torchvision==0.9.1+cu102 torchtext==0.9.0 torchaudio===0.8.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade      echo "- Installing mmcv"
+      pip install torch==1.8.1+cu102 torchvision==0.9.1+cu102 torchaudio===0.8.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade      echo "- Installing mmcv"
+      pip install torchtext==0.9.0 --upgrade -q
       pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.8.0/index.html --upgrade -q
       echo "- Installing mmdet"
       pip install mmdet==2.12.0 --upgrade -q
@@ -20,7 +21,8 @@ case ${cuda_version_major} in
    11)  
       echo "Installing icevision + dependencices for cuda ${1}"
       echo "- Installing torch and its dependencies"
-      pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchtext==0.9.0 torchaudio===0.8.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade -q
+      pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111torchaudio===0.8.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade -q
+      pip install torchtext==0.9.0 --upgrade -q
       echo "- Installing mmcv"
       pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.8.0/index.html --upgrade -q
       echo "- Installing mmdet"
