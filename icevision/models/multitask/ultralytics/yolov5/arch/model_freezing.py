@@ -82,18 +82,24 @@ class FreezingInterfaceExtension:
 
     def unfreeze(
         self,
-        freeze_stem: bool = True,
-        freeze_bbone_blocks_until: int = 0,  # between 0-9
-        freeze_neck: bool = False,
-        freeze_bbox_head: bool = False,
-        freeze_classifier_heads: bool = False,
+        unfreeze_stem: bool = False,
+        unfreeze_bbone_blocks_until: int = 9,  # either 0-9 TODO FIXME
+        unfreeze_neck: bool = True,
+        unfreeze_bbox_head: bool = True,
+        unfreeze_classifier_heads: bool = True,
     ):
+        "Unfreeze specific parts of the model. By default all parts but the stem are unfrozen"
+        if not unfreeze_bbone_blocks_until in [0, 9]:
+            raise RuntimeError(
+                f"Currently we can only unfreeze all or no blocks at once. Pass `unfreeze_bbone_blocks_until=9 | 0` to do so"
+            )
+
         self.freeze(
-            freeze_stem=freeze_stem,
-            freeze_bbone_blocks_until=freeze_bbone_blocks_until,
-            freeze_neck=freeze_neck,
-            freeze_bbox_head=freeze_bbox_head,
-            freeze_classifier_heads=freeze_classifier_heads,
+            freeze_stem=not unfreeze_stem,
+            freeze_bbone_blocks_until=unfreeze_bbone_blocks_until,
+            freeze_neck=not unfreeze_neck,
+            freeze_bbox_head=not unfreeze_bbox_head,
+            freeze_classifier_heads=not unfreeze_classifier_heads,
             _grad=True,
         )
 
