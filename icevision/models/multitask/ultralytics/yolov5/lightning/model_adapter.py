@@ -155,7 +155,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         if not set(classification_preds.keys()) == set(yb.keys()):
             raise RuntimeError(
                 f"Mismatch between prediction and target items. Predictions have "
-                f"{classification_preds.keys} keys and targets have {yb.keys()} keys"
+                f"{classification_preds.keys()} keys and targets have {yb.keys()} keys"
             )
         # prefix = f"{prefix}/" if not prefix == "" else ""
         prefix = "valid/"
