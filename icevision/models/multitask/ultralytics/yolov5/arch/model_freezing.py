@@ -95,11 +95,11 @@ class FreezingInterfaceExtension:
             )
 
         self.freeze(
-            freeze_stem=not unfreeze_stem,
+            freeze_stem=unfreeze_stem,
             freeze_bbone_blocks_until=unfreeze_bbone_blocks_until,
-            freeze_neck=not unfreeze_neck,
-            freeze_bbox_head=not unfreeze_bbox_head,
-            freeze_classifier_heads=not unfreeze_classifier_heads,
+            freeze_neck=unfreeze_neck,
+            freeze_bbox_head=unfreeze_bbox_head,
+            freeze_classifier_heads=unfreeze_classifier_heads,
             _grad=True,
         )
 
