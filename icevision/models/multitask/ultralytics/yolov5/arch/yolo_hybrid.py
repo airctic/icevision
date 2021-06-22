@@ -152,6 +152,10 @@ class HybridYOLOV5(
             self._initialize_biases()  # only run once
             # logger.info('Strides: %s' % m.stride.tolist())
 
+        self.fpn_dims = YOLO_FEATURE_MAP_DIMS[Path(model.yaml_file).stem]
+        # self.fpn_dims = self.extract_features(torch.rand(1, 3, 224, 224))
+        self.num_fpn_dims = len(self.fpn_dims)
+
         # Init weights, biases
         initialize_weights(self)
         self.info()
