@@ -129,7 +129,7 @@ class AlbumentationsBBoxesComponent(AlbumentationsAdapterComponent):
 class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
     def setup_masks(self, record_component):
         self._record_component = record_component
-        self.adapter._albu_in["masks"] = list(record_component.masks.data)
+        self.adapter._albu_in["masks"] = list(record_component.mask_array.data)
         self.adapter._collect_ops.append(CollectOp(self.collect))
 
     def collect(self, record):
