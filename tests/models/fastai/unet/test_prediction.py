@@ -5,8 +5,8 @@ from icevision.models.fastai.unet.backbones import *
 
 def _test_preds(preds):
     assert len(preds) == 1
-    assert isinstance(preds[0].segmentation.masks[0], MaskArray)
-    assert preds[0].segmentation.masks[0].to_mask(0, 0).data.squeeze().shape == (64, 64)
+    assert isinstance(preds[0].segmentation.mask_array, MaskArray)
+    assert preds[0].segmentation.mask_array.data.squeeze().shape == (64, 64)
     assert preds[0].segmentation.class_map is not None
     assert preds[0].segmentation.class_map.num_classes == 32
 

@@ -96,16 +96,16 @@ def test_record_load(record):
     record_loaded = record.load()
 
     assert isinstance(record_loaded.img, PIL.Image.Image)
-    assert isinstance(record_loaded.detection.masks, MaskArray)
+    assert isinstance(record_loaded.detection.mask_array, MaskArray)
 
     # test original record is not modified
     assert record.img == None
-    assert isinstance(record.detection.masks, EncodedRLEs)
+    assert isinstance(record.detection.masks[0], VocMaskFile)
 
     # test unload
     record_loaded.unload()
     assert record_loaded.img == None
-    assert isinstance(record_loaded.detection.masks, EncodedRLEs)
+    assert isinstance(record_loaded.detection.masks[0], VocMaskFile)
 
 
 def test_gray_scale_record_load(gray_scale_record):
@@ -160,7 +160,8 @@ def test_record_keypoints(record_keypoints):
 def test_record_num_annotations(record):
     assert record.num_annotations() == {
         "common": {},
-        "detection": {"labels": 2, "bboxes": 2, "masks": 2},
+        # "detection": {"labels": 2, "bboxes": 2, "masks": 2}, # see 868
+        "detection": {"labels": 2, "bboxes": 2},
     }
 
 
