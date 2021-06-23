@@ -55,7 +55,9 @@ def build_train_batch(records: Sequence[BaseRecord]):
     for record in records:
         # can be optimzed to be converted to tensor once at the end
         tensor_images.append(im2tensor(record.img))
-        tensor_masks.append(tensor(record.segmentation.masks.data).long().squeeze())
+        tensor_masks.append(
+            tensor(record.segmentation.mask_array.data).long().squeeze()
+        )
 
     tensor_images = torch.stack(tensor_images)
     tensor_masks = torch.stack(tensor_masks)
