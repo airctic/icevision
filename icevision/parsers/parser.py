@@ -120,7 +120,7 @@ class Parser(ParserInterface, ABC):
 
             if autofix:
                 logger.opt(colors=True).info("<blue><bold>Autofixing records</></>")
-                records.autofix()
+                records = records.autofix()
 
             records = records.make_splits(data_splitter)
 

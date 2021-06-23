@@ -82,7 +82,7 @@ def draw_sample(
 
     # Dynamic font size based on image height
     if font_size is None:
-        font_size = sample.img_size.height / dynamic_font_size_div_methodsmethodsfactor
+        font_size = sample.img_size.height / dynamic_font_size_div_factor
 
     if denormalize_fn is not None:
         img = denormalize_fn(img)
@@ -112,7 +112,7 @@ def draw_sample(
 
         # HACK
         if hasattr(composite, "masks"):
-            masks = composite.masks.to_mask(h=sample.height, w=sample.width)
+            masks = composite.mask_array
         else:
             masks = []
 
