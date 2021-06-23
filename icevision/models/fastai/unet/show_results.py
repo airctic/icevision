@@ -59,7 +59,9 @@ def loop_unet(dl, model, losses_stats, device):
             loss_comp.set_losses(loss)
             sample[0].add_component(loss_comp)
             sample[0].set_img(tensor_to_image(x[0]))
-            sample[0].segmentation.set_mask(MaskArray(y[0].detach().cpu().numpy()))
+            sample[0].segmentation.set_mask_array(
+                MaskArray(y[0].detach().cpu().numpy())
+            )
             samples_plus_losses.append(sample[0])
     return samples_plus_losses, losses_stats
 

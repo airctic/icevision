@@ -1,7 +1,7 @@
 import pytest
 from icevision import *
 from icevision.imports import *
-from icevision.models.torchvision import faster_rcnn
+from icevision.models.torchvision import faster_rcnn, keypoint_rcnn
 from icevision.models.ross import efficientdet
 from icevision.models.ross.efficientdet.backbones import *
 import albumentations as A

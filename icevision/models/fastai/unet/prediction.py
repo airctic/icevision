@@ -46,13 +46,13 @@ def convert_raw_predictions(
         pred = BaseRecord(
             (
                 ImageRecordComponent(),
-                SemanticMasksRecordComponent(),
+                SemanticMaskRecordComponent(),
                 ClassMapRecordComponent(task=tasks.segmentation),
             )
         )
 
         pred.segmentation.set_class_map(record.segmentation.class_map)
-        pred.segmentation.set_masks(MaskArray(mask_pred.cpu().numpy()[None]))
+        pred.segmentation.set_mask_array(MaskArray(mask_pred.cpu().numpy()[None]))
 
         if keep_images:
             record.set_img(tensor_to_image(tensor_image))
