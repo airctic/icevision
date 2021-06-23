@@ -91,7 +91,7 @@ def draw_sample(
     for task, composite in sample.task_composites.items():
         if task == "segmentation":
             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
-            mask = composite.masks[0].to_mask(0, 0)
+            mask = composite.mask_array
             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
 
         # Should break if no ClassMap found in composite.
@@ -572,6 +572,11 @@ def draw_segmentation_mask(
         w, h = img.size
         mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
         mask = mask.data.squeeze()
+
+        assert mask.shape == (h, w), (
+            "image and mask size should be the same"
+            f"but got image:{(w, h)}; mask: {(mask.shape[::-1])}"
+        )
 
         for class_idx in np.unique(mask):
             mask_idxs = mask == class_idx
