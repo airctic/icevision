@@ -21,6 +21,12 @@ __all__ = [
     "d6",
     "d7",
     "d7x",
+    "d0_ap",
+    "d1_ap",
+    "d2_ap",
+    "d3_ap",
+    "d4_ap",
+    "d5_ap",
 ]
 
 from icevision.models.ross.efficientdet.utils import *
@@ -50,3 +56,10 @@ d5 = EfficientDetBackboneConfig(model_name="efficientdet_d5")
 d6 = EfficientDetBackboneConfig(model_name="efficientdet_d6")
 d7 = EfficientDetBackboneConfig(model_name="efficientdet_d7")
 d7x = EfficientDetBackboneConfig(model_name="efficientdet_d7x")
+
+d0_ap = EfficientDetBackboneConfig(model_name="efficientdet_d0_ap")
+d1_ap = EfficientDetBackboneConfig(model_name="efficientdet_d1_ap")
+d2_ap = EfficientDetBackboneConfig(model_name="efficientdet_d2_ap")
+d3_ap = EfficientDetBackboneConfig(model_name="efficientdet_d3_ap")
+d4_ap = EfficientDetBackboneConfig(model_name="efficientdet_d4_ap")
+d5_ap = EfficientDetBackboneConfig(model_name="efficientdet_d5_ap")
