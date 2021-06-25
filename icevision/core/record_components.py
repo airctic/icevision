@@ -10,7 +10,6 @@ __all__ = [
     "ClassificationLabelsRecordComponent",
     "GrayScaleRecordComponent",
     "BBoxesRecordComponent",
-    # "MasksRecordComponent",
     "BaseMasksRecordComponent",
     "InstanceMasksRecordComponent",
     "SemanticMaskRecordComponent",
