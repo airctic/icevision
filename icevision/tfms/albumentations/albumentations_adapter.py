@@ -17,6 +17,10 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.core import *
 from icevision.tfms.transform import *
+from icevision.tfms.albumentations.albumentations_helpers import (
+    get_size_without_padding,
+    get_transform,
+)
 
 
 @dataclass
@@ -269,7 +273,11 @@ class Adapter(Transform, Composite):
         self._albu_out = tfms(**self._albu_in)
 
         # store additional info (might be used by components on `collect`)
-        self._size_no_padding = self._get_size_without_padding(record)
+        height, width, _ = self._albu_out["image"].shape
+        height, width = get_size_without_padding(
+            self.tfms_list, record.img, height, width
+        )
+        self._size_no_padding = ImgSize(width=width, height=height)
 
         # collect results
         for collect_op in sorted(self._collect_ops, key=lambda x: x.order):
@@ -295,24 +303,6 @@ class Adapter(Transform, Composite):
         assert len(v) == len(self._keep_mask)
         return [o for o, keep in zip(v, self._keep_mask) if keep]
 
-    def _get_size_without_padding(self, record) -> ImgSize:
-        height, width, _ = self._albu_out["image"].shape
-
-        if get_transform(self.tfms_list, "Pad") is not None:
-            after_pad_h, after_pad_w, _ = np.array(record.img).shape
-
-            t = get_transform(self.tfms_list, "SmallestMaxSize")
-            if t is not None:
-                presize = t.max_size
-                height, width = _func_max_size(after_pad_h, after_pad_w, presize, min)
-
-            t = get_transform(self.tfms_list, "LongestMaxSize")
-            if t is not None:
-                size = t.max_size
-                height, width = _func_max_size(after_pad_h, after_pad_w, size, max)
-
-        return ImgSize(width=width, height=height)
-
 
 def _flatten_tfms(t):
     flat = []
@@ -330,26 +320,3 @@ def _is_iter(o):
         return True
     except:
         return False
-
-
-def get_transform(tfms_list, t):
-    for el in tfms_list:
-        if t in str(type(el)):
-            return el
-    return None
-
-
-def py3round(number):
-    """Unified rounding in all python versions."""
-    if abs(round(number) - number) == 0.5:
-        return int(2.0 * round(number / 2.0))
-
-    return int(round(number))
-
-
-def _func_max_size(height, width, max_size, func):
-    scale = max_size / float(func(width, height))
-
-    if scale != 1.0:
-        height, width = tuple(py3round(dim * scale) for dim in (height, width))
-    return height, width

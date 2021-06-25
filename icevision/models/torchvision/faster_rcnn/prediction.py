@@ -3,6 +3,7 @@ __all__ = [
     "predict_from_dl",
     "convert_raw_prediction",
     "convert_raw_predictions",
+    "end2end_detect",
 ]
 
 from icevision.imports import *
@@ -11,6 +12,7 @@ from icevision.core import *
 from icevision.models.utils import _predict_from_dl
 from icevision.data import *
 from icevision.models.torchvision.faster_rcnn.dataloaders import *
+from icevision.models.inference import *
 
 
 @torch.no_grad()
@@ -133,3 +135,6 @@ def convert_raw_prediction(
         record.set_img(tensor_to_image(tensor_image))
 
     return Prediction(pred=pred, ground_truth=record)
+
+
+end2end_detect = partial(_end2end_detect, predict_fn=predict)
