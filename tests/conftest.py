@@ -415,7 +415,7 @@ def object_detection_record(samples_source):
 @pytest.fixture
 def instance_segmentation_record(object_detection_record):
     record = object_detection_record
-    record.add_component(MasksRecordComponent())
+    record.add_component(InstanceMasksRecordComponent())
 
     record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
 
@@ -429,7 +429,7 @@ def empty_annotations_record():
             ImageRecordComponent(),
             InstancesLabelsRecordComponent(),
             BBoxesRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
 
@@ -454,7 +454,7 @@ component_field = {
     SizeRecordComponent: "img_size",
     InstancesLabelsRecordComponent: "labels",
     BBoxesRecordComponent: "bboxes",
-    MasksRecordComponent: "masks",
+    InstanceMasksRecordComponent: "masks",
     KeyPointsRecordComponent: "keypoints",
     AreasRecordComponent: "areas",
     IsCrowdsRecordComponent: "iscrowds",

@@ -34,7 +34,7 @@ def mask_records(img, labels, bboxes, masks, class_map):
             ImageRecordComponent(),
             InstancesLabelsRecordComponent(),
             BBoxesRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
     record.set_record_id(1)

@@ -8,7 +8,7 @@ def record(samples_source):
         (
             BBoxesRecordComponent(),
             InstancesLabelsRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
             FilepathRecordComponent(),
         )
     )
@@ -52,7 +52,7 @@ def record_wrong_num_annotations(samples_source):
         (
             BBoxesRecordComponent(),
             InstancesLabelsRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
 
