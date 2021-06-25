@@ -82,7 +82,7 @@ def draw_sample(
 
     # Dynamic font size based on image height
     if font_size is None:
-        font_size = sample.img_size.height / dynamic_font_size_div_factor
+        font_size = sample.img_size.height / dynamic_font_size_div_methodsmethodsfactor
 
     if denormalize_fn is not None:
         img = denormalize_fn(img)

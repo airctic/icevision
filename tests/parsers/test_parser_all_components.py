@@ -13,7 +13,7 @@ def dummy_parser_all_components():
                     FilepathRecordComponent(),
                     InstancesLabelsRecordComponent(),
                     BBoxesRecordComponent(),
-                    MasksRecordComponent(),
+                    InstanceMasksRecordComponent(),
                     KeyPointsRecordComponent(),
                     AreasRecordComponent(),
                     IsCrowdsRecordComponent(),
