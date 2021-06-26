@@ -37,7 +37,7 @@ class FreezingInterfaceExtension:
     def _get_params_classifier_heads(self) -> List[List[Parameter]]:
         return [params(self.classifier_heads)]
 
-    def set_param_grad_state(
+    def set_param_requires_grad(
         self,
         stem: bool,
         bbone_blocks: Tuple[Collection[int], bool],
@@ -93,7 +93,7 @@ class FreezingInterfaceExtension:
             bbox_head (bool, optional): Freeze the bounding box head (the `Detect` module). Defaults to False.
             classifier_heads (bool, optional): Freeze all the classification heads. Defaults to False.
         """
-        self.set_param_grad_state(
+        self.set_param_requires_grad(
             stem=not stem,  # If `stem==True`, set requires_grad to False
             bbone_blocks=([i for i in range(bbone_blocks)], False),
             neck=not neck,
@@ -110,7 +110,7 @@ class FreezingInterfaceExtension:
         classifier_heads: bool = True,
     ):
         "Unfreeze specific parts of the model. By default all parts but the stem are unfrozen"
-        self.set_param_grad_state(
+        self.set_param_requires_grad(
             stem=stem,
             bbone_blocks=([i for i in range(9 - bbone_blocks, 9)], True),
             neck=neck,
