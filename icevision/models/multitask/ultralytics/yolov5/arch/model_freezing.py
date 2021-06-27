@@ -79,7 +79,7 @@ class FreezingInterfaceExtension:
     def freeze(
         self,
         stem: bool = True,
-        bbone_blocks: int = 0,  # between 0-9
+        bbone_blocks: int = 1,  # between 0-9
         neck: bool = False,
         bbox_head: bool = False,
         classifier_heads: bool = False,
@@ -122,6 +122,12 @@ class FreezingInterfaceExtension:
             bbox_head=bbox_head,
             classifier_heads=classifier_heads,
         )
+
+    def freeze_detector(self):
+        self.freeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
+
+    def unfreeze_detector(self):
+        self.unfreeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
 
     def freeze_specific_classifier_heads(
         self, names: Union[str, List[str], None] = None, _grad: bool = False
