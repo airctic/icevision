@@ -55,14 +55,15 @@ class FreezingInterfaceExtension:
             raise TypeError(error_msg)
         if not all(isinstance(x, int) for x in bbone_blocks[0]):
             raise TypeError(error_msg)
-        if not 0 <= bbone_blocks[0] <= 9:
-            raise ValueError(error_msg)
+        if not bbone_blocks[0] == []:
+            if not 0 <= bbone_blocks[0][0] <= 9:
+                raise ValueError(error_msg)
 
         for p in flatten(self._get_params_stem()):
             p.requires_grad = stem
 
         target_blocks, grad_state = bbone_blocks
-        pgs = np.array(self._get_params_backbone())
+        pgs = np.array(self._get_params_backbone(), dtype="object")
         for p in flatten(pgs[target_blocks]):
             p.requires_grad = grad_state
 
@@ -109,7 +110,11 @@ class FreezingInterfaceExtension:
         bbox_head: bool = True,
         classifier_heads: bool = True,
     ):
-        "Unfreeze specific parts of the model. By default all parts but the stem are unfrozen"
+        """
+        Unfreeze specific parts of the model. By default all parts but the stem are unfrozen.
+        Note that `bbone_blocks` works differently from `.freeze()`. `bbone_blocks=3` will unfreeze
+        the _last 3_ blocks, and `bbone_blocks=9` will unfreeze _all_ the blocks
+        """
         self.set_param_requires_grad(
             stem=stem,
             bbone_blocks=([i for i in range(9 - bbone_blocks, 9)], True),
