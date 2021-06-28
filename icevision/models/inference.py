@@ -40,8 +40,10 @@ def _end2end_detect(
 
     infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
-    bboxes = process_bbox_predictions(pred, img, transforms.tfms_list)
-    return bboxes
+    pred = process_bbox_predictions(pred, img, transforms.tfms_list)
+    
+    # return the record that contains the updated prediction (i.e. with resized boxes that match the original image size)
+    return pred.pred
 
 
 def process_bbox_predictions(
@@ -71,13 +73,12 @@ def process_bbox_predictions(
         xmin, ymin, xmax, ymax = postprocess_bbox(
             img, bbox, transforms, pred.pred.height, pred.pred.width
         )
-        result = {
-            "class": label,
-            "score": score,
-            "bbox": [xmin, ymin, xmax, ymax],
-        }
-        bboxes.append(result)
-    return bboxes
+        
+        bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
+        bboxes.append(bbox)
+
+    pred.pred.detection.set_bboxes(bboxes)
+    return pred
 
 
 def postprocess_bbox(
@@ -155,7 +156,7 @@ def draw_img_and_boxes(
     for bbox in bboxes:
         record.detection.add_bboxes([BBox.from_xyxy(*bbox["bbox"])])
         record.detection.add_labels([bbox["class"]])
-        pred.detection.set_scores(bbox["score"])
+        record.detection.set_scores(bbox["score"])
 
     pred_img = draw_sample(
         record,
