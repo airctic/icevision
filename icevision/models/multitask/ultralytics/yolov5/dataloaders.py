@@ -61,7 +61,9 @@ def build_single_aug_batch(
         images.append(image)
 
         # See file header for more info on why this is done
-        detection_target[:, 0] = i if detection_target.numel() > 0 else None
+        if detection_target.numel() > 0:
+            detection_target[:, 0] = i
+        # detection_target[:, 0] = i if detection_target.numel() > 0 else None
         detection_targets.append(detection_target)
 
         # Classification
