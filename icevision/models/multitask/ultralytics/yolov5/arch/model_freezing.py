@@ -78,14 +78,16 @@ class FreezingInterfaceExtension:
 
     def freeze(
         self,
-        stem: bool = True,
-        bbone_blocks: int = 1,  # between 0-9
+        stem: bool = False,
+        bbone_blocks: int = 0,  # between 0-9
         neck: bool = False,
         bbox_head: bool = False,
         classifier_heads: bool = False,
     ):
         """
-        Freeze selected parts of the network
+        Freeze selected parts of the network. By default, none of the parts are frozen, you need
+        to manually set each arg's value to `True` if you want to freeze it. If you don't want
+        this fine grained control, see `.freeze_detector()`, `.freeze_backbone()`, `.freeze_classifier_heads()`
 
         Args:
             stem (bool, optional): Freeze the first conv layer. Defaults to True.
@@ -105,13 +107,17 @@ class FreezingInterfaceExtension:
     def unfreeze(
         self,
         stem: bool = False,
-        bbone_blocks: int = 9,
-        neck: bool = True,
-        bbox_head: bool = True,
-        classifier_heads: bool = True,
+        bbone_blocks: int = 0,
+        neck: bool = False,
+        bbox_head: bool = False,
+        classifier_heads: bool = False,
     ):
         """
-        Unfreeze specific parts of the model. By default all parts but the stem are unfrozen.
+        Unfreeze specific parts of the model. By default all parts are kept frozen.
+        You need to manually set whichever part you want to unfreeze by passing that arg as `True`.
+        See `.unfreeze_detector()`, `.unfreeze_backbone()`, `.unfreeze_classifier_heads()` methods if you
+        don't want this fine grained control.
+
         Note that `bbone_blocks` works differently from `.freeze()`. `bbone_blocks=3` will unfreeze
         the _last 3_ blocks, and `bbone_blocks=9` will unfreeze _all_ the blocks
         """
@@ -124,10 +130,28 @@ class FreezingInterfaceExtension:
         )
 
     def freeze_detector(self):
+        "Freezes the entire detector i.e. stem, bbone, neck, bbox head"
         self.freeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
 
     def unfreeze_detector(self):
+        "Unfreezes the entire detector i.e. stem, bbone, neck, bbox head"
         self.unfreeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
+
+    def freeze_backbone(self, fpn=True):
+        "Freezes the entire backbone, optionally without the neck/fpn"
+        self.freeze(stem=True, bbone_blocks=9, neck=True if fpn else False)
+
+    def unfreeze_backbone(self, fpn=True):
+        "Unfreezes the entire backbone, optionally without the neck/fpn"
+        self.unfreeze(stem=True, bbone_blocks=9, neck=True if fpn else False)
+
+    def freeze_classifier_heads(self):
+        "Freezes just the classification heads"
+        self.freeze(classifier_heads=True)
+
+    def unfreeze_classifier_heads(self):
+        "Unfreezes just the classification heads"
+        self.unfreeze(classifier_heads=True)
 
     def freeze_specific_classifier_heads(
         self, names: Union[str, List[str], None] = None, _grad: bool = False
