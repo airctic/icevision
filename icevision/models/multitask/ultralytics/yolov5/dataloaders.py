@@ -137,7 +137,9 @@ def build_multi_aug_batch(
         detection_images.append(detection_image)
 
         # See file header for more info on why this is done
-        detection_target[:, 0] = i if detection_target.numel() > 0 else None
+        if detection_target.numel() > 0:
+            detection_target[:, 0] = i
+        # detection_target[:, 0] = i if detection_target.numel() > 0 else None
         detection_targets.append(detection_target)
 
         for key, group in classification_transform_groups.items():
