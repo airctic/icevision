@@ -60,7 +60,8 @@ class ClassifierConfig:
             self.fpn_keys = [self.fpn_keys]
 
         if self.loss_func_wts is not None:
-            self.loss_func_wts = self.loss_func_wts.to(torch.float32)
+            if not self.multilabel:
+                self.loss_func_wts = self.loss_func_wts.to(torch.float32)
             if torch.cuda.is_available():
                 self.loss_func_wts = self.loss_func_wts.cuda()
 
@@ -145,15 +146,18 @@ class ImageClassificationHead(nn.Module):
     def setup_loss_function(self):
         if self.loss_func is None:
             if self.multilabel:
-                # self.loss_func = nn.BCEWithLogitsLoss(self.loss_func_wts)
-                self.loss_func = partial(
-                    F.binary_cross_entropy_with_logits, pos_weight=self.loss_func_wts
-                )
-                self.activation = torch.sigmoid  # nn.Sigmoid()
+                self.loss_func = nn.BCEWithLogitsLoss(pos_weight=self.loss_func_wts)
+                # self.loss_func = partial(
+                #     F.binary_cross_entropy_with_logits, pos_weight=self.loss_func_wts
+                # )
+                self.activation = nn.Sigmoid()
+                # self.activation = torch.sigmoid  # nn.Sigmoid()
             else:
                 # self.loss_func = nn.CrossEntropyLoss(self.loss_func_wts)
-                self.loss_func = partial(F.cross_entropy, weight=self.loss_func_wts)
-                self.activation = partial(F.softmax, dim=-1)  # nn.Softmax(-1)
+                self.loss_func = nn.CrossEntropyLoss(weight=self.loss_func_wts)
+                # self.loss_func = partial(F.cross_entropy, weight=self.loss_func_wts)
+                self.activation = nn.Softmax(-1)
+                # self.activation = partial(F.softmax, dim=-1)  # nn.Softmax(-1)
 
     @classmethod
     def from_config(cls, config: ClassifierConfig):
