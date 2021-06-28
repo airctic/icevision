@@ -8,6 +8,9 @@ from icevision.tfms.albumentations.albumentations_helpers import (
 )
 from icevision.tfms.albumentations import albumentations_adapter
 
+from icevision.utils.imageio import *
+from icevision.visualize.draw_data import *
+
 
 def _end2end_detect(
     img: Union[PIL.Image.Image, Path, str],
@@ -129,3 +132,38 @@ def postprocess_bbox(
     )
 
     return xmin, ymin, xmax, ymax
+
+
+def draw_img_and_boxes(
+    img: Union[PIL.Image.Image, np.ndarray],
+    bboxes: dict,
+    class_map,
+    display_score: bool = True,
+    label_color: Union[np.array, list, tuple, str] = (255, 255, 0), 
+    label_border_color: Union[np.array, list, tuple, str] = (255, 255, 0), 
+    ) -> PIL.Image.Image:
+    
+    if not isinstance(img, PIL.Image.Image):
+      img = np.array(img)
+
+    # convert dict to record
+    record = ObjectDetectionRecord()
+    w, h = img.shape
+    record.img = np.array(img)
+    record.set_img_size(ImgSize(width=w, height=h))
+    record.detection.set_class_map(class_map)
+    for bbox in bboxes:
+        record.detection.add_bboxes([BBox.from_xyxy(*bbox['bbox'])])
+        if display_score== True:
+          score = bbox['score']
+          score = f"{score * 100: .2f}%"
+          label = bbox['class']
+          # label = f"{label}: {score}"
+          record.detection.add_labels([label])
+        else:
+          record.detection.add_labels([bbox['class']])
+        
+
+    pred_img = draw_sample(record, label_color=label_color, label_border_color=label_border_color)
+
+    return pred_img
