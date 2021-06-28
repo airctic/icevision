@@ -60,6 +60,7 @@ class ClassifierConfig:
             self.fpn_keys = [self.fpn_keys]
 
         if self.loss_func_wts is not None:
+            self.loss_func_wts = self.loss_func_wts.to(torch.float32)
             if torch.cuda.is_available():
                 self.loss_func_wts = self.loss_func_wts.cuda()
 
