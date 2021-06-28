@@ -59,6 +59,10 @@ class ClassifierConfig:
         if isinstance(self.fpn_keys, int):
             self.fpn_keys = [self.fpn_keys]
 
+        if self.loss_func_wts is not None:
+            if torch.cuda.is_available():
+                self.loss_func_wts = self.loss_func_wts.cuda()
+
         if self.multilabel:
             if self.topk is None and self.thresh is None:
                 self.thresh = 0.5
