@@ -154,17 +154,14 @@ def draw_img_and_boxes(
     record.detection.set_class_map(class_map)
     for bbox in bboxes:
         record.detection.add_bboxes([BBox.from_xyxy(*bbox["bbox"])])
-        if display_score == True:
-            score = bbox["score"]
-            score = f"{score * 100: .2f}%"
-            label = bbox["class"]
-            # label = f"{label}: {score}"
-            record.detection.add_labels([label])
-        else:
-            record.detection.add_labels([bbox["class"]])
+        record.detection.add_labels([bbox["class"]])
+        pred.detection.set_scores(bbox["score"])
 
     pred_img = draw_sample(
-        record, label_color=label_color, label_border_color=label_border_color
+        record,
+        display_score=display_score,
+        label_color=label_color,
+        label_border_color=label_border_color,
     )
 
     return pred_img
