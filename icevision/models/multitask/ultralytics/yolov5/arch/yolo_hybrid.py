@@ -177,6 +177,7 @@ class HybridYOLOV5(
         "Set model to training mode, while freezing non trainable layers' BN statistics"
         super(HybridYOLOV5, self).train(mode)
         set_bn_eval(self)
+        return self
 
     def build_classification_modules(self, verbose: bool = True):
         """
