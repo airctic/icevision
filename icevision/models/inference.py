@@ -1,4 +1,4 @@
-__all__ = ["process_bbox_predictions", "_end2end_detect"]
+__all__ = ["process_bbox_predictions", "_end2end_detect", "draw_img_and_boxes"]
 
 from icevision.imports import *
 from icevision.core import *
@@ -139,12 +139,12 @@ def draw_img_and_boxes(
     bboxes: dict,
     class_map,
     display_score: bool = True,
-    label_color: Union[np.array, list, tuple, str] = (255, 255, 0), 
-    label_border_color: Union[np.array, list, tuple, str] = (255, 255, 0), 
-    ) -> PIL.Image.Image:
-    
+    label_color: Union[np.array, list, tuple, str] = (255, 255, 0),
+    label_border_color: Union[np.array, list, tuple, str] = (255, 255, 0),
+) -> PIL.Image.Image:
+
     if not isinstance(img, PIL.Image.Image):
-      img = np.array(img)
+        img = np.array(img)
 
     # convert dict to record
     record = ObjectDetectionRecord()
@@ -153,17 +153,18 @@ def draw_img_and_boxes(
     record.set_img_size(ImgSize(width=w, height=h))
     record.detection.set_class_map(class_map)
     for bbox in bboxes:
-        record.detection.add_bboxes([BBox.from_xyxy(*bbox['bbox'])])
-        if display_score== True:
-          score = bbox['score']
-          score = f"{score * 100: .2f}%"
-          label = bbox['class']
-          # label = f"{label}: {score}"
-          record.detection.add_labels([label])
+        record.detection.add_bboxes([BBox.from_xyxy(*bbox["bbox"])])
+        if display_score == True:
+            score = bbox["score"]
+            score = f"{score * 100: .2f}%"
+            label = bbox["class"]
+            # label = f"{label}: {score}"
+            record.detection.add_labels([label])
         else:
-          record.detection.add_labels([bbox['class']])
-        
+            record.detection.add_labels([bbox["class"]])
 
-    pred_img = draw_sample(record, label_color=label_color, label_border_color=label_border_color)
+    pred_img = draw_sample(
+        record, label_color=label_color, label_border_color=label_border_color
+    )
 
     return pred_img
