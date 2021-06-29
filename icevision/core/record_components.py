@@ -253,7 +253,10 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
         return [self.class_map.get_by_name(name) for name in labels_names]
 
     def _num_annotations(self) -> Dict[str, int]:
-        return {"labels": len(self.label_ids)}
+        return {
+            "labels": len(self.labels),
+            "label_ids": len(self.label_ids),
+        }
 
     def _autofix(self) -> Dict[str, bool]:
         return {"labels": [True] * len(self.label_ids)}
