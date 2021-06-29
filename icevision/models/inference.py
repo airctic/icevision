@@ -77,6 +77,7 @@ def process_bbox_predictions(
         bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
         bboxes.append(bbox)
 
+    pred.pred.img = np.array(img)
     pred.pred.detection.set_bboxes(bboxes)
     return pred
 
