@@ -19,6 +19,13 @@ def _end2end_detect(
     class_map: ClassMap,
     detection_threshold: float = 0.5,
     predict_fn: Callable = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_score: bool = True,
+    font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
+    font_size: Union[int, float] = 12,
+    label_color: Union[np.array, list, tuple, str] = ("#C4C4C4"),  # Mild Gray
+    return_as_pil_img=True,
 ):
     """
     Run Object Detection inference (only `bboxes`) on a single image.
@@ -41,10 +48,24 @@ def _end2end_detect(
     infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
     pred = process_bbox_predictions(pred, img, transforms.tfms_list)
-    
-    # return the record that contains the updated prediction (i.e. with resized boxes that match the original image size)
-    # also return a dict in case the user needs to return a json object
-    return pred.pred, pred.pred.as_dict()
+
+    # draw image, return it as PIL image by default otherwise as numpy array
+    pred_img = draw_record(
+        record=pred, 
+        class_map=class_map, 
+        display_label=display_label,
+        display_score=display_score,
+        display_bbox=display_bbox,
+        font_path=font_path,
+        font_size=font_size,
+        label_color=label_color,
+        return_as_pil_img=return_as_pil_img,
+    )
+
+    pred.pred.img = pred_img
+    # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
+    # and all the info regarding the boxes, labels, and prediction scores
+    return pred.pred.as_dict()
 
 
 def process_bbox_predictions(
