@@ -64,14 +64,15 @@ def _end2end_detect(
         return_as_pil_img=return_as_pil_img,
     )
 
-    pred.pred['common']['img'] = pred_img
+    record = pred.pred
+    record['common']['img'] = pred_img
     
     w, h = img.shape
-    pred.pred.set_img_size(ImgSize(width=w, height=h))
+    record.set_img_size(ImgSize(width=w, height=h))
 
     # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
     # and all the info regarding the boxes, labels, and prediction scores
-    return pred.pred['common']['img'], pred.pred.as_dict()
+    return record['common']['img'], record.as_dict()
 
 
 def process_bbox_predictions(
