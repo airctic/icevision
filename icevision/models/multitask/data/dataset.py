@@ -171,8 +171,15 @@ class HybridAugmentationsRecordDataset(Dataset):
     def __len__(self):
         return len(self.records)
 
+    def load_record(self, i: int):
+        """
+        Simple record loader. Externalised for easy subclassing for custom behavior
+        like loading cached records from disk
+        """
+        return self.records[i].load()
+
     def __getitem__(self, i):
-        record = self.records[i].load()
+        record = self.load_record(i)
 
         # Keep a copy of the orig img as it gets modified by albu
         original_img = deepcopy(record.img)
