@@ -177,6 +177,7 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         classification_losses: TensorDict,
     ):
         log_vars = dict(
+            total_loss=detection_loss + classification_total_loss,
             detection_loss=detection_loss,
             classification_total_loss=classification_total_loss,
             **{
