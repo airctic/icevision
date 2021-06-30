@@ -197,13 +197,12 @@ class HybridAugmentationsRecordDataset(Dataset):
                 print(f"  Group: {group['tasks']}, ID: {id(tfmd_img)}")
 
             # NOTE:
-            # * We need to add the img component dynamically here to
-            #   play nice with the albumentations adapter 🤬
-            # * Setting the same img twice (to diff parts in memory),
-            #   but it's ok cuz we will unload the record in DataLoader
+            # Setting the same img twice (to diff parts in memory) but it's ok cuz we will unload the record later
             for task in group["tasks"]:
-                record.add_component(ImageRecordComponent(Task(task)))
-                getattr(record, task).set_img(tfmd_img)
+                # record.add_component(ImageRecordComponent(Task(task))) # TODO FIXME: This throws a weird error idk why
+                comp = getattr(record, task)
+                comp.add_component(ImageRecordComponent())
+                comp.set_img(tfmd_img)
                 if self.debug:
                     print(f"   - Task: {task}, ID: {id(tfmd_img)}")
 
