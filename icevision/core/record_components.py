@@ -254,8 +254,7 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
 
     def _num_annotations(self) -> Dict[str, int]:
         return {
-            "labels": len(self.labels),
-            "label_ids": len(self.label_ids),
+            "labels": len(self.label_ids),
         }
 
     def _autofix(self) -> Dict[str, bool]:
@@ -271,7 +270,10 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
         return [*super()._repr(), f"Labels: {self.label_ids}"]
 
     def as_dict(self) -> dict:
-        return {"labels": self.label_ids}
+        return {
+            "labels": self.labels,
+            "label_ids": self.label_ids,
+        }
 
     def _builder_template(self) -> List[str]:
         return [
