@@ -11,6 +11,7 @@ from icevision.tfms.albumentations import albumentations_adapter
 from icevision.utils.imageio import *
 from icevision.visualize.draw_data import *
 
+DEFAULT_FONT_PATH = get_default_font()
 
 def _end2end_detect(
     img: Union[PIL.Image.Image, Path, str],
