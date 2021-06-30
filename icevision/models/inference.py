@@ -10,6 +10,7 @@ from icevision.tfms.albumentations import albumentations_adapter
 
 from icevision.utils.imageio import *
 from icevision.visualize.draw_data import *
+from icevision.visualize.utils import *
 
 DEFAULT_FONT_PATH = get_default_font()
 
