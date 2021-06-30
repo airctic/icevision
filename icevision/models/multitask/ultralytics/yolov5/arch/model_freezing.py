@@ -37,44 +37,38 @@ class FreezingInterfaceExtension:
     def _get_params_classifier_heads(self) -> List[List[Parameter]]:
         return [params(self.classifier_heads)]
 
-    def set_param_requires_grad(
-        self,
-        stem: bool,
-        bbone_blocks: Tuple[Collection[int], bool],
-        neck: bool,
-        bbox_head: bool,
-        classifier_heads: bool,
-    ):
+    def _set_param_grad_stem(self, mode: bool):
+        for p in flatten(self._get_params_stem()):
+            p.requires_grad = mode
+
+    def _set_param_grad_backbone(self, mode: bool, bbone_blocks: Collection[int]):
         error_msg = f"""
-        `bbone_blocks` must be a list|tuple where the second value is the gradient state to be set, and the
-        first value is a List[int] between 0-9 specifying which blocks to set this state for
+        `bbone_blocks` must be a list|tuple of values between 0-9 specifying which blocks to set this state for
         """
-        if not (isinstance(bbone_blocks, (list, tuple)) and len(bbone_blocks) == 2):
+
+        if not isinstance(bbone_blocks, (list, tuple)):
             raise TypeError(error_msg)
-        if not isinstance(bbone_blocks[0], (list, tuple)):
+        if not all(isinstance(x, int) for x in bbone_blocks):
             raise TypeError(error_msg)
-        if not all(isinstance(x, int) for x in bbone_blocks[0]):
-            raise TypeError(error_msg)
-        if not bbone_blocks[0] == []:
-            if not 0 <= bbone_blocks[0][0] <= 9:
+        if not bbone_blocks == []:
+            if not 0 <= bbone_blocks[0] <= 9:
                 raise ValueError(error_msg)
 
-        for p in flatten(self._get_params_stem()):
-            p.requires_grad = stem
-
-        target_blocks, grad_state = bbone_blocks
         pgs = np.array(self._get_params_backbone(), dtype="object")
-        for p in flatten(pgs[target_blocks]):
-            p.requires_grad = grad_state
+        for p in flatten(pgs[bbone_blocks]):
+            p.requires_grad = mode
 
+    def _set_param_grad_neck(self, mode: bool):
         for p in flatten(self._get_params_neck()):
-            p.requires_grad = neck
+            p.requires_grad = mode
 
+    def _set_param_grad_bbox_head(self, mode: bool):
         for p in flatten(self._get_params_bbox_head()):
-            p.requires_grad = bbox_head
+            p.requires_grad = mode
 
+    def _set_param_grad_classifier_heads(self, mode: bool):
         for p in flatten(self._get_params_classifier_heads()):
-            p.requires_grad = classifier_heads
+            p.requires_grad = mode
 
     def freeze(
         self,
@@ -96,13 +90,16 @@ class FreezingInterfaceExtension:
             bbox_head (bool, optional): Freeze the bounding box head (the `Detect` module). Defaults to False.
             classifier_heads (bool, optional): Freeze all the classification heads. Defaults to False.
         """
-        self.set_param_requires_grad(
-            stem=not stem,  # If `stem==True`, set requires_grad to False
-            bbone_blocks=([i for i in range(bbone_blocks)], False),
-            neck=not neck,
-            bbox_head=not bbox_head,
-            classifier_heads=not classifier_heads,
-        )
+        if stem:
+            self._set_param_grad_stem(False)
+        if bbone_blocks:
+            self._set_param_grad_backbone(False, [i for i in range(bbone_blocks)])
+        if neck:
+            self._set_param_grad_neck(False)
+        if bbox_head:
+            self._set_param_grad_bbox_head(False)
+        if classifier_heads:
+            self._set_param_grad_classifier_heads(False)
 
     def unfreeze(
         self,
@@ -121,13 +118,16 @@ class FreezingInterfaceExtension:
         Note that `bbone_blocks` works differently from `.freeze()`. `bbone_blocks=3` will unfreeze
         the _last 3_ blocks, and `bbone_blocks=9` will unfreeze _all_ the blocks
         """
-        self.set_param_requires_grad(
-            stem=stem,
-            bbone_blocks=([i for i in range(9 - bbone_blocks, 9)], True),
-            neck=neck,
-            bbox_head=bbox_head,
-            classifier_heads=classifier_heads,
-        )
+        if stem:
+            self._set_param_grad_stem(True)
+        if bbone_blocks:
+            self._set_param_grad_backbone(True, [i for i in range(9 - bbone_blocks, 9)])
+        if neck:
+            self._set_param_grad_neck(True)
+        if bbox_head:
+            self._set_param_grad_bbox_head(True)
+        if classifier_heads:
+            self._set_param_grad_classifier_heads(True)
 
     def freeze_detector(self):
         "Freezes the entire detector i.e. stem, bbone, neck, bbox head"
