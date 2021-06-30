@@ -14,6 +14,7 @@ from icevision.visualize.utils import *
 
 DEFAULT_FONT_PATH = get_default_font()
 
+
 def _end2end_detect(
     img: Union[PIL.Image.Image, Path, str],
     transforms: albumentations_adapter.Adapter,
@@ -53,8 +54,8 @@ def _end2end_detect(
 
     # draw image, return it as PIL image by default otherwise as numpy array
     pred_img = draw_record(
-        record=pred, 
-        class_map=class_map, 
+        record=pred,
+        class_map=class_map,
         display_label=display_label,
         display_score=display_score,
         display_bbox=display_bbox,
@@ -65,14 +66,14 @@ def _end2end_detect(
     )
 
     record = pred.pred
-    record['common']['img'] = pred_img
-    
+    record.set_img(pred_img)
+
     w, h = img.shape
     record.set_img_size(ImgSize(width=w, height=h))
 
     # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
     # and all the info regarding the boxes, labels, and prediction scores
-    return record['common']['img'], record.as_dict()
+    return pred_img, record.as_dict()
 
 
 def process_bbox_predictions(
@@ -102,7 +103,7 @@ def process_bbox_predictions(
         xmin, ymin, xmax, ymax = postprocess_bbox(
             img, bbox, transforms, pred.pred.height, pred.pred.width
         )
-        
+
         bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
         bboxes.append(bbox)
 
