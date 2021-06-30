@@ -43,7 +43,8 @@ def _end2end_detect(
     pred = process_bbox_predictions(pred, img, transforms.tfms_list)
     
     # return the record that contains the updated prediction (i.e. with resized boxes that match the original image size)
-    return pred.pred
+    # also return a dict in case the user needs to return a json object
+    return pred.pred, pred.pred.as_dict()
 
 
 def process_bbox_predictions(
