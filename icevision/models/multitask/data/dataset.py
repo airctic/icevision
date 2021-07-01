@@ -161,7 +161,7 @@ class HybridAugmentationsRecordDataset(Dataset):
         for attr in flatten(
             [g["tasks"] for g in self.classification_transforms_groups.values()]
         ):
-            if not hasattr(records, attr):
+            if not hasattr(record, attr):
                 missing_tasks += [attr]
         if not missing_tasks == []:
             raise ValueError(
