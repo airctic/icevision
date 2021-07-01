@@ -157,10 +157,11 @@ class HybridAugmentationsRecordDataset(Dataset):
             ), f"Invalid keys in `classification_transforms_groups`"
 
         missing_tasks = []
+        record = self.load_record(0)
         for attr in flatten(
             [g["tasks"] for g in self.classification_transforms_groups.values()]
         ):
-            if not hasattr(self.records[0], attr):
+            if not hasattr(records, attr):
                 missing_tasks += [attr]
         if not missing_tasks == []:
             raise ValueError(
