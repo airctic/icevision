@@ -69,7 +69,7 @@ def _end2end_detect(
         )
         record.set_img(pred_img)
     else:
-        record.set_img(None)
+        record._unload()
 
     w, h = img.shape
     record.set_img_size(ImgSize(width=w, height=h))
