@@ -75,21 +75,22 @@ def _end2end_detect(
     record.set_img_size(ImgSize(width=w, height=h))
 
     pred_dict = record.as_dict()
-    
+
     # expose img at the root instead of having under the `common` key
     if return_img:
-      pred_dict['img'] = pred_img
+        pred_dict["img"] = pred_img
     else:
-       pred_dict['img'] = None
+        pred_dict["img"] = None
 
-    pred_dict['width'] = w
-    pred_dict['height'] = h   
+    pred_dict["width"] = w
+    pred_dict["height"] = h
     # delete the `common` key that holds both the `img` and its shape
-    del pred_dict['common']
+    del pred_dict["common"]
 
     # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
     # labels, and prediction scores
     return pred_dict
+
 
 def process_bbox_predictions(
     pred: Prediction,
