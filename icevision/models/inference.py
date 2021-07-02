@@ -29,6 +29,7 @@ def _end2end_detect(
     font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = ("#C4C4C4"),  # Mild Gray
     return_as_pil_img=True,
+    return_img=True,
 ):
     """
     Run Object Detection inference (only `bboxes`) on a single image.
@@ -51,29 +52,31 @@ def _end2end_detect(
     infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
     pred = process_bbox_predictions(pred, img, transforms.tfms_list)
+    record = pred.pred
 
     # draw image, return it as PIL image by default otherwise as numpy array
-    pred_img = draw_record(
-        record=pred,
-        class_map=class_map,
-        display_label=display_label,
-        display_score=display_score,
-        display_bbox=display_bbox,
-        font_path=font_path,
-        font_size=font_size,
-        label_color=label_color,
-        return_as_pil_img=return_as_pil_img,
-    )
-
-    record = pred.pred
-    record.set_img(pred_img)
+    if return_img:
+        pred_img = draw_record(
+            record=pred,
+            class_map=class_map,
+            display_label=display_label,
+            display_score=display_score,
+            display_bbox=display_bbox,
+            font_path=font_path,
+            font_size=font_size,
+            label_color=label_color,
+            return_as_pil_img=return_as_pil_img,
+        )
+        record.set_img(pred_img)
+    else:
+        record.set_img(None)
 
     w, h = img.shape
     record.set_img_size(ImgSize(width=w, height=h))
 
     # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
-    # and all the info regarding the boxes, labels, and prediction scores
-    return pred_img, record.as_dict()
+    # labels, and prediction scores
+    return record.as_dict()
 
 
 def process_bbox_predictions(
