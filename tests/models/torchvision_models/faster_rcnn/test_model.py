@@ -19,10 +19,10 @@ def test_e2e_detect(samples_source, fridge_class_map, model_name, param_groups_l
     backbone = backbone_fn(pretrained=False)
     model = faster_rcnn.model(num_classes=4, backbone=backbone)
 
-    bboxes = faster_rcnn.end2end_detect(
+    pred_dict = faster_rcnn.end2end_detect(
         img_path, tfms_, model, fridge_class_map, detection_threshold=1
     )
-    assert len(bboxes) == 0
+    assert len(pred_dict['detection']['bboxes']) == 0
 
 
 def test_faster_rcnn_default_param_groups():
