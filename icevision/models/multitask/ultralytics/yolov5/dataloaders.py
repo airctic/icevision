@@ -158,6 +158,7 @@ def build_multi_aug_batch(
                 else:
                     labels = comp.label_ids
                     classification_targets[name].extend(labels)
+        record.unload()  # NOTE: Safety mechanism
 
     # Massage data
     for group in classification_data.values():
