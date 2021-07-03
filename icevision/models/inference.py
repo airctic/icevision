@@ -53,7 +53,7 @@ def _end2end_detect(
 
     Returns
     -------
-    A dictionnary with categories, scores, bounding box coordinates, image height and width, 
+    A dictionnary with categories, scores, bounding box coordinates, image height and width,
                    and optionally a PIL Image or a numpy array (image).
                    Bounding boxes are adjusted to the original image size and aspect ratio
     """
