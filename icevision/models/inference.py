@@ -1,4 +1,4 @@
-__all__ = ["process_bbox_predictions", "_end2end_detect"]
+__all__ = ["process_bbox_predictions", "_end2end_detect", "draw_img_and_boxes"]
 
 from icevision.imports import *
 from icevision.core import *
@@ -8,6 +8,12 @@ from icevision.tfms.albumentations.albumentations_helpers import (
 )
 from icevision.tfms.albumentations import albumentations_adapter
 
+from icevision.utils.imageio import *
+from icevision.visualize.draw_data import *
+from icevision.visualize.utils import *
+
+DEFAULT_FONT_PATH = get_default_font()
+
 
 def _end2end_detect(
     img: Union[PIL.Image.Image, Path, str],
@@ -16,29 +22,85 @@ def _end2end_detect(
     class_map: ClassMap,
     detection_threshold: float = 0.5,
     predict_fn: Callable = None,
+    display_label: bool = True,
+    display_bbox: bool = True,
+    display_score: bool = True,
+    font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
+    font_size: Union[int, float] = 12,
+    label_color: Union[np.array, list, tuple, str] = ("#C4C4C4"),  # Mild Gray
+    return_as_pil_img=True,
+    return_img=True,
 ):
     """
     Run Object Detection inference (only `bboxes`) on a single image.
 
     Parameters
     ----------
-    img: image to run inference on. Can be a string, Path or PIL.Image
+    img: image to run inference on. It can be a string, Path or PIL.Image
     transforms: icevision albumentations transforms
     model: model to run inference with
     class_map: ClassMap with the available categories
-    detection_threshold: confidence threshold below which boxes are discarded
+    detection_threshold: confidence threshold below which bounding boxes are discarded
+    display_label: display or not a bounding box label(i.e class)
+    display_bbox: display or not a bounding box
+    display_score: display or not a bounding box score
+    font_path: path to the font file used
+    font_size: font size
+    label_color: a <collection> of RGB values or a hex code string that defines
+                   the color of all the plotted labels
+    return_as_pil_img: if True a PIL image is returned otherwise a numpy array is returned
+    return_img: whether we should also return an image in addition to the bounding boxes, labels, and scores
 
     Returns
     -------
-    List of dicts with category, score and bbox coordinates adjusted to original image size and aspect ratio
+    A dictionnary with categories, scores, bounding box coordinates, image height and width,
+                   and optionally a PIL Image or a numpy array (image).
+                   Bounding boxes are adjusted to the original image size and aspect ratio
     """
     if isinstance(img, (str, Path)):
         img = PIL.Image.open(Path(img))
 
     infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
-    bboxes = process_bbox_predictions(pred, img, transforms.tfms_list)
-    return bboxes
+    pred = process_bbox_predictions(pred, img, transforms.tfms_list)
+    record = pred.pred
+
+    # draw image, return it as PIL image by default otherwise as numpy array
+    if return_img:
+        pred_img = draw_record(
+            record=pred,
+            class_map=class_map,
+            display_label=display_label,
+            display_score=display_score,
+            display_bbox=display_bbox,
+            font_path=font_path,
+            font_size=font_size,
+            label_color=label_color,
+            return_as_pil_img=return_as_pil_img,
+        )
+        record.set_img(pred_img)
+    else:
+        record._unload()
+
+    w, h = img.shape
+    record.set_img_size(ImgSize(width=w, height=h))
+
+    pred_dict = record.as_dict()
+
+    # expose img at the root instead of having under the `common` key
+    if return_img:
+        pred_dict["img"] = pred_img
+    else:
+        pred_dict["img"] = None
+
+    pred_dict["width"] = w
+    pred_dict["height"] = h
+    # delete the `common` key that holds both the `img` and its shape
+    del pred_dict["common"]
+
+    # return a dict that contains the image with its predicted boxes (i.e. with resized boxes that match the original image size)
+    # labels, and prediction scores
+    return pred_dict
 
 
 def process_bbox_predictions(
@@ -68,13 +130,13 @@ def process_bbox_predictions(
         xmin, ymin, xmax, ymax = postprocess_bbox(
             img, bbox, transforms, pred.pred.height, pred.pred.width
         )
-        result = {
-            "class": label,
-            "score": score,
-            "bbox": [xmin, ymin, xmax, ymax],
-        }
-        bboxes.append(result)
-    return bboxes
+
+        bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
+        bboxes.append(bbox)
+
+    pred.pred.img = np.array(img)
+    pred.pred.detection.set_bboxes(bboxes)
+    return pred
 
 
 def postprocess_bbox(
@@ -129,3 +191,36 @@ def postprocess_bbox(
     )
 
     return xmin, ymin, xmax, ymax
+
+
+def draw_img_and_boxes(
+    img: Union[PIL.Image.Image, np.ndarray],
+    bboxes: dict,
+    class_map,
+    display_score: bool = True,
+    label_color: Union[np.array, list, tuple, str] = (255, 255, 0),
+    label_border_color: Union[np.array, list, tuple, str] = (255, 255, 0),
+) -> PIL.Image.Image:
+
+    if not isinstance(img, PIL.Image.Image):
+        img = np.array(img)
+
+    # convert dict to record
+    record = ObjectDetectionRecord()
+    w, h = img.shape
+    record.img = np.array(img)
+    record.set_img_size(ImgSize(width=w, height=h))
+    record.detection.set_class_map(class_map)
+    for bbox in bboxes:
+        record.detection.add_bboxes([BBox.from_xyxy(*bbox["bbox"])])
+        record.detection.add_labels([bbox["class"]])
+        record.detection.set_scores(bbox["score"])
+
+    pred_img = draw_sample(
+        record,
+        display_score=display_score,
+        label_color=label_color,
+        label_border_color=label_border_color,
+    )
+
+    return pred_img

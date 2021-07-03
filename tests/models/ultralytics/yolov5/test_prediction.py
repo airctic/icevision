@@ -14,10 +14,10 @@ def test_e2e_detect(samples_source, fridge_class_map, backbone):
     model = models.ultralytics.yolov5.model(
         num_classes=5, img_size=384, backbone=backbone(pretrained=True)
     )
-    bboxes = models.ultralytics.yolov5.end2end_detect(
+    pred_dict = models.ultralytics.yolov5.end2end_detect(
         img_path, tfms_, model, fridge_class_map
     )
-    assert len(bboxes) == 0
+    assert len(pred_dict["detection"]["bboxes"]) == 0
 
 
 def _test_preds(preds):
