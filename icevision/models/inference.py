@@ -36,15 +36,26 @@ def _end2end_detect(
 
     Parameters
     ----------
-    img: image to run inference on. Can be a string, Path or PIL.Image
+    img: image to run inference on. It can be a string, Path or PIL.Image
     transforms: icevision albumentations transforms
     model: model to run inference with
     class_map: ClassMap with the available categories
-    detection_threshold: confidence threshold below which boxes are discarded
+    detection_threshold: confidence threshold below which bounding boxes are discarded
+    display_label: display or not a bounding box label(i.e class)
+    display_bbox: display or not a bounding box
+    display_score: display or not a bounding box score
+    font_path: path to the font file used
+    font_size: font size
+    label_color: a <collection> of RGB values or a hex code string that defines
+                   the color of all the plotted labels
+    return_as_pil_img: if True a PIL image is returned otherwise a numpy array is returned
+    return_img: whether we should also return an image in addition to the bounding boxes, labels, and scores
 
     Returns
     -------
-    List of dicts with category, score and bbox coordinates adjusted to original image size and aspect ratio
+    A dictionnary with categories, scores, bounding box coordinates, image height and width, 
+                   and optionally a PIL Image or a numpy array (image).
+                   Bounding boxes are adjusted to the original image size and aspect ratio
     """
     if isinstance(img, (str, Path)):
         img = PIL.Image.open(Path(img))
