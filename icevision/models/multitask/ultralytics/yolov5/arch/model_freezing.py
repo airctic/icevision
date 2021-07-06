@@ -26,10 +26,10 @@ class FreezingInterfaceExtension:
         return params(self.model[0])
 
     def _get_params_backbone(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[1:10]]
+        return [params(m) for m in self.model[1 : len(self.yaml["backbone"])]]
 
     def _get_params_neck(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[10:][:-1]]
+        return [params(m) for m in self.model[len(self.yaml["backbone"]) :][:-1]]
 
     def _get_params_bbox_head(self) -> List[List[Parameter]]:
         return params(self.model[-1])
@@ -51,7 +51,7 @@ class FreezingInterfaceExtension:
         if not all(isinstance(x, int) for x in bbone_blocks):
             raise TypeError(error_msg)
         if not bbone_blocks == []:
-            if not 0 <= bbone_blocks[0] <= 9:
+            if not 0 <= bbone_blocks[0] <= len(self.yaml["backbone"]) - 1:
                 raise ValueError(error_msg)
 
         pgs = np.array(self._get_params_backbone(), dtype="object")
