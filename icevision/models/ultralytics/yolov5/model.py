@@ -37,7 +37,11 @@ def model(
         else device
     )
 
-    cfg_filepath = Path(yolov5.__file__).parent / f"models/{model_name}.yaml"
+    if model_name in ["yolov5s", "yolov5m", "yolov5l", "yolov5x"]:
+        cfg_filepath = Path(yolov5.__file__).parent / f"models/{model_name}.yaml"
+    else:
+        cfg_filepath = Path(yolov5.__file__).parent / f"models/hub/{model_name}.yaml"
+
     if pretrained:
         weights_path = yolo_dir / f"{model_name}.pt"
 
