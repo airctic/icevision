@@ -13,6 +13,7 @@ def model(
     backbone: EfficientDetBackboneConfig,
     num_classes: int,
     img_size: int,
+    **kwargs,
 ) -> nn.Module:
     """Creates the efficientdet model specified by `model_name`.
 
@@ -39,6 +40,7 @@ def model(
         bench_labeler=True,
         num_classes=num_classes - 1,
         pretrained=backbone.pretrained,
+        **kwargs,
     )
 
     # TODO: Break down param groups for backbone
