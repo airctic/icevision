@@ -28,3 +28,7 @@ pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu101/t
 echo "- Installing mmdet"
 pip install mmdet==2.13.0 -U -q
 echo "icevision installation finished"  
+
+# restart notebook
+echo "Restarting runtime!"
+kill -9 -1
