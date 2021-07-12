@@ -181,6 +181,14 @@ class HybridYOLOV5(
 
     @property
     def num_bbone_blocks(self) -> int:
+        return len(self.yaml["backbone"]) - 1
+
+    @property
+    def bbone_blocks_start_idx(self) -> int:
+        return 1
+
+    @property
+    def bbone_blocks_end_idx(self) -> int:
         return len(self.yaml["backbone"])
 
     def build_classification_modules(self, verbose: bool = True):

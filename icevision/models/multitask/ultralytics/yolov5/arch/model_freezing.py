@@ -26,7 +26,7 @@ class FreezingInterfaceExtension:
         return params(self.model[0])
 
     def _get_params_backbone(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[1 : self.num_bbone_blocks]]
+        return [params(m) for m in self.model[1 : self.bbone_blocks_end_idx]]
 
     def _get_params_neck(self) -> List[List[Parameter]]:
         return [params(m) for m in self.model[self.num_bbone_blocks :][:-1]]
