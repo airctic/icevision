@@ -29,7 +29,7 @@ class FreezingInterfaceExtension:
         return [params(m) for m in self.model[1 : self.bbone_blocks_end_idx]]
 
     def _get_params_neck(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[self.num_bbone_blocks :][:-1]]
+        return [params(m) for m in self.model[self.bbone_blocks_end_idx :][:-1]]
 
     def _get_params_bbox_head(self) -> List[List[Parameter]]:
         return params(self.model[-1])
