@@ -26,10 +26,10 @@ class FreezingInterfaceExtension:
         return params(self.model[0])
 
     def _get_params_backbone(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[1 : len(self.yaml["backbone"])]]
+        return [params(m) for m in self.model[1 : self.num_bbone_blocks]]
 
     def _get_params_neck(self) -> List[List[Parameter]]:
-        return [params(m) for m in self.model[len(self.yaml["backbone"]) :][:-1]]
+        return [params(m) for m in self.model[self.num_bbone_blocks :][:-1]]
 
     def _get_params_bbox_head(self) -> List[List[Parameter]]:
         return params(self.model[-1])
@@ -43,7 +43,7 @@ class FreezingInterfaceExtension:
 
     def _set_param_grad_backbone(self, mode: bool, bbone_blocks: Collection[int]):
         error_msg = f"""
-        `bbone_blocks` must be a list|tuple of values between 0-9 specifying which blocks to set this state for
+        `bbone_blocks` must be a list|tuple of values between 0-{self.num_bbone_blocks} specifying which blocks to set this state for
         """
 
         if not isinstance(bbone_blocks, (list, tuple)):
@@ -51,7 +51,7 @@ class FreezingInterfaceExtension:
         if not all(isinstance(x, int) for x in bbone_blocks):
             raise TypeError(error_msg)
         if not bbone_blocks == []:
-            if not 0 <= bbone_blocks[0] <= len(self.yaml["backbone"]) - 1:
+            if not 0 <= bbone_blocks[0] <= self.num_bbone_blocks - 1:
                 raise ValueError(error_msg)
 
         pgs = np.array(self._get_params_backbone(), dtype="object")
@@ -73,7 +73,7 @@ class FreezingInterfaceExtension:
     def freeze(
         self,
         stem: bool = False,
-        bbone_blocks: int = 0,  # between 0-9
+        bbone_blocks: int = 0,  # between 0 to self.num_bbone_blocks
         neck: bool = False,
         bbox_head: bool = False,
         classifier_heads: bool = False,
@@ -85,7 +85,7 @@ class FreezingInterfaceExtension:
 
         Args:
             stem (bool, optional): Freeze the first conv layer. Defaults to True.
-            bbone_blocks (int, optional): Number of blocks to freeze. If 0, none are frozen; if 9, all are frozen. If 3, the first 3 blocks are frozen
+            bbone_blocks (int, optional): Number of blocks to freeze. If 0, none are frozen; if ==self.num_bbone_blocks, all are frozen.
             neck (bool, optional): Freeze the neck (FPN). Defaults to False.
             bbox_head (bool, optional): Freeze the bounding box head (the `Detect` module). Defaults to False.
             classifier_heads (bool, optional): Freeze all the classification heads. Defaults to False.
@@ -116,12 +116,20 @@ class FreezingInterfaceExtension:
         don't want this fine grained control.
 
         Note that `bbone_blocks` works differently from `.freeze()`. `bbone_blocks=3` will unfreeze
-        the _last 3_ blocks, and `bbone_blocks=9` will unfreeze _all_ the blocks
+        the _last 3_ blocks, and `bbone_blocks=self.num_bbone_blocks` will unfreeze _all_ the blocks
         """
         if stem:
             self._set_param_grad_stem(True)
         if bbone_blocks:
-            self._set_param_grad_backbone(True, [i for i in range(9 - bbone_blocks, 9)])
+            self._set_param_grad_backbone(
+                True,
+                [
+                    i
+                    for i in range(
+                        self.num_bbone_blocks - bbone_blocks, self.num_bbone_blocks
+                    )
+                ],
+            )
         if neck:
             self._set_param_grad_neck(True)
         if bbox_head:
@@ -131,19 +139,27 @@ class FreezingInterfaceExtension:
 
     def freeze_detector(self):
         "Freezes the entire detector i.e. stem, bbone, neck, bbox head"
-        self.freeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
+        self.freeze(
+            stem=True, bbone_blocks=self.num_bbone_blocks, neck=True, bbox_head=True
+        )
 
     def unfreeze_detector(self):
         "Unfreezes the entire detector i.e. stem, bbone, neck, bbox head"
-        self.unfreeze(stem=True, bbone_blocks=9, neck=True, bbox_head=True)
+        self.unfreeze(
+            stem=True, bbone_blocks=self.num_bbone_blocks, neck=True, bbox_head=True
+        )
 
     def freeze_backbone(self, fpn=True):
         "Freezes the entire backbone, optionally without the neck/fpn"
-        self.freeze(stem=True, bbone_blocks=9, neck=True if fpn else False)
+        self.freeze(
+            stem=True, bbone_blocks=self.num_bbone_blocks, neck=True if fpn else False
+        )
 
     def unfreeze_backbone(self, fpn=True):
         "Unfreezes the entire backbone, optionally without the neck/fpn"
-        self.unfreeze(stem=True, bbone_blocks=9, neck=True if fpn else False)
+        self.unfreeze(
+            stem=True, bbone_blocks=self.num_bbone_blocks, neck=True if fpn else False
+        )
 
     def freeze_classifier_heads(self):
         "Freezes just the classification heads"
