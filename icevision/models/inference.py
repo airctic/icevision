@@ -28,7 +28,6 @@ def _end2end_detect(
     font_path: Optional[os.PathLike] = DEFAULT_FONT_PATH,
     font_size: Union[int, float] = 12,
     label_color: Union[np.array, list, tuple, str] = ("#FF59D6"),  # Pink
-    label_border_color: Union[np.array, list, tuple, str] = "#FF59D6",  # Pink,
     return_as_pil_img=True,
     return_img=True,
     **kwargs,
@@ -78,7 +77,6 @@ def _end2end_detect(
             font_path=font_path,
             font_size=font_size,
             label_color=label_color,
-            label_border_color=label_border_color,
             return_as_pil_img=return_as_pil_img,
             **kwargs,
         )
