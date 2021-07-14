@@ -115,7 +115,7 @@ class ImageRecordComponent(RecordComponent):
         assert isinstance(img, (PIL.Image.Image, np.ndarray))
         self.img = img
         if isinstance(img, PIL.Image.Image):
-            height, width = img.shape
+            width, height = img.size
         elif isinstance(img, np.ndarray):
             # else:
             height, width, _ = self.img.shape
@@ -136,7 +136,7 @@ class ImageRecordComponent(RecordComponent):
                     )
                 return [f"Img: {width}x{height}x{channels} <np.ndarray> Image"]
             elif isinstance(self.img, PIL.Image.Image):
-                height, width = self.img.shape
+                width, height = self.img.size
                 return [f"Img: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
         else:
             return [f"Img: {self.img}"]
