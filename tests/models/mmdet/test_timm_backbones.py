@@ -21,7 +21,7 @@ class TestTimmBackbones:
         backbone = model_type.backbones.timm.mobilenet.mobilenetv3_large_100
         backbone.config_path = samples_source / backbone.config_path
 
-        model = model_type.model(backbone=backbone, num_classes=5)
+        model = model_type.model(backbone=backbone(pretrained=True), num_classes=5)
 
         return train_dl, valid_dl, model
 
