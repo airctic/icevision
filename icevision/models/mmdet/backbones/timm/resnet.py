@@ -1,6 +1,7 @@
 __all__ = [
     "BaseResNet",
     "ResNet50_Timm",
+    "ResNetRS50_Timm",
 ]
 
 from icevision.models.mmdet.backbones.timm.common import *
@@ -26,7 +27,7 @@ class BaseResNet(MMDetTimmBase):
     def __init__(
         self,
         model_name: str = None,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
@@ -93,13 +94,13 @@ class BaseResNet(MMDetTimmBase):
 class ResNet50_Timm(BaseResNet):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "ResNet50 with hardcoded `pretrained=True`"
+        "ResNet50"
         super().__init__(
             model_name="resnet50",
             pretrained=pretrained,
@@ -118,13 +119,13 @@ class ResNet50_Timm(BaseResNet):
 class ResNetRS50_Timm(BaseResNet):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "ResNetRS50 with hardcoded `pretrained=True`"
+        "ResNetRS50"
         super().__init__(
             model_name="resnetrs50",
             pretrained=pretrained,

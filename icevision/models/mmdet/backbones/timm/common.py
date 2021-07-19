@@ -10,7 +10,7 @@ class MMDetTimmBase(nn.Module):
     def __init__(
         self,
         model_name: str = None,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
     ):

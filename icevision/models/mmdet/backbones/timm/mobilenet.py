@@ -27,7 +27,7 @@ class BaseMobileNetV3(MMDetTimmBase):
     def __init__(
         self,
         model_name: str = None,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
@@ -96,13 +96,13 @@ class BaseMobileNetV3(MMDetTimmBase):
 class MobileNetV3_Large_100(BaseMobileNetV3):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "MobileNetV3 Large with hardcoded `pretrained=True`"
+        "MobileNetV3 Large"
         super().__init__(
             model_name="mobilenetv3_large_100",
             pretrained=pretrained,
@@ -121,13 +121,13 @@ class MobileNetV3_Large_100(BaseMobileNetV3):
 class MobileNetV3_RW(BaseMobileNetV3):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "register_module Large with hardcoded `pretrained=True`"
+        "register_module Large"
         super().__init__(
             model_name="mobilenetv3_rw",
             pretrained=pretrained,

@@ -26,7 +26,7 @@ class BaseResNet(MMDetTimmBase):
     def __init__(
         self,
         model_name: str = None,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
@@ -93,13 +93,13 @@ class BaseResNet(MMDetTimmBase):
 class ResNest50D_Timm(BaseResNet):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "ResNe(s)t50 with hardcoded `pretrained=True`"
+        "ResNe(s)t50"
         super().__init__(
             model_name="resnest50d",
             pretrained=pretrained,
@@ -118,13 +118,13 @@ class ResNest50D_Timm(BaseResNet):
 class ResNest101E_Timm(BaseResNet):
     def __init__(
         self,
-        pretrained: bool = True,  # doesn't matter
+        pretrained: bool = True,
         out_indices: Collection[int] = (2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         frozen_stem: bool = True,
     ):
-        "ResNe(s)t101 with hardcoded `pretrained=True`"
+        "ResNe(s)t101"
         super().__init__(
             model_name="resnest101e",
             pretrained=pretrained,
