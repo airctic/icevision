@@ -23,11 +23,12 @@ for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
 #     blah
 
 # FIXME
-def open_img(fn, gray=False) -> PIL.Image.Image:
+def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
     "Open an image from disk `fn` as a PIL Image"
     color = "L" if gray else "RGB"
     image = PIL.Image.open(str(fn))
-    image = PIL.ImageOps.exif_transpose(image)
+    if not ignore_exif:
+        image = PIL.ImageOps.exif_transpose(image)
     image = image.convert(color)
     return image
 
