@@ -25,6 +25,11 @@ from icevision.models.mmdet.utils import *
             models.mmdet.retinanet,
             models.mmdet.retinanet.backbones.timm.resnet.resnet50,
         ),
+        (
+            "fridge_ds",
+            models.mmdet.retinanet,
+            models.mmdet.retinanet.backbones.timm.resnet.resnetrs50,
+        ),
     ),
 )
 class TestTimmBackbones:
