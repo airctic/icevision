@@ -8,7 +8,6 @@ from icevision.models.mmdet.backbones.timm.resnet import *
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
-from icevision.models.mmdet.utils import *
 
 base_config_path = mmdet_configs_path / "retinanet"
 
