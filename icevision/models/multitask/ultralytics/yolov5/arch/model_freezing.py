@@ -155,6 +155,14 @@ class FreezingInterfaceExtension:
             stem=True, bbone_blocks=self.num_bbone_blocks, neck=True if fpn else False
         )
 
+    def freeze_neck(self):
+        "Freeze the FPN/Neck"
+        self.freeze(neck=True)
+
+    def freeze_fpn(self):
+        "Freeze the FPN/Neck"
+        self.freeze_neck()
+
     def unfreeze_backbone(self, fpn=True):
         "Unfreezes the entire backbone, optionally without the neck/fpn"
         self.unfreeze(
