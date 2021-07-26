@@ -67,15 +67,16 @@ def build_single_aug_batch(
         detection_targets.append(detection_target)
 
         # Classification
-        for comp in record.components:
-            name = comp.task.name
-            if isinstance(comp, ClassificationLabelsRecordComponent):
-                if comp.is_multilabel:
-                    labels = comp.one_hot_encoded()
-                    classification_targets[name].append(labels)
-                else:
-                    labels = comp.label_ids
-                    classification_targets[name].extend(labels)
+        assign_classification_targets_from_record(classification_targets, record)
+        # for comp in record.components:
+        #     name = comp.task.name
+        #     if isinstance(comp, ClassificationLabelsRecordComponent):
+        #         if comp.is_multilabel:
+        #             labels = comp.one_hot_encoded()
+        #             classification_targets[name].append(labels)
+        #         else:
+        #             labels = comp.label_ids
+        #             classification_targets[name].extend(labels)
 
     classification_targets = {k: tensor(v) for k, v in classification_targets.items()}
 
@@ -149,15 +150,16 @@ def build_multi_aug_batch(
             classification_data[key]["tasks"] = group["tasks"]
             classification_data[key]["images"].append(im2tensor(task.img))
 
-        for comp in record.components:
-            name = comp.task.name
-            if isinstance(comp, ClassificationLabelsRecordComponent):
-                if comp.is_multilabel:
-                    labels = comp.one_hot_encoded()
-                    classification_targets[name].append(labels)
-                else:
-                    labels = comp.label_ids
-                    classification_targets[name].extend(labels)
+        assign_classification_targets_from_record(classification_targets, record)
+        # for comp in record.components:
+        #     name = comp.task.name
+        #     if isinstance(comp, ClassificationLabelsRecordComponent):
+        #         if comp.is_multilabel:
+        #             labels = comp.one_hot_encoded()
+        #             classification_targets[name].append(labels)
+        #         else:
+        #             labels = comp.label_ids
+        #             classification_targets[name].extend(labels)
         record.unload()  # NOTE: Safety mechanism
 
     # Massage data

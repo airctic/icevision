@@ -90,15 +90,16 @@ def build_multi_aug_batch(
             classification_data[key]["images"].append(_img_tensor(task))
 
         # Get classification labels for each group
-        for comp in record.components:
-            name = comp.task.name
-            if isinstance(comp, ClassificationLabelsRecordComponent):
-                if comp.is_multilabel:
-                    labels = comp.one_hot_encoded()
-                    classification_labels[name].append(labels)
-                else:
-                    labels = comp.label_ids
-                    classification_labels[name].extend(labels)
+        assign_classification_targets_from_record(classification_labels, record)
+        # for comp in record.components:
+        #     name = comp.task.name
+        #     if isinstance(comp, ClassificationLabelsRecordComponent):
+        #         if comp.is_multilabel:
+        #             labels = comp.one_hot_encoded()
+        #             classification_labels[name].append(labels)
+        #         else:
+        #             labels = comp.label_ids
+        #             classification_labels[name].extend(labels)
 
     # Massage data
     for group in classification_data.values():
@@ -134,15 +135,16 @@ def build_single_aug_batch(records: Sequence[RecordType]):
         bboxes.append(_bboxes(record))
 
         # Loop through and create classifier dict of inputs
-        for comp in record.components:
-            name = comp.task.name
-            if isinstance(comp, ClassificationLabelsRecordComponent):
-                if comp.is_multilabel:
-                    labels = comp.one_hot_encoded()
-                    classification_labels[name].append(labels)
-                else:
-                    labels = comp.label_ids
-                    classification_labels[name].extend(labels)
+        assign_classification_targets_from_record(classification_labels, record)
+        # for comp in record.components:
+        #     name = comp.task.name
+        #     if isinstance(comp, ClassificationLabelsRecordComponent):
+        #         if comp.is_multilabel:
+        #             labels = comp.one_hot_encoded()
+        #             classification_labels[name].append(labels)
+        #         else:
+        #             labels = comp.label_ids
+        #             classification_labels[name].extend(labels)
 
     classification_labels = {k: tensor(v) for k, v in classification_labels.items()}
 

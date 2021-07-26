@@ -3,11 +3,12 @@ This may be a temporary file that may eventually be removed,
 as it only slightly modifies an existing function.
 """
 
-__all__ = ["unload_records"]
+__all__ = ["unload_records", "assign_classification_targets_from_record"]
 
 
 from icevision.core.record_type import RecordType
 from typing import Any, Dict, Optional, Callable, Sequence, Tuple
+from icevision.core.record_components import ClassificationLabelsRecordComponent
 
 
 def unload_records(
@@ -38,3 +39,15 @@ def unload_records(
         return tupled_output, records
 
     return inner
+
+
+def assign_classification_targets_from_record(classification_labels: dict, record):
+    for comp in record.components:
+        name = comp.task.name
+        if isinstance(comp, ClassificationLabelsRecordComponent):
+            if comp.is_multilabel:
+                labels = comp.one_hot_encoded()
+                classification_labels[name].append(labels)
+            else:
+                labels = comp.label_ids
+                classification_labels[name].extend(labels)
