@@ -163,12 +163,15 @@ def build_multi_aug_batch(
         record.unload()  # NOTE: Safety mechanism
 
     # Massage data
-    for group in classification_data.values():
-        group["targets"] = {
-            task: tensor(classification_targets[task]) for task in group["tasks"]
-        }
-        group["images"] = torch.stack(group["images"])
-    classification_data = {k: dict(v) for k, v in classification_data.items()}
+    classification_data = massage_multi_aug_classification_data(
+        classification_data, classification_targets, "targets"
+    )
+    # for group in classification_data.values():
+    #     group["targets"] = {
+    #         task: tensor(classification_targets[task]) for task in group["tasks"]
+    #     }
+    #     group["images"] = torch.stack(group["images"])
+    # classification_data = {k: dict(v) for k, v in classification_data.items()}
 
     detection_data = dict(
         images=torch.stack(detection_images, 0),

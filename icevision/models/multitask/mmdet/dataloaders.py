@@ -102,12 +102,15 @@ def build_multi_aug_batch(
         #             classification_labels[name].extend(labels)
 
     # Massage data
-    for group in classification_data.values():
-        group["classification_labels"] = {
-            task: tensor(classification_labels[task]) for task in group["tasks"]
-        }
-        group["images"] = torch.stack(group["images"])
-    classification_data = {k: dict(v) for k, v in classification_data.items()}
+    classification_data = massage_multi_aug_classification_data(
+        classification_data, classification_labels, "classification_labels"
+    )
+    # for group in classification_data.values():
+    #     group["classification_labels"] = {
+    #         task: tensor(classification_labels[task]) for task in group["tasks"]
+    #     }
+    #     group["images"] = torch.stack(group["images"])
+    # classification_data = {k: dict(v) for k, v in classification_data.items()}
 
     detection_data = {
         "img": torch.stack(det_images),

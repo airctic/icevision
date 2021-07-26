@@ -3,12 +3,18 @@ This may be a temporary file that may eventually be removed,
 as it only slightly modifies an existing function.
 """
 
-__all__ = ["unload_records", "assign_classification_targets_from_record"]
+__all__ = [
+    "unload_records",
+    "assign_classification_targets_from_record",
+    "massage_multi_aug_classification_data",
+]
 
 
+import torch
 from icevision.core.record_type import RecordType
 from typing import Any, Dict, Optional, Callable, Sequence, Tuple
 from icevision.core.record_components import ClassificationLabelsRecordComponent
+from torch import tensor
 
 
 def unload_records(
@@ -51,3 +57,15 @@ def assign_classification_targets_from_record(classification_labels: dict, recor
             else:
                 labels = comp.label_ids
                 classification_labels[name].extend(labels)
+
+
+def massage_multi_aug_classification_data(
+    classification_data, classification_targets, target_key: str
+):
+    for group in classification_data.values():
+        group[target_key] = {
+            task: tensor(classification_targets[task]) for task in group["tasks"]
+        }
+        group["images"] = torch.stack(group["images"])
+
+    return {k: dict(v) for k, v in classification_data.items()}
