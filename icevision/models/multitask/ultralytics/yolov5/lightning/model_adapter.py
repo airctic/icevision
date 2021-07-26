@@ -18,10 +18,11 @@ from icevision.models.multitask.ultralytics.yolov5.prediction import (
     convert_raw_predictions,
 )
 from icevision.models.multitask.utils.model import ForwardType
+from icevision.models.multitask.engines.lightning import MultiTaskLightningModelAdapter
 from yolov5.utils.loss import ComputeLoss
 
 
-class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
+class HybridYOLOV5LightningAdapter(MultiTaskLightningModelAdapter):
     """ """
 
     def __init__(
@@ -140,60 +141,3 @@ class HybridYOLOV5LightningAdapter(pl.LightningModule, ABC):
         self.log_losses(
             "valid", detection_loss, total_classification_loss, classification_losses
         )
-
-    def validation_epoch_end(self, outs):
-        self.finalize_metrics()
-
-    # ======================== LOGGING METHODS ======================== #
-    def compute_and_log_classification_metrics(
-        self,
-        classification_preds: TensorDict,  # activated predictions
-        yb: TensorDict,
-        on_step: bool = False,
-        # prefix: str = "valid",
-    ):
-        if not set(classification_preds.keys()) == set(yb.keys()):
-            raise RuntimeError(
-                f"Mismatch between prediction and target items. Predictions have "
-                f"{classification_preds.keys()} keys and targets have {yb.keys()} keys"
-            )
-        # prefix = f"{prefix}/" if not prefix == "" else ""
-        prefix = "valid/"
-        for (name, metric), (_, preds) in zip(
-            self.classification_metrics.items(), classification_preds.items()
-        ):
-            self.log(
-                f"{prefix}{metric.__class__.__name__.lower()}_{name}",  # accuracy_{task_name}
-                metric(preds, yb[name].type(torch.int)),
-                on_step=on_step,
-                on_epoch=True,
-            )
-
-    def log_losses(
-        self,
-        mode: str,
-        detection_loss: Tensor,
-        classification_total_loss: Tensor,
-        classification_losses: TensorDict,
-    ):
-        log_vars = dict(
-            total_loss=detection_loss + classification_total_loss,
-            detection_loss=detection_loss,
-            classification_total_loss=classification_total_loss,
-            **{
-                f"classification_loss_{name}": loss
-                for name, loss in classification_losses.items()
-            },
-        )
-        for k, v in log_vars.items():
-            self.log(f"{mode}/{k}", v.item() if isinstance(v, torch.Tensor) else v)
-
-    def accumulate_metrics(self, preds):
-        for metric in self.metrics:
-            metric.accumulate(preds=preds)
-
-    def finalize_metrics(self) -> None:
-        for metric in self.metrics:
-            metric_logs = metric.finalize()
-            for k, v in metric_logs.items():
-                self.log(f"{metric.name}/{k}", v)

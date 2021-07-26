@@ -3,6 +3,7 @@
 # We could in theory also do `pl.metrics`
 
 # import pytorch_lightning.metrics as tm
+from icevision.models.multitask.utils.prediction import extract_classifier_pred_cfgs
 import torchmetrics as tm
 from icevision.all import *
 from mmcv.utils import ConfigDict
@@ -13,12 +14,12 @@ from icevision.models.multitask.mmdet.single_stage import (
 )
 from icevision.models.multitask.mmdet.prediction import *
 from icevision.models.multitask.utils.dtypes import *
-
+from icevision.models.multitask.engines.lightning import MultiTaskLightningModelAdapter
 
 __all__ = ["HybridSingleStageDetectorLightningAdapter"]
 
 
-class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
+class HybridSingleStageDetectorLightningAdapter(MultiTaskLightningModelAdapter):
     """Lightning module specialized for EfficientDet, with metrics support.
 
     The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
@@ -109,52 +110,10 @@ class HybridSingleStageDetectorLightningAdapter(pl.LightningModule, ABC):
     # ======================== LOGGING METHODS ======================== #
 
     def convert_raw_predictions(self, batch, raw_preds, records):
-        classification_configs = {
-            name: ConfigDict(
-                multilabel=head.multilabel, topk=head.topk, thresh=head.thresh
-            )
-            for name, head in self.model.classifier_heads.items()
-        }
         return convert_raw_predictions(
             batch=batch,
             raw_preds=raw_preds,
             records=records,
             detection_threshold=0.0,
-            classification_configs=classification_configs,
+            classification_configs=extract_classifier_pred_cfgs(self.model),
         )
-
-    def compute_and_log_classification_metrics(
-        self,
-        classification_preds: TensorDict,  # activated predictions
-        yb: TensorDict,
-        on_step: bool = False,
-        # prefix: str = "valid",
-    ):
-        # prefix = f"{prefix}/" if not prefix == "" else ""
-        prefix = "valid/"
-        for (name, metric), (_, preds) in zip(
-            self.classification_metrics.items(), classification_preds.items()
-        ):
-            self.log(
-                f"{prefix}{metric.__class__.__name__.lower()}_{name}",  # accuracy_{task_name}
-                metric(preds, yb[name].type(torch.int)),
-                on_step=on_step,
-                on_epoch=True,
-            )
-
-    def log_losses(self, log_vars: dict, mode: str):
-        for k, v in log_vars.items():
-            self.log(f"{mode}/{k}", v.item() if isinstance(v, torch.Tensor) else v)
-
-    def validation_epoch_end(self, outs):
-        self.finalize_metrics()
-
-    def accumulate_metrics(self, preds):
-        for metric in self.metrics:
-            metric.accumulate(preds=preds)
-
-    def finalize_metrics(self) -> None:
-        for metric in self.metrics:
-            metric_logs = metric.finalize()
-            for k, v in metric_logs.items():
-                self.log(f"{metric.name}/{k}", v)
