@@ -100,6 +100,17 @@ class TestTimmBackbones:
                 model_name="fcos",
                 config_path="fcos_r50_caffe_fpn_gn-head_1x_coco.py",
                 backbone_dict={
+                    "type": "EfficientNet_Lite0",
+                },
+            ),
+        ),
+        (
+            "fridge_ds",
+            models.mmdet.fcos,
+            MMDetTimmBackboneConfig(
+                model_name="fcos",
+                config_path="fcos_r50_caffe_fpn_gn-head_1x_coco.py",
+                backbone_dict={
                     "type": "ResNet50_Timm",
                     "pretrained": True,
                     "out_indices": (2, 3, 4),
