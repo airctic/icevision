@@ -54,6 +54,7 @@ nav:
     - Custom Parser: custom_parser.md
     - Inference: inference.md
   - Other Tutorials:
+    - MMDet + Timm Models: timm_mmdet_integration.md  
     - Model Tracking Using Wandb: wandb_efficientdet.md
     - How to use negative samples: negative_samples.md
     - Fixed Splitter: voc_predefined_splits.md
