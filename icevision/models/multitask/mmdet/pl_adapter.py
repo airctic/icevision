@@ -20,18 +20,7 @@ __all__ = ["HybridSingleStageDetectorLightningAdapter"]
 
 
 class HybridSingleStageDetectorLightningAdapter(MultiTaskLightningModelAdapter):
-    """Lightning module specialized for EfficientDet, with metrics support.
-
-    The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
-    are already overriden.
-
-    # Arguments
-        model: The pytorch model to use.
-        metrics: `Sequence` of metrics to use.
-
-    # Returns
-        A `LightningModule`.
-    """
+    """"""
 
     def __init__(
         self,
