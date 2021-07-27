@@ -53,3 +53,7 @@ class MultiTaskLightningModelAdapter(LightningModelAdapter):
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
+
+    # Modest speedup (See https://pytorch-lightning.readthedocs.io/en/stable/benchmarking/performance.html#zero-grad-set-to-none-true)
+    def optimizer_zero_grad(self, epoch, batch_idx, optimizer, optimizer_idx):
+        optimizer.zero_grad(set_to_none=True)
