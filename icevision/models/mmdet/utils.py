@@ -68,6 +68,7 @@ def create_model_config(
     weights_url = backbone.weights_url
 
     # download weights
+    weights_path = None
     if pretrained and weights_url:
         save_dir = Path(checkpoints_path) / model_name
         save_dir.mkdir(exist_ok=True, parents=True)
