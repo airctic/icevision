@@ -12,6 +12,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.parsers import *
+from icevision.data.dataset import Dataset
 
 BN_TYPES = (nn.BatchNorm1d, nn.BatchNorm2d, nn.BatchNorm3d)
 
