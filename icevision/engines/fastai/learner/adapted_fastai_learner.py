@@ -17,8 +17,7 @@ def adapted_fastai_learner(
     **learner_kwargs,
 ) -> fastai.Learner:
     # convert dataloaders to fastai
-    fastai_dls= convert_dataloaders_to_fastai(dls=dls, device=device)
-
+    fastai_dls = convert_dataloaders_to_fastai(dls=dls, device=device)
 
     # convert metrics to fastai
     metrics = metrics or []
