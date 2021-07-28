@@ -171,4 +171,4 @@ def get_dataloaders(
     dls.append(train_dl)
     dls.append(valid_dl)
 
-    return dls
+    return ds, dls
