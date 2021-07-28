@@ -22,16 +22,10 @@ __all__ = ["HybridSingleStageDetectorLightningAdapter"]
 class HybridSingleStageDetectorLightningAdapter(MultiTaskLightningModelAdapter):
     """"""
 
-    def __init__(
-        self,
-        model: HybridSingleStageDetector,
-        metrics: List[Metric] = None,
-        debug: bool = False,
-    ):
+    def __init__(self, model: HybridSingleStageDetector, metrics: List[Metric] = None):
         super().__init__()
         self.metrics = metrics or []
         self.model = model
-        self.debug = debug
 
         self.classification_metrics = nn.ModuleDict()
         for name, head in model.classifier_heads.items():
@@ -54,15 +48,11 @@ class HybridSingleStageDetectorLightningAdapter(MultiTaskLightningModelAdapter):
     def training_step(self, batch: Tuple[dict, Sequence[RecordType]], batch_idx):
         # Unpack batch into dict + list of records
         data, samples = batch
+
         # Get model outputs - dict of losses and vars to log
         step_type = ForwardType.TRAIN_MULTI_AUG
         if "img_metas" in data.keys():
             step_type = ForwardType.TRAIN
-
-        if self.debug:
-            logger.info(f"Training Step: {data.keys()}")
-            logger.info(f"Batch Idx: {batch_idx}")
-            logger.info(f"Training Mode: {step_type}")
 
         outputs = self.model.train_step(data=data, step_type=step_type)
 
