@@ -1,4 +1,7 @@
-__all__ = ["convert_dataloader_to_fastai"]
+__all__ = [
+    "convert_dataloader_to_fastai",
+    "convert_dataloaders_to_fastai",
+]
 
 from icevision.imports import *
 from icevision.engines.fastai.imports import *
@@ -32,3 +35,22 @@ def convert_dataloader_to_fastai(dataloader: DataLoader):
         shuffle=shuffle,
         pin_memory=dataloader.pin_memory,
     )
+
+
+def convert_dataloaders_to_fastai(
+    dls: List[Union[DataLoader, fastai.DataLoader]], device=None
+):
+    fastai_dls = []
+    for dl in dls:
+        if isinstance(dl, DataLoader):
+            fastai_dl = convert_dataloader_to_fastai(dl)
+        elif isinstance(dl, fastai.DataLoader):
+            fastai_dl = dl
+        else:
+            raise ValueError(f"dl type {type(dl)} not supported")
+
+        fastai_dls.append(fastai_dl)
+
+    device = device or fastai.default_device()
+    fastai_dls = fastai.DataLoaders(*fastai_dls).to(device)
+    return fastai_dls

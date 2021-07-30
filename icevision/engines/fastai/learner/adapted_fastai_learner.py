@@ -17,19 +17,7 @@ def adapted_fastai_learner(
     **learner_kwargs,
 ) -> fastai.Learner:
     # convert dataloaders to fastai
-    fastai_dls = []
-    for dl in dls:
-        if isinstance(dl, DataLoader):
-            fastai_dl = convert_dataloader_to_fastai(dl)
-        elif isinstance(dl, fastai.DataLoader):
-            fastai_dl = dl
-        else:
-            raise ValueError(f"dl type {type(dl)} not supported")
-
-        fastai_dls.append(fastai_dl)
-
-    device = device or fastai.default_device()
-    fastai_dls = fastai.DataLoaders(*fastai_dls).to(device)
+    fastai_dls = convert_dataloaders_to_fastai(dls=dls, device=device)
 
     # convert metrics to fastai
     metrics = metrics or []
