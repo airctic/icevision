@@ -8,7 +8,6 @@ from icevision import models
 from icevision.models import *
 from icevision.metrics import *
 from icevision.visualize import *
-from icevision.engines.fastai import *
 
 # HACK: Only for presentation, need to fix namespace
 from icevision.parsers import Parser
