@@ -7,6 +7,7 @@ from icevision.utils.utils import normalize, flatten
 
 import icevision.tfms as tfms
 import torchvision.transforms as Tfms
+import albumentations as A
 
 __all__ = ["HybridAugmentationsRecordDataset", "RecordDataset"]
 
@@ -179,6 +180,19 @@ class HybridAugmentationsRecordDataset(Dataset):
         """
         return self.records[i].load()
 
+    @staticmethod
+    def dispatch_classification_tfms(
+        tfm: Union[A.Compose, Tfms.Compose], image: PIL.Image.Image
+    ):
+        "Dispatch albu / torchvision transforms with appropriate inp / out formats"
+        assert isinstance(image, PIL.Image.Image)
+        if isinstance(tfm, A.Compose):
+            return tfm(image=np.array(image))["image"]
+        elif isinstance(tfm, Tfms.Compose):
+            return tfm(image)
+        else:
+            raise TypeError(f"Only Albu | Torchvision transforms supported")
+
     def __getitem__(self, i):
         record = self.load_record(i)
 
@@ -198,7 +212,7 @@ class HybridAugmentationsRecordDataset(Dataset):
         if self.classification_transforms_groups is not None:
             for group in self.classification_transforms_groups.values():
                 img_tfms = group["transforms"]
-                tfmd_img = img_tfms(original_img)
+                tfmd_img = self.dispatch_classification_tfms(img_tfms, original_img)
                 if self.debug:
                     print(f"  Group: {group['tasks']}, ID: {id(tfmd_img)}")
 
