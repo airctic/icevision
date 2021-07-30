@@ -51,7 +51,7 @@ from torch.optim.lr_scheduler import (
     CosineAnnealingWarmRestarts,
 )
 
-from torchvision.transforms.functional import to_tensor as im2tensor
+from torchvision.transforms.functional import to_tensor
 
 from loguru import logger
 
@@ -92,3 +92,14 @@ class partial:
 
     def __repr__(self):
         return str(self)
+
+
+def im2tensor(pic: Union[np.ndarray, PIL.Image.Image, torch.Tensor]):
+    if isinstance(pic, torch.Tensor):
+        return pic
+    elif isinstance(pic, (np.ndarray, PIL.Image.Image)):
+        return to_tensor(pic)
+    else:
+        raise TypeError(
+            f"Expected {np.ndarray} | {PIL.Image.Image} | {torch.Tensor}, got {type(pic)}"
+        )
