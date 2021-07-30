@@ -1,0 +1,1968 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/dev/progressive_resizing/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.1">
+    
+    
+      
+        <title>Progressive resizing - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.1118c9be.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ba0d045b.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#training-using-progressive-resizing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Progressive resizing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Getting Started
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Other Tutorials
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Progressive resizing
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Progressive resizing
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#paper-highlighting-the-importance-of-progressive-resizing" class="md-nav__link">
+    Paper highlighting the importance of progressive resizing:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
+    Datasets : Fridge Objects dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
+    Train and Validation Dataset Transforms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initial-size-first-size-size-384" class="md-nav__link">
+    Initial size: First size (size = 384)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-pass-first-training-with-the-size-384" class="md-nav__link">
+    First Pass: First Training with the size = 384
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-resizing-from-here" class="md-nav__link">
+    Restart resizing from here
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsequent-pass-subsequent-training-with-the-size-512" class="md-nav__link">
+    Subsequent Pass: Subsequent Training with the size = 512
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convert-pytorch-dataloaders-to-fastai-dataloaders" class="md-nav__link">
+    Convert Pytorch DataLoaders to Fastai DataLoaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-model-on-google-drive" class="md-nav__link">
+    Saving Model on Google Drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      <label class="md-nav__link" for="__nav_8">
+        Deployment
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      <label class="md-nav__link" for="__nav_8_2">
+        Gradio
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      <label class="md-nav__link" for="__nav_9">
+        API Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      <label class="md-nav__link" for="__nav_9_3">
+        Transforms
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      <label class="md-nav__link" for="__nav_9_4">
+        Models
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      <label class="md-nav__link" for="__nav_9_4_1">
+        Faster RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      <label class="md-nav__link" for="__nav_9_4_2">
+        Mask RCNN
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      <label class="md-nav__link" for="__nav_9_4_3">
+        EfficientDet
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#paper-highlighting-the-importance-of-progressive-resizing" class="md-nav__link">
+    Paper highlighting the importance of progressive resizing:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-fridge-objects-dataset" class="md-nav__link">
+    Datasets : Fridge Objects dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#train-and-validation-dataset-transforms" class="md-nav__link">
+    Train and Validation Dataset Transforms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initial-size-first-size-size-384" class="md-nav__link">
+    Initial size: First size (size = 384)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-pass-first-training-with-the-size-384" class="md-nav__link">
+    First Pass: First Training with the size = 384
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#restart-resizing-from-here" class="md-nav__link">
+    Restart resizing from here
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsequent-pass-subsequent-training-with-the-size-512" class="md-nav__link">
+    Subsequent Pass: Subsequent Training with the size = 512
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#convert-pytorch-dataloaders-to-fastai-dataloaders" class="md-nav__link">
+    Convert Pytorch DataLoaders to Fastai DataLoaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-model-on-google-drive" class="md-nav__link">
+    Saving Model on Google Drive
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/progressive_resizing.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="training-using-progressive-resizing">Training using progressive resizing</h1>
+<p>Quote from Fastbook:</p>
+<blockquote>
+<p>jargon: progressive resizing: Gradually using larger and larger images as you train.</p>
+</blockquote>
+<p>Progressive resizing is a very effective technique to train model from scratch or using transfer learning. IceVision now offers a good support for that technique.</p>
+<p>For more information about the progressive resizing technique, please check out the reference, here below:</p>
+<p>Fastai Fastbook Chapter: https://github.com/fastai/fastbook/blob/master/07_sizing_and_tta.ipynb</p>
+<p>Check out the section: <strong>Progressive Resizing</strong></p>
+<h2 id="paper-highlighting-the-importance-of-progressive-resizing">Paper highlighting the importance of progressive resizing:</h2>
+<ul>
+<li>
+<p><a href="https://arxiv.org/pdf/2106.03112v1.pdf">Rethinking Training from Scratch for
+Object Detection</a></p>
+</li>
+<li>
+<p><a href="https://arxiv.org/pdf/2104.00298.pdf">EfficientNetV2: Smaller Models and Faster Training</a></p>
+</li>
+</ul>
+<h2 id="introduction">Introduction</h2>
+<p>This tutorial walk you through the different steps of training the fridge dataset using the progressive resizing technique. </p>
+<p>The main differences with IceVision standard training are the use of:</p>
+<ul>
+<li>
+<p>The <code>get_dataloaders()</code> method
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">ds</span><span class="p">,</span> <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dataloaders</span><span class="p">(</span><span class="n">model_type</span><span class="p">,</span> <span class="p">[</span><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span><span class="p">],</span> <span class="p">[</span><span class="n">train_tfms</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></p>
+</li>
+<li>
+<p>replacing dataloaders (corresponding to different image sizes) in either a Fastai <code>Learner</code> object or a Pytorch-Lightning <code>Trainer</code> object as follow:</p>
+</li>
+<li>
+<p>For Fastai:</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replace current dataloaders by the new ones (corresponding to the new size)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">dls</span> <span class="o">=</span> <span class="n">fastai_dls</span>
+
+<span class="c1"># Standard training</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>Pytorch-Lightning:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replace current dataloaders by the new ones (corresponding to the new size)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">valid_dataloader</span> <span class="o">=</span> <span class="n">dls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Standard training</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dls</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+</code></pre></div>
+<h2 id="imports">Imports</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastai.callback.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
+</code></pre></div>
+<h2 id="datasets-fridge-objects-dataset">Datasets : Fridge Objects dataset</h2>
+<p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
+- can, 
+- carton, 
+- milk bottle, 
+- water bottle.</p>
+<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Download the dataset</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
+<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
+<span class="c1"># Create the parser</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Parse annotations to create records</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
+</code></pre></div>
+<h2 id="creating-a-model">Creating a model</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
+
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
+  <span class="c1"># The efficientdet model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
+  <span class="c1"># The yolov5 model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
+
+<span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">extra_args</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
+</code></pre></div>
+<h2 id="train-and-validation-dataset-transforms">Train and Validation Dataset Transforms</h2>
+<h2 id="initial-size-first-size-size-384">Initial size: First size (size = 384)</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">ds</span><span class="p">,</span> <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dataloaders</span><span class="p">(</span><span class="n">model_type</span><span class="p">,</span> <span class="p">[</span><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span><span class="p">],</span> <span class="p">[</span><span class="n">train_tfms</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># dls[0].dataset[0]</span>
+<span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>BaseRecord
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>common: 
+    - Image size ImgSize(width=384, height=384)
+    - Filepath: /root/.icevision/data/fridge/odFridgeObjects/images/112.jpg
+    - Img: 384x384x3 &lt;np.ndarray&gt; Image
+    - Record ID: 15
+detection: 
+    - BBoxes: [&lt;BBox (xmin:131.17572064203858, ymin:239.0191364865004, xmax:325.2123962126736, ymax:312.68812907493447)&gt;, &lt;BBox (xmin:82.22909604282495, ymin:82.72545127450111, xmax:181.53168623735334, ymax:288.81880204425784)&gt;]
+    - Class Map: &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
+    - Labels: [4, 1]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_21_0.png" /></p>
+<h2 id="dataloader">DataLoader</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="metrics">Metrics</h2>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+</code></pre></div>
+<h2 id="training">Training</h2>
+<p>IceVision is an agnostic framework meaning it can be plugged to other DL framework such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
+<p>You could also plug to oth DL framework using your own custom code.</p>
+<h3 id="training-using-fastai">Training using fastai</h3>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="n">SaveModelCallback</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;COCOMetric&#39;</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.00010000000474974513, lr_steep=0.00015848931798245758)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_29_2.png" /></p>
+<h3 id="first-pass-first-training-with-the-size-384">First Pass: First Training with the size = 384</h3>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.303019</td>
+      <td>1.198495</td>
+      <td>0.018335</td>
+      <td>00:07</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with COCOMetric value: 0.018334512022630832.
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.146912</td>
+      <td>1.077046</td>
+      <td>0.076843</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.078911</td>
+      <td>0.835020</td>
+      <td>0.172249</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.936218</td>
+      <td>0.585196</td>
+      <td>0.317453</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.803767</td>
+      <td>0.500256</td>
+      <td>0.409220</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.701060</td>
+      <td>0.394725</td>
+      <td>0.598500</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.623153</td>
+      <td>0.357143</td>
+      <td>0.649460</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.564359</td>
+      <td>0.360178</td>
+      <td>0.691023</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.518424</td>
+      <td>0.343954</td>
+      <td>0.707619</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.478071</td>
+      <td>0.333479</td>
+      <td>0.735202</td>
+      <td>00:06</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.447511</td>
+      <td>0.331000</td>
+      <td>0.739396</td>
+      <td>00:06</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with COCOMetric value: 0.07684290821192277.
+Better model found at epoch 1 with COCOMetric value: 0.17224854342050785.
+Better model found at epoch 2 with COCOMetric value: 0.31745342072333244.
+Better model found at epoch 3 with COCOMetric value: 0.4092202239902201.
+Better model found at epoch 4 with COCOMetric value: 0.5985001096045487.
+Better model found at epoch 5 with COCOMetric value: 0.6494598763585641.
+Better model found at epoch 6 with COCOMetric value: 0.6910227038257398.
+Better model found at epoch 7 with COCOMetric value: 0.7076194302452169.
+Better model found at epoch 8 with COCOMetric value: 0.735202499994352.
+Better model found at epoch 9 with COCOMetric value: 0.7393958039433105.
+</code></pre></div>
+</div>
+<h2 id="restart-resizing-from-here">Restart resizing from here</h2>
+<h2 id="subsequent-pass-subsequent-training-with-the-size-512">Subsequent Pass: Subsequent Training with the size = 512</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Second Pass (size = 512)</span>
+<span class="c1"># presize = 640</span>
+<span class="c1"># size = 512</span>
+
+<span class="c1"># Third Pass (size = 640)</span>
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">768</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">640</span>
+
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">ds</span><span class="p">,</span> <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dataloaders</span><span class="p">(</span><span class="n">model_type</span><span class="p">,</span> <span class="p">[</span><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span><span class="p">],</span> <span class="p">[</span><span class="n">train_tfms</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>BaseRecord
+</code></pre></div>
+</div>
+
+<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">ds</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>common: 
+    - Image size ImgSize(width=640, height=640)
+    - Filepath: /root/.icevision/data/fridge/odFridgeObjects/images/112.jpg
+    - Img: 640x640x3 &lt;np.ndarray&gt; Image
+    - Record ID: 15
+detection: 
+    - BBoxes: [&lt;BBox (xmin:98.14351388888991, ymin:376.93381905417573, xmax:576.7811863685447, ymax:620.2620189083259)&gt;, &lt;BBox (xmin:5.201505318565632, ymin:12.437821266274758, xmax:329.20034254651534, ymax:498.3316159707134)&gt;]
+    - Class Map: &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
+    - Labels: [4, 1]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_36_0.png" /></p>
+<h2 id="convert-pytorch-dataloaders-to-fastai-dataloaders">Convert Pytorch DataLoaders to Fastai DataLoaders</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.engines.fastai</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">fastai_dls</span> <span class="o">=</span> <span class="n">convert_dataloaders_to_fastai</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="n">dls</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replace current dataloaders by the new ones (corresponding to the new size)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">dls</span> <span class="o">=</span> <span class="n">fastai_dls</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">fastai_dls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">learn</span><span class="o">.</span><span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;icevision.engines.fastai.adapters.convert_dataloader_to_fastai.convert_dataloader_to_fastai.&lt;locals&gt;.FastaiDataLoaderWithCollate object at 0x7fe804b4b710&gt;
+&lt;icevision.engines.fastai.adapters.convert_dataloader_to_fastai.convert_dataloader_to_fastai.&lt;locals&gt;.FastaiDataLoaderWithCollate object at 0x7fe804b4b710&gt;
+
+SuggestedLRs(lr_min=2.2908675418875645e-07, lr_steep=9.12010818865383e-07)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_41_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># learn.fit_one_cycle(10, 2e-4)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.200535</td>
+      <td>0.183777</td>
+      <td>0.857028</td>
+      <td>00:13</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with COCOMetric value: 0.8570280948418122.
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.192144</td>
+      <td>0.188399</td>
+      <td>0.846013</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.184424</td>
+      <td>0.167971</td>
+      <td>0.865162</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.192361</td>
+      <td>0.194635</td>
+      <td>0.853915</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.191424</td>
+      <td>0.195987</td>
+      <td>0.837771</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.192338</td>
+      <td>0.186021</td>
+      <td>0.828367</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.189835</td>
+      <td>0.152657</td>
+      <td>0.869115</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.184088</td>
+      <td>0.163762</td>
+      <td>0.859548</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.179976</td>
+      <td>0.155070</td>
+      <td>0.868776</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.175261</td>
+      <td>0.156499</td>
+      <td>0.867725</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.171284</td>
+      <td>0.156758</td>
+      <td>0.863302</td>
+      <td>00:10</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with COCOMetric value: 0.8460132624669883.
+Better model found at epoch 1 with COCOMetric value: 0.8651620055945506.
+Better model found at epoch 5 with COCOMetric value: 0.8691152429678355.
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_43_0.png" /></p>
+<h2 id="inference">Inference</h2>
+<h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
+<p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/7 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_46_0.png" /></p>
+<h2 id="training-using-pytorch-lightning">Training using Pytorch Lightning</h2>
+<p>You have to follow the same procedure as for the Fastai example. It is quite similar to the Fastai one except we don't need to convert dataloaders like in Fastai. PL dataloaders are just pytorch dataloaders.</p>
+<div class="highlight"><pre><span></span><code># Create a model
+class LightModel(model_type.lightning.ModelAdapter):
+    def configure_optimizers(self):
+        return SGD(self.parameters(), lr=1e-4)
+
+light_model = LightModel(model, metrics=metrics)
+
+# Create a trainer
+trainer = pl.Trainer(max_epochs=10, gpus=1)
+
+# First Pass  (size = 384)
+# Transforms
+presize = 512
+size = 384
+train_tfms = tfms.A.Adapter([*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()])
+valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size), tfms.A.Normalize()])
+
+# Dataloaders
+ds, dls = get_dataloaders(model_type, [train_records, valid_records], [train_tfms, valid_tfms], batch_size=16, num_workers=2)
+
+First training
+trainer.fit(light_model, dls[0], dls[1])
+
+# Second Pass (size = 512)
+presize = 640
+size = 512
+
+# Third Pass (size = 640)
+# presize = 768
+# size = 640
+
+train_tfms = tfms.A.Adapter([*tfms.A.aug_tfms(size=size, presize=presize), tfms.A.Normalize()])
+valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(size), tfms.A.Normalize()])
+
+# Dataloaders
+ds, dls = get_dataloaders(model_type, [train_records, valid_records], [train_tfms, valid_tfms], batch_size=16, num_workers=2)
+
+# Replace current dataloaders by the new ones (corresponding to the new size)
+trainer.train_dataloader = dls[0]
+trainer.valid_dataloader = dls[1]
+
+# Subsequent training
+trainer.fit(light_model, dls[0], dls[1])
+</code></pre></div>
+<h2 id="saving-model-on-google-drive">Saving Model on Google Drive</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/gdrive&#39;</span><span class="p">,</span> <span class="n">force_remount</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">root_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;/content/gdrive/My Drive/&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">root_dir</span><span class="o">/</span><span class="s1">&#39;icevision/models/fridge/fridge_retinanet_prog_resizing_1.pth&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Mounted at /content/gdrive
+</code></pre></div>
+</div>
+<h2 id="happy-learning">Happy Learning!</h2>
+<p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../voc_predefined_splits/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Fixed Splitter" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Fixed Splitter
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../albumentations/" class="md-footer__link md-footer__link--next" aria-label="Next: Albumentations" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Albumentations
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.53c85856.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.716f8af4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
