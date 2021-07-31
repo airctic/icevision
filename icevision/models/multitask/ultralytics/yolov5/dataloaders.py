@@ -63,20 +63,9 @@ def build_single_aug_batch(
         # See file header for more info on why this is done
         if detection_target.numel() > 0:
             detection_target[:, 0] = i
-        # detection_target[:, 0] = i if detection_target.numel() > 0 else None
-        detection_targets.append(detection_target)
 
-        # Classification
+        detection_targets.append(detection_target)
         assign_classification_targets_from_record(classification_targets, record)
-        # for comp in record.components:
-        #     name = comp.task.name
-        #     if isinstance(comp, ClassificationLabelsRecordComponent):
-        #         if comp.is_multilabel:
-        #             labels = comp.one_hot_encoded()
-        #             classification_targets[name].append(labels)
-        #         else:
-        #             labels = comp.label_ids
-        #             classification_targets[name].extend(labels)
 
     classification_targets = {k: tensor(v) for k, v in classification_targets.items()}
 
@@ -142,36 +131,20 @@ def build_multi_aug_batch(
         # See file header for more info on why this is done
         if detection_target.numel() > 0:
             detection_target[:, 0] = i
-        # detection_target[:, 0] = i if detection_target.numel() > 0 else None
-        detection_targets.append(detection_target)
 
+        detection_targets.append(detection_target)
         for key, group in classification_transform_groups.items():
             task = getattr(record, group["tasks"][0])
             classification_data[key]["tasks"] = group["tasks"]
             classification_data[key]["images"].append(im2tensor(task.img))
 
         assign_classification_targets_from_record(classification_targets, record)
-        # for comp in record.components:
-        #     name = comp.task.name
-        #     if isinstance(comp, ClassificationLabelsRecordComponent):
-        #         if comp.is_multilabel:
-        #             labels = comp.one_hot_encoded()
-        #             classification_targets[name].append(labels)
-        #         else:
-        #             labels = comp.label_ids
-        #             classification_targets[name].extend(labels)
         record.unload()  # NOTE: Safety mechanism
 
     # Massage data
     classification_data = massage_multi_aug_classification_data(
         classification_data, classification_targets, "targets"
     )
-    # for group in classification_data.values():
-    #     group["targets"] = {
-    #         task: tensor(classification_targets[task]) for task in group["tasks"]
-    #     }
-    #     group["images"] = torch.stack(group["images"])
-    # classification_data = {k: dict(v) for k, v in classification_data.items()}
 
     detection_data = dict(
         images=torch.stack(detection_images, 0),
