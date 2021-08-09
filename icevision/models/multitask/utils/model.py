@@ -15,8 +15,8 @@ class ForwardType(Enum):
     # EXPORT_COREML = 7
 
 
-# Taken from from https://github.com/fastai/fastai/blob/4decc673ba811a41c6e3ab648aab96dd27244ff7/fastai/callback/training.py#L43-L49
-def set_bn_eval(m: nn.Module, use_eval=True) -> None:
+# Modified from from https://github.com/fastai/fastai/blob/4decc673ba811a41c6e3ab648aab96dd27244ff7/fastai/callback/training.py#L43-L49
+def set_bn_eval(m: nn.Module) -> None:
     "Set bn layers in eval mode for all recursive, non-trainable children of `m`."
     for l in m.children():
         if isinstance(l, _BatchNorm) and not next(l.parameters()).requires_grad:
