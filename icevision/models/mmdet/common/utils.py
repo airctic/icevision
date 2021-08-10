@@ -73,8 +73,6 @@ def build_model(
 
     _model.param_groups = MethodType(param_groups, _model)
     _model.cfg = cfg  # save the config in the model for convenience
-    _model.weights_path = weights_path # save the model.weights_path in case we want to rebuild the model after updating its attributes
+    _model.weights_path = weights_path  # save the model.weights_path in case we want to rebuild the model after updating its attributes
 
     return _model
-
-
