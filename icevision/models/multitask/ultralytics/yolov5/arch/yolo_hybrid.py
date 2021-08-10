@@ -199,7 +199,10 @@ class HybridYOLOV5(
               correct for each classifier config, and corrects them if not
         """
         arch = Path(self.yaml_file).stem
-        fpn_dims = np.array(YOLO_FEATURE_MAP_DIMS[arch])
+        # fpn_dims = np.array(YOLO_FEATURE_MAP_DIMS[arch])
+        fpn_dims = [
+            o.shape[1] for o in self.extract_features(torch.rand(1, 3, 640, 640))
+        ]
 
         for task, cfg in self.classifier_configs.items():
             num_fpn_features = (
