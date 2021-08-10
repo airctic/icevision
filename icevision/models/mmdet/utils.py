@@ -83,7 +83,6 @@ def create_model_config(
     cfg = Config.fromfile(config_path)
 
     if cfg_options is not None:
-        print(f"Merging cfg_options: {cfg_options}")
         cfg.merge_from_dict(cfg_options)     
 
     return cfg, weights_path
