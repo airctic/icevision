@@ -58,6 +58,7 @@ nav:
     - How to use negative samples: negative_samples.md
     - Fixed Splitter: voc_predefined_splits.md
     - Progressive resizing: progressive_resizing.md
+    - MMDetection Custom Config: mmdet_custom_config.md
   - Transforms:
     - Albumentations: albumentations.md 
   - Models: models.md
