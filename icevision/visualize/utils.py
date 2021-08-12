@@ -93,7 +93,7 @@ def rand_cmap(
     from matplotlib.colors import LinearSegmentedColormap
     import colorsys
 
-    np.random.seed(0)
+    np.random.seed(49)
 
     if type not in ("bright", "soft"):
         print('Please choose "bright" or "soft" for type')
