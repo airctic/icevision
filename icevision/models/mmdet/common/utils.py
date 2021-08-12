@@ -36,6 +36,7 @@ def build_model(
     pretrained: bool = True,
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
+    cfg_options=None,
 ) -> nn.Module:
 
     cfg, weights_path = create_model_config(
@@ -43,6 +44,7 @@ def build_model(
         pretrained=pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
+        cfg_options=cfg_options,
     )
 
     if model_type == "one_stage_detector_bbox":
@@ -70,5 +72,7 @@ def build_model(
         load_checkpoint(_model, str(weights_path))
 
     _model.param_groups = MethodType(param_groups, _model)
+    _model.cfg = cfg  # save the config in the model for convenience
+    _model.weights_path = weights_path  # save the model.weights_path in case we want to rebuild the model after updating its attributes
 
     return _model

@@ -3,14 +3,25 @@ from icevision.all import *
 
 
 @pytest.mark.parametrize(
-    "ds, model_type, pretrained",
+    "ds, model_type, pretrained, cfg_options",
     (
-        ("fridge_ds", models.mmdet.retinanet, True),
-        ("fridge_ds", models.mmdet.retinanet, False),
+        ("fridge_ds", models.mmdet.retinanet, True, None),
+        ("fridge_ds", models.mmdet.retinanet, False, None),
+        (
+            "fridge_ds",
+            models.mmdet.retinanet,
+            False,
+            {
+                "model.bbox_head.loss_bbox.loss_weight": 2,
+                "model.bbox_head.loss_cls.loss_weight": 0.8,
+            },
+        ),
     ),
 )
 class TestBboxModels:
-    def dls_model(self, ds, model_type, pretrained, samples_source, request):
+    def dls_model(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
         train_ds, valid_ds = request.getfixturevalue(ds)
         train_dl = model_type.train_dl(train_ds, batch_size=2)
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
@@ -19,16 +30,18 @@ class TestBboxModels:
         backbone.config_path = samples_source / backbone.config_path
 
         model = model_type.model(
-            backbone=backbone(pretrained=pretrained), num_classes=5
+            backbone=backbone(pretrained=pretrained),
+            num_classes=5,
+            cfg_options=cfg_options,
         )
 
         return train_dl, valid_dl, model
 
     def test_mmdet_bbox_models_fastai(
-        self, ds, model_type, pretrained, samples_source, request
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, samples_source, request
+            ds, model_type, pretrained, cfg_options, samples_source, request
         )
 
         learn = model_type.fastai.learner(
@@ -37,10 +50,10 @@ class TestBboxModels:
         learn.fine_tune(1, 3e-4)
 
     def test_mmdet_bbox_models_light(
-        self, ds, model_type, pretrained, samples_source, request
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, samples_source, request
+            ds, model_type, pretrained, cfg_options, samples_source, request
         )
 
         class LitModel(model_type.lightning.ModelAdapter):
