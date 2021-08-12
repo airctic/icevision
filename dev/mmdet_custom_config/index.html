@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/getting_started_instance_segmentation/">
+        <link rel="canonical" href="https://airctic.com/dev/mmdet_custom_config/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
     
     
       
-        <title>Instance Segmentation - IceVision</title>
+        <title>MMDetection Custom Config - IceVision</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#getting-started-with-instance-segmentation-using-icevision" class="md-skip">
+        <a href="#mmdetection-custom-config" class="md-skip">
           Skip to content
         </a>
       
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Instance Segmentation
+              MMDetection Custom Config
             
           </span>
         </div>
@@ -209,14 +209,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       <label class="md-nav__link" for="__nav_3">
         Getting Started
@@ -244,181 +242,11 @@
             
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Instance Segmentation
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
         Instance Segmentation
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-icevision-and-icedata" class="md-nav__link">
-    Installing IceVision and IceData
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#imports" class="md-nav__link">
-    Imports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#model" class="md-nav__link">
-    Model
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#choose-a-model-and-backbone" class="md-nav__link">
-    Choose a model and backbone
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#datasets-pennfudan" class="md-nav__link">
-    Datasets : Pennfudan
-  </a>
-  
-    <nav class="md-nav" aria-label="Datasets : Pennfudan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
-    Displaying the same image with different transforms
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dataloader" class="md-nav__link">
-    DataLoader
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#model_1" class="md-nav__link">
-    Model
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#metrics" class="md-nav__link">
-    Metrics
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#training" class="md-nav__link">
-    Training
-  </a>
-  
-    <nav class="md-nav" aria-label="Training">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#training-using-fastai" class="md-nav__link">
-    Training using fastai
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#training-using-lightning" class="md-nav__link">
-    Training using Lightning
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#show-results" class="md-nav__link">
-    Show Results
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
-  
-    <nav class="md-nav" aria-label="Inference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#predicting-a-batch-of-images" class="md-nav__link">
-    Predicting a batch of images
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#happy-learning" class="md-nav__link">
-    Happy Learning!
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -471,12 +299,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       <label class="md-nav__link" for="__nav_4">
         Other Tutorials
@@ -540,11 +370,161 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../mmdet_custom_config/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          MMDetection Custom Config
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         MMDetection Custom Config
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision-and-icedata" class="md-nav__link">
+    Install IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-and-prepare-a-dataset" class="md-nav__link">
+    Download and prepare a dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-datasets-with-agumentations-and-transforms" class="md-nav__link">
+    Creating datasets with agumentations and transforms
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#print-config-settings" class="md-nav__link">
+    Print config settings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-loader" class="md-nav__link">
+    Data Loader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-model-inference-and-showing-results" class="md-nav__link">
+    Using the model - inference and showing results
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the model - inference and showing results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    Prediction
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1139,15 +1119,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
-    Introduction
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installing-icevision-and-icedata" class="md-nav__link">
-    Installing IceVision and IceData
+  <a href="#install-icevision-and-icedata" class="md-nav__link">
+    Install IceVision and IceData
   </a>
   
 </li>
@@ -1160,49 +1133,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#model" class="md-nav__link">
-    Model
+  <a href="#download-and-prepare-a-dataset" class="md-nav__link">
+    Download and prepare a dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#choose-a-model-and-backbone" class="md-nav__link">
-    Choose a model and backbone
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#datasets-pennfudan" class="md-nav__link">
-    Datasets : Pennfudan
-  </a>
-  
-    <nav class="md-nav" aria-label="Datasets : Pennfudan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
-    Displaying the same image with different transforms
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dataloader" class="md-nav__link">
-    DataLoader
+  <a href="#creating-datasets-with-agumentations-and-transforms" class="md-nav__link">
+    Creating datasets with agumentations and transforms
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#model_1" class="md-nav__link">
-    Model
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#print-config-settings" class="md-nav__link">
+    Print config settings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-loader" class="md-nav__link">
+    Data Loader
   </a>
   
 </li>
@@ -1230,8 +1197,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#training-using-lightning" class="md-nav__link">
-    Training using Lightning
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
   </a>
   
 </li>
@@ -1242,23 +1209,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#show-results" class="md-nav__link">
-    Show Results
+  <a href="#using-the-model-inference-and-showing-results" class="md-nav__link">
+    Using the model - inference and showing results
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
-  
-    <nav class="md-nav" aria-label="Inference">
+    <nav class="md-nav" aria-label="Using the model - inference and showing results">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#predicting-a-batch-of-images" class="md-nav__link">
-    Predicting a batch of images
+  <a href="#prediction" class="md-nav__link">
+    Prediction
   </a>
   
 </li>
@@ -1288,86 +1248,184 @@
               
                 
                 
-                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_instance_segmentation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="getting-started-with-instance-segmentation-using-icevision">Getting Started with Instance Segmentation using IceVision</h1>
-<h2 id="introduction">Introduction</h2>
-<p>This tutorial walk you through the different steps of training the fridge dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
-<p>For more information about how the fridge dataset as well as its corresponding parser check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/pennfudan">pennfudan folder</a> in icedata.</p>
-<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
-<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
-<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
-<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
-<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/mmdet_custom_config.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="mmdetection-custom-config">MMDetection Custom Config</h1>
+<p>When creating an MMDetection <code>model</code>, the model <code>config</code> object is stored in <code>model.cfg</code> and the pretrained weight file path is stored in <code>model.weights_path</code>. In order to update model config attribute, you need to create an <code>cfg_options</code> dictionary: </p>
+<p><strong>Example: Changing loss weights for loss_bbox and loss_cls</strong></p>
+<p>You can pass the <code>cfg_options</code> argument when creation a model</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+<span class="s1">&#39;cfg_options&#39;</span> <span class="o">=</span> <span class="p">{</span> 
+  <span class="s1">&#39;model.bbox_head.loss_bbox.loss_weight&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s1">&#39;model.bbox_head.loss_cls.loss_weight&#39;</span><span class="p">:</span> <span class="mf">0.8</span> <span class="p">}</span>
+
+<span class="c1"># Passing cfg_options to the `model()` method to update loss weights</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">cfg_options</span><span class="o">=</span><span class="n">cfg_options</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="install-icevision-and-icedata">Install IceVision and IceData</h2>
+<p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
+as the fastai and pytorch lightning engines.</p>
+<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
+<p>All of the IceVision components can be easily imported with a single line.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
-<h2 id="model">Model</h2>
-<p>To create a model, we need to:</p>
-<ul>
-<li>Choose one of the <strong>models</strong> supported by IceVision</li>
-<li>Choose one of the <strong>backbones</strong> corresponding to a chosen model</li>
-<li>Determine the <strong>number of the object classes</strong>: This will be done after parsing a dataset. Check out the Parsing Section </li>
-</ul>
-<h2 id="choose-a-model-and-backbone">Choose a model and backbone</h2>
-<p><strong>TorchVision</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet34_fpn</span><span class="p">()</span>
-</code></pre></div>
-<h2 id="datasets-pennfudan">Datasets : Pennfudan</h2>
-<p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
+<h2 id="download-and-prepare-a-dataset">Download and prepare a dataset</h2>
+<p>Now we can start by downloading the Fridge Objects dataset. This tiny dataset contains 134 images of 4 classes:
 - can, 
 - carton, 
 - milk bottle, 
 - water bottle.</p>
-<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<p>IceVision provides methods to load a dataset, parse annotation files, and more.</p>
+<p>For more information about how the fridge dataset as well as its corresponding parser, check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/fridge">fridge folder</a> in icedata.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Download the dataset</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
+<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+<h2 id="parse-the-dataset">Parse the dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create the parser</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="displaying-the-same-image-with-different-transforms">Displaying the same image with different transforms</h3>
-<p>Note:</p>
-<blockquote>
-<p>Transforms are applied <strong>lazily</strong>, meaning they are only applied when we grab (get) an item.
-This means that, if you have augmentation (random) transforms, each time you get the <strong>same</strong> item from 
-the dataset you will get a slightly different version of it.</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Parse annotations to create records</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
+</code></pre></div>
+<h2 id="creating-datasets-with-agumentations-and-transforms">Creating datasets with agumentations and transforms</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="c1"># size is set to 384 because EfficientDet requires its inputs to be divisible by 128</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Show an element of the train_ds with augmentation transformations applied</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_15_0.png" /></p>
-<h2 id="dataloader">DataLoader</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<p><img alt="png" src="../images/mmdet_custom_config/mmdet_custom_config_14_0.png" /></p>
+<h2 id="creating-a-model">Creating a model</h2>
+<p>This shows how to customize a retinanet model by using the <code>cfg_options</code> object:
+<div class="highlight"><pre><span></span><code>model_type = models.mmdet.retinanet
+backbone = model_type.backbones.resnet50_fpn_1x(pretrained=True, cfg_options=cfg_options)
+</code></pre></div>
+As pretrained models are used by default, we typically leave this out of the backbone creation step.</p>
+<p>We've selected a few of the many options below. You can easily pick which option you want to try by setting the value of <code>selection</code>. This shows you how to easily customize your model.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just the config options you would like to update</span>
+
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c1"># Example: Changing both loss weights: loss_bbox, loss_cls</span>
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+  <span class="n">cfg_options</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="s1">&#39;model.bbox_head.loss_bbox.loss_weight&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;model.bbox_head.loss_cls.loss_weight&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+     <span class="p">}</span>
+
+<span class="c1"># Example: cahnging anchor boxes ratios:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+  <span class="n">cfg_options</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="s1">&#39;model.bbox_head.anchor_generator.ratios&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span> 
+    <span class="p">}</span>
+
+
+<span class="n">cfg_options</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>{&#39;model.bbox_head.loss_bbox.loss_weight&#39;: 2,
+ &#39;model.bbox_head.loss_cls.loss_weight&#39;: 0.8}
+</code></pre></div>
+</div>
+<p>Now it is just a one-liner to instantiate the model. If you want to try another <em>option</em>, just edit the line at the top of the previous cell.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model and pass the `cfg_options` dictionary</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">cfg_options</span><span class="o">=</span><span class="n">cfg_options</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">loss_bbox</span><span class="o">.</span><span class="n">loss_weight</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">loss_cls</span><span class="o">.</span><span class="n">loss_weight</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">anchor_generator</span><span class="o">.</span><span class="n">ratios</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">loss_cls</span><span class="o">.</span><span class="n">loss_weight</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">loss_bbox</span><span class="o">.</span><span class="n">loss_weight</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">anchor_generator</span><span class="o">.</span><span class="n">ratios</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>2
+0.8
+tensor([0.50000, 1.00000, 2.00000])
+
+0.8
+2
+[0.5, 1.0, 2.0]
+</code></pre></div>
+</div>
+<h2 id="print-config-settings">Print config settings</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># You have access to model&#39;s weights_path</span>
+<span class="n">model</span><span class="o">.</span><span class="n">weights_path</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># You also have access to the whole config object</span>
+<span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Double checking model new attributes for `loss_cls`</span>
+<span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">loss_cls</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Double checkingmodel new attributes for `anchor_generator`</span>
+<span class="n">model</span><span class="o">.</span><span class="n">cfg</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">bbox_head</span><span class="o">.</span><span class="n">anchor_generator</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Path(&#39;checkpoints/retinanet/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth&#39;)
+
+{&#39;alpha&#39;: 0.25,
+ &#39;gamma&#39;: 2.0,
+ &#39;loss_weight&#39;: 0.8,
+ &#39;type&#39;: &#39;FocalLoss&#39;,
+ &#39;use_sigmoid&#39;: True}
+
+{&#39;octave_base_scale&#39;: 4,
+ &#39;ratios&#39;: [0.5, 1.0, 2.0],
+ &#39;scales_per_octave&#39;: 3,
+ &#39;strides&#39;: [8, 16, 32, 64, 128],
+ &#39;type&#39;: &#39;AnchorGenerator&#39;}
+</code></pre></div>
+</div>
+<h2 id="data-loader">Data Loader</h2>
+<p>The Data Loader is specific to a model_type. The job of the data loader is to get items from a dataset and batch them up in the specific format required by each model. This is why creating the data loaders is separated from creating the datasets.</p>
+<p>We can take a look at the first batch of items from the <code>valid_dl</code>. Remember that the <code>valid_tfms</code> only resized (with padding) and normalized records, so different images, for example, are not returned each time. This is important to provide consistent validation during training.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Data Loaders</span>
 <span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
-<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_18_0.png" /></p>
-<h2 id="model_1">Model</h2>
-<p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
-</code></pre></div>
 <h2 id="metrics">Metrics</h2>
-<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">mask</span><span class="p">)]</span>
+<p>The fastai and pytorch lightning engines collect metrics to track progress during training. IceVision provides metric classes that work across the engines and libraries.</p>
+<p>The same metrics can be used for both fastai and pytorch lightning.</p>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
 </code></pre></div>
 <h2 id="training">Training</h2>
-<p>IceVision is an agnostic framework meaning it can be plugged to other DL framework such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
-<p>You could also plug to oth DL framework using your own custom code.</p>
+<p>IceVision is an agnostic framework meaning it can be plugged into other DL learning engines such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
 <h3 id="training-using-fastai">Training using fastai</h3>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+
+<span class="c1"># For Sparse-RCNN, use lower `end_lr`</span>
+<span class="c1"># learn.lr_find(end_lr=0.005)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.00010000000474974513, lr_steep=1.737800812406931e-05)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=8.317637839354575e-05, lr_steep=0.00010964782268274575)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_26_2.png" /></p>
+<p><img alt="png" src="../images/mmdet_custom_config/mmdet_custom_config_33_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1383,10 +1441,10 @@ the dataset you will get a slightly different version of it.</p>
   <tbody>
     <tr>
       <td>0</td>
-      <td>2.361193</td>
-      <td>1.672817</td>
-      <td>0.000040</td>
-      <td>00:16</td>
+      <td>1.229304</td>
+      <td>0.983039</td>
+      <td>0.092624</td>
+      <td>00:06</td>
     </tr>
   </tbody>
 </table>
@@ -1404,148 +1462,148 @@ the dataset you will get a slightly different version of it.</p>
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.536968</td>
-      <td>1.494403</td>
-      <td>0.000147</td>
-      <td>00:19</td>
+      <td>0.899269</td>
+      <td>0.741807</td>
+      <td>0.156066</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>1.516644</td>
-      <td>1.430333</td>
-      <td>0.000538</td>
-      <td>00:23</td>
+      <td>0.810302</td>
+      <td>0.558525</td>
+      <td>0.365440</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.496924</td>
-      <td>1.343002</td>
-      <td>0.001926</td>
-      <td>00:22</td>
+      <td>0.728987</td>
+      <td>0.518454</td>
+      <td>0.478187</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.435968</td>
-      <td>1.183041</td>
-      <td>0.002488</td>
-      <td>00:21</td>
+      <td>0.663082</td>
+      <td>0.367077</td>
+      <td>0.609001</td>
+      <td>00:06</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.343802</td>
-      <td>0.962206</td>
-      <td>0.000928</td>
-      <td>00:20</td>
+      <td>0.604693</td>
+      <td>0.365837</td>
+      <td>0.717380</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>1.199133</td>
-      <td>0.734787</td>
-      <td>0.004951</td>
-      <td>00:20</td>
+      <td>0.555109</td>
+      <td>0.308284</td>
+      <td>0.837230</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>1.071547</td>
-      <td>0.682442</td>
-      <td>0.005912</td>
-      <td>00:20</td>
+      <td>0.507140</td>
+      <td>0.260290</td>
+      <td>0.871975</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.973078</td>
-      <td>0.692099</td>
-      <td>0.006344</td>
-      <td>00:20</td>
+      <td>0.464969</td>
+      <td>0.248942</td>
+      <td>0.881214</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.892403</td>
-      <td>0.649406</td>
-      <td>0.006396</td>
-      <td>00:21</td>
+      <td>0.429737</td>
+      <td>0.238713</td>
+      <td>0.864140</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.837712</td>
-      <td>0.690478</td>
-      <td>0.007804</td>
-      <td>00:22</td>
+      <td>0.398711</td>
+      <td>0.215525</td>
+      <td>0.916083</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.790692</td>
-      <td>0.647615</td>
-      <td>0.007775</td>
-      <td>00:23</td>
+      <td>0.372950</td>
+      <td>0.206479</td>
+      <td>0.911718</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.758785</td>
-      <td>0.626387</td>
-      <td>0.002885</td>
-      <td>00:20</td>
+      <td>0.356441</td>
+      <td>0.191768</td>
+      <td>0.909661</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.727605</td>
-      <td>0.609429</td>
-      <td>0.010509</td>
-      <td>00:20</td>
+      <td>0.343991</td>
+      <td>0.215923</td>
+      <td>0.911696</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.706678</td>
-      <td>0.611301</td>
-      <td>0.012746</td>
-      <td>00:20</td>
+      <td>0.331874</td>
+      <td>0.218360</td>
+      <td>0.887766</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.684067</td>
-      <td>0.616399</td>
-      <td>0.008784</td>
-      <td>00:20</td>
+      <td>0.313435</td>
+      <td>0.194519</td>
+      <td>0.908697</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.668815</td>
-      <td>0.621261</td>
-      <td>0.011861</td>
-      <td>00:19</td>
+      <td>0.299692</td>
+      <td>0.212282</td>
+      <td>0.900371</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.652843</td>
-      <td>0.615020</td>
-      <td>0.008686</td>
-      <td>00:19</td>
+      <td>0.286332</td>
+      <td>0.189399</td>
+      <td>0.916208</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.649229</td>
-      <td>0.612351</td>
-      <td>0.008146</td>
-      <td>00:20</td>
+      <td>0.282384</td>
+      <td>0.195011</td>
+      <td>0.911806</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.641258</td>
-      <td>0.609879</td>
-      <td>0.007551</td>
-      <td>00:22</td>
+      <td>0.275653</td>
+      <td>0.200540</td>
+      <td>0.904800</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.640558</td>
-      <td>0.608780</td>
-      <td>0.007924</td>
-      <td>00:19</td>
+      <td>0.273256</td>
+      <td>0.200690</td>
+      <td>0.904800</td>
+      <td>00:05</td>
     </tr>
   </tbody>
 </table>
 
-<h3 id="training-using-lightning">Training using Lightning</h3>
+<h3 id="training-using-pytorch-lightning">Training using Pytorch Lightning</h3>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
@@ -1555,22 +1613,21 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="show-results">Show Results</h2>
+<h2 id="using-the-model-inference-and-showing-results">Using the model - inference and showing results</h2>
+<p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_32_0.png" /></p>
-<h2 id="inference">Inference</h2>
-<h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
-<p>Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. </p>
+<p><img alt="png" src="../images/mmdet_custom_config/mmdet_custom_config_39_0.png" /></p>
+<h3 id="prediction">Prediction</h3>
 <blockquote>
 <p>NOTE: For a more detailed look at inference check out the <a href="https://airctic.com/dev/inference/">inference tutorial</a></p>
 </blockquote>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_36_0.png" /></p>
+<p><img alt="png" src="../images/mmdet_custom_config/mmdet_custom_config_42_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
@@ -1592,7 +1649,7 @@ the dataset you will get a slightly different version of it.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../getting_started_object_detection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection" rel="prev">
+        <a href="../progressive_resizing/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Progressive resizing" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1601,20 +1658,20 @@ the dataset you will get a slightly different version of it.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Object Detection
+              Progressive resizing
             </div>
           </div>
         </a>
       
       
         
-        <a href="../getting_started_keypoint_detection/" class="md-footer__link md-footer__link--next" aria-label="Next: Keypoint Detection" rel="next">
+        <a href="../albumentations/" class="md-footer__link md-footer__link--next" aria-label="Next: Albumentations" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Keypoint Detection
+              Albumentations
             </div>
           </div>
           <div class="md-footer__button md-icon">
