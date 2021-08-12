@@ -2,6 +2,7 @@ __all__ = ["show_batch"]
 
 from icevision.utils import *
 from icevision.visualize import *
+from icevision.models.utils import *
 
 
 def show_batch(batch, ncols: int = 1, figsize=None, **show_samples_kwargs):
@@ -10,9 +11,9 @@ def show_batch(batch, ncols: int = 1, figsize=None, **show_samples_kwargs):
     # Arguments
         show_samples_kwargs: Check the parameters from `show_samples`
     """
-    (tensor_images, *_), records = batch
+    (tensor_images, labels), records = unpack_batch(batch)
 
-    for tensor_image, record in zip(tensor_images, records):
+    for tensor_image, label, record in zip(tensor_images, labels, records):
         image = tensor_to_image(tensor_image)
         record.set_img(image)
 
