@@ -125,7 +125,7 @@ class MaskFile(Mask):
         self.filepath = Path(filepath)
 
     def to_mask(self, h, w):
-        mask = open_img(self.filepath, gray=True)
+        mask = np.array(open_img(self.filepath, gray=True))
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
         return MaskArray(masks)
