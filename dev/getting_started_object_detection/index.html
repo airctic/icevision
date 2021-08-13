@@ -1346,15 +1346,11 @@ as the fastai and pytorch lightning engines.</p>
 <p>The record is a key concept in IceVision, it holds the information about an image and its annotations. It is extensible and can support other object formats and types of annotations.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Create the parser</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
-<span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parse annotations to create records</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>&lt;ClassMap: {&#39;background&#39;: 0}&gt;
-</code></pre></div>
-</div>
 <h2 id="creating-datasets-with-agumentations-and-transforms">Creating datasets with agumentations and transforms</h2>
 <p>Data augmentations are essential for robust training and results on many datasets and deep learning tasks. IceVision ships with the <a href="https://albumentations.ai/docs/">Albumentations</a> library for defining and executing transformations, but can be extended to use others.</p>
 <p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizintal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
@@ -1396,12 +1392,15 @@ As pretrained models are used by default, we typically leave this out of the bac
 
 <span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
 
-
 <span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
-  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">vfnet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_mstrain_2x</span>
+  <span class="c1"># extra_args[&#39;cfg_options&#39;] = { </span>
+  <span class="c1">#   &#39;model.bbox_head.loss_bbox.loss_weight&#39;: 2,</span>
+  <span class="c1">#   &#39;model.bbox_head.loss_cls.loss_weight&#39;: 0.8,</span>
+  <span class="c1">#    }</span>
 
 <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
   <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
@@ -1422,8 +1421,16 @@ As pretrained models are used by default, we typically leave this out of the bac
 
 <span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">extra_args</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>{&#39;config_path&#39;: Path(&#39;/root/.icevision/mmdetection_configs/mmdetection_configs-2.10.0/configs/vfnet/vfnet_r50_fpn_mstrain_2x_coco.py&#39;),
+ &#39;model_name&#39;: &#39;vfnet&#39;,
+ &#39;weights_url&#39;: &#39;https://openmmlab.oss-cn-hangzhou.aliyuncs.com/mmdetection/v2.0/vfnet/vfnet_r50_fpn_mstrain_2x_coco/vfnet_r50_fpn_mstrain_2x_coco_20201027-7cc75bd2.pth&#39;}
+</code></pre></div>
+</div>
 <p>Now it is just a one-liner to instantiate the model. If you want to try another <em>option</em>, just edit the line at the top of the previous cell.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the mdoel</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
 </code></pre></div>
 <h2 id="data-loader">Data Loader</h2>
@@ -1436,7 +1443,6 @@ As pretrained models are used by default, we typically leave this out of the bac
 <div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_24_0.png" /></p>
 <h2 id="metrics">Metrics</h2>
 <p>The fastai and pytorch lightning engines collect metrics to track progress during training. IceVision provides metric classes that work across the engines and libraries.</p>
 <p>The same metrics can be used for both fastai and pytorch lightning.</p>
@@ -1453,12 +1459,12 @@ As pretrained models are used by default, we typically leave this out of the bac
 <span class="c1"># learn.lr_find(end_lr=0.005)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=6.918309954926372e-05, lr_steep=9.120108734350652e-05)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0015848932787775993, lr_steep=0.013182567432522774)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_30_2.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_31_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.00158</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1473,10 +1479,10 @@ As pretrained models are used by default, we typically leave this out of the bac
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.308208</td>
-      <td>0.935791</td>
-      <td>0.228113</td>
-      <td>00:07</td>
+      <td>2.821655</td>
+      <td>1.596003</td>
+      <td>0.410899</td>
+      <td>00:08</td>
     </tr>
   </tbody>
 </table>
@@ -1494,143 +1500,143 @@ As pretrained models are used by default, we typically leave this out of the bac
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.852521</td>
-      <td>0.686144</td>
-      <td>0.273189</td>
-      <td>00:06</td>
+      <td>1.448358</td>
+      <td>1.164307</td>
+      <td>0.738301</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.751516</td>
-      <td>0.582417</td>
-      <td>0.311040</td>
-      <td>00:06</td>
+      <td>1.308425</td>
+      <td>0.991188</td>
+      <td>0.843508</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.673795</td>
-      <td>0.476592</td>
-      <td>0.455760</td>
-      <td>00:06</td>
+      <td>1.188745</td>
+      <td>0.856154</td>
+      <td>0.882014</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.600898</td>
-      <td>0.381470</td>
-      <td>0.599883</td>
-      <td>00:06</td>
+      <td>1.135873</td>
+      <td>0.951209</td>
+      <td>0.882354</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.537530</td>
-      <td>0.306719</td>
-      <td>0.771026</td>
-      <td>00:06</td>
+      <td>1.100407</td>
+      <td>0.926789</td>
+      <td>0.867308</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.490598</td>
-      <td>0.261897</td>
-      <td>0.830975</td>
-      <td>00:06</td>
+      <td>1.085654</td>
+      <td>1.020031</td>
+      <td>0.867359</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.445553</td>
-      <td>0.231296</td>
-      <td>0.832984</td>
-      <td>00:06</td>
+      <td>1.081272</td>
+      <td>0.789338</td>
+      <td>0.878533</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.401092</td>
-      <td>0.231449</td>
-      <td>0.837599</td>
-      <td>00:05</td>
+      <td>1.036406</td>
+      <td>0.914110</td>
+      <td>0.865317</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.368480</td>
-      <td>0.208900</td>
-      <td>0.860189</td>
-      <td>00:06</td>
+      <td>1.008738</td>
+      <td>0.753763</td>
+      <td>0.911693</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.340383</td>
-      <td>0.218216</td>
-      <td>0.830745</td>
-      <td>00:06</td>
+      <td>0.966287</td>
+      <td>0.843626</td>
+      <td>0.875202</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.316760</td>
-      <td>0.197272</td>
-      <td>0.856959</td>
-      <td>00:05</td>
+      <td>0.933151</td>
+      <td>0.709110</td>
+      <td>0.905314</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.297015</td>
-      <td>0.166001</td>
-      <td>0.872045</td>
-      <td>00:05</td>
+      <td>0.895972</td>
+      <td>0.691964</td>
+      <td>0.898786</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.278996</td>
-      <td>0.174514</td>
-      <td>0.862729</td>
-      <td>00:06</td>
+      <td>0.858289</td>
+      <td>0.688191</td>
+      <td>0.932358</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.262735</td>
-      <td>0.176559</td>
-      <td>0.862040</td>
-      <td>00:05</td>
+      <td>0.830012</td>
+      <td>0.689273</td>
+      <td>0.912881</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.248073</td>
-      <td>0.155698</td>
-      <td>0.875354</td>
-      <td>00:06</td>
+      <td>0.799195</td>
+      <td>0.590365</td>
+      <td>0.937997</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.238265</td>
-      <td>0.159138</td>
-      <td>0.870347</td>
-      <td>00:06</td>
+      <td>0.761083</td>
+      <td>0.583762</td>
+      <td>0.945319</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.228922</td>
-      <td>0.151915</td>
-      <td>0.869607</td>
-      <td>00:05</td>
+      <td>0.733080</td>
+      <td>0.580863</td>
+      <td>0.931967</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.224587</td>
-      <td>0.150929</td>
-      <td>0.876862</td>
-      <td>00:05</td>
+      <td>0.704263</td>
+      <td>0.553845</td>
+      <td>0.956975</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.220448</td>
-      <td>0.150267</td>
-      <td>0.872779</td>
-      <td>00:05</td>
+      <td>0.675909</td>
+      <td>0.552239</td>
+      <td>0.955867</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.215704</td>
-      <td>0.150309</td>
-      <td>0.872779</td>
-      <td>00:05</td>
+      <td>0.664840</td>
+      <td>0.551422</td>
+      <td>0.955867</td>
+      <td>00:07</td>
     </tr>
   </tbody>
 </table>
@@ -1649,7 +1655,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 <p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_36_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_37_0.png" /></p>
 <h3 id="prediction">Prediction</h3>
 <p>Sometimes you want to have more control than <code>show_results</code> provides. You can construct an inference dataloader using <code>infer_dl</code> from any IceVision dataset and pass this to <code>predict_dl</code> and use <code>show_preds</code> to look at the predictions.</p>
 <p>A prediction is returned as a dict with keys: <code>scores</code>, <code>labels</code>, <code>bboxes</code>, and possibly <code>masks</code>. </p>
@@ -1663,7 +1669,12 @@ As pretrained models are used by default, we typically leave this out of the bac
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_40_0.png" /></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/7 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_41_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
