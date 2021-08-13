@@ -2,6 +2,7 @@
 from icevision.models.mmdet.models import faster_rcnn
 from icevision.models.mmdet.models import retinanet
 from icevision.models.mmdet.models import fcos
+from icevision.models.mmdet.models import vfnet
 from icevision.models.mmdet.models import cornernet
 from icevision.models.mmdet.models import centripetalnet
 from icevision.models.mmdet.models import sparse_rcnn
