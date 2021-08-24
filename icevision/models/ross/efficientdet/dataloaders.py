@@ -179,7 +179,7 @@ def process_train_record(record) -> tuple:
 def process_infer_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet inference"""
     image = im2tensor(record.img)
-    image_size = image.shape[-2:]
+    n_channels, image_height, image_width = image.shape
     image_scale = 1.0
-
-    return image, image_size, image_scale
+    # EffDet expects image size to be passed in W, H notation
+    return image, (image_width, image_height), image_scale
