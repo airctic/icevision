@@ -109,7 +109,7 @@ def test_record_load(record):
 
 
 def test_gray_scale_record_load(gray_scale_record):
-    record_loaded = record.load()
+    record_loaded = gray_scale_record.load()
 
     assert isinstance(record_loaded.img, np.ndarray)
     assert isinstance(record_loaded.detection.masks, MaskArray)
