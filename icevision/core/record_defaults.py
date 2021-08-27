@@ -1,6 +1,7 @@
 __all__ = [
     "ObjectDetectionRecord",
     "InstanceSegmentationRecord",
+    "KeypointsRecord",
     "RadiographicObjectDetectionRecord",
     "RadiographicInstanceSegmentationRecord",
     "RadiographicKeypointsRecord",
