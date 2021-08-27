@@ -30,3 +30,15 @@ def test_open_img(samples_source, fn, expected):
 def test_get_image_size(samples_source, fn, expected):
     size = get_image_size(samples_source / fn)
     assert size == (expected)
+
+
+@pytest.mark.parametrize(
+    "fn,expected",
+    [
+        ("gray_scale/gray_scale_h_10_w_10_image.tiff", (10, 10)),
+        ("gray_scale/gray_scale_h_50_w_50_image.tiff", (50, 50)),
+    ],
+)
+def test_open_gray_scale_image(samples_source, fn, expected):
+    # When returning np arrays
+    assert np.array(open_img(samples_source / fn)).shape[:-1] == expected

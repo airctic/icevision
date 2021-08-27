@@ -8,7 +8,7 @@ __all__ = [
     "BaseLabelsRecordComponent",
     "InstancesLabelsRecordComponent",
     "ClassificationLabelsRecordComponent",
-    "RadiographicRecordComponent",
+    "GrayScaleRecordComponent",
     "BBoxesRecordComponent",
     "MasksRecordComponent",
     "AreasRecordComponent",
@@ -214,7 +214,7 @@ class SizeRecordComponent(RecordComponent):
         return ["record{task}set_img_size(<ImgSize>)"]
 
 
-class RadiographicRecordComponent(FilepathRecordComponent):
+class GrayScaleRecordComponent(FilepathRecordComponent):
     """Overwrites the FilepathRecordComponent to load radiographic images like 16bit grayscale tiff images."""
 
     def _load(self):
