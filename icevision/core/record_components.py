@@ -8,6 +8,7 @@ __all__ = [
     "BaseLabelsRecordComponent",
     "InstancesLabelsRecordComponent",
     "ClassificationLabelsRecordComponent",
+    "RadiographicRecordComponent",
     "BBoxesRecordComponent",
     "MasksRecordComponent",
     "AreasRecordComponent",
@@ -48,9 +49,6 @@ class RecordComponent(TaskComponent):
 
     def _autofix(self) -> Dict[str, bool]:
         return {}
-
-    def _remove_annotation(self, i) -> None:
-        return
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
         return {}
@@ -214,6 +212,14 @@ class SizeRecordComponent(RecordComponent):
 
     def _builder_template(self) -> List[str]:
         return ["record{task}set_img_size(<ImgSize>)"]
+
+
+class RadiographicRecordComponent(FilepathRecordComponent):
+    """Overwrites the FilepathRecordComponent to load radiographic images like 16bit grayscale tiff images."""
+
+    def _load(self):
+        img = open_radiographic_image(self.filepath)
+        self.set_img(img)
 
 
 ### Annotation parsers ###

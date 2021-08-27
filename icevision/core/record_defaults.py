@@ -1,4 +1,10 @@
-__all__ = ["ObjectDetectionRecord", "InstanceSegmentationRecord"]
+__all__ = [
+    "ObjectDetectionRecord",
+    "InstanceSegmentationRecord",
+    "RadiographicObjectDetectionRecord",
+    "RadiographicInstanceSegmentationRecord",
+    "RadiographicKeypointsRecord",
+]
 
 from icevision.core.record import *
 from icevision.core.record_components import *
@@ -29,6 +35,38 @@ def KeypointsRecord():
     return BaseRecord(
         (
             FilepathRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+            KeyPointsRecordComponent(),
+        )
+    )
+
+
+def RadiographicObjectDetectionRecord():
+    return BaseRecord(
+        (
+            RadiographicRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+        )
+    )
+
+
+def RadiographicInstanceSegmentationRecord():
+    return BaseRecord(
+        (
+            RadiographicRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            BBoxesRecordComponent(),
+            MasksRecordComponent(),
+        )
+    )
+
+
+def RadiographicKeypointsRecord():
+    return BaseRecord(
+        (
+            RadiographicRecordComponent(),
             InstancesLabelsRecordComponent(),
             BBoxesRecordComponent(),
             KeyPointsRecordComponent(),
