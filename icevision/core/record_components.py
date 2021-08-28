@@ -18,6 +18,7 @@ __all__ = [
     "LossesRecordComponent",
 ]
 
+from icevision.utils.imageio import open_gray_scale_image
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core.components import *
@@ -218,7 +219,7 @@ class GrayScaleRecordComponent(FilepathRecordComponent):
     """Overwrites the FilepathRecordComponent to load radiographic images like 16bit grayscale tiff images."""
 
     def _load(self):
-        img = open_radiographic_image(self.filepath)
+        img = open_gray_scale_image(self.filepath)
         self.set_img(img)
 
 

@@ -115,8 +115,8 @@ def test_gray_scale_record_load(gray_scale_record):
     assert isinstance(record_loaded.detection.masks, MaskArray)
 
     # test original record is not modified
-    assert record.img == None
-    assert isinstance(record.detection.masks, EncodedRLEs)
+    assert gray_scale_record.img == None
+    assert isinstance(gray_scale_record.detection.masks, EncodedRLEs)
 
     # test unload
     record_loaded.unload()
