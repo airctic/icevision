@@ -32,6 +32,14 @@ def open_img(fn, gray=False) -> PIL.Image.Image:
     return image
 
 
+def open_gray_scale_image(fn):
+    "Opens an radiographic/gray scale image, stacks the channel to represent a RGB image and returns is as a 32bit float array."
+    img = np.array(PIL.Image.open(fn))
+    img = np.dstack([img, img, img])
+    img = img.astype(np.float32)
+    return img
+
+
 # TODO: Deprecated
 def get_image_size(filepath: Union[str, Path]) -> Tuple[int, int]:
     """

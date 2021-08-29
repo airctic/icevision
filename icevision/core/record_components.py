@@ -8,6 +8,7 @@ __all__ = [
     "BaseLabelsRecordComponent",
     "InstancesLabelsRecordComponent",
     "ClassificationLabelsRecordComponent",
+    "GrayScaleRecordComponent",
     "BBoxesRecordComponent",
     "MasksRecordComponent",
     "AreasRecordComponent",
@@ -17,6 +18,7 @@ __all__ = [
     "LossesRecordComponent",
 ]
 
+from icevision.utils.imageio import open_gray_scale_image
 from icevision.imports import *
 from icevision.utils import *
 from icevision.core.components import *
@@ -48,9 +50,6 @@ class RecordComponent(TaskComponent):
 
     def _autofix(self) -> Dict[str, bool]:
         return {}
-
-    def _remove_annotation(self, i) -> None:
-        return
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
         return {}
@@ -214,6 +213,14 @@ class SizeRecordComponent(RecordComponent):
 
     def _builder_template(self) -> List[str]:
         return ["record{task}set_img_size(<ImgSize>)"]
+
+
+class GrayScaleRecordComponent(FilepathRecordComponent):
+    """Overwrites the FilepathRecordComponent to load radiographic images like 16bit grayscale tiff images."""
+
+    def _load(self):
+        img = open_gray_scale_image(self.filepath)
+        self.set_img(img)
 
 
 ### Annotation parsers ###

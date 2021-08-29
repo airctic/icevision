@@ -27,6 +27,31 @@ def record(samples_source):
     return record
 
 
+@pytest.fixture()
+def gray_scale_record(samples_source):
+    record = BaseRecord(
+        (
+            BBoxesRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            MasksRecordComponent(),
+            GrayScaleRecordComponent(),
+        )
+    )
+
+    record.set_record_id(1)
+    record.set_image_size(3, 3)
+    record.set_filepath(samples_source / "gray_scale/gray_scale_h_50_w_50_image.tiff")
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels(["a", "b"])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 4, 4), BBox.from_xyxy(1, 2, 1, 3)]
+    )
+    mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
+    record.detection.add_masks([VocMaskFile(mask_filepath)])
+
+    return record
+
+
 @pytest.fixture
 def record_empty_annotations():
     record = BaseRecord((BBoxesRecordComponent(), InstancesLabelsRecordComponent()))
@@ -76,6 +101,22 @@ def test_record_load(record):
     # test original record is not modified
     assert record.img == None
     assert isinstance(record.detection.masks, EncodedRLEs)
+
+    # test unload
+    record_loaded.unload()
+    assert record_loaded.img == None
+    assert isinstance(record_loaded.detection.masks, EncodedRLEs)
+
+
+def test_gray_scale_record_load(gray_scale_record):
+    record_loaded = gray_scale_record.load()
+
+    assert isinstance(record_loaded.img, np.ndarray)
+    assert isinstance(record_loaded.detection.masks, MaskArray)
+
+    # test original record is not modified
+    assert gray_scale_record.img == None
+    assert isinstance(gray_scale_record.detection.masks, EncodedRLEs)
 
     # test unload
     record_loaded.unload()

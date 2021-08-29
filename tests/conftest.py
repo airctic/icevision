@@ -144,6 +144,22 @@ def coco_keypoints_parser(coco_dir):
     )
 
 
+@pytest.fixture
+def object_detection_record(samples_source):
+    record = ObjectDetectionRecord()
+
+    record.set_record_id(1)
+    record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
+    record.set_img_size(ImgSize(width=500, height=375))
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
+    )
+
+    return record
+
+
 @pytest.fixture(scope="module")
 def coco_mask_records(coco_mask_parser):
     return coco_mask_parser.parse(data_splitter=SingleSplitSplitter())[0]
@@ -365,7 +381,33 @@ def object_detection_record(samples_source):
 
 
 @pytest.fixture
+def gray_scale_object_detection_record(samples_source):
+    record = ObjectDetectionRecord()
+
+    record.set_record_id(1)
+    record.set_filepath(samples_source / "gray_scale/gray_scale_h_50_w_50_image.tiff")
+    record.set_img_size(ImgSize(width=50, height=50))
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
+    )
+
+    return record
+
+
+@pytest.fixture
 def instance_segmentation_record(object_detection_record):
+    record = object_detection_record
+    record.add_component(MasksRecordComponent())
+
+    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+
+    return record
+
+
+@pytest.fixture
+def gray_scale_instance_segmentation_record(gray_scale_object_detection_record):
     record = object_detection_record
     record.add_component(MasksRecordComponent())
 
