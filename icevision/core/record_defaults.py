@@ -34,10 +34,10 @@ def InstanceSegmentationRecord():
     )
 
 
-def SemanticSegmentationRecord():
+def SemanticSegmentationRecord(gray=False):
     return BaseRecord(
         (
-            FilepathRecordComponent(),
+            FilepathRecordComponent(gray=gray),
             ClassMapRecordComponent(task=tasks.segmentation),
             SemanticMaskRecordComponent(),
         )
