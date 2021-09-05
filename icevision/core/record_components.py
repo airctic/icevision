@@ -153,15 +153,18 @@ class ImageRecordComponent(RecordComponent):
 
 
 class FilepathRecordComponent(ImageRecordComponent):
-    def __init__(self, task=tasks.common):
+    def __init__(self, task=tasks.common, gray=False):
         super().__init__(task=task)
+        self.gray = gray
         self.filepath = None
 
     def set_filepath(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
     def _load(self):
-        img = open_img(self.filepath)
+        img = open_img(self.filepath, gray=self.gray)
+        if self.gray:
+            img = img.convert("RGB")
         self.set_img(img)
 
     def _autofix(self) -> Dict[str, bool]:

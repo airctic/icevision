@@ -566,7 +566,7 @@ def draw_segmentation_mask(
     display_mask: bool = True,
     alpha: float = 0.5,
 ):
-    img = PIL.Image.fromarray(img)
+    img = PIL.Image.fromarray(img).convert("RGB")
 
     if display_mask:
         w, h = img.size
