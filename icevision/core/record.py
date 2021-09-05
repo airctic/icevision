@@ -14,7 +14,7 @@ class BaseRecord(TaskComposite):
     def as_dict(self) -> dict:
         return self.reduce_on_components("as_dict", reduction="update")
 
-    def num_annotations(self) -> Dict[str, int]:
+    def num_annotations(self) -> Dict[str, dict]:
         return self.reduce_on_components("_num_annotations", reduction="update")
 
     def check_num_annotations(self):
