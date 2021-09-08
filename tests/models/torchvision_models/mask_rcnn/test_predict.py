@@ -30,7 +30,7 @@ def _test_preds(preds):
     pred = preds[0].pred
     assert isinstance(pred.detection.label_ids, list)
     assert isinstance(pred.detection.bboxes[0], BBox)
-    assert isinstance(pred.detection.masks[0], MaskArray)
+    assert isinstance(pred.detection.mask_array[0], MaskArray)
     assert isinstance(pred.detection.scores, np.ndarray)
 
 
