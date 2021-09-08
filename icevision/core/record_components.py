@@ -427,6 +427,12 @@ class BaseMasksRecordComponent(RecordComponent):
     def as_dict(self) -> dict:
         return {"masks": self.masks, "mask_array": self.mask_array}
 
+    def _remove_annotation(self, i):
+        raise NotImplementedError(
+            "_remove_annotation does not work for mask component, if you're getting "
+            "this on autofix, it's probably means this record has to be fixes manually"
+        )
+
 
 class SemanticMaskRecordComponent(BaseMasksRecordComponent):
     def __init__(self, task=tasks.segmentation):
