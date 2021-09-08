@@ -3,6 +3,7 @@ __all__ = [
     "SingleSplitSplitter",
     "RandomSplitter",
     "FixedSplitter",
+    "FuncSplitter",
 ]
 
 from icevision.imports import *
@@ -115,3 +116,19 @@ class FixedSplitter(DataSplitter):
             idmap: idmap used for getting ids.
         """
         return self.splits
+
+
+# class FixedValidSplitter(FixedSplitter):
+#     """Similar to `FixedSplitter` but only have to pass a single list for validation.
+#     """
+#     def split(self, records: Sequence[BaseRecord]):
+#         record_ids =
+#         records =
+
+
+class FuncSplitter(DataSplitter):
+    def __init__(self, func):
+        self.func = func
+
+    def split(self, records: Sequence[BaseRecord]):
+        return self.func(records)
