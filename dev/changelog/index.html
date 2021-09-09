@@ -987,6 +987,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#081" class="md-nav__link">
     [0.8.1]
   </a>
@@ -1002,7 +1009,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed" class="md-nav__link">
+  <a href="#changed_1" class="md-nav__link">
     Changed
   </a>
   
@@ -1029,7 +1036,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_1" class="md-nav__link">
+  <a href="#changed_2" class="md-nav__link">
     Changed
   </a>
   
@@ -1056,7 +1063,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_2" class="md-nav__link">
+  <a href="#changed_3" class="md-nav__link">
     Changed
   </a>
   
@@ -1083,7 +1090,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_3" class="md-nav__link">
+  <a href="#changed_4" class="md-nav__link">
     Changed
   </a>
   
@@ -1117,7 +1124,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_4" class="md-nav__link">
+  <a href="#changed_5" class="md-nav__link">
     Changed
   </a>
   
@@ -1144,7 +1151,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_5" class="md-nav__link">
+  <a href="#changed_6" class="md-nav__link">
     Changed
   </a>
   
@@ -1171,7 +1178,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_6" class="md-nav__link">
+  <a href="#changed_7" class="md-nav__link">
     Changed
   </a>
   
@@ -1198,7 +1205,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_7" class="md-nav__link">
+  <a href="#changed_8" class="md-nav__link">
     Changed
   </a>
   
@@ -1225,7 +1232,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_8" class="md-nav__link">
+  <a href="#changed_9" class="md-nav__link">
     Changed
   </a>
   
@@ -1245,7 +1252,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed_9" class="md-nav__link">
+  <a href="#changed_10" class="md-nav__link">
     Changed
   </a>
   
@@ -1279,7 +1286,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_10" class="md-nav__link">
+  <a href="#changed_11" class="md-nav__link">
     Changed
   </a>
   
@@ -1313,7 +1320,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_11" class="md-nav__link">
+  <a href="#changed_12" class="md-nav__link">
     Changed
   </a>
   
@@ -1333,7 +1340,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed_12" class="md-nav__link">
+  <a href="#changed_13" class="md-nav__link">
     Changed
   </a>
   
@@ -1360,7 +1367,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_13" class="md-nav__link">
+  <a href="#changed_14" class="md-nav__link">
     Changed
   </a>
   
@@ -1387,7 +1394,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed_14" class="md-nav__link">
+  <a href="#changed_15" class="md-nav__link">
     Changed
   </a>
   
@@ -1414,7 +1421,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_15" class="md-nav__link">
+  <a href="#changed_16" class="md-nav__link">
     Changed
   </a>
   
@@ -1448,7 +1455,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_16" class="md-nav__link">
+  <a href="#changed_17" class="md-nav__link">
     Changed
   </a>
   
@@ -1475,7 +1482,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#changed_17" class="md-nav__link">
+  <a href="#changed_18" class="md-nav__link">
     Changed
   </a>
   
@@ -1520,6 +1527,12 @@
 <h3 id="added">Added</h3>
 <ul>
 <li>Low level parsing workflow with <code>RecordCollection</code></li>
+<li>Semantic segmentation support with fastai</li>
+</ul>
+<h2 id="changed">Changed</h2>
+<ul>
+<li><strong>Breaking:</strong> Refactored mask components workflow</li>
+<li><strong>Breaking:</strong> Due to the new mask components refactor, autofix doesn't work for mask components anymore.</li>
 </ul>
 <h2 id="081">[0.8.1]</h2>
 <h3 id="added_1">Added</h3>
@@ -1527,7 +1540,7 @@
 <li><code>end2end_detect()</code>: Run Object Detection inference (only <code>bboxes</code>) on a single image, and return predicted boxes corresponding to original image size
 -<strong>Breaking:</strong> BaseLabelsRecordComponent <code>as_dict()</code> now returns both <code>labels</code> <code>and labels_ids</code>. <code>labels</code> are now strings instead of integers.</li>
 </ul>
-<h3 id="changed">Changed</h3>
+<h3 id="changed_1">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> On <code>tfms.A.aug_tfms</code> parameter <code>size</code> and <code>presize</code> changed from order (height, width) to (width, height)</li>
 <li>Added <code>RecordCollection</code></li>
@@ -1541,7 +1554,7 @@
 <li><code>SimpleConfusionMatrix</code> Metric</li>
 <li>Negative samples support for mmdetection object detection models</li>
 </ul>
-<h3 id="changed_1">Changed</h3>
+<h3 id="changed_2">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> Albumentations <code>aug_tfms</code> defaults.</li>
 <li>rotate_limit changed from 45 to 15</li>
@@ -1555,7 +1568,7 @@
 <ul>
 <li>Metrics for mmdetection models</li>
 </ul>
-<h3 id="changed_2">Changed</h3>
+<h3 id="changed_3">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> Renamed tasks <code>default,detect,classif</code> to <code>common,detection,classification</code></li>
 <li><strong>Breaking:</strong> Renamed <code>imageid</code> to <code>record_id</code></li>
@@ -1584,7 +1597,7 @@
 <ul>
 <li>mmdetection models</li>
 </ul>
-<h3 id="changed_3">Changed</h3>
+<h3 id="changed_4">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> All <code>Parser</code> subclasses need to call <code>super.__init__</code></li>
 <li><strong>Breaking:</strong> <code>LabelsMixin.labels</code> now needs to return <code>List[Hashable]</code> instead of <code>List[int]</code> (labels names instead of label ids)</li>
@@ -1602,7 +1615,7 @@
 <ul>
 <li><code>aggregate_records_objects</code> function</li>
 </ul>
-<h3 id="changed_4">Changed</h3>
+<h3 id="changed_5">Changed</h3>
 <ul>
 <li>Added <code>label_field</code> to VIA parser to allow for alternate <code>region_attribute</code> names</li>
 </ul>
@@ -1613,7 +1626,7 @@
 <li>VGG Image Annotator v2 JSON format parser for bboxes</li>
 <li><code>figsize</code> parameter to <code>show_record</code> and <code>show_sample</code></li>
 </ul>
-<h3 id="changed_5">Changed</h3>
+<h3 id="changed_6">Changed</h3>
 <ul>
 <li>improved visualisation for small bboxes</li>
 <li><code>COCOMetric</code> now returns all metrics from pycocotools</li>
@@ -1624,7 +1637,7 @@
 <ul>
 <li>retinanet: model, dataloaders, predict, ...</li>
 </ul>
-<h3 id="changed_6">Changed</h3>
+<h3 id="changed_7">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> models/rcnn renamed to models/torchvision_models</li>
 <li>tests/models/rcnn renamed to tests/models/torchvision_models</li>
@@ -1636,7 +1649,7 @@
 <li>tutorial with hard negative samples</li>
 <li>ability to skip record while parsing</li>
 </ul>
-<h3 id="changed_7">Changed</h3>
+<h3 id="changed_8">Changed</h3>
 <ul>
 <li>show_preds visual improvement</li>
 </ul>
@@ -1648,14 +1661,14 @@
 <li>new class <code>EncodedRLEs</code></li>
 <li>all masks get converted to <code>EncodedRLEs</code> at parsing time</li>
 </ul>
-<h3 id="changed_8">Changed</h3>
+<h3 id="changed_9">Changed</h3>
 <ul>
 <li>Removed warning on autofixing masks</li>
 <li>RLE default counts is now COCO style</li>
 <li>renamed <code>Mask.to_erle</code> to <code>Mask.to_erles</code></li>
 </ul>
 <h2 id="021">[0.2.1]</h2>
-<h3 id="changed_9">Changed</h3>
+<h3 id="changed_10">Changed</h3>
 <ul>
 <li>updated matplotlib and ipykernel minimum version for colab compatibility</li>
 </ul>
@@ -1676,7 +1689,7 @@
 <li>InvalidDataError for BBox</li>
 <li>Catches InvalidDataError while parsing data</li>
 </ul>
-<h3 id="changed_10">Changed</h3>
+<h3 id="changed_11">Changed</h3>
 <ul>
 <li><strong>Breaking:</strong> Unified <code>parsers.SizeMixin</code> functions <code>image_width</code> and <code>image_height</code> into a single function <code>image_width_height</code></li>
 <li>Rename Parser <code>SizeMixin</code> fields from <code>width</code> <code>height</code> to <code>image_width</code> <code>image_height</code></li>
@@ -1690,12 +1703,12 @@
 <ul>
 <li>Efficientdet now support empty annotations</li>
 </ul>
-<h3 id="changed_11">Changed</h3>
+<h3 id="changed_12">Changed</h3>
 <ul>
 <li>Returns float instead of dict on <code>FastaiMetricAdapter</code></li>
 </ul>
 <h2 id="015">[0.1.5]</h2>
-<h3 id="changed_12">Changed</h3>
+<h3 id="changed_13">Changed</h3>
 <ul>
 <li>Updates fastai2 to the final release version</li>
 </ul>
@@ -1705,10 +1718,10 @@
 <li>soft import <code>icedata</code> in <code>icevision.all</code></li>
 <li><code>show_pbar</code> parameter to <code>COCOMetric</code></li>
 </ul>
-<h3 id="changed_13">Changed</h3>
+<h3 id="changed_14">Changed</h3>
 <h3 id="deleted_2">Deleted</h3>
 <h2 id="013">[0.1.3]</h2>
-<h3 id="changed_14">Changed</h3>
+<h3 id="changed_15">Changed</h3>
 <ul>
 <li>Effdet as direct dependency</li>
 </ul>
@@ -1717,7 +1730,7 @@
 <ul>
 <li><code>show_results</code> function for each model</li>
 </ul>
-<h3 id="changed_15">Changed</h3>
+<h3 id="changed_16">Changed</h3>
 <ul>
 <li>Default <code>data_splitter</code> for Parser changed to <code>RandomSplitter</code></li>
 <li>Renamed package from <code>mantisshrimp</code> to <code>icevision</code></li>
@@ -1742,7 +1755,7 @@
 <li><code>download_gdrive</code> and <code>download_and_extract_gdrive</code></li>
 <li>New datasets <code>pennfundan</code> and <code>birds</code></li>
 </ul>
-<h3 id="changed_16">Changed</h3>
+<h3 id="changed_17">Changed</h3>
 <ul>
 <li>Renames <code>AlbuTransform</code> to <code>AlbumentationTransforms</code></li>
 <li>All <code>build_batch</code> method now returns <code>batch, samples</code>, the batch is always a tuple of inputs to the model</li>
@@ -1770,7 +1783,7 @@ so, for example, instead of <code>Parser</code> now we have to do <code>parsers.
 <li><code>sort</code> parameter for <code>get_image_files</code></li>
 <li><code>ClassMap</code>: A class that handles the mapping between ids and names, with the optional insertion of the background class</li>
 </ul>
-<h3 id="changed_17">Changed</h3>
+<h3 id="changed_18">Changed</h3>
 <ul>
 <li>All dataloaders now return the batch and the records, e.g. <code>return (images, targets), records</code></li>
 <li><code>Metric.accumulate</code> signature changed to <code>(records, preds)</code>, reflects in <code>FastaiMetricAdapter</code> and <code>LightningModelAdapter</code></li>
