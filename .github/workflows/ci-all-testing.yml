@@ -21,10 +21,14 @@ jobs:
           - python-version: '3.7'
             torch-version: '1.7.0'
             torchvision-version: '0.8.0'
+            mmcv-full-version: '1.3.3'
+            mmdet-version: '2.12.0'
           # Maximum supported versions of dependencies
           - python-version: '3.8'
             torch-version: '1.9.0'
             torchvision-version: '0.10.0'
+            mmcv-full-version: '1.3.12'
+            mmdet-version: '2.16.0'
 
     steps:
     - uses: actions/checkout@v2
@@ -36,8 +40,8 @@ jobs:
     - name: Install package
       run: |
         pip install torch==${{ matrix.torch-version }} torchvision==${{ matrix.torchvision-version }} -f https://download.pytorch.org/whl/torch_stable.html
-        pip install mmcv-full=="1.3.12" -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{ matrix.torch-version }}/index.html
-        pip install mmdet==2.12.0 --upgrade
+        pip install mmcv-full==${{ matrix.mmcv-full-version }} -f https://download.openmmlab.com/mmcv/dist/cpu/torch${{ matrix.torch-version }}/index.html
+        pip install mmdet==${{ matrix.mmdet-version }}
         pip install -e ".[all,dev]"
         pip install yolov5-icevision --upgrade
 
