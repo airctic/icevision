@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - Low level parsing workflow with `RecordCollection`
+- Semantic segmentation support with fastai
+
+
+## Changed
+- **Breaking:** Refactored mask components workflow
+- **Breaking:** Due to the new mask components refactor, autofix doesn't work for mask components anymore.
 
 ## [0.8.1]
 ### Added 
