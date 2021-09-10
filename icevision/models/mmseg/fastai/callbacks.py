@@ -15,7 +15,7 @@ class _ModelWrap(nn.Module):
         self.model = model
 
     def forward(self, xb):
-        return self.model.train_step(data=xb, optimizer=None)
+        return self.model.train_step(data_batch=xb, optimizer=None)
 
     def forward_test(self, xb):
         imgs = xb[0]["img"]
