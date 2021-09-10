@@ -1,7 +1,7 @@
 import pytest
 from icevision import *
 from icevision.imports import *
-from icevision.models.torchvision import faster_rcnn
+from icevision.models.torchvision import faster_rcnn, keypoint_rcnn
 from icevision.models.ross import efficientdet
 from icevision.models.ross.efficientdet.backbones import *
 import albumentations as A
@@ -36,6 +36,54 @@ def fridge_efficientdet_model() -> nn.Module:
 def fridge_faster_rcnn_model() -> nn.Module:
     backbone = models.torchvision.faster_rcnn.backbones.resnet18_fpn(pretrained=False)
     return faster_rcnn.model(num_classes=5, backbone=backbone)
+
+
+@pytest.fixture()
+def camvid_class_map(samples_source) -> ClassMap:
+    codes = list(np.loadtxt(samples_source / "camvid/codes.txt", dtype=str))
+    return ClassMap(codes, background=None)
+
+
+@pytest.fixture()
+def camvid_records(samples_source, camvid_class_map) -> RecordCollection:
+    images_dir = samples_source / "camvid/images"
+    labels_dir = samples_source / "camvid/labels"
+    image_files = get_image_files(images_dir)
+
+    records = RecordCollection(SemanticSegmentationRecord)
+
+    for image_file in pbar(image_files):
+        record = records.get_by_record_id(image_file.stem)
+
+        if record.is_new:
+            record.set_filepath(image_file)
+            record.set_img_size(get_img_size(image_file))
+            record.segmentation.set_class_map(camvid_class_map)
+
+        mask_file = SemanticMaskFile(labels_dir / f"{image_file.stem}_P.png")
+        record.segmentation.set_mask(mask_file)
+
+    records = records.autofix()
+    # list of 5 records
+    return records
+
+
+@pytest.fixture()
+def camvid_ds(camvid_records) -> Tuple[Dataset, Dataset]:
+
+    train_records, valid_records = camvid_records.make_splits(
+        RandomSplitter([0.8, 0.2], seed=0)
+    )
+
+    IMG_SIZE = 64
+    tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
+
+    train_ds = Dataset(train_records, tfms_)
+    valid_ds = Dataset(valid_records, tfms_)
+    assert len(train_ds) == 4
+    assert len(valid_ds) == 1
+
+    return train_ds, valid_ds
 
 
 @pytest.fixture(scope="module")
@@ -142,6 +190,22 @@ def coco_keypoints_parser(coco_dir):
         annotations_filepath=coco_dir / "keypoints_annotations.json",
         img_dir=coco_dir / "images",
     )
+
+
+@pytest.fixture
+def object_detection_record(samples_source):
+    record = ObjectDetectionRecord()
+
+    record.set_record_id(1)
+    record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
+    record.set_img_size(ImgSize(width=500, height=375))
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
+    )
+
+    return record
 
 
 @pytest.fixture(scope="module")
@@ -365,7 +429,33 @@ def object_detection_record(samples_source):
 
 
 @pytest.fixture
+def gray_scale_object_detection_record(samples_source):
+    record = ObjectDetectionRecord()
+
+    record.set_record_id(1)
+    record.set_filepath(samples_source / "gray_scale/gray_scale_h_50_w_50_image.tiff")
+    record.set_img_size(ImgSize(width=50, height=50))
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels_by_id([1, 2])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 3, 4), BBox.from_xyxy(10, 20, 30, 40)]
+    )
+
+    return record
+
+
+@pytest.fixture
 def instance_segmentation_record(object_detection_record):
+    record = object_detection_record
+    record.add_component(InstanceMasksRecordComponent())
+
+    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+
+    return record
+
+
+@pytest.fixture
+def gray_scale_instance_segmentation_record(gray_scale_object_detection_record):
     record = object_detection_record
     record.add_component(MasksRecordComponent())
 
@@ -381,7 +471,7 @@ def empty_annotations_record():
             ImageRecordComponent(),
             InstancesLabelsRecordComponent(),
             BBoxesRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
 
@@ -406,7 +496,7 @@ component_field = {
     SizeRecordComponent: "img_size",
     InstancesLabelsRecordComponent: "labels",
     BBoxesRecordComponent: "bboxes",
-    MasksRecordComponent: "masks",
+    InstanceMasksRecordComponent: "masks",
     KeyPointsRecordComponent: "keypoints",
     AreasRecordComponent: "areas",
     IsCrowdsRecordComponent: "iscrowds",

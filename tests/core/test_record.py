@@ -8,7 +8,7 @@ def record(samples_source):
         (
             BBoxesRecordComponent(),
             InstancesLabelsRecordComponent(),
-            MasksRecordComponent(),
+            # InstanceMasksRecordComponent(),
             FilepathRecordComponent(),
         )
     )
@@ -21,8 +21,33 @@ def record(samples_source):
     record.detection.add_bboxes(
         [BBox.from_xyxy(1, 2, 4, 4), BBox.from_xyxy(1, 2, 1, 3)]
     )
-    mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
-    record.detection.add_masks([VocMaskFile(mask_filepath)])
+    # mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
+    # record.detection.add_masks([VocMaskFile(mask_filepath)])
+
+    return record
+
+
+@pytest.fixture()
+def gray_scale_record(samples_source):
+    record = BaseRecord(
+        (
+            BBoxesRecordComponent(),
+            InstancesLabelsRecordComponent(),
+            # InstanceMasksRecordComponent(),
+            GrayScaleRecordComponent(),
+        )
+    )
+
+    record.set_record_id(1)
+    record.set_image_size(3, 3)
+    record.set_filepath(samples_source / "gray_scale/gray_scale_h_50_w_50_image.tiff")
+    record.detection.set_class_map(ClassMap(["a", "b"]))
+    record.detection.add_labels(["a", "b"])
+    record.detection.add_bboxes(
+        [BBox.from_xyxy(1, 2, 4, 4), BBox.from_xyxy(1, 2, 1, 3)]
+    )
+    # mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
+    # record.detection.add_masks([VocMaskFile(mask_filepath)])
 
     return record
 
@@ -52,7 +77,7 @@ def record_wrong_num_annotations(samples_source):
         (
             BBoxesRecordComponent(),
             InstancesLabelsRecordComponent(),
-            MasksRecordComponent(),
+            InstanceMasksRecordComponent(),
         )
     )
 
@@ -61,8 +86,8 @@ def record_wrong_num_annotations(samples_source):
     record.detection.set_class_map(ClassMap(["a", "b"]))
     record.detection.add_labels(["a", "b"])
     record.detection.add_bboxes([BBox.from_xyxy(1, 2, 4, 4)])
-    mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
-    record.detection.add_masks([VocMaskFile(mask_filepath)])
+    # mask_filepath = samples_source / "voc/SegmentationObject/2007_000063.png"
+    # record.detection.add_masks([VocMaskFile(mask_filepath)])
 
     return record
 
@@ -71,16 +96,32 @@ def test_record_load(record):
     record_loaded = record.load()
 
     assert isinstance(record_loaded.img, PIL.Image.Image)
-    assert isinstance(record_loaded.detection.masks, MaskArray)
+    # assert isinstance(record_loaded.detection.mask_array, MaskArray)
 
     # test original record is not modified
     assert record.img == None
-    assert isinstance(record.detection.masks, EncodedRLEs)
+    # assert isinstance(record.detection.masks[0], VocMaskFile)
 
     # test unload
     record_loaded.unload()
     assert record_loaded.img == None
-    assert isinstance(record_loaded.detection.masks, EncodedRLEs)
+    # assert isinstance(record_loaded.detection.masks[0], VocMaskFile)
+
+
+def test_gray_scale_record_load(gray_scale_record):
+    record_loaded = gray_scale_record.load()
+
+    assert isinstance(record_loaded.img, np.ndarray)
+    # assert isinstance(record_loaded.detection.mask_array, MaskArray)
+
+    # test original record is not modified
+    assert gray_scale_record.img == None
+    # assert isinstance(gray_scale_record.detection.masks[0], VocMaskFile)
+
+    # test unload
+    record_loaded.unload()
+    assert record_loaded.img == None
+    # assert isinstance(record_loaded.detection.masks, EncodedRLEs)
 
 
 class TestKeypointsMetadata(KeypointsMetadata):
@@ -119,7 +160,8 @@ def test_record_keypoints(record_keypoints):
 def test_record_num_annotations(record):
     assert record.num_annotations() == {
         "common": {},
-        "detection": {"labels": 2, "bboxes": 2, "masks": 2},
+        # "detection": {"labels": 2, "bboxes": 2, "masks": 2}, # see 868
+        "detection": {"labels": 2, "bboxes": 2},
     }
 
 
@@ -133,7 +175,7 @@ def test_record_autofix(record):
 
     assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 3)]
-    assert len(record.detection.masks) == 1
+    # assert len(record.detection.masks) == 1
 
 
 def test_record_autofix_invalid_path(record_invalid_path):
@@ -156,4 +198,4 @@ def test_autofix_records(
     record = records[0]
     assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 3)]
-    assert len(record.detection.masks) == 1
+    # assert len(record.detection.masks) == 1

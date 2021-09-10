@@ -1,17 +1,10 @@
 from icevision.models.utils import *
 from icevision.models.interpretation import *
 
-# backwards compatibility
-from icevision.models.torchvision import (
-    faster_rcnn,
-    mask_rcnn,
-    retinanet,
-    keypoint_rcnn,
-)
 from icevision.models import torchvision
 
 # Soft dependencies
-from icevision.soft_dependencies import SoftDependencies
+from icevision.soft_dependencies import SoftDependencies, _SoftDependencies
 
 if SoftDependencies.effdet:
     # backwards compatibility
@@ -33,3 +26,6 @@ if SoftDependencies.yolov5:
 
 if SoftDependencies.mmseg:
     from icevision.models import mmseg
+
+if SoftDependencies.fastai:
+    from icevision.models import fastai
