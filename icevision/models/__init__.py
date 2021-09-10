@@ -30,3 +30,5 @@ if SoftDependencies.fastai:
 
 if SoftDependencies.sahi:
     from icevision.models import inference_sahi
+if SoftDependencies.mmseg:
+    from icevision.models import mmseg
