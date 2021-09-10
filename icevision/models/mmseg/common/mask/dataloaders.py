@@ -1,22 +1,59 @@
-__all__ = [
-    "build_train_batch",
-    "build_valid_batch",
-    "build_infer_batch",
-    "train_dl",
-    "valid_dl",
-    "infer_dl",
-]
+__all__ = ["train_dl", "valid_dl", "infer_dl", "build_train_batch", "build_infer_batch"]
 
-from icevision.core import *
+
 from icevision.imports import *
+from icevision.core import *
 from icevision.models.utils import *
-from icevision.models.mmseg.common.utils import convert_background_from_zero_to_last
 
 
-def _img_tensor(record):
-    # convert from RGB to BGR
-    img = record.img[:, :, ::-1].copy()
-    return im2tensor(img)
+def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for training the model.
+
+    # Arguments
+        dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
+        batch_tfms: Transforms to be applied at the batch level.
+        **dataloader_kwargs: Keyword arguments that will be internally passed to a Pytorch `DataLoader`.
+        The parameter `collate_fn` is already defined internally and cannot be passed here.
+
+    # Returns
+        A Pytorch `DataLoader`.
+    """
+    return transform_dl(
+        dataset=dataset,
+        build_batch=build_train_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
+
+
+def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    """A `DataLoader` with a custom `collate_fn` that batches items as required for validating the model.
+
+    # Arguments
+        dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
+        batch_tfms: Transforms to be applied at the batch level.
+        **dataloader_kwargs: Keyword arguments that will be internally passed to a Pytorch `DataLoader`.
+        The parameter `collate_fn` is already defined internally and cannot be passed here.
+
+    # Returns
+        A Pytorch `DataLoader`.
+    """
+    return train_dl(dataset, batch_tfms=None, **dataloader_kwargs)
+
+
+def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
+    return transform_dl(
+        dataset=dataset,
+        build_batch=build_infer_batch,
+        batch_tfms=batch_tfms,
+        **dataloader_kwargs
+    )
+
+
+def _img_meta_mask(record):
+    img_meta = _img_meta(record)
+    img_meta["ori_shape"] = img_meta["pad_shape"]
+    return img_meta
 
 
 def _img_meta(record):
@@ -31,116 +68,43 @@ def _img_meta(record):
     }
 
 
-def _labels(record):
-    if len(record.detection.label_ids) == 0:
-        return torch.empty(0)
-    else:
-        tensor_label_ids = tensor(record.detection.label_ids)
-        labels = convert_background_from_zero_to_last(
-            label_ids=tensor_label_ids, class_map=record.detection.class_map
-        )
-        return labels
+def build_train_batch(records: Sequence[BaseRecord]):
+    # tensor_images, tensor_masks = [], []
+    # for record in records:
+    #     # can be optimzed to be converted to tensor once at the end
+    #     tensor_images.append(im2tensor(record.img))
+    #     tensor_masks.append(
+    #         tensor(record.segmentation.mask_array.data).long().squeeze()
+    #     )
 
+    # tensor_images = torch.stack(tensor_images)
+    # tensor_masks = torch.stack(tensor_masks)
 
-def _bboxes(record):
-    if len(record.detection.label_ids) == 0:
-        return torch.empty((0, 4))
-    else:
-        xyxys = [bbox.xyxy for bbox in record.detection.bboxes]
-        return tensor(xyxys, dtype=torch.float32)
+    # return (tensor_images, tensor_masks), records
 
-
-def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    return transform_dl(
-        dataset=dataset,
-        build_batch=build_train_batch,
-        batch_tfms=batch_tfms,
-        **dataloader_kwargs
-    )
-
-
-def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    return transform_dl(
-        dataset=dataset,
-        build_batch=build_valid_batch,
-        batch_tfms=batch_tfms,
-        **dataloader_kwargs
-    )
-
-
-def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
-    """A `DataLoader` with a custom `collate_fn` that batches items as required for inferring the model.
-
-    # Arguments
-        dataset: Possibly a `Dataset` object, but more generally, any `Sequence` that returns records.
-        batch_tfms: Transforms to be applied at the batch level.
-        **dataloader_kwargs: Keyword arguments that will be internally passed to a Pytorch `DataLoader`.
-        The parameter `collate_fn` is already defined internally and cannot be passed here.
-
-    # Returns
-        A Pytorch `DataLoader`.
-    """
-    return transform_dl(
-        dataset=dataset,
-        build_batch=build_infer_batch,
-        batch_tfms=batch_tfms,
-        **dataloader_kwargs
-    )
-
-
-def build_valid_batch(
-    records: Sequence[RecordType],
-) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
-    return build_train_batch(records=records)
-
-
-def build_train_batch(
-    records: Sequence[RecordType],
-) -> Tuple[dict, List[Dict[str, torch.Tensor]]]:
     images, labels, bboxes, masks, img_metas = [], [], [], [], []
     for record in records:
-        images.append(_img_tensor(record))
+        images.append(im2tensor(record.img))
         img_metas.append(_img_meta_mask(record))
-        labels.append(_labels(record))
-        bboxes.append(_bboxes(record))
-        masks.append(_masks(record))
+        # labels.append(_labels(record))
+        # bboxes.append(_bboxes(record))
+        masks.append(tensor(record.segmentation.mask_array.data).long().squeeze())
 
     data = {
         "img": torch.stack(images),
         "img_metas": img_metas,
-        "gt_labels": labels,
-        "gt_bboxes": bboxes,
-        "gt_masks": masks,
+        # "gt_labels": labels,
+        # "gt_bboxes": bboxes,
+        "gt_semantic_seg": torch.stack(masks),
     }
 
     return data, records
 
 
-def build_infer_batch(records):
-    imgs, img_metas = [], []
+def build_infer_batch(records: Sequence[BaseRecord]):
+    tensor_images = []
     for record in records:
-        imgs.append(_img_tensor(record))
-        img_metas.append(_img_meta_mask(record))
+        tensor_images.append(im2tensor(record.img))
 
-    data = {
-        "img": [torch.stack(imgs)],
-        "img_metas": [img_metas],
-    }
-
-    return data, records
-
-
-def _img_meta_mask(record):
-    img_meta = _img_meta(record)
-    img_meta["ori_shape"] = img_meta["pad_shape"]
-    return img_meta
-
-
-def _masks(record):
-    if len(record.detection.masks) == 0:
-        raise RuntimeError("Negative samples still needs to be implemented")
-    else:
-        mask = record.detection.masks.data
-        _, h, w = mask.shape
-        return mask
-        # return BitmapMasks(mask, height=h, width=w)
+    tensor_images = torch.stack(tensor_images)
+    return (tensor_images,), records
