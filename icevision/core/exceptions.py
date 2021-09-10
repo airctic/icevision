@@ -1,4 +1,9 @@
-__all__ = ["InvalidDataError", "AutofixAbort", "AbortParseRecord"]
+__all__ = [
+    "InvalidDataError",
+    "AutofixAbort",
+    "AbortParseRecord",
+    "InvalidMMSegModelType",
+]
 
 
 class InvalidDataError(Exception):
@@ -10,4 +15,8 @@ class AutofixAbort(Exception):
 
 
 class AbortParseRecord(Exception):
+    pass
+
+
+class InvalidMMSegModelType(Exception):
     pass
