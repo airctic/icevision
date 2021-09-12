@@ -83,6 +83,14 @@ def create_model_config(
 
     cfg = Config.fromfile(config_path)
 
+    # TODO: Make this more elegant
+    # HACK: Make this more elegant
+    # This is required to avoid making PyTorch think we want to do parallel computing
+    # https://github.com/open-mmlab/mmsegmentation/issues/809
+    cfg["model"]["backbone"]["norm_cfg"] = dict(type="BN", requires_grad=True)
+    cfg["model"]["decode_head"]["norm_cfg"] = dict(type="BN", requires_grad=True)
+    cfg["model"]["auxiliary_head"]["norm_cfg"] = dict(type="BN", requires_grad=True)
+
     if cfg_options is not None:
         cfg.merge_from_dict(cfg_options)
 

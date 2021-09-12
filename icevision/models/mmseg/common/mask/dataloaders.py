@@ -64,7 +64,8 @@ def _img_meta(record):
         # "img_shape": (record.img_size.height, record.img_size.width, img_c),
         "img_shape": (img_h, img_w, img_c),
         "pad_shape": (img_h, img_w, img_c),
-        "scale_factor": np.ones(4),  # TODO: is scale factor correct?
+        "flip": False,  # TODO: is this correct?
+        "scale_factor": 1.0,  # TODO: is scale factor correct?
     }
 
 
@@ -88,7 +89,7 @@ def build_train_batch(records: Sequence[BaseRecord]):
         img_metas.append(_img_meta_mask(record))
         # labels.append(_labels(record))
         # bboxes.append(_bboxes(record))
-        masks.append(tensor(record.segmentation.mask_array.data).long().squeeze())
+        masks.append(tensor(record.segmentation.mask_array.data).long())
 
     data = {
         "img": torch.stack(images),

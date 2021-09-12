@@ -50,7 +50,8 @@ def build_model(
     )
 
     if model_type == "EncoderDecoder":
-        cfg.model.decode_head.num_classes = num_classes - 1
+        cfg.model.decode_head.num_classes = num_classes
+        cfg.model.auxiliary_head.num_classes = num_classes
     else:
         raise (InvalidMMSegModelType)
 
