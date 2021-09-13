@@ -24,11 +24,8 @@ def _predict_batch(
 ) -> List[Prediction]:
     device = model_device(model)
 
-    images, *_ = batch
-    images = images.to(device)
-
-    raw_preds = model(images)
-    preds = convert_raw_predictions(
+    raw_preds = model(**batch, return_loss=False)
+    preds = convert_raw_predictions_no_gt(
         batch=batch,
         raw_preds=raw_preds,
         records=records,
@@ -47,10 +44,17 @@ def convert_raw_predictions(
 
     # tensor_images, *_ = batch
 
-    tensor_gts = batch["gt_semantic_seg"].squeeze().chunk(8, dim=0)
+    if "gt_semantic_seg" in batch:
+        tensor_gts = batch["gt_semantic_seg"].squeeze().chunk(8, dim=0)
+    else:
+        tensor_gts = []
+
+    tensor_imgs = batch["img"].squeeze().chunk(8, dim=0)
 
     preds = []
-    for record, tensor_gt, mask_pred in zip(records, tensor_gts, raw_preds):
+    for record, tensor_gt, mask_pred, tensor_image in zip(
+        records, tensor_gts, raw_preds, tensor_imgs
+    ):
         pred = BaseRecord(
             (
                 ImageRecordComponent(),
@@ -62,10 +66,44 @@ def convert_raw_predictions(
         pred.segmentation.set_class_map(record.segmentation.class_map)
         pred.segmentation.set_mask_array(MaskArray(mask_pred))
 
-        record.segmentation.set_mask_array(MaskArray(tensor_gt.squeeze().cpu().numpy()))
+        if len(tensor_gts):
+            record.segmentation.set_mask_array(
+                MaskArray(tensor_gt.squeeze().cpu().numpy())
+            )
 
-        # if keep_images:
-        #     record.set_img(tensor_to_image(tensor_image))
+        if keep_images:
+            record.set_img(tensor_to_image(tensor_image))
+
+        preds.append(Prediction(pred=pred, ground_truth=record))
+
+    return preds
+
+
+# TODO: Refactor to use a single conversion method?
+def convert_raw_predictions_no_gt(
+    batch,
+    raw_preds: torch.Tensor,
+    records: Sequence[BaseRecord],
+    keep_images: bool = False,
+) -> List[Prediction]:
+
+    tensor_imgs = batch["img"][0].squeeze().chunk(8, dim=0)
+
+    preds = []
+    for record, mask_pred, tensor_image in zip(records, raw_preds, tensor_imgs):
+        pred = BaseRecord(
+            (
+                ImageRecordComponent(),
+                SemanticMaskRecordComponent(),
+                ClassMapRecordComponent(task=tasks.segmentation),
+            )
+        )
+
+        pred.segmentation.set_class_map(record.segmentation.class_map)
+        pred.segmentation.set_mask_array(MaskArray(mask_pred))
+
+        if keep_images:
+            record.set_img(tensor_to_image(tensor_image))
 
         preds.append(Prediction(pred=pred, ground_truth=record))
 

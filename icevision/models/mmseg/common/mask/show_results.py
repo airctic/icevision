@@ -27,6 +27,5 @@ def show_results(
         ncols=ncols,
         denormalize_fn=denormalize_fn,
         show=show,
-        detection_threshold=detection_threshold,
         device=device,
     )

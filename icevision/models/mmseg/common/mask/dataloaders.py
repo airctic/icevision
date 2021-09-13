@@ -83,29 +83,32 @@ def build_train_batch(records: Sequence[BaseRecord]):
 
     # return (tensor_images, tensor_masks), records
 
-    images, labels, bboxes, masks, img_metas = [], [], [], [], []
+    images, masks, img_metas = [], [], []
     for record in records:
         images.append(im2tensor(record.img))
         img_metas.append(_img_meta_mask(record))
-        # labels.append(_labels(record))
-        # bboxes.append(_bboxes(record))
         masks.append(tensor(record.segmentation.mask_array.data).long())
 
     data = {
         "img": torch.stack(images),
         "img_metas": img_metas,
-        # "gt_labels": labels,
-        # "gt_bboxes": bboxes,
         "gt_semantic_seg": torch.stack(masks),
     }
 
     return data, records
 
 
+#  See this for expected format https://mmsegmentation.readthedocs.io/en/latest/api.html#mmseg.models.segmentors.BaseSegmentor.forward_test
 def build_infer_batch(records: Sequence[BaseRecord]):
-    tensor_images = []
+    images = []
     for record in records:
-        tensor_images.append(im2tensor(record.img))
+        images.append(im2tensor(record.img))
 
-    tensor_images = torch.stack(tensor_images)
-    return (tensor_images,), records
+    data = {
+        "img": [
+            torch.stack(images).cuda()
+        ],  # TODO: Make this compatible with CPU inference
+        "img_metas": [[_img_meta_mask(record)]],
+    }
+
+    return data, records
