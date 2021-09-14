@@ -5,8 +5,8 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.base_show_results import base_show_results
-from icevision.models.mmseg.common.mask.dataloaders import *
-from icevision.models.mmseg.common.mask.prediction import *
+from icevision.models.mmseg.common.dataloaders import *
+from icevision.models.mmseg.common.prediction import *
 
 
 def show_results(
