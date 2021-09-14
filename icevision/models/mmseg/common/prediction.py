@@ -11,7 +11,7 @@ from icevision.core import *
 from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.mmseg.common.utils import *
-from icevision.models.mmseg.common.mask.dataloaders import *
+from icevision.models.mmseg.common.dataloaders import *
 
 
 @torch.no_grad()

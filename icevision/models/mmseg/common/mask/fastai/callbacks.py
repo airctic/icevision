@@ -1,7 +1,7 @@
 __all__ = ["MaskMMSegmentationCallback"]
 
 from icevision.models.mmseg.fastai.callbacks import MMSegmentationCallback
-from icevision.models.mmseg.common.mask.prediction import convert_raw_predictions
+from icevision.models.mmseg.common.prediction import convert_raw_predictions
 
 
 class MaskMMSegmentationCallback(MMSegmentationCallback):

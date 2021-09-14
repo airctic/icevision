@@ -6,7 +6,7 @@ from icevision.core import *
 from icevision.data import *
 from icevision.engines.fastai import *
 from icevision.models.mmseg.utils import *
-from icevision.models.mmseg.common.mask.prediction import convert_raw_predictions
+from icevision.models.mmseg.common.prediction import convert_raw_predictions
 
 
 class _ModelWrap(nn.Module):
