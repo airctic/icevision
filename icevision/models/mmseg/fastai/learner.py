@@ -1,4 +1,4 @@
-__all__ = ["mmsegmentation_learner"]
+__all__ = ["learner"]
 
 from icevision.imports import *
 from icevision.models.mmseg.common import loss_fn
@@ -6,13 +6,13 @@ from icevision.models.mmseg.fastai.callbacks import *
 from icevision.engines.fastai import *
 
 
-def mmsegmentation_learner(
+def learner(
     dls: List[Union[DataLoader, fastai.DataLoader]],
     model: nn.Module,
     cbs=None,
     **learner_kwargs,
 ):
-    """Fastai `Learner` adapted for MMDetection models.
+    """Fastai `Learner` adapted for MMSegmentation models.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.
@@ -24,6 +24,8 @@ def mmsegmentation_learner(
     # Returns
         A fastai `Learner`.
     """
+
+    cbs = [MMSegmentationCallback] + L(cbs)
 
     learn = adapted_fastai_learner(
         dls=dls,
