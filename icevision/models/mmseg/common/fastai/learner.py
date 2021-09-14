@@ -2,7 +2,7 @@ __all__ = ["learner"]
 
 from icevision.imports import *
 from icevision.models.mmseg.fastai.learner import mmsegmentation_learner
-from icevision.models.mmseg.common.mask.fastai.callbacks import (
+from icevision.models.mmseg.common.fastai.callbacks import (
     MaskMMSegmentationCallback,
 )
 
