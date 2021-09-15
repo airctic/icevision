@@ -1,7 +1,7 @@
 __all__ = [
     "resnet50_fpn_1x_coco",
     "resnet50_fpn_20e_coco",
-    "resnet101_fpn_20e_coco ",
+    "resnet101_fpn_20e_coco",
     "resnext101_64x4d_fpn_20e_coco",
 ]
 
