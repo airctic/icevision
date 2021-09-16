@@ -1,5 +1,6 @@
 from icevision.models.utils import *
 from icevision.models.interpretation import *
+from icevision.models.checkpoint import *
 
 from icevision.models import torchvision
 
