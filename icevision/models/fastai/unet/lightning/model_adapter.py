@@ -47,9 +47,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
             loss = self.loss_func(preds, yb)
 
             preds = unet.convert_raw_predictions(
-                batch=xb,
-                raw_preds=preds,
-                records=records,
+                batch=xb, raw_preds=preds, records=records,
             )
 
         self.accumulate_metrics(preds)

@@ -24,8 +24,7 @@ def test_yolo_model(backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium, large, extra_large],
+    "backbone", [small, medium, large, extra_large],
 )
 def test_yolo_model_notpretrained(backbone):
     model = models.ultralytics.yolov5.model(

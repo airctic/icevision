@@ -12,9 +12,7 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.mmdet.common.utils import *
 from icevision.models.mmdet.common.mask.dataloaders import *
-from icevision.models.mmdet.common.bbox.prediction import (
-    _unpack_raw_bboxes,
-)
+from icevision.models.mmdet.common.bbox.prediction import _unpack_raw_bboxes
 
 
 @torch.no_grad()

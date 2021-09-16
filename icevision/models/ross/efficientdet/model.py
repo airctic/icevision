@@ -10,10 +10,7 @@ from effdet.efficientdet import HeadNet
 
 
 def model(
-    backbone: EfficientDetBackboneConfig,
-    num_classes: int,
-    img_size: int,
-    **kwargs,
+    backbone: EfficientDetBackboneConfig, num_classes: int, img_size: int, **kwargs,
 ) -> nn.Module:
     """Creates the efficientdet model specified by `model_name`.
 

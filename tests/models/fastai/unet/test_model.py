@@ -4,8 +4,7 @@ from icevision.models.fastai.unet.backbones import *
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [resnet18, resnet50, resnet101],
+    "backbone", [resnet18, resnet50, resnet101],
 )
 def test_unet_model(backbone):
     model = models.fastai.unet.model(

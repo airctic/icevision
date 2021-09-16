@@ -1,5 +1,5 @@
 from icevision.models.mmdet.models.scnet import backbones
-from icevision.models.mmdet.common.bbox.single_stage import *
+from icevision.models.mmdet.common.bbox.two_stage import *
 from icevision.models.interpretation import Interpretation, _move_to_device
 from icevision.models.mmdet.common.interpretation_utils import (
     sum_losses_mmdet,

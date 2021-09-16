@@ -21,8 +21,5 @@ def base_show_results(
     preds = predict_fn(model, records, **predict_kwargs)
 
     show_preds(
-        preds,
-        denormalize_fn=denormalize_fn,
-        ncols=ncols,
-        show=show,
+        preds, denormalize_fn=denormalize_fn, ncols=ncols, show=show,
     )

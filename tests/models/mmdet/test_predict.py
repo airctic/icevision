@@ -3,13 +3,7 @@ from icevision.all import *
 
 
 @pytest.mark.parametrize(
-    "ds, model_type",
-    [
-        (
-            "fridge_ds",
-            models.mmdet.retinanet,
-        ),
-    ],
+    "ds, model_type", [("fridge_ds", models.mmdet.retinanet,),],
 )
 def test_mmdet_bbox_models_predict(ds, model_type, samples_source, request):
     _, valid_ds = request.getfixturevalue(ds)

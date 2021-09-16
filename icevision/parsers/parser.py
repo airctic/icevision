@@ -110,9 +110,7 @@ class Parser(ParserInterface, ABC):
             A list of records for each split defined by `data_splitter`.
         """
         if self._check_path(cache_filepath):
-            logger.info(
-                f"Loading cached records from {cache_filepath}",
-            )
+            logger.info(f"Loading cached records from {cache_filepath}",)
             return pickle.load(open(Path(cache_filepath), "rb"))
         else:
             data_splitter = data_splitter or RandomSplitter([0.8, 0.2])
