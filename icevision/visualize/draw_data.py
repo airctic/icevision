@@ -238,7 +238,7 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
-        caption = prefix + caption
+        caption = str(prefix) + str(caption)
         caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
