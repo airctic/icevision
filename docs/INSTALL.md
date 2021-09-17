@@ -79,7 +79,7 @@ We need to provide the appropriate version of the `mmcv-full` package as well as
 #### CUDA-Version Installation Example
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.3.3" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
+$ pip install mmcv-full=="1.3.8" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
@@ -87,7 +87,7 @@ $ pip install mmdet
 #### CPU-Version Installation
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.3.3+torch.1.8.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
+$ pip install mmcv-full=="1.3.8+torch.1.8.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
