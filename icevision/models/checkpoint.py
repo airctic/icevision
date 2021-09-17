@@ -66,10 +66,7 @@ def save_icevision_checkpoint(
     if backbone_name:
         meta.update(backbone_name=backbone_name)
 
-    print(meta)
-
     save_checkpoint(model, filename, optimizer=optimizer, meta=meta)
-    print(filename)
 
 
 def model_from_checkpoint(
