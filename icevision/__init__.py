@@ -7,7 +7,6 @@ from icevision import backbones
 from icevision import models
 from icevision.metrics import *
 from icevision.visualize import *
-from icevision.models.checkpoint import *
 
 # HACK: Only for presentation, need to fix namespace
 from icevision.parsers import Parser
