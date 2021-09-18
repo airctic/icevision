@@ -6,6 +6,7 @@ __all__ = [
     "apply_batch_tfms",
     "_predict_from_dl",
     "get_dataloaders",
+    "unpack_batch",
 ]
 
 from icevision.imports import *
@@ -172,3 +173,30 @@ def get_dataloaders(
     dls.append(valid_dl)
 
     return ds, dls
+
+
+def unpack_batch(batch):
+    if len(batch) != 2:
+        raise ValueError(
+            "Invalid batch structure. Expecting `(inputs, labels), records`"
+        )
+
+    inputs = batch[0][0]
+    if len(batch[0]) == 1:
+        labels = [None] * len(inputs)
+    elif len(batch[0]) == 2:
+        labels = batch[0][1]
+    else:
+        raise ValueError(
+            "Invalid batch structure. Expecting `(inputs, Optional[labels]), records`"
+        )
+
+    records = batch[1]
+
+    if not len(inputs) == len(labels) == len(records):
+        raise ValueError(
+            "Number of inputs, labels and records should be the same"
+            f"but got {(len(inputs), len(labels), len(records))}"
+        )
+
+    return (inputs, labels), records

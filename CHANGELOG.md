@@ -4,13 +4,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-Supports pytorch 1.9
+
+### Added
+- Pytorch 1.9 support
+- Low level parsing workflow with `RecordCollection`
+- Semantic segmentation support with fastai
+
+
+## Changed
+- **Breaking:** Refactored mask components workflow
+- **Breaking:** Due to the new mask components refactor, autofix doesn't work for mask components anymore.
 
 ## [0.8.1]
 ### Added 
 - `end2end_detect()`: Run Object Detection inference (only `bboxes`) on a single image, and return predicted boxes corresponding to original image size
 -**Breaking:** BaseLabelsRecordComponent `as_dict()` now returns both `labels` `and labels_ids`. `labels` are now strings instead of integers.
  
+### Changed
+- **Breaking:** On `tfms.A.aug_tfms` parameter `size` and `presize` changed from order (height, width) to (width, height)
+- Added `RecordCollection`
+- **Breaking:** Changed how the *resnet* (not-fpn) backbone cut is done for torchvision models. Previous *resnet torchvision* trained models will have trouble loading weights.
+
 ## [0.8.0]
 Supports pytorch 1.8
 ### Added
@@ -262,4 +276,3 @@ so, for example, instead of `Parser` now we have to do `parsers.Parser`
 
 ## Links  
 [Unreleased]: https://github.com/airctic/mantisshrimp/tree/master
-
