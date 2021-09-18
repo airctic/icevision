@@ -10,12 +10,14 @@ __all__ = [
     "draw_mask",
     "draw_keypoints",
     "draw_label",
+    "draw_segmentation_mask",
 ]
 
 from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
 from icevision.visualize.utils import *
+from matplotlib.colors import LinearSegmentedColormap
 
 # This should probably move elsewhere
 from PIL import Image, ImageFont, ImageDraw
@@ -85,7 +87,13 @@ def draw_sample(
     if denormalize_fn is not None:
         img = denormalize_fn(img)
 
+    # HACK to visualize segmentation mask
     for task, composite in sample.task_composites.items():
+        if task == "segmentation":
+            cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
+            mask = composite.mask_array
+            return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
+
         # Should break if no ClassMap found in composite.
         #  Should be as the only composite without ClassMap should be
         #  `sample.common`. This is a foundational assumption? #NOTE
@@ -104,7 +112,7 @@ def draw_sample(
 
         # HACK
         if hasattr(composite, "masks"):
-            masks = composite.masks.to_mask(h=sample.height, w=sample.width)
+            masks = composite.mask_array
         else:
             masks = []
 
@@ -230,7 +238,7 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
-        caption = prefix + caption
+        caption = str(prefix) + str(caption)
         caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
@@ -547,6 +555,35 @@ def draw_mask(
     # Key concept is that alpha for non-mask pixels are 0 (transparent)
     img.putalpha(255)
     img = PIL.Image.alpha_composite(img, mask_pil)
+
+    return np.array(img)
+
+
+def draw_segmentation_mask(
+    img: np.ndarray,
+    mask: MaskArray,
+    cmap: LinearSegmentedColormap,
+    display_mask: bool = True,
+    alpha: float = 0.5,
+):
+    img = PIL.Image.fromarray(img).convert("RGB")
+
+    if display_mask:
+        w, h = img.size
+        mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
+        mask = mask.data.squeeze()
+
+        assert mask.shape == (h, w), (
+            "image and mask size should be the same"
+            f"but got image:{(w, h)}; mask: {(mask.shape[::-1])}"
+        )
+
+        for class_idx in np.unique(mask):
+            mask_idxs = mask == class_idx
+            mask_arr[mask_idxs] = np.array(cmap(class_idx)[:3]) * 255
+
+        mask_pil = PIL.Image.fromarray(mask_arr)
+        img = PIL.Image.blend(img, mask_pil, alpha=alpha)
 
     return np.array(img)
 

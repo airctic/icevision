@@ -122,7 +122,14 @@ def convert_raw_prediction(
     masks = masks_probs > mask_threshold
     masks = MaskArray(masks.squeeze(1))
 
-    pred.pred.add_component(MasksRecordComponent())
-    pred.detection.set_masks(masks)
+    pred.pred.add_component(InstanceMasksRecordComponent())
+    pred.detection.set_mask_array(masks)
+
+    if keep_image:
+        # HACK: quick fix for when we have to add masks back
+        if len(sample) > 1:
+            tensor_image, label = sample
+            mask = MaskArray(np.array(label["masks"].cpu().numpy()))
+            pred.ground_truth.detection.set_mask_array(mask)
 
     return pred
