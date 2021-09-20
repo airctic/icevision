@@ -153,3 +153,5 @@ archives/
 
 *.pth
 notebooks/wandb/latest-run
+
+checkpoints
