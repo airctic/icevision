@@ -350,13 +350,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-model-to-eval-mode" class="md-nav__link">
-    Set model to eval mode
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#single-image-inference" class="md-nav__link">
     Single Image Inference
   </a>
@@ -373,6 +366,13 @@
         <li class="md-nav__item">
   <a href="#how-to-save-a-model-and-its-metadata-in-icevision" class="md-nav__link">
     How to save a model and its metadata in IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-models-already-containing-metadata" class="md-nav__link">
+    Loading models already containing metadata
   </a>
   
 </li>
@@ -1107,13 +1107,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-model-to-eval-mode" class="md-nav__link">
-    Set model to eval mode
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#single-image-inference" class="md-nav__link">
     Single Image Inference
   </a>
@@ -1130,6 +1123,13 @@
         <li class="md-nav__item">
   <a href="#how-to-save-a-model-and-its-metadata-in-icevision" class="md-nav__link">
     How to save a model and its metadata in IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-models-already-containing-metadata" class="md-nav__link">
+    Loading models already containing metadata
   </a>
   
 </li>
@@ -1167,6 +1167,12 @@ as the fastai and pytorch lightning engines.</p>
 <p>All of the IceVision components can be easily imported with a single line.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>The history saving thread hit an unexpected error (DatabaseError(&#39;database disk image is malformed&#39;)).History will not be written to the database.
+
+[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/farid/.icevision/mmdetection_configs/mmdetection_configs-2.10.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+</code></pre></div>
+</div>
 <h2 id="list-of-images-for-inference">List of images for inference</h2>
 <p>Please store your images in a folder, and populate the <code>path_to_folder</code> variable with the corresponding folder name.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Pick your images folder</span>
@@ -1174,15 +1180,24 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">img_files</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">path_to_image_folder</span><span class="p">)</span>
 <span class="c1"># img_files</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_files</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
 <span class="n">img</span>
 </code></pre></div>
 <p><img alt="png" src="../images/inference/inference_8_0.png" /></p>
 <h2 id="loading-a-checkpoint-and-creating-the-corresponding-model">Loading a checkpoint and creating the corresponding model</h2>
 <p>The checkpoint file can either a local file or an URL</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># checkpoint_path = &#39;checkpoints/fridge-retinanet-save-checkpoint-full.pth&#39;</span>
-<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m6/fridge-retinanet-checkpoint-full.pth&#39;</span>
-<span class="n">checkpoint_and_model</span> <span class="o">=</span> <span class="n">model_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
+
+<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;http://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r50_fpn_1x_coco/retinanet_r50_fpn_1x_coco_20200130-c2398f9e.pth&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.models</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># The model is automatically recreated in the evaluation mode. To unset that mode, you only need to pass `eval_mode=Fales`)</span>
+<span class="n">checkpoint_and_model</span> <span class="o">=</span> <span class="n">model_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">,</span> 
+    <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;mmdet.retinanet&#39;</span><span class="p">,</span> 
+    <span class="n">backbone_name</span><span class="o">=</span><span class="s1">&#39;resnet50_fpn_1x&#39;</span><span class="p">,</span>
+    <span class="n">img_size</span><span class="o">=</span><span class="mi">640</span><span class="p">,</span> 
+    <span class="n">is_coco</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Just logging the info</span>
 <span class="n">model_type</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span>
@@ -1192,42 +1207,43 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">class_map</span><span class="p">,</span> <span class="n">img_size</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>(&lt;module &#39;icevision.models.mmdet.models.retinanet&#39; from &#39;/home/farid/repos/airctic/icevision/icevision/models/mmdet/models/retinanet/__init__.py&#39;&gt;,
- &lt;icevision.models.mmdet.models.retinanet.backbones.resnet_fpn.MMDetRetinanetBackboneConfig at 0x7fd2f413a700&gt;,
- &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;,
- 384)
+<div class="highlight"><pre><span></span><code>Use load_from_http loader
+
+/home/farid/anaconda3/envs/icevision/lib/python3.8/site-packages/mmcv/cnn/utils/weight_init.py:99: UserWarning: init_cfg without layer key, if you do not define override key either, this init_cfg will do nothing
+  warnings.warn(
+
+(&lt;module &#39;icevision.models.mmdet.models.retinanet&#39; from &#39;/home/farid/repos/airctic/icevision/icevision/models/mmdet/models/retinanet/__init__.py&#39;&gt;,
+ &lt;icevision.models.mmdet.models.retinanet.backbones.resnet_fpn.MMDetRetinanetBackboneConfig at 0x7fa2024c34f0&gt;,
+ &lt;ClassMap: {&#39;background&#39;: 0, &#39;person&#39;: 1, &#39;bicycle&#39;: 2, &#39;car&#39;: 3, &#39;motorcycle&#39;: 4, &#39;airplane&#39;: 5, &#39;bus&#39;: 6, &#39;train&#39;: 7, &#39;truck&#39;: 8, &#39;boat&#39;: 9, &#39;traffic light&#39;: 10, &#39;fire hydrant&#39;: 11, &#39;stop sign&#39;: 12, &#39;parking meter&#39;: 13, &#39;bench&#39;: 14, &#39;bird&#39;: 15, &#39;cat&#39;: 16, &#39;dog&#39;: 17, &#39;horse&#39;: 18, &#39;sheep&#39;: 19, &#39;cow&#39;: 20, &#39;elephant&#39;: 21, &#39;bear&#39;: 22, &#39;zebra&#39;: 23, &#39;giraffe&#39;: 24, &#39;backpack&#39;: 25, &#39;umbrella&#39;: 26, &#39;handbag&#39;: 27, &#39;tie&#39;: 28, &#39;suitcase&#39;: 29, &#39;frisbee&#39;: 30, &#39;skis&#39;: 31, &#39;snowboard&#39;: 32, &#39;sports ball&#39;: 33, &#39;kite&#39;: 34, &#39;baseball bat&#39;: 35, &#39;baseball glove&#39;: 36, &#39;skateboard&#39;: 37, &#39;surfboard&#39;: 38, &#39;tennis racket&#39;: 39, &#39;bottle&#39;: 40, &#39;wine glass&#39;: 41, &#39;cup&#39;: 42, &#39;fork&#39;: 43, &#39;knife&#39;: 44, &#39;spoon&#39;: 45, &#39;bowl&#39;: 46, &#39;banana&#39;: 47, &#39;apple&#39;: 48, &#39;sandwich&#39;: 49, &#39;orange&#39;: 50, &#39;broccoli&#39;: 51, &#39;carrot&#39;: 52, &#39;hot dog&#39;: 53, &#39;pizza&#39;: 54, &#39;donut&#39;: 55, &#39;cake&#39;: 56, &#39;chair&#39;: 57, &#39;couch&#39;: 58, &#39;potted plant&#39;: 59, &#39;bed&#39;: 60, &#39;dining table&#39;: 61, &#39;toilet&#39;: 62, &#39;tv&#39;: 63, &#39;laptop&#39;: 64, &#39;mouse&#39;: 65, &#39;remote&#39;: 66, &#39;keyboard&#39;: 67, &#39;cell phone&#39;: 68, &#39;microwave&#39;: 69, &#39;oven&#39;: 70, &#39;toaster&#39;: 71, &#39;sink&#39;: 72, &#39;refrigerator&#39;: 73, &#39;book&#39;: 74, &#39;clock&#39;: 75, &#39;vase&#39;: 76, &#39;scissors&#39;: 77, &#39;teddy bear&#39;: 78, &#39;hair drier&#39;: 79, &#39;toothbrush&#39;: 80}&gt;,
+ 640)
 </code></pre></div>
 </div>
 <h2 id="get-model-object">Get Model Object</h2>
-<p><code>model_from_checkpoint(checkpoint_path)</code> returns a dictionary: <code>checkpoint_and_model</code>.The model object is stored in <code>checkpoint_and_model["model"]</code>.</p>
+<p><code>model_from_checkpoint(checkpoint_path)</code> returns a dictionary: <code>checkpoint_and_model</code>. The model object is stored in <code>checkpoint_and_model["model"]</code>. </p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Get model object</span>
+<span class="c1"># The model is automatically set in the evaluation mode</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
 
 <span class="c1"># Check device</span>
 <span class="n">device</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span>
 <span class="n">device</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">img_size</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;img_size&quot;</span><span class="p">]</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">img_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>device(type=&#39;cpu&#39;)
 </code></pre></div>
 </div>
-<h2 id="set-model-to-eval-mode">Set model to eval mode</h2>
-<blockquote>
-<p>You must set model to eval mode. Otherwise predictions will be wrong.</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">img_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-</code></pre></div>
 <h2 id="single-image-inference">Single Image Inference</h2>
 <p>The <code>end2end_detect()</code> not only compute predictions for a single image but also automatically adjust predicted boxes to the original image size</p>
-<div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_files</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_files</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
 
-<span class="n">pred_dict</span>  <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">end2end_detect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">pred_dict</span>  <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">end2end_detect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">pred_dict</span><span class="p">[</span><span class="s1">&#39;img&#39;</span><span class="p">]</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_18_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_17_0.png" /></p>
 <h2 id="batch-inference">Batch Inference</h2>
 <p>The following option shows to do generate inference for a set of images. The latter is processed in batches.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Create a dataset</span>
@@ -1236,23 +1252,76 @@ as the fastai and pytorch lightning engines.</p>
 
 <span class="c1"># Batch Inference</span>
 <span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">preds_saved</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds_saved</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_21_0.png" /></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/2 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/inference/inference_20_0.png" /></p>
 <h2 id="how-to-save-a-model-and-its-metadata-in-icevision">How to save a model and its metadata in IceVision</h2>
+<p>When saving a model weights, we could also store the model metadata that are retrieved by the <code>model_from_checkpoint(checkpoint_path)</code> method</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># How to save a model and its metadata</span>
-<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;checkpoints/fridge-retinanet-checkpoint-full.pth&#39;</span>
+<span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;coco-retinanet-checkpoint-full.pth&#39;</span>
 
 <span class="n">save_icevision_checkpoint</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
                         <span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;mmdet.retinanet&#39;</span><span class="p">,</span> 
                         <span class="n">backbone_name</span><span class="o">=</span><span class="s1">&#39;resnet50_fpn_1x&#39;</span><span class="p">,</span>
-                        <span class="n">class_map</span> <span class="o">=</span>  <span class="n">class_map</span><span class="p">,</span> 
+                        <span class="n">classes</span> <span class="o">=</span>  <span class="n">class_map</span><span class="o">.</span><span class="n">get_classes</span><span class="p">(),</span> 
                         <span class="n">img_size</span><span class="o">=</span><span class="n">img_size</span><span class="p">,</span> 
                         <span class="n">filename</span><span class="o">=</span><span class="n">checkpoint_path</span><span class="p">,</span>
-                        <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;icevision_version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.9.1a1&#39;</span><span class="p">})</span>
+                        <span class="n">meta</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;icevision_version&#39;</span><span class="p">:</span> <span class="s1">&#39;0.9.1&#39;</span><span class="p">})</span>
 </code></pre></div>
+<h2 id="loading-models-already-containing-metadata">Loading models already containing metadata</h2>
+<p>If you have saved your model weights with the model metadata, you only need to call <code>model_from_checkpoint(checkpoint_path)</code>: No other arguments (<code>model_name, backbone_name, classes, img_size</code>) are needed. All the information is already embedded in the checkpoint file.</p>
+<div class="highlight"><pre><span></span><code><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m6/fridge-retinanet-checkpoint-full.pth&#39;</span>
+
+<span class="n">checkpoint_and_model</span> <span class="o">=</span> <span class="n">model_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Just logging the info</span>
+<span class="n">model_type</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;backbone&quot;</span><span class="p">]</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;class_map&quot;</span><span class="p">]</span>
+<span class="n">img_size</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;img_size&quot;</span><span class="p">]</span>
+<span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">class_map</span><span class="p">,</span> <span class="n">img_size</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Inference</span>
+
+<span class="c1"># Model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+
+<span class="c1"># Transforms</span>
+<span class="n">img_size</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;img_size&quot;</span><span class="p">]</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">img_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="c1"># Pick your images folder</span>
+<span class="n">path_to_image_folder</span> <span class="o">=</span> <span class="s2">&quot;../samples/fridge/odFridgeObjects/images&quot;</span>
+<span class="n">img_files</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">path_to_image_folder</span><span class="p">)</span>
+
+<span class="c1"># Create a dataset with appropriate images </span>
+<span class="n">imgs_array</span> <span class="o">=</span> <span class="p">[</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span> <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">img_files</span><span class="p">]</span>
+<span class="n">infer_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_images</span><span class="p">(</span><span class="n">imgs_array</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+
+<span class="c1"># Batch Inference</span>
+<span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Use load_from_http loader
+
+(&lt;module &#39;icevision.models.mmdet.models.retinanet&#39; from &#39;/home/farid/repos/airctic/icevision/icevision/models/mmdet/models/retinanet/__init__.py&#39;&gt;,
+ &lt;icevision.models.mmdet.models.retinanet.backbones.resnet_fpn.MMDetRetinanetBackboneConfig at 0x7fa2024c34f0&gt;,
+ &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;,
+ 384)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/inference/inference_27_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
