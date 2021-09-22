@@ -83,6 +83,7 @@ def show_pred(
         display_bbox=display_bbox,
         display_mask=display_mask,
         denormalize_fn=denormalize_fn,
+        **draw_sample_kwargs,
     )
 
     prediction = draw_pred(
