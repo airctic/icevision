@@ -41,6 +41,7 @@ def param_groups(model):
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+        layers += [model.neck]
     else:
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
