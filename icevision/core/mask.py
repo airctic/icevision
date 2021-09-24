@@ -82,9 +82,17 @@ class MaskArray(Mask):
         return self
 
     def to_erles(self, h, w) -> EncodedRLEs:
-        return EncodedRLEs(
-            mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
-        )
+        # HACK: force empty annotations to have valid shape
+        if len(self.data.shape) == 1:
+            return EncodedRLEs(
+                mask_utils.encode(
+                    np.asfortranarray(self.data[:, None, None].transpose(1, 2, 0))
+                )
+            )
+        else:
+            return EncodedRLEs(
+                mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+            )
 
     def to_coco_rle(self, h, w) -> List[dict]:
         """From https://stackoverflow.com/a/49547872/6772672"""
@@ -111,7 +119,10 @@ class MaskArray(Mask):
             return masks.to_mask(h, w)
         else:
             masks_arrays = [o.to_mask(h=h, w=w).data for o in masks]
-            return cls(np.concatenate(masks_arrays))
+            if len(masks_arrays) == 0:
+                return cls(np.array([]))
+            else:
+                return cls(np.concatenate(masks_arrays))
 
 
 class MaskFile(Mask):
