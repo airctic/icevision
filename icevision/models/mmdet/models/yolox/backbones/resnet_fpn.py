@@ -12,9 +12,7 @@ class MMDetYOLOXBackboneConfig(MMDetBackboneConfig):
 
 
 base_config_path = mmdet_configs_path / "yolox"
-base_weights_url = (
-    "https://download.openmmlab.com/mmdetection/v2.0/yolox/"
-)
+base_weights_url = "https://download.openmmlab.com/mmdetection/v2.0/yolox/"
 
 yolox_tiny_8x8 = MMDetYOLOXBackboneConfig(
     config_path=base_config_path / "yolox_tiny_8x8_300e_coco.py",
