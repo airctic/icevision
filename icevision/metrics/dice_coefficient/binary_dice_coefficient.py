@@ -22,15 +22,6 @@ class BinaryDiceCoefficient(Metric):
 
     def accumulate(self, preds):
 
-        # TODO: Remove this when done testing! Only used to binarize non-binary inputs
-        for x in preds:
-            x.pred.segmentation.mask_array.data = (
-                x.pred.segmentation.mask_array.data > 15
-            )
-            x.ground_truth.segmentation.mask_array.data = (
-                x.ground_truth.segmentation.mask_array.data > 15
-            )
-
         pred = (
             np.stack([x.pred.segmentation.mask_array.data for x in preds])
             .astype(np.bool)
