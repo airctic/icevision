@@ -40,21 +40,21 @@ def build_model(
     force_download=False,
     cfg_options=None,
     pre_training_dataset: str = None,
-    lr_schd: int = None,
+    lr_schd: str = None,
     crop_size: tuple = None,
 ) -> nn.Module:
 
     if pre_training_dataset is None or lr_schd is None or crop_size is None:
         pre_trained_variant = backbone.get_default_pre_trained_variant()
         logger.info(
-            f"Loaded default configuration for {backbone.backbone_type} (Pre-training dataset = {pre_trained_variant['pre_training_dataset']}, learning schedule = {pre_trained_variant['lr_schd']}, crop size = {pre_trained_variant['crop_size']})"
+            f"Loaded default configuration for {backbone.model_name} with {backbone.backbone_type} backbone (Pre-training dataset = {pre_trained_variant['pre_training_dataset']}, learning schedule = {pre_trained_variant['lr_schd']}, crop size = {pre_trained_variant['crop_size']})"
         )
     else:
         pre_trained_variant = backbone.get_pre_trained_variant(
             pre_training_dataset, lr_schd, crop_size
         )
         logger.info(
-            f"Loaded non-default configuration for {backbone.backbone_type} (Pre-training dataset = {pre_trained_variant['pre_training_dataset']}, learning schedule = {pre_trained_variant['lr_schd']}, crop size = {pre_trained_variant['crop_size']})"
+            f"Loaded non-default configuration for {backbone.model_name} with {backbone.backbone_type} backbone (Pre-training dataset = {pre_trained_variant['pre_training_dataset']}, learning schedule = {pre_trained_variant['lr_schd']}, crop size = {pre_trained_variant['crop_size']})"
         )
 
     cfg, weights_path = create_model_config(
