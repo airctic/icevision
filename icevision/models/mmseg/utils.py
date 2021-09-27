@@ -9,6 +9,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.utils import *
 from icevision.backbones import BackboneConfig
+from icevision.core.exceptions import PreTrainedVariantNotFound
 from icevision.models.mmseg.download_configs import download_mmseg_configs
 from mmseg.models.segmentors import *
 from mmcv import Config
@@ -31,19 +32,46 @@ class MMSegBackboneConfig(BackboneConfig):
         return self
 
     def get_default_pre_trained_variant(self):
-        return list(
+        """Fetch the default pre-trained variant for the backbone configuration
+
+        Returns:
+            dict: pre-trained variant information
+        """
+
+        default_variant = list(
             filter(lambda x: "default" in x and x["default"], self.pre_trained_variants)
-        )[0]
+        )
+
+        if not len(default_variant):
+            raise PreTrainedVariantNotFound
+
+        return default_variant[0]
 
     def get_pre_trained_variant(self, dataset: str, lr_schd: int, crop_size: tuple):
-        return list(
+        """Fetch a specific pre-trained variant for the backbone configuration
+
+        Args:
+            dataset (str): dataset the variant was trained on
+            lr_schd (int): learning schedule
+            crop_size (tuple): input crop size
+
+        Returns:
+            dict: pre-trained variant information
+        """
+
+        variant = list(
             filter(
                 lambda x: x["pre_training_dataset"] == dataset
                 and x["lr_schd"] == lr_schd
                 and x["crop_size"] == crop_size,
                 self.pre_trained_variants,
             )
-        )[0]
+        )
+
+        if not len(variant):
+            raise PreTrainedVariantNotFound
+
+        return variant[0]
 
 
 def param_groups(model):

@@ -3,6 +3,7 @@ __all__ = [
     "AutofixAbort",
     "AbortParseRecord",
     "InvalidMMSegModelType",
+    "PreTrainedVariantNotFound",
 ]
 
 
@@ -19,4 +20,8 @@ class AbortParseRecord(Exception):
 
 
 class InvalidMMSegModelType(Exception):
+    pass
+
+
+class PreTrainedVariantNotFound(Exception):
     pass
