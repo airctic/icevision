@@ -12,6 +12,9 @@ def model(
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
     cfg_options=None,
+    pre_training_dataset: str = None,
+    lr_schd: int = None,
+    crop_size: tuple = None,
 ) -> nn.Module:
 
     return build_model(
@@ -22,4 +25,7 @@ def model(
         checkpoints_path=checkpoints_path,
         force_download=force_download,
         cfg_options=cfg_options,
+        pre_training_dataset=pre_training_dataset,
+        lr_schd=lr_schd,
+        crop_size=crop_size,
     )

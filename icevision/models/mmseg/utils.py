@@ -20,15 +20,30 @@ mmseg_configs_path = download_mmseg_configs()
 
 
 class MMSegBackboneConfig(BackboneConfig):
-    def __init__(self, model_name, config_path, weights_url):
+    def __init__(self, model_name: str, backbone_type: str, pre_trained_variants: dict):
         self.model_name = model_name
-        self.config_path = config_path
-        self.weights_url = weights_url
+        self.backbone_type = backbone_type
+        self.pre_trained_variants = pre_trained_variants
         self.pretrained: bool
 
     def __call__(self, pretrained: bool = True) -> "MMSegBackboneConfig":
         self.pretrained = pretrained
         return self
+
+    def get_default_pre_trained_variant(self):
+        return list(
+            filter(lambda x: "default" in x and x["default"], self.pre_trained_variants)
+        )[0]
+
+    def get_pre_trained_variant(self, dataset: str, lr_schd: int, crop_size: tuple):
+        return list(
+            filter(
+                lambda x: x["pre_training_dataset"] == dataset
+                and x["lr_schd"] == lr_schd
+                and x["crop_size"] == crop_size,
+                self.pre_trained_variants,
+            )
+        )[0]
 
 
 def param_groups(model):
@@ -58,16 +73,14 @@ def param_groups(model):
 
 
 def create_model_config(
-    backbone: MMSegBackboneConfig,
+    model_name: str,
+    config_path: str,
+    weights_url: str,
     pretrained: bool = True,
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
     cfg_options=None,
 ):
-
-    model_name = backbone.model_name
-    config_path = backbone.config_path
-    weights_url = backbone.weights_url
 
     # download weights
     weights_path = None
