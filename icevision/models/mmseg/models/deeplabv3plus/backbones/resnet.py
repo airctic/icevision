@@ -6,7 +6,7 @@ from icevision.imports import *
 from icevision.models.mmseg.utils import *
 
 
-class MMSegDeeplabBackboneConfig(MMSegBackboneConfig):
+class MMSegDeeplabPlusBackboneConfig(MMSegBackboneConfig):
     def __init__(self, **kwargs):
         super().__init__(model_name="deeplabv3plus", **kwargs)
 
@@ -14,7 +14,7 @@ class MMSegDeeplabBackboneConfig(MMSegBackboneConfig):
 base_config_path = mmseg_configs_path / "deeplabv3plus"
 base_weights_url = "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus"
 
-resnet101_d8 = MMSegDeeplabBackboneConfig(
+resnet101_d8 = MMSegDeeplabPlusBackboneConfig(
     backbone_type="R-101-D8",
     pre_trained_variants=[
         {

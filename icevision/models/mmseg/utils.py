@@ -122,7 +122,7 @@ def create_model_config(
         if not weights_path.exists() or force_download:
             download_url(url=weights_url, save_path=str(weights_path))
 
-    cfg = Config.fromfile(config_path)
+    cfg = Config.fromfile(mmseg_configs_path / config_path)
 
     # TODO: Make this more elegant
     # HACK: Make this more elegant
