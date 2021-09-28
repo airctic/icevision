@@ -275,9 +275,16 @@ class SemanticMaskFile(Mask):
         self.filepath = Path(filepath)
         self.binary = binary
 
-    def to_mask(self, h, w):
+    def to_mask(self, h, w, pad_dim=True):
         # TODO: convert the 255 masks
         mask = open_img(self.filepath, gray=True)
+
+        # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
+        (w_org, h_org) = mask.size
+
+        if w_org != w or h_org != h:
+            mask = mask.resize((w, h))
+
         # HACK: because open_img now return PIL
         mask = np.array(mask)
 
@@ -285,7 +292,11 @@ class SemanticMaskFile(Mask):
         if self.binary:
             mask[mask == 255] = 1
 
-        return MaskArray(mask[None])
+        # control array padding behaviour
+        if pad_dim:
+            return MaskArray(mask[None])
+        else:
+            return MaskArray(mask)
 
     def to_coco_rle(self, h, w) -> List[dict]:
         raise NotImplementedError
