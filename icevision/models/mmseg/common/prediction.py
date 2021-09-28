@@ -12,6 +12,7 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.mmseg.common.utils import *
 from icevision.models.mmseg.common.dataloaders import *
+import itertools
 
 
 @torch.no_grad()
@@ -25,7 +26,7 @@ def _predict_batch(
     device = model_device(model)
 
     raw_preds = model(**batch, return_loss=False)
-    preds = convert_raw_predictions_no_gt(
+    preds = convert_raw_predictions(
         batch=batch,
         raw_preds=raw_preds,
         records=records,
@@ -42,19 +43,22 @@ def convert_raw_predictions(
     keep_images: bool = False,
 ) -> List[Prediction]:
 
-    # tensor_images, *_ = batch
-
+    # Retrieve ground_truth masks from batch, if present (at training time)
     if "gt_semantic_seg" in batch:
         tensor_gts = batch["gt_semantic_seg"].squeeze().chunk(8, dim=0)
     else:
-        tensor_gts = []
+        tensor_gts = [None]
 
-    tensor_imgs = batch["img"].squeeze().chunk(8, dim=0)
+    tensor_imgs = [x.chunk(batch["img"][0].shape[0], dim=0) for x in batch["img"]]
+    tensor_imgs = list(
+        itertools.chain.from_iterable(tensor_imgs)
+    )  # Ensuring that all chunks are unrolled into the list
 
     preds = []
     for record, tensor_gt, mask_pred, tensor_image in zip(
-        records, tensor_gts, raw_preds, tensor_imgs
+        records, cycle(tensor_gts), raw_preds, tensor_imgs
     ):
+
         pred = BaseRecord(
             (
                 ImageRecordComponent(),
@@ -66,44 +70,26 @@ def convert_raw_predictions(
         pred.segmentation.set_class_map(record.segmentation.class_map)
         pred.segmentation.set_mask_array(MaskArray(mask_pred))
 
-        if len(tensor_gts):
-            record.segmentation.set_mask_array(
-                MaskArray(tensor_gt.squeeze().cpu().numpy())
-            )
+        if tensor_gt is not None:
+
+            # This is used at train time to have mask available for metric computation
+            if torch.is_tensor(tensor_gt):
+
+                record.segmentation.set_mask_array(
+                    MaskArray(tensor_gt.squeeze().cpu().numpy())
+                )
 
         if keep_images:
-            record.set_img(tensor_to_image(tensor_image))
+            record.set_img(tensor_to_image(tensor_image.squeeze()))
 
-        preds.append(Prediction(pred=pred, ground_truth=record))
+            # We load the record to ensure mask data is available
+            if len(record.segmentation.masks):
 
-    return preds
+                (h, w, _) = record.img.shape
 
-
-# TODO: Refactor to use a single conversion method?
-def convert_raw_predictions_no_gt(
-    batch,
-    raw_preds: torch.Tensor,
-    records: Sequence[BaseRecord],
-    keep_images: bool = False,
-) -> List[Prediction]:
-
-    tensor_imgs = batch["img"][0].squeeze().chunk(8, dim=0)
-
-    preds = []
-    for record, mask_pred, tensor_image in zip(records, raw_preds, tensor_imgs):
-        pred = BaseRecord(
-            (
-                ImageRecordComponent(),
-                SemanticMaskRecordComponent(),
-                ClassMapRecordComponent(task=tasks.segmentation),
-            )
-        )
-
-        pred.segmentation.set_class_map(record.segmentation.class_map)
-        pred.segmentation.set_mask_array(MaskArray(mask_pred))
-
-        if keep_images:
-            record.set_img(tensor_to_image(tensor_image))
+                record.segmentation.set_mask_array(
+                    record.segmentation.masks[0].to_mask(h=h, w=w, pad_dim=False)
+                )
 
         preds.append(Prediction(pred=pred, ground_truth=record))
 
