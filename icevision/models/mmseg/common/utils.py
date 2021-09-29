@@ -83,8 +83,7 @@ def build_model(
         # _model.init_weights()
         # load_checkpoint(_model, str(weights_path))
 
-    # _model.param_groups = MethodType(param_groups, _model) #TODO Re-enable this
-    _model.param_groups = []
+    _model.param_groups = MethodType(param_groups, _model)
     _model.cfg = cfg  # save the config in the model for convenience
     _model.weights_path = weights_path  # save the model.weights_path in case we want to rebuild the model after updating its attributes
 
