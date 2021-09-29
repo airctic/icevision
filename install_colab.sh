@@ -15,4 +15,4 @@
 
 # restart notebook
 !echo "Restarting runtime!"
-!kill -9 -1
+exit()
