@@ -75,27 +75,11 @@ class MMSegBackboneConfig(BackboneConfig):
 
 
 def param_groups(model):
-    body = model.backbone
 
-    layers = []
-    # if isinstance(body, SSDVGG):
-    #     layers += [body.features]
-    #     layers += [body.extra, body.l2_norm]
-    # else:
-    layers += [nn.Sequential(body.conv1, body.bn1)]
-    layers += [getattr(body, l) for l in body.res_layers]
-    layers += [model.neck]
+    layers = [*model.children()]
 
-    # if isinstance(model, SingleStageDetector):
-    #     layers += [model.bbox_head]
-    # elif isinstance(model, TwoStageDetector):
-    #     layers += [nn.Sequential(model.rpn_head, model.roi_head)]
-    # else:
-    #     raise RuntimeError(
-    #         "{model} must inherit either from SingleStageDetector or TwoStageDetector class"
-    #     )
+    _param_groups = [list(group.parameters()) for group in layers]
 
-    _param_groups = [list(layer.parameters()) for layer in layers]
     check_all_model_params_in_groups2(model, _param_groups)
     return _param_groups
 
