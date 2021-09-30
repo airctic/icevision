@@ -6,7 +6,7 @@
 
 
 !echo "- Installing icevision from master"
-pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] -U -q
+!pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] -U -q
 !echo "- Installing icedata from master"      
 !pip install git+git://github.com/airctic/icedata.git -U -q
 !echo "- Installing yolov5-icevision" 
