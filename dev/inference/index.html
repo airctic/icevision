@@ -1280,6 +1280,9 @@ as the fastai and pytorch lightning engines.</p>
 <div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="n">exit</span><span class="p">()</span>
+</code></pre></div>
 <h2 id="imports">Imports</h2>
 <p>All of the IceVision components can be easily imported with a single line.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1300,7 +1303,7 @@ as the fastai and pytorch lightning engines.</p>
 <div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_files</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
 <span class="n">img</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_8_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_9_0.png" /></p>
 <h2 id="loading-a-checkpoint-and-creating-the-corresponding-model">Loading a checkpoint and creating the corresponding model</h2>
 <p>The checkpoint file can either a local file or an URL</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># checkpoint_path = &#39;checkpoints/fridge-retinanet-save-checkpoint-full.pth&#39;</span>
@@ -1360,7 +1363,7 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">pred_dict</span>  <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">end2end_detect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">pred_dict</span><span class="p">[</span><span class="s1">&#39;img&#39;</span><span class="p">]</span>
 </code></pre></div>
-<p><img alt="png" src="../images/inference/inference_17_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_18_0.png" /></p>
 <h2 id="batch-inference">Batch Inference</h2>
 <p>The following option shows to do generate inference for a set of images. The latter is processed in batches.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Create a dataset</span>
@@ -1378,7 +1381,7 @@ as the fastai and pytorch lightning engines.</p>
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/inference/inference_20_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_21_0.png" /></p>
 <h2 id="how-to-save-a-model-and-its-metadata-in-icevision">How to save a model and its metadata in IceVision</h2>
 <p>When saving a model weights, we could also store the model metadata that are retrieved by the <code>model_from_checkpoint(checkpoint_path)</code> method</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># How to save a model and its metadata</span>
@@ -1438,7 +1441,7 @@ as the fastai and pytorch lightning engines.</p>
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/inference/inference_27_0.png" /></p>
+<p><img alt="png" src="../images/inference/inference_28_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 

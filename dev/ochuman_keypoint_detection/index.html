@@ -1183,6 +1183,9 @@
 <div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">.</span><span class="n">git</span><span class="c1">#egg=icevision[all] --upgrade -q</span>
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">git</span><span class="o">+</span><span class="n">git</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icedata</span><span class="o">.</span><span class="n">git</span> <span class="o">-</span><span class="n">q</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="n">exit</span><span class="p">()</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
 <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/gdrive&#39;</span><span class="p">)</span>
 </code></pre></div>
@@ -1237,7 +1240,7 @@ Record:
 <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_12_0.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_13_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
@@ -1264,7 +1267,7 @@ Record:
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_21_2.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_22_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mf">2e-4</span><span class="p">),</span> <span class="n">pct_start</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
 </code></pre></div>
@@ -1328,7 +1331,7 @@ SuggestedLRs(lr_min=1.9054606673307718e-05, lr_steep=7.585775847473997e-07)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_23_2.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_24_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
 <span class="n">base_lr</span> <span class="o">=</span> <span class="mf">3e-5</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="n">base_lr</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">base_lr</span><span class="p">),</span> <span class="n">pct_start</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">div</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
@@ -1490,11 +1493,11 @@ Better model found at epoch 19 with valid_loss value: 3.9320456981658936.
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_25_0.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_26_0.png" /></p>
 <h2 id="show-model-results">Show model results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_27_0.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_28_0.png" /></p>
 <h2 id="save-model">Save model</h2>
 <div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;/content/gdrive/My Drive/icevision/OCHuman/model.pth&quot;</span><span class="p">)</span>
 </code></pre></div>
@@ -1535,7 +1538,7 @@ Better model found at epoch 19 with valid_loss value: 3.9320456981658936.
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_34_0.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_35_0.png" /></p>
 <h2 id="plot_top_losses"><code>plot_top_losses</code></h2>
 <div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 <span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> 
@@ -1550,7 +1553,7 @@ Better model found at epoch 19 with valid_loss value: 3.9320456981658936.
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_36_3.png" /></p>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_37_3.png" /></p>
                 
               
               
