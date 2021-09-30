@@ -13,6 +13,11 @@ echo "- Installing yolov5-icevision"
 pip install yolov5-icevision -U -q 
 
 
-# restart notebook
-echo "Restarting runtime"
-exit()
+# Installation completed
+echo "Installation completed!"
+
+
+# Restart the Kernel
+echo "=========================="
+echo "Please Restart Kernel!"
+echo "=========================="
