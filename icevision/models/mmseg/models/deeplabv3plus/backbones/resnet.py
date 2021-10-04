@@ -33,7 +33,6 @@ resnet101_d16_mg124 = MMSegDeeplabPlusBackboneConfig(
             "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes/deeplabv3plus_r101-d16-mg124_512x1024_40k_cityscapes_20200908_005644-cf9ce186.pth",
         },
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r101-d16-mg124_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
@@ -82,7 +81,6 @@ resnet101_d8 = MMSegDeeplabPlusBackboneConfig(
             "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101-d8_512x1024_40k_cityscapes/deeplabv3plus_r101-d8_512x1024_40k_cityscapes_20200605_094614-3769eecf.pth",
         },
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r101-d8_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
@@ -145,7 +143,6 @@ resnet101b_d8 = MMSegDeeplabPlusBackboneConfig(
             "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes/deeplabv3plus_r101b-d8_512x1024_80k_cityscapes_20201226_190843-9c3c93a4.pth",
         },
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r101b-d8_769x769_80k_cityscapes.py",
             "crop_size": (769, 769),
             "lr_schd": "80k",
@@ -159,7 +156,6 @@ resnet18_d8 = MMSegDeeplabPlusBackboneConfig(
     backbone_type="R-18-D8",
     pre_trained_variants=[
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r18-d8_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
@@ -180,7 +176,6 @@ resnet18b_d8 = MMSegDeeplabPlusBackboneConfig(
     backbone_type="R-18B-D8",
     pre_trained_variants=[
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r18b-d8_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
@@ -202,34 +197,6 @@ resnet50_d8 = MMSegDeeplabPlusBackboneConfig(
     backbone_type="R-50-D8",
     pre_trained_variants=[
         {
-            "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_480x480_40k_pascal_context.py",
-            "crop_size": (480, 480),
-            "lr_schd": "40k",
-            "pre_training_dataset": "pascal_context",
-            "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth",
-        },
-        {
-            "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_480x480_40k_pascal_context_59.py",
-            "crop_size": (480, 480),
-            "lr_schd": "40k",
-            "pre_training_dataset": "pascal_context_59",
-            "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth",
-        },
-        {
-            "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_480x480_80k_pascal_context.py",
-            "crop_size": (480, 480),
-            "lr_schd": "80k",
-            "pre_training_dataset": "pascal_context",
-            "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth",
-        },
-        {
-            "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_480x480_80k_pascal_context_59.py",
-            "crop_size": (480, 480),
-            "lr_schd": "80k",
-            "pre_training_dataset": "pascal_context_59",
-            "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r18b-d8_769x769_80k_cityscapes/deeplabv3plus_r18b-d8_769x769_80k_cityscapes_20201226_151312-2c868aff.pth",
-        },
-        {
             "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "40k",
@@ -237,7 +204,6 @@ resnet50_d8 = MMSegDeeplabPlusBackboneConfig(
             "weights_url": "https://download.openmmlab.com/mmsegmentation/v0.5/deeplabv3plus/deeplabv3plus_r50-d8_512x1024_40k_cityscapes/deeplabv3plus_r50-d8_512x1024_40k_cityscapes_20200605_094610-d222ffcd.pth",
         },
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r50-d8_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
@@ -293,7 +259,6 @@ resnet50b_d8 = MMSegDeeplabPlusBackboneConfig(
     backbone_type="R-50B-D8",
     pre_trained_variants=[
         {
-            "default": True,
             "config_path": "deeplabv3plus/deeplabv3plus_r50b-d8_512x1024_80k_cityscapes.py",
             "crop_size": (512, 1024),
             "lr_schd": "80k",
