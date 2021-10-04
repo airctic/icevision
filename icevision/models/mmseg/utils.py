@@ -2,6 +2,7 @@ __all__ = [
     "MMSegBackboneConfig",
     "mmseg_configs_path",
     "param_groups",
+    "param_groups_default",
     "MMSegBackboneConfig",
     "create_model_config",
 ]
@@ -81,6 +82,16 @@ def param_groups(model):
     _param_groups = [list(group.parameters()) for group in layers]
 
     check_all_model_params_in_groups2(model, _param_groups)
+    return _param_groups
+
+
+def param_groups_default(model):
+
+    _param_groups = [
+        p for p in model.parameters() if p.requires_grad
+    ]  # equivalent to fastai.trainable_params
+
+    # check_all_model_params_in_groups2(model, [_param_groups])
     return _param_groups
 
 

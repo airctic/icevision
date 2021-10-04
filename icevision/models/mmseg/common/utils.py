@@ -13,6 +13,7 @@ from mmseg.models import build_segmentor
 from mmcv.runner import load_checkpoint
 from icevision.models.mmseg.utils import *
 from icevision.core.exceptions import *
+from mmcv.cnn.utils import revert_sync_batchnorm
 
 
 def convert_background_from_zero_to_last(label_ids, class_map):
@@ -42,6 +43,8 @@ def build_model(
     pre_training_dataset: str = None,
     lr_schd: str = None,
     crop_size: tuple = None,
+    logical_param_groups: bool = False,
+    device: str = "gpu",
 ) -> nn.Module:
 
     if pre_training_dataset is None or lr_schd is None or crop_size is None:
@@ -73,17 +76,17 @@ def build_model(
     else:
         raise (InvalidMMSegModelType)
 
-    if (pretrained == False) or (weights_path is not None):
-        cfg.model.pretrained = None
-        _model = build_segmentor(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
-        # _model.init_weights()
-    else:
-        print(weights_path)
-        _model = init_segmentor(cfg.model, weights_path)
-        # _model.init_weights()
-        # load_checkpoint(_model, str(weights_path))
+    _model = build_segmentor(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
+    _model.init_weights()
 
-    _model.param_groups = MethodType(param_groups, _model)
+    if pretrained == True:
+        load_checkpoint(_model, str(weights_path))
+
+    if logical_param_groups:
+        _model.param_groups = MethodType(param_groups, _model)
+    else:
+        _model.param_groups = MethodType(param_groups_default, _model)
+
     _model.cfg = cfg  # save the config in the model for convenience
     _model.weights_path = weights_path  # save the model.weights_path in case we want to rebuild the model after updating its attributes
 
