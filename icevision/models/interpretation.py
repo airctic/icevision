@@ -223,7 +223,7 @@ class Interpretation:
         samples = add_annotations(samples)
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
-        preds = self.predict_from_dl(model=model, infer_dl=dl)
+        preds = self.predict_from_dl(model=model, infer_dl=dl, keep_images=True)
         preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(
@@ -237,6 +237,18 @@ class Interpretation:
             ann1 = "\n".join(ann[:4])
             ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
+
+        # Ensure that segmentation ground truth masks are loaded
+        if hasattr(sorted_samples[0], "segmentation") and (
+            not sorted_samples[0].segmentation.mask_array
+        ):
+            for ii in range(len(sorted_samples)):
+                w, h = sorted_samples[0].img_size
+                sorted_samples[ii].segmentation.mask_array = (
+                    sorted_samples[ii]
+                    .segmentation.masks[0]
+                    .to_mask(h=h, w=w, pad_dim=False)
+                )
 
         sorted_preds = [
             Prediction(pred=p, ground_truth=s)

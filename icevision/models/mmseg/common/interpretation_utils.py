@@ -9,10 +9,10 @@ from icevision.core.record_components import LossesRecordComponent
 from icevision.models.mmseg.common.utils import mmseg_tensor_to_image
 
 
-def sum_losses_mmdet(losses_dict):
+def sum_losses_mmseg(losses_dict):
     loss_ = {}
     for k, v in losses_dict.items():
-        if k.startswith("loss"):
+        if k.__contains__("loss"):
             if isinstance(v, torch.Tensor):
                 loss_[k] = float(v.cpu().numpy())
             elif isinstance(v, list):
@@ -22,15 +22,17 @@ def sum_losses_mmdet(losses_dict):
     return loss_
 
 
-def loop_mmdet(dl, model, losses_stats, device):
+def loop_mmseg(dl, model, losses_stats, device):
     samples_plus_losses = []
+
+    model.eval()
 
     with torch.no_grad():
         for data, sample in pbar(dl):
             torch.manual_seed(0)
             _, data = _move_to_device(None, data, device)
             loss = model(**data)
-            loss = sum_losses_mmdet(loss)
+            loss = sum_losses_mmseg(loss)
 
             for l in losses_stats.keys():
                 losses_stats[l].append(loss[l])
@@ -38,7 +40,7 @@ def loop_mmdet(dl, model, losses_stats, device):
             loss_comp = LossesRecordComponent()
             loss_comp.set_losses(loss)
             sample[0].add_component(loss_comp)
-            sample[0].set_img(mmdet_tensor_to_image(data["img"][0]))
+            sample[0].set_img(mmseg_tensor_to_image(data["img"][0]))
             samples_plus_losses.append(sample[0])
 
     return samples_plus_losses, losses_stats
