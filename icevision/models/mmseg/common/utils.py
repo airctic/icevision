@@ -45,6 +45,7 @@ def build_model(
     crop_size: tuple = None,
     logical_param_groups: bool = False,
     device: str = "gpu",
+    distributed: bool = False,
 ) -> nn.Module:
 
     if pre_training_dataset is None or lr_schd is None or crop_size is None:
@@ -86,6 +87,10 @@ def build_model(
         _model.param_groups = MethodType(param_groups, _model)
     else:
         _model.param_groups = MethodType(param_groups_default, _model)
+
+    # TODO: Implement support for distributed treaning
+    if not distributed:
+        _model = revert_sync_batchnorm(_model)
 
     _model.cfg = cfg  # save the config in the model for convenience
     _model.weights_path = weights_path  # save the model.weights_path in case we want to rebuild the model after updating its attributes
