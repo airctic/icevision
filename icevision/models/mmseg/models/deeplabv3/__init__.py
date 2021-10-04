@@ -6,16 +6,16 @@ from icevision.models.mmseg.common.show_results import *
 from icevision.models.mmseg.common.show_batch import *
 
 from icevision.models.mmseg.common.interpretation_utils import (
-    sum_losses_mmdet,
-    loop_mmdet,
+    sum_losses_mmseg,
+    loop_mmseg,
 )
 
 from icevision.models.mmseg.common.segmentors.encoder_decoder import *
 
 
 _LOSSES_DICT = {
-    "loss_cls": [],
-    "loss_bbox": [],
+    "decode.loss_seg": [],
+    "aux.loss_seg": [],
     "loss_total": [],
 }
 
@@ -26,4 +26,4 @@ interp = Interpretation(
     predict_from_dl=predict_from_dl,
 )
 
-interp._loop = loop_mmdet
+interp._loop = loop_mmseg
