@@ -1,0 +1,45 @@
+__all__ = ["JaccardIndex"]
+
+from icevision.imports import *
+from icevision.utils import *
+from icevision.data import *
+from icevision.metrics.metric import *
+
+
+class JaccardIndex(Metric):
+    """Jaccard Index for Semantic Segmentation
+
+    Calculates Jaccard Index for semantic segmentation (binary images only).
+
+    """
+
+    def __init__(self):
+        self._reset()
+
+    def _reset(self):
+        self._union = 0
+        self._intersection = 0
+
+    def accumulate(self, preds):
+
+        pred = (
+            np.stack([x.pred.segmentation.mask_array.data for x in preds])
+            .astype(np.bool)
+            .flatten()
+        )
+
+        target = self._seg_masks_gt = (
+            np.stack([x.ground_truth.segmentation.mask_array.data for x in preds])
+            .astype(np.bool)
+            .flatten()
+        )
+
+        self._union += pred.sum() + target.sum()
+        self._intersection += np.logical_or(pred, target).sum()
+
+    def finalize(self) -> Dict[str, float]:
+
+        jaccard = self._intersection / self._union
+
+        self._reset()
+        return {"jaccard_value_for_fastai": jaccard}
