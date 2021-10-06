@@ -41,10 +41,9 @@ class BinaryDiceCoefficient(Metric):
 
         if self._union == 0:
             dice = 0
-            self._reset()
-            return {"dummy_value_for_fastai": dice}
 
         else:
             dice = 2.0 * self._intersection / self._union
-            self._reset()
-            return {"dummy_value_for_fastai": dice}
+        
+        self._reset()
+        return {"dummy_value_for_fastai": dice}
