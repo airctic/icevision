@@ -41,10 +41,10 @@ class JaccardIndex(Metric):
 
         if self._union == 0:
             jaccard = 0
-            self._reset()
-            return {"jaccard_value_for_fastai": jaccard}
-        
+
         else:
             jaccard = self._intersection / self._union
-            self._reset()
-            return {"jaccard_value_for_fastai": jaccard}
+        
+        self._reset()
+        return {"jaccard_value_for_fastai": jaccard}
+
