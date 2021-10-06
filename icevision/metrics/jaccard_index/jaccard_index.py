@@ -34,8 +34,8 @@ class JaccardIndex(Metric):
             .flatten()
         )
 
-        self._union += pred.sum() + target.sum()
-        self._intersection += np.logical_or(pred, target).sum()
+        self._union += np.logical_or(pred, target).sum()
+        self._intersection += np.logical_and(pred, target).sum()
 
     def finalize(self) -> Dict[str, float]:
 
