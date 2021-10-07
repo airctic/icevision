@@ -193,6 +193,7 @@ class Interpretation:
         sort_by: str = "loss_total",
         n_samples: int = 5,
         batch_size: int = 8,
+        device: torch.device = None,
     ) -> Tuple[List[dict], List[dict], dict]:
         """
         Gets a dataset and a model as input. Calculates losses for each sample in the dataset.
@@ -222,8 +223,10 @@ class Interpretation:
         samples, losses_stats = self.get_losses(model, dataset)
         samples = add_annotations(samples)
 
-        dl = self.infer_dl(dataset, batch_size=batch_size)
-        preds = self.predict_from_dl(model=model, infer_dl=dl, keep_images=True)
+        dl = self.infer_dl(dataset, batch_size=batch_size, device=device)
+        preds = self.predict_from_dl(
+            model=model, infer_dl=dl, keep_images=True, device=device
+        )
         preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(
