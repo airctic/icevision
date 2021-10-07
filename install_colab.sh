@@ -1,6 +1,6 @@
 pip install openmim -q
 echo "- Installing mmcv"
-mim install mmcv-full==1.3.7
+mim install mmcv-full==1.3.13
 echo "- Installing mmdet"
 mim install mmdet==2.12.0
 echo "- Installing mmseg"
