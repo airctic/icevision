@@ -27,6 +27,8 @@ echo "- Installing mmcv"
 pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.8.0/index.html -U -q
 echo "- Installing mmdet"
 pip install mmdet==2.13.0 -U -q
+echo "- Installing mmseg"
+pip install mmsegmentation==0.17.0 -U
 echo "icevision installation finished"  
 
 # restart notebook
