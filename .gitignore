@@ -155,3 +155,4 @@ archives/
 notebooks/wandb/latest-run
 
 artifacts/*
+checkpoints

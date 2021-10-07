@@ -3,7 +3,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [Unreleased] - 0.10.0a1
+### Main dependencies updated
+- torch 1.9.0
+- tochvision 0.10
+- mmdet 2.16.0
+- mmcv 1.3.14
+- fastai 2.5.2
+- pytorch-lightning 1.4.8
+
+
+## [Unreleased] - 0.9.0a1
 ### Added
 - Low level parsing workflow with `RecordCollection`
 - Semantic segmentation support with fastai

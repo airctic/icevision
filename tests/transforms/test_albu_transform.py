@@ -3,7 +3,7 @@ from icevision.tfms.albumentations.albumentations_adapter import (
 )
 import pytest
 from icevision.all import *
-from albumentations.augmentations.transforms import (
+from albumentations import (
     LongestMaxSize,
     Normalize,
     PadIfNeeded,
