@@ -31,7 +31,7 @@ jobs:
           pip install openmim -q
           mim install mmcv-full
           mim install mmdet==2.12.0
-          mim install mmseg==0.17.0
+          mim install mmsegmentation==0.17.0
           pip install -e ".[all,dev]"
           pip install yolov5-icevision --upgrade
           # Below version is needed to work around a clash with ruamel-yaml. When v1.0 is released this can be removed.

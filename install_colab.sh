@@ -4,7 +4,7 @@ mim install mmcv-full
 echo "- Installing mmdet"
 mim install mmdet
 echo "- Installing mmseg"
-mim install mmseg
+mim install mmsegmentation
 
 echo "- Installing icevision from master"
 pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] -U -q
