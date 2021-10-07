@@ -23,7 +23,8 @@ def _predict_batch(
     keep_images: bool = False,
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
-    device = model_device(model)
+
+    device = device or model_device(model)
 
     raw_preds = model(**batch, return_loss=False)
     preds = convert_raw_predictions(
@@ -103,7 +104,9 @@ def predict(
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
 
-    batch, records = build_infer_batch(dataset)
+    device = device or model_device(model)
+
+    batch, records = build_infer_batch(dataset, device=device)
 
     return _predict_batch(
         model=model,
@@ -119,13 +122,18 @@ def predict_from_dl(
     infer_dl: DataLoader,
     show_pbar: bool = True,
     keep_images: bool = False,
+    device: Optional[torch.device] = None,
     **predict_kwargs,
 ):
+
+    device = device or model_device(model)
+
     return _predict_from_dl(
         predict_fn=_predict_batch,
         model=model,
         infer_dl=infer_dl,
         show_pbar=show_pbar,
         keep_images=keep_images,
+        device=device,
         **predict_kwargs,
     )
