@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 name: Run unit tests
 
+=======
+>>>>>>> e97574af (Reverted workflow files to match current master)
 on:
   push:
     branches: [ master ]
@@ -24,22 +27,25 @@ jobs:
 
     - name: Install package
       run: |
-        pip install torch=="1.8.1+cpu" torchvision=="0.9.1+cpu" -f https://download.pytorch.org/whl/torch_stable.html
-        pip install openmim -q
-        mim install mmcv-full==1.3.13
-        mim install mmdet==2.12.0
-        mim install mmsegmentation==0.17.0
+        pip install torch=="1.9.0+cpu" torchvision=="0.10.0+cpu" -f https://download.pytorch.org/whl/torch_stable.html
+        pip install mmcv-full=="1.3.14" -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.9.0/index.html 
+        pip install mmdet==2.17.0 --upgrade
+        pip install mmsegmentation==0.17.0 --upgrade
         pip install -e ".[all,dev]"
         pip install fiftyone
-
+        pip install yolov5-icevision --upgrade
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+<<<<<<< HEAD
 
     - name: Unit tests
+=======
+    - name: Run tests
+>>>>>>> e97574af (Reverted workflow files to match current master)
       run: pytest tests -m "not cuda" --cov=icevision --cov-report=xml --color=yes
 
     - name: Upload coverage to Codecov
