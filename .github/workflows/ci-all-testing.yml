@@ -25,6 +25,7 @@ jobs:
     - name: Install package
       run: |
         sh ./icevision_install.sh cpu
+        pip install mmsegmentation==0.17.0 -U
         pip install -e ".[all,dev]"
         pip install fiftyone
 
