@@ -32,6 +32,9 @@ class ClassMap:
     def num_classes(self):
         return len(self)
 
+    def get_classes(self) -> Sequence[str]:
+        return self._id2class
+
     def get_by_id(self, id: int) -> str:
         return self._id2class[id]
 
