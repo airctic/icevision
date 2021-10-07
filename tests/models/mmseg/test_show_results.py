@@ -23,8 +23,12 @@ def test_show_results(camvid_ds, backbone, monkeypatch):
 
     if torch.cuda.is_available():
         model.cuda()  # Needed when ran on machine with a GPU as data will be loaded on the device by default
+        device = torch.device("cuda")
 
-    deeplabv3.show_results(model, valid_ds)
+    else:
+        device = torch.device("cpu")
+
+    deeplabv3.show_results(model, valid_ds, device=device)
 
 
 @pytest.mark.parametrize(
@@ -46,9 +50,12 @@ def test_plot_losses(camvid_ds, backbone, monkeypatch):
 
     if torch.cuda.is_available():
         model.cuda()  # Needed when ran on machine with a GPU as data will be loaded on the device by default
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
 
     samples_plus_losses, preds, _ = deeplabv3.interp.plot_top_losses(
-        model=model, dataset=ds, sort_by="loss_total", n_samples=2
+        model=model, dataset=ds, sort_by="loss_total", n_samples=2, device=device
     )
     assert len(samples_plus_losses) == len(ds) == len(preds)
 
