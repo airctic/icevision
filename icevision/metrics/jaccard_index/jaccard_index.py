@@ -28,7 +28,7 @@ class JaccardIndex(Metric):
             .flatten()
         )
 
-        target = self._seg_masks_gt = (
+        target = (
             np.stack([x.ground_truth.segmentation.mask_array.data for x in preds])
             .astype(np.bool)
             .flatten()
@@ -44,7 +44,6 @@ class JaccardIndex(Metric):
 
         else:
             jaccard = self._intersection / self._union
-        
+
         self._reset()
         return {"jaccard_value_for_fastai": jaccard}
-
