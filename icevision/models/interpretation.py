@@ -207,7 +207,6 @@ class Interpretation:
         sort_by: (str) the loss to sort samples by
         n_samples: how many samples to show
         batch_size: used when creating the infer dataloader to get model predictions on the dataset
-        device: (pytorch.device) device to use to plot top losses
 
         Returns
         -------
@@ -221,15 +220,11 @@ class Interpretation:
             f"Losses returned by model: {[l for l in list(_prepend_str(self.losses_dict, 'loss').keys()) if l!='loss_total']}",
         )
 
-        device = auto_device_config(device)
-
         samples, losses_stats = self.get_losses(model, dataset)
         samples = add_annotations(samples)
 
         dl = self.infer_dl(dataset, batch_size=batch_size)
-        preds = self.predict_from_dl(
-            model=model, infer_dl=dl, keep_images=True, device=device
-        )
+        preds = self.predict_from_dl(model=model, infer_dl=dl, keep_images=True)
         preds = [p.pred for p in preds]
 
         sorted_samples, sorted_preds, annotations = sort_losses(

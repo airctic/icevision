@@ -12,6 +12,8 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.mmseg.common.utils import *
 from icevision.models.mmseg.common.dataloaders import *
+from icevision.models.interpretation import _move_to_device
+
 import itertools
 
 
@@ -24,7 +26,13 @@ def _predict_batch(
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
 
-    device = device or model_device(model)
+    if device and (
+        batch["img"][0].device.type != device.type
+        or model_device(model).type != device.type
+    ):
+        _, batch = _move_to_device(None, batch, device.type)
+    elif batch["img"][0].device.type != model_device(model).type:
+        _, batch = _move_to_device(None, batch, model_device(model).type)
 
     raw_preds = model(**batch, return_loss=False)
     preds = convert_raw_predictions(
@@ -104,9 +112,7 @@ def predict(
     device: Optional[torch.device] = None,
 ) -> List[Prediction]:
 
-    device = device or model_device(model)
-
-    batch, records = build_infer_batch(dataset, device=device)
+    batch, records = build_infer_batch(dataset)
 
     return _predict_batch(
         model=model,
