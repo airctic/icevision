@@ -42,22 +42,13 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
     return train_dl(dataset, batch_tfms=None, **dataloader_kwargs)
 
 
-def infer_dl(
-    dataset, batch_tfms=None, device: Optional[torch.device] = None, **dataloader_kwargs
-) -> DataLoader:
-
-    device = auto_device_config(device)
-
-    if device:
-        dl_kwargs = {"device": device}
-    else:
-        dl_kwargs = {}
+def infer_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 
     return transform_dl(
         dataset=dataset,
         build_batch=build_infer_batch,
         batch_tfms=batch_tfms,
-        build_batch_kwargs=dl_kwargs,
+        # build_batch_kwargs=dl_kwargs,
         **dataloader_kwargs,
     )
 
@@ -100,20 +91,14 @@ def build_train_batch(records: Sequence[BaseRecord]):
 #  See this for expected format https://mmsegmentation.readthedocs.io/en/latest/api.html#mmseg.models.segmentors.BaseSegmentor.forward_test
 def build_infer_batch(
     records: Sequence[BaseRecord],
-    device: Optional[torch.device] = torch.device("cuda"),
 ):
 
     images = []
     for record in records:
         images.append(im2tensor(record.img))
 
-    if device and device.type == "cuda":
-        img = torch.stack(images).cuda()
-    else:
-        img = torch.stack(images)
-
     data = {
-        "img": [img],
+        "img": [torch.stack(images)],
         "img_metas": [[_img_meta_mask(record)]],
     }
 
