@@ -4,6 +4,7 @@ __all__ = ["train_dl", "valid_dl", "infer_dl", "build_train_batch", "build_infer
 from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
+from icevision.utils import *
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -44,6 +45,8 @@ def valid_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
 def infer_dl(
     dataset, batch_tfms=None, device: Optional[torch.device] = None, **dataloader_kwargs
 ) -> DataLoader:
+
+    device = auto_device_config(device)
 
     if device:
         dl_kwargs = {"device": device}
