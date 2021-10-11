@@ -13,9 +13,12 @@ class MulticlassDiceCoefficient(Metric):
 
     Heaviliy inspired by fastai's implementation:  Implement multi-class version following https://github.com/fastai/fastai/blob/594e1cc20068b0d99bfc30bfe6dac88ab381a157/fastai/metrics.py#L343
 
+    # Arguments
+        classes_to_exclude: A list of class names to exclude from metric computation
     """
 
-    def __init__(self):
+    def __init__(self, classes_to_exclude: list = []):
+        self.classes_to_exclude = classes_to_exclude
         self._reset()
 
     def _reset(self):
@@ -30,8 +33,14 @@ class MulticlassDiceCoefficient(Metric):
             [x.ground_truth.segmentation.mask_array.data for x in preds]
         ).flatten()
 
+        unique_classes_id = list(preds[0].segmentation.class_map._class2id.values())
+
+        for c in self.classes_to_exclude:
+            if c in preds[0].segmentation.class_map._class2id:
+                unique_classes_id.remove(preds[0].segmentation.class_map._class2id[c])
+
         # We iterate through all unique classes across preditions and targets
-        for c in np.unique(np.concatenate((np.unique(pred), np.unique(target)))):
+        for c in unique_classes_id:
 
             p = np.where(pred == c, 1, 0)
             t = np.where(target == c, 1, 0)
