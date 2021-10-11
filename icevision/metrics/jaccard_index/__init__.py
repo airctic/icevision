@@ -1,1 +1,1 @@
-from icevision.metrics.binary_jaccard_index import *
+from icevision.metrics.jaccard_index.binary_jaccard_index import *
