@@ -35,7 +35,7 @@ def setup_cases():
                     [0,0,0,0,0,0,0,0,0,0,0,0],
                     [0,0,0,0,0,0,0,0,0,0,0,0],
                 ]),
-            'expected_value': {'dummy_value_for_fastai': 0.0},
+            'expected_value': {'dummy_value_for_fastai': 0.0}, # correct
             'binary':  True
         },
 
@@ -69,7 +69,7 @@ def setup_cases():
                 [1,1,1,1,1,1,1,1,1,1,1,1],
                 [1,1,1,1,1,1,1,1,1,1,1,1],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 1.0},
+            'expected_value': {'dummy_value_for_fastai': 1.0}, # correct 
             'binary': True
         },
         
@@ -104,7 +104,7 @@ def setup_cases():
                 [0,0,0,0,0,0,0,0,2,2,2,2],
                 [0,0,0,0,0,0,0,0,2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.6516129032258065},
+            'expected_value': {'dummy_value_for_fastai': 0.6516129032258065}, # should be 0.567 ??
             'binary': False
         },
 
@@ -138,7 +138,7 @@ def setup_cases():
                 [1,1,1,1,1,1,2,2,2,2,2,2],
                 [1,1,1,1,1,1,2,2,2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.3333333333333333},
+            'expected_value': {'dummy_value_for_fastai': 0.3333333333333333}, # correct value
             'binary': False
         },
 
@@ -172,7 +172,7 @@ def setup_cases():
                 [2,2,0,0,1,1,1,1,0,0,0,0],
                 [2,2,2,2,0,0,0,0,0,0,0,0],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.5872274143302181},
+            'expected_value': {'dummy_value_for_fastai': 0.5872274143302181}, # should be 0.637 ??
             'binary': False
         },
 
@@ -188,7 +188,7 @@ def setup_cases():
                 [1,1,1,1],
                 [2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.45},
+            'expected_value': {'dummy_value_for_fastai': 0.45}, # should be 0.5333 ??
             'binary': False
         }
 
