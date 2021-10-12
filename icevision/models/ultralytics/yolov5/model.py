@@ -88,7 +88,7 @@ def model(
         spp_index = [
             i + 2
             for i, layer in enumerate(model.model.children())
-            if layer._get_name() == "SPP"
+            if layer._get_name() == "SPPF"
         ][0]
         backbone = list(model.model.children())[:spp_index]
         neck = list(model.model.children())[spp_index:-1]
