@@ -86,7 +86,7 @@ def model(
 
     def param_groups_fn(model: nn.Module) -> List[List[nn.Parameter]]:
         spp_index = [
-            i + 2
+            i + 1
             for i, layer in enumerate(model.model.children())
             if layer._get_name() == "SPPF"
         ][0]
