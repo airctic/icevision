@@ -2,398 +2,216 @@ import pytest
 from icevision.all import *
 
 
-# test - full 0% overlap
 @pytest.fixture()
-def setup_pred_no_overlap():
-    # synthetic data to test
-    gt = np.asarray([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-    ])
+def setup_cases():
+    return [
+        {
+            'name': "no_overlap",
+            'pred_mask': np.asarray([
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1],
+                ]),
+            'gt_mask': np.asarray([
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0],
+                ]),
+            'expected_value': {'binary_jaccard_value_for_fastai': 0.0}, 
+        },
 
+        {
+            'name': 'full_overlap',
+            'pred_mask': np.asarray([
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+            ]),
+            'gt_mask': np.asarray([
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+            ]),
+            'expected_value': {'binary_jaccard_value_for_fastai': 1.0}, 
+        },
 
-    pred = np.asarray([
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-    ])
+        {
+            'name': 'quarter_overlap',
+            'pred_mask': np.asarray([
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,1,1,0,0,0,0,0],
+                [0,0,0,0,0,1,1,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+            ]),
+            'gt_mask': np.asarray([
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+            ]),
+            'expected_value': {'binary_jaccard_value_for_fastai': 0.25}, 
+        },
 
-    # setup pred record
-    pred_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),))
+        {
+            'name': 'half_overlap',
+            'pred_mask': np.asarray([
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+                [1,1,1,1,1,1,0,0,0,0,0,0],
+            ]),
+            'gt_mask': np.asarray([
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+                [1,1,1,1,1,1,1,1,1,1,1,1],
+            ]),
+            'expected_value': {'binary_jaccard_value_for_fastai': 0.5},
+        },
 
-    pred_record.segmentation.set_class_map(ClassMap(["square"]))
-    pred_record.segmentation.set_mask_array(MaskArray(pred))
+        {
+            'name': 'patterned_overlap',
+            'pred_mask': np.asarray([
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,1,1,0,0,0,0,0,0],
+                [0,0,0,0,1,1,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,1,1,0,0,0,0,0],
+                [0,0,0,0,0,1,1,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,1,1,0,0,0,0],
+                [0,0,0,0,0,0,1,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+            ]),
+            'gt_mask': np.asarray([
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,1,1,1,1,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0],
+            ]),
+            'expected_value': {'binary_jaccard_value_for_fastai': 0.2}, 
+        },
 
-    # setup ground truth record
-    gt_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),)) 
-
-    gt_record.segmentation.set_class_map(ClassMap(["square"]))
-    gt_record.segmentation.set_mask_array(MaskArray(gt))
-
-    # w, h = imgA.shape[0], imgA.shape[1]
-    w, h = gt.shape[0], gt.shape[1]
-
-    gt_record.set_img_size(ImgSize(w,h), original=True)
-
-    prediction = Prediction(pred=pred_record, ground_truth=gt_record)
-
-    return prediction
-
-# testing metric 
-@pytest.fixture()
-def expected_binary_jaccard_output_no_overlap():
-
-    return {'binary_jaccard_value_for_fastai': 0.0}
-
-# @pytest.fixture()
-def test_binary_jaccard_no_overlap(setup_pred_no_overlap, expected_binary_jaccard_output_no_overlap):
-
-    pred = setup_pred_no_overlap
-
-    jaccard = BinaryJaccardIndex()
-    jaccard.accumulate([pred])
-
-    assert jaccard.finalize() == expected_binary_jaccard_output_no_overlap
-
-
-# test - full 100% overlap
-@pytest.fixture()
-def setup_pred_full_overlap():
-    # synthetic data to test
-    gt = np.asarray([
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-    ])
-
-    pred = np.asarray([
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-    ])
-
-    # setup pred record
-    pred_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),))
-
-    pred_record.segmentation.set_class_map(ClassMap(["square"]))
-    pred_record.segmentation.set_mask_array(MaskArray(pred))
-
-    # setup ground truth record
-    gt_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),)) 
-
-    gt_record.segmentation.set_class_map(ClassMap(["square"]))
-    gt_record.segmentation.set_mask_array(MaskArray(gt))
-
-    # w, h = imgA.shape[0], imgA.shape[1]
-    w, h = gt.shape[0], gt.shape[1]
-
-    gt_record.set_img_size(ImgSize(w,h), original=True)
-
-    prediction = Prediction(pred=pred_record, ground_truth=gt_record)
-
-    return prediction
-
-# testing metric 
-@pytest.fixture()
-def expected_binary_jaccard_output_full_overlap():
-
-    return {'binary_jaccard_value_for_fastai': 1.0}
-
-# @pytest.fixture()
-def test_binary_jaccard_full_overlap(setup_pred_full_overlap, expected_binary_jaccard_output_full_overlap):
-
-    pred = setup_pred_full_overlap
-
-    jaccard = BinaryJaccardIndex()
-    jaccard.accumulate([pred])
-
-    assert jaccard.finalize() == expected_binary_jaccard_output_full_overlap
-
-
-# test - 25% overlap
-@pytest.fixture()
-def setup_prediction_quarter_overlap():
-    # synthetic data to test
-    gt = np.asarray([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-    ])
-
-    pred = np.asarray([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,1,1,0,0,0,0,0],
-        [0,0,0,0,0,1,1,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-    ])
-
-    # setup pred record
-    pred_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),))
-
-    pred_record.segmentation.set_class_map(ClassMap(["square"]))
-    pred_record.segmentation.set_mask_array(MaskArray(pred))
-
-    # setup ground truth record
-    gt_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),)) 
-
-    gt_record.segmentation.set_class_map(ClassMap(["square"]))
-    gt_record.segmentation.set_mask_array(MaskArray(gt))
-
-    # w, h = imgA.shape[0], imgA.shape[1]
-    w, h = gt.shape[0], gt.shape[1]
-
-    gt_record.set_img_size(ImgSize(w,h), original=True)
-
-    prediction = Prediction(pred=pred_record, ground_truth=gt_record)
-
-    return prediction
-
-
-# testing metric 
-@pytest.fixture()
-def expected_binary_jaccard_output_quarter_overlap():
-
-    return {'binary_jaccard_value_for_fastai': 0.25}
+        ]
 
 
 # @pytest.fixture()
-def test_binary_jaccard_quarter_overlap(setup_prediction_quarter_overlap, expected_binary_jaccard_output_quarter_overlap):
+def test_jaccard_index(setup_cases):
 
-    pred = setup_prediction_quarter_overlap
+    cases = setup_cases
 
-    jaccard = BinaryJaccardIndex()
-    jaccard.accumulate([pred])
+    for case in cases:
 
-    assert jaccard.finalize() == expected_binary_jaccard_output_quarter_overlap
+        # setup pred record
+        pred_record = BaseRecord((
+            ImageRecordComponent(),
+            SemanticMaskRecordComponent(),
+            ClassMapRecordComponent(task=tasks.segmentation),))
 
+        pred_record.segmentation.set_class_map(ClassMap(["square"]))
+        pred_record.segmentation.set_mask_array(MaskArray(case['pred_mask']))
 
-# test - 50% overlap
-@pytest.fixture()
-def setup_pred_half_overlap():
-    # synthetic data to test
-    gt = np.asarray([
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1],
-    ])
+        # setup ground truth record
+        gt_record = BaseRecord((
+            ImageRecordComponent(),
+            SemanticMaskRecordComponent(),
+            ClassMapRecordComponent(task=tasks.segmentation),)) 
 
-    pred = np.asarray([
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-        [1,1,1,1,1,1,0,0,0,0,0,0],
-    ])
+        gt_record.segmentation.set_class_map(ClassMap(["square"]))
+        gt_record.segmentation.set_mask_array(MaskArray(case['gt_mask']))
 
-    # setup pred record
-    pred_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),))
+        # w, h = imgA.shape[0], imgA.shape[1]
+        w, h = case['gt_mask'].shape[0], case['gt_mask'].shape[1]
 
-    pred_record.segmentation.set_class_map(ClassMap(["square"]))
-    pred_record.segmentation.set_mask_array(MaskArray(pred))
+        gt_record.set_img_size(ImgSize(w,h), original=True)
 
-    # setup ground truth record
-    gt_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),)) 
+        prediction = Prediction(pred=pred_record, ground_truth=gt_record)
 
-    gt_record.segmentation.set_class_map(ClassMap(["square"]))
-    gt_record.segmentation.set_mask_array(MaskArray(gt))
+        name = case['name']
 
-    # w, h = imgA.shape[0], imgA.shape[1]
-    w, h = gt.shape[0], gt.shape[1]
+        jaccard = BinaryJaccardIndex()
+        jaccard.accumulate([prediction])
 
-    gt_record.set_img_size(ImgSize(w,h), original=True)
+        results = jaccard.finalize()
+        
+        # return f'Results for test with {name}: {results}'
 
-    prediction = Prediction(pred=pred_record, ground_truth=gt_record)
-
-    return prediction
-
-# testing metric 
-@pytest.fixture()
-def expected_binary_jaccard_output_half_overlap():
-
-    return {'binary_jaccard_value_for_fastai': 0.5}
-
-# @pytest.fixture()
-def test_binary_jaccard_half_overlap(setup_pred_half_overlap, expected_binary_jaccard_output_half_overlap):
-
-    pred = setup_pred_half_overlap
-
-    jaccard = BinaryJaccardIndex()
-    jaccard.accumulate([pred])
-
-    assert jaccard.finalize() == expected_binary_jaccard_output_half_overlap
-
-
-
-# test - patterened overlap
-@pytest.fixture()
-def setup_pred_patterned_overlap():
-    # synthetic data to test
-    gt = np.asarray([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,1,1,1,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-    ])
-
-    pred = np.asarray([
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,1,1,0,0,0,0,0,0],
-        [0,0,0,0,1,1,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,1,1,0,0,0,0,0],
-        [0,0,0,0,0,1,1,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,1,1,0,0,0,0],
-        [0,0,0,0,0,0,1,1,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0],
-    ])
-
-    # setup pred record
-    pred_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),))
-
-    pred_record.segmentation.set_class_map(ClassMap(["square"]))
-    pred_record.segmentation.set_mask_array(MaskArray(pred))
-
-    # setup ground truth record
-    gt_record = BaseRecord((
-        ImageRecordComponent(),
-        SemanticMaskRecordComponent(),
-        ClassMapRecordComponent(task=tasks.segmentation),)) 
-
-    gt_record.segmentation.set_class_map(ClassMap(["square"]))
-    gt_record.segmentation.set_mask_array(MaskArray(gt))
-
-    # w, h = imgA.shape[0], imgA.shape[1]
-    w, h = gt.shape[0], gt.shape[1]
-
-    gt_record.set_img_size(ImgSize(w,h), original=True)
-
-    prediction = Prediction(pred=pred_record, ground_truth=gt_record)
-
-    return prediction
-
-
-# testing metric 
-@pytest.fixture()
-def expected_binary_jaccard_output_patterned_overlap():
-
-    return {'binary_jaccard_value_for_fastai': 0.2}
-
-
-# @pytest.fixture()
-def test_binary_jaccard_patterned_overlap(setup_pred_patterned_overlap, expected_binary_jaccard_output_patterned_overlap):
-
-    pred = setup_pred_patterned_overlap
-
-    jaccard = BinaryJaccardIndex()
-    jaccard.accumulate([pred])
-
-    assert jaccard.finalize() == expected_binary_jaccard_output_patterned_overlap
-
+        assert results == case['expected_value']
