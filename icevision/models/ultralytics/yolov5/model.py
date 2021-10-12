@@ -6,7 +6,7 @@ from icevision.utils import *
 import yaml
 import yolov5
 from yolov5.models.yolo import Model
-from yolov5.utils.google_utils import attempt_download
+from yolov5.utils.downloads import attempt_download
 from yolov5.utils.torch_utils import intersect_dicts
 from yolov5.utils.general import check_img_size
 from icevision.models.ultralytics.yolov5.utils import *
