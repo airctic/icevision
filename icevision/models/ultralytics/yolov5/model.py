@@ -45,7 +45,7 @@ def model(
     if pretrained:
         weights_path = yolo_dir / f"{model_name}.pt"
 
-        with open(Path(yolov5.__file__).parent / "data/hyp.finetune.yaml") as f:
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.finetune.yaml") as f:
             hyp = yaml.load(f, Loader=yaml.SafeLoader)
 
         attempt_download(weights_path)  # download if not found locally
@@ -64,7 +64,7 @@ def model(
         )  # intersect
         model.load_state_dict(state_dict, strict=False)  # load
     else:
-        with open(Path(yolov5.__file__).parent / "data/hyp.scratch.yaml") as f:
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.scratch.yaml") as f:
             hyp = yaml.load(f, Loader=yaml.SafeLoader)
 
         model = Model(
