@@ -22,7 +22,7 @@ def fridge_efficientdet_model() -> nn.Module:
     WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.pt"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
     backbone = models.ross.efficientdet.backbones.tf_lite0(pretrained=False)
-    model = efficientdet.model(backbone=backbone, num_classes=5, img_size=384)
+    model = efficientdet.model(backbone=backbone, num_classes=5, img_size=256)
 
     state_dict = torch.hub.load_state_dict_from_url(
         WEIGHTS_URL, map_location=torch.device("cpu")
@@ -88,7 +88,7 @@ def camvid_ds(camvid_records) -> Tuple[Dataset, Dataset]:
 
 @pytest.fixture(scope="module")
 def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
-    IMG_SIZE = 384
+    IMG_SIZE = 256
 
     parser = parsers.VOCBBoxParser(
         annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
