@@ -36,6 +36,7 @@ def setup_cases():
                     [0,0,0,0,0,0,0,0,0,0,0,0],
                 ]),
             'expected_value': {'dummy_value_for_fastai': 0.0}, # correct
+            'class_map': ClassMap(["one"]),
             'binary':  True
         },
 
@@ -70,6 +71,7 @@ def setup_cases():
                 [1,1,1,1,1,1,1,1,1,1,1,1],
             ]),
             'expected_value': {'dummy_value_for_fastai': 1.0}, # correct 
+            'class_map': ClassMap(["one"]),
             'binary': True
         },
         
@@ -104,7 +106,8 @@ def setup_cases():
                 [0,0,0,0,0,0,0,0,2,2,2,2],
                 [0,0,0,0,0,0,0,0,2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.6516129032258065}, # should be 0.567 ??
+            'expected_value': {'dummy_value_for_fastai': 0.567741935483871}, 
+            'class_map': ClassMap(["one", "two"]),
             'binary': False
         },
 
@@ -138,7 +141,8 @@ def setup_cases():
                 [1,1,1,1,1,1,2,2,2,2,2,2],
                 [1,1,1,1,1,1,2,2,2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.3333333333333333}, # correct value
+            'expected_value': {'dummy_value_for_fastai': 0.4444444444444444}, 
+            'class_map': ClassMap(["one", "two"]),
             'binary': False
         },
 
@@ -172,7 +176,8 @@ def setup_cases():
                 [2,2,0,0,1,1,1,1,0,0,0,0],
                 [2,2,2,2,0,0,0,0,0,0,0,0],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.5872274143302181}, # should be 0.637 ??
+            'expected_value': {'dummy_value_for_fastai': 0.6370989779745314}, 
+            'class_map': ClassMap(["one", "two"]),
             'binary': False
         },
 
@@ -188,7 +193,8 @@ def setup_cases():
                 [1,1,1,1],
                 [2,2,2,2],
             ]),
-            'expected_value': {'dummy_value_for_fastai': 0.45}, # should be 0.5333 ??
+            'expected_value': {'dummy_value_for_fastai': 0.5222222222222223}, 
+            'class_map': ClassMap(["one", "two"]),
             'binary': False
         }
 
@@ -210,6 +216,7 @@ def test_multilabel_dice_metric(setup_cases):
 
         pred_record.segmentation.set_class_map(ClassMap(["square"]))
         pred_record.segmentation.set_mask_array(MaskArray(case['pred_mask']))
+        pred_record.segmentation.set_class_map(case['class_map'])
 
         # setup ground truth record
         gt_record = BaseRecord((
@@ -219,6 +226,7 @@ def test_multilabel_dice_metric(setup_cases):
 
         gt_record.segmentation.set_class_map(ClassMap(["square"]))
         gt_record.segmentation.set_mask_array(MaskArray(case['gt_mask']))
+        gt_record.segmentation.set_class_map(case['class_map'])
 
         # w, h = imgA.shape[0], imgA.shape[1]
         w, h = case['gt_mask'].shape[0], case['gt_mask'].shape[1]
