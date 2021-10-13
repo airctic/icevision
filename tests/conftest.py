@@ -88,7 +88,7 @@ def camvid_ds(camvid_records) -> Tuple[Dataset, Dataset]:
 
 @pytest.fixture(scope="module")
 def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
-    IMG_SIZE = 256
+    IMG_SIZE = 384
 
     parser = parsers.VOCBBoxParser(
         annotations_dir=samples_source / "fridge/odFridgeObjects/annotations",
