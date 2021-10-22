@@ -27,11 +27,11 @@ jobs:
 
       - name: Install package
         run: |
-        pip install torch=="1.9.0+cpu" torchvision=="0.10.0+cpu" -f https://download.pytorch.org/whl/torch_stable.html
-        pip install mmcv-full=="1.3.14" -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.9.0/index.html 
-        pip install mmdet==2.17.0 --upgrade
+          pip install torch=="1.9.0+cpu" torchvision=="0.10.0+cpu" -f https://download.pytorch.org/whl/torch_stable.html
+          pip install mmcv-full=="1.3.14" -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.9.0/index.html 
+          pip install mmdet==2.17.0 --upgrade
           pip install -e ".[all,dev]"
-          pip install yolov5-icevision --upgrade
+          pip install git+git://github.com/airctic/yolov5-icevision.git -U -q 
           # Below version is needed to work around a clash with ruamel-yaml. When v1.0 is released this can be removed.
           pip install git+git://github.com/jimporter/mike.git@2961733cbfef132e9d63752307443981ad02d1fc --upgrade
 
