@@ -1247,9 +1247,15 @@
 <h1 id="custom-parser-simple">Custom Parser - Simple</h1>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
 <p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
-<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
-<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
-<span class="err">!</span><span class="n">chmod</span> <span class="o">+</span><span class="n">x</span> <span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="o">./</span><span class="n">install_colab</span><span class="o">.</span><span class="n">sh</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="imports">Imports</h2>
 <p>As always, let's import everything from <code>icevision</code>. Additionally, we will also need <code>pandas</code> (you might need to install it with <code>pip install pandas</code>).</p>
@@ -1447,7 +1453,7 @@
 <p>Let's take a look at one record:</p>
 <div class="highlight"><pre><span></span><code><span class="n">show_record</span><span class="p">(</span><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">display_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </code></pre></div>
-<p><img alt="png" src="../images/custom_parser/custom_parser_26_0.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_27_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 <div class="k-default-codeblock">

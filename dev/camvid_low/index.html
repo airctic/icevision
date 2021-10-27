@@ -1106,6 +1106,18 @@
                 <div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
 <span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://s3.amazonaws.com/fast-ai-sample/camvid_tiny.tgz&#39;</span>
@@ -1147,7 +1159,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/camvid_low/camvid_low_7_0.png" /></p>
+<p><img alt="png" src="../images/camvid_low/camvid_low_9_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">384</span>
 <span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">presize</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">presize</span><span class="o">*</span><span class="mf">.75</span><span class="p">)),</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mf">.75</span><span class="p">))</span>
 
@@ -1164,7 +1176,7 @@
 <div class="highlight"><pre><span></span><code><span class="n">ds_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">ds_samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/camvid_low/camvid_low_10_0.png" /></p>
+<p><img alt="png" src="../images/camvid_low/camvid_low_12_0.png" /></p>
 <h2 id="coco">COCO</h2>
 <p>[
 {image_id: 2, segmentation: Polygon(23, 45, 12, 67),
@@ -1201,7 +1213,7 @@ SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.00015848931798245758)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/camvid_low/camvid_low_18_2.png" /></p>
+<p><img alt="png" src="../images/camvid_low/camvid_low_20_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1262,7 +1274,7 @@ SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.00015848931798245758)
 
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/camvid_low/camvid_low_20_0.png" /></p>
+<p><img alt="png" src="../images/camvid_low/camvid_low_22_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
@@ -1326,7 +1338,7 @@ AttributeError: &#39;NoneType&#39; object has no attribute &#39;data&#39;
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/camvid_low/camvid_low_22_1.png" /></p>
+<p><img alt="png" src="../images/camvid_low/camvid_low_24_1.png" /></p>
 <div class="highlight"><pre><span></span><code>
 </code></pre></div>
                 
