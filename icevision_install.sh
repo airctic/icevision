@@ -1,4 +1,12 @@
-# target can be: cuda11, cuda10, cpu
+# Pick your installation target: cuda11 or cuda10 or cpu
+# Pick icevision version: if empty, the PyPi release version will be chosen. If you pass `master`, the GitHub master version will be chosen
+
+# Examples
+## Install cuda11  and icevsision master version
+# !bash icevision_install.sh cuda11 master  
+
+## Install cpu and icevsision PyPi version
+# !bash icevision_install.sh cpu 
 
 target="${1}" 
 case ${target} in 
