@@ -63,6 +63,6 @@ case ${icevision_version} in
       echo "- Installing yolov5-icevision" 
       pip install yolov5-icevision --upgrade -q
       ;;
-   
+  esac 
 
 echo "icevision installation finished!"  
