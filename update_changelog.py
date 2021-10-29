@@ -98,7 +98,7 @@ def create_markdown_from_pull_request_data(data, version_name=None):
     # add thank you notice
     markdown += (
         "**Thank you to all contributers: "
-        + ", ".join([entry[0] for entry in sorted_data])
+        + ", ".join([f"@{entry[0]}" for entry in sorted_data])
         + "**"
         + "\n\n[comment]: # (Version_end)\n\n"
     )
@@ -130,7 +130,7 @@ def get_latest_pull_request_id(log_data):
 
 def load_changelogs():
     change_log = open("CHANGELOG.md", "r").read()
-    with open("CHANGELOG_backup.md") as f:
+    with open("CHANGELOG_backup.md", "w") as f:
         f.write(change_log)
     changelogs_head, changelog_body = change_log.split(
         "[comment]: # (Add changes below)"
