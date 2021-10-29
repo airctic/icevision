@@ -1,8 +1,8 @@
-pip install openmim -q
 echo "- Installing mmcv"
-mim install mmcv-full
+pip install mmcv-full==1.3.14 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.9.0/index.html --upgrade -q 
+
 echo "- Installing mmdet"
-mim install mmdet
+pip install mmdet==2.17.0 --upgrade -q
 
 
 echo "- Installing icevision from master"
