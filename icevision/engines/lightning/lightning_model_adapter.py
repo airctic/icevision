@@ -6,7 +6,11 @@ from icevision.metrics import *
 
 
 class LightningModelAdapter(pl.LightningModule, ABC):
-    def __init__(self, metrics: List[Metric] = None, metrics_keys_to_log_to_prog_bar: List[tuple] = None):
+    def __init__(
+        self,
+        metrics: List[Metric] = None,
+        metrics_keys_to_log_to_prog_bar: List[tuple] = None,
+    ):
         """
         To show a metric in the progressbar a list of tupels can be provided for metrics_keys_to_log_to_prog_bar, the first
         entry has to be the name of the metric to log and the second entry the display name in the progressbar. By default the
@@ -14,7 +18,9 @@ class LightningModelAdapter(pl.LightningModule, ABC):
         """
         super().__init__()
         self.metrics = metrics or []
-        self.metrics_keys_to_log_to_prog_bar = metrics_keys_to_log_to_prog_bar or [("AP (IoU=0.50:0.95) area=all", "mAP")]
+        self.metrics_keys_to_log_to_prog_bar = metrics_keys_to_log_to_prog_bar or [
+            ("AP (IoU=0.50:0.95) area=all", "mAP")
+        ]
 
     def accumulate_metrics(self, preds):
         for metric in self.metrics:
