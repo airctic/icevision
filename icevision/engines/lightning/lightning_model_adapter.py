@@ -19,7 +19,7 @@ class LightningModelAdapter(pl.LightningModule, ABC):
         super().__init__()
         self.metrics = metrics or []
         self.metrics_keys_to_log_to_prog_bar = metrics_keys_to_log_to_prog_bar or [
-            ("AP (IoU=0.50:0.95) area=all", "mAP")
+            ("AP (IoU=0.50:0.95) area=all", "COCOMetric")
         ]
 
     def accumulate_metrics(self, preds):
