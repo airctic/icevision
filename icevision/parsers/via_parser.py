@@ -37,13 +37,16 @@ class VIAParseError(Exception):
 class VIABaseParser(Parser):
     def __init__(
         self,
-        annotations_filepath: Union[str, Path],
+        annotations_filepath: Union[str, Path, dict],
         img_dir: Union[str, Path],
         class_map: ClassMap,
         label_field: str = "label",
     ):
         super().__init__(template_record=self.template_record())
-        self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
+        if isinstance(annotations_filepath, dict):
+            self.annotations_dict = annotations_filepath
+        else:
+            self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
         self.label_field = label_field
         self.class_map = class_map
