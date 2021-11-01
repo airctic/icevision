@@ -31,12 +31,15 @@ from icevision.parsers import *
 class COCOBaseParser(Parser):
     def __init__(
         self,
-        annotations_filepath: Union[str, Path],
+        annotations_filepath: Union[str, Path, dict],
         img_dir: Union[str, Path],
         idmap: Optional[IDMap] = None,
     ):
 
-        self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
+        if isinstance(annotations_filepath, dict):
+            self.annotations_dict = annotations_filepath
+        else:
+            self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
 
         self._record_id2info = {o["id"]: o for o in self.annotations_dict["images"]}
