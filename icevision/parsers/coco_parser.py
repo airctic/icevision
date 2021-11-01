@@ -1,5 +1,4 @@
 __all__ = [
-    # "coco",
     "COCOBaseParser",
     "COCOBBoxParser",
     "COCOMaskParser",
@@ -11,21 +10,6 @@ from icevision.imports import *
 from icevision.core import *
 from icevision.utils import *
 from icevision.parsers import *
-
-
-# # TODO: Deprecated
-# def coco(
-#     annotations_file: Union[str, Path],
-#     img_dir: Union[str, Path],
-#     mask: bool = True,
-#     idmap: Optional[IDMap] = None,
-# ) -> Parser:
-#     logger.warning(
-#         "This function will be deprecated, instantiate the concrete "
-#         "classes instead: `COCOBBoxParser`, `COCOMaskParser`, `COCOKeypointsParser`"
-#     )
-#     parser_cls = COCOMaskParser if mask else COCOBBoxParser
-#     return parser_cls(annotations_file, img_dir, idmap=idmap)
 
 
 class COCOBaseParser(Parser):
