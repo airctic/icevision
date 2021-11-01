@@ -198,6 +198,6 @@ def test_mask_parser(coco_mask_parser):
 def test_coco_base_parser_init_from_dict(coco_dir):
     annotations_dict = json.load(open(coco_dir / "annotations.json"))
     parser_init_by_dict = parsers.COCOBBoxParser(
-        annotations_dict, coco_dir / "images", mask=False
+        annotations_dict, coco_dir / "images"
     )
     assert parser_init_by_dict.annotations_dict == annotations_dict
