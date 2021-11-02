@@ -56,11 +56,11 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     Returns image (width, height)
     """
     try:
-        with PIL.Image.open(filepath) as image:
-            image_size = image.size
+        image = PIL.Image.open(filepath)
+        image_size = image.size
     except AttributeError as err:
-        im = cv2.imread(str(filepath))
-        image_size = tuple(im.shape[:2][::-1])
+        image = cv2.imread(str(filepath))
+        image_size = tuple(image.shape[:2][::-1])
 
     try:
         exif = image._getexif()
