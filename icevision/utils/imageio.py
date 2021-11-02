@@ -55,8 +55,12 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     Returns image (width, height)
     """
-    with PIL.Image.open(filepath) as image:
-        image_size = image.size
+    try:
+        with PIL.Image.open(filepath) as image:
+            image_size = image.size
+    except AttributeError as err:
+        print(f"Failed to load image: {filepath}")
+        raise err
 
     try:
         exif = image._getexif()
