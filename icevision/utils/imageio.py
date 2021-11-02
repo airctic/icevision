@@ -59,8 +59,8 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
         with PIL.Image.open(filepath) as image:
             image_size = image.size
     except AttributeError as err:
-        print(f"Failed to load image: {filepath}")
-        raise err
+        im = torchvision.io.read_image(filepath)
+        image_size = tuple(im.shape[-2:][::-1])
 
     try:
         exif = image._getexif()
