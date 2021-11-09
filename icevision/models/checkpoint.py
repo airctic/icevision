@@ -178,7 +178,9 @@ def model_from_checkpoint(
     if isinstance(filename, Path):
         filename = str(filename)
 
-    checkpoint = _load_checkpoint(filename=filename, map_location=map_location, logger=logger)
+    checkpoint = _load_checkpoint(
+        filename=filename, map_location=map_location, logger=logger
+    )
 
     if is_coco and classes:
         err_msg = "`is_coco` cannot be set to True if `classes` is passed and `not None`. `classes` has priority. `is_coco` will be ignored."
@@ -186,7 +188,6 @@ def model_from_checkpoint(
             logger.warning(err_msg)
         else:
             print(err_msg)
-
 
     if classes is None:
         if is_coco:
