@@ -83,7 +83,10 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
     def validation_step(self, batch, batch_idx):
         data, records = batch
 
-        updated_records = self.get_updated_records(records, data["gt_masks"])
+        if "gt_masks" in data.keys():
+            updated_records = self.get_updated_records(records, data["gt_masks"])
+        else:
+            updated_records = records
 
         self.model.eval()
         with torch.no_grad():
