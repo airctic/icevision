@@ -400,7 +400,7 @@ class BaseMasksRecordComponent(RecordComponent):
         self.masks.extend(masks)
 
     def set_masks(self, masks: Sequence[Mask]):
-        self.masks.clear
+        self.masks.clear()
         self.masks.extend(masks)
 
     def set_mask(self, mask: Mask):

@@ -67,6 +67,8 @@ class MaskArray(Mask):
     """
 
     def __init__(self, data: np.uint8):
+        if len(data.shape) == 2:
+            data = np.expand_dims(data, 0)
         self.data = data.astype(np.uint8)
 
     def __len__(self):
