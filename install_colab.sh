@@ -1,5 +1,5 @@
 echo "- Installing mmcv"
-pip install mmcv-full==1.3.14 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.9.0/index.html --upgrade -q 
+pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10.0/index.html --upgrade -q  
 
 echo "- Installing mmdet"
 pip install mmdet==2.17.0 --upgrade -q
