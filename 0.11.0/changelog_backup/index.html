@@ -1,0 +1,2007 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.11.0/changelog_backup/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.0">
+    
+    
+      
+        <title>Changelog - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8b42a75e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Other Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressive_resizing/" class="md-nav__link">
+        Progressive resizing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mmdet_custom_config/" class="md-nav__link">
+        MMDetection Custom Config
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          Gradio
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          API Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_3">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_1">
+          Faster RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_2">
+          Mask RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_3">
+          EfficientDet
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unreleased-0100a1" class="md-nav__link">
+    Unreleased - 0.10.0a1
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased - 0.10.0a1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#main-dependencies-updated" class="md-nav__link">
+    Main dependencies updated
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unreleased-090a1" class="md-nav__link">
+    Unreleased - 0.9.0a1
+  </a>
+  
+    <nav class="md-nav" aria-label="Unreleased - 0.9.0a1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#081" class="md-nav__link">
+    [0.8.1]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.8.1]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_1" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_1" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080" class="md-nav__link">
+    [0.8.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.8.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_2" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_2" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070" class="md-nav__link">
+    [0.7.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.7.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_3" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_3" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060b1" class="md-nav__link">
+    [0.6.0b1]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.6.0b1]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_4" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_4" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052" class="md-nav__link">
+    [0.5.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.5.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_5" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_5" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050" class="md-nav__link">
+    [0.5.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.5.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_6" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_6" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040" class="md-nav__link">
+    [0.4.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.4.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_7" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_7" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030" class="md-nav__link">
+    [0.3.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.3.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_8" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_8" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#022" class="md-nav__link">
+    [0.2.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_9" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_9" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#021" class="md-nav__link">
+    [0.2.1]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.1]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_10" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020" class="md-nav__link">
+    [0.2.0]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.2.0]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important" class="md-nav__link">
+    IMPORTANT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added_10" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_11" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_1" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#016" class="md-nav__link">
+    [0.1.6]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.6]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_11" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_12" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#015" class="md-nav__link">
+    [0.1.5]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.5]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_13" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#014" class="md-nav__link">
+    [0.1.4]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.4]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_12" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_14" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_2" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#013" class="md-nav__link">
+    [0.1.3]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.3]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#changed_15" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#012" class="md-nav__link">
+    [0.1.2]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.1.2]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_13" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_16" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deleted_3" class="md-nav__link">
+    Deleted
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#009" class="md-nav__link">
+    [0.0.9]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.0.9]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_14" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_17" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#000-pre-release" class="md-nav__link">
+    [0.0.0-pre-release]
+  </a>
+  
+    <nav class="md-nav" aria-label="[0.0.0-pre-release]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added_15" class="md-nav__link">
+    Added
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed_18" class="md-nav__link">
+    Changed
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    Removed
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links" class="md-nav__link">
+    Links
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="changelog">Changelog</h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>.</p>
+<h2 id="unreleased-0100a1"><a href="https://github.com/airctic/mantisshrimp/tree/master">Unreleased</a> - 0.10.0a1</h2>
+<h3 id="main-dependencies-updated">Main dependencies updated</h3>
+<ul>
+<li>torch 1.9.0</li>
+<li>tochvision 0.10</li>
+<li>mmdet 2.16.0</li>
+<li>mmcv 1.3.14</li>
+<li>fastai 2.5.2</li>
+<li>pytorch-lightning 1.4.8</li>
+</ul>
+<h2 id="unreleased-090a1"><a href="https://github.com/airctic/mantisshrimp/tree/master">Unreleased</a> - 0.9.0a1</h2>
+<h3 id="added">Added</h3>
+<ul>
+<li>Low level parsing workflow with <code>RecordCollection</code></li>
+<li>Semantic segmentation support with fastai</li>
+</ul>
+<h2 id="changed">Changed</h2>
+<ul>
+<li><strong>Breaking:</strong> Refactored mask components workflow</li>
+<li><strong>Breaking:</strong> Due to the new mask components refactor, autofix doesn't work for mask components anymore.</li>
+</ul>
+<h2 id="081">[0.8.1]</h2>
+<h3 id="added_1">Added</h3>
+<ul>
+<li><code>end2end_detect()</code>: Run Object Detection inference (only <code>bboxes</code>) on a single image, and return predicted boxes corresponding to original image size
+-<strong>Breaking:</strong> BaseLabelsRecordComponent <code>as_dict()</code> now returns both <code>labels</code> <code>and labels_ids</code>. <code>labels</code> are now strings instead of integers.</li>
+</ul>
+<h3 id="changed_1">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> On <code>tfms.A.aug_tfms</code> parameter <code>size</code> and <code>presize</code> changed from order (height, width) to (width, height)</li>
+<li>Added <code>RecordCollection</code></li>
+<li><strong>Breaking:</strong> Changed how the <em>resnet</em> (not-fpn) backbone cut is done for torchvision models. Previous <em>resnet torchvision</em> trained models will have trouble loading weights.</li>
+</ul>
+<h2 id="080">[0.8.0]</h2>
+<p>Supports pytorch 1.8</p>
+<h3 id="added_2">Added</h3>
+<ul>
+<li><code>iou_thresholds</code> parameter to <code>COCOMetric</code></li>
+<li><code>SimpleConfusionMatrix</code> Metric</li>
+<li>Negative samples support for mmdetection object detection models</li>
+</ul>
+<h3 id="changed_2">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> Albumentations <code>aug_tfms</code> defaults.</li>
+<li>rotate_limit changed from 45 to 15</li>
+<li>rgb_shift_limit changed from 20 to 10</li>
+<li>VOC parser uses image sizes from annotation file instead of image</li>
+<li>bumps fastai to latest version (&lt;2.4)</li>
+</ul>
+<h2 id="070">[0.7.0]</h2>
+<p><strong>BREAKING:</strong> API Refactor</p>
+<h3 id="added_3">Added</h3>
+<ul>
+<li>Metrics for mmdetection models</li>
+</ul>
+<h3 id="changed_3">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> Renamed tasks <code>default,detect,classif</code> to <code>common,detection,classification</code></li>
+<li><strong>Breaking:</strong> Renamed <code>imageid</code> to <code>record_id</code></li>
+<li><strong>Breaking:</strong> Added parameter <code>is_new</code> to <code>Parser.parse_fields</code></li>
+<li>Removed all dependencies on <code>cv2</code> for visualisation</li>
+<li>Use new composite API for visualisation - covers user defined task names &amp; multiple tasks</li>
+<li>Added a ton of visualisation goodies to <code>icevision.visualize.draw_data.draw_sample</code> - user can now</li>
+<li>use custom fonts</li>
+<li>control mask thickness</li>
+<li>control mask blending</li>
+<li>prettify labels -- show confidence score &amp; capitalise label</li>
+<li>plot specific and/or exclude specific labels</li>
+<li>pass in a dictionary mapping labels to specific colors</li>
+<li>control label height &amp; width padding from bbox edge</li>
+<li>add border around label for legibility (color is a parameter)</li>
+</ul>
+<p><strong>Breaking:</strong>: Rename <code>labels-&gt;label_ids</code>, <code>labels_names-&gt;labels</code> in <code>LabelsRecordComponent</code>
+- Renamed torchvision resnet backbones:
+  - resnet_fpn.resnet18 -&gt; resnet18_fpn
+  - resnest_fpn.resnest18 -&gt; resnest18_fpn</p>
+<p><strong>Breaking:</strong> Added parameters <code>sample</code> and <code>keep_image</code> to <code>convert_raw_prediction</code>
+<strong>Breaking:</strong> Renamed <code>VocXmlParser</code> to <code>VOCBBoxParser</code> and <code>VocMaskParser</code> to <code>VOCMaskParser</code>
+<strong>Breaking:</strong> Renamed <code>predict_dl</code> to <code>predict_from_dl</code></p>
+<h2 id="060b1">[0.6.0b1]</h2>
+<h3 id="added_4">Added</h3>
+<ul>
+<li>mmdetection models</li>
+</ul>
+<h3 id="changed_4">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> All <code>Parser</code> subclasses need to call <code>super.__init__</code></li>
+<li><strong>Breaking:</strong> <code>LabelsMixin.labels</code> now needs to return <code>List[Hashable]</code> instead of <code>List[int]</code> (labels names instead of label ids)</li>
+<li><strong>Breaking:</strong> Model namespace changes e.g. <code>faster_rcnn</code> -&gt; <code>models.torchvision.faster_rcnn</code>, <code>efficientdet</code> -&gt; <code>models.ross.efficientdet</code></li>
+<li><strong>Breaking:</strong> Renamed <code>ClassMap.get_name/get_id</code> to <code>ClassMap.get_by_name/get_by_id</code></li>
+<li><strong>Breaking:</strong> Removes <code>idmap</code> argument from <code>Parser.parse</code>. Instead pass <code>idmap</code> to the constructor (<code>__init__</code>).</li>
+<li>ClassMap is not created inside of the parser, it's not required to instantiate it before</li>
+<li>class_map labels get automatically filled while parsing</li>
+<li>background for class_map is now always 0 (unless no background)</li>
+<li>adds <code>class_map</code> to <code>Record</code></li>
+</ul>
+<h3 id="deleted">Deleted</h3>
+<h2 id="052">[0.5.2]</h2>
+<h3 id="added_5">Added</h3>
+<ul>
+<li><code>aggregate_records_objects</code> function</li>
+</ul>
+<h3 id="changed_5">Changed</h3>
+<ul>
+<li>Added <code>label_field</code> to VIA parser to allow for alternate <code>region_attribute</code> names</li>
+</ul>
+<h2 id="050">[0.5.0]</h2>
+<h3 id="added_6">Added</h3>
+<ul>
+<li>Keypoints full support: data API, model and training</li>
+<li>VGG Image Annotator v2 JSON format parser for bboxes</li>
+<li><code>figsize</code> parameter to <code>show_record</code> and <code>show_sample</code></li>
+</ul>
+<h3 id="changed_6">Changed</h3>
+<ul>
+<li>improved visualisation for small bboxes</li>
+<li><code>COCOMetric</code> now returns all metrics from pycocotools</li>
+<li>makes torchvision models torchscriptable</li>
+</ul>
+<h2 id="040">[0.4.0]</h2>
+<h3 id="added_7">Added</h3>
+<ul>
+<li>retinanet: model, dataloaders, predict, ...</li>
+</ul>
+<h3 id="changed_7">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> models/rcnn renamed to models/torchvision_models</li>
+<li>tests/models/rcnn renamed to tests/models/torchvision_models</li>
+</ul>
+<h2 id="030">[0.3.0]</h2>
+<h3 id="added_8">Added</h3>
+<ul>
+<li>pytorch 1.7 support, all dependencies updated</li>
+<li>tutorial with hard negative samples</li>
+<li>ability to skip record while parsing</li>
+</ul>
+<h3 id="changed_8">Changed</h3>
+<ul>
+<li>show_preds visual improvement</li>
+</ul>
+<h2 id="022">[0.2.2]</h2>
+<h3 id="added_9">Added</h3>
+<ul>
+<li>Cache records after parsing with the new parameter <code>cache_filepath</code> added to <code>Parser.parse</code> (#504)</li>
+<li>Added <code>pretrained: bool = True</code> argument to both faster_rcnn and mask_rcnn <code>model()</code> methods. (#516)</li>
+<li>new class <code>EncodedRLEs</code></li>
+<li>all masks get converted to <code>EncodedRLEs</code> at parsing time</li>
+</ul>
+<h3 id="changed_9">Changed</h3>
+<ul>
+<li>Removed warning on autofixing masks</li>
+<li>RLE default counts is now COCO style</li>
+<li>renamed <code>Mask.to_erle</code> to <code>Mask.to_erles</code></li>
+</ul>
+<h2 id="021">[0.2.1]</h2>
+<h3 id="changed_10">Changed</h3>
+<ul>
+<li>updated matplotlib and ipykernel minimum version for colab compatibility</li>
+</ul>
+<h2 id="020">[0.2.0]</h2>
+<h3 id="important">IMPORTANT</h3>
+<ul>
+<li><strong>Switched from poetry to setuptools</strong></li>
+</ul>
+<h3 id="added_10">Added</h3>
+<ul>
+<li>Function <code>wandb_img_preds</code> to help logging bboxes to wandb</li>
+<li>wandb as a soft dependency</li>
+<li>Template code for <code>parsers.SizeMixin</code> if <code>parsers.FilepathMixin</code> is used</li>
+<li>Get image size without opening image with <code>get_image_size</code></li>
+<li>Ability to skip record while parsing with <code>AbortParseRecord</code></li>
+<li>Autofix for record: <code>autofix_records</code> function and <code>autofix:bool</code> parameter added to <code>Parser.parse</code></li>
+<li>Record class and mixins, <code>create_mixed_record</code> function to help creating Records</li>
+<li>InvalidDataError for BBox</li>
+<li>Catches InvalidDataError while parsing data</li>
+</ul>
+<h3 id="changed_11">Changed</h3>
+<ul>
+<li><strong>Breaking:</strong> Unified <code>parsers.SizeMixin</code> functions <code>image_width</code> and <code>image_height</code> into a single function <code>image_width_height</code></li>
+<li>Rename Parser <code>SizeMixin</code> fields from <code>width</code> <code>height</code> to <code>image_width</code> <code>image_height</code></li>
+</ul>
+<h3 id="deleted_1">Deleted</h3>
+<ul>
+<li>Removed <code>CombinedParser</code>, all parsing can be done with the standard <code>Parser</code></li>
+</ul>
+<h2 id="016">[0.1.6]</h2>
+<h3 id="added_11">Added</h3>
+<ul>
+<li>Efficientdet now support empty annotations</li>
+</ul>
+<h3 id="changed_12">Changed</h3>
+<ul>
+<li>Returns float instead of dict on <code>FastaiMetricAdapter</code></li>
+</ul>
+<h2 id="015">[0.1.5]</h2>
+<h3 id="changed_13">Changed</h3>
+<ul>
+<li>Updates fastai2 to the final release version</li>
+</ul>
+<h2 id="014">[0.1.4]</h2>
+<h3 id="added_12">Added</h3>
+<ul>
+<li>soft import <code>icedata</code> in <code>icevision.all</code></li>
+<li><code>show_pbar</code> parameter to <code>COCOMetric</code></li>
+</ul>
+<h3 id="changed_14">Changed</h3>
+<h3 id="deleted_2">Deleted</h3>
+<h2 id="013">[0.1.3]</h2>
+<h3 id="changed_15">Changed</h3>
+<ul>
+<li>Effdet as direct dependency</li>
+</ul>
+<h2 id="012">[0.1.2]</h2>
+<h3 id="added_13">Added</h3>
+<ul>
+<li><code>show_results</code> function for each model</li>
+</ul>
+<h3 id="changed_16">Changed</h3>
+<ul>
+<li>Default <code>data_splitter</code> for Parser changed to <code>RandomSplitter</code></li>
+<li>Renamed package from <code>mantisshrimp</code> to <code>icevision</code></li>
+</ul>
+<h3 id="deleted_3">Deleted</h3>
+<ul>
+<li>Removed <code>datasets</code> module to instead use the new <code>icedata</code> package</li>
+</ul>
+<h2 id="009">[0.0.9]</h2>
+<h3 id="added_14">Added</h3>
+<ul>
+<li><code>batch, samples = &lt;model_name&gt;.build_infer_batch(dataset)</code>  </li>
+<li><code>preds = &lt;model_name&gt;.predict(model, batch)</code> </li>
+<li><code>infer_dl = &lt;model_name&gt;.infer_dataloader(dataset)</code></li>
+<li><code>samples, preds = predict_dl(model, infer_dl)</code></li>
+<li><code>Dataset.from_images</code> Contructs a <code>Dataset</code> from a list of images (numpy arrays)</li>
+<li><code>tfms.A.aug_tfms</code> for easy access to common augmentation transforms with albumentations</li>
+<li><code>tfms.A.resize_and_pad</code>, useful as a validation transform</li>
+<li><code>**predict_kwargs</code> to <code>predict_dl</code> signature</li>
+<li><code>from mantisshrimp.all import *</code> to import internal modules and external imports</li>
+<li><code>show</code> parameter to <code>show_img</code></li>
+<li><code>download_gdrive</code> and <code>download_and_extract_gdrive</code></li>
+<li>New datasets <code>pennfundan</code> and <code>birds</code></li>
+</ul>
+<h3 id="changed_17">Changed</h3>
+<ul>
+<li>Renames <code>AlbuTransform</code> to <code>AlbumentationTransforms</code></li>
+<li>All <code>build_batch</code> method now returns <code>batch, samples</code>, the batch is always a tuple of inputs to the model</li>
+<li><code>batch_tfms</code> moved to <code>tfms.batch</code></li>
+<li><code>AlbumentationTransforms</code> moved to <code>tfms.A.Adapter</code></li>
+<li>All parsers function were moved to their own namespace <code>parsers</code> instead of being on the global namespace
+so, for example, instead of <code>Parser</code> now we have to do <code>parsers.Parser</code></li>
+<li>Removed <code>Parser</code> word from Mixins, e.g. <code>ImageidParserMixin</code> -&gt; <code>parsers.ImageidMixin</code></li>
+<li>Removed <code>Parser</code> word from parser default bundle, e.g. <code>FasterRCNNParser</code> -&gt; <code>parsers.FasterRCNN</code></li>
+<li>COCO and VOC parsers moved from <code>datasets</code> to <code>parsers</code></li>
+<li><code>DataSplitter</code>s moved from <code>parsers/splits.py</code> to <code>utils/data_splitter.py</code></li>
+<li>Renames <code>*_dataloader</code> to <code>*_dl</code>, e.g. <code>mask_rcnn.train_dataloader</code> to <code>mask_rcnn.train_dl</code></li>
+<li>Moves <code>RecordType</code> from <code>parsers</code> to <code>core</code></li>
+<li>Refactors <code>IDMap</code>, adds methods <code>get_name</code> and <code>get_id</code></li>
+<li>Moves <code>IDMap</code> from <code>utils</code> to <code>data</code></li>
+<li><code>DataSplitter.split</code> now receives <code>idmap</code> instead of <code>ids</code></li>
+</ul>
+<h2 id="000-pre-release">[0.0.0-pre-release]</h2>
+<h3 id="added_15">Added</h3>
+<ul>
+<li><code>CaptureStdout</code> for capturing writes to stdout (print), e.g. from COCOMetric</li>
+<li><code>mantisshrimp.models.&lt;model_name&gt;.convert_raw_predictions</code> to convert raw preds (tensors output from the model) to library standard dict</li>
+<li><code>COCOMetricType</code> for selecting what metric type to use (<code>bbox</code>, <code>mask</code>, <code>keypoints</code>)</li>
+<li><code>COCOMetric</code> fixed</li>
+<li><code>sort</code> parameter for <code>get_image_files</code></li>
+<li><code>ClassMap</code>: A class that handles the mapping between ids and names, with the optional insertion of the background class</li>
+</ul>
+<h3 id="changed_18">Changed</h3>
+<ul>
+<li>All dataloaders now return the batch and the records, e.g. <code>return (images, targets), records</code></li>
+<li><code>Metric.accumulate</code> signature changed to <code>(records, preds)</code>, reflects in <code>FastaiMetricAdapter</code> and <code>LightningModelAdapter</code></li>
+<li><code>datasets.&lt;name&gt;.CLASSES</code> substituted by a function <code>datasets.&lt;name&gt;.class_map</code> that returns a <code>ClassMap</code></li>
+<li><code>datasets.voc.VocXmlParser</code>, <code>show</code> methods: parameter <code>classes: Sequence[str]</code> substituted by <code>class_map: ClassMap</code></li>
+<li><code>datasets.fridge.parser</code>, <code>datasets.pets.parser</code>: additional required parameter <code>class_map</code></li>
+</ul>
+<h3 id="removed">Removed</h3>
+<ul>
+<li><code>MantisFasterRCNN</code>, <code>MantisMaskRCNN</code></li>
+<li><code>MantisEfficientDet</code></li>
+<li><code>CategoryMap</code>, <code>Category</code></li>
+<li><code>MantisModule</code></li>
+</ul>
+<h2 id="links">Links</h2>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.f8263e09.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4fc53ad4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>

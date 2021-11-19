@@ -1,0 +1,1619 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.11.0/ochuman_keypoint_detection/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.0">
+    
+    
+      
+        <title>Ochuman keypoint detection - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8b42a75e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ochuman-dataset" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ochuman keypoint detection
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Other Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressive_resizing/" class="md-nav__link">
+        Progressive resizing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mmdet_custom_config/" class="md-nav__link">
+        MMDetection Custom Config
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          Gradio
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          API Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_3">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_1">
+          Faster RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_2">
+          Mask RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_3">
+          EfficientDet
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision" class="md-nav__link">
+    Installing IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-ochuman-parser" class="md-nav__link">
+    Defining OCHuman parser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parse-data" class="md-nav__link">
+    Parse data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-augmentations" class="md-nav__link">
+    Datasets + augmentations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloaders" class="md-nav__link">
+    Dataloaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#train-a-fastai-learner" class="md-nav__link">
+    Train a fastai learner
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-model-results" class="md-nav__link">
+    Show model results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#save-model" class="md-nav__link">
+    Save model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-inference-on-validation-set" class="md-nav__link">
+    Running inference on validation set
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plot_top_losses" class="md-nav__link">
+    plot_top_losses
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/ochuman_keypoint_detection.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="ochuman-dataset"><a href="https://github.com/liruilong940607/OCHumanApi/tree/958aa2046ba4f5760fcc94cb458da8fe72cedf4f">OCHuman dataset</a></h1>
+<p>From the OCHuman repo:</p>
+<blockquote>
+<p>This dataset focus on heavily occluded human with comprehensive annotations including bounding-box, humans pose and instance mask. This dataset contains 13360 elaborately annotated human instances within 5081 images. With average 0.573 MaxIoU of each person, OCHuman is the most complex and challenging dataset related to human. Through this dataset, we want to emphasize occlusion as a challenging problem for researchers to study.</p>
+</blockquote>
+<h2 id="installing-icevision">Installing IceVision</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/gdrive&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="defining-ochuman-parser">Defining OCHuman parser</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">ochuman</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1m
+    MANUALLY download AND unzip the dataset from https://cg.cs.tsinghua.edu.cn/dataset/form.html?dataset=ochuman. 
+    You will need the path to the `ochuman.json` annotations file and the `images` directory.
+    [0m | [36micedata.datasets.ochuman.data[0m:[36mload_data[0m:[36m11[0m
+</code></pre></div>
+</div>
+<h2 id="parse-data">Parse data</h2>
+<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">ochuman</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="s2">&quot;../OCHuman/ochuman.json&quot;</span><span class="p">,</span> <span class="s2">&quot;../OCHuman/images/images/&quot;</span><span class="p">)</span>
+
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data_splitter</span><span class="o">=</span><span class="n">RandomSplitter</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]),</span>
+                                            <span class="n">cache_filepath</span><span class="o">=</span><span class="s2">&quot;../OCHuman/ochuman.pkl&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">train_records</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_records</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/5081 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m132[0m
+
+(4064, 1017)
+
+Record:
+    - Image ID: 4306
+    - Image size (width, height): (1000, 721)
+    - Filepath: ../OCHuman/images/images/003909.jpg
+    - BBoxes: [&lt;BBox (xmin:820, ymin:49, xmax:998, ymax:713)&gt;, &lt;BBox (xmin:829, ymin:4, xmax:988, ymax:608)&gt;]
+    - KeyPoints: [&lt;KeyPoints (11 visible keypoints)&gt;, &lt;KeyPoints (17 visible keypoints)&gt;]
+    - Labels: [1, 1]
+</code></pre></div>
+</div>
+<h2 id="datasets-augmentations">Datasets + augmentations</h2>
+<div class="highlight"><pre><span></span><code><span class="n">presize</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">512</span>
+
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">,</span> <span class="n">crop_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_13_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>(4064, 1017)
+</code></pre></div>
+</div>
+<h2 id="dataloaders">Dataloaders</h2>
+<div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="model">Model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_keypoints</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="train-a-fastai-learner">Train a <code>fastai</code> learner</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastai.callback.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">SaveModelCallback</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.0002290867705596611)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_22_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mf">2e-4</span><span class="p">),</span> <span class="n">pct_start</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>5.161397</td>
+      <td>4.942918</td>
+      <td>08:53</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4.726882</td>
+      <td>4.636247</td>
+      <td>08:33</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>4.584739</td>
+      <td>4.549319</td>
+      <td>08:34</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4.538661</td>
+      <td>4.479443</td>
+      <td>08:34</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.489905</td>
+      <td>4.405727</td>
+      <td>08:28</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with valid_loss value: 4.942918300628662.
+Better model found at epoch 1 with valid_loss value: 4.636247158050537.
+Better model found at epoch 2 with valid_loss value: 4.549318790435791.
+Better model found at epoch 3 with valid_loss value: 4.479443073272705.
+Better model found at epoch 4 with valid_loss value: 4.405727386474609.
+
+/home/ec2-user/anaconda3/envs/python3/lib/python3.6/site-packages/fastai/learner.py:54: UserWarning: Saved filed doesn&#39;t contain an optimizer state.
+  elif with_opt: warn(&quot;Saved filed doesn&#39;t contain an optimizer state.&quot;)
+
+SuggestedLRs(lr_min=1.9054606673307718e-05, lr_steep=7.585775847473997e-07)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_24_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
+<span class="n">base_lr</span> <span class="o">=</span> <span class="mf">3e-5</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="n">base_lr</span><span class="o">/</span><span class="mi">100</span><span class="p">,</span> <span class="n">base_lr</span><span class="p">),</span> <span class="n">pct_start</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">div</span><span class="o">=</span><span class="mf">5.0</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>4.281294</td>
+      <td>4.280225</td>
+      <td>09:46</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>4.260938</td>
+      <td>4.245230</td>
+      <td>09:47</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>4.205652</td>
+      <td>4.205603</td>
+      <td>09:54</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4.187217</td>
+      <td>4.184843</td>
+      <td>09:54</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.181470</td>
+      <td>4.144880</td>
+      <td>09:58</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>4.144985</td>
+      <td>4.128638</td>
+      <td>09:47</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>4.122699</td>
+      <td>4.091643</td>
+      <td>09:47</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>4.102231</td>
+      <td>4.076291</td>
+      <td>09:46</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>4.052161</td>
+      <td>4.054412</td>
+      <td>09:45</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>4.051751</td>
+      <td>4.025484</td>
+      <td>09:43</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>4.030755</td>
+      <td>4.010231</td>
+      <td>09:46</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>4.013452</td>
+      <td>3.995036</td>
+      <td>09:48</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>3.990907</td>
+      <td>3.981723</td>
+      <td>09:45</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>3.971456</td>
+      <td>3.970602</td>
+      <td>09:43</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>3.957092</td>
+      <td>3.958838</td>
+      <td>09:48</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>3.945086</td>
+      <td>3.938980</td>
+      <td>09:43</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>3.963209</td>
+      <td>3.947997</td>
+      <td>09:44</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>3.953434</td>
+      <td>3.936984</td>
+      <td>09:45</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>3.929243</td>
+      <td>3.939439</td>
+      <td>09:44</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>3.915179</td>
+      <td>3.932046</td>
+      <td>09:44</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_loss</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>Better model found at epoch 0 with valid_loss value: 4.280224800109863.
+Better model found at epoch 1 with valid_loss value: 4.245229721069336.
+Better model found at epoch 2 with valid_loss value: 4.205602645874023.
+Better model found at epoch 3 with valid_loss value: 4.184842586517334.
+Better model found at epoch 4 with valid_loss value: 4.1448798179626465.
+Better model found at epoch 5 with valid_loss value: 4.128637790679932.
+Better model found at epoch 6 with valid_loss value: 4.091643333435059.
+Better model found at epoch 7 with valid_loss value: 4.076290607452393.
+Better model found at epoch 8 with valid_loss value: 4.054412364959717.
+Better model found at epoch 9 with valid_loss value: 4.02548360824585.
+Better model found at epoch 10 with valid_loss value: 4.010230541229248.
+Better model found at epoch 11 with valid_loss value: 3.9950363636016846.
+Better model found at epoch 12 with valid_loss value: 3.981722831726074.
+Better model found at epoch 13 with valid_loss value: 3.9706015586853027.
+Better model found at epoch 14 with valid_loss value: 3.9588377475738525.
+Better model found at epoch 15 with valid_loss value: 3.9389796257019043.
+Better model found at epoch 17 with valid_loss value: 3.936984062194824.
+Better model found at epoch 19 with valid_loss value: 3.9320456981658936.
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_26_0.png" /></p>
+<h2 id="show-model-results">Show model results</h2>
+<div class="highlight"><pre><span></span><code><span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_28_0.png" /></p>
+<h2 id="save-model">Save model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;/content/gdrive/My Drive/icevision/OCHuman/model.pth&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_keypoints</span><span class="o">=</span><span class="mi">19</span><span class="p">)</span>
+<span class="n">state_dict</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;/content/gdrive/My Drive/icevision/OCHuman/model.pth&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;All keys matched successfully&gt;
+</code></pre></div>
+</div>
+<h2 id="running-inference-on-validation-set">Running inference on validation set</h2>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">,</span> <span class="n">preds</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">)</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="n">preds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="n">samples</span><span class="p">[</span><span class="mi">68</span><span class="p">:</span><span class="mi">70</span><span class="p">],</span> <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[</span><span class="mi">68</span><span class="p">:</span><span class="mi">70</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">display_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/128 [00:00&lt;?, ?it/s]
+
+{&#39;labels&#39;: array([1, 1]),
+ &#39;scores&#39;: array([0.9954145 , 0.87553155], dtype=float32),
+ &#39;bboxes&#39;: [&lt;BBox (xmin:135.16175842285156, ymin:90.47511291503906, xmax:388.1414794921875, ymax:455.3265380859375)&gt;,
+  &lt;BBox (xmin:239.25103759765625, ymin:62.99104309082031, xmax:374.84564208984375, ymax:493.66461181640625)&gt;],
+ &#39;above_threshold&#39;: tensor([ True,  True, False], device=&#39;cuda:0&#39;),
+ &#39;keypoints&#39;: [&lt;KeyPoints (19 visible keypoints)&gt;,
+  &lt;KeyPoints (19 visible keypoints)&gt;],
+ &#39;keypoints_scores&#39;: array([[4.7273316, 4.433237 , 2.8647   , 4.096078 , 3.5330942, 3.1904428,
+         2.2852895, 1.2644477, 1.880893 , 2.0137696, 0.9186574, 1.7884026,
+         9.4684725, 7.821962 , 8.573485 , 9.469735 , 7.5895596, 8.652597 ,
+         8.642918 ],
+        [5.2349987, 4.315785 , 2.9298844, 4.9465637, 3.5089214, 3.051835 ,
+         3.27213  , 2.6559322, 2.7692387, 4.543542 , 2.9491417, 2.4100673,
+         7.3162084, 5.801812 , 7.8256035, 8.6648445, 6.7377696, 8.427677 ,
+         7.8614326]], dtype=float32)}
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_35_0.png" /></p>
+<h2 id="plot_top_losses"><code>plot_top_losses</code></h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> 
+                                                                                  <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_keypoint&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+
+  0%|          | 0/1017 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/ochuman_keypoint_detection/ochuman_keypoint_detection_37_3.png" /></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.f8263e09.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4fc53ad4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>

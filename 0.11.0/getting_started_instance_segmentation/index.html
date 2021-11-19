@@ -1,0 +1,1912 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.11.0/getting_started_instance_segmentation/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.0">
+    
+    
+      
+        <title>Instance Segmentation - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8b42a75e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#getting-started-with-instance-segmentation-using-icevision" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Instance Segmentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Instance Segmentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Instance Segmentation
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-model-and-backbone" class="md-nav__link">
+    Choose a model and backbone
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-pennfudan" class="md-nav__link">
+    Datasets : Pennfudan
+  </a>
+  
+    <nav class="md-nav" aria-label="Datasets : Pennfudan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
+    Displaying the same image with different transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model_1" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Other Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressive_resizing/" class="md-nav__link">
+        Progressive resizing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mmdet_custom_config/" class="md-nav__link">
+        MMDetection Custom Config
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          Deployment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Deployment" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Deployment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2">
+          Gradio
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Gradio" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Gradio
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_coco/" class="md-nav__link">
+        COCO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_pets/" class="md-nav__link">
+        PETS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../IceApp_masks/" class="md-nav__link">
+        Masks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          API Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_3" type="checkbox" id="__nav_9_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_3">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4" type="checkbox" id="__nav_9_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_9_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_1" type="checkbox" id="__nav_9_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_1">
+          Faster RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_2" type="checkbox" id="__nav_9_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_2">
+          Mask RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9_4_3" type="checkbox" id="__nav_9_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9_4_3">
+          EfficientDet
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_9_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing-icevision-and-icedata" class="md-nav__link">
+    Installing IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-a-model-and-backbone" class="md-nav__link">
+    Choose a model and backbone
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datasets-pennfudan" class="md-nav__link">
+    Datasets : Pennfudan
+  </a>
+  
+    <nav class="md-nav" aria-label="Datasets : Pennfudan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#displaying-the-same-image-with-different-transforms" class="md-nav__link">
+    Displaying the same image with different transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataloader" class="md-nav__link">
+    DataLoader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#model_1" class="md-nav__link">
+    Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_instance_segmentation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="getting-started-with-instance-segmentation-using-icevision">Getting Started with Instance Segmentation using IceVision</h1>
+<h2 id="introduction">Introduction</h2>
+<p>This tutorial walk you through the different steps of training the fridge dataset. the IceVision Framework is an <strong>agnostic framework</strong>. As an illustration, we will train our model using both the <a href="https://github.com/fastai/fastai">fastai</a> library, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a> libraries.</p>
+<p>For more information about how the fridge dataset as well as its corresponding parser check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/pennfudan">pennfudan folder</a> in icedata.</p>
+<h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># IceVision - IceData - MMDetection - YOLO v5 Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="imports">Imports</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<h2 id="model">Model</h2>
+<p>To create a model, we need to:</p>
+<ul>
+<li>Choose one of the <strong>models</strong> supported by IceVision</li>
+<li>Choose one of the <strong>backbones</strong> corresponding to a chosen model</li>
+<li>Determine the <strong>number of the object classes</strong>: This will be done after parsing a dataset. Check out the Parsing Section </li>
+</ul>
+<h2 id="choose-a-model-and-backbone">Choose a model and backbone</h2>
+<p><strong>TorchVision</strong></p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet18_fpn</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="datasets-pennfudan">Datasets : Pennfudan</h2>
+<p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
+- can, 
+- carton, 
+- milk bottle, 
+- water bottle.</p>
+<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/170 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/170 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+<h3 id="displaying-the-same-image-with-different-transforms">Displaying the same image with different transforms</h3>
+<p>Note:</p>
+<blockquote>
+<p>Transforms are applied <strong>lazily</strong>, meaning they are only applied when we grab (get) an item.
+This means that, if you have augmentation (random) transforms, each time you get the <strong>same</strong> item from 
+the dataset you will get a slightly different version of it.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_16_0.png" /></p>
+<h2 id="dataloader">DataLoader</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">valid_batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">)</span>
+<span class="n">infer_batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">infer_dl</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">valid_images</span><span class="p">,</span> <span class="n">valid_labels</span><span class="p">),</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">valid_batch</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
+<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_22_0.png" /></p>
+<h2 id="model_1">Model</h2>
+<p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
+</code></pre></div>
+<h2 id="metrics">Metrics</h2>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">mask</span><span class="p">)]</span>
+</code></pre></div>
+<h2 id="training">Training</h2>
+<p>IceVision is an agnostic framework meaning it can be plugged to other DL framework such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
+<p>You could also plug to oth DL framework using your own custom code.</p>
+<h3 id="training-using-fastai">Training using fastai</h3>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0006309573538601399, lr_steep=9.999999747378752e-06)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_30_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.060735</td>
+      <td>2.167423</td>
+      <td>0.000000</td>
+      <td>00:17</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;4&#39; class=&#39;&#39; max=&#39;20&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  20.00% [4/20 01:22&lt;05:30]
+&lt;/div&gt;
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.869391</td>
+      <td>1.816108</td>
+      <td>0.000000</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.750445</td>
+      <td>1.636558</td>
+      <td>0.000000</td>
+      <td>00:23</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.637094</td>
+      <td>1.441535</td>
+      <td>0.000000</td>
+      <td>00:19</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.507450</td>
+      <td>1.243060</td>
+      <td>0.000000</td>
+      <td>00:19</td>
+    </tr>
+  </tbody>
+</table>
+<p>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>&lt;div&gt;
+    &lt;style&gt;
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    &lt;/style&gt;
+  &lt;progress value=&#39;1&#39; class=&#39;&#39; max=&#39;17&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
+  5.88% [1/17 00:01&lt;00:22]
+&lt;/div&gt;
+
+---------------------------------------------------------------------------
+
+KeyboardInterrupt                         Traceback (most recent call last)
+
+&lt;ipython-input-19-6b1cbbe77f9d&gt; in &lt;module&gt;
+----&gt; 1 learn.fine_tune(20, 1e-4, freeze_epochs=1)
+</code></pre></div>
+</div>
+
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>~/git/fastai/fastai/callback/schedule.py in fine_tune(self, epochs, base_lr, freeze_epochs, lr_mult, pct_start, div, **kwargs)
+    158     base_lr /= 2
+    159     self.unfreeze()
+--&gt; 160     self.fit_one_cycle(epochs, slice(base_lr/lr_mult, base_lr), pct_start=pct_start, div=div, **kwargs)
+    161 
+    162 # Cell
+
+~/git/fastai/fastai/callback/schedule.py in fit_one_cycle(self, n_epoch, lr_max, div, div_final, pct_start, wd, moms, cbs, reset_opt)
+    110     scheds = {&#39;lr&#39;: combined_cos(pct_start, lr_max/div, lr_max, lr_max/div_final),
+    111               &#39;mom&#39;: combined_cos(pct_start, *(self.moms if moms is None else moms))}
+--&gt; 112     self.fit(n_epoch, cbs=ParamScheduler(scheds)+L(cbs), reset_opt=reset_opt, wd=wd)
+    113 
+    114 # Cell
+
+~/git/fastai/fastai/learner.py in fit(self, n_epoch, lr, wd, cbs, reset_opt)
+    216             self.opt.set_hypers(lr=self.lr if lr is None else lr)
+    217             self.n_epoch = n_epoch
+--&gt; 218             self._with_events(self._do_fit, &#39;fit&#39;, CancelFitException, self._end_cleanup)
+    219 
+    220     def _end_cleanup(self): self.dl,self.xb,self.yb,self.pred,self.loss = None,(None,),(None,),None,None
+
+~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
+    158 
+    159     def _with_events(self, f, event_type, ex, final=noop):
+--&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
+    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
+    162         self(f&#39;after_{event_type}&#39;);  final()
+
+~/git/fastai/fastai/learner.py in _do_fit(self)
+    207         for epoch in range(self.n_epoch):
+    208             self.epoch=epoch
+--&gt; 209             self._with_events(self._do_epoch, &#39;epoch&#39;, CancelEpochException)
+    210 
+    211     def fit(self, n_epoch, lr=None, wd=None, cbs=None, reset_opt=False):
+
+~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
+    158 
+    159     def _with_events(self, f, event_type, ex, final=noop):
+--&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
+    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
+    162         self(f&#39;after_{event_type}&#39;);  final()
+
+~/git/fastai/fastai/learner.py in _do_epoch(self)
+    201 
+    202     def _do_epoch(self):
+--&gt; 203         self._do_epoch_train()
+    204         self._do_epoch_validate()
+    205 
+
+~/git/fastai/fastai/learner.py in _do_epoch_train(self)
+    193     def _do_epoch_train(self):
+    194         self.dl = self.dls.train
+--&gt; 195         self._with_events(self.all_batches, &#39;train&#39;, CancelTrainException)
+    196 
+    197     def _do_epoch_validate(self, ds_idx=1, dl=None):
+
+~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
+    158 
+    159     def _with_events(self, f, event_type, ex, final=noop):
+--&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
+    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
+    162         self(f&#39;after_{event_type}&#39;);  final()
+
+~/git/fastai/fastai/learner.py in all_batches(self)
+    164     def all_batches(self):
+    165         self.n_iter = len(self.dl)
+--&gt; 166         for o in enumerate(self.dl): self.one_batch(*o)
+    167 
+    168     def _do_one_batch(self):
+
+~/git/fastai/fastai/data/load.py in __iter__(self)
+    107         self.before_iter()
+    108         self.__idxs=self.get_idxs() # called in context of main process (not workers/subprocesses)
+--&gt; 109         for b in _loaders[self.fake_l.num_workers==0](self.fake_l):
+    110             if self.device is not None: b = to_device(b, self.device)
+    111             yield self.after_batch(b)
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in __next__(self)
+    515             if self._sampler_iter is None:
+    516                 self._reset()
+--&gt; 517             data = self._next_data()
+    518             self._num_yielded += 1
+    519             if self._dataset_kind == _DatasetKind.Iterable and \
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _next_data(self)
+   1180 
+   1181             assert not self._shutdown and self._tasks_outstanding &gt; 0
+-&gt; 1182             idx, data = self._get_data()
+   1183             self._tasks_outstanding -= 1
+   1184             if self._dataset_kind == _DatasetKind.Iterable:
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _get_data(self)
+   1146         else:
+   1147             while True:
+-&gt; 1148                 success, data = self._try_get_data()
+   1149                 if success:
+   1150                     return data
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _try_get_data(self, timeout)
+    984         #   (bool: whether successfully get data, any: data if successful else None)
+    985         try:
+--&gt; 986             data = self._data_queue.get(timeout=timeout)
+    987             return (True, data)
+    988         except Exception as e:
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/queues.py in get(self, block, timeout)
+    111                 self._rlock.release()
+    112         # unserialize the data after having released the lock
+--&gt; 113         return _ForkingPickler.loads(res)
+    114 
+    115     def qsize(self):
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/multiprocessing/reductions.py in rebuild_storage_fd(cls, df, size)
+    280 
+    281 def rebuild_storage_fd(cls, df, size):
+--&gt; 282     fd = df.detach()
+    283     try:
+    284         storage = storage_from_cache(cls, fd_id(fd))
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/resource_sharer.py in detach(self)
+     55         def detach(self):
+     56             &#39;&#39;&#39;Get the fd.  This should only be called once.&#39;&#39;&#39;
+---&gt; 57             with _resource_sharer.get_connection(self._id) as conn:
+     58                 return reduction.recv_handle(conn)
+     59 
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/resource_sharer.py in get_connection(ident)
+     85         from .connection import Client
+     86         address, key = ident
+---&gt; 87         c = Client(address, authkey=process.current_process().authkey)
+     88         c.send((key, os.getpid()))
+     89         return c
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in Client(address, family, authkey)
+    496 
+    497     if authkey is not None:
+--&gt; 498         answer_challenge(c, authkey)
+    499         deliver_challenge(c, authkey)
+    500 
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in answer_challenge(connection, authkey)
+    744     message = message[len(CHALLENGE):]
+    745     digest = hmac.new(authkey, message, &#39;md5&#39;).digest()
+--&gt; 746     connection.send_bytes(digest)
+    747     response = connection.recv_bytes(256)        # reject large message
+    748     if response != WELCOME:
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in send_bytes(self, buf, offset, size)
+    198         elif offset + size &gt; n:
+    199             raise ValueError(&quot;buffer length &lt; offset + size&quot;)
+--&gt; 200         self._send_bytes(m[offset:offset + size])
+    201 
+    202     def send(self, obj):
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in _send_bytes(self, buf)
+    402             # Also note we want to avoid sending a 0-length buffer separately,
+    403             # to avoid &quot;broken pipe&quot; errors if the other end closed the pipe.
+--&gt; 404             self._send(header + buf)
+    405 
+    406     def _recv_bytes(self, maxsize=None):
+
+~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in _send(self, buf, write)
+    366         remaining = len(buf)
+    367         while True:
+--&gt; 368             n = write(self._handle, buf)
+    369             remaining -= n
+    370             if remaining == 0:
+
+KeyboardInterrupt: 
+</code></pre></div>
+</div>
+### Training using Lightning
+
+
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+</code></pre></div>
+
+## Show Results
+
+
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+![png](images/getting_started_instance_segmentation/getting_started_instance_segmentation_36_0.png)
+
+
+
+## Inference
+
+### Predicting a batch of images
+
+Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. 
+
+
+> NOTE: For a more detailed look at inference check out the [inference tutorial](https://airctic.com/dev/inference/)
+
+
+<div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/9 [00:00&lt;?, ?it/s]
+
+---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-44-0404657b7fb5&gt; in &lt;module&gt;
+----&gt; 1 show_preds(preds=preds[:4], ncols=3)
+</code></pre></div>
+</div>
+
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>~/git/icevision/icevision/visualize/show_data.py in show_preds(preds, denormalize_fn, display_label, display_bbox, display_mask, figsize, show, annotations, ncols, **draw_sample_kwargs)
+    210         figsize=figsize or (6, 6 * len(preds) / 2 / 0.75),
+    211         show=show,
+--&gt; 212         axs_per_iter=2,
+    213     )
+
+~/git/icevision/icevision/utils/imageio.py in plot_grid(fs, ncols, figsize, show, axs_per_iter, **kwargs)
+     94 
+     95     for f, ax in zip(fs, axs):
+---&gt; 96         f(ax=ax)
+     97 
+     98     plt.tight_layout()
+
+~/git/icevision/icevision/imports.py in __call__(self, *args, **kwargs)
+     84 
+     85     def __call__(self, *args, **kwargs):
+---&gt; 86         return self._partial(*args, **kwargs)
+     87 
+     88     def __str__(self):
+
+~/git/icevision/icevision/visualize/show_data.py in show_pred(pred, denormalize_fn, display_label, display_bbox, display_mask, show, ax, figsize, annotation, **draw_sample_kwargs)
+     83         display_bbox=display_bbox,
+     84         display_mask=display_mask,
+---&gt; 85         denormalize_fn=denormalize_fn,
+     86     )
+     87 
+
+~/git/icevision/icevision/visualize/draw_data.py in draw_sample(sample, class_map, denormalize_fn, display_label, display_bbox, display_score, display_mask, display_keypoints, font_path, font_size, label_color, label_border_color, label_thin_border, label_pad_width_factor, label_pad_height_factor, mask_blend, mask_border_thickness, color_map, prettify, prettify_func, return_as_pil_img, exclude_labels, include_only, multiple_classification_spacing_factor, dynamic_font_size_div_factor, include_classification_task_names, include_instances_task_names)
+    121             masks,
+    122             getattr(composite, &quot;keypoints&quot;, []),
+--&gt; 123             getattr(composite, &quot;scores&quot;, []),
+    124         ):
+    125             # random color by default
+
+TypeError: zip_longest argument #3 must support iteration
+</code></pre></div>
+</div>
+
+![png](images/getting_started_instance_segmentation/getting_started_instance_segmentation_41_1.png)
+
+
+
+## Happy Learning!
+
+If you need any assistance, feel free to join our [forum](https://discord.gg/JDBeZYK).
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../getting_started_object_detection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Object Detection" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Object Detection
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../getting_started_keypoint_detection/" class="md-footer__link md-footer__link--next" aria-label="Next: Keypoint Detection" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Keypoint Detection
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.f8263e09.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4fc53ad4.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
