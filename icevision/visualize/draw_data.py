@@ -79,7 +79,6 @@ def draw_sample(
     """
     img = np.asarray(sample.img).copy()  # HACK
     num_classification_plotted = 0
-
     # Dynamic font size based on image height
     if font_size is None:
         font_size = sample.img_size.height / dynamic_font_size_div_factor
@@ -91,7 +90,10 @@ def draw_sample(
     for task, composite in sample.task_composites.items():
         if task == "segmentation":
             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
-            mask = composite.mask_array
+            if composite.mask_array is None:
+                mask = composite.masks[0].to_mask(None, None).data
+            else:
+                mask = composite.mask_array
             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
 
         # Should break if no ClassMap found in composite.
@@ -112,7 +114,10 @@ def draw_sample(
 
         # HACK
         if hasattr(composite, "masks"):
-            masks = composite.mask_array
+            if composite.mask_array is None:
+                masks = composite.masks[0].to_mask(None, None).data
+            else:
+                masks = composite.mask_array
         else:
             masks = []
 
@@ -143,7 +148,6 @@ def draw_sample(
             if color_map is not None:
                 color = as_rgb_tuple(color_map[label])
                 color = np.array(color).astype(np.float)
-
             if display_mask and mask is not None:
                 img = draw_mask(
                     img=img,
@@ -238,7 +242,7 @@ def draw_label(
         caption = str(label)
     if prettify:
         # We could introduce a callback here for more complex label renaming
-        caption = prefix + caption
+        caption = str(prefix) + str(caption)
         caption = prettify_func(caption)
 
     # Append label confidence to caption if applicable
@@ -536,7 +540,7 @@ def draw_mask(
     # Add alpha with 0 transparency. We draw the mask with border color first
     color = np.append(color, 255)
     mask_arr = np.zeros((h, w, 4), dtype=np.uint8)
-    mask_arr[mask_idxs] = color
+    mask_arr[mask_idxs[1:]] = color
 
     # Now create a second mask and draw the desired color on top of the
     # border mask. If `border_thickness` is 0, this replaces the border mask
@@ -552,7 +556,6 @@ def draw_mask(
     # Key concept is that alpha for non-mask pixels are 0 (transparent)
     img.putalpha(255)
     img = PIL.Image.alpha_composite(img, mask_pil)
-
     return np.array(img)
 
 

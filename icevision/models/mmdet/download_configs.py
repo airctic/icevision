@@ -3,8 +3,8 @@ __all__ = ["download_mmdet_configs"]
 from icevision.imports import *
 from icevision.utils import *
 
-VERSION = "v2.10.0"
-BASE_URL = "https://codeload.github.com/airctic/mmdetection_configs/zip/refs/tags"
+VERSION = "v2.16.0"
+BASE_URL = "https://github.com/airctic/mmdetection_configs/archive/refs/tags"
 
 
 def download_mmdet_configs() -> Path:
@@ -29,6 +29,6 @@ def download_mmdet_configs() -> Path:
         download_path = save_dir / f"{VERSION}.zip"
         if not download_path.exists():
             logger.info("Downloading mmdet configs")
-            download_and_extract(f"{BASE_URL}/{VERSION}", download_path)
+            download_and_extract(f"{BASE_URL}/{VERSION}.zip", download_path)
 
     return mmdet_config_path

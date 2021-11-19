@@ -6,7 +6,7 @@ from icevision.utils import *
 import yaml
 import yolov5
 from yolov5.models.yolo import Model
-from yolov5.utils.google_utils import attempt_download
+from yolov5.utils.downloads import attempt_download
 from yolov5.utils.torch_utils import intersect_dicts
 from yolov5.utils.general import check_img_size
 from icevision.models.ultralytics.yolov5.utils import *
@@ -45,7 +45,7 @@ def model(
     if pretrained:
         weights_path = yolo_dir / f"{model_name}.pt"
 
-        with open(Path(yolov5.__file__).parent / "data/hyp.finetune.yaml") as f:
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.finetune.yaml") as f:
             hyp = yaml.load(f, Loader=yaml.SafeLoader)
 
         attempt_download(weights_path)  # download if not found locally
@@ -64,7 +64,7 @@ def model(
         )  # intersect
         model.load_state_dict(state_dict, strict=False)  # load
     else:
-        with open(Path(yolov5.__file__).parent / "data/hyp.scratch.yaml") as f:
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.scratch.yaml") as f:
             hyp = yaml.load(f, Loader=yaml.SafeLoader)
 
         model = Model(
@@ -86,9 +86,9 @@ def model(
 
     def param_groups_fn(model: nn.Module) -> List[List[nn.Parameter]]:
         spp_index = [
-            i + 2
+            i + 1
             for i, layer in enumerate(model.model.children())
-            if layer._get_name() == "SPP"
+            if layer._get_name() == "SPPF"
         ][0]
         backbone = list(model.model.children())[:spp_index]
         neck = list(model.model.children())[spp_index:-1]

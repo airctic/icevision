@@ -75,6 +75,7 @@ def show_pred(
     ax: plt.Axes = None,
     figsize=None,
     annotation=None,
+    font_size=13,
     **draw_sample_kwargs,
 ) -> None:
     actual = draw_sample(
@@ -83,6 +84,8 @@ def show_pred(
         display_bbox=display_bbox,
         display_mask=display_mask,
         denormalize_fn=denormalize_fn,
+        font_size=font_size,
+        **draw_sample_kwargs,
     )
 
     prediction = draw_pred(
@@ -91,6 +94,7 @@ def show_pred(
         display_label=display_label,
         display_bbox=display_bbox,
         display_mask=display_mask,
+        font_size=font_size,
         **draw_sample_kwargs,
     )
 

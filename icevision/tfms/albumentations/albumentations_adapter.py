@@ -297,7 +297,7 @@ class Adapter(Transform, Composite):
     #     return record
 
     def _filter_attribute(self, v: list):
-        if self._keep_mask is None:
+        if self._keep_mask is None or len(self._keep_mask) == 0:
             return v
         assert len(v) == len(self._keep_mask)
         return [o for o, keep in zip(v, self._keep_mask) if keep]

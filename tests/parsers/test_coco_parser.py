@@ -4,12 +4,12 @@ from icevision.all import *
 
 @pytest.fixture
 def coco_bbox_parser(coco_dir):
-    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=False)
+    return parsers.COCOBBoxParser(coco_dir / "annotations.json", coco_dir / "images")
 
 
 @pytest.fixture
 def coco_mask_parser(coco_dir):
-    return parsers.coco(coco_dir / "annotations.json", coco_dir / "images", mask=True)
+    return parsers.COCOMaskParser(coco_dir / "annotations.json", coco_dir / "images")
 
 
 def test_keypoints_parser(coco_dir, coco_keypoints_parser):
@@ -193,3 +193,9 @@ def test_mask_parser(coco_mask_parser):
             243.78,
         ]
     ]
+
+
+def test_coco_base_parser_init_from_dict(coco_dir):
+    annotations_dict = json.load(open(coco_dir / "annotations.json"))
+    parser_init_by_dict = parsers.COCOBBoxParser(annotations_dict, coco_dir / "images")
+    assert parser_init_by_dict.annotations_dict == annotations_dict
