@@ -134,8 +134,17 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
 
     def collect(self, record):
         masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
-        masks = MaskArray(np.array(masks))
-        self._record_component.set_mask_array(masks)
+        if len(masks) > 0:
+            masks = MaskArray(np.array(masks))
+            self._record_component.set_mask_array(masks)
+            # set masks from the modified masks array
+            rles = []
+            for m in masks:
+                rles.append(RLE.from_coco(m.to_coco_rle(*masks.shape[1:])[0]['counts']))
+            self._record_component.set_masks(rles)
+        else:
+            self._record_component.masks.clear()
+            self._record_component.mask_array = None
         # HACK: Not sure if necessary
         self._record_component = None
 
