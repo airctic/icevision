@@ -204,3 +204,32 @@ def test_mask_transform_with_unload(records, check_attributes_on_component):
     assert len(record.detection.iscrowds) == 1
     assert len(record.detection.areas) == 1
     check_attributes_on_component(record)
+
+
+def test_empty_mask_transform_with_unload(records, check_attributes_on_component):
+    # crop the record to create empty masks
+    tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
+    tfmed = tfm_ds[0]
+    # assert record is empty
+    assert len(tfmed.detection.label_ids) == 0
+    assert len(tfmed.detection.bboxes) == 0
+    assert not tfmed.detection.mask_array.data.any()
+    assert len(tfmed.detection.iscrowds) == 0
+    assert len(tfmed.detection.areas) == 0
+    check_attributes_on_component(tfmed)
+
+    original_mask_array = tfmed.detection.mask_array
+
+    tfmed.unload()
+
+    assert not tfmed.detection.mask_array
+
+    tfmed.detection.mask_array = MaskArray.from_masks(
+        tfmed.detection.masks, tfmed.height, tfmed.width
+    )
+
+    assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)
+    assert not tfmed.detection.mask_array.data.any()
+
+    check_attributes_on_component(tfmed)
