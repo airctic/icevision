@@ -140,7 +140,7 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
             # set masks from the modified masks array
             rles = []
             for m in masks:
-                rles.append(RLE.from_coco(m.to_coco_rle(*masks.shape[1:])[0]['counts']))
+                rles.append(RLE.from_coco(m.to_coco_rle(*masks.shape[1:])[0]["counts"]))
             self._record_component.set_masks(rles)
         else:
             self._record_component.masks.clear()
