@@ -27,3 +27,6 @@ if SoftDependencies.yolov5:
 
 if SoftDependencies.fastai:
     from icevision.models import fastai
+
+if SoftDependencies.sahi:
+    from icevision.models import inference_sahi
