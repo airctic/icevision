@@ -84,6 +84,9 @@ class IceSahiModel(DetectionModel):
         return_img=True,
         **kwargs
     ):
+        if isinstance(image, Path):
+            image = str(image)
+
         pred = sahi_get_sliced_prediction(image=image, detection_model=self, **kwargs)
         if keep_sahi_format:
             return pred
