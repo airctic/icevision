@@ -91,7 +91,13 @@ def draw_sample(
         if task == "segmentation":
             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
             if composite.mask_array is None:
-                mask = composite.masks[0].to_mask(None, None).data
+                if len(composite.masks) > 1:
+                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
+                else:
+                    masks = [
+                        mask.to_mask(img.shape[1], img.shape[0]).data
+                        for mask in composite.masks
+                    ]
             else:
                 mask = composite.mask_array
             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
@@ -115,7 +121,13 @@ def draw_sample(
         # HACK
         if hasattr(composite, "masks"):
             if composite.mask_array is None:
-                masks = composite.masks[0].to_mask(None, None).data
+                if len(composite.masks) > 1:
+                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
+                else:
+                    masks = [
+                        mask.to_mask(img.shape[1], img.shape[0]).data
+                        for mask in composite.masks
+                    ]
             else:
                 masks = composite.mask_array
         else:
@@ -406,10 +418,7 @@ def draw_pred(
 
 
 def draw_bbox(
-    img: np.ndarray,
-    bbox: BBox,
-    color: Tuple[int, int, int],
-    gap: bool = True,
+    img: np.ndarray, bbox: BBox, color: Tuple[int, int, int], gap: bool = True,
 ):
     """Draws a box on an image with a given color.
     # Arguments
@@ -592,9 +601,7 @@ def draw_segmentation_mask(
 
 
 def draw_keypoints(
-    img: np.ndarray,
-    kps: KeyPoints,
-    color: Tuple[int, int, int],
+    img: np.ndarray, kps: KeyPoints, color: Tuple[int, int, int],
 ):
     x, y, v = kps.x, kps.y, kps.visible
 
