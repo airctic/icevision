@@ -2,6 +2,8 @@ import pytest
 from icevision.all import *
 from icevision.models.ultralytics.yolov5.backbones import *
 import albumentations as A
+from icevision.models.inference_sahi import IceSahiModel
+from sahi.prediction import PredictionResult
 
 
 @pytest.mark.parametrize(
@@ -18,6 +20,51 @@ def test_e2e_detect(samples_source, fridge_class_map, backbone):
         img_path, tfms_, model, fridge_class_map
     )
     assert len(pred_dict["detection"]["bboxes"]) == 0
+
+
+@pytest.mark.parametrize(
+    "backbone",
+    [small, medium],
+)
+def test_sahi(samples_source, fridge_class_map, backbone):
+    img_path = samples_source / "sahi/fridge_small_items.jpg"
+    tfms_ = tfms.A.Adapter([A.Resize(384, 384), A.Normalize()])
+    model = models.ultralytics.yolov5.model(
+        num_classes=5, img_size=384, backbone=backbone(pretrained=True)
+    )
+
+    sahimodel = IceSahiModel(
+        model_type=models.ultralytics.yolov5,
+        model=model,
+        class_map=fridge_class_map,
+        tfms=tfms_,
+        confidence_threshold=0.4,
+    )
+
+    pred = sahimodel.get_sliced_prediction(
+        img_path,
+        keep_sahi_format=True,
+        slice_height=384,
+        slice_width=384,
+    )
+    assert isinstance(pred, PredictionResult)
+    assert isinstance(pred.object_prediction_list, list)
+
+    pred = sahimodel.get_sliced_prediction(
+        img_path,
+        keep_sahi_format=False,
+        return_img=True,
+        slice_height=384,
+        slice_width=384,
+    )
+    assert isinstance(pred, dict)
+    assert sorted(list(pred.keys())) == ["detection", "height", "img", "width"]
+    assert sorted(list(pred["detection"].keys())) == [
+        "bboxes",
+        "label_ids",
+        "labels",
+        "scores",
+    ]
 
 
 def _test_preds(preds):

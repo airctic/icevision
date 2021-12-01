@@ -27,5 +27,6 @@ def test_lightning_yolo_train(fridge_ds, backbone):
 
     light_model = LightModel(model, metrics=metrics)
 
-    trainer = pl.Trainer(max_epochs=1)
+    gpus = 1 if torch.cuda.is_available() else 0
+    trainer = pl.Trainer(max_epochs=1, gpus=gpus)
     trainer.fit(light_model, train_dl, valid_dl)
