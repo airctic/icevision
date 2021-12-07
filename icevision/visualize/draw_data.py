@@ -418,7 +418,10 @@ def draw_pred(
 
 
 def draw_bbox(
-    img: np.ndarray, bbox: BBox, color: Tuple[int, int, int], gap: bool = True,
+    img: np.ndarray,
+    bbox: BBox,
+    color: Tuple[int, int, int],
+    gap: bool = True,
 ):
     """Draws a box on an image with a given color.
     # Arguments
@@ -601,7 +604,9 @@ def draw_segmentation_mask(
 
 
 def draw_keypoints(
-    img: np.ndarray, kps: KeyPoints, color: Tuple[int, int, int],
+    img: np.ndarray,
+    kps: KeyPoints,
+    color: Tuple[int, int, int],
 ):
     x, y, v = kps.x, kps.y, kps.visible
 
