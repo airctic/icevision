@@ -15,14 +15,21 @@ class ModelAdapter(LightningModelAdapter, ABC):
     # Arguments
         model: The pytorch model to use.
         metrics: `Sequence` of metrics to use.
+        detection_threshold: Confidence threshold used during validation
 
     # Returns
         A `LightningModule`.
     """
 
-    def __init__(self, model: nn.Module, metrics: List[Metric] = None):
+    def __init__(
+        self,
+        model: nn.Module,
+        metrics: List[Metric] = None,
+        detection_threshold: float = 0.0,
+    ):
         super().__init__(metrics=metrics)
         self.model = model
+        self.detection_threshold = detection_threshold
 
     def forward(self, *args, **kwargs):
         return self.model(*args, **kwargs)
@@ -47,7 +54,7 @@ class ModelAdapter(LightningModelAdapter, ABC):
                 batch=(xb, yb),
                 raw_preds=raw_preds["detections"],
                 records=records,
-                detection_threshold=0.0,
+                detection_threshold=self.detection_threshold,
             )
             loss = efficientdet.loss_fn(raw_preds, yb)
 

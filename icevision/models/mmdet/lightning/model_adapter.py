@@ -23,14 +23,21 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
     # Arguments
         model: The pytorch model to use.
         metrics: `Sequence` of metrics to use.
+        detection_threshold: Confidence threshold used during validation
 
     # Returns
         A `LightningModule`.
     """
 
-    def __init__(self, model: nn.Module, metrics: List[Metric] = None):
+    def __init__(
+        self,
+        model: nn.Module,
+        metrics: List[Metric] = None,
+        detection_threshold: float = 0.0,
+    ):
         super().__init__(metrics=metrics)
         self.model = model
+        self.detection_threshold = detection_threshold
 
     @abstractmethod
     def convert_raw_predictions(self, batch, raw_preds, records):
@@ -96,7 +103,10 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
             )
 
         preds = self.convert_raw_predictions(
-            batch=data, raw_preds=raw_preds, records=updated_records
+            batch=data,
+            raw_preds=raw_preds,
+            records=updated_records,
+            detection_threshold=self.detection_threshold,
         )
         self.accumulate_metrics(preds)
 

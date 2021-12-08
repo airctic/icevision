@@ -14,9 +14,15 @@ from icevision.core.bbox import BBox
 
 
 class RCNNModelAdapter(LightningModelAdapter, ABC):
-    def __init__(self, model: nn.Module, metrics: Sequence[Metric] = None):
+    def __init__(
+        self,
+        model: nn.Module,
+        metrics: Sequence[Metric] = None,
+        detection_threshold: float = 0.0,
+    ):
         super().__init__(metrics=metrics)
         self.model = model
+        self.detection_threshold = detection_threshold
 
     @abstractmethod
     def convert_raw_predictions(self, batch, raw_preds, records):
@@ -76,7 +82,10 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
             self.eval()
             raw_preds = self(xb)
             preds = self.convert_raw_predictions(
-                batch=batch, raw_preds=raw_preds, records=updated_records
+                batch=batch,
+                raw_preds=raw_preds,
+                records=updated_records,
+                detection_threshold=self.detection_threshold,
             )
             self.accumulate_metrics(preds=preds)
 
