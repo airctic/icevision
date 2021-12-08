@@ -113,8 +113,5 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         for k, v in outputs["log_vars"].items():
             self.log(f"valid/{k}", v)
 
-        # TODO: is train and eval model automatically set by lighnting?
-        self.model.train()
-
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
