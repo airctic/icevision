@@ -354,8 +354,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    Next steps
+  <a href="#models" class="md-nav__link">
+    Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#showing-the-results" class="md-nav__link">
+    Showing the results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-inference-prediction" class="md-nav__link">
+    Batch Inference (Prediction)
   </a>
   
 </li>
@@ -1210,8 +1245,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    Next steps
+  <a href="#models" class="md-nav__link">
+    Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#showing-the-results" class="md-nav__link">
+    Showing the results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#batch-inference-prediction" class="md-nav__link">
+    Batch Inference (Prediction)
   </a>
   
 </li>
@@ -1257,6 +1327,10 @@
 <span class="kn">import</span> <span class="nn">IPython</span>
 <span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>{&#39;restart&#39;: True, &#39;status&#39;: &#39;ok&#39;}
+</code></pre></div>
+</div>
 <h2 id="imports">Imports</h2>
 <p>As always, let's import everything from <code>icevision</code>. Additionally, we will also need <code>pandas</code> (you might need to install it with <code>pip install pandas</code>).</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1387,13 +1461,13 @@
         super().__init__(template_record=template_record)
     def __iter__(self) -&gt; Any:
     def __len__(self) -&gt; int:
-    def record_id(self, o) -&gt; Hashable:
-    def parse_fields(self, o, record, is_new):
+    def record_id(self, o: Any) -&gt; Hashable:
+    def parse_fields(self, o: Any, record: BaseRecord, is_new: bool):
         record.set_filepath(&lt;Union[str, Path]&gt;)
         record.set_img_size(&lt;ImgSize&gt;)
-        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
         record.detection.set_class_map(&lt;ClassMap&gt;)
         record.detection.add_labels(&lt;Sequence[Hashable]&gt;)
+        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
 </code></pre></div>
 </div>
 <p>We can copy the template and use it as our starting point. Let's go over each of the methods we have to define:</p>
@@ -1450,6 +1524,14 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/109 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/7 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
 <p>Let's take a look at one record:</p>
 <div class="highlight"><pre><span></span><code><span class="n">show_record</span><span class="p">(</span><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">display_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </code></pre></div>
@@ -1461,26 +1543,466 @@
 </code></pre></div>
 </div>
 
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="c1"># size is set to 384 because EfficientDet requires its inputs to be divisible by 128</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Show an element of the train_ds with augmentation transformations applied</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></p>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>common: 
-    - Filepath: /home/lgvaz/.icevision/data/chess_sample/chess_sample-master/images/0.jpg
-    - Image: None
-    - Image ID: 0
+    - Filepath: /root/.icevision/data/chess_sample/chess_sample-master/images/6.jpg
+    - Img: None
     - Image size ImgSize(width=416, height=416)
+    - Record ID: 6.jpg
 detection: 
-    - BBoxes: [&lt;BBox (xmin:280, ymin:227, xmax:310, ymax:284)&gt;, &lt;BBox (xmin:311, ymin:110, xmax:345, ymax:195)&gt;, &lt;BBox (xmin:237, ymin:85, xmax:262, ymax:159)&gt;, &lt;BBox (xmin:331, ymin:277, xmax:366, ymax:333)&gt;, &lt;BBox (xmin:235, ymin:3, xmax:255, ymax:51)&gt;, &lt;BBox (xmin:267, ymin:38, xmax:286, ymax:82)&gt;, &lt;BBox (xmin:271, ymin:72, xmax:291, ymax:116)&gt;, &lt;BBox (xmin:280, ymin:145, xmax:303, ymax:190)&gt;, &lt;BBox (xmin:283, ymin:188, xmax:305, ymax:233)&gt;, &lt;BBox (xmin:254, ymin:284, xmax:278, ymax:333)&gt;, &lt;BBox (xmin:206, ymin:5, xmax:225, ymax:50)&gt;, &lt;BBox (xmin:207, ymin:103, xmax:226, ymax:147)&gt;, &lt;BBox (xmin:235, ymin:27, xmax:256, ymax:84)&gt;, &lt;BBox (xmin:172, ymin:134, xmax:196, ymax:195)&gt;, &lt;BBox (xmin:138, ymin:87, xmax:165, ymax:158)&gt;, &lt;BBox (xmin:91, ymin:280, xmax:119, ymax:335)&gt;, &lt;BBox (xmin:73, ymin:0, xmax:98, ymax:46)&gt;, &lt;BBox (xmin:56, ymin:111, xmax:87, ymax:191)&gt;, &lt;BBox (xmin:52, ymin:174, xmax:79, ymax:231)&gt;, &lt;BBox (xmin:141, ymin:53, xmax:163, ymax:106)&gt;, &lt;BBox (xmin:52, ymin:221, xmax:83, ymax:281)&gt;, &lt;BBox (xmin:172, ymin:103, xmax:192, ymax:147)&gt;, &lt;BBox (xmin:109, ymin:3, xmax:129, ymax:46)&gt;, &lt;BBox (xmin:110, ymin:69, xmax:130, ymax:112)&gt;, &lt;BBox (xmin:101, ymin:148, xmax:126, ymax:192)&gt;, &lt;BBox (xmin:98, ymin:192, xmax:121, ymax:235)&gt;, &lt;BBox (xmin:97, ymin:233, xmax:121, ymax:279)&gt;, &lt;BBox (xmin:176, ymin:282, xmax:199, ymax:332)&gt;]
     - Class Map: &lt;ClassMap: {&#39;background&#39;: 0, &#39;black-bishop&#39;: 1, &#39;black-king&#39;: 2, &#39;black-queen&#39;: 3, &#39;black-rook&#39;: 4, &#39;black-pawn&#39;: 5, &#39;black-knight&#39;: 6, &#39;white-queen&#39;: 7, &#39;white-rook&#39;: 8, &#39;white-king&#39;: 9, &#39;white-bishop&#39;: 10, &#39;white-knight&#39;: 11, &#39;white-pawn&#39;: 12}&gt;
-    - Labels: [1, 2, 3, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 11, 12, 12, 12, 12, 12, 12, 12]
+    - Labels: [8, 9, 12, 12, 12, 12, 2, 4, 3, 5, 5, 5]
+    - BBoxes: [&lt;BBox (xmin:170, ymin:79, xmax:195, ymax:132)&gt;, &lt;BBox (xmin:131, ymin:129, xmax:162, ymax:213)&gt;, &lt;BBox (xmin:167, ymin:119, xmax:189, ymax:165)&gt;, &lt;BBox (xmin:136, ymin:52, xmax:158, ymax:97)&gt;, &lt;BBox (xmin:101, ymin:15, xmax:123, ymax:59)&gt;, &lt;BBox (xmin:94, ymin:256, xmax:118, ymax:304)&gt;, &lt;BBox (xmin:257, ymin:268, xmax:291, ymax:354)&gt;, &lt;BBox (xmin:335, ymin:297, xmax:368, ymax:355)&gt;, &lt;BBox (xmin:234, ymin:97, xmax:260, ymax:173)&gt;, &lt;BBox (xmin:273, ymin:84, xmax:291, ymax:128)&gt;, &lt;BBox (xmin:204, ymin:118, xmax:223, ymax:162)&gt;, &lt;BBox (xmin:248, ymin:204, xmax:270, ymax:251)&gt;]
 </code></pre></div>
 </div>
-<h2 id="next-steps">Next steps</h2>
-<ul>
-<li>This was just merged, come help us adjusting the documentation and fixing the bugs</li>
-</ul>
+
+<p><img alt="png" src="../images/custom_parser/custom_parser_31_0.png" /></p>
+<h2 id="models">Models</h2>
+<p>We've selected a few of the many options below. You can easily pick which libraries, models, and backbones you like to use.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
+
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">vfnet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_mstrain_2x</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">faster_rcnn</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+  <span class="c1"># extra_args[&#39;cfg_options&#39;] = { </span>
+  <span class="c1">#   &#39;model.bbox_head.loss_bbox.loss_weight&#39;: 2,</span>
+  <span class="c1">#   &#39;model.bbox_head.loss_cls.loss_weight&#39;: 0.8,</span>
+  <span class="c1">#    }</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
+  <span class="c1"># The efficientdet model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
+  <span class="c1"># The yolov5 model requires an img_size parameter</span>
+  <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
+
+<span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">extra_args</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Data Loaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>(&lt;module &#39;icevision.models.mmdet.models.vfnet&#39; from &#39;/usr/local/lib/python3.7/dist-packages/icevision/models/mmdet/models/vfnet/__init__.py&#39;&gt;,
+ &lt;icevision.models.mmdet.models.vfnet.backbones.resnet_fpn.MMDetVFNETBackboneConfig at 0x7f3d3eefcf50&gt;,
+ {})
+</code></pre></div>
+</div>
+<h2 id="training">Training</h2>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+</code></pre></div>
+<h2 id="training-using-fastai">Training using fastai</h2>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/usr/local/lib/python3.7/dist-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
+  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
+/usr/local/lib/python3.7/dist-packages/mmdet/core/anchor/anchor_generator.py:361: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
+  &#39;``single_level_grid_anchors`` would be deprecated soon. &#39;
+
+SuggestedLRs(valley=3.0199516913853586e-05)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/custom_parser/custom_parser_41_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.581739</td>
+      <td>1.825835</td>
+      <td>0.196081</td>
+      <td>00:01</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/usr/local/lib/python3.7/dist-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
+  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
+/usr/local/lib/python3.7/dist-packages/mmdet/core/anchor/anchor_generator.py:361: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
+  &#39;``single_level_grid_anchors`` would be deprecated soon. &#39;
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.581900</td>
+      <td>1.786651</td>
+      <td>0.216952</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1.608743</td>
+      <td>1.763155</td>
+      <td>0.224355</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1.631124</td>
+      <td>1.756258</td>
+      <td>0.224446</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.605482</td>
+      <td>1.744663</td>
+      <td>0.221207</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.601004</td>
+      <td>1.733463</td>
+      <td>0.225954</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1.602483</td>
+      <td>1.737170</td>
+      <td>0.227496</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1.585189</td>
+      <td>1.726894</td>
+      <td>0.230818</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.569807</td>
+      <td>1.705676</td>
+      <td>0.242893</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.568512</td>
+      <td>1.702688</td>
+      <td>0.239849</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>1.554865</td>
+      <td>1.681125</td>
+      <td>0.247037</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>1.555655</td>
+      <td>1.684015</td>
+      <td>0.297935</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>1.543609</td>
+      <td>1.681997</td>
+      <td>0.301196</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>1.534735</td>
+      <td>1.690655</td>
+      <td>0.310736</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>1.524568</td>
+      <td>1.689521</td>
+      <td>0.314591</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1.516276</td>
+      <td>1.659921</td>
+      <td>0.330271</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>1.511769</td>
+      <td>1.629157</td>
+      <td>0.348593</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>1.502966</td>
+      <td>1.596284</td>
+      <td>0.362406</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>1.497759</td>
+      <td>1.586747</td>
+      <td>0.371476</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>1.497266</td>
+      <td>1.607103</td>
+      <td>0.369360</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>1.492118</td>
+      <td>1.642410</td>
+      <td>0.333980</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>1.489123</td>
+      <td>1.666914</td>
+      <td>0.333943</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>1.487922</td>
+      <td>1.678961</td>
+      <td>0.331371</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>1.483647</td>
+      <td>1.671102</td>
+      <td>0.349929</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>1.480486</td>
+      <td>1.642387</td>
+      <td>0.365551</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>1.472842</td>
+      <td>1.604754</td>
+      <td>0.377337</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>1.466778</td>
+      <td>1.569934</td>
+      <td>0.398319</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>1.457183</td>
+      <td>1.547147</td>
+      <td>0.410581</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>1.452692</td>
+      <td>1.534132</td>
+      <td>0.419814</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>1.447047</td>
+      <td>1.526892</td>
+      <td>0.423409</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>1.443192</td>
+      <td>1.525016</td>
+      <td>0.422199</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>1.444314</td>
+      <td>1.528092</td>
+      <td>0.420855</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>1.442283</td>
+      <td>1.533094</td>
+      <td>0.419651</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>1.434897</td>
+      <td>1.537819</td>
+      <td>0.417674</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>1.431285</td>
+      <td>1.542786</td>
+      <td>0.418381</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>1.424665</td>
+      <td>1.546462</td>
+      <td>0.418103</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>1.418521</td>
+      <td>1.548954</td>
+      <td>0.416256</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>1.414101</td>
+      <td>1.550630</td>
+      <td>0.416183</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>37</td>
+      <td>1.407963</td>
+      <td>1.551399</td>
+      <td>0.416183</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>38</td>
+      <td>1.402073</td>
+      <td>1.551711</td>
+      <td>0.416183</td>
+      <td>00:01</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>1.393795</td>
+      <td>1.551780</td>
+      <td>0.416183</td>
+      <td>00:01</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="training-using-pytorch-lightning">Training using Pytorch Lightning</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># class LightModel(model_type.lightning.ModelAdapter):</span>
+<span class="c1">#     def configure_optimizers(self):</span>
+<span class="c1">#         return Adam(self.parameters(), lr=1e-4)</span>
+
+<span class="c1"># light_model = LightModel(model, metrics=metrics)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># trainer = pl.Trainer(max_epochs=20, gpus=1)</span>
+<span class="c1"># trainer.fit(light_model, train_dl, valid_dl)</span>
+</code></pre></div>
+<h2 id="showing-the-results">Showing the results</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/custom_parser/custom_parser_47_0.png" /></p>
+<h2 id="batch-inference-prediction">Batch Inference (Prediction)</h2>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/1 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/custom_parser/custom_parser_50_0.png" /></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>And that's it! Now that you have your data in the standard library record format, you can use it to create a <code>Dataset</code>, visualize the image with the annotations and basically use all helper functions that IceVision provides! </p>
+<p>This notebook shows ho to create a custom parser to process data stored in format different than the popular COCO or VOV formats. </p>
+<p>The parsed data feed any IceVision models that could be trained by either Fastai or Pytorch-Lightning training loops.</p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
                 
               
               
