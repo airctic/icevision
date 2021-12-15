@@ -49,44 +49,8 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
 
         return outputs["loss"]
 
-    @staticmethod
-    def get_component_by_class(components, component_class):
-        for component in components:
-            if isinstance(component, component_class):
-                return component
-        else:
-            return None
-
-    def get_updated_records(self, records, masks):
-        new_records = []
-        for record, mask in zip(records, masks):
-            record_copy = deepcopy(record)
-            instance_mask_record_component = self.get_component_by_class(
-                record_copy.detection.components, InstanceMasksRecordComponent
-            )
-            if instance_mask_record_component is not None:
-                mask_array = MaskArray(mask.masks)
-                instance_mask_record_component.set_mask_array(mask_array)
-                instance_mask_record_component.set_masks(
-                    mask_array.to_erles(None, None).erles
-                )
-            bbox_record_component = self.get_component_by_class(
-                record_copy.detection.components, BBoxesRecordComponent
-            )
-            if bbox_record_component is not None:
-                bbox_record_component.set_bboxes(
-                    [BBox(*row.tolist()) for row in mask.get_bboxes()]
-                )
-            new_records.append(record_copy)
-        return new_records
-
     def validation_step(self, batch, batch_idx):
         data, records = batch
-
-        if "gt_masks" in data.keys():
-            updated_records = self.get_updated_records(records, data["gt_masks"])
-        else:
-            updated_records = records
 
         self.model.eval()
         with torch.no_grad():
@@ -96,7 +60,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
             )
 
         preds = self.convert_raw_predictions(
-            batch=data, raw_preds=raw_preds, records=updated_records
+            batch=data, raw_preds=raw_preds, records=records
         )
         self.accumulate_metrics(preds)
 
