@@ -35,18 +35,21 @@ def param_groups(model):
     body = model.backbone
 
     layers = []
+
+    # add the backbone
     if isinstance(body, SSDVGG):
         layers += [body.features]
-        layers += [body.extra, body.l2_norm]
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
-        layers += [model.neck]
     else:
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
-        layers += [model.neck]
 
+    # add the neck
+    layers += [model.neck]
+
+    # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
     elif isinstance(model, TwoStageDetector):
