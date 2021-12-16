@@ -1522,7 +1522,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 <p>We've selected a few of the many options below. You can easily pick which option you want to try by setting the value of <code>selection</code>. This shows you how easy it is to try new libraries, models, and backbones.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
 
-<span class="n">selection</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1530,8 +1530,8 @@ As pretrained models are used by default, we typically leave this out of the bac
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">vfnet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_mstrain_2x</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">faster_rcnn</span>
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
   <span class="c1"># extra_args[&#39;cfg_options&#39;] = { </span>
   <span class="c1">#   &#39;model.bbox_head.loss_bbox.loss_weight&#39;: 2,</span>
@@ -1539,17 +1539,25 @@ As pretrained models are used by default, we typically leave this out of the bac
   <span class="c1">#    }</span>
 
 <span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">faster_rcnn</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">ssd</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">ssd300</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
   <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
   <span class="c1"># The efficientdet model requires an img_size parameter</span>
   <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
   <span class="c1"># The yolov5 model requires an img_size parameter</span>
