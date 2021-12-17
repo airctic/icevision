@@ -71,18 +71,30 @@ $ pip install icevision[all]
 We need to provide the appropriate version of the `mmcv-full` package as well as the `cuda` and the `torch` versions. Here are some examples for both the **CUDA** and the **CPU** versions  
 
 !!! danger "Torch and CUDA version"  
-    For the torch version use `torch.__version__` and replace the last number with 0.
-    For the cuda version use: `torch.version.cuda`.
+    To find out what is the version of torch and cuda in active environment, run 
+```
+import torch
+torch.__version__
+```
+```
+1.10.0+cu111
+```
+This means your torch version is `1.10.0` and cuda is `11.1`.   
+We can set up these useful environment variables to automate mmcv installation.  
+Keep in mind that you might need to change the numbers accordingly:
 
-    Example: `TORCH_VERSION = torch1.8.0`; `CUDA_VERSION = cu101`
+    Example: `TORCH_VERSION = torch1.10.0`; `CUDA_VERSION = cu111`
 
 #### CUDA-Version Installation Example
 <div class="termy">
 ```console
-$ pip install mmcv-full=="1.3.3" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
+$ pip install mmcv-full=="1.3.17" -f https://download.openmmlab.com/mmcv/dist/CUDA_VERSION/TORCH_VERSION/index.html --upgrade
 $ pip install mmdet
 ```
 </div>
+
+!!! info "Note"  
+    If you run into trouble, you can always refer to mmdetection [installation guide](https://github.com/open-mmlab/mmdetection/blob/master/docs/en/get_started.md)
 
 #### CPU-Version Installation
 <div class="termy">
