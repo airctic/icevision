@@ -66,7 +66,6 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
                 imgs=[data["img"]], img_metas=[data["img_metas"]]
             )
 
-
         preds = convert_raw_predictions(
             batch=data,
             raw_preds=raw_preds,
