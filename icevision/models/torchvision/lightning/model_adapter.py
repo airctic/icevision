@@ -25,7 +25,7 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         self.detection_threshold = detection_threshold
 
     @abstractmethod
-    def convert_raw_predictions(self, batch, raw_preds, records):
+    def convert_raw_predictions(self, batch, raw_preds, records, detection_threshold):
         """Convert raw predictions from the model to library standard."""
 
     def forward(self, *args, **kwargs):
