@@ -14,6 +14,7 @@ changing one word. There is no need to be familiar with all the quirks that new 
 ## Creating a model
 
 In order to create a model, we need to:
+
 * Choose one of the **libraries** supported by IceVision
 * Choose one of the **models** supported by the library
 * Choose one of the **backbones** corresponding to a chosen model
