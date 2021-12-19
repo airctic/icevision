@@ -5,10 +5,10 @@ from icevision.models.torchvision.retinanet.prediction import *
 
 
 class RetinanetCallback(RCNNCallback):
-    def convert_raw_predictions(self, batch, raw_preds):
+    def convert_raw_predictions(self, batch, raw_preds, detection_threshold=0.0):
         return convert_raw_predictions(
             batch=batch,
             raw_preds=raw_preds,
             records=self.learn.records,
-            detection_threshold=0.0,
+            detection_threshold=detection_threshold,
         )
