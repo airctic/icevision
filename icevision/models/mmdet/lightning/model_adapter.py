@@ -40,7 +40,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         self.detection_threshold = detection_threshold
 
     @abstractmethod
-    def convert_raw_predictions(self, batch, raw_preds, records):
+    def convert_raw_predictions(self, batch, raw_preds, records, detection_threshold):
         """Convert raw predictions from the model to library standard."""
 
     def forward(self, *args, **kwargs):
@@ -102,7 +102,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
                 imgs=[data["img"]], img_metas=[data["img_metas"]]
             )
 
-        preds = self.convert_raw_predictions(
+        preds = convert_raw_predictions(
             batch=data,
             raw_preds=raw_preds,
             records=updated_records,
