@@ -18,11 +18,11 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         self,
         model: nn.Module,
         metrics: Sequence[Metric] = None,
-        detection_threshold: float = 0.0,
+        validation_confidence_threshold: float = 0.0,
     ):
         super().__init__(metrics=metrics)
         self.model = model
-        self.detection_threshold = detection_threshold
+        self.detection_threshold = validation_confidence_threshold
 
     @abstractmethod
     def convert_raw_predictions(self, batch, raw_preds, records, detection_threshold):
