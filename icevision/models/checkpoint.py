@@ -164,13 +164,10 @@ def model_from_checkpoint(
     logger=None,
 ):
     """load checkpoint through URL scheme path.
-
     Args:
         filename (str): checkpoint file name with given prefix
         map_location (str, optional): Same as :func:`torch.load`.
             Default: None
-
-
     Returns:
         dict or OrderedDict: The loaded checkpoint.
     """
@@ -206,10 +203,12 @@ def model_from_checkpoint(
     if model_name is None:
         model_name = checkpoint["meta"].get("model_name", None)
 
-    model_type = None
     if model_name:
-        lib, mod = model_name.split(".")
-        model_type = getattr(getattr(models, lib), mod)
+        model = model_name.split(".")
+        if len(model) >= 3:
+            model_type = getattr(getattr(models, model[-2]), model[-1])
+        else: 
+            model_type = getattr(getattr(models, model[0]), model[1])
 
     if backbone_name is None:
         backbone_name = checkpoint["meta"].get("backbone_name", None)
