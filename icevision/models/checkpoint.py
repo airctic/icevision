@@ -203,6 +203,7 @@ def model_from_checkpoint(
     if model_name is None:
         model_name = checkpoint["meta"].get("model_name", None)
 
+    model_type = None
     if model_name:
         model = model_name.split(".")
         if len(model) >= 3:
