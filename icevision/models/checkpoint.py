@@ -208,7 +208,7 @@ def model_from_checkpoint(
         model = model_name.split(".")
         if len(model) >= 3:
             model_type = getattr(getattr(models, model[-2]), model[-1])
-        else: 
+        else:
             model_type = getattr(getattr(models, model[0]), model[1])
 
     if backbone_name is None:
