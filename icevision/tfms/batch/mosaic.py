@@ -5,9 +5,10 @@ from icevision.tfms.batch.batch_transform import BatchTransform
 
 
 class Mosaic(BatchTransform):
-    def __init__(self, n_imgs=4, bbox_safe=True):
+    def __init__(self, n_imgs=4, bbox_safe=True, p=0.3):
         self.n_imgs = n_imgs
         self.bbox_safe = bbox_safe
+        self.p = p
 
     def create_tfms(self, main_record: BaseRecord):
         positions = [
@@ -60,12 +61,17 @@ class Mosaic(BatchTransform):
     def make_mosaic(
         self, main_record: BaseRecord, mosaic_records: List[BaseRecord]
     ) -> BaseRecord:
+        do_apply = np.random.random_sample() <= self.p
+        if not do_apply:
+            return main_record
+
         mosaic_tfms = self.create_tfms(main_record)
         main_record_copy = deepcopy(main_record)
         canvas = np.zeros_like(main_record.img)
         labels = []
         bboxes = []
         # apply crops and padding
+
         for record, tfm in zip([main_record, *mosaic_records], mosaic_tfms):
             record_copy = deepcopy(record)
             record_copy = tfm(record_copy)
