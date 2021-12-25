@@ -7,11 +7,13 @@ from icevision.models.mmdet.common.interpretation_utils import (
 )
 
 _LOSSES_DICT = {
+    "loss_rpn_cls": [],
+    "loss_rpn_bbox": [],
     "loss_cls": [],
     "loss_bbox": [],
+    "loss_mask": [],
     "loss_total": [],
 }
-
 interp = Interpretation(
     losses_dict=_LOSSES_DICT,
     valid_dl=valid_dl,
