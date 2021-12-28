@@ -21,8 +21,7 @@ def test_mmdet_bbox_models_predict(ds, model_type, samples_source, request):
 
 
 @pytest.mark.parametrize(
-    "model_type",
-    [models.mmdet.retinanet, models.mmdet.faster_rcnn],
+    "model_type", [models.mmdet.retinanet, models.mmdet.faster_rcnn],
 )
 def test_sahi(model_type, samples_source, fridge_class_map):
     img_path = samples_source / "sahi/fridge_small_items.jpg"
@@ -40,10 +39,7 @@ def test_sahi(model_type, samples_source, fridge_class_map):
     )
 
     pred = sahimodel.get_sliced_prediction(
-        img_path,
-        keep_sahi_format=True,
-        slice_height=384,
-        slice_width=384,
+        img_path, keep_sahi_format=True, slice_height=384, slice_width=384,
     )
     assert isinstance(pred, PredictionResult)
     assert isinstance(pred.object_prediction_list, list)

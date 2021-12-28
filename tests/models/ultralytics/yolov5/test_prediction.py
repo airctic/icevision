@@ -22,8 +22,7 @@ def test_e2e_detect(samples_source, fridge_class_map, backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium],
+    "backbone", [small, medium],
 )
 def test_sahi(samples_source, fridge_class_map, backbone):
     img_path = samples_source / "sahi/fridge_small_items.jpg"
@@ -41,10 +40,7 @@ def test_sahi(samples_source, fridge_class_map, backbone):
     )
 
     pred = sahimodel.get_sliced_prediction(
-        img_path,
-        keep_sahi_format=True,
-        slice_height=384,
-        slice_width=384,
+        img_path, keep_sahi_format=True, slice_height=384, slice_width=384,
     )
     assert isinstance(pred, PredictionResult)
     assert isinstance(pred.object_prediction_list, list)
