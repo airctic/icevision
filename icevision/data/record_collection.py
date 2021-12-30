@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 __all__ = ["RecordCollection"]
 
 from icevision.imports import *
@@ -22,23 +24,20 @@ class RecordCollection:
             record.is_new = True
             return record
 
-    def new(self, records: Sequence[BaseRecord]):
+    def new(self, records: Sequence[BaseRecord]) -> RecordCollection:
         new = type(self)(self.create_record_fn)
         new._records = IndexableDict([(record.record_id, record) for record in records])
         return new
 
-    def __add__(self, other):
+    def __add__(self, other: RecordCollection) -> RecordCollection:
         return self.new([*self._records.values(), *other._records.values()])
 
-    def make_splits(self, data_splitter: DataSplitter):
+    def make_splits(self, data_splitter: DataSplitter) -> List[RecordCollection]:
         record_id_splits = data_splitter.split(self)
         return [
             self.new([self._records[record_id] for record_id in record_ids])
             for record_ids in record_id_splits
         ]
-
-        # for record_ids in record_id_splits:
-        #     yield self.new([self._records[record_id] for record_id in record_ids])
 
     def autofix(self, show_pbar: int = True):
         records = autofix_records(self._records.values())
