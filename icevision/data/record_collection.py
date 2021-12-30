@@ -43,8 +43,13 @@ class RecordCollection:
         records = autofix_records(self._records.values())
         return self.new(records)
 
-    def __getitem__(self, i: int) -> BaseRecord:
-        return self._records.values()[i]
+    def __getitem__(self, i: Union[int, slice]) -> Union[BaseRecord, RecordCollection]:
+        if isinstance(i, slice):
+            return self.new(self._records.values()[i])
+        elif isinstance(i, int):
+            return self._records.values()[i]
+        else:
+            raise RuntimeError(f"method __getitem__ for type {type(i)} not implemented")
 
     def __len__(self):
         return len(self._records)
