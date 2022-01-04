@@ -11,6 +11,7 @@ from mmcv.runner import (
     load_state_dict,
 )
 
+
 # COCO Classes: 80 classes
 CLASSES = (
     "person",
