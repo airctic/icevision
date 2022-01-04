@@ -206,8 +206,10 @@ def model_from_checkpoint(
     model_type = None
     if model_name:
         model = model_name.split(".")
+        # If model_name contains three or more components, the library and model are the second to last and last components, respectively (e.g. models.mmdet.retinanet)
         if len(model) >= 3:
             model_type = getattr(getattr(models, model[-2]), model[-1])
+        # If model_name follows the default convention, the library and model are the first and second components, respectively (e.g. mmdet.retinanet)
         else:
             model_type = getattr(getattr(models, model[0]), model[1])
 
