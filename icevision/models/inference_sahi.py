@@ -182,6 +182,11 @@ class IceSahiModel(DetectionModel):
         if full_shape_list is not None and isinstance(full_shape_list[0], int):
             full_shape_list = [full_shape_list]
 
+        # assuming self._original_predictions["detection"] contains single image results
+        image_ind = 0
+        shift_amount = shift_amount_list[image_ind]
+        full_shape = None if full_shape_list is None else full_shape_list[image_ind]
+
         for i in range(total_detections):
             lbl = original_predictions["label_ids"][i]
             scores.append(original_predictions["scores"][i])
@@ -206,8 +211,8 @@ class IceSahiModel(DetectionModel):
                     score=score,
                     bool_mask=bool_mask,
                     category_name=category_name,
-                    shift_amount=shift_amount_list[0],
-                    full_shape=full_shape_list[0],
+                    shift_amount=shift_amount,
+                    full_shape=full_shape,
                 )
                 object_prediction_list.append(object_prediction)
 
