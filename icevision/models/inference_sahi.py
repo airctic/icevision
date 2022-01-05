@@ -153,17 +153,19 @@ class IceSahiModel(DetectionModel):
 
     def _create_object_prediction_list_from_original_predictions(
         self,
-        shift_amount: Optional[List[int]] = [0, 0],
-        full_shape: Optional[List[int]] = None,
+        shift_amount_list: Optional[List[List[int]]] = [[0, 0]],
+        full_shape_list: Optional[List[List[int]]] = None,
     ):
         """
         self._original_predictions is converted to a list of prediction.ObjectPrediction and set to
-        self._object_prediction_list.
+        self._object_prediction_list_per_image.
         Args:
-            shift_amount: list
-                To shift the box and mask predictions from sliced image to full sized image, should be in the form of [shift_x, shift_y]
-            full_shape: list
-                Size of the full image after shifting, should be in the form of [height, width]
+            shift_amount_list: list of list
+                To shift the box and mask predictions from sliced image to full sized image, should
+                be in the form of List[[shift_x, shift_y],[shift_x, shift_y],...]
+            full_shape_list: list of list
+                Size of the full image after shifting, should be in the form of
+                List[[height, width],[height, width],...]
         """
         original_predictions = self._original_predictions["detection"]
         category_mapping = self.category_mapping
@@ -173,6 +175,12 @@ class IceSahiModel(DetectionModel):
         labels, scores = [], []
 
         total_detections = len(original_predictions["labels"])
+
+        # compatilibty for sahi v0.8.15
+        if isinstance(shift_amount_list[0], int):
+            shift_amount_list = [shift_amount_list]
+        if full_shape_list is not None and isinstance(full_shape_list[0], int):
+            full_shape_list = [full_shape_list]
 
         for i in range(total_detections):
             lbl = original_predictions["label_ids"][i]
@@ -198,9 +206,9 @@ class IceSahiModel(DetectionModel):
                     score=score,
                     bool_mask=bool_mask,
                     category_name=category_name,
-                    shift_amount=shift_amount,
-                    full_shape=full_shape,
+                    shift_amount=shift_amount_list[0],
+                    full_shape=full_shape_list[0],
                 )
                 object_prediction_list.append(object_prediction)
 
-        self._object_prediction_list = object_prediction_list
+        self._object_prediction_list_per_image = [object_prediction_list]
