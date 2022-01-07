@@ -101,7 +101,9 @@ def draw_sample(
                 elif isinstance(composite.masks[0], MaskArray):
                     mask = composite.masks[0]
                 else:
-                    raise ValueError("Mask has to be of they RLE, EncodedRLEs or MaskArray.")
+                    raise ValueError(
+                        "Mask has to be of they RLE, EncodedRLEs or MaskArray."
+                    )
             else:
                 mask = composite.mask_array
             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
@@ -135,7 +137,9 @@ def draw_sample(
                 elif isinstance(composite.masks[0], MaskArray):
                     mask = composite.masks[0]
                 else:
-                    raise ValueError("Mask has to be of they RLE, EncodedRLEs or MaskArray.")
+                    raise ValueError(
+                        "Mask has to be of they RLE, EncodedRLEs or MaskArray."
+                    )
             else:
                 masks = composite.mask_array
         else:
