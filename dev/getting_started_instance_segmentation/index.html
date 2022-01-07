@@ -381,8 +381,49 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#training-using-lightning" class="md-nav__link">
+    Training using Lightning
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-results" class="md-nav__link">
+    Show Results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
   
 </li>
       
@@ -1305,8 +1346,49 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#training-using-lightning" class="md-nav__link">
+    Training using Lightning
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show-results" class="md-nav__link">
+    Show Results
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
+  </a>
+  
+    <nav class="md-nav" aria-label="Inference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#predicting-a-batch-of-images" class="md-nav__link">
+    Predicting a batch of images
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
   
 </li>
       
@@ -1343,6 +1425,10 @@
 <h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/frederik/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+</code></pre></div>
+</div>
 <h2 id="model">Model</h2>
 <p>To create a model, we need to:</p>
 <ul>
@@ -1351,9 +1437,9 @@
 <li>Determine the <strong>number of the object classes</strong>: This will be done after parsing a dataset. Check out the Parsing Section </li>
 </ul>
 <h2 id="choose-a-model-and-backbone">Choose a model and backbone</h2>
-<p><strong>TorchVision</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet18_fpn</span><span class="p">()</span>
+<p>We use <strong>MMDet</strong> here. When you want to use the torch vision version the COCOMetric will not be correct at the moment due to a problem in the bounding box conversion.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="datasets-pennfudan">Datasets : Pennfudan</h2>
 <p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
@@ -1364,9 +1450,19 @@
 <p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
 <span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">train_ds</span><span class="p">,</span> <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># train_ds, valid_ds = icedata.pennfudan.dataset(data_dir)</span>
+<span class="n">train_rs</span><span class="p">,</span> <span class="n">valid_rs</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_rs</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_rs</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div></p>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>  0%|          | 0/170 [00:00&lt;?, ?it/s]
 
@@ -1385,23 +1481,21 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_16_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_18_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">valid_batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">)</span>
 <span class="n">infer_batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">infer_dl</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">valid_images</span><span class="p">,</span> <span class="n">valid_labels</span><span class="p">),</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">valid_batch</span>
-</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_22_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_23_0.png" /></p>
 <h2 id="model_1">Model</h2>
 <p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
@@ -1419,12 +1513,17 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(lr_min=0.0006309573538601399, lr_steep=9.999999747378752e-06)
+<div class="highlight"><pre><span></span><code>/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
+  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
+/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
+  warnings.warn(
+
+SuggestedLRs(valley=0.00019054606673307717)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_30_2.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_31_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1439,383 +1538,146 @@ the dataset you will get a slightly different version of it.</p>
   <tbody>
     <tr>
       <td>0</td>
-      <td>3.060735</td>
-      <td>2.167423</td>
-      <td>0.000000</td>
+      <td>1.559413</td>
+      <td>0.395396</td>
+      <td>0.585344</td>
+      <td>00:17</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.810590</td>
+      <td>0.426341</td>
+      <td>0.650293</td>
+      <td>00:18</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.398036</td>
+      <td>0.337106</td>
+      <td>0.687948</td>
+      <td>00:20</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.364015</td>
+      <td>0.295129</td>
+      <td>0.710121</td>
+      <td>00:18</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.338850</td>
+      <td>0.267298</td>
+      <td>0.725615</td>
+      <td>00:17</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.316937</td>
+      <td>0.269908</td>
+      <td>0.737023</td>
+      <td>00:16</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.296187</td>
+      <td>0.251252</td>
+      <td>0.732487</td>
       <td>00:17</td>
     </tr>
   </tbody>
 </table>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>&lt;div&gt;
-    &lt;style&gt;
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    &lt;/style&gt;
-  &lt;progress value=&#39;4&#39; class=&#39;&#39; max=&#39;20&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
-  20.00% [4/20 01:22&lt;05:30]
-&lt;/div&gt;
-</code></pre></div>
-</div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: left;">
-      <th>epoch</th>
-      <th>train_loss</th>
-      <th>valid_loss</th>
-      <th>COCOMetric</th>
-      <th>time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>1.869391</td>
-      <td>1.816108</td>
-      <td>0.000000</td>
-      <td>00:20</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>1.750445</td>
-      <td>1.636558</td>
-      <td>0.000000</td>
-      <td>00:23</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>1.637094</td>
-      <td>1.441535</td>
-      <td>0.000000</td>
-      <td>00:19</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>1.507450</td>
-      <td>1.243060</td>
-      <td>0.000000</td>
-      <td>00:19</td>
-    </tr>
-  </tbody>
-</table>
-<p>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>&lt;div&gt;
-    &lt;style&gt;
-        /* Turns off some styling */
-        progress {
-            /* gets rid of default border in Firefox and Opera. */
-            border: none;
-            /* Needs to be in here for Safari polyfill so background images work as expected. */
-            background-size: auto;
-        }
-        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-            background: #F44336;
-        }
-    &lt;/style&gt;
-  &lt;progress value=&#39;1&#39; class=&#39;&#39; max=&#39;17&#39; style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress&gt;
-  5.88% [1/17 00:01&lt;00:22]
-&lt;/div&gt;
-
----------------------------------------------------------------------------
-
-KeyboardInterrupt                         Traceback (most recent call last)
-
-&lt;ipython-input-19-6b1cbbe77f9d&gt; in &lt;module&gt;
-----&gt; 1 learn.fine_tune(20, 1e-4, freeze_epochs=1)
-</code></pre></div>
-</div>
-
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>~/git/fastai/fastai/callback/schedule.py in fine_tune(self, epochs, base_lr, freeze_epochs, lr_mult, pct_start, div, **kwargs)
-    158     base_lr /= 2
-    159     self.unfreeze()
---&gt; 160     self.fit_one_cycle(epochs, slice(base_lr/lr_mult, base_lr), pct_start=pct_start, div=div, **kwargs)
-    161 
-    162 # Cell
-
-~/git/fastai/fastai/callback/schedule.py in fit_one_cycle(self, n_epoch, lr_max, div, div_final, pct_start, wd, moms, cbs, reset_opt)
-    110     scheds = {&#39;lr&#39;: combined_cos(pct_start, lr_max/div, lr_max, lr_max/div_final),
-    111               &#39;mom&#39;: combined_cos(pct_start, *(self.moms if moms is None else moms))}
---&gt; 112     self.fit(n_epoch, cbs=ParamScheduler(scheds)+L(cbs), reset_opt=reset_opt, wd=wd)
-    113 
-    114 # Cell
-
-~/git/fastai/fastai/learner.py in fit(self, n_epoch, lr, wd, cbs, reset_opt)
-    216             self.opt.set_hypers(lr=self.lr if lr is None else lr)
-    217             self.n_epoch = n_epoch
---&gt; 218             self._with_events(self._do_fit, &#39;fit&#39;, CancelFitException, self._end_cleanup)
-    219 
-    220     def _end_cleanup(self): self.dl,self.xb,self.yb,self.pred,self.loss = None,(None,),(None,),None,None
-
-~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
-    158 
-    159     def _with_events(self, f, event_type, ex, final=noop):
---&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
-    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
-    162         self(f&#39;after_{event_type}&#39;);  final()
-
-~/git/fastai/fastai/learner.py in _do_fit(self)
-    207         for epoch in range(self.n_epoch):
-    208             self.epoch=epoch
---&gt; 209             self._with_events(self._do_epoch, &#39;epoch&#39;, CancelEpochException)
-    210 
-    211     def fit(self, n_epoch, lr=None, wd=None, cbs=None, reset_opt=False):
-
-~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
-    158 
-    159     def _with_events(self, f, event_type, ex, final=noop):
---&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
-    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
-    162         self(f&#39;after_{event_type}&#39;);  final()
-
-~/git/fastai/fastai/learner.py in _do_epoch(self)
-    201 
-    202     def _do_epoch(self):
---&gt; 203         self._do_epoch_train()
-    204         self._do_epoch_validate()
-    205 
-
-~/git/fastai/fastai/learner.py in _do_epoch_train(self)
-    193     def _do_epoch_train(self):
-    194         self.dl = self.dls.train
---&gt; 195         self._with_events(self.all_batches, &#39;train&#39;, CancelTrainException)
-    196 
-    197     def _do_epoch_validate(self, ds_idx=1, dl=None):
-
-~/git/fastai/fastai/learner.py in _with_events(self, f, event_type, ex, final)
-    158 
-    159     def _with_events(self, f, event_type, ex, final=noop):
---&gt; 160         try: self(f&#39;before_{event_type}&#39;);  f()
-    161         except ex: self(f&#39;after_cancel_{event_type}&#39;)
-    162         self(f&#39;after_{event_type}&#39;);  final()
-
-~/git/fastai/fastai/learner.py in all_batches(self)
-    164     def all_batches(self):
-    165         self.n_iter = len(self.dl)
---&gt; 166         for o in enumerate(self.dl): self.one_batch(*o)
-    167 
-    168     def _do_one_batch(self):
-
-~/git/fastai/fastai/data/load.py in __iter__(self)
-    107         self.before_iter()
-    108         self.__idxs=self.get_idxs() # called in context of main process (not workers/subprocesses)
---&gt; 109         for b in _loaders[self.fake_l.num_workers==0](self.fake_l):
-    110             if self.device is not None: b = to_device(b, self.device)
-    111             yield self.after_batch(b)
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in __next__(self)
-    515             if self._sampler_iter is None:
-    516                 self._reset()
---&gt; 517             data = self._next_data()
-    518             self._num_yielded += 1
-    519             if self._dataset_kind == _DatasetKind.Iterable and \
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _next_data(self)
-   1180 
-   1181             assert not self._shutdown and self._tasks_outstanding &gt; 0
--&gt; 1182             idx, data = self._get_data()
-   1183             self._tasks_outstanding -= 1
-   1184             if self._dataset_kind == _DatasetKind.Iterable:
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _get_data(self)
-   1146         else:
-   1147             while True:
--&gt; 1148                 success, data = self._try_get_data()
-   1149                 if success:
-   1150                     return data
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/utils/data/dataloader.py in _try_get_data(self, timeout)
-    984         #   (bool: whether successfully get data, any: data if successful else None)
-    985         try:
---&gt; 986             data = self._data_queue.get(timeout=timeout)
-    987             return (True, data)
-    988         except Exception as e:
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/queues.py in get(self, block, timeout)
-    111                 self._rlock.release()
-    112         # unserialize the data after having released the lock
---&gt; 113         return _ForkingPickler.loads(res)
-    114 
-    115     def qsize(self):
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/site-packages/torch/multiprocessing/reductions.py in rebuild_storage_fd(cls, df, size)
-    280 
-    281 def rebuild_storage_fd(cls, df, size):
---&gt; 282     fd = df.detach()
-    283     try:
-    284         storage = storage_from_cache(cls, fd_id(fd))
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/resource_sharer.py in detach(self)
-     55         def detach(self):
-     56             &#39;&#39;&#39;Get the fd.  This should only be called once.&#39;&#39;&#39;
----&gt; 57             with _resource_sharer.get_connection(self._id) as conn:
-     58                 return reduction.recv_handle(conn)
-     59 
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/resource_sharer.py in get_connection(ident)
-     85         from .connection import Client
-     86         address, key = ident
----&gt; 87         c = Client(address, authkey=process.current_process().authkey)
-     88         c.send((key, os.getpid()))
-     89         return c
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in Client(address, family, authkey)
-    496 
-    497     if authkey is not None:
---&gt; 498         answer_challenge(c, authkey)
-    499         deliver_challenge(c, authkey)
-    500 
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in answer_challenge(connection, authkey)
-    744     message = message[len(CHALLENGE):]
-    745     digest = hmac.new(authkey, message, &#39;md5&#39;).digest()
---&gt; 746     connection.send_bytes(digest)
-    747     response = connection.recv_bytes(256)        # reject large message
-    748     if response != WELCOME:
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in send_bytes(self, buf, offset, size)
-    198         elif offset + size &gt; n:
-    199             raise ValueError(&quot;buffer length &lt; offset + size&quot;)
---&gt; 200         self._send_bytes(m[offset:offset + size])
-    201 
-    202     def send(self, obj):
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in _send_bytes(self, buf)
-    402             # Also note we want to avoid sending a 0-length buffer separately,
-    403             # to avoid &quot;broken pipe&quot; errors if the other end closed the pipe.
---&gt; 404             self._send(header + buf)
-    405 
-    406     def _recv_bytes(self, maxsize=None):
-
-~/miniconda3/envs/icedl-dev/lib/python3.7/multiprocessing/connection.py in _send(self, buf, write)
-    366         remaining = len(buf)
-    367         while True:
---&gt; 368             n = write(self._handle, buf)
-    369             remaining -= n
-    370             if remaining == 0:
-
-KeyboardInterrupt: 
-</code></pre></div>
-</div>
-### Training using Lightning
-
-
+<h3 id="training-using-lightning">Training using Lightning</h3>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">SGD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">5e-4</span><span class="p">)</span>
 
 <span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
-
-
-<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+</code></pre></div>
+</div>
 
-## Show Results
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  | Name  | Type     | Params
+-----------------------------------
+0 | model | MaskRCNN | 44.0 M
+-----------------------------------
+43.7 M    Trainable params
+225 K     Non-trainable params
+44.0 M    Total params
+175.885   Total estimated model params size (MB)
 
+Validation sanity check: 0it [00:00, ?it/s]
 
+/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 4. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+  warning_cache.warn(
+/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:412: UserWarning: The number of training samples (34) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+  rank_zero_warn(
+
+Training: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 2. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
+  warning_cache.warn(
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+</code></pre></div>
+</div>
+<h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-
-
-
-![png](images/getting_started_instance_segmentation/getting_started_instance_segmentation_36_0.png)
-
-
-
-## Inference
-
-### Predicting a batch of images
-
-Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. 
-
-
-> NOTE: For a more detailed look at inference check out the [inference tutorial](https://airctic.com/dev/inference/)
-
-
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_37_0.png" /></p>
+<h2 id="inference">Inference</h2>
+<h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
+<p>Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. </p>
+<blockquote>
+<p>NOTE: For a more detailed look at inference check out the <a href="https://airctic.com/dev/inference/">inference tutorial</a></p>
+</blockquote>
 <div class="highlight"><pre><span></span><code><span class="n">batch</span><span class="p">,</span> <span class="n">records</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
-
-
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-
-
 <div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>  0%|          | 0/9 [00:00&lt;?, ?it/s]
-
----------------------------------------------------------------------------
-
-TypeError                                 Traceback (most recent call last)
-
-&lt;ipython-input-44-0404657b7fb5&gt; in &lt;module&gt;
-----&gt; 1 show_preds(preds=preds[:4], ncols=3)
 </code></pre></div>
 </div>
 
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>~/git/icevision/icevision/visualize/show_data.py in show_preds(preds, denormalize_fn, display_label, display_bbox, display_mask, figsize, show, annotations, ncols, **draw_sample_kwargs)
-    210         figsize=figsize or (6, 6 * len(preds) / 2 / 0.75),
-    211         show=show,
---&gt; 212         axs_per_iter=2,
-    213     )
-
-~/git/icevision/icevision/utils/imageio.py in plot_grid(fs, ncols, figsize, show, axs_per_iter, **kwargs)
-     94 
-     95     for f, ax in zip(fs, axs):
----&gt; 96         f(ax=ax)
-     97 
-     98     plt.tight_layout()
-
-~/git/icevision/icevision/imports.py in __call__(self, *args, **kwargs)
-     84 
-     85     def __call__(self, *args, **kwargs):
----&gt; 86         return self._partial(*args, **kwargs)
-     87 
-     88     def __str__(self):
-
-~/git/icevision/icevision/visualize/show_data.py in show_pred(pred, denormalize_fn, display_label, display_bbox, display_mask, show, ax, figsize, annotation, **draw_sample_kwargs)
-     83         display_bbox=display_bbox,
-     84         display_mask=display_mask,
----&gt; 85         denormalize_fn=denormalize_fn,
-     86     )
-     87 
-
-~/git/icevision/icevision/visualize/draw_data.py in draw_sample(sample, class_map, denormalize_fn, display_label, display_bbox, display_score, display_mask, display_keypoints, font_path, font_size, label_color, label_border_color, label_thin_border, label_pad_width_factor, label_pad_height_factor, mask_blend, mask_border_thickness, color_map, prettify, prettify_func, return_as_pil_img, exclude_labels, include_only, multiple_classification_spacing_factor, dynamic_font_size_div_factor, include_classification_task_names, include_instances_task_names)
-    121             masks,
-    122             getattr(composite, &quot;keypoints&quot;, []),
---&gt; 123             getattr(composite, &quot;scores&quot;, []),
-    124         ):
-    125             # random color by default
-
-TypeError: zip_longest argument #3 must support iteration
-</code></pre></div>
-</div>
-
-![png](images/getting_started_instance_segmentation/getting_started_instance_segmentation_41_1.png)
-
-
-
-## Happy Learning!
-
-If you need any assistance, feel free to join our [forum](https://discord.gg/JDBeZYK).
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_42_0.png" /></p>
+<h2 id="happy-learning">Happy Learning!</h2>
+<p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
               
               
