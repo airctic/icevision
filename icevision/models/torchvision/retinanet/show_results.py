@@ -6,9 +6,7 @@ from icevision.models.torchvision.retinanet.dataloaders import (
     valid_dl,
     infer_dl,
 )
-from icevision.models.torchvision.retinanet.prediction import (
-    predict_from_dl,
-)
+from icevision.models.torchvision.retinanet.prediction import predict_from_dl
 
 _LOSSES_DICT = {
     "classification": [],
