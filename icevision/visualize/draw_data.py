@@ -91,13 +91,17 @@ def draw_sample(
         if task == "segmentation":
             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
             if composite.mask_array is None:
-                if len(composite.masks) > 1:
-                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
-                else:
+                if isinstance(composite.masks[0], RLE):
                     masks = [
                         mask.to_mask(img.shape[1], img.shape[0]).data
                         for mask in composite.masks
                     ]
+                elif isinstance(composite.masks[0], EncodedRLEs):
+                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
+                elif isinstance(composite.masks[0], MaskArray):
+                    mask = composite.masks[0]
+                else:
+                    raise ValueError("Mask has to be of they RLE, EncodedRLEs or MaskArray.")
             else:
                 mask = composite.mask_array
             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
@@ -121,13 +125,17 @@ def draw_sample(
         # HACK
         if hasattr(composite, "masks"):
             if composite.mask_array is None:
-                if len(composite.masks) > 1:
-                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
-                else:
+                if isinstance(composite.masks[0], RLE):
                     masks = [
                         mask.to_mask(img.shape[1], img.shape[0]).data
                         for mask in composite.masks
                     ]
+                elif isinstance(composite.masks[0], EncodedRLEs):
+                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
+                elif isinstance(composite.masks[0], MaskArray):
+                    mask = composite.masks[0]
+                else:
+                    raise ValueError("Mask has to be of they RLE, EncodedRLEs or MaskArray.")
             else:
                 masks = composite.mask_array
         else:
