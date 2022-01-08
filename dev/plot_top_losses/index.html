@@ -1118,13 +1118,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-top_plot_losses-on-a-retinanet-pretrained-but-not-finetuned-model" class="md-nav__link">
-    Run top_plot_losses on a retinanet pretrained (but not finetuned) model
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model" class="md-nav__link">
     Run top_plot_losses on a efficientdet pretrained (but not finetuned) model
   </a>
@@ -1176,26 +1169,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#mmdet-models-integration" class="md-nav__link">
-    mmdet models integration
-  </a>
-  
-    <nav class="md-nav" aria-label="mmdet models integration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#fcos-weighted-loss-example" class="md-nav__link">
-    fcos weighted loss example
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1227,7 +1200,7 @@
 <h2 id="load-fridge-dataset">Load <code>fridge</code> dataset</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
 <span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
 <span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
@@ -1240,15 +1213,6 @@
 <span class="c1"># Records</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=20380998.0), HTML(value=&#39;&#39;)))
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=128.0), HTML(value=&#39;&#39;)))
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
-</code></pre></div>
-</div>
-
 <div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
 <span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 <span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
@@ -1257,25 +1221,33 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=128.0), HTML
 <span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="train-faster_rcnn-model">Train <code>faster_rcnn</code> model</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
-</code></pre></div>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></p>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth&quot; to /root/.cache/torch/hub/checkpoints/fasterrcnn_resnet50_fpn_coco-258fb6c6.pth
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=167502836.0), HTML(value=&#39;&#39;)))
+[33m[1m[1mWARNING [0m[33m[1m[0m - [33m[1mThis function will be deprecated, instantiate the concrete classes instead: `VOCBBoxParser`, `VOCMaskParser`[0m | [36micevision.parsers.voc_parser[0m:[36mvoc[0m:[36m17[0m
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
-
+<h2 id="train-faster_rcnn-model">Train <code>faster_rcnn</code> model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">))</span> 
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1290,28 +1262,19 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=167502836.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.929798</td>
-      <td>0.745340</td>
-      <td>0.110503</td>
+      <td>3.995082</td>
+      <td>1.145674</td>
+      <td>0.000057</td>
       <td>00:09</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>0.801614</td>
-      <td>0.534930</td>
-      <td>0.287367</td>
-      <td>00:06</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>0.683533</td>
-      <td>0.503273</td>
-      <td>0.254913</td>
-      <td>00:07</td>
     </tr>
   </tbody>
 </table>
 
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+</code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1325,37 +1288,72 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=167502836.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>4.777527</td>
-      <td>0.727937</td>
-      <td>0.112012</td>
-      <td>00:11</td>
+      <td>1.193951</td>
+      <td>1.648449</td>
+      <td>0.032289</td>
+      <td>00:13</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>2.675926</td>
-      <td>0.900404</td>
-      <td>0.087199</td>
-      <td>00:09</td>
+      <td>0.985826</td>
+      <td>0.735072</td>
+      <td>0.000160</td>
+      <td>00:10</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.949393</td>
-      <td>0.676135</td>
-      <td>0.063974</td>
-      <td>00:09</td>
+      <td>0.924974</td>
+      <td>0.794665</td>
+      <td>0.018933</td>
+      <td>00:10</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.550345</td>
-      <td>0.538352</td>
-      <td>0.075615</td>
-      <td>00:09</td>
+      <td>0.893960</td>
+      <td>0.844737</td>
+      <td>0.052620</td>
+      <td>00:10</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.305145</td>
-      <td>0.539530</td>
-      <td>0.101115</td>
+      <td>0.893976</td>
+      <td>0.812259</td>
+      <td>0.183922</td>
+      <td>00:11</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.880687</td>
+      <td>0.681532</td>
+      <td>0.173614</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.858650</td>
+      <td>0.665555</td>
+      <td>0.247655</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.818621</td>
+      <td>0.510320</td>
+      <td>0.337507</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.776634</td>
+      <td>0.518227</td>
+      <td>0.360398</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.736172</td>
+      <td>0.486833</td>
+      <td>0.372902</td>
       <td>00:09</td>
     </tr>
   </tbody>
@@ -1377,36 +1375,30 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=167502836.0)
   (calculates weighted sum of the 4 losses - <em>Note</em>: I have set weights to <code>0.25</code> for example purposes)</li>
 </ul>
 <p>Below we show several ways of invoking the same API on the trained model, sorting samples by different losses combinations.</p>
-<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_21_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_classifier&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_20_5.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_classifier&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_21_5.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_22_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># in this case `loss_weighted` will be equal to `loss_box_reg`</span>
 <span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
@@ -1418,21 +1410,18 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(
         <span class="p">},</span>
     <span class="p">}</span>
 
-<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_22_5.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_23_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
         <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1443,72 +1432,70 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(
         <span class="p">},</span>
     <span class="p">}</span>
 
-<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">faster_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_23_5.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_24_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># `losses_stats` contains useful statistics for each computed loss in the dataset</span>
 <span class="n">losses_stats</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># we can easily extract losses per image and display them in a pandas DataFrame for further analysis</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">icevision.models.interpretation</span> <span class="kn">import</span> <span class="n">get_samples_losses</span>
 
 <span class="n">loss_per_image</span> <span class="o">=</span> <span class="n">get_samples_losses</span><span class="p">(</span><span class="n">samples_plus_losses</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">loss_per_image</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>{&#39;loss_box_reg&#39;: {&#39;1ile&#39;: 0.05190576612949371,
-  &#39;25ile&#39;: 0.2035452425479889,
-  &#39;50ile&#39;: 0.2641611248254776,
-  &#39;75ile&#39;: 0.3478182256221771,
-  &#39;99ile&#39;: 0.5161057710647583,
-  &#39;max&#39;: 0.5161057710647583,
-  &#39;mean&#39;: 0.2718363240934335,
-  &#39;min&#39;: 0.05190576612949371},
- &#39;loss_classifier&#39;: {&#39;1ile&#39;: 0.0807231068611145,
-  &#39;25ile&#39;: 0.1814981997013092,
-  &#39;50ile&#39;: 0.25537528097629547,
-  &#39;75ile&#39;: 0.32677075266838074,
-  &#39;99ile&#39;: 0.4015304148197174,
-  &#39;max&#39;: 0.4015304148197174,
-  &#39;mean&#39;: 0.24639798099031815,
-  &#39;min&#39;: 0.0807231068611145},
- &#39;loss_objectness&#39;: {&#39;1ile&#39;: 5.380709990276955e-05,
-  &#39;25ile&#39;: 0.0020654327236115932,
-  &#39;50ile&#39;: 0.006522084586322308,
-  &#39;75ile&#39;: 0.010207928717136383,
-  &#39;99ile&#39;: 0.030636457726359367,
-  &#39;max&#39;: 0.030636457726359367,
-  &#39;mean&#39;: 0.007866157029499075,
-  &#39;min&#39;: 5.380709990276955e-05},
- &#39;loss_rpn_box_reg&#39;: {&#39;1ile&#39;: 0.0014084185240790248,
-  &#39;25ile&#39;: 0.008392253890633583,
-  &#39;50ile&#39;: 0.014501482248306274,
-  &#39;75ile&#39;: 0.017447534948587418,
-  &#39;99ile&#39;: 0.03517897427082062,
-  &#39;max&#39;: 0.03517897427082062,
-  &#39;mean&#39;: 0.013996926015422035,
-  &#39;min&#39;: 0.0014084185240790248},
- &#39;loss_total&#39;: {&#39;1ile&#39;: 0.13555445312522352,
-  &#39;25ile&#39;: 0.4158565173856914,
-  &#39;50ile&#39;: 0.5547791894059628,
-  &#39;75ile&#39;: 0.7083070203661919,
-  &#39;99ile&#39;: 0.9351915549486876,
-  &#39;max&#39;: 0.9351915549486876,
-  &#39;mean&#39;: 0.5400973881286728,
-  &#39;min&#39;: 0.13555445312522352}}
+<div class="highlight"><pre><span></span><code>{&#39;loss_classifier&#39;: {&#39;min&#39;: 0.06532751768827438,
+  &#39;max&#39;: 0.3570514917373657,
+  &#39;mean&#39;: 0.22153257807860008,
+  &#39;1ile&#39;: 0.06532751768827438,
+  &#39;25ile&#39;: 0.17143525183200836,
+  &#39;50ile&#39;: 0.23105227947235107,
+  &#39;75ile&#39;: 0.2811724841594696,
+  &#39;99ile&#39;: 0.3570514917373657},
+ &#39;loss_box_reg&#39;: {&#39;min&#39;: 0.04955608770251274,
+  &#39;max&#39;: 0.41760146617889404,
+  &#39;mean&#39;: 0.24227395410147998,
+  &#39;1ile&#39;: 0.04955608770251274,
+  &#39;25ile&#39;: 0.16739314794540405,
+  &#39;50ile&#39;: 0.23787736147642136,
+  &#39;75ile&#39;: 0.3278003931045532,
+  &#39;99ile&#39;: 0.41760146617889404},
+ &#39;loss_objectness&#39;: {&#39;min&#39;: 0.0017869938164949417,
+  &#39;max&#39;: 0.10180316120386124,
+  &#39;mean&#39;: 0.016076406804271616,
+  &#39;1ile&#39;: 0.0017869938164949417,
+  &#39;25ile&#39;: 0.007386505138128996,
+  &#39;50ile&#39;: 0.010415146127343178,
+  &#39;75ile&#39;: 0.018654515966773033,
+  &#39;99ile&#39;: 0.10180316120386124},
+ &#39;loss_rpn_box_reg&#39;: {&#39;min&#39;: 0.001359554473310709,
+  &#39;max&#39;: 0.02417410910129547,
+  &#39;mean&#39;: 0.008536153078938905,
+  &#39;1ile&#39;: 0.001359554473310709,
+  &#39;25ile&#39;: 0.0056922342628240585,
+  &#39;50ile&#39;: 0.007792716380208731,
+  &#39;75ile&#39;: 0.010672150179743767,
+  &#39;99ile&#39;: 0.02417410910129547},
+ &#39;loss_total&#39;: {&#39;min&#39;: 0.11875081108883023,
+  &#39;max&#39;: 0.7295006141066551,
+  &#39;mean&#39;: 0.4884190920632906,
+  &#39;1ile&#39;: 0.11875081108883023,
+  &#39;25ile&#39;: 0.3626828184351325,
+  &#39;50ile&#39;: 0.5204635132104158,
+  &#39;75ile&#39;: 0.6233997480012476,
+  &#39;99ile&#39;: 0.7295006141066551}}
 </code></pre></div>
 </div>
 <div>
@@ -1532,383 +1519,340 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>filepath</th>
       <th>loss_classifier</th>
       <th>loss_box_reg</th>
       <th>loss_objectness</th>
       <th>loss_rpn_box_reg</th>
       <th>loss_total</th>
       <th>loss_weighted</th>
+      <th>filepath</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/70.jpg</td>
-      <td>0.401530</td>
-      <td>0.516106</td>
-      <td>0.003187</td>
-      <td>0.014368</td>
-      <td>0.935192</td>
-      <td>0.233798</td>
+      <td>0.296700</td>
+      <td>0.417601</td>
+      <td>0.007554</td>
+      <td>0.007645</td>
+      <td>0.729501</td>
+      <td>0.182375</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/86.jpg</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/65.jpg</td>
-      <td>0.361605</td>
-      <td>0.396446</td>
-      <td>0.004368</td>
-      <td>0.035179</td>
-      <td>0.797597</td>
-      <td>0.199399</td>
+      <td>0.345282</td>
+      <td>0.344900</td>
+      <td>0.021045</td>
+      <td>0.006102</td>
+      <td>0.717329</td>
+      <td>0.179332</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/90.jpg</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/69.jpg</td>
-      <td>0.325730</td>
-      <td>0.436458</td>
-      <td>0.007038</td>
-      <td>0.021536</td>
-      <td>0.790761</td>
-      <td>0.197690</td>
+      <td>0.357051</td>
+      <td>0.327800</td>
+      <td>0.020415</td>
+      <td>0.008122</td>
+      <td>0.713388</td>
+      <td>0.178347</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/80.jpg</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/82.jpg</td>
-      <td>0.336966</td>
-      <td>0.380997</td>
-      <td>0.030636</td>
-      <td>0.014635</td>
-      <td>0.763234</td>
-      <td>0.190809</td>
+      <td>0.301462</td>
+      <td>0.354785</td>
+      <td>0.015013</td>
+      <td>0.015807</td>
+      <td>0.687068</td>
+      <td>0.171767</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/65.jpg</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/76.jpg</td>
-      <td>0.344810</td>
-      <td>0.397597</td>
-      <td>0.007009</td>
-      <td>0.011474</td>
-      <td>0.760891</td>
-      <td>0.190223</td>
+      <td>0.232049</td>
+      <td>0.370708</td>
+      <td>0.019768</td>
+      <td>0.010672</td>
+      <td>0.633197</td>
+      <td>0.158299</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/41.jpg</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/91.jpg</td>
-      <td>0.347157</td>
-      <td>0.377784</td>
-      <td>0.013784</td>
-      <td>0.014169</td>
-      <td>0.752894</td>
-      <td>0.188223</td>
+      <td>0.296007</td>
+      <td>0.310065</td>
+      <td>0.014165</td>
+      <td>0.008247</td>
+      <td>0.628484</td>
+      <td>0.157121</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/81.jpg</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/73.jpg</td>
-      <td>0.334780</td>
-      <td>0.347818</td>
-      <td>0.008493</td>
-      <td>0.017216</td>
-      <td>0.708307</td>
-      <td>0.177077</td>
+      <td>0.211539</td>
+      <td>0.393251</td>
+      <td>0.011715</td>
+      <td>0.006894</td>
+      <td>0.623400</td>
+      <td>0.155850</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/87.jpg</td>
     </tr>
     <tr>
       <th>7</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/63.jpg</td>
-      <td>0.326771</td>
-      <td>0.343447</td>
-      <td>0.003026</td>
-      <td>0.020271</td>
-      <td>0.693515</td>
-      <td>0.173379</td>
+      <td>0.271977</td>
+      <td>0.331191</td>
+      <td>0.012193</td>
+      <td>0.007269</td>
+      <td>0.622630</td>
+      <td>0.155657</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/48.jpg</td>
     </tr>
     <tr>
       <th>8</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/125.jpg</td>
-      <td>0.284659</td>
-      <td>0.318850</td>
-      <td>0.008986</td>
-      <td>0.012640</td>
-      <td>0.625135</td>
-      <td>0.156284</td>
+      <td>0.281172</td>
+      <td>0.282685</td>
+      <td>0.026252</td>
+      <td>0.014193</td>
+      <td>0.604303</td>
+      <td>0.151076</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/37.jpg</td>
     </tr>
     <tr>
       <th>9</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/51.jpg</td>
-      <td>0.253484</td>
-      <td>0.333823</td>
-      <td>0.006035</td>
-      <td>0.008696</td>
-      <td>0.602038</td>
-      <td>0.150509</td>
+      <td>0.260208</td>
+      <td>0.324138</td>
+      <td>0.008174</td>
+      <td>0.011745</td>
+      <td>0.604265</td>
+      <td>0.151066</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/74.jpg</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/66.jpg</td>
-      <td>0.282760</td>
-      <td>0.277893</td>
-      <td>0.008295</td>
-      <td>0.024600</td>
-      <td>0.593548</td>
-      <td>0.148387</td>
+      <td>0.278057</td>
+      <td>0.261131</td>
+      <td>0.018655</td>
+      <td>0.007381</td>
+      <td>0.565223</td>
+      <td>0.141306</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
     </tr>
     <tr>
       <th>11</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/42.jpg</td>
-      <td>0.257737</td>
-      <td>0.299093</td>
-      <td>0.016960</td>
-      <td>0.017189</td>
-      <td>0.590978</td>
-      <td>0.147745</td>
+      <td>0.235263</td>
+      <td>0.310668</td>
+      <td>0.002415</td>
+      <td>0.007940</td>
+      <td>0.556287</td>
+      <td>0.139072</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/46.jpg</td>
     </tr>
     <tr>
       <th>12</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/59.jpg</td>
-      <td>0.257267</td>
-      <td>0.262500</td>
-      <td>0.021031</td>
-      <td>0.022185</td>
-      <td>0.562983</td>
-      <td>0.140746</td>
+      <td>0.299006</td>
+      <td>0.214321</td>
+      <td>0.009115</td>
+      <td>0.011385</td>
+      <td>0.533828</td>
+      <td>0.133457</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/36.jpg</td>
     </tr>
     <tr>
       <th>13</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/90.jpg</td>
-      <td>0.260042</td>
-      <td>0.265823</td>
-      <td>0.004306</td>
-      <td>0.016405</td>
-      <td>0.546575</td>
-      <td>0.136644</td>
+      <td>0.230056</td>
+      <td>0.258252</td>
+      <td>0.008532</td>
+      <td>0.010260</td>
+      <td>0.507099</td>
+      <td>0.126775</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/40.jpg</td>
     </tr>
     <tr>
       <th>14</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/109.jpg</td>
-      <td>0.248338</td>
-      <td>0.260444</td>
-      <td>0.018180</td>
-      <td>0.017427</td>
-      <td>0.544389</td>
-      <td>0.136097</td>
+      <td>0.220261</td>
+      <td>0.210022</td>
+      <td>0.007387</td>
+      <td>0.005692</td>
+      <td>0.443363</td>
+      <td>0.110841</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/115.jpg</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/16.jpg</td>
-      <td>0.221121</td>
-      <td>0.255459</td>
-      <td>0.002065</td>
-      <td>0.005470</td>
-      <td>0.484115</td>
-      <td>0.121029</td>
+      <td>0.171435</td>
+      <td>0.145327</td>
+      <td>0.101803</td>
+      <td>0.024174</td>
+      <td>0.442740</td>
+      <td>0.110685</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/109.jpg</td>
     </tr>
     <tr>
       <th>16</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
-      <td>0.228037</td>
-      <td>0.208443</td>
-      <td>0.013820</td>
-      <td>0.018261</td>
-      <td>0.468562</td>
-      <td>0.117141</td>
+      <td>0.233022</td>
+      <td>0.204496</td>
+      <td>0.003368</td>
+      <td>0.001360</td>
+      <td>0.442246</td>
+      <td>0.110562</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/47.jpg</td>
     </tr>
     <tr>
       <th>17</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/80.jpg</td>
-      <td>0.218763</td>
-      <td>0.217823</td>
-      <td>0.007633</td>
-      <td>0.017448</td>
-      <td>0.461667</td>
-      <td>0.115417</td>
+      <td>0.202497</td>
+      <td>0.217503</td>
+      <td>0.008341</td>
+      <td>0.010180</td>
+      <td>0.438521</td>
+      <td>0.109630</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/31.jpg</td>
     </tr>
     <tr>
       <th>18</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/33.jpg</td>
-      <td>0.211880</td>
-      <td>0.199396</td>
-      <td>0.010208</td>
-      <td>0.016371</td>
-      <td>0.437855</td>
-      <td>0.109464</td>
+      <td>0.206598</td>
+      <td>0.164179</td>
+      <td>0.051936</td>
+      <td>0.015769</td>
+      <td>0.438482</td>
+      <td>0.109621</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/25.jpg</td>
     </tr>
     <tr>
       <th>19</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/123.jpg</td>
-      <td>0.181498</td>
-      <td>0.219479</td>
-      <td>0.001994</td>
-      <td>0.012886</td>
-      <td>0.415857</td>
-      <td>0.103964</td>
+      <td>0.145833</td>
+      <td>0.187863</td>
+      <td>0.018361</td>
+      <td>0.010626</td>
+      <td>0.362683</td>
+      <td>0.090671</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/59.jpg</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/100.jpg</td>
-      <td>0.121183</td>
-      <td>0.203545</td>
-      <td>0.000172</td>
-      <td>0.001678</td>
-      <td>0.326578</td>
-      <td>0.081645</td>
+      <td>0.118557</td>
+      <td>0.171712</td>
+      <td>0.002909</td>
+      <td>0.001784</td>
+      <td>0.294962</td>
+      <td>0.073740</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/127.jpg</td>
     </tr>
     <tr>
       <th>21</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/102.jpg</td>
-      <td>0.141722</td>
-      <td>0.161956</td>
-      <td>0.000054</td>
-      <td>0.002683</td>
-      <td>0.306415</td>
-      <td>0.076604</td>
+      <td>0.103582</td>
+      <td>0.167393</td>
+      <td>0.014592</td>
+      <td>0.006817</td>
+      <td>0.292384</td>
+      <td>0.073096</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/12.jpg</td>
     </tr>
     <tr>
       <th>22</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/19.jpg</td>
-      <td>0.129916</td>
-      <td>0.137039</td>
-      <td>0.000416</td>
-      <td>0.007992</td>
-      <td>0.275363</td>
-      <td>0.068841</td>
+      <td>0.180912</td>
+      <td>0.102142</td>
+      <td>0.002801</td>
+      <td>0.002640</td>
+      <td>0.288496</td>
+      <td>0.072124</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/19.jpg</td>
     </tr>
     <tr>
       <th>23</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/3.jpg</td>
-      <td>0.134473</td>
-      <td>0.104869</td>
-      <td>0.005156</td>
-      <td>0.008392</td>
-      <td>0.252891</td>
-      <td>0.063223</td>
+      <td>0.118964</td>
+      <td>0.102546</td>
+      <td>0.007565</td>
+      <td>0.004681</td>
+      <td>0.233756</td>
+      <td>0.058439</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/110.jpg</td>
     </tr>
     <tr>
       <th>24</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/4.jpg</td>
-      <td>0.113395</td>
-      <td>0.092752</td>
-      <td>0.000150</td>
-      <td>0.003340</td>
-      <td>0.209638</td>
-      <td>0.052409</td>
+      <td>0.097024</td>
+      <td>0.074887</td>
+      <td>0.002125</td>
+      <td>0.002476</td>
+      <td>0.176512</td>
+      <td>0.044128</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/100.jpg</td>
     </tr>
     <tr>
       <th>25</th>
-      <td>/root/.icevision/data/fridge/odFridgeObjects/images/1.jpg</td>
-      <td>0.080723</td>
-      <td>0.051906</td>
-      <td>0.001517</td>
-      <td>0.001408</td>
-      <td>0.135554</td>
-      <td>0.033889</td>
+      <td>0.065328</td>
+      <td>0.049556</td>
+      <td>0.001787</td>
+      <td>0.002080</td>
+      <td>0.118751</td>
+      <td>0.029688</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/106.jpg</td>
     </tr>
   </tbody>
 </table>
 </div>
 
-<h2 id="run-top_plot_losses-on-a-retinanet-pretrained-but-not-finetuned-model">Run <code>top_plot_losses</code> on a <code>retinanet</code> pretrained (but not finetuned) model</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">retinanet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/retinanet_resnet50_fpn_coco-eeacb38b.pth&quot; to /root/.cache/torch/hub/checkpoints/retinanet_resnet50_fpn_coco-eeacb38b.pth
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=136595076.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span> 
-      <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;loss_classification&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
-                <span class="s2">&quot;loss_bbox_regression&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>
-                <span class="p">}</span>
-        <span class="p">}</span>
-
-<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">retinanet</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classification&#39;, &#39;loss_bbox_regression&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
-
-/usr/local/lib/python3.6/dist-packages/torch/nn/_reduction.py:44: UserWarning: size_average and reduce args will be deprecated, please use reduction=&#39;sum&#39; instead.
-  warnings.warn(warning.format(ret))
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_28_6.png" /></p>
 <h2 id="run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model">Run <code>top_plot_losses</code> on a <code>efficientdet</code> pretrained (but not finetuned) model</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s1">&#39;tf_efficientdet_lite0&#39;</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="mi">384</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
+<span class="c1"># The efficientdet model requires an img_size parameter</span>
+<span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;class_loss&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;class_loss&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_lite0-f5f303a9.pth&quot; to /root/.cache/torch/hub/checkpoints/tf_efficientdet_lite0-f5f303a9.pth
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;effdet_total_loss&#39;, &#39;class_loss&#39;, &#39;box_loss&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;effdet_total_loss&#39;, &#39;class_loss&#39;, &#39;box_loss&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=26.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+
+/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
+  indices_all = cls_topk_indices_all // num_classes
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=4.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_31_5.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_29_4.png" /></p>
 <h1 id="instance-segmentation">Instance Segmentation</h1>
 <h2 id="plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset"><code>plot_top_losses</code> in action with a <code>mask_rcnn</code> model on the <code>pennfudan</code> dataset</h2>
-<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">class_map</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">class_map</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
 </code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># train_ds, valid_ds = icedata.pennfudan.dataset(data_dir)</span>
+<span class="n">train_rs</span><span class="p">,</span> <span class="n">valid_rs</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_rs</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_rs</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></p>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=53723336.0), HTML(value=&#39;&#39;)))
+<div class="highlight"><pre><span></span><code>  0%|          | 0/170 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/170 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
-
-<div class="highlight"><pre><span></span><code><span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-
-<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-
-<span class="n">shift_scale_rotate</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">ShiftScaleRotate</span><span class="p">(</span><span class="n">rotate_limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">crop_fn</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">RandomSizedCrop</span><span class="p">,</span> <span class="n">min_max_height</span><span class="o">=</span><span class="p">(</span><span class="mi">384</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="mi">384</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">348</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">,</span> <span class="n">shift_scale_rotate</span><span class="o">=</span><span class="n">shift_scale_rotate</span><span class="p">,</span> <span class="n">crop_fn</span><span class="o">=</span><span class="n">crop_fn</span><span class="p">),</span>
-        <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(),</span>
-    <span class="p">]</span>
-<span class="p">)</span>
-
-<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
-<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
-
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=170.0), HTML(value=&#39;&#39;)))
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">class_map</span><span class="p">))</span>
-
-<span class="n">learn</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
-<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">5e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth&quot; to /root/.cache/torch/hub/checkpoints/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=178090079.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1921,19 +1865,26 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=178090079.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.702523</td>
-      <td>0.555716</td>
-      <td>00:18</td>
+      <td>1.950177</td>
+      <td>0.444139</td>
+      <td>00:32</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.657636</td>
-      <td>0.522894</td>
-      <td>00:14</td>
+      <td>0.936212</td>
+      <td>0.439992</td>
+      <td>00:28</td>
     </tr>
   </tbody>
 </table>
 
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
+  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
+/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
+  warnings.warn(
+</code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1946,84 +1897,83 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=178090079.0)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.551434</td>
-      <td>0.377621</td>
-      <td>00:20</td>
+      <td>0.374806</td>
+      <td>0.344675</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.469830</td>
-      <td>0.448473</td>
-      <td>00:19</td>
+      <td>0.347379</td>
+      <td>0.350029</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.472173</td>
-      <td>0.364438</td>
-      <td>00:19</td>
+      <td>0.336716</td>
+      <td>0.364372</td>
+      <td>00:25</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.437653</td>
-      <td>0.338397</td>
-      <td>00:19</td>
+      <td>0.329699</td>
+      <td>0.333309</td>
+      <td>00:28</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.375957</td>
-      <td>0.342569</td>
-      <td>00:19</td>
+      <td>0.315138</td>
+      <td>0.344930</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.385508</td>
-      <td>0.317213</td>
-      <td>00:20</td>
+      <td>0.308043</td>
+      <td>0.340804</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.371840</td>
-      <td>0.343802</td>
-      <td>00:19</td>
+      <td>0.289543</td>
+      <td>0.312908</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.356101</td>
-      <td>0.358258</td>
-      <td>00:19</td>
+      <td>0.278561</td>
+      <td>0.327445</td>
+      <td>00:26</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.484352</td>
-      <td>0.322044</td>
-      <td>00:19</td>
+      <td>0.266237</td>
+      <td>0.310647</td>
+      <td>00:25</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.339008</td>
-      <td>0.312049</td>
-      <td>00:19</td>
+      <td>0.262186</td>
+      <td>0.310190</td>
+      <td>00:26</td>
     </tr>
   </tbody>
 </table>
 
-<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">mask_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_mask&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_mask&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_mask&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_rpn_cls&#39;, &#39;loss_rpn_bbox&#39;, &#39;loss_cls&#39;, &#39;loss_bbox&#39;, &#39;loss_mask&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=34.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/34 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/5 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=5.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_37_5.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_39_3.png" /></p>
 <h1 id="keypoint-detection">Keypoint Detection</h1>
 <h2 id="plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset"><code>plot_top_losses</code> in action with a <code>keypoint_rcnn</code> model on the <code>biwi</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">keypoint_rcnn</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
 
@@ -2038,31 +1988,25 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=34.0), HTML(
 <span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=593774.0), HTML(value=&#39;&#39;)))
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=200.0), HTML(value=&#39;&#39;)))
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m126[0m
+<p><div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet18_fpn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_keypoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">backbones</span><span class="o">.</span><span class="n">resnet_fpn</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_keypoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/resnet18-5c106cde.pth&quot; to /root/.cache/torch/hub/checkpoints/resnet18-5c106cde.pth
-
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=46827520.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/593774 [00:00&lt;?, ?B/s]
+
+  0%|          | 0/200 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/200 [00:00&lt;?, ?it/s]
 </code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -2075,15 +2019,15 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=46827520.0),
   <tbody>
     <tr>
       <td>0</td>
-      <td>9.269516</td>
-      <td>8.537302</td>
-      <td>00:35</td>
+      <td>9.133101</td>
+      <td>7.838448</td>
+      <td>00:57</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>8.527759</td>
-      <td>7.503790</td>
-      <td>00:16</td>
+      <td>8.182481</td>
+      <td>6.926270</td>
+      <td>00:28</td>
     </tr>
   </tbody>
 </table>
@@ -2100,113 +2044,49 @@ HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=46827520.0),
   <tbody>
     <tr>
       <td>0</td>
-      <td>7.033783</td>
-      <td>6.651293</td>
-      <td>00:22</td>
+      <td>6.294706</td>
+      <td>5.840428</td>
+      <td>00:46</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>6.630652</td>
-      <td>5.782725</td>
-      <td>00:24</td>
+      <td>5.892668</td>
+      <td>5.038722</td>
+      <td>00:25</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>6.220629</td>
-      <td>5.254831</td>
-      <td>00:15</td>
+      <td>5.503245</td>
+      <td>4.533072</td>
+      <td>00:27</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>5.921734</td>
-      <td>5.051409</td>
-      <td>00:19</td>
+      <td>5.199810</td>
+      <td>4.395931</td>
+      <td>00:28</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>5.713860</td>
-      <td>4.953146</td>
-      <td>00:17</td>
+      <td>4.986382</td>
+      <td>4.209587</td>
+      <td>00:22</td>
     </tr>
   </tbody>
 </table>
 
-<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">keypoint_rcnn</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_keypoint&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_keypoint&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_keypoint&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m206[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_keypoint&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
 
-HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=40.0), HTML(value=&#39;&#39;)))
+  0%|          | 0/40 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/5 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>HBox(children=(HTML(value=&#39;&#39;), FloatProgress(value=0.0, max=5.0), HTML(value=&#39;&#39;)))
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_43_5.png" /></p>
-<h1 id="mmdet-models-integration"><code>mmdet</code> models integration</h1>
-<h2 id="fcos-weighted-loss-example"><code>fcos</code> weighted loss example</h2>
-<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">fridge</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-
-<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
-</code></pre></div>
-<p><div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">fcos</span>
-
-<span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">224</span>
-<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
-
-<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">train_tfms</span><span class="p">)</span>
-<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">valid_tfms</span><span class="p">)</span>
-
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="nb">len</span><span class="p">(</span><span class="n">train_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dl</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">config_path</span> <span class="o">=</span> <span class="s2">&quot;~/mmdetection/configs/fcos/fcos_center_r50_caffe_fpn_gn-head_1x_coco.py&quot;</span>
-<span class="n">weights_path</span> <span class="o">=</span> <span class="kc">None</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">weights_path</span><span class="o">=</span><span class="n">weights_path</span><span class="p">)</span>
-</code></pre></div></p>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>100%|██████████| 128/128 [00:00&lt;00:00, 970.67it/s]
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m132[0m
-
-(10, 10)
-
-2021-02-16 22:56:47,939 - mmdet - INFO - load model from: open-mmlab://detectron/resnet50_caffe
-2021-02-16 22:56:48,046 - mmdet - WARNING - The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>unexpected key in source state_dict: conv1.bias, layer1.0.conv1.bias, layer1.0.conv2.bias, layer1.0.conv3.bias, layer1.0.downsample.0.bias, layer1.1.conv1.bias, layer1.1.conv2.bias, layer1.1.conv3.bias, layer1.2.conv1.bias, layer1.2.conv2.bias, layer1.2.conv3.bias, layer2.0.conv1.bias, layer2.0.conv2.bias, layer2.0.conv3.bias, layer2.0.downsample.0.bias, layer2.1.conv1.bias, layer2.1.conv2.bias, layer2.1.conv3.bias, layer2.2.conv1.bias, layer2.2.conv2.bias, layer2.2.conv3.bias, layer2.3.conv1.bias, layer2.3.conv2.bias, layer2.3.conv3.bias, layer3.0.conv1.bias, layer3.0.conv2.bias, layer3.0.conv3.bias, layer3.0.downsample.0.bias, layer3.1.conv1.bias, layer3.1.conv2.bias, layer3.1.conv3.bias, layer3.2.conv1.bias, layer3.2.conv2.bias, layer3.2.conv3.bias, layer3.3.conv1.bias, layer3.3.conv2.bias, layer3.3.conv3.bias, layer3.4.conv1.bias, layer3.4.conv2.bias, layer3.4.conv3.bias, layer3.5.conv1.bias, layer3.5.conv2.bias, layer3.5.conv3.bias, layer4.0.conv1.bias, layer4.0.conv2.bias, layer4.0.conv3.bias, layer4.0.downsample.0.bias, layer4.1.conv1.bias, layer4.1.conv2.bias, layer4.1.conv3.bias, layer4.2.conv1.bias, layer4.2.conv2.bias, layer4.2.conv3.bias
-</code></pre></div>
-</div>
-
-<div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;loss_cls&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;loss_bbox&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;loss_centerness&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">}</span>
-
-<span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_centerness&#39;, &#39;loss_cls&#39;, &#39;loss_bbox&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m211[0m
-100%|██████████| 10/10 [00:03&lt;00:00,  2.75it/s]
-100%|██████████| 2/2 [00:02&lt;00:00,  1.43s/it]
-</code></pre></div>
-</div>
-
-<p><img alt="svg" src="plot_top_losses_files/plot_top_losses_48_1.svg" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_46_3.png" /></p>
                 
               
               

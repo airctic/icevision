@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/camvid_low/">
+        <link rel="canonical" href="https://airctic.com/dev/getting_started_semantic_segmentation/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.0">
     
     
       
-        <title>Camvid low - IceVision</title>
+        <title>Getting started semantic segmentation - IceVision</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#coco" class="md-skip">
+        <a href="#getting-started-with-semantic-segmentation-using-icevision" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Camvid low
+              Getting started semantic segmentation
             
           </span>
         </div>
@@ -1074,6 +1074,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1082,8 +1084,50 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#coco" class="md-nav__link">
-    COCO
+  <a href="#install" class="md-nav__link">
+    Install
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-and-parsing-the-data" class="md-nav__link">
+    Getting and parsing the data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transforms-and-datasets" class="md-nav__link">
+    Transforms and datasets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unet-model-and-dataloaders" class="md-nav__link">
+    UNET model and dataloaders
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-and-training-the-fastai-learner" class="md-nav__link">
+    Defining and training the fastai learner
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inference" class="md-nav__link">
+    Inference
   </a>
   
 </li>
@@ -1101,29 +1145,27 @@
               
                 
                 
-                  <h1>Camvid low</h1>
-                
-                <div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
-<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
-</code></pre></div>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_semantic_segmentation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="getting-started-with-semantic-segmentation-using-icevision">Getting Started with Semantic Segmentation using IceVision</h1>
+<h2 id="install">Install</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
-<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
-
-<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
-<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
-</code></pre></div>
+<h2 id="imports">Imports</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+</code></pre></div>
+</div>
+<h2 id="getting-and-parsing-the-data">Getting and parsing the data</h2>
 <div class="highlight"><pre><span></span><code><span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://s3.amazonaws.com/fast-ai-sample/camvid_tiny.tgz&#39;</span>
 <span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="s1">&#39;camvid_tiny&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;camvid_tiny&#39;</span>
 </code></pre></div>
-<p><div class="highlight"><pre><span></span><code><span class="n">codes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;codes.txt&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">codes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;codes.txt&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 <span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">codes</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">images_dir</span> <span class="o">=</span> <span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;images&#39;</span>
@@ -1149,17 +1191,16 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">sample_records</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">show_records</span><span class="p">(</span><span class="n">sample_records</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div></p>
+</code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/2314212 [00:00&lt;?, ?B/s]
-
-  0%|          | 0/100 [00:00&lt;?, ?it/s]
+<div class="highlight"><pre><span></span><code>  0%|          | 0/100 [00:00&lt;?, ?it/s]
 
   0%|          | 0/100 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/camvid_low/camvid_low_9_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_12_0.png" /></p>
+<h2 id="transforms-and-datasets">Transforms and datasets</h2>
 <div class="highlight"><pre><span></span><code><span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">384</span>
 <span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">presize</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">presize</span><span class="o">*</span><span class="mf">.75</span><span class="p">)),</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mf">.75</span><span class="p">))</span>
 
@@ -1176,14 +1217,8 @@
 <div class="highlight"><pre><span></span><code><span class="n">ds_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">ds_samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/camvid_low/camvid_low_12_0.png" /></p>
-<h2 id="coco">COCO</h2>
-<p>[
-{image_id: 2, segmentation: Polygon(23, 45, 12, 67),
-{image_id: 2, segmentation: Polygon(12, 876, 345, 765),
-]</p>
-<p>Instance segmentation: (20, 512, 512); labels = [bike, car, bike, person, ...]
-Semantic segmentation: (512, 512)</p>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_16_0.png" /></p>
+<h2 id="unet-model-and-dataloaders">UNET model and dataloaders</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">unet</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1192,7 +1227,8 @@ Semantic segmentation: (512, 512)</p>
 <div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet34</span><span class="p">()</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
 </code></pre></div>
-<p><div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">accuracy_camvid</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+<h2 id="defining-and-training-the-fastai-learner">Defining and training the <code>fastai</code> learner</h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">accuracy_camvid</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
     <span class="c1"># ignores void pixels</span>
     <span class="n">keep_idxs</span> <span class="o">=</span> <span class="n">target</span> <span class="o">!=</span> <span class="n">class_map</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s1">&#39;Void&#39;</span><span class="p">)</span>
     <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="n">keep_idxs</span><span class="p">]</span>
@@ -1203,18 +1239,14 @@ Semantic segmentation: (512, 512)</p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">accuracy_camvid</span><span class="p">])</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
-</code></pre></div></p>
+</code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://download.pytorch.org/models/resnet34-333f7ec4.pth&quot; to /home/lgvaz/.cache/torch/hub/checkpoints/resnet34-333f7ec4.pth
-
-  0%|          | 0.00/83.3M [00:00&lt;?, ?B/s]
-
-SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.00015848931798245758)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=9.120108734350652e-05)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/camvid_low/camvid_low_20_2.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_24_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1229,10 +1261,10 @@ SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.00015848931798245758)
   <tbody>
     <tr>
       <td>0</td>
-      <td>3.355970</td>
-      <td>2.791769</td>
-      <td>0.477911</td>
-      <td>00:07</td>
+      <td>3.392160</td>
+      <td>2.630378</td>
+      <td>0.255401</td>
+      <td>00:09</td>
     </tr>
   </tbody>
 </table>
@@ -1250,97 +1282,96 @@ SuggestedLRs(lr_min=0.00020892962347716094, lr_steep=0.00015848931798245758)
   <tbody>
     <tr>
       <td>0</td>
-      <td>2.383541</td>
-      <td>2.173135</td>
-      <td>0.552900</td>
+      <td>2.602331</td>
+      <td>2.325062</td>
+      <td>0.440709</td>
       <td>00:07</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>2.028430</td>
-      <td>1.761778</td>
-      <td>0.593276</td>
+      <td>2.381318</td>
+      <td>1.799831</td>
+      <td>0.530444</td>
       <td>00:07</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.831391</td>
-      <td>1.660434</td>
-      <td>0.629597</td>
+      <td>2.142349</td>
+      <td>1.332237</td>
+      <td>0.668531</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1.917440</td>
+      <td>1.123698</td>
+      <td>0.693745</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>1.747154</td>
+      <td>0.993772</td>
+      <td>0.751023</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>1.598631</td>
+      <td>0.996451</td>
+      <td>0.762109</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>1.491493</td>
+      <td>0.948187</td>
+      <td>0.774137</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.395746</td>
+      <td>0.869413</td>
+      <td>0.793335</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.311806</td>
+      <td>0.876654</td>
+      <td>0.794053</td>
+      <td>00:07</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>1.256938</td>
+      <td>0.868124</td>
+      <td>0.796351</td>
       <td>00:07</td>
     </tr>
   </tbody>
 </table>
 
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/camvid_low/camvid_low_22_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_26_0.png" /></p>
+<h2 id="inference">Inference</h2>
+<div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+<span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+</code></pre></div>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_28_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">([</span><span class="n">valid_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">],</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">show_sample</span><span class="p">(</span><span class="n">preds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pred</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/5 [00:00&lt;?, ?it/s]
-
----------------------------------------------------------------------------
-
-AttributeError                            Traceback (most recent call last)
-
-&lt;ipython-input-22-0404657b7fb5&gt; in &lt;module&gt;
-----&gt; 1 show_preds(preds=preds[:4], ncols=3)
+<div class="highlight"><pre><span></span><code>  0%|          | 0/1 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>~/git/icevision/icevision/visualize/show_data.py in show_preds(preds, denormalize_fn, display_label, display_bbox, display_mask, figsize, show, annotations, ncols, **draw_sample_kwargs)
-    210         figsize=figsize or (6, 6 * len(preds) / 2 / 0.75),
-    211         show=show,
---&gt; 212         axs_per_iter=2,
-    213     )
-
-~/git/icevision/icevision/utils/imageio.py in plot_grid(fs, ncols, figsize, show, axs_per_iter, **kwargs)
-     94 
-     95     for f, ax in zip(fs, axs):
----&gt; 96         f(ax=ax)
-     97 
-     98     plt.tight_layout()
-
-~/git/icevision/icevision/imports.py in __call__(self, *args, **kwargs)
-     84 
-     85     def __call__(self, *args, **kwargs):
----&gt; 86         return self._partial(*args, **kwargs)
-     87 
-     88     def __str__(self):
-
-~/git/icevision/icevision/visualize/show_data.py in show_pred(pred, denormalize_fn, display_label, display_bbox, display_mask, show, ax, figsize, annotation, **draw_sample_kwargs)
-     83         display_bbox=display_bbox,
-     84         display_mask=display_mask,
----&gt; 85         denormalize_fn=denormalize_fn,
-     86     )
-     87 
-
-~/git/icevision/icevision/visualize/draw_data.py in draw_sample(sample, class_map, denormalize_fn, display_label, display_bbox, display_score, display_mask, display_keypoints, font_path, font_size, label_color, label_border_color, label_thin_border, label_pad_width_factor, label_pad_height_factor, mask_blend, mask_border_thickness, color_map, prettify, prettify_func, return_as_pil_img, exclude_labels, include_only, multiple_classification_spacing_factor, dynamic_font_size_div_factor, include_classification_task_names, include_instances_task_names)
-     92             cm = rand_cmap(sample.segmentation.class_map.num_classes, verbose=False)
-     93             mask = composite.mask_array
----&gt; 94             return draw_segmentation_mask(img, mask, cm, display_mask=display_mask)
-     95 
-     96         # Should break if no ClassMap found in composite.
-
-~/git/icevision/icevision/visualize/draw_data.py in draw_segmentation_mask(img, mask, cmap, display_mask, alpha)
-    571         w, h = img.size
-    572         mask_arr = np.zeros((h, w, 3), dtype=np.uint8)
---&gt; 573         mask = mask.data.squeeze()
-    574 
-    575         assert mask.shape == (h, w), (
-
-AttributeError: &#39;NoneType&#39; object has no attribute &#39;data&#39;
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/camvid_low/camvid_low_24_1.png" /></p>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_30_0.png" /></p>
                 
               
               
