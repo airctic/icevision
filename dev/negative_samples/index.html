@@ -1322,6 +1322,10 @@
 <p>The dataset is stored on github, so a simple <code>git clone</code> will do.</p>
 <div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">datitran</span><span class="o">/</span><span class="n">raccoon_dataset</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>fatal: destination path &#39;raccoon_dataset&#39; already exists and is not an empty directory.
+</code></pre></div>
+</div>
 <p>The raccoon dataset uses the VOC annotation format, icevision natively supports this format:</p>
 <div class="highlight"><pre><span></span><code><span class="n">raccoon_data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;raccoon_dataset&#39;</span><span class="p">)</span>
 <span class="n">raccoon_parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">raccoon_data_dir</span> <span class="o">/</span><span class="s1">&#39;annotations&#39;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">raccoon_data_dir</span> <span class="o">/</span><span class="s1">&#39;images&#39;</span><span class="p">)</span>
@@ -1331,6 +1335,15 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">raccoon_train_records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/200 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/200 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
 <p><img alt="png" src="../images/negative_samples/negative_samples_16_0.png" /></p>
 <h2 id="pets-dataset">Pets dataset</h2>
 <p>With icedata we can easily download the pets dataset:</p>
@@ -1348,13 +1361,13 @@
         super().__init__(template_record=template_record)
     def __iter__(self) -&gt; Any:
     def __len__(self) -&gt; int:
-    def record_id(self, o) -&gt; Hashable:
-    def parse_fields(self, o, record, is_new):
+    def record_id(self, o: Any) -&gt; Hashable:
+    def parse_fields(self, o: Any, record: BaseRecord, is_new: bool):
         record.set_img_size(&lt;ImgSize&gt;)
         record.set_filepath(&lt;Union[str, Path]&gt;)
+        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
         record.detection.set_class_map(&lt;ClassMap&gt;)
         record.detection.add_labels(&lt;Sequence[Hashable]&gt;)
-        record.detection.add_bboxes(&lt;Sequence[BBox]&gt;)
 </code></pre></div>
 </div>
 <p>And now we use that to fill the required methods. We don't have to use the <code>.detection</code> methods since we don't want bboxes for these images.</p>
@@ -1383,6 +1396,15 @@
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">show_records</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">pets_train_records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/7390 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/7390 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
 <p><img alt="png" src="../images/negative_samples/negative_samples_28_0.png" /></p>
 <h2 id="transforms">Transforms</h2>
 <p>Let's define a simple list of transforms, they are the same for both datasets.</p>
@@ -1394,23 +1416,27 @@
 </code></pre></div>
 <h2 id="datasets-and-dataloaders">Datasets and DataLoaders</h2>
 <p>We create the raccoon dataset and dataloader as normal:</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">8</span>
+</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">raccoon_train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">raccoon_valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 
-<span class="n">raccoon_train_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">raccoon_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">raccoon_valid_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">raccoon_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">raccoon_train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">raccoon_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">raccoon_valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">raccoon_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <p>For adding the pets data, we simply have to combine the list of records. Note that the pets dataset contains a lot more images than the raccoon dataset, so we'll get only 100 images for train and 30 for valid, feel free to change these numbers and explore the results!</p>
 <div class="highlight"><pre><span></span><code><span class="n">combined_train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_train_records</span> <span class="o">+</span> <span class="n">pets_train_records</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">combined_valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">raccoon_valid_records</span> <span class="o">+</span> <span class="n">pets_valid_records</span><span class="p">[:</span><span class="mi">30</span><span class="p">],</span> <span class="n">valid_tfms</span><span class="p">)</span>
 
-<span class="n">combined_train_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">combined_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">combined_valid_dl</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">combined_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">combined_train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">combined_train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">combined_valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">combined_valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 <p>Let's take a look at the combined dataset:</p>
 <div class="highlight"><pre><span></span><code><span class="n">show_samples</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">combined_train_ds</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">),</span> <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/negative_samples/negative_samples_38_0.png" /></p>
+<p><img alt="png" src="../images/negative_samples/negative_samples_40_0.png" /></p>
 <h2 id="metrics">Metrics</h2>
 <p>As usual, let's stick with our <code>COCOMetric</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
@@ -1418,13 +1444,29 @@
 <h2 id="models">Models</h2>
 <p>We're now ready to train a separate model for each dataset and see how the results change!</p>
 <h3 id="raccoons-only">Raccoons only</h3>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">raccoon_model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
-<span class="n">raccoon_learn</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">raccoon_train_dl</span><span class="p">,</span> <span class="n">raccoon_valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">raccoon_model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+    <span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> 
+    <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> 
+    <span class="n">img_size</span><span class="o">=</span><span class="n">size</span>
+<span class="p">)</span>
+
+<span class="n">raccoon_learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span>
+    <span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">raccoon_train_dl</span><span class="p">,</span> <span class="n">raccoon_valid_dl</span><span class="p">],</span> 
+    <span class="n">model</span><span class="o">=</span><span class="n">raccoon_model</span><span class="p">,</span> 
+    <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span>
+<span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">raccoon_learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=0.005248074419796467)
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/negative_samples/negative_samples_49_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">raccoon_learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
   <thead>
@@ -1439,42 +1481,47 @@
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.747288</td>
-      <td>1.354049</td>
-      <td>0.000296</td>
-      <td>00:08</td>
+      <td>1.597212</td>
+      <td>1.354181</td>
+      <td>0.000307</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>1.536247</td>
-      <td>1.372290</td>
-      <td>0.002133</td>
-      <td>00:06</td>
+      <td>1.480324</td>
+      <td>1.354777</td>
+      <td>0.001507</td>
+      <td>00:04</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.346514</td>
-      <td>1.235068</td>
-      <td>0.065862</td>
-      <td>00:06</td>
+      <td>1.319088</td>
+      <td>1.254850</td>
+      <td>0.034810</td>
+      <td>00:04</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.147257</td>
-      <td>1.136243</td>
-      <td>0.159568</td>
-      <td>00:06</td>
+      <td>1.087830</td>
+      <td>1.081156</td>
+      <td>0.053211</td>
+      <td>00:04</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.003974</td>
-      <td>1.082577</td>
-      <td>0.131702</td>
-      <td>00:06</td>
+      <td>0.928458</td>
+      <td>0.898133</td>
+      <td>0.098449</td>
+      <td>00:04</td>
     </tr>
   </tbody>
 </table>
 
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/ppotrykus/anaconda3/envs/icevision-dev/lib/python3.8/site-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
+  indices_all = cls_topk_indices_all // num_classes
+</code></pre></div>
+</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1488,224 +1535,233 @@
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.556644</td>
-      <td>0.960585</td>
-      <td>0.284111</td>
-      <td>00:08</td>
+      <td>0.579946</td>
+      <td>0.861432</td>
+      <td>0.069980</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.536918</td>
-      <td>0.872882</td>
-      <td>0.365284</td>
-      <td>00:08</td>
+      <td>0.571890</td>
+      <td>0.824743</td>
+      <td>0.077679</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.508285</td>
-      <td>0.826196</td>
-      <td>0.341167</td>
-      <td>00:08</td>
+      <td>0.546770</td>
+      <td>0.768505</td>
+      <td>0.090791</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.491788</td>
-      <td>0.718738</td>
-      <td>0.389929</td>
-      <td>00:08</td>
+      <td>0.518292</td>
+      <td>0.676042</td>
+      <td>0.382004</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.477697</td>
-      <td>0.623467</td>
-      <td>0.394723</td>
-      <td>00:08</td>
+      <td>0.507741</td>
+      <td>0.644902</td>
+      <td>0.433709</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.464236</td>
-      <td>0.636479</td>
-      <td>0.403623</td>
-      <td>00:07</td>
+      <td>0.495793</td>
+      <td>0.692048</td>
+      <td>0.240042</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.453317</td>
-      <td>0.608919</td>
-      <td>0.409568</td>
-      <td>00:08</td>
+      <td>0.471785</td>
+      <td>0.577972</td>
+      <td>0.508806</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.445977</td>
-      <td>0.692406</td>
-      <td>0.330556</td>
-      <td>00:07</td>
+      <td>0.456929</td>
+      <td>0.624429</td>
+      <td>0.383962</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.431024</td>
-      <td>0.654473</td>
-      <td>0.411304</td>
-      <td>00:07</td>
+      <td>0.436571</td>
+      <td>0.644672</td>
+      <td>0.429864</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.417715</td>
-      <td>0.603621</td>
-      <td>0.394563</td>
-      <td>00:07</td>
+      <td>0.426388</td>
+      <td>0.581951</td>
+      <td>0.486592</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.404465</td>
-      <td>0.664019</td>
-      <td>0.410722</td>
-      <td>00:08</td>
+      <td>0.398668</td>
+      <td>0.562105</td>
+      <td>0.508463</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.393347</td>
-      <td>0.791837</td>
-      <td>0.349207</td>
-      <td>00:08</td>
+      <td>0.384981</td>
+      <td>0.508337</td>
+      <td>0.543620</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.380127</td>
-      <td>0.571296</td>
-      <td>0.441543</td>
-      <td>00:07</td>
+      <td>0.366980</td>
+      <td>0.497647</td>
+      <td>0.554876</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.365624</td>
-      <td>0.581066</td>
-      <td>0.493645</td>
-      <td>00:07</td>
+      <td>0.357205</td>
+      <td>0.494502</td>
+      <td>0.553882</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.356092</td>
-      <td>0.560838</td>
-      <td>0.485373</td>
-      <td>00:07</td>
+      <td>0.343215</td>
+      <td>0.491536</td>
+      <td>0.568322</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.347702</td>
-      <td>0.596353</td>
-      <td>0.479297</td>
-      <td>00:07</td>
+      <td>0.326071</td>
+      <td>0.490430</td>
+      <td>0.584215</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.336457</td>
-      <td>0.518080</td>
-      <td>0.526282</td>
-      <td>00:07</td>
+      <td>0.322718</td>
+      <td>0.501275</td>
+      <td>0.553775</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.326160</td>
-      <td>0.517299</td>
-      <td>0.506950</td>
-      <td>00:07</td>
+      <td>0.311050</td>
+      <td>0.486727</td>
+      <td>0.592019</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.312393</td>
-      <td>0.527800</td>
-      <td>0.478262</td>
-      <td>00:08</td>
+      <td>0.299104</td>
+      <td>0.476103</td>
+      <td>0.588887</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.303629</td>
-      <td>0.503981</td>
-      <td>0.503308</td>
-      <td>00:07</td>
+      <td>0.297170</td>
+      <td>0.500982</td>
+      <td>0.536913</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>20</td>
-      <td>0.297672</td>
-      <td>0.505081</td>
-      <td>0.494659</td>
-      <td>00:07</td>
+      <td>0.286925</td>
+      <td>0.482961</td>
+      <td>0.560512</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>21</td>
-      <td>0.291259</td>
-      <td>0.499499</td>
-      <td>0.513842</td>
-      <td>00:08</td>
+      <td>0.278372</td>
+      <td>0.486913</td>
+      <td>0.544892</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>22</td>
-      <td>0.281656</td>
-      <td>0.492497</td>
-      <td>0.513260</td>
-      <td>00:07</td>
+      <td>0.272823</td>
+      <td>0.497099</td>
+      <td>0.557630</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>23</td>
-      <td>0.275641</td>
-      <td>0.488630</td>
-      <td>0.534297</td>
-      <td>00:07</td>
+      <td>0.271815</td>
+      <td>0.485606</td>
+      <td>0.560342</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>24</td>
-      <td>0.273479</td>
-      <td>0.515775</td>
-      <td>0.521623</td>
-      <td>00:07</td>
+      <td>0.261464</td>
+      <td>0.475296</td>
+      <td>0.577226</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>25</td>
-      <td>0.270986</td>
-      <td>0.533966</td>
-      <td>0.491943</td>
-      <td>00:07</td>
+      <td>0.260394</td>
+      <td>0.479651</td>
+      <td>0.566950</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>26</td>
-      <td>0.264893</td>
-      <td>0.516566</td>
-      <td>0.528829</td>
-      <td>00:07</td>
+      <td>0.256806</td>
+      <td>0.477946</td>
+      <td>0.575284</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>27</td>
-      <td>0.262945</td>
-      <td>0.497911</td>
-      <td>0.532670</td>
-      <td>00:07</td>
+      <td>0.257800</td>
+      <td>0.480531</td>
+      <td>0.576717</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>28</td>
-      <td>0.260062</td>
-      <td>0.489442</td>
-      <td>0.524715</td>
-      <td>00:08</td>
+      <td>0.257753</td>
+      <td>0.484309</td>
+      <td>0.560253</td>
+      <td>00:05</td>
     </tr>
     <tr>
       <td>29</td>
-      <td>0.254210</td>
-      <td>0.488340</td>
-      <td>0.534543</td>
-      <td>00:08</td>
+      <td>0.253717</td>
+      <td>0.482582</td>
+      <td>0.566893</td>
+      <td>00:05</td>
     </tr>
   </tbody>
 </table>
 
 <p>If only raccoon photos are showed during training, everything is a raccoon!</p>
-<div class="highlight"><pre><span></span><code><span class="n">efficientdet</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">raccoon_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">raccoon_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/negative_samples/negative_samples_49_0.png" /></p>
+<p><img alt="png" src="../images/negative_samples/negative_samples_52_0.png" /></p>
 <h3 id="raccoons-pets">Raccoons + pets</h3>
-<div class="highlight"><pre><span></span><code><span class="n">combined_model</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
-<span class="n">combined_learn</span> <span class="o">=</span> <span class="n">efficientdet</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">combined_train_dl</span><span class="p">,</span> <span class="n">combined_valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">combined_model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">combined_model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+    <span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> 
+    <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">raccoon_parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> 
+    <span class="n">img_size</span><span class="o">=</span><span class="n">size</span>
+<span class="p">)</span>
+
+<span class="n">combined_learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span>
+    <span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">combined_train_dl</span><span class="p">,</span> <span class="n">combined_valid_dl</span><span class="p">],</span> 
+    <span class="n">model</span><span class="o">=</span><span class="n">combined_model</span><span class="p">,</span> 
+    <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span>
+<span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">combined_learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
@@ -1722,38 +1778,38 @@
   <tbody>
     <tr>
       <td>0</td>
-      <td>2.629423</td>
-      <td>16.484606</td>
-      <td>0.000362</td>
-      <td>00:10</td>
+      <td>2.676468</td>
+      <td>20.114677</td>
+      <td>0.001932</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>2.326190</td>
-      <td>10.975664</td>
-      <td>0.006295</td>
-      <td>00:10</td>
+      <td>1.999201</td>
+      <td>2.396560</td>
+      <td>0.075933</td>
+      <td>00:06</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>1.823228</td>
-      <td>16.245941</td>
-      <td>0.109865</td>
-      <td>00:10</td>
+      <td>1.456598</td>
+      <td>32.068226</td>
+      <td>0.075432</td>
+      <td>00:06</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.527442</td>
-      <td>49.796238</td>
-      <td>0.086900</td>
-      <td>00:10</td>
+      <td>1.105171</td>
+      <td>27.473427</td>
+      <td>0.141161</td>
+      <td>00:06</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.251809</td>
-      <td>39.998779</td>
-      <td>0.069102</td>
-      <td>00:10</td>
+      <td>0.951076</td>
+      <td>24.071144</td>
+      <td>0.057629</td>
+      <td>00:06</td>
     </tr>
   </tbody>
 </table>
@@ -1771,221 +1827,221 @@
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.872557</td>
-      <td>20.347977</td>
-      <td>0.154616</td>
-      <td>00:12</td>
+      <td>0.610488</td>
+      <td>9.588224</td>
+      <td>0.115317</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.763502</td>
-      <td>10.243771</td>
-      <td>0.224684</td>
-      <td>00:11</td>
+      <td>0.580771</td>
+      <td>6.247436</td>
+      <td>0.336951</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.711195</td>
-      <td>10.047447</td>
-      <td>0.234970</td>
-      <td>00:11</td>
+      <td>0.559531</td>
+      <td>4.243937</td>
+      <td>0.357085</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.661595</td>
-      <td>6.806975</td>
-      <td>0.285452</td>
-      <td>00:11</td>
+      <td>0.520752</td>
+      <td>1.651748</td>
+      <td>0.401737</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.609079</td>
-      <td>4.103896</td>
-      <td>0.270586</td>
-      <td>00:11</td>
+      <td>0.519708</td>
+      <td>2.837212</td>
+      <td>0.371190</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.577907</td>
-      <td>2.187822</td>
-      <td>0.322366</td>
-      <td>00:12</td>
+      <td>0.521373</td>
+      <td>6.292931</td>
+      <td>0.328725</td>
+      <td>00:09</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.557430</td>
-      <td>2.126654</td>
-      <td>0.268614</td>
-      <td>00:11</td>
+      <td>0.476777</td>
+      <td>2.089493</td>
+      <td>0.456670</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.535719</td>
-      <td>1.525599</td>
-      <td>0.330552</td>
-      <td>00:11</td>
+      <td>0.499804</td>
+      <td>6.462561</td>
+      <td>0.316811</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.537557</td>
-      <td>7.515461</td>
-      <td>0.302180</td>
-      <td>00:11</td>
+      <td>0.981566</td>
+      <td>21.373594</td>
+      <td>0.285337</td>
+      <td>00:09</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.516761</td>
-      <td>6.857810</td>
-      <td>0.349205</td>
-      <td>00:11</td>
+      <td>0.986519</td>
+      <td>12.665498</td>
+      <td>0.379301</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.491282</td>
-      <td>4.321424</td>
-      <td>0.428389</td>
-      <td>00:12</td>
+      <td>0.717527</td>
+      <td>8.835299</td>
+      <td>0.468607</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.474612</td>
-      <td>4.784684</td>
-      <td>0.376503</td>
-      <td>00:11</td>
+      <td>0.584880</td>
+      <td>7.107671</td>
+      <td>0.488671</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.459131</td>
-      <td>4.136829</td>
-      <td>0.285586</td>
-      <td>00:11</td>
+      <td>0.497443</td>
+      <td>6.248025</td>
+      <td>0.465282</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.445324</td>
-      <td>2.872945</td>
-      <td>0.374402</td>
-      <td>00:11</td>
+      <td>0.495668</td>
+      <td>4.710539</td>
+      <td>0.476700</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.422465</td>
-      <td>1.711623</td>
-      <td>0.399955</td>
-      <td>00:11</td>
+      <td>0.484720</td>
+      <td>1.786158</td>
+      <td>0.453496</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.402938</td>
-      <td>2.038269</td>
-      <td>0.424111</td>
-      <td>00:12</td>
+      <td>0.419404</td>
+      <td>2.497736</td>
+      <td>0.438899</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.382965</td>
-      <td>1.591949</td>
-      <td>0.442361</td>
-      <td>00:11</td>
+      <td>0.379092</td>
+      <td>2.484356</td>
+      <td>0.502668</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.368094</td>
-      <td>0.904978</td>
-      <td>0.485397</td>
-      <td>00:11</td>
+      <td>0.362614</td>
+      <td>1.563345</td>
+      <td>0.490237</td>
+      <td>00:09</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.357877</td>
-      <td>0.632512</td>
-      <td>0.498205</td>
-      <td>00:11</td>
+      <td>0.337136</td>
+      <td>1.657581</td>
+      <td>0.538952</td>
+      <td>00:09</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.336768</td>
-      <td>0.472029</td>
-      <td>0.469013</td>
-      <td>00:11</td>
+      <td>0.316169</td>
+      <td>1.152076</td>
+      <td>0.509543</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>20</td>
-      <td>0.338500</td>
-      <td>0.427688</td>
-      <td>0.511560</td>
-      <td>00:11</td>
+      <td>0.304117</td>
+      <td>1.089841</td>
+      <td>0.521393</td>
+      <td>00:07</td>
     </tr>
     <tr>
       <td>21</td>
-      <td>0.333879</td>
-      <td>0.548746</td>
-      <td>0.465288</td>
-      <td>00:11</td>
+      <td>0.299743</td>
+      <td>1.460610</td>
+      <td>0.500326</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>22</td>
-      <td>0.323725</td>
-      <td>0.739504</td>
-      <td>0.543710</td>
-      <td>00:11</td>
+      <td>0.278153</td>
+      <td>1.020550</td>
+      <td>0.489060</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>23</td>
-      <td>0.312402</td>
-      <td>0.875822</td>
-      <td>0.529362</td>
-      <td>00:11</td>
+      <td>0.265477</td>
+      <td>0.737581</td>
+      <td>0.546207</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>24</td>
-      <td>0.383150</td>
-      <td>0.737657</td>
-      <td>0.549364</td>
-      <td>00:11</td>
+      <td>0.252644</td>
+      <td>0.702136</td>
+      <td>0.494025</td>
+      <td>00:09</td>
     </tr>
     <tr>
       <td>25</td>
-      <td>0.364561</td>
-      <td>1.356293</td>
-      <td>0.508299</td>
-      <td>00:11</td>
+      <td>0.248898</td>
+      <td>0.650576</td>
+      <td>0.548857</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>26</td>
-      <td>0.365999</td>
-      <td>1.194988</td>
-      <td>0.515767</td>
-      <td>00:11</td>
+      <td>0.273597</td>
+      <td>0.597172</td>
+      <td>0.544202</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>27</td>
-      <td>0.353583</td>
-      <td>0.990942</td>
-      <td>0.525482</td>
-      <td>00:12</td>
+      <td>0.263164</td>
+      <td>0.943378</td>
+      <td>0.550043</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>28</td>
-      <td>0.344147</td>
-      <td>0.887491</td>
-      <td>0.531592</td>
-      <td>00:11</td>
+      <td>0.243946</td>
+      <td>0.758281</td>
+      <td>0.553848</td>
+      <td>00:08</td>
     </tr>
     <tr>
       <td>29</td>
-      <td>0.332661</td>
-      <td>0.863412</td>
-      <td>0.521443</td>
-      <td>00:11</td>
+      <td>0.245725</td>
+      <td>0.694360</td>
+      <td>0.548657</td>
+      <td>00:09</td>
     </tr>
   </tbody>
 </table>
 
 <p>When negative samples are used during training, the model get's way better understading what <strong>is not</strong> a raccoon.</p>
-<div class="highlight"><pre><span></span><code><span class="n">efficientdet</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">combined_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">combined_model</span><span class="p">,</span> <span class="n">combined_valid_ds</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/negative_samples/negative_samples_54_0.png" /></p>
+<p><img alt="png" src="../images/negative_samples/negative_samples_57_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>That's it folks! If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
