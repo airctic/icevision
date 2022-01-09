@@ -8,6 +8,7 @@ from icevision.models.mmdet.models import cornernet
 from icevision.models.mmdet.models import centripetalnet
 from icevision.models.mmdet.models import sparse_rcnn
 from icevision.models.mmdet.models import ssd
+from icevision.models.mmdet.models import detr
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
