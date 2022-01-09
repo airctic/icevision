@@ -27,6 +27,9 @@ class RecordCollection:
         new._records = IndexableDict([(record.record_id, record) for record in records])
         return new
 
+    def __add__(self, other):
+        return self.new([*self._records.values(), *other._records.values()])
+
     def make_splits(self, data_splitter: DataSplitter):
         record_id_splits = data_splitter.split(self)
         return [

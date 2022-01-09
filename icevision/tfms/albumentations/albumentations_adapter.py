@@ -277,9 +277,9 @@ class Adapter(Transform, Composite):
         record.setup_transform(tfm=self)
 
         # TODO: composing every time
-        tfms = self.create_tfms()
+        albu_tfms = self.create_tfms()
         # apply transform
-        self._albu_out = tfms(**self._albu_in)
+        self._albu_out = albu_tfms(**self._albu_in)
 
         # store additional info (might be used by components on `collect`)
         height, width, _ = self._albu_out["image"].shape
