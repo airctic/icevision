@@ -31,4 +31,6 @@ case ${platform} in
       pip install icedata -U -q
       echo "icevision installation finished!"
       ;; 
-esac 
+esac
+# a workaround regarding opencv in colab issue: https://github.com/airctic/icevision/issues/1012
+pip install opencv-python-headless==4.1.2.30

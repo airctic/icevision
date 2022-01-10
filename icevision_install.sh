@@ -71,6 +71,8 @@ case ${icevision_version} in
       echo "- Installing yolov5-icevision" 
       pip install yolov5-icevision --upgrade -q
       ;;
-  esac 
+  esac
 
+# a workaround regarding opencv in colab issue: https://github.com/airctic/icevision/issues/1012
+pip install opencv-python-headless==4.1.2.30
 echo "icevision installation finished!"  
