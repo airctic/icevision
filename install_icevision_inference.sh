@@ -21,13 +21,13 @@ case ${platform} in
       
       
       echo "- Installing icevision and icedata"
-      pip install git+git://github.com/airctic/icevision.git#egg=icevision[inference] -U -q
+      pip install git+https://github.com/airctic/icevision.git#egg=icevision[inference] -U -q
       pip install icedata -U -q
       echo "icevision installation finished!"   
       ;; 
    *)  # Installing only icevision and icedata
       echo "- Installing icevision inference"
-      pip install git+git://github.com/airctic/icevision.git#egg=icevision[inference] -U -q
+      pip install git+https://github.com/airctic/icevision.git#egg=icevision[inference] -U -q
       pip install icedata -U -q
       echo "icevision installation finished!"
       ;; 

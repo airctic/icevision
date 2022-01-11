@@ -50,12 +50,12 @@ pip install mmdet==2.17.0 --upgrade -q
 icevision_version="${2}"
 
 case ${icevision_version} in 
-   master) 
+   master)
       echo "- Installing icevision from master"
-      pip install git+git://github.com/airctic/icevision.git\#egg=icevision[all] --upgrade -q
+      pip install git+https://github.com/airctic/icevision.git#egg=icevision[all] --upgrade -q
 
       echo "- Installing icedata from master"      
-      pip install git+git://github.com/airctic/icedata.git --upgrade -q
+      pip install git+https://github.com/airctic/icedata.git --upgrade -q
       ;;
 
    *) 
