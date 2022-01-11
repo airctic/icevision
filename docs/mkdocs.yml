@@ -54,7 +54,6 @@ nav:
     - Keypoint Detection: getting_started_keypoint_detection.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
-    - YOLOv5: YOLOv5.md
   - Other Tutorials:
     - Model Tracking Using Wandb: wandb_efficientdet.md
     - How to use negative samples: negative_samples.md
