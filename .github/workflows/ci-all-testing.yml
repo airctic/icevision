@@ -23,7 +23,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install package
-      run: sh ./icevision_install.sh cpu
+      run: |
+        sh ./icevision_install.sh cpu
+        pip install -e ".[all,dev]"
 
     - name: Lint with flake8
       run: |
