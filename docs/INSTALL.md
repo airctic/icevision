@@ -92,12 +92,6 @@ $ pip install mmdet
 ```
 </div>
 
-#### YOLOv5 Installation
-<div class="termy">
-```console
-$ pip install yolov5-icevision --upgrade
-```
-</div>
 
 ## Troubleshooting
 

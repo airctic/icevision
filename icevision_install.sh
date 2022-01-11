@@ -56,9 +56,6 @@ case ${icevision_version} in
 
       echo "- Installing icedata from master"      
       pip install git+git://github.com/airctic/icedata.git --upgrade -q
-
-      echo "- Installing yolov5-icevision" 
-      pip install git+git://github.com/airctic/yolov5-icevision.git  --upgrade -q      
       ;;
 
    *) 
@@ -67,9 +64,6 @@ case ${icevision_version} in
 
       echo "- Installing icedata from PyPi"      
       pip install icedata --upgrade -q
-
-      echo "- Installing yolov5-icevision" 
-      pip install yolov5-icevision --upgrade -q
       ;;
   esac
 
