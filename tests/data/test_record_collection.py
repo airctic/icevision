@@ -31,3 +31,16 @@ def test_fixed_splitter(records):
     data_splitter = FixedSplitter(presplits)
     splits = data_splitter(records)
     assert splits == presplits
+
+
+def test_record_collection_adding(records):
+    copy = deepcopy(records)
+    for record_id in ["file5", "file6", "file7", "file8"]:
+        copy.get_by_record_id(record_id)
+    records_sum = copy + records
+    assert len(records_sum) == 2 * len(records)
+
+
+def test_record_collection_slicing(records):
+    subset = records[:2]
+    assert isinstance(subset, RecordCollection)
