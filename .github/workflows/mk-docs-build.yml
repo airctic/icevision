@@ -27,7 +27,7 @@ jobs:
 
       - name: Install package
         run: |
-          ./icevision_install.sh cpu
+          sh ./icevision_install.sh cpu
           pip install -e ".[dev]"
 
 
