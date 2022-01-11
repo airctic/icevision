@@ -112,14 +112,16 @@ class ImageRecordComponent(RecordComponent):
         super().__init__(task=task)
         self.img = None
 
-    def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
-        assert isinstance(img, (PIL.Image.Image, np.ndarray))
+    def set_img(self, img: Union[PIL.Image.Image, np.ndarray, torch.Tensor]):
+        assert isinstance(img, (PIL.Image.Image, np.ndarray, torch.Tensor))
         self.img = img
         if isinstance(img, PIL.Image.Image):
             width, height = img.size
         elif isinstance(img, np.ndarray):
             # else:
             height, width, _ = self.img.shape
+        elif isinstance(img, torch.Tensor):
+            _, height, width = self.img.shape
         # this should set on SizeRecordComponent
         self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
 
