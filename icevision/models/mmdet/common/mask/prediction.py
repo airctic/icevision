@@ -136,7 +136,7 @@ def convert_raw_prediction(
     pred.detection.set_scores(keep_scores)
     pred.detection.set_labels_by_id(keep_labels)
     pred.detection.set_bboxes(keep_bboxes)
-    pred.detection.set_masks(keep_masks)
+    pred.detection.set_mask_array(keep_masks)
     pred.above_threshold = keep_mask
 
     if keep_image:

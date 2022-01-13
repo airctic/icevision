@@ -50,15 +50,12 @@ pip install mmdet==2.17.0 --upgrade -q
 icevision_version="${2}"
 
 case ${icevision_version} in 
-   master) 
+   master)
       echo "- Installing icevision from master"
-      pip install git+git://github.com/airctic/icevision.git\#egg=icevision[all] --upgrade -q
+      pip install git+https://github.com/airctic/icevision.git#egg=icevision[all] --upgrade -q
 
       echo "- Installing icedata from master"      
-      pip install git+git://github.com/airctic/icedata.git --upgrade -q
-
-      echo "- Installing yolov5-icevision" 
-      pip install git+git://github.com/airctic/yolov5-icevision.git  --upgrade -q      
+      pip install git+https://github.com/airctic/icedata.git --upgrade -q
       ;;
 
    *) 
@@ -67,10 +64,9 @@ case ${icevision_version} in
 
       echo "- Installing icedata from PyPi"      
       pip install icedata --upgrade -q
-
-      echo "- Installing yolov5-icevision" 
-      pip install yolov5-icevision --upgrade -q
       ;;
-  esac 
+  esac
 
+# a workaround regarding opencv in colab issue: https://github.com/airctic/icevision/issues/1012
+pip install opencv-python-headless==4.1.2.30
 echo "icevision installation finished!"  
