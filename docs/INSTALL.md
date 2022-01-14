@@ -48,7 +48,7 @@ for example, where you might install the icevision latest version (from the `mas
 
 <div class="termy">
 ```console
-$ pip install git+git://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
+$ pip install git+https://github.com/airctic/icevision.git#egg=icevision[all] --upgrade
 ```
 </div>
 
@@ -92,12 +92,6 @@ $ pip install mmdet
 ```
 </div>
 
-#### YOLOv5 Installation
-<div class="termy">
-```console
-$ pip install yolov5-icevision --upgrade
-```
-</div>
 
 ## Troubleshooting
 
