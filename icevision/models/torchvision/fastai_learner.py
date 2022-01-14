@@ -3,7 +3,7 @@ __all__ = ["RCNNCallback", "rcnn_learner"]
 from icevision.imports import *
 from icevision.engines.fastai import *
 from icevision.models.torchvision.loss_fn import loss_fn
-from icevision.models.torchvision.fastai.callbacks import *
+from icevision.models.torchvision.fastai_callbacks import *
 
 
 def noop_watch(models, criterion=None, log="gradients", log_freq=1000, idx=None):

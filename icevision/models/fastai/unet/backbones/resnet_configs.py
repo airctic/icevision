@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 from icevision.backbones import resnet
-from icevision.models.torchvision.backbones.backbone_config import (
+from icevision.models.torchvision.backbone_config import (
     TorchvisionBackboneConfig,
 )
 

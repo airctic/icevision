@@ -1,6 +1,6 @@
 __all__ = ["KeypointRCNNCallback"]
 
-from icevision.models.torchvision.fastai.callbacks import *
+from icevision.models.torchvision.fastai_callbacks import *
 from icevision.models.torchvision.keypoint_rcnn.prediction import *
 
 

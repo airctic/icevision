@@ -1,7 +1,7 @@
 __all__ = ["mobilenet"]
 
 from icevision.backbones import mobilenet as mobilenet_fn
-from icevision.models.torchvision.backbones.backbone_config import (
+from icevision.models.torchvision.backbone_config import (
     TorchvisionBackboneConfig,
 )
 

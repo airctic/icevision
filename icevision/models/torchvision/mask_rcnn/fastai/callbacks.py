@@ -1,6 +1,6 @@
 __all__ = ["MaskRCNNCallback"]
 
-from icevision.models.torchvision.fastai.callbacks import *
+from icevision.models.torchvision.fastai_callbacks import *
 from icevision.models.torchvision.mask_rcnn.prediction import *
 
 

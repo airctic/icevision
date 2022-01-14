@@ -1,6 +1,6 @@
 __all__ = ["ModelAdapter"]
 
-from icevision.models.torchvision.lightning.model_adapter import *
+from icevision.models.torchvision.lightning_model_adapter import *
 from icevision.models.torchvision.retinanet.prediction import *
 
 
