@@ -1163,7 +1163,7 @@
 <li><strong>size</strong> <code>Union[int, Tuple[int, int]]</code>: The final size of the image. If an <code>int</code> is given, the maximum size of
     the image is rescaled, maintaing aspect ratio. If a <code>tuple</code> is given,
     the image is rescaled to have that exact size (width, height).</li>
-<li><strong>presizing</strong>: Rescale the image before applying other transfroms. If <code>None</code> this
+<li><strong>presize</strong> <code>Optional[Union[int, Tuple[int, int]]]</code>: Rescale the image before applying other transfroms. If <code>None</code> this
         transform is not applied. First introduced by fastai,this technique is
         explained in their book in <a href="https://github.com/fastai/fastbook/blob/master/05_pet_breeds.ipynb">this</a>
         chapter (tip: search for "Presizing").</li>
