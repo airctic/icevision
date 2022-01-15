@@ -46,10 +46,8 @@ def param_groups(model):
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
 
-    # add the neck if exists (DETR doesn't have neck)
-    for name in model.named_modules():
-        if "neck" in name:
-            layers += [model.neck]
+    # add the neck module if it exists (DETR doesn't have a neck module)
+    layers += [model.neck for name in model.named_modules() if name == "neck"]
 
     # add the head
     if isinstance(model, SingleStageDetector):
