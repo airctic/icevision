@@ -17,7 +17,7 @@ IceVision lays the foundation to easily integrate different augmentation librari
 
 In addition, IceVision offers the users the option to create their own adapters using the augmentation library of their choice. They can follow a [similar approach](https://github.com/airctic/icevision/tree/master/icevision/tfms/albumentations) to the one we use to create their own augmentation library adapter.
 
-To ease the users' learning curve, we also provide the [aug_tfms](https://airctic.com/albumentations_tfms/#aug_tfms) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
+To ease the users' learning curve, we also provide the [aug_tfms](https://github.com/airctic/icevision/blob/master/icevision/tfms/albumentations/albumentations_helpers.py#L23) function that includes some of the most used transforms. The users can also override the default arguments. Other similar transforms pipeline can also be created by the users in order to be applied to their own use-cases.
 
 
 ## Usage
