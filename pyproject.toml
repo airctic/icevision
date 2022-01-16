@@ -8,7 +8,8 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = ">=3.7,<3.9"
 pillow = ">8.0.0,<9"
-torch = ">=1.9.0,<1.11"
+torch = "~1.10.0"
+#torch = { version = "=1.10.0+cu102", source = "pytorch" }
 torchvision = ">=0.10.0,<0.12"
 fastcore = ">=1.3.0,<1.4"
 tqdm = ">=4.49.0,<5"
@@ -29,6 +30,26 @@ wandb = "^0.12.9"
 sahi = ">0.8.19,<1"
 resnest = ">=0.0.6b20201125,<0.0.7"
 yolov5-icevision = "~6"
+
+
+#[[tool.poetry.source]]
+#name = "torch_rep"
+#url = "https://eternalphane.github.io/pytorch-pypi"
+
+#[[tool.poetry.source]]
+#name = "pytorch"
+#url = "https://download.pytorch.org/whl/cu102/"
+#secondary = false
+
+#poe the poetry artist
+#[tool.poe.tasks]
+### PyTorch with CUDA 11.1. If PyTorch is imported first, importing Tensorflow will detect CUDA + cuDNN bundled with PyTorch
+### Run with the command "poe force-cuda11"
+### See https://github.com/python-poetry/poetry/issues/2543
+#force-cuda102 = "pip install torch==1.10.0+cu102 torchvision==0.11.1+cu102 -f https://download.pytorch.org/whl/torch_stable.html"
+#force-mmcv = "pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html"
+
+
 
 [tool.poetry.dev-dependencies]
 black = "==20.8b1"
