@@ -8,9 +8,8 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = ">=3.7,<3.9"
 pillow = ">8.0.0,<9"
-torch = "~1.10.0"
-#torch = { version = "=1.10.0+cu102", source = "pytorch" }
-torchvision = ">=0.10.0,<0.12"
+torch = "1.10.0+cu102"
+torchvision = "0.11.0+cu102"
 fastcore = ">=1.3.0,<1.4"
 tqdm = ">=4.49.0,<5"
 opencv-python = ">=4.1.1,<5"
@@ -32,14 +31,15 @@ resnest = ">=0.0.6b20201125,<0.0.7"
 yolov5-icevision = "~6"
 
 
-#[[tool.poetry.source]]
-#name = "torch_rep"
-#url = "https://eternalphane.github.io/pytorch-pypi"
+[[tool.poetry.source]]
+name = "torch_rep"
+url = "https://eternalphane.github.io/pytorch-pypi"
 
-#[[tool.poetry.source]]
-#name = "pytorch"
-#url = "https://download.pytorch.org/whl/cu102/"
-#secondary = false
+[[tool.poetry.source]]
+name = "mmcv_full_rep"
+#url = "http://localhost:8000/"
+url = "https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html"
+default=true
 
 #poe the poetry artist
 #[tool.poe.tasks]
