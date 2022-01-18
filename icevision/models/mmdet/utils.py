@@ -47,10 +47,7 @@ def param_groups(model):
         layers += [getattr(body, l) for l in body.res_layers]
 
     # add the neck module if it exists (DETR doesn't have a neck module)
-    for name, _ in model.named_modules():
-        if name == "neck":
-            layers += [model.neck]
-            break
+    layers += [module for name, module in model.named_modules() if name == "neck"]
 
     # add the head
     if isinstance(model, SingleStageDetector):
