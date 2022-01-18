@@ -1,6 +1,5 @@
 __all__ = [
     "convert_record_to_fo_sample",
-    "record_to_fo_detections",
     "convert_prediction_to_fo_sample",
     "create_fo_dataset",
 ]
@@ -12,9 +11,23 @@ from icevision import tfms
 from icevision.core.bbox import BBox
 from icevision.data.prediction import Prediction
 from icevision.models.inference import postprocess_bbox
+from icevision.soft_dependencies import SoftDependencies
 
 from typing import Any, Callable, Union, Iterable, List, Tuple
-from fiftyone import Detection, Detections, Sample, Dataset, list_datasets, load_dataset
+
+if SoftDependencies.fiftyone:
+    from fiftyone import (
+        Detection,
+        Detections,
+        Sample,
+        Dataset,
+        list_datasets,
+        load_dataset,
+    )
+
+    fiftyone_available = True
+else:
+    fiftyone_available = False
 
 
 def convert_record_to_fo_sample(
@@ -31,7 +44,10 @@ def convert_record_to_fo_sample(
     A record contains a preprocessed image of you data. However, fiftyone expects an filepath to you image. Thus, we need to undo the pre-processing
     of the bounding box. Therefore, we have provide 2 methods
 
-        - The postprocess_bbox() function form icevif
+        - The postprocess_bbox() function form icevision.models.inference
+
+        - A custom undo_bbox_tfms_fn
+
 
     If sample is not defined, a new sample is created.
 
@@ -50,6 +66,9 @@ def convert_record_to_fo_sample(
     -------
     fo.Sample, which can be directly added to a given Fiftyone dataset
     """
+
+    if not fiftyone_available:
+        raise ImportError("Fiftyone is not installed on you system.")
 
     # Validate input
     if transformations is not None and undo_bbox_tfms_fn is not None:
@@ -104,6 +123,7 @@ def convert_record_to_fo_sample(
 
 
 def record_to_fo_detections(record, undo_bbox_tfms) -> Iterable[Detection]:
+
     if hasattr(record, "detection"):
         if hasattr(record.detection, "bboxes"):
             if hasattr(record.detection, "scores"):
@@ -167,6 +187,9 @@ def convert_prediction_to_fo_sample(
     -------
     fo.Sample, which can be directly added to a given Fiftyone dataset
     """
+
+    if not fiftyone_available:
+        raise ImportError("Fiftyone is not installed on you system.")
 
     # Create fo sample
     sample = Sample(prediction.ground_truth.common.filepath)
@@ -232,6 +255,9 @@ def create_fo_dataset(
     -------
     fo.Dataset
     """
+
+    if not fiftyone_available:
+        raise ImportError("Fiftyone is not installed on you system.")
 
     # Validate input
     if dataset_name in list_datasets():

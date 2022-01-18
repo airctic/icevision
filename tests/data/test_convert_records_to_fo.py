@@ -7,14 +7,16 @@ from fiftyone import list_datasets, load_dataset, Detection, Sample, Dataset
 from icevision import tfms
 from icevision import data
 from icevision.data import Prediction
-from icevision.data.convert_records_to_fo import _convert_bbox_to_fo_bbox
+from icevision.data.convert_records_to_fo import (
+    _convert_bbox_to_fo_bbox,
+    record_to_fo_detections,
+)
 
 # Test subject
 from icevision.data import (
     convert_record_to_fo_sample,
     convert_prediction_to_fo_sample,
     create_fo_dataset,
-    record_to_fo_detections,
 )
 from tests.conftest import object_detection_record
 
