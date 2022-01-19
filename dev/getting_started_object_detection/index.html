@@ -1446,16 +1446,6 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/128 [00:00&lt;?, ?it/s]
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
-
-  0%|          | 0/128 [00:00&lt;?, ?it/s]
-
-&lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
-</code></pre></div>
-</div>
 <h2 id="creating-datasets-with-agumentations-and-transforms">Creating datasets with agumentations and transforms</h2>
 <p>Data augmentations are essential for robust training and results on many datasets and deep learning tasks. IceVision ships with the <a href="https://albumentations.ai/docs/">Albumentations</a> library for defining and executing transformations, but can be extended to use others.</p>
 <p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizintal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
@@ -1495,7 +1485,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 <p>We've selected a few of the many options below. You can easily pick which option you want to try by setting the value of <code>selection</code>. This shows you how easy it is to try new libraries, models, and backbones.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
 
-<span class="n">selection</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1511,7 +1501,7 @@ As pretrained models are used by default, we typically leave this out of the bac
   <span class="c1">#   &#39;model.bbox_head.loss_cls.loss_weight&#39;: 0.8,</span>
   <span class="c1">#    }</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">faster_rcnn</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
 
@@ -1527,18 +1517,26 @@ As pretrained models are used by default, we typically leave this out of the bac
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">yolof</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">yolof_r50_c5_8x8_1x_coco</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">detr</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">r50_8x2_150e_coco</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">deformable_detr</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">twostage_refine_r50_16x2_50e_coco</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
   <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
   <span class="c1"># The efficientdet model requires an img_size parameter</span>
   <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
   <span class="c1"># The yolov5 model requires an img_size parameter</span>
@@ -1548,955 +1546,10 @@ As pretrained models are used by default, we typically leave this out of the bac
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">backbone</span><span class="o">.</span><span class="vm">__dict__</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>(&lt;module &#39;icevision.models.mmdet.models.yolof&#39; from &#39;/home/dnth/Desktop/icevision/icevision/models/mmdet/models/yolof/__init__.py&#39;&gt;,
- &lt;icevision.models.mmdet.models.yolof.backbones.resnet_fpn.MMDetYOLOFBackboneConfig at 0x7fe679e3aca0&gt;,
- {})
-
-{&#39;model_name&#39;: &#39;yolof&#39;,
- &#39;config_path&#39;: Path(&#39;/home/dnth/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs/yolof/yolof_r50_c5_8x8_1x_coco.py&#39;),
- &#39;weights_url&#39;: &#39;https://download.openmmlab.com/mmdetection/v2.0/yolof/yolof_r50_c5_8x8_1x_coco/yolof_r50_c5_8x8_1x_coco_20210425_024427-8e864411.pth&#39;}
-</code></pre></div>
-</div>
 <p>Now it is just a one-liner to instantiate the model. If you want to try another <em>option</em>, just edit the line at the top of the previous cell.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/mmdet/core/anchor/builder.py:16: UserWarning: ``build_anchor_generator`` would be deprecated soon, please use ``build_prior_generator`` 
-  warnings.warn(
-2022-01-18 17:21:34,353 - mmcv - INFO - initialize ResNet with init_cfg {&#39;type&#39;: &#39;Pretrained&#39;, &#39;checkpoint&#39;: &#39;open-mmlab://detectron/resnet50_caffe&#39;}
-2022-01-18 17:21:34,354 - mmcv - INFO - load model from: open-mmlab://detectron/resnet50_caffe
-2022-01-18 17:21:34,354 - mmcv - INFO - load checkpoint from openmmlab path: open-mmlab://detectron/resnet50_caffe
-2022-01-18 17:21:34,419 - mmcv - WARNING - The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>unexpected key in source state_dict: conv1.bias, layer1.0.conv1.bias, layer1.0.conv2.bias, layer1.0.conv3.bias, layer1.0.downsample.0.bias, layer1.1.conv1.bias, layer1.1.conv2.bias, layer1.1.conv3.bias, layer1.2.conv1.bias, layer1.2.conv2.bias, layer1.2.conv3.bias, layer2.0.conv1.bias, layer2.0.conv2.bias, layer2.0.conv3.bias, layer2.0.downsample.0.bias, layer2.1.conv1.bias, layer2.1.conv2.bias, layer2.1.conv3.bias, layer2.2.conv1.bias, layer2.2.conv2.bias, layer2.2.conv3.bias, layer2.3.conv1.bias, layer2.3.conv2.bias, layer2.3.conv3.bias, layer3.0.conv1.bias, layer3.0.conv2.bias, layer3.0.conv3.bias, layer3.0.downsample.0.bias, layer3.1.conv1.bias, layer3.1.conv2.bias, layer3.1.conv3.bias, layer3.2.conv1.bias, layer3.2.conv2.bias, layer3.2.conv3.bias, layer3.3.conv1.bias, layer3.3.conv2.bias, layer3.3.conv3.bias, layer3.4.conv1.bias, layer3.4.conv2.bias, layer3.4.conv3.bias, layer3.5.conv1.bias, layer3.5.conv2.bias, layer3.5.conv3.bias, layer4.0.conv1.bias, layer4.0.conv2.bias, layer4.0.conv3.bias, layer4.0.downsample.0.bias, layer4.1.conv1.bias, layer4.1.conv2.bias, layer4.1.conv3.bias, layer4.2.conv1.bias, layer4.2.conv2.bias, layer4.2.conv3.bias
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>2022-01-18 17:21:34,515 - mmcv - INFO - 
-backbone.conv1.weight - torch.Size([64, 3, 7, 7]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,516 - mmcv - INFO - 
-backbone.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,517 - mmcv - INFO - 
-backbone.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,517 - mmcv - INFO - 
-backbone.layer1.0.conv1.weight - torch.Size([64, 64, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,517 - mmcv - INFO - 
-backbone.layer1.0.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,517 - mmcv - INFO - 
-backbone.layer1.0.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,518 - mmcv - INFO - 
-backbone.layer1.0.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,518 - mmcv - INFO - 
-backbone.layer1.0.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,518 - mmcv - INFO - 
-backbone.layer1.0.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,519 - mmcv - INFO - 
-backbone.layer1.0.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,519 - mmcv - INFO - 
-backbone.layer1.0.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,519 - mmcv - INFO - 
-backbone.layer1.0.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,519 - mmcv - INFO - 
-backbone.layer1.0.downsample.0.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,520 - mmcv - INFO - 
-backbone.layer1.0.downsample.1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,520 - mmcv - INFO - 
-backbone.layer1.0.downsample.1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,520 - mmcv - INFO - 
-backbone.layer1.1.conv1.weight - torch.Size([64, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,520 - mmcv - INFO - 
-backbone.layer1.1.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,521 - mmcv - INFO - 
-backbone.layer1.1.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,521 - mmcv - INFO - 
-backbone.layer1.1.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,521 - mmcv - INFO - 
-backbone.layer1.1.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,522 - mmcv - INFO - 
-backbone.layer1.1.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,522 - mmcv - INFO - 
-backbone.layer1.1.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,522 - mmcv - INFO - 
-backbone.layer1.1.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,523 - mmcv - INFO - 
-backbone.layer1.1.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,523 - mmcv - INFO - 
-backbone.layer1.2.conv1.weight - torch.Size([64, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,523 - mmcv - INFO - 
-backbone.layer1.2.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,524 - mmcv - INFO - 
-backbone.layer1.2.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,524 - mmcv - INFO - 
-backbone.layer1.2.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,524 - mmcv - INFO - 
-backbone.layer1.2.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,525 - mmcv - INFO - 
-backbone.layer1.2.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,525 - mmcv - INFO - 
-backbone.layer1.2.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,525 - mmcv - INFO - 
-backbone.layer1.2.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,525 - mmcv - INFO - 
-backbone.layer1.2.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,526 - mmcv - INFO - 
-backbone.layer2.0.conv1.weight - torch.Size([128, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,526 - mmcv - INFO - 
-backbone.layer2.0.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,526 - mmcv - INFO - 
-backbone.layer2.0.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,527 - mmcv - INFO - 
-backbone.layer2.0.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,528 - mmcv - INFO - 
-backbone.layer2.0.downsample.0.weight - torch.Size([512, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,528 - mmcv - INFO - 
-backbone.layer2.0.downsample.1.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,528 - mmcv - INFO - 
-backbone.layer2.0.downsample.1.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,530 - mmcv - INFO - 
-backbone.layer2.1.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,530 - mmcv - INFO - 
-backbone.layer2.1.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,530 - mmcv - INFO - 
-backbone.layer2.1.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,530 - mmcv - INFO - 
-backbone.layer2.1.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,530 - mmcv - INFO - 
-backbone.layer2.1.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,531 - mmcv - INFO - 
-backbone.layer2.1.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,531 - mmcv - INFO - 
-backbone.layer2.1.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,531 - mmcv - INFO - 
-backbone.layer2.1.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,531 - mmcv - INFO - 
-backbone.layer2.1.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,531 - mmcv - INFO - 
-backbone.layer2.2.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,532 - mmcv - INFO - 
-backbone.layer2.2.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,533 - mmcv - INFO - 
-backbone.layer2.2.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,533 - mmcv - INFO - 
-backbone.layer2.2.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,533 - mmcv - INFO - 
-backbone.layer2.3.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,533 - mmcv - INFO - 
-backbone.layer2.3.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,533 - mmcv - INFO - 
-backbone.layer2.3.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,534 - mmcv - INFO - 
-backbone.layer2.3.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,534 - mmcv - INFO - 
-backbone.layer2.3.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,534 - mmcv - INFO - 
-backbone.layer2.3.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,534 - mmcv - INFO - 
-backbone.layer2.3.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,535 - mmcv - INFO - 
-backbone.layer2.3.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,535 - mmcv - INFO - 
-backbone.layer2.3.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,536 - mmcv - INFO - 
-backbone.layer3.0.conv1.weight - torch.Size([256, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,536 - mmcv - INFO - 
-backbone.layer3.0.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,536 - mmcv - INFO - 
-backbone.layer3.0.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,536 - mmcv - INFO - 
-backbone.layer3.0.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,537 - mmcv - INFO - 
-backbone.layer3.0.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,537 - mmcv - INFO - 
-backbone.layer3.0.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,537 - mmcv - INFO - 
-backbone.layer3.0.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,537 - mmcv - INFO - 
-backbone.layer3.0.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,537 - mmcv - INFO - 
-backbone.layer3.0.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,538 - mmcv - INFO - 
-backbone.layer3.0.downsample.0.weight - torch.Size([1024, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,538 - mmcv - INFO - 
-backbone.layer3.0.downsample.1.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,538 - mmcv - INFO - 
-backbone.layer3.0.downsample.1.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,538 - mmcv - INFO - 
-backbone.layer3.1.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,538 - mmcv - INFO - 
-backbone.layer3.1.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,539 - mmcv - INFO - 
-backbone.layer3.1.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,540 - mmcv - INFO - 
-backbone.layer3.1.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,540 - mmcv - INFO - 
-backbone.layer3.2.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,540 - mmcv - INFO - 
-backbone.layer3.2.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,540 - mmcv - INFO - 
-backbone.layer3.2.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,541 - mmcv - INFO - 
-backbone.layer3.2.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,541 - mmcv - INFO - 
-backbone.layer3.2.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,541 - mmcv - INFO - 
-backbone.layer3.2.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,543 - mmcv - INFO - 
-backbone.layer3.2.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,543 - mmcv - INFO - 
-backbone.layer3.2.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,543 - mmcv - INFO - 
-backbone.layer3.2.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,544 - mmcv - INFO - 
-backbone.layer3.3.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,544 - mmcv - INFO - 
-backbone.layer3.3.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,544 - mmcv - INFO - 
-backbone.layer3.3.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,544 - mmcv - INFO - 
-backbone.layer3.3.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,544 - mmcv - INFO - 
-backbone.layer3.3.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,545 - mmcv - INFO - 
-backbone.layer3.3.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,545 - mmcv - INFO - 
-backbone.layer3.3.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,545 - mmcv - INFO - 
-backbone.layer3.3.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,545 - mmcv - INFO - 
-backbone.layer3.3.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,545 - mmcv - INFO - 
-backbone.layer3.4.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,546 - mmcv - INFO - 
-backbone.layer3.4.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.4.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.4.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.5.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.5.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.5.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,547 - mmcv - INFO - 
-backbone.layer3.5.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer3.5.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer3.5.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer3.5.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer3.5.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer3.5.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,548 - mmcv - INFO - 
-backbone.layer4.0.conv1.weight - torch.Size([512, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,549 - mmcv - INFO - 
-backbone.layer4.0.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,550 - mmcv - INFO - 
-backbone.layer4.0.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,550 - mmcv - INFO - 
-backbone.layer4.0.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,550 - mmcv - INFO - 
-backbone.layer4.0.downsample.0.weight - torch.Size([2048, 1024, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,550 - mmcv - INFO - 
-backbone.layer4.0.downsample.1.weight - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,550 - mmcv - INFO - 
-backbone.layer4.0.downsample.1.bias - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.conv1.weight - torch.Size([512, 2048, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,551 - mmcv - INFO - 
-backbone.layer4.1.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.1.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.1.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.1.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.2.conv1.weight - torch.Size([512, 2048, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.2.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,552 - mmcv - INFO - 
-backbone.layer4.2.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,553 - mmcv - INFO - 
-backbone.layer4.2.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from open-mmlab://detectron/resnet50_caffe 
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.lateral_conv.weight - torch.Size([512, 2048, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.lateral_conv.bias - torch.Size([512]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.lateral_norm.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.lateral_norm.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.fpn_conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,554 - mmcv - INFO - 
-neck.fpn_conv.bias - torch.Size([512]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,555 - mmcv - INFO - 
-neck.fpn_norm.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,555 - mmcv - INFO - 
-neck.fpn_norm.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,555 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv1.conv.weight - torch.Size([128, 512, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,555 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv1.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,556 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv1.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,556 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv2.conv.weight - torch.Size([128, 128, 3, 3]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,556 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv2.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,556 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv2.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,557 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv3.conv.weight - torch.Size([512, 128, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,557 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv3.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,557 - mmcv - INFO - 
-neck.dilated_encoder_blocks.0.conv3.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,557 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv1.conv.weight - torch.Size([128, 512, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,558 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv1.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,558 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv1.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,558 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv2.conv.weight - torch.Size([128, 128, 3, 3]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,558 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv2.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,558 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv2.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,559 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv3.conv.weight - torch.Size([512, 128, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,559 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv3.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,559 - mmcv - INFO - 
-neck.dilated_encoder_blocks.1.conv3.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,559 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv1.conv.weight - torch.Size([128, 512, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv1.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv1.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv2.conv.weight - torch.Size([128, 128, 3, 3]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv2.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv2.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,560 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv3.conv.weight - torch.Size([512, 128, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,561 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv3.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,561 - mmcv - INFO - 
-neck.dilated_encoder_blocks.2.conv3.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,561 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv1.conv.weight - torch.Size([128, 512, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,561 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv1.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,561 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv1.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv2.conv.weight - torch.Size([128, 128, 3, 3]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv2.bn.weight - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv2.bn.bias - torch.Size([128]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv3.conv.weight - torch.Size([512, 128, 1, 1]): 
-Initialized by user-defined `init_weights` in DilatedEncoder  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv3.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,562 - mmcv - INFO - 
-neck.dilated_encoder_blocks.3.conv3.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.0.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.0.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.0.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.1.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.1.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,563 - mmcv - INFO - 
-bbox_head.cls_subnet.1.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.0.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.0.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.0.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.1.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.1.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,564 - mmcv - INFO - 
-bbox_head.bbox_subnet.1.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.2.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.2.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.2.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.3.conv.weight - torch.Size([512, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.3.bn.weight - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,565 - mmcv - INFO - 
-bbox_head.bbox_subnet.3.bn.bias - torch.Size([512]): 
-The value is the same before and after calling `init_weights` of YOLOF  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.cls_score.weight - torch.Size([20, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.cls_score.bias - torch.Size([20]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.bbox_pred.weight - torch.Size([20, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.bbox_pred.bias - torch.Size([20]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.object_pred.weight - torch.Size([5, 512, 3, 3]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-2022-01-18 17:21:34,566 - mmcv - INFO - 
-bbox_head.object_pred.bias - torch.Size([5]): 
-Initialized by user-defined `init_weights` in YOLOFHead  
-
-
-load checkpoint from local path: checkpoints/yolof/yolof_r50_c5_8x8_1x_coco_20210425_024427-8e864411.pth
-The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>size mismatch for bbox_head.cls_score.weight: copying a param with shape torch.Size([400, 512, 3, 3]) from checkpoint, the shape in current model is torch.Size([20, 512, 3, 3]).
-size mismatch for bbox_head.cls_score.bias: copying a param with shape torch.Size([400]) from checkpoint, the shape in current model is torch.Size([20]).
-</code></pre></div>
-</div>
 <h2 id="data-loader">Data Loader</h2>
 <p>The Data Loader is specific to a model_type. The job of the data loader is to get items from a dataset and batch them up in the specific format required by each model. This is why creating the data loaders is separated from creating the datasets.</p>
 <p>We can take a look at the first batch of items from the <code>valid_dl</code>. Remember that the <code>valid_tfms</code> only resized (with padding) and normalized records, so different images, for example, are not returned each time. This is important to provide consistent validation during training.</p>
@@ -2507,7 +1560,6 @@ size mismatch for bbox_head.cls_score.bias: copying a param with shape torch.Siz
 <div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_26_0.png" /></p>
 <h2 id="metrics">Metrics</h2>
 <p>The fastai and pytorch lightning engines collect metrics to track progress during training. IceVision provides metric classes that work across the engines and libraries.</p>
 <p>The same metrics can be used for both fastai and pytorch lightning.</p>
@@ -2523,17 +1575,6 @@ size mismatch for bbox_head.cls_score.bias: copying a param with shape torch.Siz
 <span class="c1"># For Sparse-RCNN, use lower `end_lr`</span>
 <span class="c1"># learn.lr_find(end_lr=0.005)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
-  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
-/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
-  warnings.warn(
-
-SuggestedLRs(valley=0.0002290867705596611)
-</code></pre></div>
-</div>
-
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_32_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">0.00158</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -2549,9 +1590,9 @@ SuggestedLRs(valley=0.0002290867705596611)
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.329820</td>
-      <td>2.436331</td>
-      <td>0.001104</td>
+      <td>4.282796</td>
+      <td>3.556162</td>
+      <td>0.000000</td>
       <td>00:03</td>
     </tr>
   </tbody>
@@ -2570,143 +1611,143 @@ SuggestedLRs(valley=0.0002290867705596611)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.773516</td>
-      <td>0.601884</td>
-      <td>0.306045</td>
-      <td>00:02</td>
+      <td>2.906284</td>
+      <td>1.651251</td>
+      <td>0.514744</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.668220</td>
-      <td>0.480886</td>
-      <td>0.475216</td>
-      <td>00:02</td>
+      <td>2.120166</td>
+      <td>1.340260</td>
+      <td>0.636351</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.580867</td>
-      <td>0.494540</td>
-      <td>0.540983</td>
-      <td>00:02</td>
+      <td>1.760227</td>
+      <td>1.048941</td>
+      <td>0.744560</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.525388</td>
-      <td>0.438960</td>
-      <td>0.606014</td>
-      <td>00:02</td>
+      <td>1.543842</td>
+      <td>1.071704</td>
+      <td>0.850686</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.504952</td>
-      <td>0.551916</td>
-      <td>0.459644</td>
-      <td>00:02</td>
+      <td>1.387548</td>
+      <td>0.964828</td>
+      <td>0.843832</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>0.485167</td>
-      <td>0.513171</td>
-      <td>0.487884</td>
+      <td>1.284623</td>
+      <td>0.858511</td>
+      <td>0.878575</td>
       <td>00:03</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>0.469393</td>
-      <td>0.521923</td>
-      <td>0.480782</td>
-      <td>00:02</td>
+      <td>1.216737</td>
+      <td>0.871548</td>
+      <td>0.878225</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>0.450229</td>
-      <td>1.439825</td>
-      <td>0.408897</td>
-      <td>00:02</td>
+      <td>1.137540</td>
+      <td>0.832400</td>
+      <td>0.880371</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>0.427434</td>
-      <td>0.361013</td>
-      <td>0.662140</td>
-      <td>00:02</td>
+      <td>1.083292</td>
+      <td>0.753999</td>
+      <td>0.909935</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>0.417444</td>
-      <td>0.408913</td>
-      <td>0.586889</td>
-      <td>00:02</td>
+      <td>1.021289</td>
+      <td>0.762208</td>
+      <td>0.885468</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>10</td>
-      <td>0.391931</td>
-      <td>0.389337</td>
-      <td>0.640370</td>
+      <td>0.957823</td>
+      <td>0.682070</td>
+      <td>0.904922</td>
       <td>00:03</td>
     </tr>
     <tr>
       <td>11</td>
-      <td>0.366869</td>
-      <td>0.327192</td>
-      <td>0.710013</td>
-      <td>00:02</td>
+      <td>0.914076</td>
+      <td>0.667000</td>
+      <td>0.900920</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>12</td>
-      <td>0.343070</td>
-      <td>0.318773</td>
-      <td>0.700275</td>
-      <td>00:02</td>
+      <td>0.868626</td>
+      <td>0.731849</td>
+      <td>0.892283</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>13</td>
-      <td>0.322352</td>
-      <td>0.295736</td>
-      <td>0.733367</td>
-      <td>00:02</td>
+      <td>0.825539</td>
+      <td>0.636049</td>
+      <td>0.908815</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>14</td>
-      <td>0.304112</td>
-      <td>0.291967</td>
-      <td>0.730158</td>
-      <td>00:02</td>
+      <td>0.784374</td>
+      <td>0.613358</td>
+      <td>0.928341</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>15</td>
-      <td>0.283911</td>
-      <td>0.314886</td>
-      <td>0.771818</td>
-      <td>00:02</td>
+      <td>0.750682</td>
+      <td>0.584259</td>
+      <td>0.929360</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>16</td>
-      <td>0.264725</td>
-      <td>0.256472</td>
-      <td>0.793623</td>
-      <td>00:02</td>
+      <td>0.721707</td>
+      <td>0.569473</td>
+      <td>0.929833</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>17</td>
-      <td>0.248524</td>
-      <td>0.266356</td>
-      <td>0.788988</td>
-      <td>00:02</td>
+      <td>0.701580</td>
+      <td>0.573457</td>
+      <td>0.930522</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>18</td>
-      <td>0.237011</td>
-      <td>0.263994</td>
-      <td>0.788126</td>
-      <td>00:02</td>
+      <td>0.676955</td>
+      <td>0.569403</td>
+      <td>0.931394</td>
+      <td>00:03</td>
     </tr>
     <tr>
       <td>19</td>
-      <td>0.227245</td>
-      <td>0.258344</td>
-      <td>0.798073</td>
-      <td>00:02</td>
+      <td>0.659083</td>
+      <td>0.566195</td>
+      <td>0.929665</td>
+      <td>00:03</td>
     </tr>
   </tbody>
 </table>
@@ -2721,47 +1762,6 @@ SuggestedLRs(valley=0.0002290867705596611)
 <div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>GPU available: True, used: True
-TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  | Name  | Type  | Params
---------------------------------
-0 | model | YOLOF | 42.4 M
---------------------------------
-42.2 M    Trainable params
-225 K     Non-trainable params
-42.4 M    Total params
-169.634   Total estimated model params size (MB)
-
-Validation sanity check: 0it [00:00, ?it/s]
-
-/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 8. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
-  warning_cache.warn(
-/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:428: UserWarning: The number of training samples (13) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
-  rank_zero_warn(
-
-Training: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-/home/dnth/anaconda3/envs/icevision-contrib/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 2. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
-  warning_cache.warn(
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-</code></pre></div>
-</div>
 <h2 id="using-the-model-inference-and-showing-results">Using the model - inference and showing results</h2>
 <p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
