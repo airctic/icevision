@@ -1393,7 +1393,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/frederik/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/dnth/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
 </code></pre></div>
 </div>
 <h2 id="model">Model</h2>
@@ -1405,8 +1405,17 @@
 </ul>
 <h2 id="choose-a-model-and-backbone">Choose a model and backbone</h2>
 <p>We use <strong>MMDet</strong> here. When you want to use the torch vision version the COCOMetric will not be correct at the moment due to a problem in the bounding box conversion.</p>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
+
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
+    <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
+    <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">mask_rcnn_swin_t_p4_w7_fpn_1x_coco</span>
 </code></pre></div>
 <h2 id="datasets-pennfudan">Datasets : Pennfudan</h2>
 <p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
@@ -1466,7 +1475,7 @@ the dataset you will get a slightly different version of it.</p>
 <h2 id="model_1">Model</h2>
 <p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
 </code></pre></div>
 <h2 id="metrics">Metrics</h2>
 <div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">mask</span><span class="p">)]</span>
@@ -1480,16 +1489,11 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
-  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
-/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
-  warnings.warn(
-
-SuggestedLRs(valley=0.00019054606673307717)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=9.120108734350652e-05)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_31_3.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_31_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1505,17 +1509,17 @@ SuggestedLRs(valley=0.00019054606673307717)
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.559413</td>
-      <td>0.395396</td>
-      <td>0.585344</td>
-      <td>00:17</td>
+      <td>1.518704</td>
+      <td>0.520843</td>
+      <td>0.610489</td>
+      <td>00:11</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.810590</td>
-      <td>0.426341</td>
-      <td>0.650293</td>
-      <td>00:18</td>
+      <td>0.799316</td>
+      <td>0.388823</td>
+      <td>0.689349</td>
+      <td>00:10</td>
     </tr>
   </tbody>
 </table>
@@ -1533,38 +1537,38 @@ SuggestedLRs(valley=0.00019054606673307717)
   <tbody>
     <tr>
       <td>0</td>
-      <td>0.398036</td>
-      <td>0.337106</td>
-      <td>0.687948</td>
-      <td>00:20</td>
+      <td>0.373752</td>
+      <td>0.356427</td>
+      <td>0.690000</td>
+      <td>00:11</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>0.364015</td>
-      <td>0.295129</td>
-      <td>0.710121</td>
-      <td>00:18</td>
+      <td>0.362768</td>
+      <td>0.354911</td>
+      <td>0.721681</td>
+      <td>00:11</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>0.338850</td>
-      <td>0.267298</td>
-      <td>0.725615</td>
-      <td>00:17</td>
+      <td>0.345709</td>
+      <td>0.342564</td>
+      <td>0.722313</td>
+      <td>00:11</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>0.316937</td>
-      <td>0.269908</td>
-      <td>0.737023</td>
-      <td>00:16</td>
+      <td>0.327585</td>
+      <td>0.345134</td>
+      <td>0.733165</td>
+      <td>00:11</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>0.296187</td>
-      <td>0.251252</td>
-      <td>0.732487</td>
-      <td>00:17</td>
+      <td>0.324897</td>
+      <td>0.341429</td>
+      <td>0.732759</td>
+      <td>00:11</td>
     </tr>
   </tbody>
 </table>
@@ -1579,47 +1583,6 @@ SuggestedLRs(valley=0.00019054606673307717)
 <div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>GPU available: True, used: True
-TPU available: False, using: 0 TPU cores
-IPU available: False, using: 0 IPUs
-LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  | Name  | Type     | Params
------------------------------------
-0 | model | MaskRCNN | 44.0 M
------------------------------------
-43.7 M    Trainable params
-225 K     Non-trainable params
-44.0 M    Total params
-175.885   Total estimated model params size (MB)
-
-Validation sanity check: 0it [00:00, ?it/s]
-
-/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 4. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
-  warning_cache.warn(
-/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:412: UserWarning: The number of training samples (34) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
-  rank_zero_warn(
-
-Training: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-/home/frederik/anaconda3/envs/icevision_dev/lib/python3.8/site-packages/pytorch_lightning/utilities/data.py:59: UserWarning: Trying to infer the `batch_size` from an ambiguous collection. The batch size we found is 2. To avoid any miscalculations, use `self.log(..., batch_size=batch_size)`.
-  warning_cache.warn(
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-
-Validating: 0it [00:00, ?it/s]
-</code></pre></div>
-</div>
 <h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
