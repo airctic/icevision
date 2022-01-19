@@ -1,1 +1,1 @@
-from icevision.models.mmdet.models.swin.backbones.resnet_fpn import *
+from icevision.models.mmdet.models.swin.backbones.swin_t import *

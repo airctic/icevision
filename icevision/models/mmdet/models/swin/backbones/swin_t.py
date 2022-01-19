@@ -1,4 +1,4 @@
-__all__ = ["swin_t_1x"]
+__all__ = ["mask_rcnn_swin_t_p4_w7_fpn_1x_coco"]
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
@@ -15,7 +15,7 @@ base_weights_url = (
 )
 
 
-swin_t_1x = MMDetSwinBackboneConfig(
+mask_rcnn_swin_t_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
     config_path=base_config_path / "mask_rcnn_swin-t-p4-w7_fpn_1x_coco.py",
     weights_url=f"{base_weights_url}/mask_rcnn_swin-t-p4-w7_fpn_1x_coco/mask_rcnn_swin-t-p4-w7_fpn_1x_coco_20210902_120937-9d6b7cfa.pth",
 )

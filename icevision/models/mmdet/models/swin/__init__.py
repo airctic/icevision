@@ -1,5 +1,5 @@
 from icevision.models.mmdet.models.swin import backbones
-from icevision.models.mmdet.common.bbox.two_stage import *
+from icevision.models.mmdet.common.mask.two_stage import *
 from icevision.models.interpretation import Interpretation, _move_to_device
 from icevision.models.mmdet.common.interpretation_utils import (
     sum_losses_mmdet,
@@ -7,8 +7,11 @@ from icevision.models.mmdet.common.interpretation_utils import (
 )
 
 _LOSSES_DICT = {
+    "loss_rpn_cls": [],
+    "loss_rpn_bbox": [],
     "loss_cls": [],
     "loss_bbox": [],
+    "loss_mask": [],
     "loss_total": [],
 }
 
