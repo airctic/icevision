@@ -14,4 +14,3 @@ from icevision.models.mmdet.models import deformable_detr
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
-from icevision.models.mmdet.models import swin
