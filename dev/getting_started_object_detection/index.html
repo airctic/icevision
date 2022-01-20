@@ -1504,6 +1504,10 @@ As pretrained models are used by default, we typically leave this out of the bac
 <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">faster_rcnn</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span>
+  <span class="c1"># extra_args[&#39;cfg_options&#39;] = { </span>
+  <span class="c1">#   &#39;model.roi_head.bbox_head.loss_bbox.loss_weight&#39;: 2,</span>
+  <span class="c1">#   &#39;model.roi_head.bbox_head.loss_cls.loss_weight&#39;: 0.8,</span>
+  <span class="c1">#    }</span>
 
 <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">ssd</span>
