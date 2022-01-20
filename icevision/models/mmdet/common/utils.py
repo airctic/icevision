@@ -5,6 +5,7 @@ __all__ = [
     "build_model",
 ]
 
+from icevision import backbones
 from icevision.imports import *
 from icevision.utils import *
 from mmcv import Config
@@ -47,14 +48,25 @@ def build_model(
         cfg_options=cfg_options,
     )
 
+    # The Swin Transformer backbone is taken off MaskRCNN model on mmdet repo.
+    # https://github.com/open-mmlab/mmdetection/tree/master/configs/swin
+    if backbone.model_name == "swin":
+        # Remove mask-related config so that this model can be used with object detection models
+        cfg.model.roi_head.mask_roi_extractor = None
+        cfg.model.roi_head.mask_head = None
+
     if model_type == "one_stage_detector_bbox":
-        cfg.model.bbox_head.num_classes = num_classes - 1
+        if backbone.model_name == "swin":
+            cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
+        else:
+            cfg.model.bbox_head.num_classes = num_classes - 1
 
     if model_type == "two_stage_detector_bbox":
         # Sparse-RCNN has a list of bbox_head whereas Faster-RCNN has only one
         if isinstance(cfg.model.roi_head.bbox_head, list):
             for bbox_head in cfg.model.roi_head.bbox_head:
                 bbox_head["num_classes"] = num_classes - 1
+
         else:
             cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
 
