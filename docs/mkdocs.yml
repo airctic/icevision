@@ -50,6 +50,7 @@ nav:
   - Getting Started:
     - Object Detection: getting_started_object_detection.md
     - Instance Segmentation: getting_started_instance_segmentation.md
+    - Semantic Segmentation: getting_started_semantic_segmentation.md 
     - Keypoint Detection: getting_started_keypoint_detection.md
     - Custom Parser: custom_parser.md
     - Inference: inference.md
@@ -59,16 +60,13 @@ nav:
     - Fixed Splitter: voc_predefined_splits.md
     - Progressive resizing: progressive_resizing.md
     - MMDetection Custom Config: mmdet_custom_config.md
+    - Model Debugging with Plot Top Losses: plot_top_losses.md
+    - Advanced Keypoint Detection: ochuman_keypoint_detection.md
+    - Small Object Detection with SAHI: SAHI_inference.md
   - Transforms:
     - Albumentations: albumentations.md 
   - Models: models.md
   - Backbones: backbones.md
-  - Deployment: 
-    - Overview: deployment.md
-    - Gradio:
-      - COCO: IceApp_coco.md
-      - PETS: IceApp_pets.md
-      - Masks: IceApp_masks.md
   - API Documentation:
     - Parser: parser.md
     - Dataset: dataset.md
@@ -87,8 +85,6 @@ nav:
         - common: efficientdet.md
         - fastai: efficientdet_fastai.md
         - lightning: efficientdet_lightning.md
-      # - Metrics:
-      #   - COCOMetric: coco_metric.md
     - Data Splitters: data_splits.md
   - Contributing Guide: contributing.md
   - Generating Docs: readme_mkdocs.md

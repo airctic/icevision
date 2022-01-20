@@ -1,5 +1,4 @@
 __all__ = [
-    "coco",
     "COCOBaseParser",
     "COCOBBoxParser",
     "COCOMaskParser",
@@ -13,30 +12,18 @@ from icevision.utils import *
 from icevision.parsers import *
 
 
-# TODO: Deprecated
-def coco(
-    annotations_file: Union[str, Path],
-    img_dir: Union[str, Path],
-    mask: bool = True,
-    idmap: Optional[IDMap] = None,
-) -> Parser:
-    logger.warning(
-        "This function will be deprecated, instantiate the concrete "
-        "classes instead: `COCOBBoxParser`, `COCOMaskParser`, `COCOKeypointsParser`"
-    )
-    parser_cls = COCOMaskParser if mask else COCOBBoxParser
-    return parser_cls(annotations_file, img_dir, idmap=idmap)
-
-
 class COCOBaseParser(Parser):
     def __init__(
         self,
-        annotations_filepath: Union[str, Path],
+        annotations_filepath: Union[str, Path, dict],
         img_dir: Union[str, Path],
         idmap: Optional[IDMap] = None,
     ):
 
-        self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
+        if isinstance(annotations_filepath, dict):
+            self.annotations_dict = annotations_filepath
+        else:
+            self.annotations_dict = json.loads(Path(annotations_filepath).read_bytes())
         self.img_dir = Path(img_dir)
 
         self._record_id2info = {o["id"]: o for o in self.annotations_dict["images"]}

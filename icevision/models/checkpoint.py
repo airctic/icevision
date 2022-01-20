@@ -11,6 +11,7 @@ from mmcv.runner import (
     load_state_dict,
 )
 
+
 # COCO Classes: 80 classes
 CLASSES = (
     "person",
@@ -161,15 +162,13 @@ def model_from_checkpoint(
         (r"^module\.", ""),
     ],
     eval_mode=True,
+    logger=None,
 ):
     """load checkpoint through URL scheme path.
-
     Args:
         filename (str): checkpoint file name with given prefix
         map_location (str, optional): Same as :func:`torch.load`.
             Default: None
-
-
     Returns:
         dict or OrderedDict: The loaded checkpoint.
     """
@@ -177,12 +176,16 @@ def model_from_checkpoint(
     if isinstance(filename, Path):
         filename = str(filename)
 
-    checkpoint = _load_checkpoint(filename)
+    checkpoint = _load_checkpoint(
+        filename=filename, map_location=map_location, logger=logger
+    )
 
     if is_coco and classes:
-        logger.warning(
-            "`is_coco` cannot be set to True if `classes` is passed and `not None`. `classes` has priority. `is_coco` will be ignored."
-        )
+        err_msg = "`is_coco` cannot be set to True if `classes` is passed and `not None`. `classes` has priority. `is_coco` will be ignored."
+        if logger is not None:
+            logger.warning(err_msg)
+        else:
+            print(err_msg)
 
     if classes is None:
         if is_coco:
@@ -203,8 +206,13 @@ def model_from_checkpoint(
 
     model_type = None
     if model_name:
-        lib, mod = model_name.split(".")
-        model_type = getattr(getattr(models, lib), mod)
+        model = model_name.split(".")
+        # If model_name contains three or more components, the library and model are the second to last and last components, respectively (e.g. models.mmdet.retinanet)
+        if len(model) >= 3:
+            model_type = getattr(getattr(models, model[-2]), model[-1])
+        # If model_name follows the default convention, the library and model are the first and second components, respectively (e.g. mmdet.retinanet)
+        else:
+            model_type = getattr(getattr(models, model[0]), model[1])
 
     if backbone_name is None:
         backbone_name = checkpoint["meta"].get("backbone_name", None)

@@ -23,4 +23,5 @@ def test_soft_dependencies():
         "mmdet": True,
         "yolov5": True,
         "mmseg": True,
+        "sahi": True,
     }

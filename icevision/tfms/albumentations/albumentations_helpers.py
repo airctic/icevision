@@ -45,7 +45,7 @@ def aug_tfms(
         size: The final size of the image. If an `int` is given, the maximum size of
             the image is rescaled, maintaing aspect ratio. If a `tuple` is given,
             the image is rescaled to have that exact size (width, height).
-        presizing: Rescale the image before applying other transfroms. If `None` this
+        presize: Rescale the image before applying other transfroms. If `None` this
                 transform is not applied. First introduced by fastai,this technique is
                 explained in their book in [this](https://github.com/fastai/fastbook/blob/master/05_pet_breeds.ipynb)
                 chapter (tip: search for "Presizing").

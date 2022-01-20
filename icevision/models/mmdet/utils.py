@@ -13,6 +13,8 @@ from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
+from mmdet.models.backbones.csp_darknet import CSPDarknet
+from mmdet.models.backbones.swin import SwinTransformer
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -34,14 +36,33 @@ def param_groups(model):
     body = model.backbone
 
     layers = []
+
+    # add the backbone
     if isinstance(body, SSDVGG):
         layers += [body.features]
-        layers += [body.extra, body.l2_norm]
+    elif isinstance(body, CSPDarknet):
+        layers += [body.stem.conv.conv, body.stem.conv.bn]
+        layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+    elif isinstance(body, SwinTransformer):
+        layers += [
+            body.patch_embed.adap_padding,
+            body.patch_embed.projection,
+            body.patch_embed.norm,
+            body.drop_after_pos,
+            body.stages,
+            body.norm0,
+            body.norm1,
+            body.norm2,
+            body.norm3,
+        ]
     else:
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
-        layers += [model.neck]
 
+    # add the neck module if it exists (DETR doesn't have a neck module)
+    layers += [module for name, module in model.named_modules() if name == "neck"]
+
+    # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
     elif isinstance(model, TwoStageDetector):

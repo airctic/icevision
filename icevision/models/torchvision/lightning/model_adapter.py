@@ -5,6 +5,12 @@ from icevision.utils import *
 from icevision.metrics import *
 from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
 from icevision.models.torchvision.loss_fn import loss_fn
+from icevision.core.record_components import (
+    InstanceMasksRecordComponent,
+    BBoxesRecordComponent,
+)
+from icevision.core.mask import MaskArray
+from icevision.core.bbox import BBox
 
 
 class RCNNModelAdapter(LightningModelAdapter, ABC):
@@ -30,7 +36,6 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
 
     def validation_step(self, batch, batch_idx):
         (xb, yb), records = batch
-
         with torch.no_grad():
             self.train()
             train_preds = self(xb, yb)

@@ -4,6 +4,12 @@ from icevision.imports import *
 from icevision.utils import *
 from icevision.metrics import *
 from icevision.engines.lightning.lightning_model_adapter import LightningModelAdapter
+from icevision.core.record_components import (
+    InstanceMasksRecordComponent,
+    BBoxesRecordComponent,
+)
+from icevision.core.mask import MaskArray
+from icevision.core.bbox import BBox
 
 from icevision.models.mmdet.common.bbox import convert_raw_predictions
 
@@ -45,6 +51,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
 
     def validation_step(self, batch, batch_idx):
         data, records = batch
+
         self.model.eval()
         with torch.no_grad():
             outputs = self.model.train_step(data=data, optimizer=None)
