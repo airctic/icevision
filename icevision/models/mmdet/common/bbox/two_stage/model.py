@@ -16,13 +16,6 @@ def model(
     cfg_options=None,
 ) -> nn.Module:
 
-    cfg, weights_path = create_model_config(
-        backbone=backbone,
-        pretrained=backbone.pretrained,
-        checkpoints_path=checkpoints_path,
-        force_download=force_download,
-    )
-
     return build_model(
         model_type="two_stage_detector_bbox",
         backbone=backbone,
