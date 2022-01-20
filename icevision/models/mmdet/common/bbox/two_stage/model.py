@@ -13,6 +13,7 @@ def model(
     num_classes: int,
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
+    cfg_options=None,
 ) -> nn.Module:
 
     cfg, weights_path = create_model_config(
@@ -29,4 +30,5 @@ def model(
         pretrained=backbone.pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
+        cfg_options=cfg_options,
     )
