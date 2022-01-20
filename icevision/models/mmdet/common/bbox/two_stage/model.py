@@ -21,6 +21,7 @@ def model(
         pretrained=backbone.pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
+        cfg_options=None,
     )
 
     return build_model(

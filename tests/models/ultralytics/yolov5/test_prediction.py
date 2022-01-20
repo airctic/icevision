@@ -7,8 +7,7 @@ from sahi.prediction import PredictionResult
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium, large, extra_large],
+    "backbone", [small, medium, large, extra_large],
 )
 def test_e2e_detect(samples_source, fridge_class_map, backbone):
     img_path = samples_source / "fridge/odFridgeObjects/images/10.jpg"
@@ -23,8 +22,7 @@ def test_e2e_detect(samples_source, fridge_class_map, backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium],
+    "backbone", [small, medium],
 )
 def test_sahi(samples_source, fridge_class_map, backbone):
     img_path = samples_source / "sahi/fridge_small_items.jpg"
@@ -42,10 +40,7 @@ def test_sahi(samples_source, fridge_class_map, backbone):
     )
 
     pred = sahimodel.get_sliced_prediction(
-        img_path,
-        keep_sahi_format=True,
-        slice_height=384,
-        slice_width=384,
+        img_path, keep_sahi_format=True, slice_height=384, slice_width=384,
     )
     assert isinstance(pred, PredictionResult)
     assert isinstance(pred.object_prediction_list, list)
@@ -75,8 +70,7 @@ def _test_preds(preds):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium, large, extra_large],
+    "backbone", [small, medium, large, extra_large],
 )
 def test_yolo_predict(fridge_ds, backbone):
     _, valid_ds = fridge_ds
@@ -88,8 +82,7 @@ def test_yolo_predict(fridge_ds, backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [small, medium, large, extra_large],
+    "backbone", [small, medium, large, extra_large],
 )
 def test_yolo_predict_from_dl(fridge_ds, backbone):
     _, valid_ds = fridge_ds

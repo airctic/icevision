@@ -106,9 +106,7 @@ def _end2end_detect(
 
 
 def process_bbox_predictions(
-    pred: Prediction,
-    img: PIL.Image.Image,
-    transforms: List[Any],
+    pred: Prediction, img: PIL.Image.Image, transforms: List[Any],
 ) -> List[Dict[str, Any]]:
     """
     Postprocess prediction.

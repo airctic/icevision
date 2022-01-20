@@ -4,6 +4,7 @@ from icevision.models.mmdet.models import yolox
 from icevision.models.mmdet.models import yolof
 from icevision.models.mmdet.models import retinanet
 from icevision.models.mmdet.models import fcos
+from icevision.models.mmdet.models import scnet
 from icevision.models.mmdet.models import vfnet
 from icevision.models.mmdet.models import cornernet
 from icevision.models.mmdet.models import centripetalnet

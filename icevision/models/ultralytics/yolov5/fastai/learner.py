@@ -32,11 +32,7 @@ def learner(
         return compute_loss(preds, targets)[0]
 
     learn = adapted_fastai_learner(
-        dls=dls,
-        model=model,
-        cbs=cbs,
-        loss_func=loss_fn,
-        **learner_kwargs,
+        dls=dls, model=model, cbs=cbs, loss_func=loss_fn, **learner_kwargs,
     )
 
     # HACK: patch AvgLoss (in original, find_bs looks at learn.yb which has shape (N, 6) - with N being number_of_objects_in_image * batch_size. So impossible to retrieve BS)

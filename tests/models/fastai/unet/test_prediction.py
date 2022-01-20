@@ -12,8 +12,7 @@ def _test_preds(preds):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [resnet18, resnet50, resnet101],
+    "backbone", [resnet18, resnet50, resnet101],
 )
 def test_unet_predict(camvid_ds, backbone):
     _, valid_ds = camvid_ds
@@ -25,8 +24,7 @@ def test_unet_predict(camvid_ds, backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [resnet18, resnet50, resnet101],
+    "backbone", [resnet18, resnet50, resnet101],
 )
 def test_unet_predict_from_dl(camvid_ds, backbone):
     _, valid_ds = camvid_ds

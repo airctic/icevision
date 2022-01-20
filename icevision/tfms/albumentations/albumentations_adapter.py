@@ -182,11 +182,7 @@ class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
         # group keypoints from same instance
         group_kpts = [
             flat_kpts[i : i + len(flat_kpts) // len(self._kpts)]
-            for i in range(
-                0,
-                len(flat_kpts),
-                len(flat_kpts) // len(self._kpts),
-            )
+            for i in range(0, len(flat_kpts), len(flat_kpts) // len(self._kpts),)
         ]
         assert len(group_kpts) == len(self._kpts)
 
