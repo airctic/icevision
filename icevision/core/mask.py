@@ -64,10 +64,11 @@ class MaskArray(Mask):
 
     # Arguments
         data: Mask array, with the dimensions: (num_instances, height, width)
+        pad_dim: bool
     """
 
-    def __init__(self, data: np.uint8):
-        if len(data.shape) == 2:
+    def __init__(self, data: np.uint8, pad_dim: bool = True):
+        if pad_dim and (len(data.shape) == 2):
             data = np.expand_dims(data, 0)
         self.data = data.astype(np.uint8)
 
@@ -293,10 +294,7 @@ class SemanticMaskFile(Mask):
             mask[mask == 255] = 1
 
         # control array padding behaviour
-        if pad_dim:
-            return MaskArray(mask[None])
-        else:
-            return MaskArray(mask)
+        return MaskArray(mask, pad_dim=pad_dim)
 
     def to_coco_rle(self, h, w) -> List[dict]:
         raise NotImplementedError
