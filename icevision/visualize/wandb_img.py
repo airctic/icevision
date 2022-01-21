@@ -167,7 +167,10 @@ def wandb_segmentation_image(
 
     for class_entry in pred.ground_truth.segmentation.class_map._class2id:
         wandb_classes.append(
-            {"name": class_entry, "id": class_map._class2id[class_entry]}
+            {
+                "name": class_entry,
+                "id": pred.ground_truth.segmentation.class_map._class2id[class_entry],
+            }
         )
 
     return wandb.Image(
