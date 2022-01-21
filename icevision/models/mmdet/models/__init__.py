@@ -12,6 +12,7 @@ from icevision.models.mmdet.models import ssd
 from icevision.models.mmdet.models import detr
 from icevision.models.mmdet.models import deformable_detr
 from icevision.models.mmdet.models import fsaf
+from icevision.models.mmdet.models import sabl
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
