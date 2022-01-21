@@ -11,6 +11,7 @@ from icevision.models.mmdet.models import sparse_rcnn
 from icevision.models.mmdet.models import ssd
 from icevision.models.mmdet.models import detr
 from icevision.models.mmdet.models import deformable_detr
+from icevision.models.mmdet.models import fsaf
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
