@@ -51,10 +51,12 @@ def param_groups(model):
             body.patch_embed.norm,
             body.drop_after_pos,
             body.stages,
-            body.norm1,
-            body.norm2,
-            body.norm3,
         ]
+        # Swin backbone for two-stage detector has norm0 attribute
+        if getattr(body, "norm0", False):
+            layers += [body.norm0]
+
+        layers += [body.norm1, body.norm2, body.norm3]
     else:
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
