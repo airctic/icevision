@@ -43,6 +43,7 @@ def param_groups(model):
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+
     elif isinstance(body, SwinTransformer):
         layers += [
             body.patch_embed.adap_padding,
@@ -50,7 +51,6 @@ def param_groups(model):
             body.patch_embed.norm,
             body.drop_after_pos,
             body.stages,
-            body.norm0,
             body.norm1,
             body.norm2,
             body.norm3,
