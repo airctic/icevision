@@ -283,6 +283,7 @@ class SemanticMaskFile(Mask):
         # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
         (w_org, h_org) = mask.size
 
+        # TODO: Check NEAREST is always the best option or only for binary?
         if w_org != w or h_org != h:
             mask = mask.resize((w, h), resample=PIL.Image.NEAREST)
 
