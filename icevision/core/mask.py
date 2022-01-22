@@ -284,7 +284,7 @@ class SemanticMaskFile(Mask):
         (w_org, h_org) = mask.size
 
         if w_org != w or h_org != h:
-            mask = mask.resize((w, h))
+            mask = mask.resize((w, h), resample=PIL.Image.NEAREST)
 
         # HACK: because open_img now return PIL
         mask = np.array(mask)
