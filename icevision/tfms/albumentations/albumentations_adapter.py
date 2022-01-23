@@ -138,11 +138,7 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
         self._record_component.set_mask_array(masks)
         # # set masks from the modified masks array
         # TODO: Understand whether something special needs to be done here, see comment on Github
-        if (
-            (self._record_component.masks is not None)
-            & len(self._record_component.masks)
-            & isinstance(self._record_component.masks[0], RLE)
-        ):
+        if all(isinstance(i, Polygon) for i in masks):
             rles = []
             for m in masks:
                 if m.data.any():
