@@ -14,8 +14,8 @@ from icevision.models.mmseg.common.segmentors.encoder_decoder import *
 
 
 _LOSSES_DICT = {
-    "decode.loss_seg": [],
-    "aux.loss_seg": [],
+    "decode.loss_ce": [],
+    "aux.loss_ce": [],
     "loss_total": [],
 }
 
