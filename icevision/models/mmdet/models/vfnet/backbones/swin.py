@@ -39,7 +39,7 @@ with open(
     download.write(content)
 
 
-config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_base_small_patch4_window7_224.py"
+config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_base_patch4_window7_224.py"
 with urlopen(config_url) as webpage:
     content = webpage.read()
 # Save to local mmdet config folder.
