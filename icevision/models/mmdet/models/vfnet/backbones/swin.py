@@ -1,9 +1,4 @@
-__all__ = [
-    "swin_t_p4_w7_fpn_1x_coco",
-    "swin_s_p4_w7_fpn_1x_coco",
-    "swin_b_p4_w7_fpn_1x_coco",
-    "swin_l_p4_w7_fpn_1x_coco",
-]
+__all__ = ["swin_t_p4_w7_fpn_1x_coco", "swin_s_p4_w7_fpn_1x_coco"]
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
@@ -22,7 +17,7 @@ base_weights_url = (
 
 #####
 # Download congi from URL.
-config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/vfnet/vfnet_swin_tiny_patch4_window7_224.py"
+config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_tiny_patch4_window7_224.py"
 with urlopen(config_url) as webpage:
     content = webpage.read()
 # Save to local mmdet config folder.
@@ -32,11 +27,13 @@ with open(base_config_path / "vfnet_swin_tiny_patch4_window7_224.py", "wb") as d
 
 #####
 # Download congi from URL.
-config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/vfnet/vfnet_swin_small_patch4_window7_224.py"
+config_url = "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_small_patch4_window7_224.py"
 with urlopen(config_url) as webpage:
     content = webpage.read()
 # Save to local mmdet config folder.
-with open(base_config_path / "vfnet_swin_tiny_patch4_window7_224.py", "wb") as download:
+with open(
+    base_config_path / "vfnet_swin_small_patch4_window7_224.py", "wb"
+) as download:
     download.write(content)
 #####
 
