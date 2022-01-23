@@ -48,7 +48,7 @@ echo "- Installing mmdet"
 pip install mmdet==2.17.0 --upgrade -q
 
 echo "- Installing mmseg"
-pip install mmseg==0.20.2 --upgrade -q
+pip install mmsegmentation==0.20.2 --upgrade -q
 
 icevision_version="${2}"
 
