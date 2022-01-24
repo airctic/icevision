@@ -22,9 +22,9 @@ base_weights_url = (
 ######## Download swin configs for VFNet ################
 
 config_urls = [
-    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_tiny_patch4_window7_224.py",
-    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_small_patch4_window7_224.py",
-    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin_base_patch4_window7_224.py",
+    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin-t-p4-w7_fpn_1x_coco.py",
+    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin-s-p4-w7_fpn_1x_coco.py",
+    "https://raw.githubusercontent.com/dnth/mmdetection_configs/custom-configs/configs/swin/vfnet_swin-b-p4-w7_fpn_1x_coco.py",
 ]
 
 for url in config_urls:
@@ -37,16 +37,16 @@ for url in config_urls:
 ########################################################
 
 swin_t_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
-    config_path=base_config_path / "vfnet_swin_tiny_patch4_window7_224.py",
+    config_path=base_config_path / "vfnet_swin-t-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth",
 )
 
 swin_s_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
-    config_path=base_config_path / "vfnet_swin_small_patch4_window7_224.py",
+    config_path=base_config_path / "vfnet_swin-s-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth",
 )
 
 swin_b_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
-    config_path=base_config_path / "vfnet_swin_base_patch4_window7_224.py",
+    config_path=base_config_path / "vfnet_swin-b-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224.pth",
 )
