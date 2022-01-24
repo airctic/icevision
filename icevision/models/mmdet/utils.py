@@ -6,6 +6,7 @@ __all__ = [
     "create_model_config",
 ]
 
+from numpy import isin
 from icevision.imports import *
 from icevision.utils import *
 from icevision.backbones import BackboneConfig
@@ -15,6 +16,7 @@ from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from mmdet.models.backbones.csp_darknet import CSPDarknet
 from mmdet.models.backbones.swin import SwinTransformer
+from mmdet.models.backbones.pvt import PyramidVisionTransformerV2
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -43,6 +45,9 @@ def param_groups(model):
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+
+    elif isinstance(body, PyramidVisionTransformerV2):
+        layers += [body.layers]
 
     elif isinstance(body, SwinTransformer):
         layers += [
