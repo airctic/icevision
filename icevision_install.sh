@@ -45,7 +45,7 @@ esac
 
 
 echo "- Installing mmdet"
-pip install mmdet==2.17.0 --upgrade -q
+pip install mmdet==2.20.0 --upgrade -q
 
 icevision_version="${2}"
 

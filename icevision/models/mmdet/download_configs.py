@@ -3,7 +3,7 @@ __all__ = ["download_mmdet_configs"]
 from icevision.imports import *
 from icevision.utils import *
 
-VERSION = "v2.16.0"
+VERSION = "v2.20.0"
 BASE_URL = "https://github.com/airctic/mmdetection_configs/archive/refs/tags"
 
 
