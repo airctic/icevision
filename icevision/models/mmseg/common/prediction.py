@@ -34,6 +34,9 @@ def _predict_batch(
     elif batch["img"][0].device.type != model_device(model).type:
         _, batch = _move_to_device(None, batch, model_device(model).type)
 
+    # Making sure the model is in eval mode
+    model.eval()
+
     raw_preds = model(**batch, return_loss=False)
     preds = convert_raw_predictions(
         batch=batch,
