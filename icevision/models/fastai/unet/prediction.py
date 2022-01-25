@@ -44,9 +44,13 @@ def convert_raw_predictions(
         tensor_images, tensor_gts = batch
     else:
         tensor_images = batch[0]
-        tensor_gts = [None] * len(tensor_images)
+        tensor_gts = [None] * len(records)
 
     preds = []
+
+    if len(tensor_images) != len(records):
+        raise (Exception("Tensor images and records should have the same length"))
+
     for record, tensor_image, mask_pred, tensor_gt in zip(
         records, tensor_images, mask_preds, tensor_gts
     ):
