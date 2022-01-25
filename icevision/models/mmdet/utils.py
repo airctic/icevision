@@ -67,6 +67,13 @@ def param_groups(model):
     # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
+
+        # YOLACT has mask_head and segm_head
+        if getattr(model, "mask_head", False):
+            layers += [model.mask_head]
+        if getattr(model, "segm_head", False):
+            layers += [model.segm_head]
+
     elif isinstance(model, TwoStageDetector):
         layers += [nn.Sequential(model.rpn_head, model.roi_head)]
     else:
