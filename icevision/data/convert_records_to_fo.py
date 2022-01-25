@@ -6,6 +6,7 @@ __all__ = [
 
 from PIL import Image
 from warnings import warn
+from pathlib import Path
 
 from icevision import tfms
 from icevision.core.bbox import BBox
@@ -37,6 +38,7 @@ def convert_record_to_fo_sample(
     autosave: bool = False,
     transformations=None,  # Undo postprocess via sample: icevision.models.inference.postprocess_bbox
     undo_bbox_tfms_fn: Callable[[BBox], BBox] = None,  # Undo postprocess custom fn
+    filepath: Union[Path, str] = None,
 ) -> Sample:
     """
     Takes a record and applies it to an fiftyone sample.
@@ -62,6 +64,8 @@ def convert_record_to_fo_sample(
 
     undo_bbox_tfms_fn: Custom function, that undoes transformations
 
+    filepath: The filepath, if it is not present in the record
+
     Returns
     -------
     fo.Sample, which can be directly added to a given Fiftyone dataset
@@ -80,8 +84,16 @@ def convert_record_to_fo_sample(
             "No bounding box postprocessing is used. The bboxes might be shifted in fiftyone"
         )
 
+    if filepath is not None:
+        _internal_filepath = filepath
+    else:
+        if sample is not None:
+            _internal_filepath = sample.filepath
+        else:
+            _internal_filepath = record.common.filepath
+
     # Prepare undo bbox tfms fn
-    img = Image.open(record.common.filepath)
+    img = Image.open(_internal_filepath)
     if undo_bbox_tfms_fn is not None:
         _internal_undo_bbox_tfms = lambda bbox: _convert_bbox_to_fo_bbox(
             undo_bbox_tfms_fn(bbox), img.width, img.height
@@ -107,7 +119,7 @@ def convert_record_to_fo_sample(
 
     # Get sample after successful detection
     if sample is None:
-        sample = Sample(record.common.filepath)
+        sample = Sample(_internal_filepath)
     elif isinstance(sample, Sample):
         pass
     else:
@@ -212,6 +224,7 @@ def convert_prediction_to_fo_sample(
         False,
         transformations,
         undo_bbox_tfms_fn,
+        filepath=prediction.ground_truth.common.filepath,
     )
 
     return sample
@@ -307,5 +320,5 @@ def _convert_bbox_to_fo_bbox(
         bbox.xmin / original_width,
         bbox.ymin / original_height,
         bbox.width / original_width,
-        bbox.width / original_height,
+        bbox.height / original_height,
     ]
