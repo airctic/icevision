@@ -61,10 +61,18 @@ def convert_raw_predictions(
     else:
         tensor_gts = [None]
 
-    tensor_imgs = [x.chunk(batch["img"][0].shape[0], dim=0) for x in batch["img"]]
-    tensor_imgs = list(
-        itertools.chain.from_iterable(tensor_imgs)
-    )  # Ensuring that all chunks are unrolled into the list
+    # Images for inference come in as lists
+    if isinstance(batch["img"], list):
+        tensor_imgs = [x.chunk(batch["img"][0].shape[0], dim=0) for x in batch["img"]]
+        tensor_imgs = list(
+            itertools.chain.from_iterable(tensor_imgs)
+        )  # Ensuring that all chunks are unrolled into the list
+    else:
+        # At training time, images are in a single tensor
+        tensor_imgs = batch["img"].chunk(batch["img"].shape[0], dim=0)
+
+    if len(tensor_imgs) != len(records):
+        raise (Exception("Tensor images and records should have the same length"))
 
     preds = []
     for record, tensor_gt, mask_pred, tensor_image in zip(
