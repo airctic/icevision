@@ -6,13 +6,10 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
+from icevision.models.mmdet.models.retinanet.backbones.backbone_config import (
+    MMDetRetinanetBackboneConfig,
+)
 from urllib.request import urlopen, urlcleanup
-
-
-class MMDetSwinBackboneConfig(MMDetBackboneConfig):
-    def __init__(self, **kwargs):
-        super().__init__(model_name="swin", **kwargs)
-
 
 base_config_path = mmdet_configs_path / "swin"
 base_weights_url = (
@@ -36,17 +33,17 @@ for url in config_urls:
 
 ########################################################
 
-swin_t_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
+swin_t_p4_w7_fpn_1x_coco = MMDetRetinanetBackboneConfig(
     config_path=base_config_path / "retinanet_swin-t-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth",
 )
 
-swin_s_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
+swin_s_p4_w7_fpn_1x_coco = MMDetRetinanetBackboneConfig(
     config_path=base_config_path / "retinanet_swin-s-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_small_patch4_window7_224.pth",
 )
 
-swin_b_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
+swin_b_p4_w7_fpn_1x_coco = MMDetRetinanetBackboneConfig(
     config_path=base_config_path / "retinanet_swin-b-p4-w7_fpn_1x_coco.py",
     weights_url="https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224.pth",
 )
