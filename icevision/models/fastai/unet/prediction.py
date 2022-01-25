@@ -39,11 +39,16 @@ def convert_raw_predictions(
     keep_images: bool = False,
 ) -> List[Prediction]:
     mask_preds = raw_preds.argmax(dim=1)
-    tensor_images, tensor_gts = batch
+
+    if len(batch) > 1:
+        tensor_images, tensor_gts = batch
+    else:
+        tensor_images = batch[0]
+        tensor_gts = [None]
 
     preds = []
     for record, tensor_image, mask_pred, tensor_gt in zip(
-        records, tensor_images, mask_preds, tensor_gts
+        records, tensor_images, mask_preds, cycle(tensor_gts)
     ):
         pred = BaseRecord(
             (
