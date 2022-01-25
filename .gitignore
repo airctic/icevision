@@ -155,4 +155,8 @@ archives/
 notebooks/wandb/latest-run
 
 checkpoints
-artifacts/*
+
+wandb
+wandb/*
+
+*/artifacts/*
