@@ -30,11 +30,11 @@ Depending on what version of cuda driver you'd like to use, you can install diff
 ??? note "checking your `torch`-`cuda` version"  
     To see what version of `torch` and `cuda` is installed in your current environment, run:
     ```
-    python -c "import torch;print(torch.__version__)"
+    python -c "import torch;print(torch.__version__, torch.version.cuda)"
     ```
     output:
     ```
-    1.10.1+cu102
+    1.10.1+cu102 10.2
     ```
     Your installed torch version will determine which version of `mmcv-full` you can install.
 
