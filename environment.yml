@@ -1,24 +1,19 @@
 name: ice
 channels:
-  - fastai
   - pytorch
+  - fastai
   - defaults
 dependencies:
-  - jupyter
-  - pytorch>=1.3.0
-  - torchvision>=0.5
-  - matplotlib
-  - pandas
-  - requests
-  - pyyaml
-  - fastprogress>=1.0.0
-  - pillow
-  - python>=3.6
+  - pillow >8.0.0,<9
+  - python>3.6,<4
+  - pytorch==1.10.0
+  - torchvision==0.11.1
+  - cudatoolkit=10.2
+  - fastcore >=1.3.0,<1.4
+  - fastai >=2.5.2,<2.6
   - pip
-  - scikit-learn
-  - scipy
-  - Cython
   - pip:
-      - fastai
-  - pip:
-      - git+https://github.com/airctic/icevision.git
+      - git+https://github.com/airctic/icevision.git@master#egg=icevision[all]
+#  - pip:
+#    - --find-links https://download.pytorch.org/whl/torch_stable.html
+#
