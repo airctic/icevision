@@ -61,6 +61,14 @@ case ${icevision_version} in
       pip install git+https://github.com/airctic/icedata.git --upgrade -q
       ;;
 
+   mmseg-integration)
+      echo "- Installing icevision from master (icevision integration)"
+      pip install git+https://github.com/Orbis-International/icevision.git@05ad41f183132275c7f31f25e484fcbff0a7cfd8#egg=icevision[all] --upgrade -q
+
+      echo "- Installing icedata from master"      
+      pip install git+https://github.com/airctic/icedata.git --upgrade -q
+      ;;
+
    *) 
       echo "- Installing icevision from PyPi"
       pip install icevision[all] --upgrade -q
