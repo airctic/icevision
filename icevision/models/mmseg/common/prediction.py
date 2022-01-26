@@ -74,6 +74,7 @@ def convert_raw_predictions(
     if len(tensor_imgs) != len(records):
         raise (Exception("Tensor images and records should have the same length"))
 
+    # TODO: This can be optimized by using looping through first tensor dims behaviour instead of chunking tensors?
     preds = []
     for record, tensor_gt, mask_pred, tensor_image in zip(
         records, cycle(tensor_gts), raw_preds, tensor_imgs
