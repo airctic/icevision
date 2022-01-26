@@ -5,6 +5,7 @@ __all__ = [
     "build_model",
 ]
 
+from icevision import backbones
 from icevision.imports import *
 from icevision.utils import *
 from mmcv import Config
@@ -55,6 +56,13 @@ def build_model(
         if isinstance(cfg.model.roi_head.bbox_head, list):
             for bbox_head in cfg.model.roi_head.bbox_head:
                 bbox_head["num_classes"] = num_classes - 1
+
+        # if backbone.model_name == "swin":
+        # # Remove mask-related config so that this model can be used with object detection models
+        #     cfg.model.roi_head.mask_roi_extractor = None
+        #     cfg.model.roi_head.mask_head = None
+        #     cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
+
         else:
             cfg.model.roi_head.bbox_head.num_classes = num_classes - 1
 

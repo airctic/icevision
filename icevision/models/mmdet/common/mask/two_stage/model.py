@@ -1,5 +1,7 @@
 __all__ = ["model"]
 
+from turtle import back
+from icevision import backbones
 from icevision.imports import *
 from mmcv import Config
 from mmdet.models import build_detector
@@ -13,6 +15,7 @@ def model(
     num_classes: int,
     checkpoints_path: Optional[Union[str, Path]] = "checkpoints",
     force_download=False,
+    cfg_options=None,
 ) -> nn.Module:
 
     return build_model(
@@ -22,4 +25,5 @@ def model(
         pretrained=backbone.pretrained,
         checkpoints_path=checkpoints_path,
         force_download=force_download,
+        cfg_options=cfg_options,
     )
