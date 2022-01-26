@@ -72,12 +72,19 @@ def build_model(
     )
 
     if model_type == "EncoderDecoder":
-        cfg.model.decode_head.num_classes = num_classes
-        cfg.model.auxiliary_head.num_classes = num_classes
+        if "auxiliary_head" in cfg.model:
+            cfg.model.auxiliary_head.num_classes = num_classes
+
+        if "decode_head" in cfg.model:
+            cfg.model.decode_head.num_classes = num_classes
     else:
         raise (InvalidMMSegModelType)
 
     _model = build_segmentor(cfg.model, cfg.get("train_cfg"), cfg.get("test_cfg"))
+
+    if _model.backbone.init_cfg:
+        _model.backbone.init_cfg = {}
+
     _model.init_weights()
 
     if pretrained == True:
