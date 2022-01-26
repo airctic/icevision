@@ -16,3 +16,4 @@ from icevision.models.mmdet.models import sabl
 
 # segmentation
 from icevision.models.mmdet.models import mask_rcnn
+from icevision.models.mmdet.models import yolact
