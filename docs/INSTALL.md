@@ -10,7 +10,8 @@ $ pip install icevision[all]
 !!! danger "Important"  
     We currently only support Linux/MacOS installations
 
-## **torch**
+## installation using pip
+### **torch**
 Depending on what version of cuda driver you'd like to use, you can install different versions of torch builds. If you're not sure which version to choose, we advise to use the current torch default `cuda-10.2`
 
 === "cuda-10.2"
@@ -38,7 +39,7 @@ Depending on what version of cuda driver you'd like to use, you can install diff
     ```
     Your installed torch version will determine which version of `mmcv-full` you can install.
 
-## **mmcv-full** *(optional)*
+### **mmcv-full** *(optional)*
 
 Installing `mmcv-full` is optional, yet it will let you unleash the full potential of `icevision` and allow you to use the large library of models available in `mmdet`, therefore we strongly recommend doing it.
 
@@ -114,32 +115,25 @@ Installing `mmcv-full` is optional, yet it will let you unleash the full potenti
     
     &nbsp;
 
-## **icevision**
+### **icevision**
 Icevision is distributed in 2 different eggs:
 
 - `icevision[all]` - **recommended** - complete icevision package with all dependencies
 - `icevision[inference]` - minimal dependencies, useful for deployment or simply parsing and viewing your dataset
 
-### **stable**
-recommended way to use a stable release of the library
+we recommend to install the stable release but if you want to use the most recent, bleeding edge version of the library or would like to contribute, here is how to do it: 
+
+- **stable**
 ```bash
 pip install icevision[all]
 ```
 
-
-### **bleeding edge**
-use this method if you want to experiment with the latest features added on a daily basis
+- **bleeding edge**
 ```bash
 pip install git+https://github.com/airctic/icevision.git@master#egg=icevision[all] --upgrade
 ```
 
-### **editable mode (*for developers*)**
-This method is used by developers who are usually either:
-
-- actively contributing to `icevision` project by adding new features or fixing bugs, or 
-- creating their own extensions, and making sure that their source code stay in sync with the `icevision` latest version.
-
-
+- **editable mode (*for developers*)**
 ```bash
 git clone --depth=1 https://github.com/airctic/icevision.git
 cd icevision
@@ -162,23 +156,19 @@ pre-commit install
 !!! note
     running `pip install icevision` will install `icevision[inference]` by default
 
-&nbsp;&nbsp;
-# installation using conda
+## installation using conda
+
 Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **icevision**
 
 <div class="termy">
 ```console
-$ conda create -n icevision python=3.8 anaconda
-$ conda activate icevision
-$ pip install torch==1.10.0+cu102 torchvision==0.11.1+cu102 -f https://download.pytorch.org/whl/torch_stable.html
-$ pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html
-$ pip install mmdet==2.17.0
-$ pip install icevision[all]
+curl -O https://raw.githubusercontent.com/airctic/icevision/master/environment.yml 
+conda env create -f environment.yml
 ```
 </div>
 
 &nbsp;&nbsp;
-# troubleshooting
+## troubleshooting
 
 ### MMCV is not installing with cuda support
 If you are installing MMCV from the wheel like described above and still are having problems with CUDA you will probably have to compile it locally. Do that by running:
