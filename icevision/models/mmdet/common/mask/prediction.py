@@ -12,9 +12,7 @@ from icevision.data import *
 from icevision.models.utils import _predict_from_dl
 from icevision.models.mmdet.common.utils import *
 from icevision.models.mmdet.common.mask.dataloaders import *
-from icevision.models.mmdet.common.bbox.prediction import (
-    _unpack_raw_bboxes,
-)
+from icevision.models.mmdet.common.bbox.prediction import _unpack_raw_bboxes
 
 
 @torch.no_grad()
@@ -138,7 +136,7 @@ def convert_raw_prediction(
     pred.detection.set_scores(keep_scores)
     pred.detection.set_labels_by_id(keep_labels)
     pred.detection.set_bboxes(keep_bboxes)
-    pred.detection.set_masks(keep_masks)
+    pred.detection.set_mask_array(keep_masks)
     pred.above_threshold = keep_mask
 
     if keep_image:

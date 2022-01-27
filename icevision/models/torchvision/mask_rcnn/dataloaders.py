@@ -10,9 +10,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
-from icevision.models.torchvision.faster_rcnn.dataloaders import (
-    _build_train_sample,
-)
+from icevision.models.torchvision.faster_rcnn.dataloaders import _build_train_sample
 from icevision.models.torchvision.faster_rcnn.dataloaders import (
     build_infer_batch,
     infer_dl,
