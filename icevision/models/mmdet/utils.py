@@ -15,6 +15,7 @@ from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from mmdet.models.backbones.csp_darknet import CSPDarknet
 from mmdet.models.backbones.swin import SwinTransformer
+from mmdet.models.backbones.hourglass import HourglassNet
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -43,6 +44,17 @@ def param_groups(model):
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+
+    elif isinstance(body, HourglassNet):
+        layers += [
+            body.stem,
+            body.hourglass_modules,
+            body.inters,
+            body.conv1x1s,
+            body.out_convs,
+            body.remap_convs,
+            body.relu,
+        ]
 
     elif isinstance(body, SwinTransformer):
         layers += [
