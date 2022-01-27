@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/use_fiftyone_with_icevision/">
+        <link rel="canonical" href="https://airctic.com/dev/using_fiftyone_in_icevision/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.0">
     
     
       
-        <title>Use fiftyone with icevision - IceVision</title>
+        <title>Using FiftyOne in icevision - IceVision</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#use-fiftyone-with-icevision" class="md-skip">
+        <a href="#using-fiftyone-in-icevision" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Use fiftyone with icevision
+              Using FiftyOne in icevision
             
           </span>
         </div>
@@ -366,12 +366,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
@@ -495,6 +497,141 @@
       <a href="../SAHI_inference/" class="md-nav__link">
         Small Object Detection with SAHI
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Using FiftyOne in icevision
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Using FiftyOne in icevision
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision" class="md-nav__link">
+    Install IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-datasets" class="md-nav__link">
+    Visualizing datasets
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualizing datasets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fiftyone-summary" class="md-nav__link">
+    Fiftyone Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-predictions" class="md-nav__link">
+    Visualizing predictions
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualizing predictions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loading-the-fridge-model" class="md-nav__link">
+    Loading the fridge model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merging-samples" class="md-nav__link">
+    Merging samples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-your-own-fodataset-with-fosample" class="md-nav__link">
+    Create your own fo.Dataset with fo.Sample
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your own fo.Dataset with fo.Sample">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cleanup" class="md-nav__link">
+    Cleanup
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1065,16 +1202,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#visualize-datasets" class="md-nav__link">
-    Visualize datasets
+  <a href="#visualizing-datasets" class="md-nav__link">
+    Visualizing datasets
   </a>
   
-    <nav class="md-nav" aria-label="Visualize datasets">
+    <nav class="md-nav" aria-label="Visualizing datasets">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fiftyone-in-short" class="md-nav__link">
-    Fiftyone in short
+  <a href="#fiftyone-summary" class="md-nav__link">
+    Fiftyone Summary
   </a>
   
 </li>
@@ -1085,16 +1222,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#visualize-predictions" class="md-nav__link">
-    Visualize predictions
+  <a href="#visualizing-predictions" class="md-nav__link">
+    Visualizing predictions
   </a>
   
-    <nav class="md-nav" aria-label="Visualize predictions">
+    <nav class="md-nav" aria-label="Visualizing predictions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#load-the-fridge-model" class="md-nav__link">
-    Load the fridge model
+  <a href="#loading-the-fridge-model" class="md-nav__link">
+    Loading the fridge model
   </a>
   
 </li>
@@ -1151,8 +1288,8 @@
               
                 
                 
-                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/inference.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="use-fiftyone-with-icevision">Use Fiftyone with IceVision</h1>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/using_fiftyone_in_icevision.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="using-fiftyone-in-icevision">Using Fiftyone in IceVision</h1>
 <p><img alt="" src="https://raw.githubusercontent.com/airctic/icevision/master/images/fridge-objects.png" /></p>
 <h2 id="install-icevision">Install IceVision</h2>
 <p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
@@ -1161,7 +1298,10 @@ as the fastai and pytorch lightning engines.</p>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
-<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span> <span class="n">master</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install fiftyone</span>
+<span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">fiftyone</span> <span class="o">-</span><span class="n">U</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
 <span class="kn">import</span> <span class="nn">IPython</span>
@@ -1174,14 +1314,10 @@ as the fastai and pytorch lightning engines.</p>
 <span class="kn">import</span> <span class="nn">icedata</span>  <span class="c1"># Needed for sample data</span>
 <span class="kn">import</span> <span class="nn">fiftyone</span> <span class="k">as</span> <span class="nn">fo</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/laurenz/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
-</code></pre></div>
-</div>
-<h2 id="visualize-datasets">Visualize datasets</h2>
+<h2 id="visualizing-datasets">Visualizing datasets</h2>
 <p>The fiftyone integration of IceVision can be used on either IceVision Datasets or IceVision Prediction. Let's start by visualizing a dataset. </p>
 <p>If you don't know fiftyone yet, visit the website and read about the concepts: https://voxel51.com/docs/fiftyone. </p>
-<h3 id="fiftyone-in-short">Fiftyone in short</h3>
+<h3 id="fiftyone-summary">Fiftyone Summary</h3>
 <p>Fiftyone is a tool to analyze datasets and detections of all forms. </p>
 <p>For object detection these concepta are most relevant: </p>
 <p>Fiftyone is structured into <code>fo.Datasets</code>. So every viewable entity is related to a <code>fo.Dataset</code>. An image is represented by a <code>fo.Sample</code>. After you created a <code>fo.Sample</code> you can add <code>fo.Detections</code>, which is constructed by a list of <code>fo.Detection</code>. Finally, you need to add a <code>fo.Sample</code> to your <code>fo.Dataset</code> and then launch your app by calling <code>fo.launch_app(dataset)</code>. IceVision enables you to create all of these <code>fo</code> objects from IceVision classes.</p>
@@ -1208,17 +1344,6 @@ Since fiftyone operates on filepaths, you dataset needs filepath as component an
 </code></pre></div></p>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>[]
-
-  0%|          | 0/128 [00:00&lt;?, ?it/s]
-
-[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
-
-  0%|          | 0/128 [00:00&lt;?, ?it/s]
-
- 100% |███████████████████| 26/26 [35.5ms elapsed, 0s remaining, 732.4 samples/s]     
-
-/home/laurenz/Desktop/repos/icevision/icevision/data/convert_records_to_fo.py:83: UserWarning: No bounding box postprocessing is used. The bboxes might be shifted in fiftyone
-  warn(
 
 [&#39;inference_dataset&#39;]
 </code></pre></div>
@@ -1295,7 +1420,7 @@ Selected labels:  0
 Session URL:      http://localhost:5151/
 </code></pre></div>
 </div>
-<h2 id="visualize-predictions">Visualize predictions</h2>
+<h2 id="visualizing-predictions">Visualizing predictions</h2>
 <p>Besides Datasets, you can also visualize predictions by calling the <code>icevision.data.create_fo_dataset</code> with an <code>icevision.Prediction</code>. The <code>icevision.data.create_fo_dataset</code> function allows you to append prediction to an existing dataset by setting the <code>exist_ok</code> argument to <code>True</code>.</p>
 <p>When you display images in fiftyone it always refers to the original image. However, Icevision keeps its data already transformed, which means that the bounding box needs to be post-processed to match the original image size. You have two options for this post-processing:</p>
 <ol>
@@ -1303,29 +1428,12 @@ Session URL:      http://localhost:5151/
 <li>Or u
 se your custom post-process function by using the <code>undo_bbox_tfms_fn</code> argument</li>
 </ol>
-<h3 id="load-the-fridge-model">Load the fridge model</h3>
+<h3 id="loading-the-fridge-model">Loading the fridge model</h3>
 <div class="highlight"><pre><span></span><code><span class="n">checkpoint_path</span> <span class="o">=</span> <span class="s1">&#39;https://github.com/airctic/model_zoo/releases/download/m6/fridge-retinanet-checkpoint-full.pth&#39;</span>
 
 <span class="n">checkpoint_and_model</span> <span class="o">=</span> <span class="n">model_from_checkpoint</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>load checkpoint from http path: https://github.com/airctic/model_zoo/releases/download/m6/fridge-retinanet-checkpoint-full.pth
-
-/home/laurenz/Desktop/repos/venv_icevision/lib/python3.8/site-packages/mmdet/core/anchor/builder.py:16: UserWarning: ``build_anchor_generator`` would be deprecated soon, please use ``build_prior_generator`` 
-  warnings.warn(
-2022-01-25 08:42:10,380 - mmcv - INFO - initialize ResNet with init_cfg {&#39;type&#39;: &#39;Pretrained&#39;, &#39;checkpoint&#39;: &#39;torchvision://resnet50&#39;}
-2022-01-25 08:42:10,381 - mmcv - INFO - load model from: torchvision://resnet50
-2022-01-25 08:42:10,381 - mmcv - INFO - load checkpoint from torchvision path: torchvision://resnet50
-2022-01-25 08:42:10,514 - mmcv - WARNING - The model and loaded state dict do not match exactly
-</code></pre></div>
-</div>
-
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>unexpected key in source state_dict: fc.weight, fc.bias
-</code></pre></div>
-</div>
-
-<p><div class="highlight"><pre><span></span><code><span class="c1"># Just logging the info</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just logging the info</span>
 <span class="n">model_type</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span>
 <span class="n">backbone</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;backbone&quot;</span><span class="p">]</span>
 <span class="n">class_map</span> <span class="o">=</span> <span class="n">checkpoint_and_model</span><span class="p">[</span><span class="s2">&quot;class_map&quot;</span><span class="p">]</span>
@@ -1359,806 +1467,9 @@ se your custom post-process function by using the <code>undo_bbox_tfms_fn</code>
 <span class="n">fo</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">fo</span><span class="o">.</span><span class="n">launch_app</span><span class="p">(</span><span class="n">fo_dataset</span><span class="p">)</span>
-</code></pre></div></p>
+</code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>2022-01-25 08:42:10,551 - mmcv - INFO - initialize FPN with init_cfg {&#39;type&#39;: &#39;Xavier&#39;, &#39;layer&#39;: &#39;Conv2d&#39;, &#39;distribution&#39;: &#39;uniform&#39;}
-2022-01-25 08:42:10,627 - mmcv - INFO - initialize RetinaHead with init_cfg {&#39;type&#39;: &#39;Normal&#39;, &#39;layer&#39;: &#39;Conv2d&#39;, &#39;std&#39;: 0.01, &#39;override&#39;: {&#39;type&#39;: &#39;Normal&#39;, &#39;name&#39;: &#39;retina_cls&#39;, &#39;std&#39;: 0.01, &#39;bias_prob&#39;: 0.01}}
-2022-01-25 08:42:10,683 - mmcv - INFO - 
-backbone.conv1.weight - torch.Size([64, 3, 7, 7]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,684 - mmcv - INFO - 
-backbone.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,685 - mmcv - INFO - 
-backbone.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,689 - mmcv - INFO - 
-backbone.layer1.0.conv1.weight - torch.Size([64, 64, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,690 - mmcv - INFO - 
-backbone.layer1.0.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,691 - mmcv - INFO - 
-backbone.layer1.0.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,691 - mmcv - INFO - 
-backbone.layer1.0.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,693 - mmcv - INFO - 
-backbone.layer1.0.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,695 - mmcv - INFO - 
-backbone.layer1.0.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,696 - mmcv - INFO - 
-backbone.layer1.0.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,697 - mmcv - INFO - 
-backbone.layer1.0.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,698 - mmcv - INFO - 
-backbone.layer1.0.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,700 - mmcv - INFO - 
-backbone.layer1.0.downsample.0.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,701 - mmcv - INFO - 
-backbone.layer1.0.downsample.1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,702 - mmcv - INFO - 
-backbone.layer1.0.downsample.1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,704 - mmcv - INFO - 
-backbone.layer1.1.conv1.weight - torch.Size([64, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,705 - mmcv - INFO - 
-backbone.layer1.1.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,706 - mmcv - INFO - 
-backbone.layer1.1.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,707 - mmcv - INFO - 
-backbone.layer1.1.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,708 - mmcv - INFO - 
-backbone.layer1.1.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,708 - mmcv - INFO - 
-backbone.layer1.1.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,709 - mmcv - INFO - 
-backbone.layer1.1.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,709 - mmcv - INFO - 
-backbone.layer1.1.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,710 - mmcv - INFO - 
-backbone.layer1.1.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,710 - mmcv - INFO - 
-backbone.layer1.2.conv1.weight - torch.Size([64, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,711 - mmcv - INFO - 
-backbone.layer1.2.bn1.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,711 - mmcv - INFO - 
-backbone.layer1.2.bn1.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,712 - mmcv - INFO - 
-backbone.layer1.2.conv2.weight - torch.Size([64, 64, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,712 - mmcv - INFO - 
-backbone.layer1.2.bn2.weight - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,713 - mmcv - INFO - 
-backbone.layer1.2.bn2.bias - torch.Size([64]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,713 - mmcv - INFO - 
-backbone.layer1.2.conv3.weight - torch.Size([256, 64, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,714 - mmcv - INFO - 
-backbone.layer1.2.bn3.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,714 - mmcv - INFO - 
-backbone.layer1.2.bn3.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,714 - mmcv - INFO - 
-backbone.layer2.0.conv1.weight - torch.Size([128, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,715 - mmcv - INFO - 
-backbone.layer2.0.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,715 - mmcv - INFO - 
-backbone.layer2.0.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,716 - mmcv - INFO - 
-backbone.layer2.0.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,716 - mmcv - INFO - 
-backbone.layer2.0.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,719 - mmcv - INFO - 
-backbone.layer2.0.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,722 - mmcv - INFO - 
-backbone.layer2.0.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,723 - mmcv - INFO - 
-backbone.layer2.0.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,724 - mmcv - INFO - 
-backbone.layer2.0.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,725 - mmcv - INFO - 
-backbone.layer2.0.downsample.0.weight - torch.Size([512, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,727 - mmcv - INFO - 
-backbone.layer2.0.downsample.1.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,729 - mmcv - INFO - 
-backbone.layer2.0.downsample.1.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,730 - mmcv - INFO - 
-backbone.layer2.1.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,731 - mmcv - INFO - 
-backbone.layer2.1.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,732 - mmcv - INFO - 
-backbone.layer2.1.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,732 - mmcv - INFO - 
-backbone.layer2.1.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,734 - mmcv - INFO - 
-backbone.layer2.1.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,736 - mmcv - INFO - 
-backbone.layer2.1.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,738 - mmcv - INFO - 
-backbone.layer2.1.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,739 - mmcv - INFO - 
-backbone.layer2.1.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,740 - mmcv - INFO - 
-backbone.layer2.1.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,742 - mmcv - INFO - 
-backbone.layer2.2.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,742 - mmcv - INFO - 
-backbone.layer2.2.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,744 - mmcv - INFO - 
-backbone.layer2.2.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,746 - mmcv - INFO - 
-backbone.layer2.2.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,748 - mmcv - INFO - 
-backbone.layer2.2.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,749 - mmcv - INFO - 
-backbone.layer2.2.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,750 - mmcv - INFO - 
-backbone.layer2.2.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,750 - mmcv - INFO - 
-backbone.layer2.2.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,755 - mmcv - INFO - 
-backbone.layer2.2.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,759 - mmcv - INFO - 
-backbone.layer2.3.conv1.weight - torch.Size([128, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,760 - mmcv - INFO - 
-backbone.layer2.3.bn1.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,760 - mmcv - INFO - 
-backbone.layer2.3.bn1.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,761 - mmcv - INFO - 
-backbone.layer2.3.conv2.weight - torch.Size([128, 128, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,762 - mmcv - INFO - 
-backbone.layer2.3.bn2.weight - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,763 - mmcv - INFO - 
-backbone.layer2.3.bn2.bias - torch.Size([128]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,764 - mmcv - INFO - 
-backbone.layer2.3.conv3.weight - torch.Size([512, 128, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,765 - mmcv - INFO - 
-backbone.layer2.3.bn3.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,765 - mmcv - INFO - 
-backbone.layer2.3.bn3.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,768 - mmcv - INFO - 
-backbone.layer3.0.conv1.weight - torch.Size([256, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,771 - mmcv - INFO - 
-backbone.layer3.0.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,775 - mmcv - INFO - 
-backbone.layer3.0.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,777 - mmcv - INFO - 
-backbone.layer3.0.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,781 - mmcv - INFO - 
-backbone.layer3.0.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,783 - mmcv - INFO - 
-backbone.layer3.0.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,791 - mmcv - INFO - 
-backbone.layer3.0.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,792 - mmcv - INFO - 
-backbone.layer3.0.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,793 - mmcv - INFO - 
-backbone.layer3.0.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,795 - mmcv - INFO - 
-backbone.layer3.0.downsample.0.weight - torch.Size([1024, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,796 - mmcv - INFO - 
-backbone.layer3.0.downsample.1.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,797 - mmcv - INFO - 
-backbone.layer3.0.downsample.1.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,798 - mmcv - INFO - 
-backbone.layer3.1.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,798 - mmcv - INFO - 
-backbone.layer3.1.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,801 - mmcv - INFO - 
-backbone.layer3.1.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,806 - mmcv - INFO - 
-backbone.layer3.1.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,811 - mmcv - INFO - 
-backbone.layer3.1.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,825 - mmcv - INFO - 
-backbone.layer3.1.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,827 - mmcv - INFO - 
-backbone.layer3.1.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,828 - mmcv - INFO - 
-backbone.layer3.1.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,829 - mmcv - INFO - 
-backbone.layer3.1.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,830 - mmcv - INFO - 
-backbone.layer3.2.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,832 - mmcv - INFO - 
-backbone.layer3.2.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,839 - mmcv - INFO - 
-backbone.layer3.2.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,841 - mmcv - INFO - 
-backbone.layer3.2.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,843 - mmcv - INFO - 
-backbone.layer3.2.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,845 - mmcv - INFO - 
-backbone.layer3.2.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,847 - mmcv - INFO - 
-backbone.layer3.2.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,848 - mmcv - INFO - 
-backbone.layer3.2.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,849 - mmcv - INFO - 
-backbone.layer3.2.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,850 - mmcv - INFO - 
-backbone.layer3.3.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,851 - mmcv - INFO - 
-backbone.layer3.3.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,854 - mmcv - INFO - 
-backbone.layer3.3.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,855 - mmcv - INFO - 
-backbone.layer3.3.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,857 - mmcv - INFO - 
-backbone.layer3.3.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,858 - mmcv - INFO - 
-backbone.layer3.3.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,861 - mmcv - INFO - 
-backbone.layer3.3.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,863 - mmcv - INFO - 
-backbone.layer3.3.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,865 - mmcv - INFO - 
-backbone.layer3.3.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,866 - mmcv - INFO - 
-backbone.layer3.4.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,867 - mmcv - INFO - 
-backbone.layer3.4.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,869 - mmcv - INFO - 
-backbone.layer3.4.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,872 - mmcv - INFO - 
-backbone.layer3.4.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,873 - mmcv - INFO - 
-backbone.layer3.4.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,874 - mmcv - INFO - 
-backbone.layer3.4.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,875 - mmcv - INFO - 
-backbone.layer3.4.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,876 - mmcv - INFO - 
-backbone.layer3.4.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,879 - mmcv - INFO - 
-backbone.layer3.4.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,882 - mmcv - INFO - 
-backbone.layer3.5.conv1.weight - torch.Size([256, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,885 - mmcv - INFO - 
-backbone.layer3.5.bn1.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,887 - mmcv - INFO - 
-backbone.layer3.5.bn1.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,888 - mmcv - INFO - 
-backbone.layer3.5.conv2.weight - torch.Size([256, 256, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,890 - mmcv - INFO - 
-backbone.layer3.5.bn2.weight - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,892 - mmcv - INFO - 
-backbone.layer3.5.bn2.bias - torch.Size([256]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,894 - mmcv - INFO - 
-backbone.layer3.5.conv3.weight - torch.Size([1024, 256, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,895 - mmcv - INFO - 
-backbone.layer3.5.bn3.weight - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,897 - mmcv - INFO - 
-backbone.layer3.5.bn3.bias - torch.Size([1024]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,905 - mmcv - INFO - 
-backbone.layer4.0.conv1.weight - torch.Size([512, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,906 - mmcv - INFO - 
-backbone.layer4.0.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,908 - mmcv - INFO - 
-backbone.layer4.0.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,909 - mmcv - INFO - 
-backbone.layer4.0.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,910 - mmcv - INFO - 
-backbone.layer4.0.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,911 - mmcv - INFO - 
-backbone.layer4.0.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,912 - mmcv - INFO - 
-backbone.layer4.0.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,915 - mmcv - INFO - 
-backbone.layer4.0.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,916 - mmcv - INFO - 
-backbone.layer4.0.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,917 - mmcv - INFO - 
-backbone.layer4.0.downsample.0.weight - torch.Size([2048, 1024, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,920 - mmcv - INFO - 
-backbone.layer4.0.downsample.1.weight - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,924 - mmcv - INFO - 
-backbone.layer4.0.downsample.1.bias - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,927 - mmcv - INFO - 
-backbone.layer4.1.conv1.weight - torch.Size([512, 2048, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,928 - mmcv - INFO - 
-backbone.layer4.1.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,933 - mmcv - INFO - 
-backbone.layer4.1.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,935 - mmcv - INFO - 
-backbone.layer4.1.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,938 - mmcv - INFO - 
-backbone.layer4.1.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,939 - mmcv - INFO - 
-backbone.layer4.1.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,940 - mmcv - INFO - 
-backbone.layer4.1.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,941 - mmcv - INFO - 
-backbone.layer4.1.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,942 - mmcv - INFO - 
-backbone.layer4.1.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,947 - mmcv - INFO - 
-backbone.layer4.2.conv1.weight - torch.Size([512, 2048, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,950 - mmcv - INFO - 
-backbone.layer4.2.bn1.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,953 - mmcv - INFO - 
-backbone.layer4.2.bn1.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,960 - mmcv - INFO - 
-backbone.layer4.2.conv2.weight - torch.Size([512, 512, 3, 3]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,962 - mmcv - INFO - 
-backbone.layer4.2.bn2.weight - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,964 - mmcv - INFO - 
-backbone.layer4.2.bn2.bias - torch.Size([512]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,965 - mmcv - INFO - 
-backbone.layer4.2.conv3.weight - torch.Size([2048, 512, 1, 1]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,966 - mmcv - INFO - 
-backbone.layer4.2.bn3.weight - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,967 - mmcv - INFO - 
-backbone.layer4.2.bn3.bias - torch.Size([2048]): 
-PretrainedInit: load from torchvision://resnet50 
-
-2022-01-25 08:42:10,969 - mmcv - INFO - 
-neck.lateral_convs.0.conv.weight - torch.Size([256, 512, 1, 1]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,971 - mmcv - INFO - 
-neck.lateral_convs.0.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,972 - mmcv - INFO - 
-neck.lateral_convs.1.conv.weight - torch.Size([256, 1024, 1, 1]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,973 - mmcv - INFO - 
-neck.lateral_convs.1.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,974 - mmcv - INFO - 
-neck.lateral_convs.2.conv.weight - torch.Size([256, 2048, 1, 1]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,974 - mmcv - INFO - 
-neck.lateral_convs.2.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,975 - mmcv - INFO - 
-neck.fpn_convs.0.conv.weight - torch.Size([256, 256, 3, 3]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,977 - mmcv - INFO - 
-neck.fpn_convs.0.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,978 - mmcv - INFO - 
-neck.fpn_convs.1.conv.weight - torch.Size([256, 256, 3, 3]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,979 - mmcv - INFO - 
-neck.fpn_convs.1.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,980 - mmcv - INFO - 
-neck.fpn_convs.2.conv.weight - torch.Size([256, 256, 3, 3]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,980 - mmcv - INFO - 
-neck.fpn_convs.2.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,981 - mmcv - INFO - 
-neck.fpn_convs.3.conv.weight - torch.Size([256, 2048, 3, 3]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,981 - mmcv - INFO - 
-neck.fpn_convs.3.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,982 - mmcv - INFO - 
-neck.fpn_convs.4.conv.weight - torch.Size([256, 256, 3, 3]): 
-XavierInit: gain=1, distribution=uniform, bias=0 
-
-2022-01-25 08:42:10,983 - mmcv - INFO - 
-neck.fpn_convs.4.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,984 - mmcv - INFO - 
-bbox_head.cls_convs.0.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:10,989 - mmcv - INFO - 
-bbox_head.cls_convs.0.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,994 - mmcv - INFO - 
-bbox_head.cls_convs.1.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:10,997 - mmcv - INFO - 
-bbox_head.cls_convs.1.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,998 - mmcv - INFO - 
-bbox_head.cls_convs.2.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:10,998 - mmcv - INFO - 
-bbox_head.cls_convs.2.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:10,999 - mmcv - INFO - 
-bbox_head.cls_convs.3.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,001 - mmcv - INFO - 
-bbox_head.cls_convs.3.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:11,004 - mmcv - INFO - 
-bbox_head.reg_convs.0.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,005 - mmcv - INFO - 
-bbox_head.reg_convs.0.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:11,005 - mmcv - INFO - 
-bbox_head.reg_convs.1.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,009 - mmcv - INFO - 
-bbox_head.reg_convs.1.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:11,010 - mmcv - INFO - 
-bbox_head.reg_convs.2.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,011 - mmcv - INFO - 
-bbox_head.reg_convs.2.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:11,012 - mmcv - INFO - 
-bbox_head.reg_convs.3.conv.weight - torch.Size([256, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,018 - mmcv - INFO - 
-bbox_head.reg_convs.3.conv.bias - torch.Size([256]): 
-The value is the same before and after calling `init_weights` of RetinaNet  
-
-2022-01-25 08:42:11,022 - mmcv - INFO - 
-bbox_head.retina_cls.weight - torch.Size([36, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=-4.59511985013459 
-
-2022-01-25 08:42:11,023 - mmcv - INFO - 
-bbox_head.retina_cls.bias - torch.Size([36]): 
-NormalInit: mean=0, std=0.01, bias=-4.59511985013459 
-
-2022-01-25 08:42:11,024 - mmcv - INFO - 
-bbox_head.retina_reg.weight - torch.Size([36, 256, 3, 3]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-2022-01-25 08:42:11,029 - mmcv - INFO - 
-bbox_head.retina_reg.bias - torch.Size([36]): 
-NormalInit: mean=0, std=0.01, bias=0 
-
-
-(&lt;module &#39;icevision.models.mmdet.models.retinanet&#39; from &#39;/home/laurenz/Desktop/repos/icevision/icevision/models/mmdet/models/retinanet/__init__.py&#39;&gt;,
- &lt;icevision.models.mmdet.models.retinanet.backbones.resnet_fpn.MMDetRetinanetBackboneConfig at 0x7fd1e7e463d0&gt;,
- &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;,
- 384)
-
-  0%|          | 0/7 [00:00&lt;?, ?it/s]
-
-/home/laurenz/Desktop/repos/venv_icevision/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
-  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
-/home/laurenz/Desktop/repos/venv_icevision/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
-  warnings.warn(
-
-
-
-[&#39;inference_dataset&#39;]
+<div class="highlight"><pre><span></span><code>[&#39;inference_dataset&#39;]
 </code></pre></div>
 </div>
 <style>
@@ -2529,6 +1840,41 @@ Session URL:      http://localhost:5151/
       
         
 <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../SAHI_inference/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Small Object Detection with SAHI" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Small Object Detection with SAHI
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../albumentations/" class="md-footer__link md-footer__link--next" aria-label="Next: Albumentations" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Albumentations
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
