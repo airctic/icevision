@@ -15,6 +15,7 @@ from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from mmdet.models.backbones.csp_darknet import CSPDarknet
 from mmdet.models.backbones.swin import SwinTransformer
+from mmdet.models.backbones.hourglass import HourglassNet
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -44,6 +45,17 @@ def param_groups(model):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
 
+    elif isinstance(body, HourglassNet):
+        layers += [
+            body.stem,
+            body.hourglass_modules,
+            body.inters,
+            body.conv1x1s,
+            body.out_convs,
+            body.remap_convs,
+            body.relu,
+        ]
+
     elif isinstance(body, SwinTransformer):
         layers += [
             body.patch_embed.adap_padding,
@@ -69,9 +81,9 @@ def param_groups(model):
         layers += [model.bbox_head]
 
         # YOLACT has mask_head and segm_head
-        if getattr(model, "mask_head", False):
+        if getattr(model, "mask_head"):
             layers += [model.mask_head]
-        if getattr(model, "segm_head", False):
+        if getattr(model, "segm_head"):
             layers += [model.segm_head]
 
     elif isinstance(model, TwoStageDetector):
