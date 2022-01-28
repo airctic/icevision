@@ -19,6 +19,7 @@ def test_fastai_unet_train(camvid_ds, backbone):
     class LightModel(models.fastai.unet.lightning.ModelAdapter):
         def configure_optimizers(self):
             return Adam(self.parameters(), lr=1e-4)
+
     light_model = LightModel(model)
 
     trainer = pl.Trainer(
