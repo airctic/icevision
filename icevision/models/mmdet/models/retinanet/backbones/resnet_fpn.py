@@ -13,12 +13,9 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
-
-
-class MMDetRetinanetBackboneConfig(MMDetBackboneConfig):
-    def __init__(self, **kwargs):
-        super().__init__(model_name="retinanet", **kwargs)
-
+from icevision.models.mmdet.models.retinanet.backbones.backbone_config import (
+    MMDetRetinanetBackboneConfig,
+)
 
 base_config_path = mmdet_configs_path / "retinanet"
 base_weights_url = "http://download.openmmlab.com/mmdetection/v2.0/retinanet"

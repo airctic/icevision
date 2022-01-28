@@ -11,12 +11,9 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.models.mmdet.utils import *
-
-
-class MMDetVFNETBackboneConfig(MMDetBackboneConfig):
-    def __init__(self, **kwargs):
-        super().__init__(model_name="vfnet", **kwargs)
-
+from icevision.models.mmdet.models.vfnet.backbones.backbone_config import (
+    MMDetVFNETBackboneConfig,
+)
 
 base_config_path = mmdet_configs_path / "vfnet"
 base_weights_url = (
