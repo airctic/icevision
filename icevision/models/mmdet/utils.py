@@ -81,9 +81,9 @@ def param_groups(model):
         layers += [model.bbox_head]
 
         # YOLACT has mask_head and segm_head
-        if getattr(model, "mask_head", False):
+        if getattr(model, "mask_head"):
             layers += [model.mask_head]
-        if getattr(model, "segm_head", False):
+        if getattr(model, "segm_head"):
             layers += [model.segm_head]
 
     elif isinstance(model, TwoStageDetector):
