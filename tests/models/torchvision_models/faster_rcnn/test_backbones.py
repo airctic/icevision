@@ -3,6 +3,27 @@ from icevision.all import *
 from icevision.models.torchvision import faster_rcnn
 
 
+@pytest.mark.skip
+@pytest.mark.parametrize(
+    "model_name,param_groups_len",
+    (
+        ("resnet101", 7),
+        ("resnet152", 7),
+        ("resnext101_32x8d", 7),
+        ("resnet101_fpn", 8),
+        ("resnet152_fpn", 8),
+        ("resnext101_32x8d_fpn", 8),
+        ("wide_resnet101_2_fpn", 8),
+    ),
+)
+def test_faster_rcnn_fpn_backbones_large(model_name, param_groups_len):
+    backbone_fn = getattr(models.torchvision.faster_rcnn.backbones, model_name)
+    backbone = backbone_fn(pretrained=False)
+
+    model = faster_rcnn.model(num_classes=4, backbone=backbone)
+    assert len(model.param_groups()) == param_groups_len
+
+
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
@@ -10,18 +31,11 @@ from icevision.models.torchvision import faster_rcnn
         ("resnet18", 7),
         ("resnet34", 7),
         ("resnet50", 7),
-        # ("resnet101", 7),
-        # ("resnet152", 7),
-        # ("resnext101_32x8d", 7),
         ("resnet18_fpn", 8),
         ("resnet34_fpn", 8),
         ("resnet50_fpn", 8),
-        # ("resnet101_fpn", 8),
-        # ("resnet152_fpn", 8),
         ("resnext50_32x4d_fpn", 8),
-        # ("resnext101_32x8d_fpn", 8),
         ("wide_resnet50_2_fpn", 8),
-        # ("wide_resnet101_2_fpn", 8),
     ),
 )
 def test_faster_rcnn_fpn_backbones(model_name, param_groups_len):
