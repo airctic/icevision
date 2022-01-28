@@ -5,7 +5,6 @@ __all__ = [
     "build_model",
 ]
 
-from icevision import backbones
 from icevision.imports import *
 from icevision.utils import *
 from mmcv import Config

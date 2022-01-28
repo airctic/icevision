@@ -1,7 +1,7 @@
 __all__ = ["TorchvisionBackboneConfig"]
 
 from icevision.imports import *
-from icevision.backbones import BackboneConfig
+from icevision.models.backbone_config import BackboneConfig
 
 
 class TorchvisionBackboneConfig(BackboneConfig):
