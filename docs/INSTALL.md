@@ -158,14 +158,26 @@ pre-commit install
 
 ## installation using conda
 
-Creating a conda environment is considered as a best practice because it avoids polluting the default (base) environment, and reduces dependencies conflicts. Use the following command in order to create a conda environment called **icevision**
+The easiest way to install `icevision` with all its dependencies is to use our conda 
+`environment.yml` file. Creating a conda environment is considered as a best practice 
+because it avoids polluting the default (base) environment, and reduces dependencies 
+conflicts.
 
 <div class="termy">
 ```console
-curl -O https://raw.githubusercontent.com/airctic/icevision/master/environment.yml 
-conda env create -f environment.yml
+$ curl -O https://raw.githubusercontent.com/airctic/icevision/master/environment.yml 
+$ conda env create -f environment.yml
 ```
+
 </div>
+!!! note
+    please note that installation may take up to 5 mins.
+
+!!! warning
+    using the `environment.yml` works only on cuda-10.2 enabled devices. If your GPU 
+    architecture is Ampere or newer, you have to use the pip installation method.
+
+
 
 &nbsp;&nbsp;
 ## troubleshooting
