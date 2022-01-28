@@ -2,7 +2,7 @@ import pytest
 from icevision.all import *
 from icevision.models.torchvision import retinanet
 
-@pytest.mark.skip
+
 @pytest.mark.parametrize(
     "model_name",
     (
@@ -20,7 +20,6 @@ def test_retinanet_fpn_backbones_large(model_name):
     assert len(model.param_groups()) == 7
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name",
     (
@@ -40,9 +39,7 @@ def test_retinanet_fpn_backbones_medium(model_name):
 
 @pytest.mark.parametrize(
     "model_name",
-    (
-        "resnet18_fpn",
-    ),
+    ("resnet18_fpn",),
 )
 def test_retinanet_fpn_backbones_small(model_name):
     backbone_fn = getattr(models.torchvision.retinanet.backbones, model_name)

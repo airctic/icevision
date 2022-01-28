@@ -3,7 +3,6 @@ from icevision.all import *
 from icevision.models.torchvision import keypoint_rcnn
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
@@ -24,7 +23,6 @@ def test_keypoint_rcnn_fpn_backbones_large(model_name, param_groups_len):
     assert len(model.param_groups()) == param_groups_len
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
@@ -50,7 +48,6 @@ def test_keypoint_rcnn_fpn_backbones_medium(model_name, param_groups_len):
         ("mobilenet", 6),
         ("resnet18", 7),
         ("resnet18_fpn", 8),
-
     ),
 )
 def test_keypoint_rcnn_fpn_backbones_small(model_name, param_groups_len):
