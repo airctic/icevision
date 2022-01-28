@@ -67,7 +67,6 @@ nav:
   - Transforms:
     - Albumentations: albumentations.md 
   - Models: models.md
-  - Backbones: backbones.md
   - API Documentation:
     - Parser: parser.md
     - Dataset: dataset.md

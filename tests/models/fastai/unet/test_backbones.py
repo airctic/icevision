@@ -3,6 +3,7 @@ from icevision.all import *
 from icevision.models.fastai import unet
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
@@ -19,6 +20,7 @@ def test_unet_fpn_backbones_large(model_name, param_groups_len):
     assert len(list(model.param_groups())) == param_groups_len
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (

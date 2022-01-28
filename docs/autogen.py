@@ -412,12 +412,6 @@ def generate(dest_dir: Path):
         dest_dir / "models.md",
     )
 
-    # Backbones
-    shutil.copyfile(
-        icevision_dir / "icevision/backbones/README.md",
-        dest_dir / "backbones.md",
-    )
-
     # README DOCS
     shutil.copyfile(
         icevision_dir / "docs/README.md",
