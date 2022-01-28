@@ -9,12 +9,12 @@ from icevision.models.torchvision import retinanet
         "resnet18_fpn",
         "resnet34_fpn",
         "resnet50_fpn",
-        "resnet101_fpn",
-        "resnet152_fpn",
+        # "resnet101_fpn",
+        # "resnet152_fpn",
         "resnext50_32x4d_fpn",
-        "resnext101_32x8d_fpn",
+        # "resnext101_32x8d_fpn",
         "wide_resnet50_2_fpn",
-        "wide_resnet101_2_fpn",
+        # "wide_resnet101_2_fpn",
     ),
 )
 def test_retinanet_fpn_backbones(model_name):

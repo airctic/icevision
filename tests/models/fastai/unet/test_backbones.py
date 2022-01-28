@@ -10,9 +10,9 @@ from icevision.models.fastai import unet
         ("resnet18", 6),
         ("resnet34", 6),
         ("resnet50", 6),
-        ("resnet101", 6),
-        ("resnet152", 6),
-        ("resnext101_32x8d", 6),
+        # ("resnet101", 6),
+        # ("resnet152", 6),
+        # ("resnext101_32x8d", 6),
     ),
 )
 def test_unet_fpn_backbones(model_name, param_groups_len):
