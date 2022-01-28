@@ -1,9 +1,20 @@
-__all__ = ["learner"]
+__all__ = ["learner", "KeypointRCNNCallback"]
 
 from icevision.imports import *
 from icevision.engines.fastai import *
 from icevision.models.torchvision.fastai_learner import rcnn_learner
-from icevision.models.torchvision.retinanet.fastai.callbacks import *
+from icevision.models.torchvision.fastai_callbacks import *
+from icevision.models.torchvision.keypoint_rcnn.prediction import *
+
+
+class KeypointRCNNCallback(RCNNCallback):
+    def convert_raw_predictions(self, batch, raw_preds):
+        return convert_raw_predictions(
+            batch=batch,
+            raw_preds=raw_preds,
+            records=self.learn.records,
+            detection_threshold=0.0,
+        )
 
 
 def learner(
@@ -12,7 +23,7 @@ def learner(
     cbs=None,
     **learner_kwargs
 ):
-    """Fastai `Learner` adapted for Mask RCNN.
+    """Fastai `Learner` adapted for RCNN.
 
     # Arguments
         dls: `Sequence` of `DataLoaders` passed to the `Learner`.
@@ -24,5 +35,5 @@ def learner(
     # Returns
         A fastai `Learner`.
     """
-    cbs = [RetinanetCallback()] + L(cbs)
+    cbs = [KeypointRCNNCallback()] + L(cbs)
     return rcnn_learner(dls=dls, model=model, cbs=cbs, **learner_kwargs)

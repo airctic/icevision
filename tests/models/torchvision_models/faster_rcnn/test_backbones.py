@@ -1,6 +1,6 @@
 import pytest
 from icevision.all import *
-from icevision.models.torchvision import mask_rcnn
+from icevision.models.torchvision import faster_rcnn
 
 
 @pytest.mark.parametrize(
@@ -24,9 +24,9 @@ from icevision.models.torchvision import mask_rcnn
         ("wide_resnet101_2_fpn", 8),
     ),
 )
-def test_mask_rcnn_fpn_backbones(model_name, param_groups_len):
-    backbone_fn = getattr(models.torchvision.mask_rcnn.backbones, model_name)
+def test_faster_rcnn_fpn_backbones(model_name, param_groups_len):
+    backbone_fn = getattr(models.torchvision.faster_rcnn.backbones, model_name)
     backbone = backbone_fn(pretrained=False)
 
-    model = mask_rcnn.model(num_classes=4, backbone=backbone)
+    model = faster_rcnn.model(num_classes=4, backbone=backbone)
     assert len(model.param_groups()) == param_groups_len
