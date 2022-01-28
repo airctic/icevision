@@ -1551,18 +1551,22 @@ As pretrained models are used by default, we typically leave this out of the bac
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">sabl</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">r101_fpn_gn_2x_ms_640_800_coco</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">centripetalnet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">hourglass104_mstest_16x6_210e_coco</span>
+
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
   <span class="c1"># The Retinanet model is also implemented in the torchvision library</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">retinanet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
   <span class="c1"># The efficientdet model requires an img_size parameter</span>
   <span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_size</span>
 
-<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+<span class="k">elif</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span>
   <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ultralytics</span><span class="o">.</span><span class="n">yolov5</span>
   <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span>
   <span class="c1"># The yolov5 model requires an img_size parameter</span>
