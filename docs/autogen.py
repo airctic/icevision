@@ -42,10 +42,10 @@ PAGES = {
         "icevision.models.torchvision.faster_rcnn.dataloaders.build_infer_batch",
     ],
     "faster_rcnn_fastai.md": [
-        "icevision.models.torchvision.faster_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.faster_rcnn.fastai.learner",
     ],
     "faster_rcnn_lightning.md": [
-        "icevision.models.torchvision.faster_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.faster_rcnn.lightning.ModelAdapter",
     ],
     "mask_rcnn.md": [
         "icevision.models.torchvision.mask_rcnn.model.model",
