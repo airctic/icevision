@@ -29,8 +29,6 @@ def test_mask_rcnn_fpn_backbones_large(model_name, param_groups_len):
     "model_name,param_groups_len",
     (
         ("resnet50", 7),
-        ("resnet18_fpn", 8),
-        ("resnet34_fpn", 8),
         ("resnet50_fpn", 8),
         ("resnext50_32x4d_fpn", 8),
         ("wide_resnet50_2_fpn", 8),
@@ -50,6 +48,8 @@ def test_mask_rcnn_fpn_backbones_medium(model_name, param_groups_len):
         ("mobilenet", 6),
         ("resnet18", 7),
         ("resnet34", 7),
+        ("resnet18_fpn", 8),
+        ("resnet34_fpn", 8),
     ),
 )
 def test_mask_rcnn_fpn_backbones_small(model_name, param_groups_len):
