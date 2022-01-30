@@ -57,10 +57,10 @@ PAGES = {
         "icevision.models.torchvision.mask_rcnn.dataloaders.build_infer_batch",
     ],
     "mask_rcnn_fastai.md": [
-        "icevision.models.torchvision.mask_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.mask_rcnn.fastai.learner",
     ],
     "mask_rcnn_lightning.md": [
-        "icevision.models.torchvision.mask_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.mask_rcnn.lightning.ModelAdapter",
     ],
     "efficientdet.md": [
         "icevision.models.ross.efficientdet.model.model",
@@ -72,10 +72,10 @@ PAGES = {
         "icevision.models.ross.efficientdet.dataloaders.build_infer_batch",
     ],
     "efficientdet_fastai.md": [
-        "icevision.models.ross.efficientdet.fastai.learner.learner",
+        "icevision.models.ross.efficientdet.fastai.learner",
     ],
     "efficientdet_lightning.md": [
-        "icevision.models.ross.efficientdet.lightning.model_adapter.ModelAdapter",
+        "icevision.models.ross.efficientdet.lightning.ModelAdapter",
     ],
 }
 
