@@ -1,4 +1,8 @@
-__all__ = ["COCOMetric", "COCOMetricType"]
+__all__ = [
+    "COCOMetric",
+    "COCOMetricType",
+    "metric",
+]
 
 from icevision.imports import *
 from icevision.utils import *
@@ -48,10 +52,25 @@ class COCOMetric(Metric):
             self._preds.append(pred.pred)
 
     def finalize(self) -> Dict[str, float]:
+        logs = self.metric(
+            records=self._records, 
+            preds=self._preds, 
+            print_summary=self.print_summary
+        )
+
+        self._reset()
+        return logs
+
+    def metric(
+        self, 
+        records, 
+        preds,
+        print_summary: bool = False,
+        ) -> Dict[str, float]:
         with CaptureStdout():
             coco_eval = create_coco_eval(
-                records=self._records,
-                preds=self._preds,
+                records=records,
+                preds=preds,
                 metric_type=self.metric_type.value,
                 iou_thresholds=self.iou_thresholds,
                 show_pbar=self.show_pbar,
@@ -59,7 +78,7 @@ class COCOMetric(Metric):
             coco_eval.evaluate()
             coco_eval.accumulate()
 
-        with CaptureStdout(propagate_stdout=self.print_summary):
+        with CaptureStdout(propagate_stdout=print_summary):
             coco_eval.summarize()
 
         stats = coco_eval.stats
@@ -78,5 +97,4 @@ class COCOMetric(Metric):
             "AR (IoU=0.50:0.95) area=large maxDets=100": stats[11],
         }
 
-        self._reset()
         return logs
