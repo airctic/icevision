@@ -1,7 +1,6 @@
 __all__ = [
     "COCOMetric",
     "COCOMetricType",
-    "metric",
 ]
 
 from icevision.imports import *
@@ -53,20 +52,18 @@ class COCOMetric(Metric):
 
     def finalize(self) -> Dict[str, float]:
         logs = self.metric(
-            records=self._records, 
-            preds=self._preds, 
-            print_summary=self.print_summary
+            records=self._records, preds=self._preds, print_summary=self.print_summary
         )
 
         self._reset()
         return logs
 
     def metric(
-        self, 
-        records, 
+        self,
+        records,
         preds,
         print_summary: bool = False,
-        ) -> Dict[str, float]:
+    ) -> Dict[str, float]:
         with CaptureStdout():
             coco_eval = create_coco_eval(
                 records=records,
