@@ -63,6 +63,7 @@ nav:
     - Model Debugging with Plot Top Losses: plot_top_losses.md
     - Advanced Keypoint Detection: ochuman_keypoint_detection.md
     - Small Object Detection with SAHI: SAHI_inference.md
+    - Using FiftyOne in icevision: using_fiftyone_in_icevision.md
   - Transforms:
     - Albumentations: albumentations.md 
   - Models: models.md

@@ -24,4 +24,5 @@ def test_soft_dependencies():
         "yolov5": True,
         "mmseg": True,
         "sahi": True,
+        "fiftyone": True,
     }

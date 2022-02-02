@@ -15,6 +15,7 @@ from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from mmdet.models.backbones.csp_darknet import CSPDarknet
 from mmdet.models.backbones.swin import SwinTransformer
+from mmdet.models.backbones.hourglass import HourglassNet
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -43,6 +44,18 @@ def param_groups(model):
     elif isinstance(body, CSPDarknet):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
+
+    elif isinstance(body, HourglassNet):
+        layers += [
+            body.stem,
+            body.hourglass_modules,
+            body.inters,
+            body.conv1x1s,
+            body.out_convs,
+            body.remap_convs,
+            body.relu,
+        ]
+
     elif isinstance(body, SwinTransformer):
         layers += [
             body.patch_embed.adap_padding,
@@ -50,11 +63,12 @@ def param_groups(model):
             body.patch_embed.norm,
             body.drop_after_pos,
             body.stages,
-            body.norm0,
-            body.norm1,
-            body.norm2,
-            body.norm3,
         ]
+        # Swin backbone for two-stage detector has norm0 attribute
+        if getattr(body, "norm0", False):
+            layers += [body.norm0]
+
+        layers += [body.norm1, body.norm2, body.norm3]
     else:
         layers += [nn.Sequential(body.conv1, body.bn1)]
         layers += [getattr(body, l) for l in body.res_layers]
@@ -65,6 +79,13 @@ def param_groups(model):
     # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
+
+        # YOLACT has mask_head and segm_head
+        if getattr(model, "mask_head"):
+            layers += [model.mask_head]
+        if getattr(model, "segm_head"):
+            layers += [model.segm_head]
+
     elif isinstance(model, TwoStageDetector):
         layers += [nn.Sequential(model.rpn_head, model.roi_head)]
     else:

@@ -27,6 +27,7 @@ class _SoftDependencies:
         self.sklearn = soft_import("sklearn")
         self.mmseg = soft_import("mmseg")
         self.sahi = soft_import("sahi")
+        self.fiftyone = soft_import("fiftyone")
 
     def check(self) -> Dict[str, bool]:
         return self.__dict__.copy()
