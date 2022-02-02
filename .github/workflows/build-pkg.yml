@@ -24,6 +24,5 @@ jobs:
       - name: Install package
         run: |
           pip install numpy
-          pip install fiftyone
           pip install -e .
           python -c "from icevision.all import *"
