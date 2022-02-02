@@ -1485,11 +1485,19 @@ Object Detection</a></p>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dls</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </code></pre></div>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
 <span class="kn">import</span> <span class="nn">IPython</span>
@@ -1594,7 +1602,7 @@ detection:
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_22_0.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_25_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">dls</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
@@ -1614,7 +1622,7 @@ detection:
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_30_2.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_33_2.png" /></p>
 <h3 id="first-pass-first-training-with-the-size-384">First Pass: First Training with the size = 384</h3>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
@@ -1778,7 +1786,7 @@ detection:
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_37_0.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_40_0.png" /></p>
 <h2 id="convert-pytorch-dataloaders-to-fastai-dataloaders">Convert Pytorch DataLoaders to Fastai DataLoaders</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.engines.fastai</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -1800,7 +1808,7 @@ SuggestedLRs(lr_min=2.2908675418875645e-07, lr_steep=9.12010818865383e-07)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_42_2.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_45_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># learn.fit_one_cycle(10, 2e-4)</span>
 </code></pre></div>
@@ -1922,7 +1930,7 @@ Better model found at epoch 5 with COCOMetric value: 0.8691152429678355.
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_44_0.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_47_0.png" /></p>
 <h2 id="inference">Inference</h2>
 <h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
 <p>Instead of predicting a whole list of images at one, we can process small batch at the time: This option is more memory efficient. </p>
@@ -1936,7 +1944,7 @@ Better model found at epoch 5 with COCOMetric value: 0.8691152429678355.
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_47_0.png" /></p>
+<p><img alt="png" src="../images/progressive_resizing/progressive_resizing_50_0.png" /></p>
 <h2 id="training-using-pytorch-lightning">Training using Pytorch Lightning</h2>
 <p>You have to follow the same procedure as for the Fastai example. It is quite similar to the Fastai one except we don't need to convert dataloaders like in Fastai. PL dataloaders are just pytorch dataloaders.</p>
 <div class="highlight"><pre><span></span><code># Create a model

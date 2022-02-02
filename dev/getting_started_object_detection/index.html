@@ -1418,11 +1418,19 @@
 <h2 id="install-icevision-and-icedata">Install IceVision and IceData</h2>
 <p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
 as the fastai and pytorch lightning engines.</p>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
-<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span> <span class="n">master</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
 <span class="kn">import</span> <span class="nn">IPython</span>
@@ -1483,7 +1491,7 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_17_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_20_0.png" /></p>
 <h2 id="select-a-library-model-and-backbone">Select a library, model, and backbone</h2>
 <p>In order to create a model, we need to:
 * Choose one of the <strong>libraries</strong> supported by IceVision
@@ -1796,7 +1804,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 <p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_38_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_41_0.png" /></p>
 <h3 id="prediction">Prediction</h3>
 <p>Sometimes you want to have more control than <code>show_results</code> provides. You can construct an inference dataloader using <code>infer_dl</code> from any IceVision dataset and pass this to <code>predict_dl</code> and use <code>show_preds</code> to look at the predictions.</p>
 <p>A prediction is returned as a dict with keys: <code>scores</code>, <code>labels</code>, <code>bboxes</code>, and possibly <code>masks</code>. </p>
@@ -1815,7 +1823,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_42_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_45_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 

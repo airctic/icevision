@@ -1124,11 +1124,19 @@
 <p>This notebook showcases the newly added <a href="https://github.com/ultralytics/yolov5">YOLOv5</a> suite of models to the IceVision library.</p>
 <h2 id="installing-icevision-icedata-and-yolov5-icevision">Installing IceVision, IceData and <code>yolov5-icevision</code></h2>
 <p><code>yolov5-icevision</code> is a tiny IceVision wrapper around the official YOLOv5 repo from Ultralytics, to make the code pip-installable.</p>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
@@ -1185,7 +1193,7 @@
 <span class="n">batch</span> <span class="o">=</span> <span class="n">first</span><span class="p">(</span><span class="n">dl</span><span class="p">)</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/YOLOv5/YOLOv5_13_0.png" /></p>
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_16_0.png" /></p>
 <h2 id="yolov5-model">YOLOv5 model</h2>
 <p>You can choose between a <code>small</code>, <code>medium</code> and <code>large</code> backbone.</p>
 <div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">small</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1214,7 +1222,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/YOLOv5/YOLOv5_18_2.png" /></p>
+<p><img alt="png" src="../images/YOLOv5/YOLOv5_21_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
@@ -1678,7 +1686,7 @@
 
 
 
-![png](images/YOLOv5/YOLOv5_21_0.png)
+![png](images/YOLOv5/YOLOv5_24_0.png)
 
 
 
@@ -1697,7 +1705,7 @@ From a dataset...
 
 
 
-![png](images/YOLOv5/YOLOv5_23_0.png)
+![png](images/YOLOv5/YOLOv5_26_0.png)
 
 
 
@@ -1720,7 +1728,7 @@ From a dataset...
 </code></pre></div>
 </div>
 
-![png](images/YOLOv5/YOLOv5_25_1.png)
+![png](images/YOLOv5/YOLOv5_28_1.png)
 
 
 
@@ -1750,7 +1758,7 @@ What are the images the model is having a hard time time with?
 </code></pre></div>
 </div>
 
-![png](images/YOLOv5/YOLOv5_27_3.png)
+![png](images/YOLOv5/YOLOv5_30_3.png)
 
 
 

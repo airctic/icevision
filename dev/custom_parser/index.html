@@ -1298,11 +1298,19 @@
 <h1 id="custom-parser-simple">Custom Parser - Simple</h1>
 <h2 id="installing-icevision-and-icedata">Installing IceVision and IceData</h2>
 <p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
 <span class="kn">import</span> <span class="nn">IPython</span>
@@ -1516,7 +1524,7 @@
 <p>Let's take a look at one record:</p>
 <div class="highlight"><pre><span></span><code><span class="n">show_record</span><span class="p">(</span><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">display_label</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </code></pre></div>
-<p><img alt="png" src="../images/custom_parser/custom_parser_27_0.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_30_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">train_records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 <div class="k-default-codeblock">
@@ -1551,7 +1559,7 @@ detection:
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/custom_parser/custom_parser_31_0.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_34_0.png" /></p>
 <h2 id="models">Models</h2>
 <p>We've selected a few of the many options below. You can easily pick which libraries, models, and backbones you like to use.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
@@ -1626,7 +1634,7 @@ SuggestedLRs(valley=3.0199516913853586e-05)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/custom_parser/custom_parser_41_3.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_44_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1964,7 +1972,7 @@ SuggestedLRs(valley=3.0199516913853586e-05)
 <h2 id="showing-the-results">Showing the results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/custom_parser/custom_parser_47_0.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_50_0.png" /></p>
 <h2 id="batch-inference-prediction">Batch Inference (Prediction)</h2>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1976,7 +1984,7 @@ SuggestedLRs(valley=3.0199516913853586e-05)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/custom_parser/custom_parser_50_0.png" /></p>
+<p><img alt="png" src="../images/custom_parser/custom_parser_53_0.png" /></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>This notebook shows ho to create a custom parser to process data stored in format different than the popular COCO or VOV formats. </p>
 <p>The parsed data feed any IceVision models that could be trained by either Fastai or Pytorch-Lightning training loops.</p>

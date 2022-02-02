@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#using-fiftyone-in-icevision" class="md-skip">
+        <a href="#disclaimer" class="md-skip">
           Skip to content
         </a>
       
@@ -514,8 +514,6 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Using FiftyOne in icevision
@@ -531,8 +529,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -541,20 +537,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    Disclaimer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-fiftyone-in-icevision" class="md-nav__link">
+    Using Fiftyone in IceVision
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Fiftyone in IceVision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#install-icevision" class="md-nav__link">
     Install IceVision
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#imports" class="md-nav__link">
     Imports
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#visualizing-datasets" class="md-nav__link">
     Visualizing datasets
   </a>
@@ -573,8 +584,8 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#visualizing-predictions" class="md-nav__link">
     Visualizing predictions
   </a>
@@ -600,8 +611,8 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#create-your-own-fodataset-with-fosample" class="md-nav__link">
     Create your own fo.Dataset with fo.Sample
   </a>
@@ -620,11 +631,16 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#happy-learning" class="md-nav__link">
     Happy Learning!
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1178,8 +1194,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1188,20 +1202,35 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    Disclaimer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-fiftyone-in-icevision" class="md-nav__link">
+    Using Fiftyone in IceVision
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Fiftyone in IceVision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#install-icevision" class="md-nav__link">
     Install IceVision
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#imports" class="md-nav__link">
     Imports
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#visualizing-datasets" class="md-nav__link">
     Visualizing datasets
   </a>
@@ -1220,8 +1249,8 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#visualizing-predictions" class="md-nav__link">
     Visualizing predictions
   </a>
@@ -1247,8 +1276,8 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#create-your-own-fodataset-with-fosample" class="md-nav__link">
     Create your own fo.Dataset with fo.Sample
   </a>
@@ -1267,11 +1296,16 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#happy-learning" class="md-nav__link">
     Happy Learning!
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1289,17 +1323,28 @@
                 
                 
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/using_fiftyone_in_icevision.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This notebook won't work in Colab, due to an incompatibility with the <code>fiftyone</code> library.</p>
 <h1 id="using-fiftyone-in-icevision">Using Fiftyone in IceVision</h1>
 <p><img alt="" src="https://raw.githubusercontent.com/airctic/icevision/master/images/fridge-objects.png" /></p>
 <h2 id="install-icevision">Install IceVision</h2>
 <p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
 as the fastai and pytorch lightning engines.</p>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
-<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span> <span class="n">master</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
 </code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
+</code></pre></div>
+<p><code>fiftyone</code> is not part of IceVision. We need to install it separately.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Install fiftyone</span>
 <span class="o">%</span><span class="n">pip</span> <span class="n">install</span> <span class="n">fiftyone</span> <span class="o">-</span><span class="n">U</span>
 </code></pre></div>

@@ -1286,11 +1286,19 @@
 <p>The purpose of this notebook is to showcase the newly added <code>plot_top_losses</code> functionality, which allows users to inspect models' results by plotting images sorted by various combinations of losses. This API makes it easy to immediately spot pictures the model struggles the most with, giving the practitioner the opportunity to take swift action to correct this behaviour (remove wrong samples, correct mis-labellings, etc).</p>
 <p><code>plot_top_losses</code> is available for all IceVision models, as the below notebook shows. </p>
 <h2 id="install-icevision">Install IceVision</h2>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
 <span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
 <span class="kn">import</span> <span class="nn">IPython</span>
@@ -1486,7 +1494,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_21_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_24_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_classifier&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
@@ -1498,7 +1506,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_22_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_25_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># in this case `loss_weighted` will be equal to `loss_box_reg`</span>
 <span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
@@ -1521,7 +1529,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_23_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_26_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
         <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -1543,7 +1551,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_24_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_27_3.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># `losses_stats` contains useful statistics for each computed loss in the dataset</span>
 <span class="n">losses_stats</span>
 </code></pre></div>
@@ -1915,7 +1923,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_29_4.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_32_4.png" /></p>
 <h1 id="instance-segmentation">Instance Segmentation</h1>
 <h2 id="plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset"><code>plot_top_losses</code> in action with a <code>mask_rcnn</code> model on the <code>pennfudan</code> dataset</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
@@ -2069,7 +2077,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_39_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_42_3.png" /></p>
 <h1 id="keypoint-detection">Keypoint Detection</h1>
 <h2 id="plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset"><code>plot_top_losses</code> in action with a <code>keypoint_rcnn</code> model on the <code>biwi</code> dataset</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">keypoint_rcnn</span>
@@ -2186,7 +2194,7 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_46_3.png" /></p>
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_49_3.png" /></p>
                 
               
               

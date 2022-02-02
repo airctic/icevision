@@ -1283,11 +1283,19 @@
 <p>This notebook showcases the newly added IceVision + <a href="https://github.com/obss/sahi">SAHI</a> integration.</p>
 <p>You can find more detailed info about this work in <a href="https://francescopochetti.com/icevision-sahi-democratise-small-object-detection/">this blog post</a>.</p>
 <h2 id="installing-icevision-and-dependencies-sahi">Installing Icevision and dependencies + SAHI</h2>
+<p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
 
 <span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
-<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span> <span class="n">master</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
 </code></pre></div>
 <p>Install SAHI</p>
 <div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">sahi</span> <span class="o">-</span><span class="n">q</span>
@@ -1401,7 +1409,7 @@ SuggestedLRs(valley=0.0004786300996784121)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_17_3.png" /></p>
+<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_20_3.png" /></p>
 <h3 id="training-the-model">Training the model</h3>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
@@ -1618,7 +1626,7 @@ Saving to: ‘small_fridge.jpg’
 
 <div class="highlight"><pre><span></span><code><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;small_fridge.jpg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
 </code></pre></div>
-<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_22_0.png" /></p>
+<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_25_0.png" /></p>
 <h3 id="running-inference-without-sahi">Running inference <strong>without</strong> SAHI</h3>
 <p>No bbox detected!</p>
 <div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;small_fridge.jpg&quot;</span><span class="p">)</span>
@@ -1626,7 +1634,7 @@ Saving to: ‘small_fridge.jpg’
 <span class="n">pred_dict</span>  <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">end2end_detect</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">class_map</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">pred_dict</span><span class="p">[</span><span class="s1">&#39;img&#39;</span><span class="p">]</span>
 </code></pre></div>
-<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_24_0.png" /></p>
+<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_27_0.png" /></p>
 <h3 id="running-inference-with-sahi">Running inference <strong>with</strong> SAHI</h3>
 <p>Check out how almost all objects (too small for a one-shot prediction) are detected using the sliding window approach SAHI offers.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.models.inference_sahi</span> <span class="kn">import</span> <span class="n">IceSahiModel</span>
@@ -1650,7 +1658,7 @@ Saving to: ‘small_fridge.jpg’
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_29_0.png" /></p>
+<p><img alt="png" src="../images/SAHI_inference/SAHI_inference_32_0.png" /></p>
                 
               
               
