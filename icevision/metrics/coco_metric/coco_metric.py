@@ -58,10 +58,26 @@ class COCOMetric(Metric):
         self._reset()
         return logs
 
+    def metric_from_preds(
+        self,
+        preds: List[
+            Prediction
+        ],  # Prediction holds both the ground truth and the prediction records
+        print_summary: bool = False,
+    ) -> Dict[str, float]:
+
+        gt_list = [pred.ground_truth for pred in preds]
+        preds_list = [pred.pred for pred in preds]
+
+        logs = self.metric(
+            records=gt_list, preds=preds_list, print_summary=print_summary
+        )
+        return logs
+
     def metric(
         self,
-        records,
-        preds,
+        records,  # Ground Truth records
+        preds,  # Prediction records
         print_summary: bool = False,
     ) -> Dict[str, float]:
         with CaptureStdout():
