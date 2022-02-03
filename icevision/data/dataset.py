@@ -46,7 +46,7 @@ class Dataset:
     @classmethod
     def from_images(
         cls,
-        images: Sequence[np.array],
+        images: Union[Sequence[np.array], Sequence[str]],
         tfm: Transform = None,
         class_map: Optional[ClassMap] = None,
     ):
@@ -56,11 +56,17 @@ class Dataset:
             images: `Sequence` of images in memory (numpy arrays).
             tfm: Transforms to be applied to each item.
         """
+
         records = []
         for i, image in enumerate(images):
             record = BaseRecord((ImageRecordComponent(),))
             record.set_record_id(i)
-            record.set_img(image)
+            # If it's a path
+            if isinstance(image, str):
+                record.set_img(PIL.Image.open(Path(image)))
+                record.filepath = image
+            else:
+                record.set_img(image)
             records.append(record)
 
             # TODO, HACK: adding class map because of `convert_raw_prediction`
