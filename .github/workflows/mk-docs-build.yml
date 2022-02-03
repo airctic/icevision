@@ -29,7 +29,7 @@ jobs:
         run: |
           sh ./icevision_install.sh cpu
           pip install -e ".[all,dev]"
-
+          
 
       - name: Prepare the docs
         run:  |

@@ -3,3 +3,7 @@ from icevision.data.record_collection import *
 from icevision.data.dataset import *
 from icevision.data.prediction import *
 from icevision.data.convert_records_to_coco_style import *
+from icevision.soft_dependencies import SoftDependencies
+
+if SoftDependencies.fiftyone:
+    from icevision.data.convert_records_to_fo import *
