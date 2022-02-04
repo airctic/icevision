@@ -127,11 +127,14 @@ def draw_sample(
         # HACK
         if hasattr(composite, "masks"):
             if composite.mask_array is None:
-                if isinstance(composite.masks[0], RLE) or isinstance(
-                    composite.masks[0], MaskFile
-                ):
+                if isinstance(composite.masks[0], RLE):
                     masks = [
                         mask.to_mask(img.shape[1], img.shape[0]).data
+                        for mask in composite.masks
+                    ]
+                elif isinstance(composite.masks[0], MaskFile):
+                    masks = [
+                        mask.to_mask(img.shape[1], img.shape[0])
                         for mask in composite.masks
                     ]
                 elif isinstance(composite.masks[0], EncodedRLEs):
