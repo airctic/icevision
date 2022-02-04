@@ -138,10 +138,21 @@ class MaskFile(Mask):
     def __init__(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
-    def to_mask(self, h, w):
-        mask = np.array(open_img(self.filepath, gray=True))
+    def to_mask(self, h=None, w=None):
+        mask_img = open_img(self.filepath, gray=True)
+
+        if (h is not None) and (w is not None):
+            # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
+            (w_org, h_org) = mask_img.size
+
+            # TODO: Check NEAREST is always the best option or only for binary?
+            if w_org != w or h_org != h:
+                mask_img = mask_img.resize((w, h), resample=PIL.Image.NEAREST)
+
+        mask = np.array(mask_img)
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
+
         return MaskArray(masks)
 
     def to_coco_rle(self, h, w) -> List[dict]:
