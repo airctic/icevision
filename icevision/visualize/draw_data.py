@@ -133,6 +133,9 @@ def draw_sample(
                         for mask in composite.masks
                     ]
                 elif isinstance(composite.masks[0], MaskFile):
+                    logger.warning(
+                        "Re-creating masks from files, might results in mismatches if transformations were applied"
+                    )
                     masks = [
                         mask.to_mask(img.shape[1], img.shape[0])
                         for mask in composite.masks
