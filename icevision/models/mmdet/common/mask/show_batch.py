@@ -3,7 +3,7 @@ __all__ = ["show_batch"]
 from icevision.utils import *
 from icevision.visualize import *
 from icevision.models.mmdet.common.utils import *
-from numpy import np
+import numpy as np
 from icevision.core.mask import MaskArray
 
 
