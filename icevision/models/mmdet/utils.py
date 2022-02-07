@@ -6,6 +6,7 @@ __all__ = [
     "create_model_config",
 ]
 
+from numpy import False_
 from icevision.imports import *
 from icevision.utils import *
 from icevision.backbones import BackboneConfig
@@ -81,9 +82,9 @@ def param_groups(model):
         layers += [model.bbox_head]
 
         # YOLACT has mask_head and segm_head
-        if getattr(model, "mask_head"):
+        if getattr(model, "mask_head", False):
             layers += [model.mask_head]
-        if getattr(model, "segm_head"):
+        if getattr(model, "segm_head", False):
             layers += [model.segm_head]
 
     elif isinstance(model, TwoStageDetector):
