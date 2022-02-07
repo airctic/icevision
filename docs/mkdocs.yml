@@ -18,6 +18,8 @@ markdown_extensions:
   - codehilite
   - pymdownx.snippets:
       base_path: docs
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -27,8 +29,8 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - admonition
-  - pymdownx.tabbed
   - attr_list
+  - pymdownx.details
 extra:
   manifest: manifest.webmanifest
 extra_css:
