@@ -65,8 +65,9 @@ def param_groups(model):
             body.drop_after_pos,
             body.stages,
         ]
+
         # Swin backbone for two-stage detector has norm0 attribute
-        if getattr(body, "norm0", False):
+        if hasattr(body, "norm0"):
             layers += [body.norm0]
 
         layers += [body.norm1, body.norm2, body.norm3]
