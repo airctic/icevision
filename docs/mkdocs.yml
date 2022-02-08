@@ -66,6 +66,7 @@ nav:
     - Advanced Keypoint Detection: ochuman_keypoint_detection.md
     - Small Object Detection with SAHI: SAHI_inference.md
     - Using FiftyOne in icevision: using_fiftyone_in_icevision.md
+    - Using Swin Transformer as Backbone: using_swin_transformer_as_backbone.md
   - Transforms:
     - Albumentations: albumentations.md 
   - Models: models.md
