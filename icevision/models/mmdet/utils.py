@@ -65,8 +65,9 @@ def param_groups(model):
             body.drop_after_pos,
             body.stages,
         ]
+
         # Swin backbone for two-stage detector has norm0 attribute
-        if getattr(body, "norm0", False):
+        if hasattr(body, "norm0"):
             layers += [body.norm0]
 
         layers += [body.norm1, body.norm2, body.norm3]
@@ -75,7 +76,8 @@ def param_groups(model):
         layers += [getattr(body, l) for l in body.res_layers]
 
     # add the neck module if it exists (DETR doesn't have a neck module)
-    layers += [module for name, module in model.named_modules() if name == "neck"]
+    if hasattr(model, "neck"):
+        layers += [model.neck]
 
     # add the head
     if isinstance(model, SingleStageDetector):
