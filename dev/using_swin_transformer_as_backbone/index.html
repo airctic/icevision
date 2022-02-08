@@ -13,14 +13,14 @@
         <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
       
       
-        <link rel="canonical" href="https://airctic.com/dev/wandb_efficientdet/">
+        <link rel="canonical" href="https://airctic.com/dev/using_swin_transformer_as_backbone/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
     
     
       
-        <title>Model Tracking Using Wandb - IceVision</title>
+        <title>Using Swin Transformer as Backbone - IceVision</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#icevision-meets-wb" class="md-skip">
+        <a href="#using-swin-transformer-as-backbone-in-icevision" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Model Tracking Using Wandb
+              Using Swin Transformer as Backbone
             
           </span>
         </div>
@@ -394,88 +394,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Model Tracking Using Wandb
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
         Model Tracking Using Wandb
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#install-icevision-and-icedata" class="md-nav__link">
-    Install IceVision and IceData
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#imports" class="md-nav__link">
-    Imports
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#load-the-fridge-objects-dataset" class="md-nav__link">
-    Load the Fridge Objects dataset
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#train-and-validation-datasets" class="md-nav__link">
-    Train and Validation Datasets
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-the-model" class="md-nav__link">
-    Create the model
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-the-dataloaders" class="md-nav__link">
-    Create the dataloaders
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -597,11 +520,189 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../using_swin_transformer_as_backbone/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Using Swin Transformer as Backbone
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Using Swin Transformer as Backbone
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision-and-icedata" class="md-nav__link">
+    Install IceVision and IceData
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    Imports
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-and-prepare-a-dataset" class="md-nav__link">
+    Download and prepare a dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-datasets-with-augmentations-and-transforms" class="md-nav__link">
+    Creating datasets with augmentations and transforms
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating datasets with augmentations and transforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-transforms" class="md-nav__link">
+    Understanding the transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select-a-library-model-and-backbone" class="md-nav__link">
+    Select a library, model, and backbone
+  </a>
+  
+    <nav class="md-nav" aria-label="Select a library, model, and backbone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-loader" class="md-nav__link">
+    Data Loader
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-model-inference-and-showing-results" class="md-nav__link">
+    Using the model - inference and showing results
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the model - inference and showing results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    Prediction
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1160,6 +1261,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#install-icevision-and-icedata" class="md-nav__link">
     Install IceVision and IceData
   </a>
@@ -1174,29 +1282,123 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#load-the-fridge-objects-dataset" class="md-nav__link">
-    Load the Fridge Objects dataset
+  <a href="#download-and-prepare-a-dataset" class="md-nav__link">
+    Download and prepare a dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#train-and-validation-datasets" class="md-nav__link">
-    Train and Validation Datasets
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-the-model" class="md-nav__link">
-    Create the model
+  <a href="#creating-datasets-with-augmentations-and-transforms" class="md-nav__link">
+    Creating datasets with augmentations and transforms
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating datasets with augmentations and transforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-transforms" class="md-nav__link">
+    Understanding the transforms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#select-a-library-model-and-backbone" class="md-nav__link">
+    Select a library, model, and backbone
+  </a>
+  
+    <nav class="md-nav" aria-label="Select a library, model, and backbone">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-model" class="md-nav__link">
+    Creating a model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-loader" class="md-nav__link">
+    Data Loader
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#create-the-dataloaders" class="md-nav__link">
-    Create the dataloaders
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training" class="md-nav__link">
+    Training
+  </a>
+  
+    <nav class="md-nav" aria-label="Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#training-using-fastai" class="md-nav__link">
+    Training using fastai
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-using-pytorch-lightning" class="md-nav__link">
+    Training using Pytorch Lightning
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-model-inference-and-showing-results" class="md-nav__link">
+    Using the model - inference and showing results
+  </a>
+  
+    <nav class="md-nav" aria-label="Using the model - inference and showing results">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    Prediction
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#happy-learning" class="md-nav__link">
+    Happy Learning!
   </a>
   
 </li>
@@ -1214,17 +1416,31 @@
               
                 
                 
-                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/wandb_efficientdet.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="icevision-meets-wb"><a href="https://airctic.com/">IceVision</a> meets <a href="https://wandb.ai/">W&amp;B</a></h1>
-<p>IceVision + W&amp;B = Agnostic Object Detection Framework with Outstanding Experiments Tracking </p>
-<p>IceVision fully supports W&amp;B by providing a one-liner API that enables users to track their trained models and display both the predicted and ground truth bounding boxes.</p>
-<p>W&amp;B makes visualizing and tracking different models performance a highly enjoyable task. Indeed, we are able to monitor the performance of several EfficientDet backbones by changing few lines of code and obtaining very intuitive and easy-to-interpret figures that highlights both the similarities and differences between the different backbones.</p>
-<p>For more information check the <a href="https://wandb.ai/ai-fast-track/icevision-fridge/reports/IceVision-meets-W-B--VmlldzoyODQxNjg">Report</a>. Note, however, that the report refers to an older version of IceVision. This tutorial is updated for IceVision 0.7.</p>
-<p>This tutorial emphasizes the additional work required to integrated W&amp;B. If you are new to IceVision, then we suggest that you look at the <a href="getting_started_object_detection.ipynb">getting started with object detection tutorial</a>.</p>
-<p>In this tutorial, we are using the <a href="https://github.com/fastai/fastai">fastai</a> library training loop, the <a href="">efficientdet</a> object detection model, and a sample dataset with images of objects that you might find in a fridge. Following the usual practice with IceVision, you can use W&amp;B with other training loops, model libraries, models and backbones. The W&amp;B specific lines below would not need to be changed.</p>
-<p><img alt="" src="https://raw.githubusercontent.com/airctic/icevision/master/images/fridge-objects.png" /></p>
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/using_swin_transformer_as_backbone.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="using-swin-transformer-as-backbone-in-icevision">Using Swin Transformer as backbone in IceVision</h1>
+<p>Exciting News: Now you can use both VFNet and RetinaNet with 3 different pretrained Swin Transformer backbones.</p>
+<p>Spectacular results with VFNet. COCO metric reached 66% vs 34% for RetinaNet when training the Fridge Object Dataset</p>
+<p>Both the neck (FPN) and the head are trained from scratch!</p>
+<p><img alt="" src="https://media-exp1.licdn.com/dms/image/C4E22AQE4UwSy9xbQPg/feedshare-shrink_2048_1536/0/1644117293076?e=1646870400&amp;v=beta&amp;t=MA_QZSTFGHWvMRO7FWOMFOk9m8YPIYB00g2wxnEtVsQ" /></p>
+<h2 id="introduction">Introduction</h2>
+<p><a href="https://openaccess.thecvf.com/content/ICCV2021/papers/Liu_Swin_Transformer_Hierarchical_Vision_Transformer_Using_Shifted_Windows_ICCV_2021_paper.pdf">Swin Transformer</a> currently holds state-of-the-art <a href="https://paperswithcode.com/paper/swin-transformer-hierarchical-vision">results</a> in prominent computer vision benchmark datasets:</p>
+<blockquote>
+<ol>
+<li>Image classification: 87.3 top-1 accuracy on ImageNet-1K</li>
+<li>Object detection: 58.7 box AP and 51.1 mask AP on COCO testdev</li>
+<li>Semantic segmentation: 53.5 mIoU on ADE20K val</li>
+</ol>
+</blockquote>
+<p>Its performance surpasses the previous state-of-theart by a large margin of +2.7 box AP and +2.6 mask AP on
+COCO, and +3.2 mIoU on ADE20K, demonstrating the potential of Transformer-based models as vision backbones.</p>
+<p>IceVision now supports using Swin Transformer as backbone for some models.</p>
+<p>In this tutorial, you will learn how to:
+1. Use the IceVision <code>mmdet</code> models with the Swin Transformer as backbone
+2. Instantiate the model, and then train it with both the fastai and pytorch lightning engines.<br />
+3. And finally, use the model to identify objects in images.  </p>
 <h2 id="install-icevision-and-icedata">Install IceVision and IceData</h2>
-<p>If on Colab run the following cell, else check the <a href="https://airctic.com/dev/install/">installation instructions</a></p>
+<p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, and Yolo v5 as well
+as the fastai and pytorch lightning engines.</p>
 <p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
@@ -1243,47 +1459,36 @@
 <span class="kn">import</span> <span class="nn">IPython</span>
 <span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>{&#39;restart&#39;: True, &#39;status&#39;: &#39;ok&#39;}
-</code></pre></div>
-</div>
 <h2 id="imports">Imports</h2>
+<p>All of the IceVision components can be easily imported with a single line.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.callback.wandb</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fastai.callback.tracker</span> <span class="kn">import</span> <span class="n">SaveModelCallback</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mDownloading default `.ttf` font file - SpaceGrotesk-Medium.ttf from https://raw.githubusercontent.com/airctic/storage/master/SpaceGrotesk-Medium.ttf to /root/.icevision/fonts/SpaceGrotesk-Medium.ttf[0m | [36micevision.visualize.utils[0m:[36mget_default_font[0m:[36m70[0m
-[1m[1mINFO    [0m[1m[0m - [1mDownloading mmdet configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m31[0m
-
-0B [00:00, ?B/s]
-
-Downloading https://ultralytics.com/assets/Arial.ttf to /root/.config/Ultralytics/Arial.ttf...
-</code></pre></div>
-</div>
-<h2 id="load-the-fridge-objects-dataset">Load the Fridge Objects dataset</h2>
-<p>The fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:
+<h2 id="download-and-prepare-a-dataset">Download and prepare a dataset</h2>
+<p>Now we can start by downloading the Fridge Objects dataset. This tiny dataset contains 134 images of 4 classes:
 - can, 
 - carton, 
 - milk bottle, 
 - water bottle.</p>
-<p>IceVision provides very handy methods such as loading a dataset, parsing annotations, and more. </p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Dataset</span>
+<p>IceVision provides methods to load a dataset, parse annotation files, and more.</p>
+<p>For more information about how the fridge dataset as well as its corresponding parser, check out the <a href="https://github.com/airctic/icedata/tree/master/icedata/datasets/fridge">fridge folder</a> in icedata.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Download the dataset</span>
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
 <span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
-<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">,</span> <span class="n">force_download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
 </code></pre></div>
-<p><div class="highlight"><pre><span></span><code><span class="c1"># Create the parser</span>
+<h2 id="parse-the-dataset">Parse the dataset</h2>
+<p>The parser loads the annotation file and parses them returning a list of training and validation records. The parser has an extensible <code>autofix</code> capability that identifies common errors in annotation files, reports, and often corrects them automatically.</p>
+<p>The parsers support multiple formats (including VOC and COCO). You can also extend the parser for additional formats if needed.</p>
+<p>The record is a key concept in IceVision, it holds the information about an image and its annotations. It is extensible and can support other object formats and types of annotations.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create the parser</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">VOCBBoxParser</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span> <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Parse annotations to create records</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
 <span class="n">parser</span><span class="o">.</span><span class="n">class_map</span>
-</code></pre></div></p>
+</code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/20380998 [00:00&lt;?, ?B/s]
-
-  0%|          | 0/128 [00:00&lt;?, ?it/s]
+<div class="highlight"><pre><span></span><code>  0%|          | 0/128 [00:00&lt;?, ?it/s]
 
 [1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
 
@@ -1292,10 +1497,13 @@ Downloading https://ultralytics.com/assets/Arial.ttf to /root/.config/Ultralytic
 &lt;ClassMap: {&#39;background&#39;: 0, &#39;carton&#39;: 1, &#39;milk_bottle&#39;: 2, &#39;can&#39;: 3, &#39;water_bottle&#39;: 4}&gt;
 </code></pre></div>
 </div>
-<h2 id="train-and-validation-datasets">Train and Validation Datasets</h2>
+<h2 id="creating-datasets-with-augmentations-and-transforms">Creating datasets with augmentations and transforms</h2>
+<p>Data augmentations are essential for robust training and results on many datasets and deep learning tasks. IceVision ships with the <a href="https://albumentations.ai/docs/">Albumentations</a> library for defining and executing transformations, but can be extended to use others.</p>
+<p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizintal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
+<p>The validation set is only resized (with padding).</p>
+<p>We then create <code>Datasets</code> for both. The dataset applies the transforms to the annotations (such as bounding boxes) and images in the data records.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
 <span class="n">image_size</span> <span class="o">=</span> <span class="mi">384</span>
-
 <span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 <span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
 </code></pre></div>
@@ -1303,54 +1511,88 @@ Downloading https://ultralytics.com/assets/Arial.ttf to /root/.config/Ultralytic
 <span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="create-the-model">Create the model</h2>
-<p>In IceVision, we need to select the model type and backbone. For this tutorial, we are selecting efficientdet and the <code>tf_lite0</code> backbone. Some models require additional information, such as the <code>image_size</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Library and model selection</span>
+<h3 id="understanding-the-transforms">Understanding the transforms</h3>
+<p>The Dataset transforms are only applied when we grab (get) an item. Several of the default <code>aug_tfms</code> have a random element to them. For example, one might perform a rotation with probability 0.5 where the angle of rotation  is randomly selected between +45 and -45 degrees.</p>
+<p>This means that the learner sees a slightly different version of an image each time it is accessed. This effectively increases the size of the dataset and improves learning.</p>
+<p>We can look at result of getting the 0th image from the dataset a few times and see the differences. Each time you run the next cell, you will see different results due to the random element in applying transformations.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Show an element of the train_ds with augmentation transformations applied</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/using_swin_transformer_as_backbone/using_swin_transformer_as_backbone_21_0.png" /></p>
+<h2 id="select-a-library-model-and-backbone">Select a library, model, and backbone</h2>
+<p>In order to create a model, we need to:
+* Choose one of the <strong>libraries</strong> supported by IceVision
+* Choose one of the <strong>models</strong> supported by the library
+* Choose one of the <strong>backbones</strong> corresponding to a chosen model</p>
+<p>You can access any supported models by following the IceVision unified API, use code completion to explore the available models for each library.</p>
+<h3 id="creating-a-model">Creating a model</h3>
+<p>Presently IceVision only supports the <code>mmdet</code> implementation of RetinaNet and VFNet (for object detection) and MaskRCNN (for instance segmentation) to use the Swin Transformer backbone. The model and backbone can be selected as follows:</p>
+<div class="highlight"><pre><span></span><code>model_type = models.mmdet.vfnet
+backbone = model_type.backbones.swin_t_p4_w7_fpn_1x_coco
+</code></pre></div>
+<p>There are currently 3 available backbones namely <code>swin_t_p4_w7_fpn_1x_coco</code>,<code>swin_s_p4_w7_fpn_1x_coco</code> and <code>swin_b_p4_w7_fpn_1x_coco</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Just change the value of selection to try another model</span>
 
-<span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
-<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1"># The efficientdet model requires an img_size parameter</span>
-<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;img_size&#39;</span> <span class="p">:</span> <span class="n">image_size</span><span class="p">}</span>
+<span class="n">selection</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
+<span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">vfnet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">swin_t_p4_w7_fpn_1x_coco</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">retinanet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">swin_s_p4_w7_fpn_1x_coco</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">vfnet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">swin_b_p4_w7_fpn_1x_coco</span>
+
+<span class="n">model_type</span><span class="p">,</span> <span class="n">backbone</span><span class="p">,</span> <span class="n">extra_args</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">backbone</span><span class="o">.</span><span class="vm">__dict__</span>
+</code></pre></div>
+<p>Now it is just a one-liner to instantiate the model. If you want to try another <em>option</em>, just edit the line at the top of the previous cell.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Instantiate the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
+</code></pre></div>
+<p>The current Swin Transformer implementation only provides pretrained weights for the backbone. </p>
+<blockquote>
+<p><strong><em>Note:</em></strong> For the Swin Transformer model <code>pretrained=True</code> indicates that only the backbone is pretrained. The neck and the head of the model will be trained from scratch.</p>
+</blockquote>
+<h2 id="data-loader">Data Loader</h2>
+<p>The Data Loader is specific to a model_type. The job of the data loader is to get items from a dataset and batch them up in the specific format required by each model. This is why creating the data loaders is separated from creating the datasets.</p>
+<p>We can take a look at the first batch of items from the <code>valid_dl</code>. Remember that the <code>valid_tfms</code> only resized (with padding) and normalized records, so different images, for example, are not returned each time. This is important to provide consistent validation during training.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Data Loaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
+<span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/using_swin_transformer_as_backbone/using_swin_transformer_as_backbone_31_0.png" /></p>
+<h2 id="metrics">Metrics</h2>
+<p>The fastai and pytorch lightning engines collect metrics to track progress during training. IceVision provides metric classes that work across the engines and libraries.</p>
+<p>The same metrics can be used for both fastai and pytorch lightning.</p>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+</code></pre></div>
+<h2 id="training">Training</h2>
+<p>IceVision is an agnostic framework meaning it can be plugged into other DL learning engines such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
+<h3 id="training-using-fastai">Training using fastai</h3>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">(</span><span class="n">end_lr</span><span class="o">=</span><span class="mf">0.005</span><span class="p">)</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Downloading: &quot;https://github.com/rwightman/efficientdet-pytorch/releases/download/v0.1/tf_efficientdet_lite0-f5f303a9.pth&quot; to /root/.cache/torch/hub/checkpoints/tf_efficientdet_lite0-f5f303a9.pth
+<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=4.279797212802805e-05)
 </code></pre></div>
 </div>
-<h2 id="create-the-dataloaders">Create the dataloaders</h2>
-<p>The dataloaders differ somewhat across the model_types, so creating them comes after selecting the model type.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
-<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<p><img alt="png" src="../images/using_swin_transformer_as_backbone/using_swin_transformer_as_backbone_37_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/usr/local/lib/python3.7/dist-packages/torch/utils/data/dataloader.py:481: UserWarning: This DataLoader will create 4 worker processes in total. Our suggested max number of worker in current system is 2, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
-  cpuset_checked))
-</code></pre></div>
-</div>
-<h1 id="training">Training</h1>
-<h2 id="intialize-wb">Intialize W&amp;B</h2>
-<p>At this point, we initialize W&amp;B. This works in the jupyter notebook, but it is more typical run W&amp;B from within a programme. This is partly because it enables you to track the progress of your training jobs from a custom dashboard from your browser, tablet, or phone. The full interface also makes it easy to compare multiple training runs, which can be very powerful when combined with IceVision. You can easily see which model is best suited to your problem.</p>
-<p>Initializing is a single line from the W&amp;B library.</p>
-<div class="highlight"><pre><span></span><code><span class="n">wandb</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s2">&quot;icevision-fridge&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;efficientdet_tf_lite0&quot;</span><span class="p">,</span> <span class="n">reinit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<h2 id="create-the-learner">Create the learner</h2>
-<p>This tutorial is using<a href="https://github.com/fastai/fastai">fastai</a>, but IceVision lets you us other frameworks such as  <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.</p>
-<p>In order to use W&amp;B within fastai, you need to specify the <code>WandbCallback</code>, which results in logging the metrics as well as other key parameters, as well as the <code>SaveModelCallback</code>, which enables W&amp;B to log the models. Logging the model is very powerful, as it ensures that you have a copy of the best version of the model as you train. If you are using W&amp;B on-line, however, it causes your model to be transferred to the W&amp;B database as well as saved in a local <code>wandb</code> directory.</p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> 
-                                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)],</span> 
-                                  <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">WandbCallback</span><span class="p">(),</span> <span class="n">SaveModelCallback</span><span class="p">()])</span>
-</code></pre></div>
-<h2 id="train">Train</h2>
-<p>In this case, we use the <code>fit_one_cycle</code> training method from fastai, which uses a specific policy for adjusting the learning rate. This model is likely to take around 2-10 seconds per epoch, depending on your hardware. Training for 30 epochs on this small dataset typically reaches a level around 0.8 (COCOMetric), which is sufficient for our demonstration purposes and saves some time.</p>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>Could not gather input dimensions
-WandbCallback was not able to prepare a DataLoader for logging prediction samples -&gt; &#39;Dataset&#39; object has no attribute &#39;items&#39;
-</code></pre></div>
-</div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -1364,284 +1606,236 @@ WandbCallback was not able to prepare a DataLoader for logging prediction sample
   <tbody>
     <tr>
       <td>0</td>
-      <td>1.940700</td>
-      <td>1.267195</td>
-      <td>0.000069</td>
-      <td>00:12</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>1.685492</td>
-      <td>1.271025</td>
-      <td>0.000023</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>1.540221</td>
-      <td>1.264216</td>
-      <td>0.017094</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>1.424315</td>
-      <td>1.147959</td>
-      <td>0.155413</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>1.303290</td>
-      <td>1.082212</td>
-      <td>0.218895</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>1.184958</td>
-      <td>0.875454</td>
-      <td>0.310934</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>1.083239</td>
-      <td>0.831463</td>
-      <td>0.260008</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>0.993147</td>
-      <td>0.897370</td>
-      <td>0.278169</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td>0.912498</td>
-      <td>0.779531</td>
-      <td>0.356216</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>9</td>
-      <td>0.844710</td>
-      <td>0.740413</td>
-      <td>0.360409</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td>0.782819</td>
-      <td>0.723692</td>
-      <td>0.377731</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>11</td>
-      <td>0.729454</td>
-      <td>0.745544</td>
-      <td>0.323658</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>12</td>
-      <td>0.687574</td>
-      <td>0.653606</td>
-      <td>0.413525</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>13</td>
-      <td>0.651915</td>
-      <td>0.655265</td>
-      <td>0.417471</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>14</td>
-      <td>0.620716</td>
-      <td>0.651639</td>
-      <td>0.429272</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>15</td>
-      <td>0.589860</td>
-      <td>0.543764</td>
-      <td>0.468006</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>16</td>
-      <td>0.559970</td>
-      <td>0.516403</td>
-      <td>0.574289</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>17</td>
-      <td>0.531339</td>
-      <td>0.510701</td>
-      <td>0.534853</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>18</td>
-      <td>0.504182</td>
-      <td>0.490539</td>
-      <td>0.590217</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>19</td>
-      <td>0.482276</td>
-      <td>0.391926</td>
-      <td>0.669296</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>20</td>
-      <td>0.460442</td>
-      <td>0.391556</td>
-      <td>0.693068</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>21</td>
-      <td>0.444368</td>
-      <td>0.344799</td>
-      <td>0.738415</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>22</td>
-      <td>0.425590</td>
-      <td>0.352732</td>
-      <td>0.725862</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>23</td>
-      <td>0.409553</td>
-      <td>0.319861</td>
-      <td>0.769296</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>24</td>
-      <td>0.395036</td>
-      <td>0.308085</td>
-      <td>0.769391</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>25</td>
-      <td>0.383020</td>
-      <td>0.302642</td>
-      <td>0.775355</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>26</td>
-      <td>0.372328</td>
-      <td>0.293886</td>
-      <td>0.785769</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>27</td>
-      <td>0.362688</td>
-      <td>0.292389</td>
-      <td>0.796928</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>28</td>
-      <td>0.355098</td>
-      <td>0.289134</td>
-      <td>0.799669</td>
-      <td>00:07</td>
-    </tr>
-    <tr>
-      <td>29</td>
-      <td>0.347778</td>
-      <td>0.283973</td>
-      <td>0.806622</td>
-      <td>00:07</td>
+      <td>2.715207</td>
+      <td>2.318473</td>
+      <td>0.079426</td>
+      <td>00:03</td>
     </tr>
   </tbody>
 </table>
 
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/usr/local/lib/python3.7/dist-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
-  indices_all = cls_topk_indices_all // num_classes
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>2.378009</td>
+      <td>2.299067</td>
+      <td>0.043078</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2.305085</td>
+      <td>2.170340</td>
+      <td>0.081073</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>2.240926</td>
+      <td>2.094887</td>
+      <td>0.142760</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2.171739</td>
+      <td>2.070704</td>
+      <td>0.239026</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>2.124321</td>
+      <td>1.890665</td>
+      <td>0.315633</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>2.068015</td>
+      <td>1.825514</td>
+      <td>0.433803</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2.004862</td>
+      <td>1.739451</td>
+      <td>0.419219</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.948798</td>
+      <td>1.746644</td>
+      <td>0.406612</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>1.900563</td>
+      <td>1.639521</td>
+      <td>0.513550</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>1.848227</td>
+      <td>1.623993</td>
+      <td>0.496804</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>1.803940</td>
+      <td>1.603808</td>
+      <td>0.550723</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>1.767351</td>
+      <td>1.545463</td>
+      <td>0.501292</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>1.725547</td>
+      <td>1.519361</td>
+      <td>0.598455</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>1.687097</td>
+      <td>1.539462</td>
+      <td>0.545318</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1.658265</td>
+      <td>1.403311</td>
+      <td>0.653802</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>1.626446</td>
+      <td>1.466561</td>
+      <td>0.641094</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>1.593588</td>
+      <td>1.378689</td>
+      <td>0.674150</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>1.570487</td>
+      <td>1.356180</td>
+      <td>0.644711</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>1.551844</td>
+      <td>1.396569</td>
+      <td>0.623112</td>
+      <td>00:04</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>1.533261</td>
+      <td>1.419828</td>
+      <td>0.624261</td>
+      <td>00:04</td>
+    </tr>
+  </tbody>
+</table>
 
-Better model found at epoch 0 with valid_loss value: 1.2671946287155151.
-Better model found at epoch 2 with valid_loss value: 1.2642161846160889.
-Better model found at epoch 3 with valid_loss value: 1.1479589939117432.
-Better model found at epoch 4 with valid_loss value: 1.0822120904922485.
-Better model found at epoch 5 with valid_loss value: 0.8754537105560303.
-Better model found at epoch 6 with valid_loss value: 0.8314631581306458.
-Better model found at epoch 8 with valid_loss value: 0.7795311808586121.
-Better model found at epoch 9 with valid_loss value: 0.7404130697250366.
-Better model found at epoch 10 with valid_loss value: 0.7236919403076172.
-Better model found at epoch 12 with valid_loss value: 0.6536057591438293.
-Better model found at epoch 14 with valid_loss value: 0.6516388654708862.
-Better model found at epoch 15 with valid_loss value: 0.5437638759613037.
-Better model found at epoch 16 with valid_loss value: 0.5164031982421875.
-Better model found at epoch 17 with valid_loss value: 0.5107009410858154.
-Better model found at epoch 18 with valid_loss value: 0.4905391037464142.
-Better model found at epoch 19 with valid_loss value: 0.3919256627559662.
-Better model found at epoch 20 with valid_loss value: 0.3915559649467468.
-Better model found at epoch 21 with valid_loss value: 0.34479889273643494.
-Better model found at epoch 23 with valid_loss value: 0.3198612332344055.
-Better model found at epoch 24 with valid_loss value: 0.3080853819847107.
-Better model found at epoch 25 with valid_loss value: 0.302642285823822.
-Better model found at epoch 26 with valid_loss value: 0.29388612508773804.
-Better model found at epoch 27 with valid_loss value: 0.2923893630504608.
-Better model found at epoch 28 with valid_loss value: 0.2891344130039215.
-Better model found at epoch 29 with valid_loss value: 0.28397276997566223.
+<p>In our tests, the VFNet + Swin-T backbone scored over 66% on the <code>COCOMetric</code> for this dataset. Not bad at all for a model with an untrained neck and head!</p>
+<h3 id="training-using-pytorch-lightning">Training using Pytorch Lightning</h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LightModel</span><span class="p">(</span><span class="n">model_type</span><span class="o">.</span><span class="n">lightning</span><span class="o">.</span><span class="n">ModelAdapter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
+
+<span class="n">light_model</span> <span class="o">=</span> <span class="n">LightModel</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">light_model</span><span class="p">,</span> <span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>GPU available: True, used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
 </code></pre></div>
 </div>
-<h2 id="show-results">Show results</h2>
-<p>We can now look athe results of the training in the notebook.</p>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  | Name  | Type  | Params
+--------------------------------
+0 | model | VFNet | 36.2 M
+--------------------------------
+36.2 M    Trainable params
+0         Non-trainable params
+36.2 M    Total params
+144.622   Total estimated model params size (MB)
+
+Validation sanity check: 0it [00:00, ?it/s]
+
+Training: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+
+Validating: 0it [00:00, ?it/s]
+</code></pre></div>
+</div>
+<h2 id="using-the-model-inference-and-showing-results">Using the model - inference and showing results</h2>
+<p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/using_swin_transformer_as_backbone/using_swin_transformer_as_backbone_44_0.png" /></p>
+<h3 id="prediction">Prediction</h3>
+<p>Sometimes you want to have more control than <code>show_results</code> provides. You can construct an inference dataloader using <code>infer_dl</code> from any IceVision dataset and pass this to <code>predict_dl</code> and use <code>show_preds</code> to look at the predictions.</p>
+<p>A prediction is returned as a dict with keys: <code>scores</code>, <code>labels</code>, <code>bboxes</code>, and possibly <code>masks</code>. </p>
+<p>Prediction functions that take a <code>detection_threshold</code> argument will only return the predictions whose score is above the threshold.</p>
+<p>Prediction functions that take a <code>keep_images</code> argument will only return the (tensor representation of the) image when it is <code>True</code>. In interactive environments, such as a notebook, it is helpful to see the image with bounding boxes and labels applied. In a deployment context, however, it is typically more useful (and efficient) to return the bounding boxes by themselves.</p>
+<blockquote>
+<p>NOTE: For a more detailed look at inference check out the <a href="https://airctic.com/dev/inference/">inference tutorial</a></p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>/usr/local/lib/python3.7/dist-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
-  indices_all = cls_topk_indices_all // num_classes
+<div class="highlight"><pre><span></span><code>  0%|          | 0/7 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/wandb_efficientdet/wandb_efficientdet_28_1.png" /></p>
-<h2 id="get-predictions">Get predictions</h2>
-<p>Let's get the list of predictions from our model. We do this by creating an <code>infer_dl</code> - a dataloader used for inference and then getting predictions from the data loader. </p>
-<p>Please note the <code>keep_images=True</code>. By default, the predictions include scores, labels, and bounding boxes. In our case, we want to keep the images so that we log them to W&amp;B.</p>
-<div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
-<span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="o">=</span><span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>  0%|          | 0/4 [00:00&lt;?, ?it/s]
-
-/usr/local/lib/python3.7/dist-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
-  indices_all = cls_topk_indices_all // num_classes
-</code></pre></div>
-</div>
-<h2 id="log-results-to-wb">Log results to W&amp;B</h2>
-<p>Now comes the most important bit of this tutorial - actually logging the predictions to W&amp;B. This takes one line specific to icevision and a second line to send the information to W&amp;B.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Create wandb_images for each prediction</span>
-<span class="n">wandb_images</span> <span class="o">=</span> <span class="n">wandb_img_preds</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">add_ground_truth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
-
-<span class="c1"># Log the wandb_images to wandb</span>
-<span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;Predicted images&quot;</span><span class="p">:</span> <span class="n">wandb_images</span><span class="p">})</span>
-</code></pre></div>
-<p>After logging and finishing the training, it is good to mark the run as completed. This can take a few seconds, as we wait for the W&amp;B processes to transfer data and finalize logging.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># optional: mark the run as completed</span>
-<span class="n">wandb</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
-</code></pre></div>
+<p><img alt="png" src="../images/using_swin_transformer_as_backbone/using_swin_transformer_as_backbone_48_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
@@ -1663,7 +1857,7 @@ Better model found at epoch 29 with valid_loss value: 0.28397276997566223.
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../inference/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Inference" rel="prev">
+        <a href="../using_fiftyone_in_icevision/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Using FiftyOne in icevision" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1672,20 +1866,20 @@ Better model found at epoch 29 with valid_loss value: 0.28397276997566223.
               <span class="md-footer__direction">
                 Previous
               </span>
-              Inference
+              Using FiftyOne in icevision
             </div>
           </div>
         </a>
       
       
         
-        <a href="../negative_samples/" class="md-footer__link md-footer__link--next" aria-label="Next: How to use negative samples" rel="next">
+        <a href="../albumentations/" class="md-footer__link md-footer__link--next" aria-label="Next: Albumentations" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              How to use negative samples
+              Albumentations
             </div>
           </div>
           <div class="md-footer__button md-icon">
