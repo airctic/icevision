@@ -7,6 +7,7 @@ __all__ = [
     "plot_grid",
 ]
 
+import pydicom
 from icevision.imports import *
 from PIL import ExifTags
 
@@ -22,11 +23,42 @@ for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
 # class PILMode(Enum):
 #     blah
 
+
+def open_dicom(filename) -> PIL.Image:
+    dcm = pydicom.dcmread(filename)
+    bits_stored = dcm[0x00280101]
+
+    img = dcm.pixel_array
+    # Check the photometric interpretation
+    # MONOCHROME1: Greyscale ranges from bright to dark
+    # MONOCHROME2: Greyscale ranges from dark to right
+    if dcm[0x00280004].value == "MONOCHROME1":
+        img = 2 ** bits_stored - img
+
+    # Apply a VOI LUT transformation (if the image does not
+    # contain the needed parameters, the image is returned
+    # unchanged)
+    img = pydicom.pixel_data_handlers.apply_voi_lut(img, dcm)
+
+    # TODO: Convert to 8 bits if the image is 16 bit?
+    # if bits_stored == 16:
+    #    img = img / 65535.
+    #    img = (img * 255).astype(int)
+    img = PIL.Image.fromarray(img)
+
+    return img
+
+
 # FIXME
 def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
     "Open an image from disk `fn` as a PIL Image"
     color = "L" if gray else "RGB"
-    image = PIL.Image.open(str(fn))
+
+    if ".dcm" in str(fn):
+        image = open_dicom(str(fn))
+    else:
+        image = PIL.Image.open(str(fn))
+
     if not ignore_exif:
         image = PIL.ImageOps.exif_transpose(image)
     image = image.convert(color)
@@ -55,8 +87,12 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     Returns image (width, height)
     """
-    with PIL.Image.open(filepath) as image:
-        image_size = image.size
+    if ".dcm" in str(filepath):
+        image = open_dicom(str(filepath))
+    else:
+        image = PIL.Image.open(str(filepath))
+
+    image_size = image.size
 
     try:
         exif = image._getexif()
