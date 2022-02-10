@@ -5,6 +5,76 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 [comment]: # (Add changes below)
 
+[comment]: # (Version_start)
+## 0.11.0
+The following PRs have been merged since the last version.
+
+ai-fast-track
+  - [Updating mmcv installation to torch 1.10.0](https://github.com/airctic/icevision/issues/972) (#972)
+  - [Upgrade to torch 1.10 and torchvision 0.11](https://github.com/airctic/icevision/issues/970) (#970)
+  - [Pass both map_location, and logger to downstream methods](https://github.com/airctic/icevision/issues/968) (#968)
+  - [Bumped torch and torchision versions](https://github.com/airctic/icevision/issues/961) (#961)
+  - [Update CHANGELOG.md for Release 0.11.0](https://github.com/airctic/icevision/issues/959) (#959)
+  - [Adding an installation script for cuda and cpu](https://github.com/airctic/icevision/issues/956) (#956)
+  - [fixed yaml issue in doc generation CI/CD](https://github.com/airctic/icevision/issues/952) (#952)
+  - [Upgrade mk-docs-build.yml in the CI/CD](https://github.com/airctic/icevision/issues/951) (#951)
+  - [Update mmcv to 1.3.14 and mmdet to 2.17.0 in CI/CD](https://github.com/airctic/icevision/issues/949) (#949)
+  - [Update notebooks installation](https://github.com/airctic/icevision/issues/940) (#940)
+  - [Fix Colab script](https://github.com/airctic/icevision/issues/938) (#938)
+  - [Fixed Colab installation script](https://github.com/airctic/icevision/issues/937) (#937)
+  - [Update installation to torch 1.9 and dependencies](https://github.com/airctic/icevision/issues/935) (#935)
+  - [Inference - automatically recreate model trained with COCO](https://github.com/airctic/icevision/issues/929) (#929)
+  - [Simplify save and load model checkpoints](https://github.com/airctic/icevision/issues/924) (#924)
+  - [Update installation to torch  1.9 + dependencies](https://github.com/airctic/icevision/issues/919) (#919)
+  - [Added MMDetection VFNet Support.](https://github.com/airctic/icevision/issues/906) (#906)
+  - [Make MMDetection config object accessible to users](https://github.com/airctic/icevision/issues/904) (#904)
+  - [Adding progressive resizing support](https://github.com/airctic/icevision/issues/902) (#902)
+  - [Fix mmdet weights path issue](https://github.com/airctic/icevision/issues/900) (#900)
+  - [add docker-compose instructions](https://github.com/airctic/icevision/issues/898) (#898)
+  - [Added script for icevision inference installation](https://github.com/airctic/icevision/issues/893) (#893)
+  - [Added kwargs and label_border_color to end2end_detect()](https://github.com/airctic/icevision/issues/891) (#891)
+  - [Fix icevision installation in Colab](https://github.com/airctic/icevision/issues/887) (#887)
+  - [added kwargs to the EfficientDet model() method](https://github.com/airctic/icevision/issues/883) (#883)
+
+fstroth
+  - [(WIP) Fix masks for instance segmentation](https://github.com/airctic/icevision/issues/967) (#967)
+  - [(Refactor) Removed the coco function.](https://github.com/airctic/icevision/issues/964) (#964)
+  - [(Feature) init coco and via parser with a dict instead of the filepath](https://github.com/airctic/icevision/issues/963) (#963)
+  - [(Feature) Added way to output metrics for pytorchlightning during training](https://github.com/airctic/icevision/issues/960) (#960)
+  - [Fix for CHANGLOG.md update script.](https://github.com/airctic/icevision/issues/958) (#958)
+  - [Script for automatically updating CHANGELOG.md](https://github.com/airctic/icevision/issues/957) (#957)
+  - [(Update) Updated code to run with albumentations version 1.0.3.](https://github.com/airctic/icevision/issues/927) (#927)
+  - [Radiographic images](https://github.com/airctic/icevision/issues/912) (#912)
+
+potipot
+  - [Fix show pred](https://github.com/airctic/icevision/issues/930) (#930)
+  - [Fix inference on rectangular efficientdet input](https://github.com/airctic/icevision/issues/910) (#910)
+
+FraPochetti
+  - [adding docker support](https://github.com/airctic/icevision/issues/895) (#895)
+  - [Colab Install Script: fixing link to icevision master](https://github.com/airctic/icevision/issues/888) (#888)
+
+jaeeolma
+  - [Empty mask fix](https://github.com/airctic/icevision/issues/933) (#933)
+
+bogdan-evtushenko
+  - [Add support for yolox from mmdetection.](https://github.com/airctic/icevision/issues/932) (#932)
+
+drscotthawley
+  - [casting both caption parts as str](https://github.com/airctic/icevision/issues/922) (#922)
+
+lgvaz
+  - [Unet3](https://github.com/airctic/icevision/issues/907) (#907)
+
+nicjac
+  - [Fixed PIL size bug in ImageRecordComponent (#889)](https://github.com/airctic/icevision/issues/894) (#894)
+
+**Thank you to all contributers: @ai-fast-track, @fstroth, @potipot, @FraPochetti, @jaeeolma, @bogdan-evtushenko, @drscotthawley, @lgvaz, @nicjac**
+
+[comment]: # (Version_end)
+
+
+
 ## [Unreleased] - 0.10.0a1
 ### Main dependencies updated
 - torch 1.9.0
