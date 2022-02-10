@@ -1,0 +1,2309 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for IceVision.">
+      
+      
+      
+        <meta name="author" content="Lucas Goulart Vazquez, Farid Hassainia, and Contributors">
+      
+      
+        <link rel="canonical" href="https://airctic.com/0.12.0/plot_top_losses/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>Model Debugging with Plot Top Losses - IceVision</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../css/termynal.css">
+    
+      <link rel="stylesheet" href="../css/custom.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#install-icevision" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="IceVision" class="md-header__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            IceVision
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Model Debugging with Plot Top Losses
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="IceVision" class="md-nav__button md-logo" aria-label="IceVision" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    IceVision
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/airctic/IceVision" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_object_detection/" class="md-nav__link">
+        Object Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_instance_segmentation/" class="md-nav__link">
+        Instance Segmentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_semantic_segmentation/" class="md-nav__link">
+        Semantic Segmentation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started_keypoint_detection/" class="md-nav__link">
+        Keypoint Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custom_parser/" class="md-nav__link">
+        Custom Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inference/" class="md-nav__link">
+        Inference
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Other Tutorials
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Other Tutorials" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Other Tutorials
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wandb_efficientdet/" class="md-nav__link">
+        Model Tracking Using Wandb
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../negative_samples/" class="md-nav__link">
+        How to use negative samples
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../voc_predefined_splits/" class="md-nav__link">
+        Fixed Splitter
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progressive_resizing/" class="md-nav__link">
+        Progressive resizing
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mmdet_custom_config/" class="md-nav__link">
+        MMDetection Custom Config
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Model Debugging with Plot Top Losses
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Model Debugging with Plot Top Losses
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision" class="md-nav__link">
+    Install IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-detection" class="md-nav__link">
+    Object Detection
+  </a>
+  
+    <nav class="md-nav" aria-label="Object Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-fridge-dataset" class="md-nav__link">
+    Load fridge dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-faster_rcnn-model" class="md-nav__link">
+    Train faster_rcnn model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-top_plot_losses-on-faster_rcnn-model-results" class="md-nav__link">
+    Run top_plot_losses on faster_rcnn model results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model" class="md-nav__link">
+    Run top_plot_losses on a efficientdet pretrained (but not finetuned) model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-segmentation" class="md-nav__link">
+    Instance Segmentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance Segmentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset" class="md-nav__link">
+    plot_top_losses in action with a mask_rcnn model on the pennfudan dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keypoint-detection" class="md-nav__link">
+    Keypoint Detection
+  </a>
+  
+    <nav class="md-nav" aria-label="Keypoint Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset" class="md-nav__link">
+    plot_top_losses in action with a keypoint_rcnn model on the biwi dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ochuman_keypoint_detection/" class="md-nav__link">
+        Advanced Keypoint Detection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SAHI_inference/" class="md-nav__link">
+        Small Object Detection with SAHI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../using_fiftyone_in_icevision/" class="md-nav__link">
+        Using FiftyOne in icevision
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../using_swin_transformer_as_backbone/" class="md-nav__link">
+        Using Swin Transformer as Backbone
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Models
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backbones/" class="md-nav__link">
+        Backbones
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          API Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          API Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parser/" class="md-nav__link">
+        Parser
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dataset/" class="md-nav__link">
+        Dataset
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_3" type="checkbox" id="__nav_8_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_3">
+          Transforms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Transforms" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Transforms
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../albumentations_tfms/" class="md-nav__link">
+        Albumentations
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4" type="checkbox" id="__nav_8_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_4">
+          Models
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Models" data-md-level="2">
+        <label class="md-nav__title" for="__nav_8_4">
+          <span class="md-nav__icon md-icon"></span>
+          Models
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_1" type="checkbox" id="__nav_8_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_4_1">
+          Faster RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Faster RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Faster RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faster_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_2" type="checkbox" id="__nav_8_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_4_2">
+          Mask RCNN
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Mask RCNN" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Mask RCNN
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mask_rcnn_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_4_3" type="checkbox" id="__nav_8_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_4_3">
+          EfficientDet
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="EfficientDet" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          EfficientDet
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet/" class="md-nav__link">
+        common
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_fastai/" class="md-nav__link">
+        fastai
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../efficientdet_lightning/" class="md-nav__link">
+        lightning
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_splits/" class="md-nav__link">
+        Data Splitters
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../readme_mkdocs/" class="md-nav__link">
+        Generating Docs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code_of_conduct/" class="md-nav__link">
+        Code of Conduct
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-icevision" class="md-nav__link">
+    Install IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#object-detection" class="md-nav__link">
+    Object Detection
+  </a>
+  
+    <nav class="md-nav" aria-label="Object Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-fridge-dataset" class="md-nav__link">
+    Load fridge dataset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-faster_rcnn-model" class="md-nav__link">
+    Train faster_rcnn model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-top_plot_losses-on-faster_rcnn-model-results" class="md-nav__link">
+    Run top_plot_losses on faster_rcnn model results
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model" class="md-nav__link">
+    Run top_plot_losses on a efficientdet pretrained (but not finetuned) model
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instance-segmentation" class="md-nav__link">
+    Instance Segmentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Instance Segmentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset" class="md-nav__link">
+    plot_top_losses in action with a mask_rcnn model on the pennfudan dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keypoint-detection" class="md-nav__link">
+    Keypoint Detection
+  </a>
+  
+    <nav class="md-nav" aria-label="Keypoint Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset" class="md-nav__link">
+    plot_top_losses in action with a keypoint_rcnn model on the biwi dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/plot_top_losses.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<p>The purpose of this notebook is to showcase the newly added <code>plot_top_losses</code> functionality, which allows users to inspect models' results by plotting images sorted by various combinations of losses. This API makes it easy to immediately spot pictures the model struggles the most with, giving the practitioner the opportunity to take swift action to correct this behaviour (remove wrong samples, correct mis-labellings, etc).</p>
+<p><code>plot_top_losses</code> is available for all IceVision models, as the below notebook shows. </p>
+<h2 id="install-icevision">Install IceVision</h2>
+<p>Install from pypi...</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="c1"># Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="err">!</span><span class="n">bash</span> <span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span> <span class="n">cuda11</span>
+</code></pre></div>
+<p>... or from icevision master</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># # Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
+<span class="c1"># !wget https://raw.githubusercontent.com/airctic/icevision/master/icevision_install.sh</span>
+
+<span class="c1"># # Choose your installation target: cuda11 or cuda10 or cpu</span>
+<span class="c1"># !bash icevision_install.sh cuda11 master</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Restart kernel after installation</span>
+<span class="kn">import</span> <span class="nn">IPython</span>
+<span class="n">IPython</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h1 id="object-detection">Object Detection</h1>
+<h2 id="load-fridge-dataset">Load <code>fridge</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://cvbp-secondary.z19.web.core.windows.net/datasets/object_detection/odFridgeObjects.zip&quot;</span>
+<span class="n">dest_dir</span> <span class="o">=</span> <span class="s2">&quot;fridge&quot;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">dest_dir</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Parser</span>
+<span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">([</span><span class="s2">&quot;milk_bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;can&quot;</span><span class="p">,</span> <span class="s2">&quot;water_bottle&quot;</span><span class="p">])</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">parsers</span><span class="o">.</span><span class="n">voc</span><span class="p">(</span><span class="n">annotations_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/annotations&quot;</span><span class="p">,</span>
+                     <span class="n">images_dir</span><span class="o">=</span><span class="n">data_dir</span> <span class="o">/</span> <span class="s2">&quot;odFridgeObjects/images&quot;</span><span class="p">,</span>
+                     <span class="n">class_map</span><span class="o">=</span><span class="n">class_map</span><span class="p">)</span>
+<span class="c1"># Records</span>
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">384</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">512</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="mi">384</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Datasets</span>
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+
+[33m[1m[1mWARNING [0m[33m[1m[0m - [33m[1mThis function will be deprecated, instantiate the concrete classes instead: `VOCBBoxParser`, `VOCMaskParser`[0m | [36micevision.parsers.voc_parser[0m:[36mvoc[0m:[36m17[0m
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/128 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+<h2 id="train-faster_rcnn-model">Train <code>faster_rcnn</code> model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">))</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">COCOMetric</span><span class="p">(</span><span class="n">metric_type</span><span class="o">=</span><span class="n">COCOMetricType</span><span class="o">.</span><span class="n">bbox</span><span class="p">)]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>3.995082</td>
+      <td>1.145674</td>
+      <td>0.000057</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ../aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>COCOMetric</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.193951</td>
+      <td>1.648449</td>
+      <td>0.032289</td>
+      <td>00:13</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.985826</td>
+      <td>0.735072</td>
+      <td>0.000160</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.924974</td>
+      <td>0.794665</td>
+      <td>0.018933</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.893960</td>
+      <td>0.844737</td>
+      <td>0.052620</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.893976</td>
+      <td>0.812259</td>
+      <td>0.183922</td>
+      <td>00:11</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.880687</td>
+      <td>0.681532</td>
+      <td>0.173614</td>
+      <td>00:09</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.858650</td>
+      <td>0.665555</td>
+      <td>0.247655</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.818621</td>
+      <td>0.510320</td>
+      <td>0.337507</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.776634</td>
+      <td>0.518227</td>
+      <td>0.360398</td>
+      <td>00:10</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.736172</td>
+      <td>0.486833</td>
+      <td>0.372902</td>
+      <td>00:09</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="run-top_plot_losses-on-faster_rcnn-model-results">Run <code>top_plot_losses</code> on <code>faster_rcnn</code> model results</h2>
+<p>Values allowed to pass to <code>sort_by</code> are (for <code>faster_rcnn</code>):</p>
+<ul>
+<li><code>"loss_classifier"</code></li>
+<li><code>"loss_box_reg"</code></li>
+<li><code>"loss_objectness"</code></li>
+<li><code>"loss_rpn_box_reg"</code></li>
+<li><code>"loss_total"</code> (sum of the previous 4 losses)</li>
+<li><code>{"method": "weighted", 
+  "weights": {"loss_box_reg": 0.25,
+  "loss_classifier": 0.25,
+  "loss_objectness": 0.25,
+  "loss_rpn_box_reg": 0.25,}}</code>
+  (calculates weighted sum of the 4 losses - <em>Note</em>: I have set weights to <code>0.25</code> for example purposes)</li>
+</ul>
+<p>Below we show several ways of invoking the same API on the trained model, sorting samples by different losses combinations.</p>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_total&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_24_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_classifier&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_25_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># in this case `loss_weighted` will be equal to `loss_box_reg`</span>
+<span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_box_reg&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;loss_classifier&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loss_objectness&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;loss_rpn_box_reg&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_26_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">by</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;weighted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;loss_box_reg&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_classifier&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_objectness&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+            <span class="s2">&quot;loss_rpn_box_reg&quot;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+
+<span class="n">samples_plus_losses</span><span class="p">,</span> <span class="n">preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="n">by</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_27_3.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># `losses_stats` contains useful statistics for each computed loss in the dataset</span>
+<span class="n">losses_stats</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># we can easily extract losses per image and display them in a pandas DataFrame for further analysis</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">icevision.models.interpretation</span> <span class="kn">import</span> <span class="n">get_samples_losses</span>
+
+<span class="n">loss_per_image</span> <span class="o">=</span> <span class="n">get_samples_losses</span><span class="p">(</span><span class="n">samples_plus_losses</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">loss_per_image</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>{&#39;loss_classifier&#39;: {&#39;min&#39;: 0.06532751768827438,
+  &#39;max&#39;: 0.3570514917373657,
+  &#39;mean&#39;: 0.22153257807860008,
+  &#39;1ile&#39;: 0.06532751768827438,
+  &#39;25ile&#39;: 0.17143525183200836,
+  &#39;50ile&#39;: 0.23105227947235107,
+  &#39;75ile&#39;: 0.2811724841594696,
+  &#39;99ile&#39;: 0.3570514917373657},
+ &#39;loss_box_reg&#39;: {&#39;min&#39;: 0.04955608770251274,
+  &#39;max&#39;: 0.41760146617889404,
+  &#39;mean&#39;: 0.24227395410147998,
+  &#39;1ile&#39;: 0.04955608770251274,
+  &#39;25ile&#39;: 0.16739314794540405,
+  &#39;50ile&#39;: 0.23787736147642136,
+  &#39;75ile&#39;: 0.3278003931045532,
+  &#39;99ile&#39;: 0.41760146617889404},
+ &#39;loss_objectness&#39;: {&#39;min&#39;: 0.0017869938164949417,
+  &#39;max&#39;: 0.10180316120386124,
+  &#39;mean&#39;: 0.016076406804271616,
+  &#39;1ile&#39;: 0.0017869938164949417,
+  &#39;25ile&#39;: 0.007386505138128996,
+  &#39;50ile&#39;: 0.010415146127343178,
+  &#39;75ile&#39;: 0.018654515966773033,
+  &#39;99ile&#39;: 0.10180316120386124},
+ &#39;loss_rpn_box_reg&#39;: {&#39;min&#39;: 0.001359554473310709,
+  &#39;max&#39;: 0.02417410910129547,
+  &#39;mean&#39;: 0.008536153078938905,
+  &#39;1ile&#39;: 0.001359554473310709,
+  &#39;25ile&#39;: 0.0056922342628240585,
+  &#39;50ile&#39;: 0.007792716380208731,
+  &#39;75ile&#39;: 0.010672150179743767,
+  &#39;99ile&#39;: 0.02417410910129547},
+ &#39;loss_total&#39;: {&#39;min&#39;: 0.11875081108883023,
+  &#39;max&#39;: 0.7295006141066551,
+  &#39;mean&#39;: 0.4884190920632906,
+  &#39;1ile&#39;: 0.11875081108883023,
+  &#39;25ile&#39;: 0.3626828184351325,
+  &#39;50ile&#39;: 0.5204635132104158,
+  &#39;75ile&#39;: 0.6233997480012476,
+  &#39;99ile&#39;: 0.7295006141066551}}
+</code></pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}
+</code></pre></div>
+</div>
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>loss_classifier</th>
+      <th>loss_box_reg</th>
+      <th>loss_objectness</th>
+      <th>loss_rpn_box_reg</th>
+      <th>loss_total</th>
+      <th>loss_weighted</th>
+      <th>filepath</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.296700</td>
+      <td>0.417601</td>
+      <td>0.007554</td>
+      <td>0.007645</td>
+      <td>0.729501</td>
+      <td>0.182375</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/86.jpg</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.345282</td>
+      <td>0.344900</td>
+      <td>0.021045</td>
+      <td>0.006102</td>
+      <td>0.717329</td>
+      <td>0.179332</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/90.jpg</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.357051</td>
+      <td>0.327800</td>
+      <td>0.020415</td>
+      <td>0.008122</td>
+      <td>0.713388</td>
+      <td>0.178347</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/80.jpg</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.301462</td>
+      <td>0.354785</td>
+      <td>0.015013</td>
+      <td>0.015807</td>
+      <td>0.687068</td>
+      <td>0.171767</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/65.jpg</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.232049</td>
+      <td>0.370708</td>
+      <td>0.019768</td>
+      <td>0.010672</td>
+      <td>0.633197</td>
+      <td>0.158299</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/41.jpg</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>0.296007</td>
+      <td>0.310065</td>
+      <td>0.014165</td>
+      <td>0.008247</td>
+      <td>0.628484</td>
+      <td>0.157121</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/81.jpg</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>0.211539</td>
+      <td>0.393251</td>
+      <td>0.011715</td>
+      <td>0.006894</td>
+      <td>0.623400</td>
+      <td>0.155850</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/87.jpg</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>0.271977</td>
+      <td>0.331191</td>
+      <td>0.012193</td>
+      <td>0.007269</td>
+      <td>0.622630</td>
+      <td>0.155657</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/48.jpg</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>0.281172</td>
+      <td>0.282685</td>
+      <td>0.026252</td>
+      <td>0.014193</td>
+      <td>0.604303</td>
+      <td>0.151076</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/37.jpg</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>0.260208</td>
+      <td>0.324138</td>
+      <td>0.008174</td>
+      <td>0.011745</td>
+      <td>0.604265</td>
+      <td>0.151066</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/74.jpg</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>0.278057</td>
+      <td>0.261131</td>
+      <td>0.018655</td>
+      <td>0.007381</td>
+      <td>0.565223</td>
+      <td>0.141306</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/28.jpg</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>0.235263</td>
+      <td>0.310668</td>
+      <td>0.002415</td>
+      <td>0.007940</td>
+      <td>0.556287</td>
+      <td>0.139072</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/46.jpg</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>0.299006</td>
+      <td>0.214321</td>
+      <td>0.009115</td>
+      <td>0.011385</td>
+      <td>0.533828</td>
+      <td>0.133457</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/36.jpg</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0.230056</td>
+      <td>0.258252</td>
+      <td>0.008532</td>
+      <td>0.010260</td>
+      <td>0.507099</td>
+      <td>0.126775</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/40.jpg</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.220261</td>
+      <td>0.210022</td>
+      <td>0.007387</td>
+      <td>0.005692</td>
+      <td>0.443363</td>
+      <td>0.110841</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/115.jpg</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>0.171435</td>
+      <td>0.145327</td>
+      <td>0.101803</td>
+      <td>0.024174</td>
+      <td>0.442740</td>
+      <td>0.110685</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/109.jpg</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>0.233022</td>
+      <td>0.204496</td>
+      <td>0.003368</td>
+      <td>0.001360</td>
+      <td>0.442246</td>
+      <td>0.110562</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/47.jpg</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>0.202497</td>
+      <td>0.217503</td>
+      <td>0.008341</td>
+      <td>0.010180</td>
+      <td>0.438521</td>
+      <td>0.109630</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/31.jpg</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>0.206598</td>
+      <td>0.164179</td>
+      <td>0.051936</td>
+      <td>0.015769</td>
+      <td>0.438482</td>
+      <td>0.109621</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/25.jpg</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>0.145833</td>
+      <td>0.187863</td>
+      <td>0.018361</td>
+      <td>0.010626</td>
+      <td>0.362683</td>
+      <td>0.090671</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/59.jpg</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>0.118557</td>
+      <td>0.171712</td>
+      <td>0.002909</td>
+      <td>0.001784</td>
+      <td>0.294962</td>
+      <td>0.073740</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/127.jpg</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.103582</td>
+      <td>0.167393</td>
+      <td>0.014592</td>
+      <td>0.006817</td>
+      <td>0.292384</td>
+      <td>0.073096</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/12.jpg</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0.180912</td>
+      <td>0.102142</td>
+      <td>0.002801</td>
+      <td>0.002640</td>
+      <td>0.288496</td>
+      <td>0.072124</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/19.jpg</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.118964</td>
+      <td>0.102546</td>
+      <td>0.007565</td>
+      <td>0.004681</td>
+      <td>0.233756</td>
+      <td>0.058439</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/110.jpg</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>0.097024</td>
+      <td>0.074887</td>
+      <td>0.002125</td>
+      <td>0.002476</td>
+      <td>0.176512</td>
+      <td>0.044128</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/100.jpg</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>0.065328</td>
+      <td>0.049556</td>
+      <td>0.001787</td>
+      <td>0.002080</td>
+      <td>0.118751</td>
+      <td>0.029688</td>
+      <td>/home/ubuntu/.icevision/data/fridge/odFridgeObjects/images/106.jpg</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="run-top_plot_losses-on-a-efficientdet-pretrained-but-not-finetuned-model">Run <code>top_plot_losses</code> on a <code>efficientdet</code> pretrained (but not finetuned) model</h2>
+<div class="highlight"><pre><span></span><code><span class="n">extra_args</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ross</span><span class="o">.</span><span class="n">efficientdet</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">tf_lite0</span>
+<span class="c1"># The efficientdet model requires an img_size parameter</span>
+<span class="n">extra_args</span><span class="p">[</span><span class="s1">&#39;img_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">384</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">class_map</span><span class="p">),</span> <span class="o">**</span><span class="n">extra_args</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;class_loss&quot;</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;effdet_total_loss&#39;, &#39;class_loss&#39;, &#39;box_loss&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/26 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/4 [00:00&lt;?, ?it/s]
+
+/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/effdet/bench.py:45: UserWarning: __floordiv__ is deprecated, and its behavior will change in a future version of pytorch. It currently rounds toward 0 (like the &#39;trunc&#39; function NOT &#39;floor&#39;). This results in incorrect rounding for negative values. To keep the current behavior, use torch.div(a, b, rounding_mode=&#39;trunc&#39;), or for actual floor division, use torch.div(a, b, rounding_mode=&#39;floor&#39;).
+  indices_all = cls_topk_indices_all // num_classes
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_32_4.png" /></p>
+<h1 id="instance-segmentation">Instance Segmentation</h1>
+<h2 id="plot_top_losses-in-action-with-a-mask_rcnn-model-on-the-pennfudan-dataset"><code>plot_top_losses</code> in action with a <code>mask_rcnn</code> model on the <code>pennfudan</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Loading Data</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># train_ds, valid_ds = icedata.pennfudan.dataset(data_dir)</span>
+<span class="n">train_rs</span><span class="p">,</span> <span class="n">valid_rs</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="mi">512</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">image_size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="mi">1024</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">image_size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_rs</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_rs</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">mask_rcnn</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_fpn_1x</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">icedata</span><span class="o">.</span><span class="n">pennfudan</span><span class="o">.</span><span class="n">NUM_CLASSES</span><span class="p">)</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/170 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/170 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>1.950177</td>
+      <td>0.444139</td>
+      <td>00:32</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.936212</td>
+      <td>0.439992</td>
+      <td>00:28</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:324: UserWarning: ``grid_anchors`` would be deprecated soon. Please use ``grid_priors`` 
+  warnings.warn(&#39;``grid_anchors`` would be deprecated soon. &#39;
+/home/ubuntu/anaconda3/envs/ice/lib/python3.8/site-packages/mmdet/core/anchor/anchor_generator.py:360: UserWarning: ``single_level_grid_anchors`` would be deprecated soon. Please use ``single_level_grid_priors`` 
+  warnings.warn(
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0.374806</td>
+      <td>0.344675</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0.347379</td>
+      <td>0.350029</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0.336716</td>
+      <td>0.364372</td>
+      <td>00:25</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0.329699</td>
+      <td>0.333309</td>
+      <td>00:28</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>0.315138</td>
+      <td>0.344930</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>0.308043</td>
+      <td>0.340804</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>0.289543</td>
+      <td>0.312908</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>0.278561</td>
+      <td>0.327445</td>
+      <td>00:26</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>0.266237</td>
+      <td>0.310647</td>
+      <td>00:25</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>0.262186</td>
+      <td>0.310190</td>
+      <td>00:26</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_mask&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_rpn_cls&#39;, &#39;loss_rpn_bbox&#39;, &#39;loss_cls&#39;, &#39;loss_bbox&#39;, &#39;loss_mask&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/34 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/5 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_42_3.png" /></p>
+<h1 id="keypoint-detection">Keypoint Detection</h1>
+<h2 id="plot_top_losses-in-action-with-a-keypoint_rcnn-model-on-the-biwi-dataset"><code>plot_top_losses</code> in action with a <code>keypoint_rcnn</code> model on the <code>biwi</code> dataset</h2>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">keypoint_rcnn</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">biwi</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+<span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+
+<span class="n">presize</span> <span class="o">=</span> <span class="mi">240</span>
+<span class="n">size</span> <span class="o">=</span> <span class="mi">120</span>
+
+<span class="n">valid_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">resize_and_pad</span><span class="p">(</span><span class="n">size</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+<span class="n">train_tfms</span> <span class="o">=</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Adapter</span><span class="p">([</span><span class="o">*</span><span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">aug_tfms</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">presize</span><span class="o">=</span><span class="n">presize</span><span class="p">,</span> <span class="n">crop_fn</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">tfms</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">Normalize</span><span class="p">()])</span>
+
+<span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
+<span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
+
+<span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet18_fpn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_keypoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></p>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>  0%|          | 0/593774 [00:00&lt;?, ?B/s]
+
+  0%|          | 0/200 [00:00&lt;?, ?it/s]
+
+[1m[1mINFO    [0m[1m[0m - [1m[34m[1mAutofixing records[0m[1m[34m[0m[1m[0m | [36micevision.parsers.parser[0m:[36mparse[0m:[36m122[0m
+
+  0%|          | 0/200 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>9.133101</td>
+      <td>7.838448</td>
+      <td>00:57</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>8.182481</td>
+      <td>6.926270</td>
+      <td>00:28</td>
+    </tr>
+  </tbody>
+</table>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: left;">
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>6.294706</td>
+      <td>5.840428</td>
+      <td>00:46</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>5.892668</td>
+      <td>5.038722</td>
+      <td>00:25</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.503245</td>
+      <td>4.533072</td>
+      <td>00:27</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.199810</td>
+      <td>4.395931</td>
+      <td>00:28</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.986382</td>
+      <td>4.209587</td>
+      <td>00:22</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="highlight"><pre><span></span><code><span class="n">sorted_samples</span><span class="p">,</span> <span class="n">sorted_preds</span><span class="p">,</span> <span class="n">losses_stats</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">interp</span><span class="o">.</span><span class="n">plot_top_losses</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="s2">&quot;loss_keypoint&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="k-default-codeblock">
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mLosses returned by model: [&#39;loss_classifier&#39;, &#39;loss_box_reg&#39;, &#39;loss_objectness&#39;, &#39;loss_rpn_box_reg&#39;, &#39;loss_keypoint&#39;][0m | [36micevision.models.interpretation[0m:[36mplot_top_losses[0m:[36m218[0m
+
+  0%|          | 0/40 [00:00&lt;?, ?it/s]
+
+  0%|          | 0/5 [00:00&lt;?, ?it/s]
+</code></pre></div>
+</div>
+
+<p><img alt="png" src="../images/plot_top_losses/plot_top_losses_49_3.png" /></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../mmdet_custom_config/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MMDetection Custom Config" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              MMDetection Custom Config
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../ochuman_keypoint_detection/" class="md-footer__link md-footer__link--next" aria-label="Next: Advanced Keypoint Detection" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Advanced Keypoint Detection
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            airctic.com
+          </div>
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@8.4.6/dist/mermaid.min.js"></script>
+      
+        <script src="../js/termynal.js"></script>
+      
+        <script src="../js/custom.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3"></script>
+      
+        <script src="../js/crate.js"></script>
+      
+    
+  </body>
+</html>
