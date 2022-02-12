@@ -40,10 +40,6 @@ def open_dicom(filename) -> PIL.Image:
     # unchanged)
     img = pydicom.pixel_data_handlers.apply_voi_lut(img, dcm)
 
-    # TODO: Convert to 8 bits if the image is 16 bit?
-    # if bits_stored == 16:
-    #    img = img / 65535.
-    #    img = (img * 255).astype(int)
     img = PIL.Image.fromarray(img)
 
     return img
@@ -54,10 +50,7 @@ def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
     "Open an image from disk `fn` as a PIL Image"
     color = "L" if gray else "RGB"
 
-    if ".dcm" in str(fn):
-        image = open_dicom(str(fn))
-    else:
-        image = PIL.Image.open(str(fn))
+    image = PIL.Image.open(str(fn))
 
     if not ignore_exif:
         image = PIL.ImageOps.exif_transpose(image)
@@ -67,7 +60,11 @@ def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
 
 def open_gray_scale_image(fn):
     "Opens an radiographic/gray scale image, stacks the channel to represent a RGB image and returns is as a 32bit float array."
-    img = np.array(PIL.Image.open(fn))
+    if ".dcm" in str(fn).lower():
+        img = open_dicom(str(fn))
+    else:
+        img = PIL.Image.open(str(fn))
+
     img = np.dstack([img, img, img])
     img = img.astype(np.float32)
     return img
@@ -87,7 +84,7 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     Returns image (width, height)
     """
-    if ".dcm" in str(filepath):
+    if ".dcm" in str(filepath).lower():
         image = open_dicom(str(filepath))
     else:
         image = PIL.Image.open(str(filepath))
