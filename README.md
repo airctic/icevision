@@ -21,7 +21,7 @@
 
 * * * * *
 
-IceVision is the first agnostic computer vision framework to offer a curated collection with hundreds of high-quality pre-trained models from [Torchvision](https://github.com/pytorch/vision), Open MMlab's [MMDetection](https://github.com/open-mmlab/mmdetection), Ultralytic's [Yolov5](https://github.com/ultralytics/yolov5), Ross Wightman's [EfficientDet](https://github.com/rwightman/efficientdet-pytorch) and soon Pytorch Image Models. It orchestrates the end-to-end deep learning workflow allowing to train networks with easy-to-use robust high-performance libraries such as [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and [Fastai](https://github.com/fastai/fastai).
+IceVision is the first agnostic computer vision framework to offer a curated collection with hundreds of high-quality pre-trained models from [Torchvision](https://github.com/pytorch/vision), Open MMLab's [MMDetection](https://github.com/open-mmlab/mmdetection), Ultralytic's [YOLOv5](https://github.com/ultralytics/yolov5), Ross Wightman's [EfficientDet](https://github.com/rwightman/efficientdet-pytorch) and soon PyTorch Image Models. It orchestrates the end-to-end deep learning workflow allowing to train networks with easy-to-use robust high-performance libraries such as [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning) and [Fastai](https://github.com/fastai/fastai).
 
 **IceVision Unique Features:**
 
