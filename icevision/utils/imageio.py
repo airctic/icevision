@@ -7,7 +7,6 @@ __all__ = [
     "plot_grid",
 ]
 
-import pydicom
 from icevision.imports import *
 from PIL import ExifTags
 
@@ -25,14 +24,18 @@ for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
 
 
 def open_dicom(filename) -> PIL.Image:
+    bits_stored_key = 0x00280101
+    photometric_inter_key = 0x00280004
+
     dcm = pydicom.dcmread(filename)
-    bits_stored = dcm[0x00280101]
+    bits_stored = dcm[bits_stored_key]
 
     img = dcm.pixel_array
+
     # Check the photometric interpretation
     # MONOCHROME1: Greyscale ranges from bright to dark
     # MONOCHROME2: Greyscale ranges from dark to right
-    if dcm[0x00280004].value == "MONOCHROME1":
+    if dcm[photometric_inter_key].value == "MONOCHROME1":
         img = 2 ** bits_stored - img
 
     # Apply a VOI LUT transformation (if the image does not
