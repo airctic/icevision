@@ -6,6 +6,7 @@ __all__ = [
     "create_model_config",
 ]
 
+from numpy import False_
 from icevision.imports import *
 from icevision.utils import *
 from icevision.models.backbone_config import BackboneConfig
@@ -15,6 +16,7 @@ from mmcv import Config
 from mmdet.models.backbones.ssd_vgg import SSDVGG
 from mmdet.models.backbones.csp_darknet import CSPDarknet
 from mmdet.models.backbones.swin import SwinTransformer
+from mmdet.models.backbones.hourglass import HourglassNet
 
 
 mmdet_configs_path = download_mmdet_configs()
@@ -44,6 +46,17 @@ def param_groups(model):
         layers += [body.stem.conv.conv, body.stem.conv.bn]
         layers += [body.stage1, body.stage2, body.stage3, body.stage4]
 
+    elif isinstance(body, HourglassNet):
+        layers += [
+            body.stem,
+            body.hourglass_modules,
+            body.inters,
+            body.conv1x1s,
+            body.out_convs,
+            body.remap_convs,
+            body.relu,
+        ]
+
     elif isinstance(body, SwinTransformer):
         layers += [
             body.patch_embed.adap_padding,
@@ -52,8 +65,9 @@ def param_groups(model):
             body.drop_after_pos,
             body.stages,
         ]
+
         # Swin backbone for two-stage detector has norm0 attribute
-        if getattr(body, "norm0", False):
+        if hasattr(body, "norm0"):
             layers += [body.norm0]
 
         layers += [body.norm1, body.norm2, body.norm3]
@@ -62,16 +76,17 @@ def param_groups(model):
         layers += [getattr(body, l) for l in body.res_layers]
 
     # add the neck module if it exists (DETR doesn't have a neck module)
-    layers += [module for name, module in model.named_modules() if name == "neck"]
+    if hasattr(model, "neck"):
+        layers += [model.neck]
 
     # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
 
         # YOLACT has mask_head and segm_head
-        if getattr(model, "mask_head", False):
+        if hasattr(model, "mask_head"):
             layers += [model.mask_head]
-        if getattr(model, "segm_head", False):
+        if hasattr(model, "segm_head"):
             layers += [model.segm_head]
 
     elif isinstance(model, TwoStageDetector):

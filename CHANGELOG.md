@@ -6,6 +6,84 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 [comment]: # (Add changes below)
 
 [comment]: # (Version_start)
+## 0.12.0
+The following PRs have been merged since the last version.
+
+dnth
+  - [Minor fix for clarity in mmdet utils.py](https://github.com/airctic/icevision/issues/1061) (#1061)
+  - [Swin Transformer notebook](https://github.com/airctic/icevision/issues/1059) (#1059)
+  - [Closes bug in #1057](https://github.com/airctic/icevision/issues/1058) (#1058)
+  - [CentripetalNet Support](https://github.com/airctic/icevision/issues/1050) (#1050)
+  - [Add YOLACT support from mmdet](https://github.com/airctic/icevision/issues/1046) (#1046)
+  - [Add more Swin backbones for RetinaNet and VFNet](https://github.com/airctic/icevision/issues/1042) (#1042)
+  - [Fix Swin backbone issue with single stage models](https://github.com/airctic/icevision/issues/1039) (#1039)
+  - [Add SABL (Side-Aware Boundary Localization for More Precise Object Detection)](https://github.com/airctic/icevision/issues/1038) (#1038)
+  - [Add Feature Selective Anchor-Free Module for Single-Shot Object Detection (FSAF)](https://github.com/airctic/icevision/issues/1037) (#1037)
+  - [Add Swin Transformer backbone to all mmdet models](https://github.com/airctic/icevision/issues/1035) (#1035)
+  - [Support custom config for two stage detectors](https://github.com/airctic/icevision/issues/1034) (#1034)
+  - [Add Swin Transformer backbone for Mask RCNN](https://github.com/airctic/icevision/issues/1033) (#1033)
+  - [Add Deformable DETR model from mmdet](https://github.com/airctic/icevision/issues/1032) (#1032)
+  - [Add YOLOF mmdet model](https://github.com/airctic/icevision/issues/1030) (#1030)
+
+FraPochetti
+  - [removing fiftyone as a hard dependency](https://github.com/airctic/icevision/issues/1055) (#1055)
+  - [fix progressive resizing nb + addings nbs to docs](https://github.com/airctic/icevision/issues/1023) (#1023)
+  - [fixing plot_top_losses and semantic seg](https://github.com/airctic/icevision/issues/1019) (#1019)
+  - [fixing the OCHuman notebook](https://github.com/airctic/icevision/issues/1008) (#1008)
+  - [fixing wrong colab badge in SAHI notebook](https://github.com/airctic/icevision/issues/986) (#986)
+  - [SAHI inference integration](https://github.com/airctic/icevision/issues/984) (#984)
+
+ai-fast-track
+  - [Update FiftyOne NB and add it to documentation](https://github.com/airctic/icevision/issues/1052) (#1052)
+  - [Added YOLOX backbones](https://github.com/airctic/icevision/issues/1010) (#1010)
+  - [SSD update](https://github.com/airctic/icevision/issues/993) (#993)
+  - [Added training to the custom parser notebook](https://github.com/airctic/icevision/issues/989) (#989)
+  - [updated CHANGELOG.md to the last PR](https://github.com/airctic/icevision/issues/974) (#974)
+
+potipot
+  - [fix efficientdet metrics failing test](https://github.com/airctic/icevision/issues/1022) (#1022)
+  - [Fix wandb_efficientdet notebook](https://github.com/airctic/icevision/issues/1021) (#1021)
+  - [Fix opencv colab issue](https://github.com/airctic/icevision/issues/1020) (#1020)
+  - [fixing the negative_samples notebook](https://github.com/airctic/icevision/issues/1013) (#1013)
+  - [Update installation docs](https://github.com/airctic/icevision/issues/995) (#995)
+
+strickvl
+  - [Fix docstring typo](https://github.com/airctic/icevision/issues/1028) (#1028)
+  - [Fix broken link](https://github.com/airctic/icevision/issues/1027) (#1027)
+  - [Fix bullet list formatting error](https://github.com/airctic/icevision/issues/985) (#985)
+
+matt-deboer
+  - [Properly restore transformed masks after unload](https://github.com/airctic/icevision/issues/981) (#981)
+  - [fix for #978](https://github.com/airctic/icevision/issues/980) (#980)
+  - [fix for #978: store transform results in detection.masks](https://github.com/airctic/icevision/issues/979) (#979)
+
+fstroth
+  - [Remove redundant model creation](https://github.com/airctic/icevision/issues/1036) (#1036)
+  - [(Fix) Fixed the notebook and the draw records function as well a the …](https://github.com/airctic/icevision/issues/1018) (#1018)
+
+hectorLop
+  - [refactor: Fixed the bug to add neck modules properly](https://github.com/airctic/icevision/issues/1029) (#1029)
+  - [Implementation of DETR using mmdetection](https://github.com/airctic/icevision/issues/1026) (#1026)
+
+2649
+  - [(feat) Added utils to convert Records and Predictions to fiftyone](https://github.com/airctic/icevision/issues/1031) (#1031)
+
+fcakyon
+  - [compatibility for latest sahi updates](https://github.com/airctic/icevision/issues/1015) (#1015)
+
+gablanouette
+  - [Fix checkpoint loading when model_name contains models or additional components](https://github.com/airctic/icevision/issues/1005) (#1005)
+
+Anjum48
+  - [Issue 987 - Add detection_threshold arg for all Lightning adapters](https://github.com/airctic/icevision/issues/1004) (#1004)
+
+**Thank you to all contributers: @dnth, @FraPochetti, @ai-fast-track, @potipot, @strickvl, @matt-deboer, @fstroth, @hectorLop, @2649, @fcakyon, @gablanouette, @Anjum48**
+
+[comment]: # (Version_end)
+
+
+
+[comment]: # (Version_start)
 ## 0.11.0
 The following PRs have been merged since the last version.
 
