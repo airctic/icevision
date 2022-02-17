@@ -6,7 +6,11 @@ import pytest
 
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
-    (("resnet18_fpn", 7), ("resnext50_32x4d_fpn", 7), ("wide_resnet50_2_fpn", 7),),
+    (
+        ("resnet18_fpn", 7),
+        ("resnext50_32x4d_fpn", 7),
+        ("wide_resnet50_2_fpn", 7),
+    ),
 )
 def test_e2e_detect(samples_source, fridge_class_map, model_name, param_groups_len):
     img_path = samples_source / "fridge/odFridgeObjects/images/10.jpg"

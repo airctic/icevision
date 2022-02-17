@@ -154,7 +154,9 @@ class Interpretation:
         return samples_plus_losses, losses_stats
 
     def get_losses(
-        self, model: nn.Module, dataset: Dataset,
+        self,
+        model: nn.Module,
+        dataset: Dataset,
     ) -> Tuple[List[dict], dict]:
         """
         Gets a dataset and a model as input and returns losses calculated per image + losses stats.
@@ -242,7 +244,8 @@ class Interpretation:
         ]
 
         show_preds(
-            preds=sorted_preds[:n_samples], annotations=anns[:n_samples],
+            preds=sorted_preds[:n_samples],
+            annotations=anns[:n_samples],
         )
         model.train()
         return sorted_samples, sorted_preds, losses_stats

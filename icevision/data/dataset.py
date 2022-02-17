@@ -19,7 +19,9 @@ class Dataset:
     """
 
     def __init__(
-        self, records: List[dict], tfm: Optional[Transform] = None,
+        self,
+        records: List[dict],
+        tfm: Optional[Transform] = None,
     ):
         self.records = records
         self.tfm = tfm

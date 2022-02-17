@@ -59,7 +59,10 @@ def test_mantis_mask_rcnn_predict_from_dl_threshold(
 
     infer_dl = mask_rcnn.infer_dl(dataset=sample_dataset, batch_size=2)
     preds = mask_rcnn.predict_from_dl(
-        model=model, infer_dl=infer_dl, show_pbar=False, detection_threshold=1.0,
+        model=model,
+        infer_dl=infer_dl,
+        show_pbar=False,
+        detection_threshold=1.0,
     )
 
     assert len(preds[0].pred.detection.label_ids) == 0

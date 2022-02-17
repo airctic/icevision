@@ -12,15 +12,21 @@ class ModelChoiceUI:
         self.reset_lib_info()
 
         self.libraries_available = widgets.Dropdown(
-            options=[], description="Libraries", disabled=False,
+            options=[],
+            description="Libraries",
+            disabled=False,
         )
 
         self.models_available = widgets.Dropdown(
-            options=[""], description="Models", disabled=False,
+            options=[""],
+            description="Models",
+            disabled=False,
         )
 
         self.backbones_available = widgets.Dropdown(
-            options=[""], description="Backbones", disabled=False,
+            options=[""],
+            description="Backbones",
+            disabled=False,
         )
 
     # lib_info = {

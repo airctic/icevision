@@ -23,7 +23,10 @@ def _predict_batch(
 
     raw_preds = model(images)
     preds = convert_raw_predictions(
-        batch=batch, raw_preds=raw_preds, records=records, keep_images=keep_images,
+        batch=batch,
+        raw_preds=raw_preds,
+        records=records,
+        keep_images=keep_images,
     )
 
     return preds

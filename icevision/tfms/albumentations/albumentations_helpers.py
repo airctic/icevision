@@ -28,7 +28,9 @@ def aug_tfms(
         rotate_limit=15,
     ),
     rgb_shift: Optional[A.RGBShift] = A.RGBShift(
-        r_shift_limit=10, g_shift_limit=10, b_shift_limit=10,
+        r_shift_limit=10,
+        g_shift_limit=10,
+        b_shift_limit=10,
     ),
     lightning: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
     blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),

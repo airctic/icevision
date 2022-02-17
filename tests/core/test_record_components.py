@@ -22,7 +22,11 @@ def test_classification_multilabel(dummy_class_map):
 
 
 @pytest.mark.parametrize(
-    "label_ids", [([0, 1]), ([0]),],
+    "label_ids",
+    [
+        ([0, 1]),
+        ([0]),
+    ],
 )
 def test_classification_single_label(dummy_class_map, label_ids):
     rec = BaseRecord([ClassificationLabelsRecordComponent(is_multilabel=False)])
@@ -42,7 +46,12 @@ def test_classification_single_label(dummy_class_map, label_ids):
 
 
 @pytest.mark.parametrize(
-    "label_ids", [([0, 1, 2]), ([0, 1]), ([0]),],
+    "label_ids",
+    [
+        ([0, 1, 2]),
+        ([0, 1]),
+        ([0]),
+    ],
 )
 def test_one_hot_encodings(dummy_class_map_elaborate, label_ids):
     rec = BaseRecord([ClassificationLabelsRecordComponent(is_multilabel=True)])

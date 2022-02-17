@@ -5,7 +5,8 @@ from icevision.models.interpretation import get_samples_losses
 
 
 @pytest.mark.parametrize(
-    "backbone", [resnet18, resnet50, resnet101],
+    "backbone",
+    [resnet18, resnet50, resnet101],
 )
 def test_show_results(camvid_ds, backbone, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)
@@ -17,7 +18,8 @@ def test_show_results(camvid_ds, backbone, monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "backbone", [resnet18, resnet50, resnet101],
+    "backbone",
+    [resnet18, resnet50, resnet101],
 )
 def test_plot_losses(camvid_ds, backbone, monkeypatch):
     monkeypatch.setattr(plt, "show", lambda: None)

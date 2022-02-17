@@ -75,7 +75,9 @@ class SimpleConfusionMatrix(Metric):
         assert len(self.target_labels) == len(self.predicted_labels)
         label_ids = list(self.class_map._class2id.values())
         self.confusion_matrix = sklearn.metrics.confusion_matrix(
-            y_true=self.target_labels, y_pred=self.predicted_labels, labels=label_ids,
+            y_true=self.target_labels,
+            y_pred=self.predicted_labels,
+            labels=label_ids,
         )
         if self.print_summary:
             print(self.confusion_matrix)

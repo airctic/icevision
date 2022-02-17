@@ -27,7 +27,11 @@ def learner(
     cbs = [EfficientDetCallback()] + L(cbs)
 
     learn = adapted_fastai_learner(
-        dls=dls, model=model, cbs=cbs, loss_func=loss_fn, **learner_kwargs,
+        dls=dls,
+        model=model,
+        cbs=cbs,
+        loss_func=loss_fn,
+        **learner_kwargs,
     )
 
     # HACK: patch AvgLoss (in original, find_bs looks at the first element in dictionary and gives errors)

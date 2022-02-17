@@ -158,7 +158,9 @@ def model_from_checkpoint(
     img_size=None,
     map_location=None,
     strict=False,
-    revise_keys=[(r"^module\.", ""),],
+    revise_keys=[
+        (r"^module\.", ""),
+    ],
     eval_mode=True,
     logger=None,
 ):

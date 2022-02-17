@@ -24,7 +24,11 @@ def learner(
     cbs = L(UnetCallback()) + L(cbs)
 
     learn = adapted_fastai_learner(
-        dls=dls, model=model, cbs=cbs, loss_func=loss_func, **kwargs,
+        dls=dls,
+        model=model,
+        cbs=cbs,
+        loss_func=loss_func,
+        **kwargs,
     )
 
     return learn

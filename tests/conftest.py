@@ -170,7 +170,8 @@ def coco_dir():
 @pytest.fixture(scope="module")
 def coco_bbox_parser(coco_dir):
     return parsers.COCOBBoxParser(
-        annotations_filepath=coco_dir / "annotations.json", img_dir=coco_dir / "images",
+        annotations_filepath=coco_dir / "annotations.json",
+        img_dir=coco_dir / "images",
     )
 
 
