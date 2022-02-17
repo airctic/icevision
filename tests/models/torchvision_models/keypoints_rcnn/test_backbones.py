@@ -8,9 +8,9 @@ from icevision.models.torchvision import keypoint_rcnn
     "model_name,param_groups_len",
     (
         ("resnet101_fpn", 8),
-        ("resnet152_fpn", 8),
         ("resnext101_32x8d_fpn", 8),
         ("wide_resnet101_2_fpn", 8),
+        ("resnet152_fpn", 8),
     ),
 )
 def test_keypoint_rcnn_fpn_backbones_large(model_name, param_groups_len):
