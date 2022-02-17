@@ -6,11 +6,7 @@ from icevision.models.fastai import unet
 @pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
-    (
-        ("resnet101", 6),
-        ("resnet152", 6),
-        ("resnext101_32x8d", 6),
-    ),
+    (("resnet101", 6), ("resnet152", 6), ("resnext101_32x8d", 6),),
 )
 def test_unet_fpn_backbones_large(model_name, param_groups_len):
     backbone_fn = getattr(models.fastai.unet.backbones, model_name)
@@ -22,11 +18,7 @@ def test_unet_fpn_backbones_large(model_name, param_groups_len):
 
 @pytest.mark.skip
 @pytest.mark.parametrize(
-    "model_name,param_groups_len",
-    (
-        ("resnet34", 6),
-        ("resnet50", 6),
-    ),
+    "model_name,param_groups_len", (("resnet34", 6), ("resnet50", 6),),
 )
 def test_unet_fpn_backbones_medium(model_name, param_groups_len):
     backbone_fn = getattr(models.fastai.unet.backbones, model_name)
@@ -37,11 +29,7 @@ def test_unet_fpn_backbones_medium(model_name, param_groups_len):
 
 
 @pytest.mark.parametrize(
-    "model_name,param_groups_len",
-    (
-        ("mobilenet", 5),
-        ("resnet18", 6),
-    ),
+    "model_name,param_groups_len", (("mobilenet", 5), ("resnet18", 6),),
 )
 def test_unet_fpn_backbones_small(model_name, param_groups_len):
     backbone_fn = getattr(models.fastai.unet.backbones, model_name)

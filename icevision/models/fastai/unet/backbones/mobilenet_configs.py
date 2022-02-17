@@ -6,9 +6,7 @@ from typing import List
 from icevision.utils.torch_utils import check_all_model_params_in_groups2
 from torch import nn
 import torchvision
-from icevision.models.torchvision.backbone_config import (
-    TorchvisionBackboneConfig,
-)
+from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
 
 
 def mobilenet_fn(pretrained: bool = True):

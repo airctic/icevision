@@ -10,10 +10,7 @@ import tutobooks
 from loguru import logger
 
 PAGES = {
-    "parser.md": [
-        "icevision.parsers.Parser",
-        "icevision.parsers.Parser.parse",
-    ],
+    "parser.md": ["icevision.parsers.Parser", "icevision.parsers.Parser.parse",],
     "dataset.md": [
         "icevision.data.dataset.Dataset",
         "icevision.data.dataset.Dataset.from_images",
@@ -56,9 +53,7 @@ PAGES = {
         "icevision.models.torchvision.mask_rcnn.dataloaders.build_valid_batch",
         "icevision.models.torchvision.mask_rcnn.dataloaders.build_infer_batch",
     ],
-    "mask_rcnn_fastai.md": [
-        "icevision.models.torchvision.mask_rcnn.fastai.learner",
-    ],
+    "mask_rcnn_fastai.md": ["icevision.models.torchvision.mask_rcnn.fastai.learner",],
     "mask_rcnn_lightning.md": [
         "icevision.models.torchvision.mask_rcnn.lightning.ModelAdapter",
     ],
@@ -130,9 +125,7 @@ def copy_examples(examples_dir, destination_dir):
 
         from_to = f"{file} -> {destination_file}"
         logger.opt(colors=True).log(
-            "INFO",
-            "️<green><bold>Copying Examples: {}</></>",
-            from_to,
+            "INFO", "️<green><bold>Copying Examples: {}</></>", from_to,
         )
 
 
@@ -197,9 +190,7 @@ def py_to_nb_md(dest_dir):
 def nb_to_md(src_dir, nb_folder, dest_dir):
     notebooks_dir = src_dir / nb_folder
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>Notebooks folder: {}</></>",
-        notebooks_dir,
+        "INFO", "️<green><bold>Notebooks folder: {}</></>", notebooks_dir,
     )
 
     for file_path in os.listdir(notebooks_dir):
@@ -221,18 +212,14 @@ def nb_to_md(src_dir, nb_folder, dest_dir):
         tutobooks.nb_to_md(nb_path, md_path, images_path)
         from_to = f"{file_name} -> {file_name_md}"
         logger.opt(colors=True).log(
-            "INFO",
-            "️<green><bold>Converting to Notebook: {}</></>",
-            from_to,
+            "INFO", "️<green><bold>Converting to Notebook: {}</></>", from_to,
         )
 
 
 def examples_to_md(dest_dir):
     examples_dir = icevision_dir / "examples"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>Examples folder: {}</></>",
-        examples_dir,
+        "INFO", "️<green><bold>Examples folder: {}</></>", examples_dir,
     )
 
     for file_path in os.listdir(examples_dir):
@@ -266,9 +253,7 @@ def generate(dest_dir: Path):
     if os.path.exists(dest_dir):
         print("Removing sources folder:", dest_dir)
         logger.opt(colors=True).log(
-            "INFO",
-            "️<magenta><bold>\nRemoving sources folder: {}</></>",
-            dest_dir,
+            "INFO", "️<magenta><bold>\nRemoving sources folder: {}</></>", dest_dir,
         )
         shutil.rmtree(dest_dir)
     os.makedirs(dest_dir)
@@ -277,9 +262,7 @@ def generate(dest_dir: Path):
     copy_tree(str(icevision_dir / "images"), str(template_images_dir))
     from_to = f"root/images -> docs/images"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>\nCopying images folder: {}</></>",
-        from_to,
+        "INFO", "️<green><bold>\nCopying images folder: {}</></>", from_to,
     )
 
     # Generate APIs Documentation
@@ -298,9 +281,7 @@ def generate(dest_dir: Path):
     shutil.copyfile("manifest.webmanifest", dest_dir / "manifest.webmanifest")
     from_to = f"root/manifest.webmanifest -> docs/manifest.webmanifest"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>\nCopying webmanifest file: {}</></>",
-        from_to,
+        "INFO", "️<green><bold>\nCopying webmanifest file: {}</></>", from_to,
     )
 
     # Auto generate the index.md file using the README.md file and the index.md file in templates folder
@@ -321,9 +302,7 @@ def generate(dest_dir: Path):
         filename for filename in os.listdir(dir_to_search) if filename.endswith(".md")
     ]
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>\nCopying .md files root folder: {}</></>",
-        fnamelist,
+        "INFO", "️<green><bold>\nCopying .md files root folder: {}</></>", fnamelist,
     )
 
     for fname in fnamelist:
@@ -332,9 +311,7 @@ def generate(dest_dir: Path):
         shutil.copyfile(fname_src, fname_dst)
         from_to = f"{fname} -> {fname.lower()}"
         logger.opt(colors=True).log(
-            "INFO",
-            "️<light-blue><bold>file: {}</></>",
-            from_to,
+            "INFO", "️<light-blue><bold>file: {}</></>", from_to,
         )
 
     # Copy static .md files from the docs folder
@@ -353,9 +330,7 @@ def generate(dest_dir: Path):
         shutil.copyfile(fname_src, fname_dst)
         from_to = f"{fname} -> {fname.lower()}"
         logger.opt(colors=True).log(
-            "INFO",
-            "️<light-blue><bold>Copying files: {}</></>",
-            from_to,
+            "INFO", "️<light-blue><bold>Copying files: {}</></>", from_to,
         )
 
     # Copy images folder from the template folder to the destination folder
@@ -366,9 +341,7 @@ def generate(dest_dir: Path):
     copy_tree(str(template_images_dir), str(dest_images_dir))
     from_to = f"{template_images_dir} -> {dest_images_dir}"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>Copying Images: {}</></>",
-        from_to,
+        "INFO", "️<green><bold>Copying Images: {}</></>", from_to,
     )
 
     # Copy css folder
@@ -377,9 +350,7 @@ def generate(dest_dir: Path):
     copy_tree(css_dir_src, css_dir_dest)
     from_to = f"{css_dir_src} -> {css_dir_dest}"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>Copying CSS files: {}</></>",
-        from_to,
+        "INFO", "️<green><bold>Copying CSS files: {}</></>", from_to,
     )
 
     # Copy js folder
@@ -389,9 +360,7 @@ def generate(dest_dir: Path):
     copy_tree(js_dir_src, js_dir_dest)
     from_to = f"{js_dir_src} -> {js_dir_dest}"
     logger.opt(colors=True).log(
-        "INFO",
-        "️<green><bold>Copying JS files: {}</></>",
-        from_to,
+        "INFO", "️<green><bold>Copying JS files: {}</></>", from_to,
     )
 
     # Generate .md files form Jupyter Notebooks located in the /notebooks folder
@@ -402,20 +371,17 @@ def generate(dest_dir: Path):
 
     # albumentations
     shutil.copyfile(
-        icevision_dir / "icevision/tfms/README.md",
-        dest_dir / "albumentations.md",
+        icevision_dir / "icevision/tfms/README.md", dest_dir / "albumentations.md",
     )
 
     # Models
     shutil.copyfile(
-        icevision_dir / "icevision/models/README.md",
-        dest_dir / "models.md",
+        icevision_dir / "icevision/models/README.md", dest_dir / "models.md",
     )
 
     # README DOCS
     shutil.copyfile(
-        icevision_dir / "docs/README.md",
-        dest_dir / "readme_mkdocs.md",
+        icevision_dir / "docs/README.md", dest_dir / "readme_mkdocs.md",
     )
 
 

@@ -76,11 +76,7 @@ def predict_from_dl(
 
 
 def convert_raw_predictions(
-    batch,
-    raw_preds,
-    records,
-    detection_threshold: float,
-    keep_images: bool = False,
+    batch, raw_preds, records, detection_threshold: float, keep_images: bool = False,
 ):
     return [
         convert_raw_prediction(

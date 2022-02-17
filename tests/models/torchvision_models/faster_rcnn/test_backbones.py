@@ -40,10 +40,7 @@ def test_faster_rcnn_fpn_backbones_medium(model_name, param_groups_len):
 
 
 @pytest.mark.parametrize(
-    "model_name,param_groups_len",
-    (
-        ("resnet18_fpn", 8),
-    ),
+    "model_name,param_groups_len", (("resnet18_fpn", 8),),
 )
 def test_faster_rcnn_fpn_backbones_small(model_name, param_groups_len):
     backbone_fn = getattr(models.torchvision.faster_rcnn.backbones, model_name)

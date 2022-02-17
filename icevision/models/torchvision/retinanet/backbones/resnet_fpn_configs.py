@@ -14,9 +14,7 @@ from icevision.models.torchvision.retinanet.backbones.resnet_fpn_utils import (
     patch_param_groups,
 )
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from icevision.models.torchvision.backbone_config import (
-    TorchvisionBackboneConfig,
-)
+from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
 
 
 def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):

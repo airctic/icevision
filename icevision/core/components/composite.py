@@ -73,10 +73,7 @@ class TaskComposite:
 
     # TODO: rename reduce_on_all_tasks_components
     def reduce_on_components(
-        self,
-        fn_name: str,
-        reduction: Optional[str] = None,
-        **fn_kwargs,
+        self, fn_name: str, reduction: Optional[str] = None, **fn_kwargs,
     ) -> Dict[str, Any]:
         results = {}
         for task, composite in self.task_composites.items():
