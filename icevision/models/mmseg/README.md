@@ -11,7 +11,7 @@ There are multiple layers of integrations, which are described here to facilitat
 ## Callbacks
 
 The [`MMSegmentationCallback`](icevision/models/mmseg/fastai/callbacks.py) is responsible for making the `mmsegmentation` models compatible with the fastai training loop. It ensures that:
-- The `after_create` hook is ued to wrap the model in a way that `mmsegmentation`'s conventions are translated to fit with fastai's model operations
+- The `after_create` hook is used to wrap the model in a way that `mmsegmentation`'s conventions are translated to fit with fastai's model operations
 - The `after_loss` hook is used to convert model predictions into the `IceVision` standardized record format, which allows predictions to be manipulated and visualized using the library's standard features
 
 ## Dataloaders
