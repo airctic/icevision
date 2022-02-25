@@ -1,6 +1,8 @@
 import argparse
 from io import StringIO
 import json
+
+# install Github via `pip install PyGithub`
 from github import Github
 
 
