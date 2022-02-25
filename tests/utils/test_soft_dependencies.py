@@ -24,4 +24,5 @@ def test_soft_dependencies():
         "yolov5": True,
         "sahi": True,
         "fiftyone": True,
+        "pydicom": False,
     }
