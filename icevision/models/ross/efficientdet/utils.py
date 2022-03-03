@@ -3,7 +3,7 @@ __all__ = [
 ]
 
 from icevision.imports import *
-from icevision.backbones import BackboneConfig
+from icevision.models.backbone_config import BackboneConfig
 
 
 class EfficientDetBackboneConfig(BackboneConfig):

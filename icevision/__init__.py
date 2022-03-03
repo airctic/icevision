@@ -3,7 +3,6 @@ from icevision.core import *
 from icevision import parsers
 from icevision import tfms
 from icevision.data import *
-from icevision import backbones
 from icevision import models
 from icevision.metrics import *
 from icevision.visualize import *

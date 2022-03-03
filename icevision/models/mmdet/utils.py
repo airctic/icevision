@@ -9,7 +9,7 @@ __all__ = [
 from numpy import False_
 from icevision.imports import *
 from icevision.utils import *
-from icevision.backbones import BackboneConfig
+from icevision.models.backbone_config import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config

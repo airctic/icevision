@@ -25,14 +25,14 @@ def test_unet_predict(camvid_ds, backbone):
 
 
 @pytest.mark.parametrize(
-    "backbone",
-    [resnet18, resnet50, resnet101],
+    "backbone, keep_images",
+    [(resnet18, True), (resnet50, False), (resnet101, False)],
 )
-def test_unet_predict_from_dl(camvid_ds, backbone):
+def test_unet_predict_from_dl(camvid_ds, backbone, keep_images):
     _, valid_ds = camvid_ds
     infer_dl = models.fastai.unet.infer_dl(valid_ds, batch_size=1, shuffle=False)
     model = models.fastai.unet.model(
         num_classes=32, img_size=64, backbone=backbone(pretrained=True)
     )
-    preds = models.fastai.unet.predict_from_dl(model, infer_dl)
+    preds = models.fastai.unet.predict_from_dl(model, infer_dl, keep_images=keep_images)
     _test_preds(preds)
