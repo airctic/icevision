@@ -1,4 +1,4 @@
-__all__ = ["TorchvisionBackboneConfig"]
+__all__ = ["TorchvisionBackboneConfig", "TorchvisionBackboneConfigV2"]
 
 from icevision.imports import *
 from icevision.models.backbone_config import BackboneConfig
@@ -25,4 +25,15 @@ class TorchvisionBackboneConfig(BackboneConfig):
         kwargs = {**self.backbone_fn_kwargs, **kwargs}
         self.backbone = self.backbone_fn(pretrained=pretrained, **kwargs)
 
+        return self
+
+
+class TorchvisionBackboneConfigV2(BackboneConfig):
+    def __init__(self, model_name, weights_url):
+        self.model_name = model_name
+        self.weights_url = weights_url
+        self.pretrained: bool
+
+    def __call__(self, pretrained: bool = True) -> "TorchvisionBackboneConfigV2":
+        self.pretrained = pretrained
         return self
