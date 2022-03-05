@@ -3,9 +3,11 @@ __all__ = ["resnet50_fpn", "resnet18_fpn"]
 from icevision.models.torchvision.retinanetv2.backbones.resnet_fpn_utils import (
     patch_param_groups,
 )
-from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfigV2
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from torchvision.models.detection.retinanet import LastLevelP6P7
+from icevision.models.torchvision.retinanetv2.backbones.backbone_config import (
+    RetinanetV2TorchVisionBackboneConfig,
+)
 
 
 def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):
@@ -18,12 +20,6 @@ def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):
     )
     patch_param_groups(model)
     return model
-
-
-class RetinanetV2TorchVisionBackboneConfig(TorchvisionBackboneConfigV2):
-    def __init__(self, backbone, **kwargs):
-        self.backbone = backbone
-        super().__init__(model_name="retinanet", **kwargs)
 
 
 resnet50_fpn = RetinanetV2TorchVisionBackboneConfig(

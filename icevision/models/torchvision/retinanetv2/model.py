@@ -43,7 +43,7 @@ def model(
         )
 
         if pretrained and backbone.weights_url:
-            print(f"loading pretrained model from {backbone.weights_url}")
+            print(f"Loading pretrained model from {backbone.weights_url}")
             state_dict = load_state_dict_from_url(backbone.weights_url)
             model.load_state_dict(state_dict)
             overwrite_eps(model, 0.0)  # Not sure if this is needed
