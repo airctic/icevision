@@ -137,8 +137,10 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
             masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
         except AssertionError:
             # TODO: messages should be more detailed.
-            img_path = record.as_dict()["common"]["filepath"] # ~/.icevision/data/voc/SegmentationObject/2007_000033.png'
-            data_dir = img_path.parents[1] # ~/.icevision/data/voc'
+            img_path = record.as_dict()["common"][
+                "filepath"
+            ]  # ~/.icevision/data/voc/SegmentationObject/2007_000033.png'
+            data_dir = img_path.parents[1]  # ~/.icevision/data/voc'
             checklist = list(data_dir.glob(f"**/{img_path.stem}.*"))
             checklist = "".join([f"\n  -{str(path)}" for path in checklist])
             raise AttributeError(
@@ -193,11 +195,7 @@ class AlbumentationsKeypointsComponent(AlbumentationsAdapterComponent):
         # group keypoints from same instance
         group_kpts = [
             flat_kpts[i : i + len(flat_kpts) // len(self._kpts)]
-            for i in range(
-                0,
-                len(flat_kpts),
-                len(flat_kpts) // len(self._kpts),
-            )
+            for i in range(0, len(flat_kpts), len(flat_kpts) // len(self._kpts),)
         ]
         assert len(group_kpts) == len(self._kpts)
 
