@@ -6,7 +6,7 @@ from icevision.models.torchvision.retinanetv2.backbones.resnet_fpn_utils import 
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from torchvision.models.detection.retinanet import LastLevelP6P7
 from icevision.models.torchvision.retinanetv2.backbones.backbone_config import (
-    RetinanetV2TorchVisionBackboneConfig,
+    TorchVisionRetinanetBackboneConfig,
 )
 
 
@@ -22,12 +22,12 @@ def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):
     return model
 
 
-resnet50_fpn = RetinanetV2TorchVisionBackboneConfig(
+resnet50_fpn = TorchVisionRetinanetBackboneConfig(
     backbone=_resnet_fpn("resnet50"),
     weights_url="https://download.pytorch.org/models/retinanet_resnet50_fpn_coco-eeacb38b.pth",
 )
 
-resnet18_fpn = RetinanetV2TorchVisionBackboneConfig(
+resnet18_fpn = TorchVisionRetinanetBackboneConfig(
     backbone=_resnet_fpn("resnet18"),
     weights_url="",  # No pretrained weights found for this model.
 )

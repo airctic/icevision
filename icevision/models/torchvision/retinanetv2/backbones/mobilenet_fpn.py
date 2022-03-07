@@ -7,7 +7,7 @@ from icevision.models.torchvision.retinanetv2.backbones.mobilenet_fpn_utils impo
 from torchvision.models.detection.backbone_utils import mobilenet_backbone
 from torchvision.models.detection.retinanet import LastLevelP6P7
 from icevision.models.torchvision.retinanetv2.backbones.backbone_config import (
-    RetinanetV2TorchVisionBackboneConfig,
+    TorchVisionRetinanetBackboneConfig,
 )
 
 
@@ -24,7 +24,7 @@ def _mobilenet_fpn(name: str, pretrained: bool = True, fpn=True, **kwargs):
     return model
 
 
-mobilenet_v2_fpn = RetinanetV2TorchVisionBackboneConfig(
+mobilenet_v2_fpn = TorchVisionRetinanetBackboneConfig(
     backbone=_mobilenet_fpn("mobilenet_v2"),
     weights_url="",  # No pretrained weights found for this model.
 )
