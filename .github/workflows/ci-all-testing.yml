@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 name: Run unit tests
 
-=======
->>>>>>> e97574af (Reverted workflow files to match current master)
 on:
   push:
     branches: [ master ]
