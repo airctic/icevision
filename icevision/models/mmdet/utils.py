@@ -6,9 +6,10 @@ __all__ = [
     "create_model_config",
 ]
 
+from numpy import False_
 from icevision.imports import *
 from icevision.utils import *
-from icevision.backbones import BackboneConfig
+from icevision.models.backbone_config import BackboneConfig
 from icevision.models.mmdet.download_configs import download_mmdet_configs
 from mmdet.models.detectors import *
 from mmcv import Config
@@ -64,8 +65,9 @@ def param_groups(model):
             body.drop_after_pos,
             body.stages,
         ]
+
         # Swin backbone for two-stage detector has norm0 attribute
-        if getattr(body, "norm0", False):
+        if hasattr(body, "norm0"):
             layers += [body.norm0]
 
         layers += [body.norm1, body.norm2, body.norm3]
@@ -74,16 +76,17 @@ def param_groups(model):
         layers += [getattr(body, l) for l in body.res_layers]
 
     # add the neck module if it exists (DETR doesn't have a neck module)
-    layers += [module for name, module in model.named_modules() if name == "neck"]
+    if hasattr(model, "neck"):
+        layers += [model.neck]
 
     # add the head
     if isinstance(model, SingleStageDetector):
         layers += [model.bbox_head]
 
         # YOLACT has mask_head and segm_head
-        if getattr(model, "mask_head"):
+        if hasattr(model, "mask_head"):
             layers += [model.mask_head]
-        if getattr(model, "segm_head"):
+        if hasattr(model, "segm_head"):
             layers += [model.segm_head]
 
     elif isinstance(model, TwoStageDetector):

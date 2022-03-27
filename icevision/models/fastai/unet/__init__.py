@@ -3,6 +3,7 @@ from icevision.models.fastai.unet.dataloaders import *
 from icevision.models.fastai.unet.model import *
 from icevision.models.fastai.unet.prediction import *
 from icevision.models.fastai.unet.show_results import *
+from icevision.models.fastai.unet.show_batch import *
 
 from icevision.soft_dependencies import SoftDependencies
 

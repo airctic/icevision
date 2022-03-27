@@ -133,7 +133,20 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
         self.adapter._collect_ops.append(CollectOp(self.collect))
 
     def collect(self, record):
-        masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
+        try:
+            masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
+        except AssertionError:
+            # TODO: messages should be more detailed.
+            img_path = record.as_dict()["common"][
+                "filepath"
+            ]  # ~/.icevision/data/voc/SegmentationObject/2007_000033.png'
+            data_dir = img_path.parents[1]  # ~/.icevision/data/voc'
+            checklist = list(data_dir.glob(f"**/{img_path.stem}.*"))
+            checklist = "".join([f"\n  -{str(path)}" for path in checklist])
+            raise AttributeError(
+                f"Mismatch at annotations with number of masks. Check or delete {len(checklist)} files below. {checklist}"
+            )
+
         masks = MaskArray(np.array(masks))
         self._record_component.set_mask_array(masks)
         # # set masks from the modified masks array

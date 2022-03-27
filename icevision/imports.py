@@ -71,6 +71,8 @@ if SoftDependencies.wandb:
 if SoftDependencies.sklearn:
     import sklearn
 
+if SoftDependencies.pydicom:
+    import pydicom
 
 # TODO: Stop importing partial from fastcore and move this to utils
 class partial:

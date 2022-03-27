@@ -1,7 +1,6 @@
 __all__ = ["model"]
 
 from turtle import back
-from icevision import backbones
 from icevision.imports import *
 from mmcv import Config
 from mmdet.models import build_detector

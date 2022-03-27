@@ -1,4 +1,3 @@
-import pytest
 from icevision.all import *
 
 
@@ -20,7 +19,7 @@ def _test_dl(x, y, recs):
 
 def test_train_dataloader(camvid_ds):
     train_ds, _ = camvid_ds
-    dl = models.fastai.unet.train_dl(
+    dl = models.fastai.unet.dataloaders.train_dl(
         train_ds, batch_size=1, num_workers=0, shuffle=False
     )
 
