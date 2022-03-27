@@ -1,1 +1,1 @@
-from icevision.models.mmdet.lightning.model_adapter import *
+# from icevision.models.mmdet.lightning.model_adapter import *
