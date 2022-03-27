@@ -9,7 +9,7 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.utils import *
-from icevision.backbones import BackboneConfig
+from icevision.models.backbone_config import BackboneConfig
 from icevision.core.exceptions import PreTrainedVariantNotFound
 from icevision.models.mmseg.download_configs import download_mmseg_configs
 from mmseg.models.segmentors import *
