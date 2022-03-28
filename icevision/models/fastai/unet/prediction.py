@@ -39,21 +39,10 @@ def convert_raw_predictions(
     keep_images: bool = False,
 ) -> List[Prediction]:
     mask_preds = raw_preds.argmax(dim=1)
-
-    if len(batch) > 1:
-        tensor_images, tensor_gts = batch
-    else:
-        tensor_images = batch[0]
-        tensor_gts = [None] * len(records)
+    tensor_images, *_ = batch
 
     preds = []
-
-    if len(tensor_images) != len(records):
-        raise (Exception("Tensor images and records should have the same length"))
-
-    for record, tensor_image, mask_pred, tensor_gt in zip(
-        records, tensor_images, mask_preds, tensor_gts
-    ):
+    for record, tensor_image, mask_pred in zip(records, tensor_images, mask_preds):
         pred = BaseRecord(
             (
                 ImageRecordComponent(),
@@ -64,13 +53,6 @@ def convert_raw_predictions(
 
         pred.segmentation.set_class_map(record.segmentation.class_map)
         pred.segmentation.set_mask_array(MaskArray(mask_pred.cpu().numpy()[None]))
-
-        if tensor_gt is not None:
-
-            # This is used at train time to have mask available for metric computation
-            if torch.is_tensor(tensor_gt):
-
-                record.segmentation.set_mask_array(MaskArray(tensor_gt.cpu().numpy()))
 
         if keep_images:
             record.set_img(tensor_to_image(tensor_image))
