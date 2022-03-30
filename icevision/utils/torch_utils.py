@@ -6,7 +6,6 @@ __all__ = [
     "params",
     "check_all_model_params_in_groups2",
     "model_device",
-    "auto_device_config",
 ]
 
 from icevision.imports import *
@@ -26,15 +25,6 @@ def requires_grad(model, layer):
 
 def model_device(model):
     return first(model.parameters()).device
-
-
-def auto_device_config(device: None):
-
-    return (
-        torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if device is None
-        else device
-    )
 
 
 def params(m):
