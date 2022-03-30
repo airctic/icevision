@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://airctic.com/dev/getting_started_semantic_segmentation/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-7.3.6">
     
     
       
@@ -341,6 +341,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction-to-icevision" class="md-nav__link">
+    Introduction to IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-with-semantic-segmentation" class="md-nav__link">
+    Getting Started with Semantic Segmentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#install" class="md-nav__link">
     Install
   </a>
@@ -362,30 +376,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transforms-and-datasets" class="md-nav__link">
-    Transforms and datasets
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#unet-model-and-dataloaders" class="md-nav__link">
-    UNET model and dataloaders
+  <a href="#take-a-peak-at-records" class="md-nav__link">
+    Take a peak at records
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#defining-and-training-the-fastai-learner" class="md-nav__link">
-    Defining and training the fastai learner
+  <a href="#creating-datasets-with-augmentations-and-transforms" class="md-nav__link">
+    Creating datasets with augmentations and transforms
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating datasets with augmentations and transforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-transforms" class="md-nav__link">
+    Understanding the transforms
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1152,6 +1172,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction-to-icevision" class="md-nav__link">
+    Introduction to IceVision
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started-with-semantic-segmentation" class="md-nav__link">
+    Getting Started with Semantic Segmentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#install" class="md-nav__link">
     Install
   </a>
@@ -1173,30 +1207,36 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#transforms-and-datasets" class="md-nav__link">
-    Transforms and datasets
+  <a href="#parse-the-dataset" class="md-nav__link">
+    Parse the dataset
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#unet-model-and-dataloaders" class="md-nav__link">
-    UNET model and dataloaders
+  <a href="#take-a-peak-at-records" class="md-nav__link">
+    Take a peak at records
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#defining-and-training-the-fastai-learner" class="md-nav__link">
-    Defining and training the fastai learner
+  <a href="#creating-datasets-with-augmentations-and-transforms" class="md-nav__link">
+    Creating datasets with augmentations and transforms
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating datasets with augmentations and transforms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-transforms" class="md-nav__link">
+    Understanding the transforms
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#inference" class="md-nav__link">
-    Inference
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1215,7 +1255,24 @@
                 
                 <p><a href="https://colab.research.google.com/github/airctic/icevision/blob/master/notebooks/getting_started_semantic_segmentation.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
 <h1 id="getting-started-with-semantic-segmentation-using-icevision">Getting Started with Semantic Segmentation using IceVision</h1>
+<h2 id="introduction-to-icevision">Introduction to IceVision</h2>
+<p>IceVision is a Framework for object detection, instance segmentation and semantic segmentation that makes it easier to prepare data, train an object detection model, and use that model for inference.</p>
+<p>The IceVision Framework provides a layer across multiple deep learning engines, libraries, models, and data sets.</p>
+<p>It enables you to work with multiple training engines, including <a href="https://github.com/fastai/fastai">fastai</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.</p>
+<p>It enables you to work with some of the best deep learning libraries including <a href="https://arxiv.org/abs/1906.07155">mmdetection</a>, <a href="https://github.com/rwightman/efficientdet-pytorch">Ross Wightman's efficientdet implementation</a> and model library, <a href="https://pytorch.org/vision/stable/index.html">torchvision</a>, <a href="https://github.com/ultralytics/yolov5">ultralytics Yolo</a>, and <a href="https://github.com/open-mmlab/mmsegmentation">mmsegmentation</a>.</p>
+<p>It enables you to select from many possible models and backbones from these libraries.</p>
+<p>IceVision lets you switch between them with ease. This means that you can pick the engine, library, model, and data format that work for you now and easily change them in the future. You can experiment with with them to see which ones meet your requirements.</p>
+<h2 id="getting-started-with-semantic-segmentation">Getting Started with Semantic Segmentation</h2>
+<p>This notebook will walk you through the training of models for <strong>semantic segmentation</strong> - a task that consists in classifying each pixel of an image into one of multiple classes. </p>
+<p>In this tutorial, you will learn how to<br />
+1. Install IceVision. This will include the IceData package that provides easy access to several sample datasets, as well as the engines and libraries that IceVision works with.<br />
+2. Download and prepare a dataset to work with.<br />
+3. Select an object detection library, model, and backbone.<br />
+4. Instantiate the model, and then train it with both the fastai engine.<br />
+5. And finally, use the model to identify objects in images.  </p>
+<p>The notebook is set up so that you can easily select different libraries, models, and backbones to try.</p>
 <h2 id="install">Install</h2>
+<p>The following downloads and runs a short shell script. The script installs IceVision, IceData, the MMDetection library, the MMSegmentation library and Yolo v5 as well as the fastai and pytorch lightning engines.</p>
 <p>Install from pypi...</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Torch - Torchvision - IceVision - IceData - MMDetection - YOLOv5 - EfficientDet Installation</span>
 <span class="err">!</span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="o">.</span><span class="n">githubusercontent</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">airctic</span><span class="o">/</span><span class="n">icevision</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">icevision_install</span><span class="o">.</span><span class="n">sh</span>
@@ -1234,21 +1291,32 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+<div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmdetection_configs/mmdetection_configs-2.20.1/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
+[1m[1mINFO    [0m[1m[0m - [1mThe mmseg config folder already exists. No need to downloaded it. Path : /home/ubuntu/.icevision/mmsegmentation_configs/mmsegmentation_configs-0.17.0/configs[0m | [36micevision.models.mmseg.download_configs[0m:[36mdownload_mmseg_configs[0m:[36m19[0m
 </code></pre></div>
 </div>
 <h2 id="getting-and-parsing-the-data">Getting and parsing the data</h2>
+<p>Now we can start by downloading the camvid tiny dataset, which contains . This tiny dataset contains 100 images whose pixels are classified in 33 classes, including:
+- animal,
+- car,
+- bridge,
+- building.</p>
+<p>IceVision provides methods to load a dataset, parse annotation files, and more.</p>
 <div class="highlight"><pre><span></span><code><span class="n">data_url</span> <span class="o">=</span> <span class="s1">&#39;https://s3.amazonaws.com/fast-ai-sample/camvid_tiny.tgz&#39;</span>
 <span class="n">data_dir</span> <span class="o">=</span> <span class="n">icedata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_url</span><span class="p">,</span> <span class="s1">&#39;camvid_tiny&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="s1">&#39;camvid_tiny&#39;</span>
 </code></pre></div>
+<p>Retrieve class codes from dataset file and create a class map (a structure that maps a class identifier, in this case an integer, to the actual class)</p>
 <div class="highlight"><pre><span></span><code><span class="n">codes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;codes.txt&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 <span class="n">class_map</span> <span class="o">=</span> <span class="n">ClassMap</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">codes</span><span class="p">))</span>
 </code></pre></div>
+<p>Get images files</p>
 <div class="highlight"><pre><span></span><code><span class="n">images_dir</span> <span class="o">=</span> <span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;images&#39;</span>
 <span class="n">labels_dir</span> <span class="o">=</span> <span class="n">data_dir</span><span class="o">/</span><span class="s1">&#39;labels&#39;</span>
+<span class="n">image_files</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">images_dir</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">image_files</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">images_dir</span><span class="p">)</span>
-</code></pre></div>
+<h2 id="parse-the-dataset">Parse the dataset</h2>
+<p>A unit of data in IceVision is called a record, which contains all the information required to handle a given image (e.g. path to the image, segmentation masks, class map, etc..).</p>
+<p>Here, we build a collection of records by iterating through the image files.</p>
 <div class="highlight"><pre><span></span><code><span class="n">records</span> <span class="o">=</span> <span class="n">RecordCollection</span><span class="p">(</span><span class="n">SemanticSegmentationRecord</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">image_file</span> <span class="ow">in</span> <span class="n">pbar</span><span class="p">(</span><span class="n">image_files</span><span class="p">):</span>
@@ -1265,18 +1333,23 @@
 <span class="n">records</span> <span class="o">=</span> <span class="n">records</span><span class="o">.</span><span class="n">autofix</span><span class="p">()</span>
 <span class="n">train_records</span><span class="p">,</span> <span class="n">valid_records</span> <span class="o">=</span> <span class="n">records</span><span class="o">.</span><span class="n">make_splits</span><span class="p">(</span><span class="n">RandomSplitter</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]))</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">sample_records</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">show_records</span><span class="p">(</span><span class="n">sample_records</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div>
 <div class="k-default-codeblock">
 <div class="highlight"><pre><span></span><code>  0%|          | 0/100 [00:00&lt;?, ?it/s]
 
   0%|          | 0/100 [00:00&lt;?, ?it/s]
 </code></pre></div>
 </div>
-
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_15_0.png" /></p>
-<h2 id="transforms-and-datasets">Transforms and datasets</h2>
+<h2 id="take-a-peak-at-records">Take a peak at records</h2>
+<p>Using <code>show_records</code>, we can preview the content of the records we created</p>
+<div class="highlight"><pre><span></span><code><span class="n">sample_records</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">show_records</span><span class="p">(</span><span class="n">sample_records</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_18_0.png" /></p>
+<h2 id="creating-datasets-with-augmentations-and-transforms">Creating datasets with augmentations and transforms</h2>
+<p>Data augmentations are essential for robust training and results on many datasets and deep learning tasks. IceVision ships with the <a href="https://albumentations.ai/docs/">Albumentations</a> library for defining and executing transformations, but can be extended to use others.</p>
+<p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizontal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
+<p>The validation set is only resized (with padding).</p>
+<p>We then create <code>Datasets</code> for both. The dataset applies the transforms to the annotations (such as bounding boxes) and images in the data records.</p>
 <div class="highlight"><pre><span></span><code><span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">384</span>
 <span class="n">presize</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">presize</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">presize</span><span class="o">*</span><span class="mf">.75</span><span class="p">)),</span> <span class="n">ImgSize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="o">*</span><span class="mf">.75</span><span class="p">))</span>
 
@@ -1290,38 +1363,81 @@
 <div class="highlight"><pre><span></span><code><span class="n">train_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_records</span><span class="p">,</span> <span class="n">train_tfms</span><span class="p">)</span>
 <span class="n">valid_ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">valid_records</span><span class="p">,</span> <span class="n">valid_tfms</span><span class="p">)</span>
 </code></pre></div>
+<h3 id="understanding-the-transforms">Understanding the transforms</h3>
+<p>The Dataset transforms are only applied when we grab (get) an item. Several of the default <code>aug_tfms</code> have a random element to them. For example, one might perform a rotation with probability 0.5 where the angle of rotation  is randomly selected between +45 and -45 degrees.</p>
+<p>This means that the learner sees a slightly different version of an image each time it is accessed. This effectively increases the size of the dataset and improves learning.</p>
+<p>We can look at result of getting the 0th image from the dataset a few times and see the differences. Each time you run the next cell, you will see different results due to the random element in applying transformations.</p>
 <div class="highlight"><pre><span></span><code><span class="n">ds_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">ds_samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_19_0.png" /></p>
-<h2 id="unet-model-and-dataloaders">UNET model and dataloaders</h2>
-<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">unet</span>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_23_0.png" /></p>
+<h1 id="select-a-library-model-and-backbone">Select a library, model, and backbone</h1>
+<p>In order to create a model, we need to:</p>
+<ul>
+<li>Choose one of the <strong>libraries</strong> supported by IceVision</li>
+<li>Choose one of the <strong>models</strong> supported by the library</li>
+<li>Choose one of the <strong>backbones</strong> corresponding to a chosen model</li>
+</ul>
+<p>You can access any supported models by following the IceVision unified API, use code completion to explore the available models for each library.</p>
+<h3 id="creating-a-model">Creating a model</h3>
+<p>Selections only take two simple lines of code. For example, to try the <code>mmsegmentation</code> library using the <code>deeplabv3</code> model and the <code>resnet50_d8</code> backbone could be specified by:</p>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmseg</span><span class="o">.</span><span class="n">deeplab3</span>
+<span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_d8</span>
 </code></pre></div>
+<p>As pretrained models are used by default, we typically leave this out of the backbone creation step.</p>
+<p>We've selected a few of the many options below. You can easily pick which option you want to try by setting the value of <code>selection</code>. This shows you how easy it is to try new libraries, models, and backbones.</p>
+<div class="highlight"><pre><span></span><code><span class="n">selection</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">unet</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet34</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmseg</span><span class="o">.</span><span class="n">deeplabv3</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_d8</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmseg</span><span class="o">.</span><span class="n">deeplabv3plus</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet50_d8</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmseg</span><span class="o">.</span><span class="n">segformer</span>
+  <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">mit_b0</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="data-loader">Data Loader</h2>
+<p>The Data Loader is specific to a model_type. The job of the data loader is to get items from a dataset and batch them up in the specific format required by each model. This is why creating the data loaders is separated from creating the datasets.</p>
+<p>We can take a look at the first batch of items from the <code>valid_dl</code>. Remember that the <code>valid_tfms</code> only resized (with padding) and normalized records, so different images, for example, are not returned each time. This is important to provide consistent validation during training.</p>
 <div class="highlight"><pre><span></span><code><span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">valid_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">valid_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet34</span><span class="p">()</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">backbone</span><span class="o">=</span><span class="n">backbone</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">img_size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="defining-and-training-the-fastai-learner">Defining and training the <code>fastai</code> learner</h2>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">accuracy_camvid</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-    <span class="c1"># ignores void pixels</span>
-    <span class="n">keep_idxs</span> <span class="o">=</span> <span class="n">target</span> <span class="o">!=</span> <span class="n">class_map</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s1">&#39;Void&#39;</span><span class="p">)</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="n">keep_idxs</span><span class="p">]</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="n">keep_idxs</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="p">(</span><span class="n">pred</span><span class="o">==</span><span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> 
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_28_0.png" /></p>
+<h2 id="metrics">Metrics</h2>
+<p>The fastai and pytorch lightning engines collect metrics to track progress during training. IceVision provides metric classes that work across the engines and libraries.</p>
+<p>The same metrics can be used for both fastai and pytorch lightning.</p>
+<p>As this is a segmentation problem, we are going to use two metrics: multi-class Diece coefficient, and segmentation accuracy. Note that we are ignoring "void" when computing accuracy</p>
+<div class="highlight"><pre><span></span><code><span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">MulticlassDiceCoefficient</span><span class="p">(),</span> 
+           <span class="n">SegmentationAccuracy</span><span class="p">(</span><span class="n">ignore_class</span><span class="o">=</span><span class="n">class_map</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s2">&quot;Void&quot;</span><span class="p">))]</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">accuracy_camvid</span><span class="p">])</span>
+<h2 id="training">Training</h2>
+<p>IceVision is an agnostic framework meaning it can be plugged into other DL learning engines such as <a href="https://github.com/fastai/fastai2">fastai2</a>, and <a href="https://github.com/PyTorchLightning/pytorch-lightning">pytorch-lightning</a>.  </p>
+<h3 id="training-using-fastai">Training using fastai</h3>
+<div class="highlight"><pre><span></span><code><span class="n">learn</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">fastai</span><span class="o">.</span><span class="n">learner</span><span class="p">(</span><span class="n">dls</span><span class="o">=</span><span class="p">[</span><span class="n">train_dl</span><span class="p">,</span> <span class="n">valid_dl</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span>
 </code></pre></div>
+<p>Because we use fastai, we get access to its features such as the learning rate finder</p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
 </code></pre></div>
 <div class="k-default-codeblock">
-<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=9.120108734350652e-05)
+<div class="highlight"><pre><span></span><code>SuggestedLRs(valley=0.0005754399462603033)
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_27_2.png" /></p>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_35_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1330,17 +1446,19 @@
       <th>epoch</th>
       <th>train_loss</th>
       <th>valid_loss</th>
-      <th>accuracy_camvid</th>
+      <th>MulticlassDiceCoefficient</th>
+      <th>SegmentationAccuracy</th>
       <th>time</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>0</td>
-      <td>3.392160</td>
-      <td>2.630378</td>
-      <td>0.255401</td>
-      <td>00:09</td>
+      <td>4.716942</td>
+      <td>4.197937</td>
+      <td>0.180845</td>
+      <td>0.789499</td>
+      <td>00:21</td>
     </tr>
   </tbody>
 </table>
@@ -1351,92 +1469,108 @@
       <th>epoch</th>
       <th>train_loss</th>
       <th>valid_loss</th>
-      <th>accuracy_camvid</th>
+      <th>MulticlassDiceCoefficient</th>
+      <th>SegmentationAccuracy</th>
       <th>time</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>0</td>
-      <td>2.602331</td>
-      <td>2.325062</td>
-      <td>0.440709</td>
-      <td>00:07</td>
+      <td>4.232966</td>
+      <td>4.128767</td>
+      <td>0.226597</td>
+      <td>0.806884</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>1</td>
-      <td>2.381318</td>
-      <td>1.799831</td>
-      <td>0.530444</td>
-      <td>00:07</td>
+      <td>4.154363</td>
+      <td>3.961988</td>
+      <td>0.235534</td>
+      <td>0.809175</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>2.142349</td>
-      <td>1.332237</td>
-      <td>0.668531</td>
-      <td>00:07</td>
+      <td>4.067923</td>
+      <td>3.820444</td>
+      <td>0.254283</td>
+      <td>0.813158</td>
+      <td>00:19</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>1.917440</td>
-      <td>1.123698</td>
-      <td>0.693745</td>
-      <td>00:07</td>
+      <td>3.982723</td>
+      <td>3.734250</td>
+      <td>0.277850</td>
+      <td>0.819631</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>1.747154</td>
-      <td>0.993772</td>
-      <td>0.751023</td>
-      <td>00:07</td>
+      <td>3.902324</td>
+      <td>3.667058</td>
+      <td>0.287838</td>
+      <td>0.822533</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>5</td>
-      <td>1.598631</td>
-      <td>0.996451</td>
-      <td>0.762109</td>
-      <td>00:07</td>
+      <td>3.830899</td>
+      <td>3.627812</td>
+      <td>0.292731</td>
+      <td>0.821733</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>6</td>
-      <td>1.491493</td>
-      <td>0.948187</td>
-      <td>0.774137</td>
-      <td>00:07</td>
+      <td>3.768515</td>
+      <td>3.586231</td>
+      <td>0.293273</td>
+      <td>0.825096</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>7</td>
-      <td>1.395746</td>
-      <td>0.869413</td>
-      <td>0.793335</td>
-      <td>00:07</td>
+      <td>3.714865</td>
+      <td>3.549266</td>
+      <td>0.298292</td>
+      <td>0.826219</td>
+      <td>00:17</td>
     </tr>
     <tr>
       <td>8</td>
-      <td>1.311806</td>
-      <td>0.876654</td>
-      <td>0.794053</td>
-      <td>00:07</td>
+      <td>3.669041</td>
+      <td>3.539322</td>
+      <td>0.298289</td>
+      <td>0.827088</td>
+      <td>00:18</td>
     </tr>
     <tr>
       <td>9</td>
-      <td>1.256938</td>
-      <td>0.868124</td>
-      <td>0.796351</td>
-      <td>00:07</td>
+      <td>3.630552</td>
+      <td>3.543171</td>
+      <td>0.299139</td>
+      <td>0.826904</td>
+      <td>00:18</td>
     </tr>
   </tbody>
 </table>
 
+<h2 id="using-the-model-inference-and-showing-results">Using the model - inference and showing results</h2>
+<p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_29_0.png" /></p>
-<h2 id="inference">Inference</h2>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_38_0.png" /></p>
+<h3 id="prediction">Prediction</h3>
+<p>Sometimes you want to have more control than <code>show_results</code> provides. You can construct an inference dataloader using <code>infer_dl</code> from any IceVision dataset and pass this to <code>predict_dl</code> and use <code>show_preds</code> to look at the predictions.</p>
+<p>A prediction is returned as a dict with keys: <code>scores</code>, <code>labels</code>, <code>bboxes</code>, and possibly <code>masks</code>. </p>
+<p>Prediction functions that take a <code>keep_images</code> argument will only return the (tensor representation of the) image when it is <code>True</code>. In interactive environments, such as a notebook, it is helpful to see the image with bounding boxes and labels applied. In a deployment context, however, it is typically more useful (and efficient) to return the bounding boxes by themselves.</p>
 <div class="highlight"><pre><span></span><code><span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">)</span>
-<span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">show_preds</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_31_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_40_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">([</span><span class="n">valid_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
@@ -1447,7 +1581,9 @@
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_33_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_semantic_segmentation/getting_started_semantic_segmentation_42_0.png" /></p>
+<h2 id="happy-learning">Happy Learning!</h2>
+<p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
               
               
@@ -1524,7 +1660,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
