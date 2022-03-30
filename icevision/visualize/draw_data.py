@@ -55,6 +55,7 @@ def draw_sample(
     dynamic_font_size_div_factor: float = 20.0,
     include_classification_task_names: bool = True,
     include_instances_task_names: bool = False,
+    force_mask_file_reload: bool = False,
 ) -> Union[np.ndarray, PIL.Image.Image]:
     """
     Selected kwargs:
@@ -132,6 +133,20 @@ def draw_sample(
                         mask.to_mask(img.shape[1], img.shape[0]).data
                         for mask in composite.masks
                     ]
+                elif isinstance(composite.masks[0], MaskFile):
+                    if force_mask_file_reload:
+                        logger.warning(
+                            "Re-creating masks from files, might results in mismatches if transformations were applied"
+                        )
+                        masks = [
+                            mask.to_mask(img.shape[1], img.shape[0])
+                            for mask in composite.masks
+                        ]
+                    else:
+                        logger.warning(
+                            "Masks are of type MaskFile but will not be loaded to avoid mismatch with transformed data. Set force_mask_file_reload to True to force mask loading"
+                        )
+                        masks = []
                 elif isinstance(composite.masks[0], EncodedRLEs):
                     masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
                 elif isinstance(composite.masks[0], MaskArray):

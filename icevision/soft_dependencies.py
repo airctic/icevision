@@ -25,6 +25,7 @@ class _SoftDependencies:
         self.mmdet = soft_import("mmdet")
         self.yolov5 = soft_import("yolov5")
         self.sklearn = soft_import("sklearn")
+        self.mmseg = soft_import("mmseg")
         self.sahi = soft_import("sahi")
         self.fiftyone = soft_import("fiftyone")
         self.pydicom = soft_import("pydicom")
