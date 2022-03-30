@@ -24,10 +24,10 @@ jobs:
 
     - name: Install package
       run: |
-          sh ./icevision_install.sh cpu
-          pip install -e ".[all,dev]"
-          pip install fiftyone
-          
+        sh ./icevision_install.sh cpu
+        pip install -e ".[all,dev]"
+        pip install fiftyone
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
