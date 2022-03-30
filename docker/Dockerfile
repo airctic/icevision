@@ -6,4 +6,5 @@ RUN pip install git+https://github.com/airctic/icedata.git -U
 RUN pip install yolov5-icevision -U 
 RUN pip install mmcv-full==1.3.7 -f https://download.openmmlab.com/mmcv/dist/cu101/torch1.8.0/index.html -U
 RUN pip install mmdet==2.13.0 -U
+RUN pip install mmsegmentation==0.17.0 -U
 RUN pip install ipywidgets

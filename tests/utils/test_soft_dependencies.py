@@ -25,4 +25,5 @@ def test_soft_dependencies():
         "sahi": True,
         "fiftyone": True,
         "pydicom": False,
+        "mmseg": True,
     }

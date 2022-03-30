@@ -1,4 +1,9 @@
-__all__ = ["wandb_img_preds", "wandb_image"]
+__all__ = [
+    "wandb_img_preds",
+    "wandb_image",
+    "wandb_segmentation_img_preds",
+    "wandb_segmentation_image",
+]
 
 
 from typing import List
@@ -111,3 +116,74 @@ def wandb_image(pred: Prediction, add_ground_truth: bool = False) -> wandb.Image
         #                 "class_labels": class_id_to_label,
         #             }
     return wandb.Image(pred.img, boxes=boxes, masks=masks)
+
+
+def wandb_segmentation_image(
+    pred: Prediction, add_ground_truth: bool = False
+) -> wandb.Image:
+    """Return a wandb image corresponding to the a segmentation prediction.
+    Args:
+        pred (Prediction): A prediction to log with WandB.
+            Must have been created with keep_image = True.
+        add_ground_truth (bool, optional): Add ground_truth information to the
+            the WandB image. Defaults to False.
+    Returns:
+        wandb.Image: Specifying the image, but also the prediction masks and possibly ground_truth.
+    """
+
+    class_id_to_label = {
+        id: label for id, label in enumerate(pred.segmentation.class_map._id2class)
+    }
+
+    if pred.segmentation.mask_array:
+        masks = {
+            "predictions_mask": {
+                "mask_data": pred.segmentation.mask_array.data.squeeze(),
+                "class_labels": dict(
+                    (value, key)
+                    for key, value in pred.segmentation.class_map._class2id.items()
+                ),
+            }
+        }
+
+    else:
+        masks = {}
+
+    # Ground Truth
+    if add_ground_truth:
+
+        # Ground Truth Masks
+        if pred.ground_truth.segmentation.masks:
+            masks["ground_truth_mask"] = {
+                "mask_data": pred.ground_truth.segmentation.mask_array.data.squeeze(),
+                "class_labels": dict(
+                    (value, key)
+                    for key, value in pred.ground_truth.segmentation.class_map._class2id.items()
+                ),
+            }
+
+    # Convert classmap to format expected by w&b
+    wandb_classes = []
+
+    for class_entry in pred.ground_truth.segmentation.class_map._class2id:
+        wandb_classes.append(
+            {
+                "name": class_entry,
+                "id": pred.ground_truth.segmentation.class_map._class2id[class_entry],
+            }
+        )
+
+    return wandb.Image(
+        pred.img,
+        masks=masks,
+        classes=wandb_classes,
+    )
+
+
+def wandb_segmentation_img_preds(
+    preds: List[Prediction], add_ground_truth: bool = False
+) -> List[wandb.Image]:
+    return [
+        wandb_segmentation_image(pred, add_ground_truth=add_ground_truth)
+        for pred in preds
+    ]

@@ -47,6 +47,9 @@ esac
 echo "- Installing mmdet"
 pip install mmdet==2.17.0 --upgrade -q
 
+echo "- Installing mmseg"
+pip install mmsegmentation==0.20.2 --upgrade -q
+
 icevision_version="${2}"
 
 case ${icevision_version} in 
