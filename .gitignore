@@ -154,4 +154,10 @@ archives/
 *.pth
 notebooks/wandb/latest-run
 
+artifacts/*
 checkpoints
+
+wandb
+wandb/*
+
+*/artifacts/*

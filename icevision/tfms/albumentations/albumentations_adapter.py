@@ -133,15 +133,36 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
         self.adapter._collect_ops.append(CollectOp(self.collect))
 
     def collect(self, record):
-        masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
+        try:
+            masks = self.adapter._filter_attribute(self.adapter._albu_out["masks"])
+        except AssertionError:
+            # TODO: messages should be more detailed.
+            img_path = record.as_dict()["common"][
+                "filepath"
+            ]  # ~/.icevision/data/voc/SegmentationObject/2007_000033.png'
+            data_dir = img_path.parents[1]  # ~/.icevision/data/voc'
+            checklist = list(data_dir.glob(f"**/{img_path.stem}.*"))
+            checklist = "".join([f"\n  -{str(path)}" for path in checklist])
+            raise AttributeError(
+                f"Mismatch at annotations with number of masks. Check or delete {len(checklist)} files below. {checklist}"
+            )
+
         masks = MaskArray(np.array(masks))
         self._record_component.set_mask_array(masks)
         # # set masks from the modified masks array
-        rles = []
-        for m in masks:
-            if m.data.any():
-                rles.append(RLE.from_coco(m.to_coco_rle(*masks.shape[1:])[0]["counts"]))
-        self._record_component.set_masks(rles)
+        # TODO: Understand whether something special needs to be done here, see comment on Github
+        # Had to introduce a check for Polygon as this breaks masks behaviour
+        # Do we need ot handle a case for masks?
+        if all(isinstance(i, Polygon) for i in masks) or all(
+            isinstance(i, Polygon) for i in self._record_component.masks
+        ):
+            rles = []
+            for m in masks:
+                if m.data.any():
+                    rles.append(
+                        RLE.from_coco(m.to_coco_rle(*masks.shape[1:])[0]["counts"])
+                    )
+            self._record_component.set_masks(rles)
         # HACK: Not sure if necessary
         self._record_component = None
 

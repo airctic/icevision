@@ -89,10 +89,10 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     if ".dcm" in str(filepath).lower():
         image = open_dicom(str(filepath))
+        image_size = image.size
     else:
-        image = PIL.Image.open(str(filepath))
-
-    image_size = image.size
+        with PIL.Image.open(str(filepath)) as image:
+            image_size = image.size
 
     try:
         exif = image._getexif()

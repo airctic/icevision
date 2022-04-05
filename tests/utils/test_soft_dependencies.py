@@ -22,6 +22,7 @@ def test_soft_dependencies():
         "sklearn": True,
         "mmdet": True,
         "yolov5": True,
+        "mmseg": True,
         "sahi": True,
         "fiftyone": True,
         "pydicom": False,
