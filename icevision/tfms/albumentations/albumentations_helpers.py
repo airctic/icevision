@@ -32,7 +32,7 @@ def aug_tfms(
         g_shift_limit=10,
         b_shift_limit=10,
     ),
-    lightning: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
+    lighting: Optional[A.RandomBrightnessContrast] = A.RandomBrightnessContrast(),
     blur: Optional[A.Blur] = A.Blur(blur_limit=(1, 3)),
     crop_fn: Optional[A.DualTransform] = partial(A.RandomSizedBBoxSafeCrop, p=0.5),
     pad: Optional[A.DualTransform] = partial(
@@ -54,7 +54,7 @@ def aug_tfms(
                 is not applied.
         rgb_shift: Randomly shift values for each channel of RGB image. If `None` this
                 transform is not applied.
-        lightning: Randomly changes Brightness and Contrast. If `None` this transform
+        lighting: Randomly changes Brightness and Contrast. If `None` this transform
                 is not applied.
         blur: Randomly blur the image. If `None` this transform is not applied.
         crop_fn: Randomly crop the image. If `None` this transform is not applied.
@@ -71,7 +71,7 @@ def aug_tfms(
 
     tfms = []
     tfms += [resize(presize, A.SmallestMaxSize) if presize is not None else None]
-    tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lightning, blur]
+    tfms += [horizontal_flip, shift_scale_rotate, rgb_shift, lighting, blur]
     # Resize as the last transforms to reduce the number of artificial artifacts created
     if crop_fn is not None:
         crop = crop_fn(height=height, width=width)
