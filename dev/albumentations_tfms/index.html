@@ -1162,7 +1162,7 @@
     <span class="n">rgb_shift</span><span class="o">=</span><span class="n">RGBShift</span><span class="p">(</span>
         <span class="n">always_apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">r_shift_limit</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">g_shift_limit</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">b_shift_limit</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="p">),</span>
-    <span class="n">lightning</span><span class="o">=</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span>
+    <span class="n">lighting</span><span class="o">=</span><span class="n">RandomBrightnessContrast</span><span class="p">(</span>
         <span class="n">always_apply</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
         <span class="n">brightness_limit</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
@@ -1189,7 +1189,7 @@
         is not applied.</li>
 <li><strong>rgb_shift</strong> <code>Optional[albumentations.augmentations.transforms.RGBShift]</code>: Randomly shift values for each channel of RGB image. If <code>None</code> this
         transform is not applied.</li>
-<li><strong>lightning</strong> <code>Optional[albumentations.augmentations.transforms.RandomBrightnessContrast]</code>: Randomly changes Brightness and Contrast. If <code>None</code> this transform
+<li><strong>lighting</strong> <code>Optional[albumentations.augmentations.transforms.RandomBrightnessContrast]</code>: Randomly changes Brightness and Contrast. If <code>None</code> this transform
         is not applied.</li>
 <li><strong>blur</strong> <code>Optional[albumentations.augmentations.transforms.Blur]</code>: Randomly blur the image. If <code>None</code> this transform is not applied.</li>
 <li><strong>crop_fn</strong> <code>Optional[albumentations.core.transforms_interface.DualTransform]</code>: Randomly crop the image. If <code>None</code> this transform is not applied.
