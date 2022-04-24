@@ -111,12 +111,17 @@ def convert_raw_prediction(
 ):
     # convert predictions
     raw_bboxes, raw_masks = raw_pred
+    img_size = sample["img"].shape[-2:]
+    for i in range(len(raw_masks)):
+        if len(raw_masks[i]) == 0:
+            raw_masks[i] = np.full((0, img_size[0], img_size[1]), False)
     scores, labels, bboxes = _unpack_raw_bboxes(raw_bboxes)
 
     keep_mask = scores > detection_threshold
     keep_scores = scores[keep_mask]
     keep_labels = labels[keep_mask]
     keep_bboxes = [BBox.from_xyxy(*o) for o in bboxes[keep_mask]]
+
     keep_masks = MaskArray(np.vstack(raw_masks)[keep_mask])
 
     keep_labels = convert_background_from_last_to_zero(
