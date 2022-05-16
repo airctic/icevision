@@ -41,15 +41,14 @@ class ModelAdapter(LightningModelAdapter, ABC):
     def validation_step(self, batch, batch_idx):
         (xb, yb), records = batch
 
-        with torch.no_grad():
-            raw_preds = self(xb, yb)
-            preds = efficientdet.convert_raw_predictions(
-                batch=(xb, yb),
-                raw_preds=raw_preds["detections"],
-                records=records,
-                detection_threshold=0.0,
-            )
-            loss = efficientdet.loss_fn(raw_preds, yb)
+        raw_preds = self(xb, yb)
+        preds = efficientdet.convert_raw_predictions(
+            batch=(xb, yb),
+            raw_preds=raw_preds["detections"],
+            records=records,
+            detection_threshold=0.0,
+        )
+        loss = efficientdet.loss_fn(raw_preds, yb)
 
         self.accumulate_metrics(preds)
 
