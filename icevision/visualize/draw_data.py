@@ -128,33 +128,36 @@ def draw_sample(
         # HACK
         if hasattr(composite, "masks"):
             if composite.mask_array is None:
-                if isinstance(composite.masks[0], RLE):
-                    masks = [
-                        mask.to_mask(img.shape[1], img.shape[0]).data
-                        for mask in composite.masks
-                    ]
-                elif isinstance(composite.masks[0], MaskFile):
-                    if force_mask_file_reload:
-                        logger.warning(
-                            "Re-creating masks from files, might results in mismatches if transformations were applied"
-                        )
+                if len(composite.masks) == 0:
+                    masks = []
+                else:
+                    if isinstance(composite.masks[0], RLE):
                         masks = [
-                            mask.to_mask(img.shape[1], img.shape[0])
+                            mask.to_mask(img.shape[1], img.shape[0]).data
                             for mask in composite.masks
                         ]
+                    elif isinstance(composite.masks[0], MaskFile):
+                        if force_mask_file_reload:
+                            logger.warning(
+                                "Re-creating masks from files, might results in mismatches if transformations were applied"
+                            )
+                            masks = [
+                                mask.to_mask(img.shape[1], img.shape[0])
+                                for mask in composite.masks
+                            ]
+                        else:
+                            logger.warning(
+                                "Masks are of type MaskFile but will not be loaded to avoid mismatch with transformed data. Set force_mask_file_reload to True to force mask loading"
+                            )
+                            masks = []
+                    elif isinstance(composite.masks[0], EncodedRLEs):
+                        masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
+                    elif isinstance(composite.masks[0], MaskArray):
+                        mask = composite.masks[0]
                     else:
-                        logger.warning(
-                            "Masks are of type MaskFile but will not be loaded to avoid mismatch with transformed data. Set force_mask_file_reload to True to force mask loading"
+                        raise ValueError(
+                            "Mask has to be of they RLE, EncodedRLEs or MaskArray."
                         )
-                        masks = []
-                elif isinstance(composite.masks[0], EncodedRLEs):
-                    masks = composite.masks[0].to_mask(img.shape[0], img.shape[1]).data
-                elif isinstance(composite.masks[0], MaskArray):
-                    mask = composite.masks[0]
-                else:
-                    raise ValueError(
-                        "Mask has to be of they RLE, EncodedRLEs or MaskArray."
-                    )
             else:
                 masks = composite.mask_array
         else:
