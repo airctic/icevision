@@ -17,7 +17,7 @@ from icevision.models.mmdet.models.vfnet.backbones.backbone_config import (
 
 base_config_path = mmdet_configs_path / "vfnet"
 base_weights_url = (
-    "https://openmmlab.oss-cn-hangzhou.aliyuncs.com/mmdetection/v2.0/vfnet"
+    "https://download.openmmlab.com/mmdetection/v2.0/vfnet"
 )
 
 resnet50_fpn_1x = MMDetVFNETBackboneConfig(
