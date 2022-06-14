@@ -123,4 +123,5 @@ detection:
 	- Labels: [5]
 ```
 
-All fields under `common` can be accessed directly, the others have to be specifified by it's corresponding task.
+All fields under `common` can be accessed directly, the others have to be
+specified by it's corresponding task.
