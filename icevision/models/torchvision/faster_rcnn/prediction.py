@@ -11,7 +11,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.models.utils import _predict_from_dl
 from icevision.data import *
-from icevision.models.torchvision.faster_rcnn.dataloaders import *
+from icevision.models.torchvision.dataloaders import *
 from icevision.models.inference import *
 
 

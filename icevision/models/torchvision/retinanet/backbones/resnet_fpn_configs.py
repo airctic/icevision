@@ -15,8 +15,6 @@ from icevision.models.torchvision.retinanet.backbones.resnet_fpn_utils import (
 )
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 
-# from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
-
 from icevision.models.torchvision.retinanet.backbones.backbone_config import (
     TorchvisionRetinanetBackboneConfig,
 )

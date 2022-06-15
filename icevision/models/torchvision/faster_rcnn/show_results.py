@@ -5,7 +5,7 @@ from icevision.utils import *
 from icevision.core import *
 from icevision.data import *
 from icevision.models.base_show_results import base_show_results
-from icevision.models.torchvision.faster_rcnn.dataloaders import (
+from icevision.models.torchvision.dataloaders import (
     build_infer_batch,
     valid_dl,
     infer_dl,
