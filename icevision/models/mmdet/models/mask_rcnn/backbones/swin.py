@@ -15,9 +15,7 @@ class MMDetSwinBackboneConfig(MMDetBackboneConfig):
 
 
 base_config_path = mmdet_configs_path / "swin"
-base_weights_url = (
-    "https://openmmlab.oss-cn-hangzhou.aliyuncs.com/mmdetection/v2.0/swin"
-)
+base_weights_url = "http://download.openmmlab.com/mmdetection/v2.0/swin"
 
 
 mask_rcnn_swin_t_p4_w7_fpn_1x_coco = MMDetSwinBackboneConfig(
