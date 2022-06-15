@@ -16,7 +16,9 @@ from typing import List
 from torch import nn
 import torchvision
 from icevision.utils.torch_utils import check_all_model_params_in_groups2
-from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
+from icevision.models.fastai.unet.backbones.backbone_config import (
+    TorchvisionUNetBackboneConfig,
+)
 
 
 def _resnet_features(model: nn.Module, out_channels: int):
@@ -71,9 +73,9 @@ def resnext101_32x8d_fn(pretrained: bool = True):
     return _resnet_features(model, out_channels=2048)
 
 
-resnet18 = TorchvisionBackboneConfig(resnet18_fn)
-resnet34 = TorchvisionBackboneConfig(resnet34_fn)
-resnet50 = TorchvisionBackboneConfig(resnet50_fn)
-resnet101 = TorchvisionBackboneConfig(resnet101_fn)
-resnet152 = TorchvisionBackboneConfig(resnet152_fn)
-resnext101_32x8d = TorchvisionBackboneConfig(resnext101_32x8d_fn)
+resnet18 = TorchvisionUNetBackboneConfig(backbone_fn=resnet18_fn)
+resnet34 = TorchvisionUNetBackboneConfig(backbone_fn=resnet34_fn)
+resnet50 = TorchvisionUNetBackboneConfig(backbone_fn=resnet50_fn)
+resnet101 = TorchvisionUNetBackboneConfig(backbone_fn=resnet101_fn)
+resnet152 = TorchvisionUNetBackboneConfig(backbone_fn=resnet152_fn)
+resnext101_32x8d = TorchvisionUNetBackboneConfig(backbone_fn=resnext101_32x8d_fn)
