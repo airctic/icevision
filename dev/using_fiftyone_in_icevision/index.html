@@ -1367,7 +1367,7 @@ as the fastai and pytorch lightning engines.</p>
 <p>If you don't know fiftyone yet, visit the website and read about the concepts: https://voxel51.com/docs/fiftyone. </p>
 <h3 id="fiftyone-summary">Fiftyone Summary</h3>
 <p>Fiftyone is a tool to analyze datasets and detections of all forms. </p>
-<p>For object detection these concepta are most relevant: </p>
+<p>For object detection these concepts are most relevant: </p>
 <p>Fiftyone is structured into <code>fo.Datasets</code>. So every viewable entity is related to a <code>fo.Dataset</code>. An image is represented by a <code>fo.Sample</code>. After you created a <code>fo.Sample</code> you can add <code>fo.Detections</code>, which is constructed by a list of <code>fo.Detection</code>. Finally, you need to add a <code>fo.Sample</code> to your <code>fo.Dataset</code> and then launch your app by calling <code>fo.launch_app(dataset)</code>. IceVision enables you to create all of these <code>fo</code> objects from IceVision classes.</p>
 <p>Before we train or execute inference, we need to create an <code>icevision.Dataset</code>. From this dataset, we can create a <code>fo.Dataset</code>.
 Since fiftyone operates on filepaths, you dataset needs filepath as component and you cannot use <code>Dataset.from_images</code> as it stores the images in RAM.</p>
@@ -1504,7 +1504,7 @@ se your custom post-process function by using the <code>undo_bbox_tfms_fn</code>
 <span class="n">infer_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">infer_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">preds</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">predict_from_dl</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">infer_dl</span><span class="p">,</span> <span class="n">keep_images</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># Lets add the predictions to our prevoius dataset. </span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Lets add the predictions to our previous dataset. </span>
 
 <span class="n">fo_dataset</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">create_fo_dataset</span><span class="p">(</span><span class="n">detections</span><span class="o">=</span><span class="n">preds</span><span class="p">,</span>
                                    <span class="n">dataset_name</span><span class="o">=</span><span class="n">fo_dataset_name</span><span class="p">,</span>

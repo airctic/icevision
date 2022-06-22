@@ -1484,7 +1484,7 @@ as the fastai and pytorch lightning engines.</p>
 </div>
 <h2 id="creating-datasets-with-augmentations-and-transforms">Creating datasets with augmentations and transforms</h2>
 <p>Data augmentations are essential for robust training and results on many datasets and deep learning tasks. IceVision ships with the <a href="https://albumentations.ai/docs/">Albumentations</a> library for defining and executing transformations, but can be extended to use others.</p>
-<p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizintal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
+<p>For this tutorial, we apply the Albumentation's default <code>aug_tfms</code> to the training set. <code>aug_tfms</code> randomly applies broadly useful transformations including rotation, cropping, horizontal flips, and more. See the Albumentations documentation to learn how to customize each transformation more fully.</p>
 <p>The validation set is only resized (with padding).</p>
 <p>We then create <code>Datasets</code> for both. The dataset applies the transforms to the annotations (such as bounding boxes) and images in the data records.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Transforms</span>
