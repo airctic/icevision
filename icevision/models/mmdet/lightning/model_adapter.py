@@ -52,12 +52,10 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
     def validation_step(self, batch, batch_idx):
         data, records = batch
 
-        self.model.eval()
-        with torch.no_grad():
-            outputs = self.model.train_step(data=data, optimizer=None)
-            raw_preds = self.model.forward_test(
-                imgs=[data["img"]], img_metas=[data["img_metas"]]
-            )
+        outputs = self.model.train_step(data=data, optimizer=None)
+        raw_preds = self.model.forward_test(
+            imgs=[data["img"]], img_metas=[data["img_metas"]]
+        )
 
         preds = self.convert_raw_predictions(
             batch=data, raw_preds=raw_preds, records=records
@@ -66,9 +64,6 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
 
         for k, v in outputs["log_vars"].items():
             self.log(f"valid/{k}", v)
-
-        # TODO: is train and eval model automatically set by lighnting?
-        self.model.train()
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()

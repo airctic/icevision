@@ -36,17 +36,16 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
 
     def validation_step(self, batch, batch_idx):
         (xb, yb), records = batch
-        with torch.no_grad():
-            self.train()
-            train_preds = self(xb, yb)
-            loss = loss_fn(train_preds, yb)
+        self.train()
+        train_preds = self(xb, yb)
+        loss = loss_fn(train_preds, yb)
 
-            self.eval()
-            raw_preds = self(xb)
-            preds = self.convert_raw_predictions(
-                batch=batch, raw_preds=raw_preds, records=records
-            )
-            self.accumulate_metrics(preds=preds)
+        self.eval()
+        raw_preds = self(xb)
+        preds = self.convert_raw_predictions(
+            batch=batch, raw_preds=raw_preds, records=records
+        )
+        self.accumulate_metrics(preds=preds)
 
         self.log("val_loss", loss)
 
