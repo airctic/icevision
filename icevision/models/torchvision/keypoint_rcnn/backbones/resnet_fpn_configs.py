@@ -14,7 +14,9 @@ from icevision.models.torchvision.keypoint_rcnn.backbones.resnet_fpn_utils impor
     patch_param_groups,
 )
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
+from icevision.models.torchvision.keypoint_rcnn.backbones.backbone_config import (
+    TorchvisionKeypointRCNNBackboneConfig,
+)
 
 
 def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):
@@ -60,12 +62,20 @@ def wide_resnet101_2_fpn_fn(pretrained: bool = False, **kwargs):
     return _resnet_fpn("wide_resnet101_2", pretrained=pretrained, **kwargs)
 
 
-resnet18_fpn = TorchvisionBackboneConfig(resnet18_fpn_fn)
-resnet34_fpn = TorchvisionBackboneConfig(resnet34_fpn_fn)
-resnet50_fpn = TorchvisionBackboneConfig(resnet50_fpn_fn)
-resnet101_fpn = TorchvisionBackboneConfig(resnet101_fpn_fn)
-resnet152_fpn = TorchvisionBackboneConfig(resnet152_fpn_fn)
-resnext50_32x4d_fpn = TorchvisionBackboneConfig(resnext50_32x4d_fpn_fn)
-resnext101_32x8d_fpn = TorchvisionBackboneConfig(resnext101_32x8d_fpn_fn)
-wide_resnet50_2_fpn = TorchvisionBackboneConfig(wide_resnet50_2_fpn_fn)
-wide_resnet101_2_fpn = TorchvisionBackboneConfig(wide_resnet101_2_fpn_fn)
+resnet18_fpn = TorchvisionKeypointRCNNBackboneConfig(backbone_fn=resnet18_fpn_fn)
+resnet34_fpn = TorchvisionKeypointRCNNBackboneConfig(backbone_fn=resnet34_fpn_fn)
+resnet50_fpn = TorchvisionKeypointRCNNBackboneConfig(backbone_fn=resnet50_fpn_fn)
+resnet101_fpn = TorchvisionKeypointRCNNBackboneConfig(backbone_fn=resnet101_fpn_fn)
+resnet152_fpn = TorchvisionKeypointRCNNBackboneConfig(backbone_fn=resnet152_fpn_fn)
+resnext50_32x4d_fpn = TorchvisionKeypointRCNNBackboneConfig(
+    backbone_fn=resnext50_32x4d_fpn_fn
+)
+resnext101_32x8d_fpn = TorchvisionKeypointRCNNBackboneConfig(
+    backbone_fn=resnext101_32x8d_fpn_fn
+)
+wide_resnet50_2_fpn = TorchvisionKeypointRCNNBackboneConfig(
+    backbone_fn=wide_resnet50_2_fpn_fn
+)
+wide_resnet101_2_fpn = TorchvisionKeypointRCNNBackboneConfig(
+    backbone_fn=wide_resnet101_2_fpn_fn
+)

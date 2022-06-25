@@ -642,7 +642,7 @@ def draw_keypoints(
     img_area = img_h * img_w
     img = PIL.Image.fromarray(img)
     draw = PIL.ImageDraw.Draw(img)
-    dynamic_size = int(0.01867599 * (img_area ** 0.4422045))
+    dynamic_size = int(0.01867599 * (img_area**0.4422045))
     dynamic_size = max(dynamic_size, 1)
 
     # draw connections

@@ -2,7 +2,7 @@ __all__ = ["model"]
 
 from icevision.imports import *
 from icevision.models.torchvision.utils import *
-from icevision.models.torchvision.faster_rcnn.backbones import (
+from icevision.models.torchvision.retinanet.backbones import (
     resnet_fpn_configs as resnet_fpn,
 )
 from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig

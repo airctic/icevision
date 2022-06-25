@@ -5,11 +5,12 @@ from icevision.models.backbone_config import BackboneConfig
 
 
 class TorchvisionBackboneConfig(BackboneConfig):
-    def __init__(self, backbone_fn, **backbone_fn_kwargs):
-        self.backbone: nn.Module
+    def __init__(self, model_name, backbone_fn, **backbone_fn_kwargs):
 
+        self.model_name = model_name
         self.backbone_fn = backbone_fn
         self.backbone_fn_kwargs = backbone_fn_kwargs
+        self.backbone: nn.Module
 
     def __call__(self, pretrained: bool = True, **kwargs):
         """Completes the configuration of the backbone
