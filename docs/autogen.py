@@ -34,12 +34,12 @@ PAGES = {
     ],
     "faster_rcnn.md": [
         "icevision.models.torchvision.faster_rcnn.model.model",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.train_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.valid_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.infer_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_train_batch",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_valid_batch",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.torchvision.dataloaders.train_dl",
+        "icevision.models.torchvision.dataloaders.valid_dl",
+        "icevision.models.torchvision.dataloaders.infer_dl",
+        "icevision.models.torchvision.dataloaders.build_train_batch",
+        "icevision.models.torchvision.dataloaders.build_valid_batch",
+        "icevision.models.torchvision.dataloaders.build_infer_batch",
     ],
     "faster_rcnn_fastai.md": [
         "icevision.models.torchvision.faster_rcnn.fastai.learner",
