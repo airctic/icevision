@@ -22,10 +22,10 @@ case ${target} in
    cuda11)  
       echo "Installing icevision + dependencices for ${1}"
       echo "- Installing torch and its dependencies"
-      pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html --upgrade 
+      pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html --upgrade 
 
       echo "- Installing mmcv"
-      pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10.0/index.html --upgrade -q  
+      pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10.0/index.html --upgrade -q  
     ;;  
     
    cpu)  
