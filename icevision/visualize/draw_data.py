@@ -236,6 +236,8 @@ def draw_sample(
         return img if isinstance(img, PIL.Image.Image) else PIL.Image.fromarray(img)
     else:
         # will be a `np.ndarray` by default so no need for casting
+        if mask is None:
+            img = np.repeat(img[:,:,0][:,:,np.newaxis],3, axis=2)
         return img
 
 
@@ -574,6 +576,7 @@ def draw_mask(
         raise ValueError(
             f"`border_thickness` must be an odd number. You entered {border_thickness}"
         )
+    img = np.repeat(img[:,:,0][:,:,np.newaxis],3, axis=2)
     img = PIL.Image.fromarray(img)
     w, h = img.size
 
@@ -608,7 +611,7 @@ def draw_segmentation_mask(
     display_mask: bool = True,
     alpha: float = 0.5,
 ):
-    img = PIL.Image.fromarray(img).convert("RGB")
+    img = PIL.Image.fromarray(img[0]).convert("RGB")
 
     if display_mask:
         w, h = img.size
