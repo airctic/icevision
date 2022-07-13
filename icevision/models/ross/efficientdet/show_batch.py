@@ -1,5 +1,6 @@
 __all__ = ["show_batch"]
 
+import torch
 from icevision.utils import *
 from icevision.visualize import *
 
