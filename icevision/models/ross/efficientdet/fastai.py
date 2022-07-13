@@ -1,4 +1,4 @@
-__all__ = ["learner"]
+__all__ = ["learner", "EfficientDetCallback"]
 
 from icevision.imports import *
 from icevision.engines.fastai import *

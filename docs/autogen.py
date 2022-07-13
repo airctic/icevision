@@ -72,10 +72,10 @@ PAGES = {
         "icevision.models.ross.efficientdet.dataloaders.build_infer_batch",
     ],
     "efficientdet_fastai.md": [
-        "icevision.models.ross.efficientdet.fastai.learner.learner",
+        "icevision.models.ross.efficientdet.fastai.learner",
     ],
     "efficientdet_lightning.md": [
-        "icevision.models.ross.efficientdet.lightning.model_adapter.ModelAdapter",
+        "icevision.models.ross.efficientdet.lightning.ModelAdapter",
     ],
 }
 
