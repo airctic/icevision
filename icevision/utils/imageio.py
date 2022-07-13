@@ -36,7 +36,7 @@ def open_dicom(filename) -> PIL.Image:
     # MONOCHROME1: Greyscale ranges from bright to dark
     # MONOCHROME2: Greyscale ranges from dark to right
     if dcm[photometric_inter_key].value == "MONOCHROME1":
-        img = 2**bits_stored - img
+        img = 2 ** bits_stored - img
 
     # Apply a VOI LUT transformation (if the image does not
     # contain the needed parameters, the image is returned

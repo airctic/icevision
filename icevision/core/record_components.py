@@ -368,7 +368,7 @@ class BBoxesRecordComponent(RecordComponent):
                     "bbox_y": y,
                     "bbox_width": w,
                     "bbox_height": h,
-                    "bbox_sqrt_area": bbox.area**0.5,
+                    "bbox_sqrt_area": bbox.area ** 0.5,
                     "bbox_aspect_ratio": w / h,
                 }
             )
