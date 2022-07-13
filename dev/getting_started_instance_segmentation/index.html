@@ -1445,6 +1445,10 @@
 <span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
     <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">mmdet</span><span class="o">.</span><span class="n">yolact</span>
     <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">r101_1x8_coco</span>
+
+<span class="k">if</span> <span class="n">selection</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="n">model_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">mask_rcnn</span>
+    <span class="n">backbone</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">backbones</span><span class="o">.</span><span class="n">resnet18_fpn</span>
 </code></pre></div>
 <h2 id="datasets-pennfudan">Datasets : Pennfudan</h2>
 <p>Fridge Objects dataset is tiny dataset that contains 134 images of 4 classes:

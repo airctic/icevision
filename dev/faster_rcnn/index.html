@@ -1236,11 +1236,9 @@ so it's safe to remove those internal transforms.</li>
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>nn.Module</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L15">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L15">[source]</a></span></p>
 <h3 id="train_dl">train_dl</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span><span class="p">)</span>
 </code></pre></div>
 <p>A <code>DataLoader</code> with a custom <code>collate_fn</code> that batches items as required for training the model.</p>
 <p><strong>Arguments</strong></p>
@@ -1253,11 +1251,9 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L35">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L35">[source]</a></span></p>
 <h3 id="valid_dl">valid_dl</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">valid_dl</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span><span class="p">)</span>
 </code></pre></div>
 <p>A <code>DataLoader</code> with a custom <code>collate_fn</code> that batches items as required for validating the model.</p>
 <p><strong>Arguments</strong></p>
@@ -1270,11 +1266,9 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L55">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L55">[source]</a></span></p>
 <h3 id="infer_dl">infer_dl</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">infer_dl</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_tfms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">dataloader_kwargs</span><span class="p">)</span>
 </code></pre></div>
 <p>A <code>DataLoader</code> with a custom <code>collate_fn</code> that batches items as required for inferring the model.</p>
 <p><strong>Arguments</strong></p>
@@ -1287,9 +1281,9 @@ The parameter <code>collate_fn</code> is already defined internally and cannot b
 <p><strong>Returns</strong></p>
 <p>A Pytorch <code>DataLoader</code>.</p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L96">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L96">[source]</a></span></p>
 <h3 id="build_train_batch">build_train_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_train_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when training.</p>
 <p><strong>Arguments</strong></p>
@@ -1307,9 +1301,9 @@ of the input records.</p>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L127">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L127">[source]</a></span></p>
 <h3 id="build_valid_batch">build_valid_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_valid_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when validating.</p>
 <p><strong>Arguments</strong></p>
@@ -1327,9 +1321,9 @@ of the input records.</p>
 <span class="n">outs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div></p>
 <hr />
-<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/faster_rcnn/dataloaders.py#L152">[source]</a></span></p>
+<p><span style="float:right;"><a href="https://github.com/airctic/icevision/blob/master/icevision/models/torchvision/dataloaders.py#L152">[source]</a></span></p>
 <h3 id="build_infer_batch">build_infer_batch</h3>
-<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">faster_rcnn</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">icevision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">torchvision</span><span class="o">.</span><span class="n">dataloaders</span><span class="o">.</span><span class="n">build_infer_batch</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 </code></pre></div>
 <p>Builds a batch in the format required by the model when doing inference.</p>
 <p><strong>Arguments</strong></p>
