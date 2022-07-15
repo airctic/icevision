@@ -1,5 +1,4 @@
 __all__ = [
-    "resnet_param_groups",
     "resnet18",
     "resnet34",
     "resnet50",
@@ -16,9 +15,12 @@ from typing import List
 from torch import nn
 import torchvision
 from icevision.utils.torch_utils import check_all_model_params_in_groups2
-from icevision.models.fastai.unet.backbones.backbone_config import (
-    TorchvisionUNetBackboneConfig,
-)
+from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
+
+
+class TorchvisionUNetBackboneConfig(TorchvisionBackboneConfig):
+    def __init__(self, **kwargs):
+        super().__init__(model_name="unet", **kwargs)
 
 
 def _resnet_features(model: nn.Module, out_channels: int):

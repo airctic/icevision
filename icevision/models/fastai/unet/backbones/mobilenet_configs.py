@@ -6,11 +6,16 @@ from typing import List
 from icevision.utils.torch_utils import check_all_model_params_in_groups2
 from torch import nn
 import torchvision
-from icevision.models.fastai.unet.backbones.backbone_config import (
-    TorchvisionUNetBackboneConfig,
-)
+from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
 
 
+# utils
+class TorchvisionUNetBackboneConfig(TorchvisionBackboneConfig):
+    def __init__(self, **kwargs):
+        super().__init__(model_name="unet", **kwargs)
+
+
+# backbones
 def mobilenet_fn(pretrained: bool = True):
     model = torchvision.models.mobilenet_v2(pretrained=pretrained)
 
