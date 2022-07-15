@@ -12,22 +12,22 @@ def test_get_module_element_form_module():
 
 def test_get_backend_libs():
     backend_libs = get_backend_libs()
-    assert backend_libs == ["ross", "torchvision", "fastai", "ultralytics"]
+    assert sorted(backend_libs) == sorted(["ross", "torchvision", "fastai", "ultralytics"])
 
 
 def test_get_model_types_for_backend_lib():
     torchvision_model_types = get_model_types_for_backend_lib("torchvision")
-    assert torchvision_model_types == [
+    assert sorted(torchvision_model_types) == sorted([
         "retinanet",
         "keypoint_rcnn",
         "faster_rcnn",
         "mask_rcnn",
-    ]
+    ])
 
 
 def test_get_backbone_names():
     backbone_names = get_backbone_names("torchvision", "retinanet")
-    assert backbone_names == [
+    assert sorted(backbone_names) == sorted([
         "resnet18_fpn",
         "resnet34_fpn",
         "resnet50_fpn",
@@ -37,7 +37,7 @@ def test_get_backbone_names():
         "resnext101_32x8d_fpn",
         "wide_resnet50_2_fpn",
         "wide_resnet101_2_fpn",
-    ]
+    ])
 
 
 def test_load_model_components():
