@@ -41,7 +41,6 @@ def patch_param_groups(model: nn.Module) -> None:
     model.param_groups = MethodType(param_groups, model)
 
 
-
 # backbones
 def _resnet_fpn(name: str, pretrained: bool = True, **kwargs):
     model = resnet_fpn_backbone(backbone_name=name, pretrained=pretrained, **kwargs)

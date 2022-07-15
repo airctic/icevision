@@ -10,9 +10,12 @@ from icevision import models
 MODEL_CREATION_FILEPATH = pathlib.Path(__file__).parent.resolve()
 BASE_PATH = os.path.join(MODEL_CREATION_FILEPATH, "../models")
 
-def get_module_element_form_module(module: types.ModuleType, *args: str) -> Union[types.ModuleType, callable, object]:
+
+def get_module_element_form_module(
+    module: types.ModuleType, *args: str
+) -> Union[types.ModuleType, callable, object]:
     """Loads a submodule for a given module. Args are the elements to navigate the submodules, the order of the args needs to be the order the submodules appear in (sub)module.
-    
+
     Parameters
     ----------
     module: types.ModuleType
@@ -48,15 +51,23 @@ def get_backend_libs(base_path: str = BASE_PATH) -> List[str]:
     Returns
     -------
     backend_libs: List[str]
-        List of available backend libs 
+        List of available backend libs
     """
     # FIXME remove the active_backend_libs when the lib restructure is done
     active_backend_libs = ["ross", "torchvision", "fastai", "ultralytics"]
-    backend_libs = [i for i in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, i)) and not i.startswith("__") and i in active_backend_libs]
+    backend_libs = [
+        i
+        for i in os.listdir(base_path)
+        if os.path.isdir(os.path.join(base_path, i))
+        and not i.startswith("__")
+        and i in active_backend_libs
+    ]
     return backend_libs
 
 
-def get_model_types_for_backend_lib(backend_lib_name: str, base_path: str = BASE_PATH) -> List[str]:
+def get_model_types_for_backend_lib(
+    backend_lib_name: str, base_path: str = BASE_PATH
+) -> List[str]:
     """Returns all available model_types for a given backend lib
 
     Parameters
@@ -68,14 +79,21 @@ def get_model_types_for_backend_lib(backend_lib_name: str, base_path: str = BASE
 
     Returns
     -------
-    model_types: List[str] 
+    model_types: List[str]
         List of available model types
     """
-    model_types = [i for i in os.listdir(os.path.join(base_path, backend_lib_name)) if os.path.isdir(os.path.join(base_path, backend_lib_name, i)) and not i.startswith("__")]
+    model_types = [
+        i
+        for i in os.listdir(os.path.join(base_path, backend_lib_name))
+        if os.path.isdir(os.path.join(base_path, backend_lib_name, i))
+        and not i.startswith("__")
+    ]
     return model_types
 
 
-def get_backbone_names(backend_lib_name: str, model_type_name: str, base_path: str = BASE_PATH) -> List[str]:
+def get_backbone_names(
+    backend_lib_name: str, model_type_name: str, base_path: str = BASE_PATH
+) -> List[str]:
     """Returns all available backbones for a given backend lib
 
     Parameters
@@ -94,17 +112,36 @@ def get_backbone_names(backend_lib_name: str, model_type_name: str, base_path: s
     """
     print(backend_lib_name)
     print(model_type_name)
-    backbone_files = [i for i in os.listdir(os.path.join(base_path, backend_lib_name, model_type_name, "backbones")) if os.path.join(base_path, backend_lib_name, model_type_name, "backbones", i).endswith(".py") and not i.startswith("__")]
+    backbone_files = [
+        i
+        for i in os.listdir(
+            os.path.join(base_path, backend_lib_name, model_type_name, "backbones")
+        )
+        if os.path.join(
+            base_path, backend_lib_name, model_type_name, "backbones", i
+        ).endswith(".py")
+        and not i.startswith("__")
+    ]
     backbone_list = []
     for backbone_file in backbone_files:
-        backbones = importlib.import_module("icevision.models." + ".".join([backend_lib_name, model_type_name]) + ".backbones."+backbone_file.replace(".py", ""))
+        backbones = importlib.import_module(
+            "icevision.models."
+            + ".".join([backend_lib_name, model_type_name])
+            + ".backbones."
+            + backbone_file.replace(".py", "")
+        )
         backbone_list += getattr(backbones, "__all__", [])
     return backbone_list
 
 
-def load_model_components(backend_lib_name: str, model_type_name: str, backbone_name:str, model_base_path: str = BASE_PATH):
+def load_model_components(
+    backend_lib_name: str,
+    model_type_name: str,
+    backbone_name: str,
+    model_base_path: str = BASE_PATH,
+):
     """Build a model form given backend lib, model_type and backbone.
-    
+
     Parameters
     ----------
     backend_lib_name: str
@@ -125,25 +162,42 @@ def load_model_components(backend_lib_name: str, model_type_name: str, backbone_
     try:
         backend_lib = get_module_element_form_module(models, backend_lib_name)
     except AttributeError:
-        raise AttributeError(f"Backend lib: {backend_lib_name} not found. Possible options are: {get_backend_libs(model_base_path)}")
+        raise AttributeError(
+            f"Backend lib: {backend_lib_name} not found. Possible options are: {get_backend_libs(model_base_path)}"
+        )
     # load the model_type
     try:
-        model_type = get_module_element_form_module(models, backend_lib_name, model_type_name)
+        model_type = get_module_element_form_module(
+            models, backend_lib_name, model_type_name
+        )
     except AttributeError:
-        raise AttributeError(f"Model type: {model_type_name} not found. Possible options are: {get_model_types_for_backend_lib(model_base_path, backend_lib_name)}")
+        raise AttributeError(
+            f"Model type: {model_type_name} not found. Possible options are: {get_model_types_for_backend_lib(model_base_path, backend_lib_name)}"
+        )
     # load backbone
     try:
-        backbone_module = get_module_element_form_module(models, backend_lib_name, model_type_name, "backbones")
+        backbone_module = get_module_element_form_module(
+            models, backend_lib_name, model_type_name, "backbones"
+        )
         backbone = getattr(backbone_module, backbone_name)
     except AttributeError:
-        raise AttributeError(f"Backbone: {backbone_name} not found. Possible options are: {get_backbone_names(backend_lib_name, model_type_name)}")
-    
+        raise AttributeError(
+            f"Backbone: {backbone_name} not found. Possible options are: {get_backbone_names(backend_lib_name, model_type_name)}"
+        )
+
     return model_type, backbone
 
 
-def build_model(backend_lib_name: str, model_type_name: str, backbone_name:str , num_classes: int, backbone_config: Optional[dict] = None, model_config: Optional[dict] = None):
+def build_model(
+    backend_lib_name: str,
+    model_type_name: str,
+    backbone_name: str,
+    num_classes: int,
+    backbone_config: Optional[dict] = None,
+    model_config: Optional[dict] = None,
+):
     """Build a model form given backend lib, model_type and backbone.
-    
+
     Parameters
     ----------
     backend_lib_name: str
@@ -169,10 +223,10 @@ def build_model(backend_lib_name: str, model_type_name: str, backbone_name:str ,
         backbone_config = {"pretrained": True}
     if model_config is None:
         model_config = {}
-    model_type, backbone = load_model_components(backend_lib_name, model_type_name, backbone_name)
+    model_type, backbone = load_model_components(
+        backend_lib_name, model_type_name, backbone_name
+    )
     model = model_type.model(
-        backbone=backbone(**backbone_config),
-        num_classes=num_classes,
-        **model_config
+        backbone=backbone(**backbone_config), num_classes=num_classes, **model_config
     )
     return model_type, model

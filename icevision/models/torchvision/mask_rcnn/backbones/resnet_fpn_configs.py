@@ -16,7 +16,7 @@ from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
 from icevision.models.torchvision.backbone_config import TorchvisionBackboneConfig
 
 
-#utils
+# utils
 class TorchvisionMaskRCNNBackboneConfig(TorchvisionBackboneConfig):
     def __init__(self, **kwargs):
         super().__init__(model_name="mask_rcnn", **kwargs)
