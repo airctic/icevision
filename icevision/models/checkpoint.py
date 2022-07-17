@@ -149,6 +149,7 @@ def save_icevision_checkpoint(
     save_checkpoint(model, filename, optimizer=optimizer, meta=meta)
 
 
+# TODO: Document the function better
 def model_from_checkpoint(
     filename: Union[Path, str],
     model_name=None,
