@@ -115,9 +115,3 @@ def test_ClassMapRecordComponent_repr():
     assert class_map_record_component._repr() == [
         "Class Map: <ClassMap: {'background': 0, 'test': 1}>"
     ]
-
-
-def test_BaseLabelsRecordComponent_set_labels():
-    base_labels_record_component = core.record_components.BaseLabelsRecordComponent()
-    base_labels_record_component.set_labels(["test"])
-    assert base_labels_record_component.labels == ["test"]
