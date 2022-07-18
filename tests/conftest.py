@@ -39,7 +39,7 @@ def fridge_faster_rcnn_model() -> nn.Module:
 
 
 @pytest.fixture()
-def fridge_faster_rcnn_model_mmdet() -> nn.Module:
+def faster_rcnn_model_mmdet_with_num_classes_1() -> nn.Module:
     backbone = models.mmdet.faster_rcnn.backbones.resnet50_fpn_1x(pretrained=False)
     return models.mmdet.faster_rcnn.model(num_classes=1, backbone=backbone)
 

@@ -1,5 +1,6 @@
 import pytest
 from icevision.all import *
+from PIL import Image
 
 
 @pytest.fixture
@@ -65,3 +66,58 @@ def test_one_hot_encodings(dummy_class_map_elaborate, label_ids):
     one_hot_values = rec.classification.one_hot_encoded()
     assert one_hot_values.sum() == len(label_ids)
     assert np.unique(one_hot_values).tolist() == [0, 1]
+
+
+def test_record_repr_img_is_none():
+    test_img_record_component = core.record_components.ImageRecordComponent()
+    assert test_img_record_component._repr() == ["Img: None"]
+
+
+def test_record_repr_img_is_array():
+    test_img_record_component = core.record_components.ImageRecordComponent()
+    test_img_record_component.img = np.ones([4, 4, 3], dtype=np.uint8)
+    assert test_img_record_component._repr() == ["Img: 4x4x3 <np.ndarray> Image"]
+
+
+def test_record_repr_img_is_array():
+    test_img_record_component = core.record_components.ImageRecordComponent()
+    test_img_record_component.img = PIL.Image.fromarray(
+        np.ones([4, 4, 3], dtype=np.uint8)
+    )
+    assert test_img_record_component._repr() == ["Img: 4x4 <PIL.Image; mode='RGB'>"]
+
+
+def test_RecordComponent_as_dict_returns_empty():
+    record_component = core.record_components.RecordComponent()
+    assert record_component.as_dict() == {}
+
+
+def test_RecordComponent_aggregate_objects_returns_empty():
+    record_component = core.record_components.RecordComponent()
+    assert record_component._aggregate_objects() == {}
+
+
+def test_RecordComponent_repr_returns_empty():
+    record_component = core.record_components.RecordComponent()
+    assert record_component._repr() == []
+
+
+def test_RecordComponent_builder_template_returns_empty():
+    record_component = core.record_components.RecordComponent()
+    assert record_component._builder_template() == []
+
+
+def test_ClassMapRecordComponent_repr():
+    class_map_record_component = core.record_components.ClassMapRecordComponent(
+        "object_detection"
+    )
+    class_map_record_component.class_map = ClassMap(["test"])
+    assert class_map_record_component._repr() == [
+        "Class Map: <ClassMap: {'background': 0, 'test': 1}>"
+    ]
+
+
+def test_BaseLabelsRecordComponent_set_labels():
+    base_labels_record_component = core.record_components.BaseLabelsRecordComponent()
+    base_labels_record_component.set_labels(["test"])
+    assert base_labels_record_component.labels == ["test"]

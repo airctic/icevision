@@ -264,4 +264,3 @@ def model_from_checkpoint(
         "checkpoint": checkpoint,
     }
     return checkpoint_and_model
-    # return model, model_type, backbone, class_map, img_size, checkpoint
