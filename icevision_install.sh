@@ -45,7 +45,7 @@ esac
 
 
 echo "- Installing mmdet"
-pip install mmdet==2.17.0 --upgrade -q
+pip install mmdet==2.20.0 --upgrade -q
 
 echo "- Installing mmseg"
 pip install mmsegmentation==0.20.2 --upgrade -q
