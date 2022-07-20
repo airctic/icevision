@@ -40,22 +40,30 @@ class ModelAdapter(LightningModelAdapter, ABC):
         return loss
 
     def validation_step(self, batch, batch_idx):
+        self.__val_predict(batch, loss_log_key="val_loss")
+
+    def __val_predict(self, batch, loss_log_key):
         (xb, yb), records = batch
 
-        with torch.no_grad():
-            inference_out, training_out = self(xb)
-            preds = yolov5.convert_raw_predictions(
-                batch=xb,
-                raw_preds=inference_out,
-                records=records,
-                detection_threshold=0.001,
-                nms_iou_threshold=0.6,
-            )
-            loss = self.compute_loss(training_out, yb)[0]
+        inference_out, training_out = self(xb)
+        preds = yolov5.convert_raw_predictions(
+            batch=xb,
+            raw_preds=inference_out,
+            records=records,
+            detection_threshold=0.001,
+            nms_iou_threshold=0.6,
+        )
+        loss = self.compute_loss(training_out, yb)[0]
 
         self.accumulate_metrics(preds)
 
-        self.log("val_loss", loss)
+        self.log(loss_log_key, loss)
 
     def validation_epoch_end(self, outs):
+        self.finalize_metrics()
+
+    def test_step(self, batch, batch_idx):
+        self.__val_predict(batch=batch, loss_log_key="test_loss")
+
+    def test_epoch_end(self, outs):
         self.finalize_metrics()
