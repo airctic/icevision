@@ -49,7 +49,7 @@ class TestBboxModels:
         )
         learn.fine_tune(1, 3e-4)
 
-    def test_mmdet_bbox_models_light(
+    def test_mmdet_bbox_models_light_train(
         self, ds, model_type, pretrained, cfg_options, samples_source, request
     ):
         train_dl, valid_dl, model = self.dls_model(
@@ -68,7 +68,100 @@ class TestBboxModels:
             logger=False,
             checkpoint_callback=False,
         )
+
         trainer.fit(light_model, train_dl, valid_dl)
+
+    def test_mmdet_bbox_models_light_validate(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, valid_dl, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+        light_model = LitModel(model)
+        trainer = pl.Trainer(
+            max_epochs=1,
+            weights_summary=None,
+            num_sanity_val_steps=0,
+            logger=False,
+            checkpoint_callback=False,
+        )
+
+        trainer.validate(light_model, valid_dl)
+
+    def test_mmdet_bbox_models_light_finalizes_metrics_on_validation_epoch_end(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, _, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LitModel, self).__init__(model, metrics)
+                self.was_finalize_metrics_called = False
+
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+            def finalize_metrics(self):
+                self.was_finalize_metrics_called = True
+
+        light_model = LitModel(model)
+
+        light_model.validation_epoch_end(None)
+
+        assert light_model.was_finalize_metrics_called == True
+
+    def test_mmdet_bbox_models_light_test(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, valid_dl, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+        light_model = LitModel(model)
+        trainer = pl.Trainer(
+            max_epochs=1,
+            weights_summary=None,
+            num_sanity_val_steps=0,
+            logger=False,
+            checkpoint_callback=False,
+        )
+
+        trainer.test(light_model, valid_dl)
+
+    def test_mmdet_bbox_models_light_finalizes_metrics_on_test_epoch_end(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, _, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LitModel, self).__init__(model, metrics)
+                self.was_finalize_metrics_called = False
+
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+            def finalize_metrics(self):
+                self.was_finalize_metrics_called = True
+
+        light_model = LitModel(model)
+
+        light_model.test_epoch_end(None)
+
+        assert light_model.was_finalize_metrics_called == True
 
 
 @pytest.fixture()
