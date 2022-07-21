@@ -22,3 +22,7 @@ def test_plot_losses(fridge_efficientdet_model, fridge_ds, monkeypatch):
         model=model, dataset=ds, sort_by=by, n_samples=2
     )
     assert len(samples_plus_losses) == len(ds) == len(preds)
+
+
+def test_show_batch():
+    pass
