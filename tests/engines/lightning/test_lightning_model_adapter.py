@@ -16,7 +16,6 @@ class DummLightningModelAdapter(LightningModelAdapter):
     pass
 
 
-# test if finalize metrics reports metrics correctly
 def test_finalze_metrics_reports_metrics_correctly(mocker):
     mocker.patch(
         "icevision.engines.lightning.lightning_model_adapter.LightningModelAdapter.log"

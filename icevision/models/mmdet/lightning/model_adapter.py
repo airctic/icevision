@@ -45,14 +45,14 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         outputs = self.model.train_step(data=data, optimizer=None)
 
         for k, v in outputs["log_vars"].items():
-            self.log(f"train/{k}", v)
+            self.log(f"train_{k}", v)
 
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
-        self.__val_predict(batch, loss_log_key="valid/")
+        self._shared_eval(batch, loss_log_key="val_")
 
-    def __val_predict(self, batch, loss_log_key):
+    def _shared_eval(self, batch, loss_log_key):
         data, records = batch
 
         outputs = self.model.train_step(data=data, optimizer=None)
@@ -72,7 +72,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         self.finalize_metrics()
 
     def test_step(self, batch, batch_idx):
-        self.__val_predict(batch=batch, loss_log_key="test/")
+        self._shared_eval(batch=batch, loss_log_key="test_")
 
     def test_epoch_end(self, outs):
         self.finalize_metrics()
