@@ -34,14 +34,14 @@ class ModelAdapter(LightningModelAdapter, ABC):
         loss = efficientdet.loss_fn(preds, yb)
 
         for k, v in preds.items():
-            self.log(f"train/{k}", v)
+            self.log(f"train_{k}", v)
 
         return loss
 
     def validation_step(self, batch, batch_idx):
-        self.__val_predict(batch, loss_log_key="valid/")
+        self._shared_eval(batch, loss_log_key="val_")
 
-    def __val_predict(self, batch, loss_log_key):
+    def _shared_eval(self, batch, loss_log_key):
         (xb, yb), records = batch
 
         raw_preds = self(xb, yb)
@@ -57,13 +57,13 @@ class ModelAdapter(LightningModelAdapter, ABC):
 
         for k, v in raw_preds.items():
             if "loss" in k:
-                self.log(f"{loss_log_key}/{k}", v)
+                self.log(f"{loss_log_key}{k}", v)
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
 
     def test_step(self, batch, batch_idx):
-        self.__val_predict(batch=batch, loss_log_key="test/")
+        self._shared_eval(batch=batch, loss_log_key="test_")
 
     def test_epoch_end(self, outs):
         self.finalize_metrics()
