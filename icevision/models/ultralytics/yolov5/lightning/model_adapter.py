@@ -40,13 +40,13 @@ class ModelAdapter(LightningModelAdapter, ABC):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        self._shared_eval(batch, loss_log_key="val_loss")
+        self._shared_eval(batch, loss_log_key="val")
 
     def _shared_eval(self, batch, loss_log_key):
         (xb, yb), records = batch
 
         inference_out, training_out = self(xb)
-        preds = yolov5.convert_raw_predictions(
+        preds = self.convert_raw_predictions(
             batch=xb,
             raw_preds=inference_out,
             records=records,
@@ -57,13 +57,24 @@ class ModelAdapter(LightningModelAdapter, ABC):
 
         self.accumulate_metrics(preds)
 
-        self.log(loss_log_key, loss)
+        self.log(f"{loss_log_key}_loss", loss)
+
+    def convert_raw_predictions(
+        self, batch, raw_preds, records, detection_threshold, nms_iou_threshold
+    ):
+        return yolov5.convert_raw_predictions(
+            batch=batch,
+            raw_preds=raw_preds,
+            records=records,
+            detection_threshold=detection_threshold,
+            nms_iou_threshold=nms_iou_threshold,
+        )
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
 
     def test_step(self, batch, batch_idx):
-        self._shared_eval(batch=batch, loss_log_key="test_loss")
+        self._shared_eval(batch=batch, loss_log_key="test")
 
     def test_epoch_end(self, outs):
         self.finalize_metrics()

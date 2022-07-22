@@ -41,7 +41,7 @@ def test_lightning_yolo_test(fridge_ds, backbone, light_model_cls):
 
 @pytest.mark.parametrize(
     "backbone",
-    [small, medium, large, extra_large],
+    [small, medium],
 )
 def test_lightning_yolo_finalizes_metrics_on_test_epoch_end(backbone, light_model_cls):
     model = models.ultralytics.yolov5.model(
@@ -53,3 +53,42 @@ def test_lightning_yolo_finalizes_metrics_on_test_epoch_end(backbone, light_mode
     light_model.test_epoch_end(None)
 
     assert light_model.was_finalize_metrics_called == True
+
+
+@pytest.mark.parametrize(
+    "backbone",
+    [small, medium],
+)
+def test_lightning_yolo_logs_losses_during_test_step(fridge_ds, backbone):
+    _, valid_ds = fridge_ds
+    valid_dl = models.ultralytics.yolov5.train_dl(
+        valid_ds, batch_size=1, num_workers=0, shuffle=False
+    )
+    model = models.ultralytics.yolov5.model(
+        num_classes=5, img_size=384, backbone=backbone(pretrained=False)
+    )
+
+    class LightModel(models.ultralytics.yolov5.lightning.ModelAdapter):
+        def __init__(self, model, metrics=None):
+            super(LightModel, self).__init__(model, metrics)
+            self.model = model
+            self.logs = {}
+
+        def configure_optimizers(self):
+            return SGD(self.parameters(), lr=1e-4)
+
+        def log(self, key, value, **args):
+            super(LightModel, self).log(key, value, **args)
+            self.logs[key] = value
+
+    light_model = LightModel(model)
+    light_model.to("cpu")
+    light_model.eval()
+    light_model.compute_loss = lambda *args: [random.randint(0, 10)]
+    for batch in valid_dl:
+        batch
+        break
+
+    light_model.test_step(batch, 0)
+
+    assert list(light_model.logs.keys()) == [f"test_loss"]
