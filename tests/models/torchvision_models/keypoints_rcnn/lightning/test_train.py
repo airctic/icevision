@@ -39,28 +39,30 @@ def test_lightining_keypoints_rcnn_train(ochuman_keypoints_dls, light_model_cls)
 def test_lightining_keypoints_rcnn_training_step_returns_loss(
     ochuman_keypoints_dls, light_model_cls
 ):
-    train_dl, _ = ochuman_keypoints_dls
-    model = keypoint_rcnn.model(num_keypoints=19)
-    light_model = light_model_cls(model)
-    expected_loss = random.randint(0, 10)
-    light_model.compute_loss = lambda *args: expected_loss
-    for batch in train_dl:
-        break
+    with torch.set_grad_enabled(True):
+        train_dl, _ = ochuman_keypoints_dls
+        model = keypoint_rcnn.model(num_keypoints=19)
+        light_model = light_model_cls(model)
+        expected_loss = random.randint(0, 10)
+        light_model.compute_loss = lambda *args: expected_loss
+        for batch in train_dl:
+            break
 
-    loss = light_model.training_step(batch, 0)
+        loss = light_model.training_step(batch, 0)
 
-    assert loss == expected_loss
+        assert loss == expected_loss
 
 
 def test_lightining_keypoints_rcnn_logs_losses_during_training_step(
     ochuman_keypoints_dls, light_model_cls
 ):
-    train_dl, _ = ochuman_keypoints_dls
-    model = keypoint_rcnn.model(num_keypoints=19)
-    light_model = light_model_cls(model)
-    for batch in train_dl:
-        break
+    with torch.set_grad_enabled(True):
+        train_dl, _ = ochuman_keypoints_dls
+        model = keypoint_rcnn.model(num_keypoints=19)
+        light_model = light_model_cls(model)
+        for batch in train_dl:
+            break
 
-    light_model.training_step(batch, 0)
+        light_model.training_step(batch, 0)
 
-    assert list(light_model.logs.keys()) == ["train_loss"]
+        assert list(light_model.logs.keys()) == ["train_loss"]

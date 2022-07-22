@@ -46,15 +46,16 @@ def test_lightning_yolo_validate(fridge_ds, backbone, light_model_cls):
 def test_lightning_yolo_finalizes_metrics_on_validation_epoch_end(
     backbone, light_model_cls
 ):
-    model = models.ultralytics.yolov5.model(
-        num_classes=5, img_size=384, backbone=backbone(pretrained=True)
-    )
-    metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]
-    light_model = light_model_cls(model, metrics=metrics)
+    with torch.set_grad_enabled(False):
+        model = models.ultralytics.yolov5.model(
+            num_classes=5, img_size=384, backbone=backbone(pretrained=True)
+        )
+        metrics = [COCOMetric(metric_type=COCOMetricType.bbox)]
+        light_model = light_model_cls(model, metrics=metrics)
 
-    light_model.validation_epoch_end(None)
+        light_model.validation_epoch_end(None)
 
-    assert light_model.was_finalize_metrics_called == True
+        assert light_model.was_finalize_metrics_called == True
 
 
 @pytest.mark.parametrize(
@@ -62,35 +63,36 @@ def test_lightning_yolo_finalizes_metrics_on_validation_epoch_end(
     [small, medium],
 )
 def test_lightning_yolo_logs_losses_during_validation_step(fridge_ds, backbone):
-    _, valid_ds = fridge_ds
-    valid_dl = models.ultralytics.yolov5.train_dl(
-        valid_ds, batch_size=1, num_workers=0, shuffle=False
-    )
-    model = models.ultralytics.yolov5.model(
-        num_classes=5, img_size=384, backbone=backbone(pretrained=False)
-    )
+    with torch.set_grad_enabled(False):
+        _, valid_ds = fridge_ds
+        valid_dl = models.ultralytics.yolov5.train_dl(
+            valid_ds, batch_size=1, num_workers=0, shuffle=False
+        )
+        model = models.ultralytics.yolov5.model(
+            num_classes=5, img_size=384, backbone=backbone(pretrained=False)
+        )
 
-    class LightModel(models.ultralytics.yolov5.lightning.ModelAdapter):
-        def __init__(self, model, metrics=None):
-            super(LightModel, self).__init__(model, metrics)
-            self.model = model
-            self.logs = {}
+        class LightModel(models.ultralytics.yolov5.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LightModel, self).__init__(model, metrics)
+                self.model = model
+                self.logs = {}
 
-        def configure_optimizers(self):
-            return SGD(self.parameters(), lr=1e-4)
+            def configure_optimizers(self):
+                return SGD(self.parameters(), lr=1e-4)
 
-        def log(self, key, value, **args):
-            super(LightModel, self).log(key, value, **args)
-            self.logs[key] = value
+            def log(self, key, value, **args):
+                super(LightModel, self).log(key, value, **args)
+                self.logs[key] = value
 
-    light_model = LightModel(model)
-    light_model.to("cpu")
-    light_model.eval()
-    light_model.compute_loss = lambda *args: [random.randint(0, 10)]
-    for batch in valid_dl:
-        batch
-        break
+        light_model = LightModel(model)
+        light_model.to("cpu")
+        light_model.eval()
+        light_model.compute_loss = lambda *args: [random.randint(0, 10)]
+        for batch in valid_dl:
+            batch
+            break
 
-    light_model.validation_step(batch, 0)
+        light_model.validation_step(batch, 0)
 
-    assert list(light_model.logs.keys()) == [f"val_loss"]
+        assert list(light_model.logs.keys()) == [f"val_loss"]

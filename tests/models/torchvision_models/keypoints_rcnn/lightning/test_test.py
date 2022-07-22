@@ -40,25 +40,27 @@ def test_lightining_keypoints_rcnn_test(ochuman_keypoints_dls, light_model_cls):
 
 
 def test_lightining_keypoints_finalizes_metrics_on_test_epoch_end(light_model_cls):
-    model = keypoint_rcnn.model(num_keypoints=19)
-    light_model = light_model_cls(model)
+    with torch.set_grad_enabled(False):
+        model = keypoint_rcnn.model(num_keypoints=19)
+        light_model = light_model_cls(model)
 
-    light_model.test_epoch_end(None)
+        light_model.test_epoch_end(None)
 
-    assert light_model.was_finalize_metrics_called == True
+        assert light_model.was_finalize_metrics_called == True
 
 
 def test_lightining_keypoints_rcnn_logs_losses_during_test_step(
     ochuman_keypoints_dls, light_model_cls
 ):
-    _, valid_dl = ochuman_keypoints_dls
-    model = keypoint_rcnn.model(num_keypoints=19)
-    light_model = light_model_cls(model)
-    for batch in valid_dl:
-        break
-    light_model.convert_raw_predictions = lambda **args: None
-    light_model.accumulate_metrics = lambda **args: None
+    with torch.set_grad_enabled(False):
+        _, valid_dl = ochuman_keypoints_dls
+        model = keypoint_rcnn.model(num_keypoints=19)
+        light_model = light_model_cls(model)
+        for batch in valid_dl:
+            break
+        light_model.convert_raw_predictions = lambda **args: None
+        light_model.accumulate_metrics = lambda **args: None
 
-    light_model.test_step(batch, 0)
+        light_model.test_step(batch, 0)
 
-    assert list(light_model.logs.keys()) == ["test_loss"]
+        assert list(light_model.logs.keys()) == ["test_loss"]

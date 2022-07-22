@@ -45,23 +45,25 @@ def test_lightining_faster_rcnn_validate(
 def test_lightining_faster_rcnn_finalizes_metrics_on_validation_epoch_end(
     fridge_faster_rcnn_model, light_model_cls, metrics
 ):
-    light_model = light_model_cls(fridge_faster_rcnn_model, metrics=metrics)
+    with torch.set_grad_enabled(False):
+        light_model = light_model_cls(fridge_faster_rcnn_model, metrics=metrics)
 
-    light_model.validation_epoch_end(None)
+        light_model.validation_epoch_end(None)
 
-    assert light_model.was_finalize_metrics_called == True
+        assert light_model.was_finalize_metrics_called == True
 
 
 def test_lightining_faster_rcnn_logs_losses_during_validation_step(
     fridge_faster_rcnn_dls, fridge_faster_rcnn_model, light_model_cls
 ):
-    train_dl, _ = fridge_faster_rcnn_dls
-    light_model = light_model_cls(fridge_faster_rcnn_model, metrics=None)
-    for batch in train_dl:
-        break
-    light_model.convert_raw_predictions = lambda **args: None
-    light_model.accumulate_metrics = lambda **args: None
+    with torch.set_grad_enabled(False):
+        train_dl, _ = fridge_faster_rcnn_dls
+        light_model = light_model_cls(fridge_faster_rcnn_model, metrics=None)
+        for batch in train_dl:
+            break
+        light_model.convert_raw_predictions = lambda **args: None
+        light_model.accumulate_metrics = lambda **args: None
 
-    light_model.validation_step(batch, 0)
+        light_model.validation_step(batch, 0)
 
-    assert list(light_model.logs.keys()) == ["val_loss"]
+        assert list(light_model.logs.keys()) == ["val_loss"]

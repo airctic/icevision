@@ -43,32 +43,34 @@ def test_lightining_efficientdet_train(
 def test_lightining_efficientdet_training_step_returns_loss(
     fridge_efficientdet_dls, fridge_efficientdet_model, light_model_cls
 ):
-    train_dl, _ = fridge_efficientdet_dls
-    light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
-    for batch in train_dl:
-        break
-    expected_loss = random.randint(0, 1000)
+    with torch.set_grad_enabled(True):
+        train_dl, _ = fridge_efficientdet_dls
+        light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
+        for batch in train_dl:
+            break
+        expected_loss = random.randint(0, 1000)
 
-    def fake_compute_loss(self, *args):
-        return expected_loss
+        def fake_compute_loss(self, *args):
+            return expected_loss
 
-    light_model.compute_loss = fake_compute_loss
+        light_model.compute_loss = fake_compute_loss
 
-    loss = light_model.training_step(batch, 0)
+        loss = light_model.training_step(batch, 0)
 
-    assert loss == expected_loss
+        assert loss == expected_loss
 
 
 def test_lightining_efficientdet_logs_losses_during_training_step(
     fridge_efficientdet_dls, fridge_efficientdet_model, light_model_cls
 ):
-    train_dl, _ = fridge_efficientdet_dls
-    light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
-    for batch in train_dl:
-        break
+    with torch.set_grad_enabled(True):
+        train_dl, _ = fridge_efficientdet_dls
+        light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
+        for batch in train_dl:
+            break
 
-    light_model.training_step(batch, 0)
+        light_model.training_step(batch, 0)
 
-    assert sorted(light_model.logs.keys()) == sorted(
-        ["train_loss", "train_box_loss", "train_class_loss"]
-    )
+        assert sorted(light_model.logs.keys()) == sorted(
+            ["train_loss", "train_box_loss", "train_class_loss"]
+        )

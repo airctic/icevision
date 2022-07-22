@@ -31,31 +31,32 @@ def test_fastai_unet_test(camvid_ds, backbone):
 
 @pytest.mark.parametrize("backbone", [resnet18])
 def test_fastai_unet_logs_losses_during_test_step(camvid_ds, backbone):
-    _, valid_ds = camvid_ds
-    valid_dl = models.fastai.unet.train_dl(
-        valid_ds, batch_size=1, num_workers=0, shuffle=False
-    )
-    model = models.fastai.unet.model(
-        num_classes=32, img_size=64, backbone=backbone(pretrained=False)
-    )
+    with torch.set_grad_enabled(False):
+        _, valid_ds = camvid_ds
+        valid_dl = models.fastai.unet.train_dl(
+            valid_ds, batch_size=1, num_workers=0, shuffle=False
+        )
+        model = models.fastai.unet.model(
+            num_classes=32, img_size=64, backbone=backbone(pretrained=False)
+        )
 
-    class LightModel(models.fastai.unet.lightning.ModelAdapter):
-        def __init__(self, model, metrics=None):
-            super(LightModel, self).__init__(model, metrics)
-            self.model = model
-            self.logs = {}
+        class LightModel(models.fastai.unet.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LightModel, self).__init__(model, metrics)
+                self.model = model
+                self.logs = {}
 
-        def configure_optimizers(self):
-            return Adam(self.parameters(), lr=1e-4)
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
 
-        def log(self, key, value, **args):
-            super(LightModel, self).log(key, value, **args)
-            self.logs[key] = value
+            def log(self, key, value, **args):
+                super(LightModel, self).log(key, value, **args)
+                self.logs[key] = value
 
-    for batch in valid_dl:
-        break
-    light_model = LightModel(model)
+        for batch in valid_dl:
+            break
+        light_model = LightModel(model)
 
-    light_model.test_step(batch, 0)
+        light_model.test_step(batch, 0)
 
-    assert list(light_model.logs.keys()) == ["test_loss"]
+        assert list(light_model.logs.keys()) == ["test_loss"]
