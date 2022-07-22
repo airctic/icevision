@@ -29,20 +29,23 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         (xb, yb), records = batch
         preds = self(xb, yb)
 
-        loss = loss_fn(preds, yb)
+        loss = self.compute_loss(preds, yb)
         self.log("train_loss", loss)
 
         return loss
 
+    def compute_loss(self, preds, yb):
+        return loss_fn(preds, yb)
+
     def validation_step(self, batch, batch_idx):
-        self._shared_eval(batch, loss_log_key="val_loss")
+        self._shared_eval(batch, loss_log_key="val")
 
     def _shared_eval(self, batch, loss_log_key):
         (xb, yb), records = batch
 
         self.train()
-        train_preds = self(xb, yb)
-        loss = loss_fn(train_preds, yb)
+        preds = self(xb, yb)
+        loss = self.compute_loss(preds, yb)
 
         self.eval()
         raw_preds = self(xb)
@@ -51,13 +54,13 @@ class RCNNModelAdapter(LightningModelAdapter, ABC):
         )
         self.accumulate_metrics(preds=preds)
 
-        self.log(loss_log_key, loss)
+        self.log(f"{loss_log_key}_loss", loss)
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
 
     def test_step(self, batch, batch_idx):
-        self._shared_eval(batch=batch, loss_log_key="test_loss")
+        self._shared_eval(batch=batch, loss_log_key="test")
 
     def test_epoch_end(self, outs):
         self.finalize_metrics()
