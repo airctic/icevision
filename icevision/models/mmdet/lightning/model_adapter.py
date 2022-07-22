@@ -50,7 +50,7 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
-        self._shared_eval(batch, loss_log_key="val_")
+        self._shared_eval(batch, loss_log_key="val")
 
     def _shared_eval(self, batch, loss_log_key):
         data, records = batch
@@ -66,13 +66,13 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         self.accumulate_metrics(preds)
 
         for k, v in outputs["log_vars"].items():
-            self.log(f"{loss_log_key}{k}", v)
+            self.log(f"{loss_log_key}_{k}", v)
 
     def validation_epoch_end(self, outs):
         self.finalize_metrics()
 
     def test_step(self, batch, batch_idx):
-        self._shared_eval(batch=batch, loss_log_key="test_")
+        self._shared_eval(batch=batch, loss_log_key="test")
 
     def test_epoch_end(self, outs):
         self.finalize_metrics()

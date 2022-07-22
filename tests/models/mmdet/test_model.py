@@ -1,4 +1,5 @@
 import pytest
+import random
 from icevision.all import *
 
 
@@ -71,6 +72,62 @@ class TestBboxModels:
 
         trainer.fit(light_model, train_dl, valid_dl)
 
+    def test_mmdet_bbox_models_light_training_step_returns_loss(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        train_dl, _, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+        expected_loss = random.randint(0, 10)
+        model.train_step = lambda **args: {"log_vars": {}, "loss": expected_loss}
+        light_model = LitModel(model)
+        for batch in train_dl:
+            batch
+            break
+
+        loss = light_model.training_step(batch, 0)
+
+        assert loss == expected_loss
+
+    def test_mmdet_bbox_models_light_logs_losses_during_training_step(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        train_dl, _, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LitModel, self).__init__(model, metrics)
+                self.model = model
+                self.logs = {}
+
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+            def log(self, key, value, **args):
+                super(LitModel, self).log(key, value, **args)
+                self.logs[key] = value
+
+        expected_loss_key = "my_loss_key"
+        model.train_step = lambda **args: {
+            "log_vars": {expected_loss_key: random.randint(0, 10)},
+            "loss": random.randint(0, 10),
+        }
+        light_model = LitModel(model)
+        for batch in train_dl:
+            batch
+            break
+
+        light_model.training_step(batch, 0)
+
+        assert list(light_model.logs.keys()) == [f"train_{expected_loss_key}"]
+
     def test_mmdet_bbox_models_light_validate(
         self, ds, model_type, pretrained, cfg_options, samples_source, request
     ):
@@ -92,6 +149,39 @@ class TestBboxModels:
         )
 
         trainer.validate(light_model, valid_dl)
+
+    def test_mmdet_bbox_models_light_logs_losses_during_validation_step(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, valid_dl, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LitModel, self).__init__(model, metrics)
+                self.model = model
+                self.logs = {}
+
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+            def log(self, key, value, **args):
+                super(LitModel, self).log(key, value, **args)
+                self.logs[key] = value
+
+        expected_loss_key = "my_loss_key"
+        model.train_step = lambda **args: {
+            "log_vars": {expected_loss_key: random.randint(0, 10)}
+        }
+        light_model = LitModel(model)
+        for batch in valid_dl:
+            batch
+            break
+
+        light_model.validation_step(batch, 0)
+
+        assert list(light_model.logs.keys()) == [f"val_{expected_loss_key}"]
 
     def test_mmdet_bbox_models_light_finalizes_metrics_on_validation_epoch_end(
         self, ds, model_type, pretrained, cfg_options, samples_source, request
@@ -138,6 +228,39 @@ class TestBboxModels:
         )
 
         trainer.test(light_model, valid_dl)
+
+    def test_mmdet_bbox_models_light_logs_losses_during_test_step(
+        self, ds, model_type, pretrained, cfg_options, samples_source, request
+    ):
+        _, valid_dl, model = self.dls_model(
+            ds, model_type, pretrained, cfg_options, samples_source, request
+        )
+
+        class LitModel(model_type.lightning.ModelAdapter):
+            def __init__(self, model, metrics=None):
+                super(LitModel, self).__init__(model, metrics)
+                self.model = model
+                self.logs = {}
+
+            def configure_optimizers(self):
+                return Adam(self.parameters(), lr=1e-4)
+
+            def log(self, key, value, **args):
+                super(LitModel, self).log(key, value, **args)
+                self.logs[key] = value
+
+        expected_loss_key = "my_loss_key"
+        model.train_step = lambda **args: {
+            "log_vars": {expected_loss_key: random.randint(0, 10)}
+        }
+        light_model = LitModel(model)
+        for batch in valid_dl:
+            batch
+            break
+
+        light_model.test_step(batch, 0)
+
+        assert list(light_model.logs.keys()) == [f"test_{expected_loss_key}"]
 
     def test_mmdet_bbox_models_light_finalizes_metrics_on_test_epoch_end(
         self, ds, model_type, pretrained, cfg_options, samples_source, request
