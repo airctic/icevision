@@ -22,9 +22,7 @@ def pairwise_iou_record_record(target: BaseRecord, prediction: BaseRecord):
     stacked_preds = torch.stack(stacked_preds) if stacked_preds else torch.empty(0, 4)
 
     stacked_targets = [bbox.to_tensor() for bbox in target.detection.bboxes]
-    stacked_targets = (
-        torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
-    )
+    stacked_targets = torch.stack(stacked_targets) if stacked_targets else torch.empty(0, 4)
     return torchvision.ops.box_iou(stacked_preds, stacked_targets)
 
 
