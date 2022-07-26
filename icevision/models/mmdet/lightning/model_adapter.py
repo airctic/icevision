@@ -15,7 +15,7 @@ from icevision.models.mmdet.common.bbox import convert_raw_predictions
 
 
 class MMDetModelAdapter(LightningModelAdapter, ABC):
-    """Lightning module specialized for EfficientDet, with metrics support.
+    """Lightning module specialized for MMDet, with metrics support.
 
     The methods `forward`, `training_step`, `validation_step`, `validation_epoch_end`
     are already overriden.
@@ -45,19 +45,20 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         outputs = self.model.train_step(data=data, optimizer=None)
 
         for k, v in outputs["log_vars"].items():
-            self.log(f"train/{k}", v)
+            self.log(f"train_{k}", v)
 
         return outputs["loss"]
 
     def validation_step(self, batch, batch_idx):
+        self._shared_eval(batch, loss_log_key="val")
+
+    def _shared_eval(self, batch, loss_log_key):
         data, records = batch
 
-        self.model.eval()
-        with torch.no_grad():
-            outputs = self.model.train_step(data=data, optimizer=None)
-            raw_preds = self.model.forward_test(
-                imgs=[data["img"]], img_metas=[data["img_metas"]]
-            )
+        outputs = self.model.train_step(data=data, optimizer=None)
+        raw_preds = self.model.forward_test(
+            imgs=[data["img"]], img_metas=[data["img_metas"]]
+        )
 
         preds = self.convert_raw_predictions(
             batch=data, raw_preds=raw_preds, records=records
@@ -65,10 +66,13 @@ class MMDetModelAdapter(LightningModelAdapter, ABC):
         self.accumulate_metrics(preds)
 
         for k, v in outputs["log_vars"].items():
-            self.log(f"valid/{k}", v)
-
-        # TODO: is train and eval model automatically set by lighnting?
-        self.model.train()
+            self.log(f"{loss_log_key}_{k}", v)
 
     def validation_epoch_end(self, outs):
+        self.finalize_metrics()
+
+    def test_step(self, batch, batch_idx):
+        self._shared_eval(batch=batch, loss_log_key="test")
+
+    def test_epoch_end(self, outs):
         self.finalize_metrics()

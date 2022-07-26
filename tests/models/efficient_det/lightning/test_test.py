@@ -1,5 +1,4 @@
 import pytest
-import random
 from icevision.all import *
 
 
@@ -8,11 +7,14 @@ def light_model_cls():
     class LightModel(models.ross.efficientdet.lightning.ModelAdapter):
         def __init__(self, model, metrics):
             super(LightModel, self).__init__(model, metrics)
-            self.model = model
+            self.was_finalize_metrics_called = False
             self.logs = {}
 
         def configure_optimizers(self):
             return SGD(self.parameters(), lr=1e-3)
+
+        def finalize_metrics(self):
+            self.was_finalize_metrics_called = True
 
         def log(self, key, value, **args):
             super(LightModel, self).log(key, value, **args)
@@ -24,11 +26,11 @@ def light_model_cls():
 # WARNING: Only works with cuda: https://github.com/rwightman/efficientdet-pytorch/issues/44#issuecomment-662594014
 @pytest.mark.cuda
 @pytest.mark.parametrize("metrics", [[], [COCOMetric()]])
-def test_lightining_efficientdet_train(
+def test_lightining_efficientdet_test(
     fridge_efficientdet_dls, fridge_efficientdet_model, light_model_cls, metrics
 ):
-    train_dl, valid_dl = fridge_efficientdet_dls
-    light_model = light_model_cls(model=fridge_efficientdet_model, metrics=metrics)
+    _, valid_dl = fridge_efficientdet_dls
+    light_model = light_model_cls(fridge_efficientdet_model, metrics=metrics)
     trainer = pl.Trainer(
         max_epochs=1,
         weights_summary=None,
@@ -37,40 +39,35 @@ def test_lightining_efficientdet_train(
         checkpoint_callback=False,
     )
 
-    trainer.fit(light_model, train_dl, valid_dl)
+    trainer.test(light_model, valid_dl)
 
 
-def test_lightining_efficientdet_training_step_returns_loss(
+@pytest.mark.parametrize("metrics", [[], [COCOMetric()]])
+def test_lightining_efficientdet_finalizes_metrics_on_test_epoch_end(
+    fridge_efficientdet_model, light_model_cls, metrics
+):
+    with torch.set_grad_enabled(False):
+        light_model = light_model_cls(fridge_efficientdet_model, metrics=metrics)
+
+        light_model.test_epoch_end(None)
+
+        assert light_model.was_finalize_metrics_called == True
+
+
+def test_lightining_efficientdet_logs_losses_during_test_step(
     fridge_efficientdet_dls, fridge_efficientdet_model, light_model_cls
 ):
-    with torch.set_grad_enabled(True):
+    with torch.set_grad_enabled(False):
         train_dl, _ = fridge_efficientdet_dls
         light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
         for batch in train_dl:
             break
-        expected_loss = random.randint(0, 1000)
+        light_model.convert_raw_predictions = lambda *args: None
+        light_model.compute_loss = lambda *args: None
+        light_model.accumulate_metrics = lambda *args: None
 
-        def fake_compute_loss(self, *args):
-            return expected_loss
-
-        light_model.compute_loss = fake_compute_loss
-
-        loss = light_model.training_step(batch, 0)
-
-        assert loss == expected_loss
-
-
-def test_lightining_efficientdet_logs_losses_during_training_step(
-    fridge_efficientdet_dls, fridge_efficientdet_model, light_model_cls
-):
-    with torch.set_grad_enabled(True):
-        train_dl, _ = fridge_efficientdet_dls
-        light_model = light_model_cls(model=fridge_efficientdet_model, metrics=None)
-        for batch in train_dl:
-            break
-
-        light_model.training_step(batch, 0)
+        light_model.test_step(batch, 0)
 
         assert sorted(light_model.logs.keys()) == sorted(
-            ["train_loss", "train_box_loss", "train_class_loss"]
+            ["test_loss", "test_box_loss", "test_class_loss"]
         )

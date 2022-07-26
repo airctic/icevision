@@ -33,28 +33,46 @@ class ModelAdapter(LightningModelAdapter, ABC):
         (xb, yb), _ = batch
         preds = self(xb)
 
-        loss = self.loss_func(preds, yb)
+        loss = self.compute_loss(preds, yb)
 
         self.log("train_loss", loss)
 
         return loss
 
+    def compute_loss(self, preds, yb):
+        return self.loss_func(preds, yb)
+
     def validation_step(self, batch, batch_idx):
+        self._shared_eval(batch=batch, loss_log_key="val")
+
+    def _shared_eval(self, batch, loss_log_key):
         (xb, yb), records = batch
 
-        with torch.no_grad():
-            preds = self(xb)
-            loss = self.loss_func(preds, yb)
+        preds = self(xb)
+        loss = self.compute_loss(preds, yb)
 
-            preds = unet.convert_raw_predictions(
-                batch=xb,
-                raw_preds=preds,
-                records=records,
-            )
+        preds = self.convert_raw_predictions(
+            batch=xb,
+            raw_preds=preds,
+            records=records,
+        )
 
         self.accumulate_metrics(preds)
 
-        self.log("val_loss", loss)
+        self.log(f"{loss_log_key}_loss", loss)
+
+    def convert_raw_predictions(self, batch, raw_preds, records):
+        return unet.convert_raw_predictions(
+            batch=batch,
+            raw_preds=raw_preds,
+            records=records,
+        )
 
     def validation_epoch_end(self, outs):
+        self.finalize_metrics()
+
+    def test_step(self, batch, batch_idx):
+        self._shared_eval(batch=batch, loss_log_key="test")
+
+    def test_epoch_end(self, outs):
         self.finalize_metrics()
