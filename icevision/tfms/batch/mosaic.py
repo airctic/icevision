@@ -2,13 +2,27 @@ from icevision import tfms
 from icevision.imports import *
 from icevision.core import *
 from icevision.tfms.batch.batch_transform import BatchTransform
+from icevision.tfms.batch.custom_albu_tfms import (
+    CustomRandomSizedBBoxSafeCrop,
+)
 
 
 class Mosaic(BatchTransform):
-    def __init__(self, n_imgs=4, bbox_safe=True, p=0.3):
+    def __init__(
+        self,
+        n_imgs=4,
+        bbox_safe=True,
+        p=0.3,
+        erosion_rate=0.0,
+        max_ar_distortion: float = 0.3,
+        num_tries: int = 10,
+    ):
         self.n_imgs = n_imgs
         self.bbox_safe = bbox_safe
         self.p = p
+        self.max_ar_distortion = max_ar_distortion
+        self.num_tries = num_tries
+        self.erosion_rate = erosion_rate
 
     def create_tfms(self, main_record: BaseRecord):
         positions = [
@@ -19,6 +33,8 @@ class Mosaic(BatchTransform):
         ]
         h = main_record.img_size.height
         w = main_record.img_size.width
+        # we split the canvas to 4 pieces
+        # random canvas center point (1/3 to 2/3 of image shape to minimize scaling)
         rw, rh = (1 + np.random.random_sample(2)) / 3
         pw, ph = int(rw * w), int(rh * h)
 
@@ -32,7 +48,13 @@ class Mosaic(BatchTransform):
         mosaic_tfms = [
             tfms.A.Adapter(
                 [
-                    tfms.A.RandomSizedBBoxSafeCrop(y_max - y_min, x_max - x_min)
+                    CustomRandomSizedBBoxSafeCrop(
+                        y_max - y_min,
+                        x_max - x_min,
+                        erosion_rate=self.erosion_rate,
+                        num_tries=self.num_tries,
+                        max_ar_distortion=self.max_ar_distortion,
+                    )
                     if self.bbox_safe
                     else tfms.A.Crop(x_min, y_min, x_max, y_max),
                     tfms.A.PadIfNeeded(h, w, position=position, border_mode=0),
