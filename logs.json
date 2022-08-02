@@ -1,0 +1,724 @@
+{
+    "0.11.0": {
+        "ai-fast-track": [
+            {
+                "title": "Updating mmcv installation to torch 1.10.0",
+                "id": 972,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/972/comments"
+            },
+            {
+                "title": "Upgrade to torch 1.10 and torchvision 0.11",
+                "id": 970,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/970/comments"
+            },
+            {
+                "title": "Pass both map_location, and logger to downstream methods",
+                "id": 968,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/968/comments"
+            },
+            {
+                "title": "Bumped torch and torchision versions",
+                "id": 961,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/961/comments"
+            },
+            {
+                "title": "Update CHANGELOG.md for Release 0.11.0",
+                "id": 959,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/959/comments"
+            },
+            {
+                "title": "Adding an installation script for cuda and cpu",
+                "id": 956,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/956/comments"
+            },
+            {
+                "title": "fixed yaml issue in doc generation CI/CD",
+                "id": 952,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/952/comments"
+            },
+            {
+                "title": "Upgrade mk-docs-build.yml in the CI/CD",
+                "id": 951,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/951/comments"
+            },
+            {
+                "title": "Update mmcv to 1.3.14 and mmdet to 2.17.0 in CI/CD",
+                "id": 949,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/949/comments"
+            },
+            {
+                "title": "Update notebooks installation",
+                "id": 940,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/940/comments"
+            },
+            {
+                "title": "Fix Colab script",
+                "id": 938,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/938/comments"
+            },
+            {
+                "title": "Fixed Colab installation script",
+                "id": 937,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/937/comments"
+            },
+            {
+                "title": "Update installation to torch 1.9 and dependencies",
+                "id": 935,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/935/comments"
+            },
+            {
+                "title": "Inference - automatically recreate model trained with COCO",
+                "id": 929,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/929/comments"
+            },
+            {
+                "title": "Simplify save and load model checkpoints",
+                "id": 924,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/924/comments"
+            },
+            {
+                "title": "Update installation to torch  1.9 + dependencies",
+                "id": 919,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/919/comments"
+            },
+            {
+                "title": "Added MMDetection VFNet Support.",
+                "id": 906,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/906/comments"
+            },
+            {
+                "title": "Make MMDetection config object accessible to users",
+                "id": 904,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/904/comments"
+            },
+            {
+                "title": "Adding progressive resizing support",
+                "id": 902,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/902/comments"
+            },
+            {
+                "title": "Fix mmdet weights path issue",
+                "id": 900,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/900/comments"
+            },
+            {
+                "title": "add docker-compose instructions",
+                "id": 898,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/898/comments"
+            },
+            {
+                "title": "Added script for icevision inference installation",
+                "id": 893,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/893/comments"
+            },
+            {
+                "title": "Added kwargs and label_border_color to end2end_detect()",
+                "id": 891,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/891/comments"
+            },
+            {
+                "title": "Fix icevision installation in Colab",
+                "id": 887,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/887/comments"
+            },
+            {
+                "title": "added kwargs to the EfficientDet model() method",
+                "id": 883,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/883/comments"
+            }
+        ],
+        "fstroth": [
+            {
+                "title": "(WIP) Fix masks for instance segmentation",
+                "id": 967,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/967/comments"
+            },
+            {
+                "title": "(Refactor) Removed the coco function.",
+                "id": 964,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/964/comments"
+            },
+            {
+                "title": "(Feature) init coco and via parser with a dict instead of the filepath",
+                "id": 963,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/963/comments"
+            },
+            {
+                "title": "(Feature) Added way to output metrics for pytorchlightning during training",
+                "id": 960,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/960/comments"
+            },
+            {
+                "title": "Fix for CHANGLOG.md update script.",
+                "id": 958,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/958/comments"
+            },
+            {
+                "title": "Script for automatically updating CHANGELOG.md",
+                "id": 957,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/957/comments"
+            },
+            {
+                "title": "(Update) Updated code to run with albumentations version 1.0.3.",
+                "id": 927,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/927/comments"
+            },
+            {
+                "title": "Radiographic images",
+                "id": 912,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/912/comments"
+            }
+        ],
+        "jaeeolma": [
+            {
+                "title": "Empty mask fix",
+                "id": 933,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/933/comments"
+            }
+        ],
+        "bogdan-evtushenko": [
+            {
+                "title": "Add support for yolox from mmdetection.",
+                "id": 932,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/932/comments"
+            }
+        ],
+        "potipot": [
+            {
+                "title": "Fix show pred",
+                "id": 930,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/930/comments"
+            },
+            {
+                "title": "Fix inference on rectangular efficientdet input",
+                "id": 910,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/910/comments"
+            }
+        ],
+        "drscotthawley": [
+            {
+                "title": "casting both caption parts as str",
+                "id": 922,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/922/comments"
+            }
+        ],
+        "lgvaz": [
+            {
+                "title": "Unet3",
+                "id": 907,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/907/comments"
+            }
+        ],
+        "FraPochetti": [
+            {
+                "title": "adding docker support",
+                "id": 895,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/895/comments"
+            },
+            {
+                "title": "Colab Install Script: fixing link to icevision master",
+                "id": 888,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/888/comments"
+            }
+        ],
+        "nicjac": [
+            {
+                "title": "Fixed PIL size bug in ImageRecordComponent (#889)",
+                "id": 894,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/894/comments"
+            }
+        ]
+    },
+    "latest_release": {
+        "dnth": [
+            {
+                "title": "Minor fix for clarity in mmdet utils.py",
+                "id": 1061,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1061/comments"
+            },
+            {
+                "title": "Swin Transformer notebook",
+                "id": 1059,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1059/comments"
+            },
+            {
+                "title": "Closes bug in #1057",
+                "id": 1058,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1058/comments"
+            },
+            {
+                "title": "CentripetalNet Support",
+                "id": 1050,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1050/comments"
+            },
+            {
+                "title": "Add YOLACT support from mmdet",
+                "id": 1046,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1046/comments"
+            },
+            {
+                "title": "Add more Swin backbones for RetinaNet and VFNet",
+                "id": 1042,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1042/comments"
+            },
+            {
+                "title": "Fix Swin backbone issue with single stage models",
+                "id": 1039,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1039/comments"
+            },
+            {
+                "title": "Add SABL (Side-Aware Boundary Localization for More Precise Object Detection)",
+                "id": 1038,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1038/comments"
+            },
+            {
+                "title": "Add Feature Selective Anchor-Free Module for Single-Shot Object Detection (FSAF)",
+                "id": 1037,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1037/comments"
+            },
+            {
+                "title": "Add Swin Transformer backbone to all mmdet models",
+                "id": 1035,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1035/comments"
+            },
+            {
+                "title": "Support custom config for two stage detectors",
+                "id": 1034,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1034/comments"
+            },
+            {
+                "title": "Add Swin Transformer backbone for Mask RCNN",
+                "id": 1033,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1033/comments"
+            },
+            {
+                "title": "Add Deformable DETR model from mmdet",
+                "id": 1032,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1032/comments"
+            },
+            {
+                "title": "Add YOLOF mmdet model",
+                "id": 1030,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1030/comments"
+            }
+        ],
+        "FraPochetti": [
+            {
+                "title": "removing fiftyone as a hard dependency",
+                "id": 1055,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1055/comments"
+            },
+            {
+                "title": "fix progressive resizing nb + addings nbs to docs",
+                "id": 1023,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1023/comments"
+            },
+            {
+                "title": "fixing plot_top_losses and semantic seg",
+                "id": 1019,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1019/comments"
+            },
+            {
+                "title": "fixing the OCHuman notebook",
+                "id": 1008,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1008/comments"
+            },
+            {
+                "title": "fixing wrong colab badge in SAHI notebook",
+                "id": 986,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/986/comments"
+            },
+            {
+                "title": "SAHI inference integration",
+                "id": 984,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/984/comments"
+            }
+        ],
+        "ai-fast-track": [
+            {
+                "title": "Update FiftyOne NB and add it to documentation",
+                "id": 1052,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1052/comments"
+            },
+            {
+                "title": "Added YOLOX backbones",
+                "id": 1010,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1010/comments"
+            },
+            {
+                "title": "SSD update",
+                "id": 993,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/993/comments"
+            },
+            {
+                "title": "Added training to the custom parser notebook",
+                "id": 989,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/989/comments"
+            },
+            {
+                "title": "updated CHANGELOG.md to the last PR",
+                "id": 974,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/974/comments"
+            }
+        ],
+        "fstroth": [
+            {
+                "title": "Remove redundant model creation",
+                "id": 1036,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1036/comments"
+            },
+            {
+                "title": "(Fix) Fixed the notebook and the draw records function as well a the \u2026",
+                "id": 1018,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1018/comments"
+            }
+        ],
+        "2649": [
+            {
+                "title": "(feat) Added utils to convert Records and Predictions to fiftyone",
+                "id": 1031,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1031/comments"
+            }
+        ],
+        "hectorLop": [
+            {
+                "title": "refactor: Fixed the bug to add neck modules properly",
+                "id": 1029,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1029/comments"
+            },
+            {
+                "title": "Implementation of DETR using mmdetection",
+                "id": 1026,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1026/comments"
+            }
+        ],
+        "strickvl": [
+            {
+                "title": "Fix docstring typo",
+                "id": 1028,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1028/comments"
+            },
+            {
+                "title": "Fix broken link",
+                "id": 1027,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1027/comments"
+            },
+            {
+                "title": "Fix bullet list formatting error",
+                "id": 985,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/985/comments"
+            }
+        ],
+        "potipot": [
+            {
+                "title": "fix efficientdet metrics failing test",
+                "id": 1022,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1022/comments"
+            },
+            {
+                "title": "Fix wandb_efficientdet notebook",
+                "id": 1021,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1021/comments"
+            },
+            {
+                "title": "Fix opencv colab issue",
+                "id": 1020,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1020/comments"
+            },
+            {
+                "title": "fixing the negative_samples notebook",
+                "id": 1013,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1013/comments"
+            },
+            {
+                "title": "Update installation docs",
+                "id": 995,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/995/comments"
+            }
+        ],
+        "fcakyon": [
+            {
+                "title": "compatibility for latest sahi updates",
+                "id": 1015,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1015/comments"
+            }
+        ],
+        "gablanouette": [
+            {
+                "title": "Fix checkpoint loading when model_name contains models or additional components",
+                "id": 1005,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1005/comments"
+            }
+        ],
+        "Anjum48": [
+            {
+                "title": "Issue 987 - Add detection_threshold arg for all Lightning adapters",
+                "id": 1004,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1004/comments"
+            }
+        ],
+        "matt-deboer": [
+            {
+                "title": "Properly restore transformed masks after unload",
+                "id": 981,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/981/comments"
+            },
+            {
+                "title": "fix for #978",
+                "id": 980,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/980/comments"
+            },
+            {
+                "title": "fix for #978: store transform results in detection.masks",
+                "id": 979,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/979/comments"
+            }
+        ]
+    },
+    "0.12.0": {
+        "dnth": [
+            {
+                "title": "Minor fix for clarity in mmdet utils.py",
+                "id": 1061,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1061/comments"
+            },
+            {
+                "title": "Swin Transformer notebook",
+                "id": 1059,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1059/comments"
+            },
+            {
+                "title": "Closes bug in #1057",
+                "id": 1058,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1058/comments"
+            },
+            {
+                "title": "CentripetalNet Support",
+                "id": 1050,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1050/comments"
+            },
+            {
+                "title": "Add YOLACT support from mmdet",
+                "id": 1046,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1046/comments"
+            },
+            {
+                "title": "Add more Swin backbones for RetinaNet and VFNet",
+                "id": 1042,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1042/comments"
+            },
+            {
+                "title": "Fix Swin backbone issue with single stage models",
+                "id": 1039,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1039/comments"
+            },
+            {
+                "title": "Add SABL (Side-Aware Boundary Localization for More Precise Object Detection)",
+                "id": 1038,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1038/comments"
+            },
+            {
+                "title": "Add Feature Selective Anchor-Free Module for Single-Shot Object Detection (FSAF)",
+                "id": 1037,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1037/comments"
+            },
+            {
+                "title": "Add Swin Transformer backbone to all mmdet models",
+                "id": 1035,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1035/comments"
+            },
+            {
+                "title": "Support custom config for two stage detectors",
+                "id": 1034,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1034/comments"
+            },
+            {
+                "title": "Add Swin Transformer backbone for Mask RCNN",
+                "id": 1033,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1033/comments"
+            },
+            {
+                "title": "Add Deformable DETR model from mmdet",
+                "id": 1032,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1032/comments"
+            },
+            {
+                "title": "Add YOLOF mmdet model",
+                "id": 1030,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1030/comments"
+            }
+        ],
+        "FraPochetti": [
+            {
+                "title": "removing fiftyone as a hard dependency",
+                "id": 1055,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1055/comments"
+            },
+            {
+                "title": "fix progressive resizing nb + addings nbs to docs",
+                "id": 1023,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1023/comments"
+            },
+            {
+                "title": "fixing plot_top_losses and semantic seg",
+                "id": 1019,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1019/comments"
+            },
+            {
+                "title": "fixing the OCHuman notebook",
+                "id": 1008,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1008/comments"
+            },
+            {
+                "title": "fixing wrong colab badge in SAHI notebook",
+                "id": 986,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/986/comments"
+            },
+            {
+                "title": "SAHI inference integration",
+                "id": 984,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/984/comments"
+            }
+        ],
+        "ai-fast-track": [
+            {
+                "title": "Update FiftyOne NB and add it to documentation",
+                "id": 1052,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1052/comments"
+            },
+            {
+                "title": "Added YOLOX backbones",
+                "id": 1010,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1010/comments"
+            },
+            {
+                "title": "SSD update",
+                "id": 993,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/993/comments"
+            },
+            {
+                "title": "Added training to the custom parser notebook",
+                "id": 989,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/989/comments"
+            },
+            {
+                "title": "updated CHANGELOG.md to the last PR",
+                "id": 974,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/974/comments"
+            }
+        ],
+        "fstroth": [
+            {
+                "title": "Remove redundant model creation",
+                "id": 1036,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1036/comments"
+            },
+            {
+                "title": "(Fix) Fixed the notebook and the draw records function as well a the \u2026",
+                "id": 1018,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1018/comments"
+            }
+        ],
+        "2649": [
+            {
+                "title": "(feat) Added utils to convert Records and Predictions to fiftyone",
+                "id": 1031,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1031/comments"
+            }
+        ],
+        "hectorLop": [
+            {
+                "title": "refactor: Fixed the bug to add neck modules properly",
+                "id": 1029,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1029/comments"
+            },
+            {
+                "title": "Implementation of DETR using mmdetection",
+                "id": 1026,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1026/comments"
+            }
+        ],
+        "strickvl": [
+            {
+                "title": "Fix docstring typo",
+                "id": 1028,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1028/comments"
+            },
+            {
+                "title": "Fix broken link",
+                "id": 1027,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1027/comments"
+            },
+            {
+                "title": "Fix bullet list formatting error",
+                "id": 985,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/985/comments"
+            }
+        ],
+        "potipot": [
+            {
+                "title": "fix efficientdet metrics failing test",
+                "id": 1022,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1022/comments"
+            },
+            {
+                "title": "Fix wandb_efficientdet notebook",
+                "id": 1021,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1021/comments"
+            },
+            {
+                "title": "Fix opencv colab issue",
+                "id": 1020,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1020/comments"
+            },
+            {
+                "title": "fixing the negative_samples notebook",
+                "id": 1013,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1013/comments"
+            },
+            {
+                "title": "Update installation docs",
+                "id": 995,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/995/comments"
+            }
+        ],
+        "fcakyon": [
+            {
+                "title": "compatibility for latest sahi updates",
+                "id": 1015,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1015/comments"
+            }
+        ],
+        "gablanouette": [
+            {
+                "title": "Fix checkpoint loading when model_name contains models or additional components",
+                "id": 1005,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1005/comments"
+            }
+        ],
+        "Anjum48": [
+            {
+                "title": "Issue 987 - Add detection_threshold arg for all Lightning adapters",
+                "id": 1004,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/1004/comments"
+            }
+        ],
+        "matt-deboer": [
+            {
+                "title": "Properly restore transformed masks after unload",
+                "id": 981,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/981/comments"
+            },
+            {
+                "title": "fix for #978",
+                "id": 980,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/980/comments"
+            },
+            {
+                "title": "fix for #978: store transform results in detection.masks",
+                "id": 979,
+                "url": "https://api.github.com/repos/airctic/icevision/issues/979/comments"
+            }
+        ]
+    }
+}

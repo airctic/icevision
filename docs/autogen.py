@@ -34,18 +34,18 @@ PAGES = {
     ],
     "faster_rcnn.md": [
         "icevision.models.torchvision.faster_rcnn.model.model",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.train_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.valid_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.infer_dl",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_train_batch",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_valid_batch",
-        "icevision.models.torchvision.faster_rcnn.dataloaders.build_infer_batch",
+        "icevision.models.torchvision.dataloaders.train_dl",
+        "icevision.models.torchvision.dataloaders.valid_dl",
+        "icevision.models.torchvision.dataloaders.infer_dl",
+        "icevision.models.torchvision.dataloaders.build_train_batch",
+        "icevision.models.torchvision.dataloaders.build_valid_batch",
+        "icevision.models.torchvision.dataloaders.build_infer_batch",
     ],
     "faster_rcnn_fastai.md": [
-        "icevision.models.torchvision.faster_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.faster_rcnn.fastai.learner",
     ],
     "faster_rcnn_lightning.md": [
-        "icevision.models.torchvision.faster_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.faster_rcnn.lightning.ModelAdapter",
     ],
     "mask_rcnn.md": [
         "icevision.models.torchvision.mask_rcnn.model.model",
@@ -57,10 +57,10 @@ PAGES = {
         "icevision.models.torchvision.mask_rcnn.dataloaders.build_infer_batch",
     ],
     "mask_rcnn_fastai.md": [
-        "icevision.models.torchvision.mask_rcnn.fastai.learner.learner",
+        "icevision.models.torchvision.mask_rcnn.fastai.learner",
     ],
     "mask_rcnn_lightning.md": [
-        "icevision.models.torchvision.mask_rcnn.lightning.model_adapter.ModelAdapter",
+        "icevision.models.torchvision.mask_rcnn.lightning.ModelAdapter",
     ],
     "efficientdet.md": [
         "icevision.models.ross.efficientdet.model.model",
@@ -410,12 +410,6 @@ def generate(dest_dir: Path):
     shutil.copyfile(
         icevision_dir / "icevision/models/README.md",
         dest_dir / "models.md",
-    )
-
-    # Backbones
-    shutil.copyfile(
-        icevision_dir / "icevision/backbones/README.md",
-        dest_dir / "backbones.md",
     )
 
     # README DOCS

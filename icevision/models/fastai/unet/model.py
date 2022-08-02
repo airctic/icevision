@@ -1,7 +1,7 @@
 __all__ = ["model"]
 
 from icevision.imports import *
-from icevision.backbones.backbone_config import BackboneConfig
+from icevision.models.torchvision.backbone_config import BackboneConfig
 from icevision.models.torchvision.utils import patch_param_groups
 
 

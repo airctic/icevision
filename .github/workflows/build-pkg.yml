@@ -23,6 +23,6 @@ jobs:
 
       - name: Install package
         run: |
-          pip install numpy
+#          pip install numpy
           pip install -e .
           python -c "from icevision.all import *"

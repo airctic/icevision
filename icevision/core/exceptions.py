@@ -1,4 +1,10 @@
-__all__ = ["InvalidDataError", "AutofixAbort", "AbortParseRecord"]
+__all__ = [
+    "InvalidDataError",
+    "AutofixAbort",
+    "AbortParseRecord",
+    "InvalidMMSegModelType",
+    "PreTrainedVariantNotFound",
+]
 
 
 class InvalidDataError(Exception):
@@ -10,4 +16,12 @@ class AutofixAbort(Exception):
 
 
 class AbortParseRecord(Exception):
+    pass
+
+
+class InvalidMMSegModelType(Exception):
+    pass
+
+
+class PreTrainedVariantNotFound(Exception):
     pass

@@ -45,3 +45,9 @@ def test_bbox_parser_missing_label(via_dir, via_bbox_class_map):
     )
     with pytest.raises(parsers.VIAParseError, match=r"Could not find.*IMG_4908.*"):
         _ = parser.parse(data_splitter=SingleSplitSplitter())[0]
+
+
+def test_via_base_parser_init_from_dict(via_dir, via_bbox_class_map):
+    annotations_dict = json.load(open(via_dir / "via_bbox.json"))
+    parser_init_by_dict = parsers.via(annotations_dict, via_dir, via_bbox_class_map)
+    assert parser_init_by_dict.annotations_dict == annotations_dict

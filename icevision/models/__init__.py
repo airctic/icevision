@@ -25,5 +25,11 @@ if SoftDependencies.yolov5:
     matplotlib.use(backend)
     matplotlib.rcdefaults()
 
+if SoftDependencies.mmseg:
+    from icevision.models import mmseg
+
 if SoftDependencies.fastai:
     from icevision.models import fastai
+
+if SoftDependencies.sahi:
+    from icevision.models import inference_sahi

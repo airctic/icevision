@@ -369,7 +369,7 @@ class BBoxesRecordComponent(RecordComponent):
                     "bbox_y": y,
                     "bbox_width": w,
                     "bbox_height": h,
-                    "bbox_sqrt_area": bbox.area ** 0.5,
+                    "bbox_sqrt_area": bbox.area**0.5,
                     "bbox_aspect_ratio": w / h,
                 }
             )
@@ -401,7 +401,7 @@ class BaseMasksRecordComponent(RecordComponent):
         self.masks.extend(masks)
 
     def set_masks(self, masks: Sequence[Mask]):
-        self.masks.clear
+        self.masks.clear()
         self.masks.extend(masks)
 
     def set_mask(self, mask: Mask):

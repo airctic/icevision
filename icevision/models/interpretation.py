@@ -193,6 +193,7 @@ class Interpretation:
         sort_by: str = "loss_total",
         n_samples: int = 5,
         batch_size: int = 8,
+        device: torch.device = None,
     ) -> Tuple[List[dict], List[dict], dict]:
         """
         Gets a dataset and a model as input. Calculates losses for each sample in the dataset.
@@ -237,6 +238,18 @@ class Interpretation:
             ann1 = "\n".join(ann[:4])
             ann2 = "\n".join(ann[4:])
             anns.append((ann1, ann2))
+
+        # Ensure that segmentation ground truth masks are loaded
+        if hasattr(sorted_samples[0], "segmentation") and (
+            not sorted_samples[0].segmentation.mask_array
+        ):
+            for ii in range(len(sorted_samples)):
+                w, h = sorted_samples[0].img_size
+                sorted_samples[ii].segmentation.mask_array = (
+                    sorted_samples[ii]
+                    .segmentation.masks[0]
+                    .to_mask(h=h, w=w, pad_dim=False)
+                )
 
         sorted_preds = [
             Prediction(pred=p, ground_truth=s)

@@ -64,9 +64,12 @@ class MaskArray(Mask):
 
     # Arguments
         data: Mask array, with the dimensions: (num_instances, height, width)
+        pad_dim: bool
     """
 
-    def __init__(self, data: np.uint8):
+    def __init__(self, data: np.uint8, pad_dim: bool = True):
+        if pad_dim and (len(data.shape) == 2):
+            data = np.expand_dims(data, 0)
         self.data = data.astype(np.uint8)
 
     def __len__(self):
@@ -82,9 +85,17 @@ class MaskArray(Mask):
         return self
 
     def to_erles(self, h, w) -> EncodedRLEs:
-        return EncodedRLEs(
-            mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
-        )
+        # HACK: force empty annotations to have valid shape
+        if len(self.data.shape) == 1:
+            return EncodedRLEs(
+                mask_utils.encode(
+                    np.asfortranarray(self.data[:, None, None].transpose(1, 2, 0))
+                )
+            )
+        else:
+            return EncodedRLEs(
+                mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+            )
 
     def to_coco_rle(self, h, w) -> List[dict]:
         """From https://stackoverflow.com/a/49547872/6772672"""
@@ -111,7 +122,10 @@ class MaskArray(Mask):
             return masks.to_mask(h, w)
         else:
             masks_arrays = [o.to_mask(h=h, w=w).data for o in masks]
-            return cls(np.concatenate(masks_arrays))
+            if len(masks_arrays) == 0:
+                return cls(np.array([]))
+            else:
+                return cls(np.concatenate(masks_arrays))
 
 
 class MaskFile(Mask):
@@ -124,10 +138,21 @@ class MaskFile(Mask):
     def __init__(self, filepath: Union[str, Path]):
         self.filepath = Path(filepath)
 
-    def to_mask(self, h, w):
-        mask = np.array(open_img(self.filepath, gray=True))
+    def to_mask(self, h=None, w=None):
+        mask_img = open_img(self.filepath, gray=True)
+
+        if (h is not None) and (w is not None):
+            # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
+            (w_org, h_org) = mask_img.size
+
+            # TODO: Check NEAREST is always the best option or only for binary?
+            if w_org != w or h_org != h:
+                mask_img = mask_img.resize((w, h), resample=PIL.Image.NEAREST)
+
+        mask = np.array(mask_img)
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
+
         return MaskArray(masks)
 
     def to_coco_rle(self, h, w) -> List[dict]:
@@ -262,9 +287,17 @@ class SemanticMaskFile(Mask):
         self.filepath = Path(filepath)
         self.binary = binary
 
-    def to_mask(self, h, w):
+    def to_mask(self, h, w, pad_dim=True):
         # TODO: convert the 255 masks
         mask = open_img(self.filepath, gray=True)
+
+        # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
+        (w_org, h_org) = mask.size
+
+        # TODO: Check NEAREST is always the best option or only for binary?
+        if w_org != w or h_org != h:
+            mask = mask.resize((w, h), resample=PIL.Image.NEAREST)
+
         # HACK: because open_img now return PIL
         mask = np.array(mask)
 
@@ -272,7 +305,8 @@ class SemanticMaskFile(Mask):
         if self.binary:
             mask[mask == 255] = 1
 
-        return MaskArray(mask[None])
+        # control array padding behaviour
+        return MaskArray(mask, pad_dim=pad_dim)
 
     def to_coco_rle(self, h, w) -> List[dict]:
         raise NotImplementedError

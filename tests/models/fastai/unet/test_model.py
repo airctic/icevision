@@ -13,4 +13,4 @@ def test_unet_model(backbone):
     )
 
     assert len(list(model.param_groups())) == 6
-    assert model[-1][0].out_channels == 32
+    assert model[-2][0].out_channels == 32

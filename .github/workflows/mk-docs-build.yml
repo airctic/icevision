@@ -2,18 +2,17 @@ name: Build mkdocs
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
   push:
-    branches: [ master ]
+    branches: [master]
   release:
-    types: [ created ]    
+    types: [created]
 
 env:
   SITE_BRANCH: ${{ 'gh-pages-ver' }}
 
 jobs:
-  build:
-
+  build-docs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -21,50 +20,41 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
       - name: Install package
         run: |
-          pip install torch=="1.8.1+cpu" torchvision=="0.9.1+cpu" -f https://download.pytorch.org/whl/torch_stable.html
-          pip install mmcv-full=="1.3.2+torch.1.8.0+cpu" -f https://download.openmmlab.com/mmcv/dist/index.html --use-deprecated=legacy-resolver
-          pip install mmdet==2.12.0 --upgrade
+          sh ./icevision_install.sh cpu
           pip install -e ".[all,dev]"
-          pip install yolov5-icevision --upgrade
-          # Below version is needed to work around a clash with ruamel-yaml. When v1.0 is released this can be removed.
-          pip install git+git://github.com/jimporter/mike.git@2961733cbfef132e9d63752307443981ad02d1fc --upgrade
+          
 
       - name: Prepare the docs
-        run:  |
+        run: |
           cd docs
           python autogen.py
-
       - name: Setup git config
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "bot@airctic.com"
-
       - name: Build the docs locally only
         if: github.event_name == 'pull_request'
-        run:  |
+        run: |
           cd docs
-          mike deploy dev -b ${{ env.SITE_BRANCH }} 
-
+          mike deploy dev -b ${{ env.SITE_BRANCH }}
       - name: Deploy dev docs
         id: deploy_dev
         if: github.repository == 'airctic/icevision' && github.event_name == 'push'
         run: |
           cd docs
           mike deploy dev -b ${{ env.SITE_BRANCH }} -p
-          echo '::set-output name=MIKE_VERSIONS::'$(mike list -b ${{ env.SITE_BRANCH }} | wc -l)     
-
+          echo '::set-output name=MIKE_VERSIONS::'$(mike list -b ${{ env.SITE_BRANCH }} | wc -l)
       - name: Set dev as default
         if: steps.deploy_dev.outputs.MIKE_VERSIONS == 1
         run: |
           cd docs
           mike set-default -b ${{ env.SITE_BRANCH }} dev -p
-
       - name: Get latest release tag
         if: github.event_name == 'release' && !github.event.release.prerelease
         id: latest
@@ -79,4 +69,4 @@ jobs:
           cd docs
           echo Deploy as ${{ steps.latest.outputs.release }} 
           mike deploy -b ${{ env.SITE_BRANCH }} ${{ steps.latest.outputs.release }} -p
-          mike set-default -b ${{ env.SITE_BRANCH }} ${{ steps.latest.outputs.release }} -p     
+          mike set-default -b ${{ env.SITE_BRANCH }} ${{ steps.latest.outputs.release }} -p

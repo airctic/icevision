@@ -3,7 +3,167 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+[comment]: # (Add changes below)
+
+[comment]: # (Version_start)
+## 0.12.0
+The following PRs have been merged since the last version.
+
+dnth
+  - [Minor fix for clarity in mmdet utils.py](https://github.com/airctic/icevision/issues/1061) (#1061)
+  - [Swin Transformer notebook](https://github.com/airctic/icevision/issues/1059) (#1059)
+  - [Closes bug in #1057](https://github.com/airctic/icevision/issues/1058) (#1058)
+  - [CentripetalNet Support](https://github.com/airctic/icevision/issues/1050) (#1050)
+  - [Add YOLACT support from mmdet](https://github.com/airctic/icevision/issues/1046) (#1046)
+  - [Add more Swin backbones for RetinaNet and VFNet](https://github.com/airctic/icevision/issues/1042) (#1042)
+  - [Fix Swin backbone issue with single stage models](https://github.com/airctic/icevision/issues/1039) (#1039)
+  - [Add SABL (Side-Aware Boundary Localization for More Precise Object Detection)](https://github.com/airctic/icevision/issues/1038) (#1038)
+  - [Add Feature Selective Anchor-Free Module for Single-Shot Object Detection (FSAF)](https://github.com/airctic/icevision/issues/1037) (#1037)
+  - [Add Swin Transformer backbone to all mmdet models](https://github.com/airctic/icevision/issues/1035) (#1035)
+  - [Support custom config for two stage detectors](https://github.com/airctic/icevision/issues/1034) (#1034)
+  - [Add Swin Transformer backbone for Mask RCNN](https://github.com/airctic/icevision/issues/1033) (#1033)
+  - [Add Deformable DETR model from mmdet](https://github.com/airctic/icevision/issues/1032) (#1032)
+  - [Add YOLOF mmdet model](https://github.com/airctic/icevision/issues/1030) (#1030)
+
+FraPochetti
+  - [removing fiftyone as a hard dependency](https://github.com/airctic/icevision/issues/1055) (#1055)
+  - [fix progressive resizing nb + addings nbs to docs](https://github.com/airctic/icevision/issues/1023) (#1023)
+  - [fixing plot_top_losses and semantic seg](https://github.com/airctic/icevision/issues/1019) (#1019)
+  - [fixing the OCHuman notebook](https://github.com/airctic/icevision/issues/1008) (#1008)
+  - [fixing wrong colab badge in SAHI notebook](https://github.com/airctic/icevision/issues/986) (#986)
+  - [SAHI inference integration](https://github.com/airctic/icevision/issues/984) (#984)
+
+ai-fast-track
+  - [Update FiftyOne NB and add it to documentation](https://github.com/airctic/icevision/issues/1052) (#1052)
+  - [Added YOLOX backbones](https://github.com/airctic/icevision/issues/1010) (#1010)
+  - [SSD update](https://github.com/airctic/icevision/issues/993) (#993)
+  - [Added training to the custom parser notebook](https://github.com/airctic/icevision/issues/989) (#989)
+  - [updated CHANGELOG.md to the last PR](https://github.com/airctic/icevision/issues/974) (#974)
+
+potipot
+  - [fix efficientdet metrics failing test](https://github.com/airctic/icevision/issues/1022) (#1022)
+  - [Fix wandb_efficientdet notebook](https://github.com/airctic/icevision/issues/1021) (#1021)
+  - [Fix opencv colab issue](https://github.com/airctic/icevision/issues/1020) (#1020)
+  - [fixing the negative_samples notebook](https://github.com/airctic/icevision/issues/1013) (#1013)
+  - [Update installation docs](https://github.com/airctic/icevision/issues/995) (#995)
+
+strickvl
+  - [Fix docstring typo](https://github.com/airctic/icevision/issues/1028) (#1028)
+  - [Fix broken link](https://github.com/airctic/icevision/issues/1027) (#1027)
+  - [Fix bullet list formatting error](https://github.com/airctic/icevision/issues/985) (#985)
+
+matt-deboer
+  - [Properly restore transformed masks after unload](https://github.com/airctic/icevision/issues/981) (#981)
+  - [fix for #978](https://github.com/airctic/icevision/issues/980) (#980)
+  - [fix for #978: store transform results in detection.masks](https://github.com/airctic/icevision/issues/979) (#979)
+
+fstroth
+  - [Remove redundant model creation](https://github.com/airctic/icevision/issues/1036) (#1036)
+  - [(Fix) Fixed the notebook and the draw records function as well a the …](https://github.com/airctic/icevision/issues/1018) (#1018)
+
+hectorLop
+  - [refactor: Fixed the bug to add neck modules properly](https://github.com/airctic/icevision/issues/1029) (#1029)
+  - [Implementation of DETR using mmdetection](https://github.com/airctic/icevision/issues/1026) (#1026)
+
+2649
+  - [(feat) Added utils to convert Records and Predictions to fiftyone](https://github.com/airctic/icevision/issues/1031) (#1031)
+
+fcakyon
+  - [compatibility for latest sahi updates](https://github.com/airctic/icevision/issues/1015) (#1015)
+
+gablanouette
+  - [Fix checkpoint loading when model_name contains models or additional components](https://github.com/airctic/icevision/issues/1005) (#1005)
+
+Anjum48
+  - [Issue 987 - Add detection_threshold arg for all Lightning adapters](https://github.com/airctic/icevision/issues/1004) (#1004)
+
+**Thank you to all contributers: @dnth, @FraPochetti, @ai-fast-track, @potipot, @strickvl, @matt-deboer, @fstroth, @hectorLop, @2649, @fcakyon, @gablanouette, @Anjum48**
+
+[comment]: # (Version_end)
+
+
+
+[comment]: # (Version_start)
+## 0.11.0
+The following PRs have been merged since the last version.
+
+ai-fast-track
+  - [Updating mmcv installation to torch 1.10.0](https://github.com/airctic/icevision/issues/972) (#972)
+  - [Upgrade to torch 1.10 and torchvision 0.11](https://github.com/airctic/icevision/issues/970) (#970)
+  - [Pass both map_location, and logger to downstream methods](https://github.com/airctic/icevision/issues/968) (#968)
+  - [Bumped torch and torchision versions](https://github.com/airctic/icevision/issues/961) (#961)
+  - [Update CHANGELOG.md for Release 0.11.0](https://github.com/airctic/icevision/issues/959) (#959)
+  - [Adding an installation script for cuda and cpu](https://github.com/airctic/icevision/issues/956) (#956)
+  - [fixed yaml issue in doc generation CI/CD](https://github.com/airctic/icevision/issues/952) (#952)
+  - [Upgrade mk-docs-build.yml in the CI/CD](https://github.com/airctic/icevision/issues/951) (#951)
+  - [Update mmcv to 1.3.14 and mmdet to 2.17.0 in CI/CD](https://github.com/airctic/icevision/issues/949) (#949)
+  - [Update notebooks installation](https://github.com/airctic/icevision/issues/940) (#940)
+  - [Fix Colab script](https://github.com/airctic/icevision/issues/938) (#938)
+  - [Fixed Colab installation script](https://github.com/airctic/icevision/issues/937) (#937)
+  - [Update installation to torch 1.9 and dependencies](https://github.com/airctic/icevision/issues/935) (#935)
+  - [Inference - automatically recreate model trained with COCO](https://github.com/airctic/icevision/issues/929) (#929)
+  - [Simplify save and load model checkpoints](https://github.com/airctic/icevision/issues/924) (#924)
+  - [Update installation to torch  1.9 + dependencies](https://github.com/airctic/icevision/issues/919) (#919)
+  - [Added MMDetection VFNet Support.](https://github.com/airctic/icevision/issues/906) (#906)
+  - [Make MMDetection config object accessible to users](https://github.com/airctic/icevision/issues/904) (#904)
+  - [Adding progressive resizing support](https://github.com/airctic/icevision/issues/902) (#902)
+  - [Fix mmdet weights path issue](https://github.com/airctic/icevision/issues/900) (#900)
+  - [add docker-compose instructions](https://github.com/airctic/icevision/issues/898) (#898)
+  - [Added script for icevision inference installation](https://github.com/airctic/icevision/issues/893) (#893)
+  - [Added kwargs and label_border_color to end2end_detect()](https://github.com/airctic/icevision/issues/891) (#891)
+  - [Fix icevision installation in Colab](https://github.com/airctic/icevision/issues/887) (#887)
+  - [added kwargs to the EfficientDet model() method](https://github.com/airctic/icevision/issues/883) (#883)
+
+fstroth
+  - [(WIP) Fix masks for instance segmentation](https://github.com/airctic/icevision/issues/967) (#967)
+  - [(Refactor) Removed the coco function.](https://github.com/airctic/icevision/issues/964) (#964)
+  - [(Feature) init coco and via parser with a dict instead of the filepath](https://github.com/airctic/icevision/issues/963) (#963)
+  - [(Feature) Added way to output metrics for pytorchlightning during training](https://github.com/airctic/icevision/issues/960) (#960)
+  - [Fix for CHANGLOG.md update script.](https://github.com/airctic/icevision/issues/958) (#958)
+  - [Script for automatically updating CHANGELOG.md](https://github.com/airctic/icevision/issues/957) (#957)
+  - [(Update) Updated code to run with albumentations version 1.0.3.](https://github.com/airctic/icevision/issues/927) (#927)
+  - [Radiographic images](https://github.com/airctic/icevision/issues/912) (#912)
+
+potipot
+  - [Fix show pred](https://github.com/airctic/icevision/issues/930) (#930)
+  - [Fix inference on rectangular efficientdet input](https://github.com/airctic/icevision/issues/910) (#910)
+
+FraPochetti
+  - [adding docker support](https://github.com/airctic/icevision/issues/895) (#895)
+  - [Colab Install Script: fixing link to icevision master](https://github.com/airctic/icevision/issues/888) (#888)
+
+jaeeolma
+  - [Empty mask fix](https://github.com/airctic/icevision/issues/933) (#933)
+
+bogdan-evtushenko
+  - [Add support for yolox from mmdetection.](https://github.com/airctic/icevision/issues/932) (#932)
+
+drscotthawley
+  - [casting both caption parts as str](https://github.com/airctic/icevision/issues/922) (#922)
+
+lgvaz
+  - [Unet3](https://github.com/airctic/icevision/issues/907) (#907)
+
+nicjac
+  - [Fixed PIL size bug in ImageRecordComponent (#889)](https://github.com/airctic/icevision/issues/894) (#894)
+
+**Thank you to all contributers: @ai-fast-track, @fstroth, @potipot, @FraPochetti, @jaeeolma, @bogdan-evtushenko, @drscotthawley, @lgvaz, @nicjac**
+
+[comment]: # (Version_end)
+
+
+
+## [Unreleased] - 0.10.0a1
+### Main dependencies updated
+- torch 1.9.0
+- tochvision 0.10
+- mmdet 2.16.0
+- mmcv 1.3.14
+- fastai 2.5.2
+- pytorch-lightning 1.4.8
+
+
+## [Unreleased] - 0.9.0a1
 ### Added
 - Low level parsing workflow with `RecordCollection`
 - Semantic segmentation support with fastai
