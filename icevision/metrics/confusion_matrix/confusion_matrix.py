@@ -5,6 +5,7 @@ from icevision.metrics.metric import Metric
 from icevision.imports import *
 from icevision.metrics.confusion_matrix.confusion_matrix_utils import *
 import PIL
+import matplotlib.pyplot as plt
 
 
 class MatchingPolicy(Enum):
@@ -49,6 +50,9 @@ class SimpleConfusionMatrix(Metric):
 
             target_labels, predicted_labels = [], []
             # iterate over multiple targets and preds in a record
+            # assumes no overlap with multiple preds and single target
+            # but mrcnn seems to handle this well with bbox confidence.
+            # however bbox conf needs to be set high
             for target_item, prediction_items in matches:
                 if self._policy == MatchingPolicy.BEST_SCORE:
                     predicted_item = get_best_score_item(
@@ -64,6 +68,13 @@ class SimpleConfusionMatrix(Metric):
                 predicted_label = predicted_item["predicted_label_id"]
                 target_labels.append(target_label)
                 predicted_labels.append(predicted_label)
+            # we need to account for false preds on background class
+            if (
+                len(prediction_record.detection.labels) > 0
+                and len(target_record.detection.labels) == 0
+            ):
+                target_labels = [0 for i in pred.pred.detection.labels]
+                predicted_labels = pred.pred.detection.label_ids
 
             # We need to store the entire list of gts/preds to support various CM logging methods
             assert len(predicted_labels) == len(target_labels)
@@ -89,6 +100,7 @@ class SimpleConfusionMatrix(Metric):
         normalize: Optional[str] = None,
         xticks_rotation="vertical",
         values_format: str = None,
+        values_size: int = 12,
         cmap: str = "PuBu",
         figsize: int = 11,
         **display_args,
@@ -97,25 +109,32 @@ class SimpleConfusionMatrix(Metric):
         A handle to plot the matrix in a jupyter notebook, potentially this could also be passed to save_fig
         """
         if normalize not in ["true", "pred", "all", None]:
-            raise ValueError(
-                "normalize must be one of {'true', 'pred', " "'all', None}"
-            )
+            raise ValueError("normalize must be one of {'true', 'pred', " "'all', None}")
         # properly display ints and floats
         if values_format is not None:
             values_format = ".2f" if normalize else "d"
 
         cm = self._maybe_normalize(self.confusion_matrix, normalize)
         labels_named = self.class_map._id2class
-        cm_display = sklearn.metrics.ConfusionMatrixDisplay(
-            cm, display_labels=labels_named
-        )
-        figure = cm_display.plot(
+        cm_display = sklearn.metrics.ConfusionMatrixDisplay(cm, display_labels=labels_named)
+        cm_display_plot = cm_display.plot(
             xticks_rotation=xticks_rotation,
             cmap=cmap,
             values_format=values_format,
             **display_args,
-        ).figure_
+        )
+        # Labels, title and ticks
+        label_font = {"size": "20"}  # Adjust to fit
+        cm_display_plot.ax_.set_xlabel("Predicted labels", fontdict=label_font)
+        cm_display_plot.ax_.set_ylabel("Observed labels", fontdict=label_font)
+        title_font = {"size": "28"}  # Adjust to fit
+        cm_display_plot.ax_.set_title("Confusion Matrix", fontdict=title_font)
+        cm_display_plot.ax_.tick_params(axis="both", which="major", labelsize=18)  # Adjust to fit
+        for labels in cm_display_plot.text_.ravel():
+            labels.set_fontsize(values_size)
+        figure = cm_display_plot.figure_
         figure.set_size_inches(figsize, figsize)
+        figure.tight_layout()
         plt.close()
         return figure
 
