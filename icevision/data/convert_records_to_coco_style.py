@@ -6,6 +6,7 @@ __all__ = [
     "coco_api_from_records",
     "coco_api_from_preds",
     "create_coco_eval",
+    "export_batch_inferences_as_coco_annotations",
 ]
 
 from icevision.imports import *
@@ -13,6 +14,96 @@ from icevision.utils import *
 from icevision.core import *
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
+from icevision.models.inference import *
+import json
+import numpy as np
+import PIL
+
+
+class NpEncoder(json.JSONEncoder):
+    """
+    Makes exporting from IceVision predictions to JSON possible
+    """
+
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
+
+def export_batch_inferences_as_coco_annotations(
+    preds,
+    img_files,
+    transforms,
+    class_map,
+    output_filepath="new_pseudo_labels_for_further_training.json",
+):
+    """
+    For converting object detection predictions to COCO annotation format.
+    Useful for leveraging partly-trained models to help annotate unlabeled
+    data.
+
+    Parameters
+    ----------
+    preds : IceVision predictions
+        the result of predict_from_dl()
+    img_files : list
+        The original array of fullres PIL images
+    transforms : list
+        list of transforms applied to original images (to be reversed)
+    class_map : icevision.core.class_map.ClassMap
+        The map of classes your model is training on
+    output_filepath : str, optional
+        The filepath (including filename) where you want the json results
+        to be serialized, by default
+        "new_pseudo_labels_for_further_training.json"
+
+    Returns
+    -------
+    None
+        This just spits out a serialized .json file and returns nothing.
+    """
+    object_category_list = [
+        {"id": v, "name": k, "supercategory": ""}
+        for k, v in class_map._class2id.items()
+    ]
+
+    addl_info = {
+        "licenses": [{"name": "", "id": 0, "url": ""}],
+        "info": {
+            "contributor": "",
+            "date_created": "",
+            "description": "",
+            "url": "",
+            "version": "",
+            "year": "",
+        },
+        "categories": object_category_list,
+    }
+
+    [pred.add_component(FilepathRecordComponent()) for pred in preds]
+    [preds[_].set_filepath(img_files[_]) for _ in range(len(preds))]
+
+    # This is an in-place operation, thus no saving to new variable
+    for p in preds:
+        process_bbox_predictions(
+            p, PIL.Image.open(Path(p.pred.filepath)), transforms.tfms_list
+        )
+
+    coco_style_preds = convert_preds_to_coco_style(preds)
+    finalized_pseudo_labels = {**addl_info, **coco_style_preds}
+
+    # Serialize
+    with open(output_filepath, "w") as jfile:
+        json.dump(finalized_pseudo_labels, jfile, cls=NpEncoder)
+
+    path_and_fname_split = output_filepath.rsplit("/", 1)
+    print(f"Saved {path_and_fname_split[1]} to {path_and_fname_split[0]}")
+    return None
 
 
 def create_coco_api(coco_records) -> COCO:
