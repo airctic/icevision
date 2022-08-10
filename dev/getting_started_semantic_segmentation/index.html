@@ -366,6 +366,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1197,6 +1210,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1298,6 +1324,10 @@
 <p>All of the IceVision components can be easily imported with a single line.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">icevision.all</span> <span class="kn">import</span> <span class="o">*</span>
 </code></pre></div>
+<h3 id="alternative-option-of-importing-icevision">Alternative option of importing icevision</h3>
+<p>In some environments wildcard imports are not allowed (eg: Kubeflow Pipelines &amp; distributed environment that rely on pickling). </p>
+<p>In that case you can call <code>import icevision.all as iv</code>  instead of <code>from icevision.all import *</code></p>
+<p>In that case you should reference icevision objects with the <code>iv.</code> prefix, so for instance one would do <code>iv.Dataset</code> instead of the regular approach of just doing <code>Dataset</code>, same for any other icevision object (eg: <code>iv.tfms.A.Adapter</code> instead of <code>tfms.A.Adapter</code> etc).</p>
 <h2 id="download-and-prepare-a-dataset">Download and prepare a dataset</h2>
 <p>Now we can start by downloading the camvid tiny dataset, which contains . This tiny dataset contains 100 images whose pixels are classified in 33 classes, including:
 - animal,

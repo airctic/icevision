@@ -345,6 +345,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1258,6 +1271,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1421,6 +1447,10 @@
 <div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/dnth/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
 </code></pre></div>
 </div>
+<h3 id="alternative-option-of-importing-icevision">Alternative option of importing icevision</h3>
+<p>In some environments wildcard imports are not allowed (eg: Kubeflow Pipelines &amp; distributed environment that rely on pickling). </p>
+<p>In that case you can call <code>import icevision.all as iv</code>  instead of <code>from icevision.all import *</code></p>
+<p>In that case you should reference icevision objects with the <code>iv.</code> prefix, so for instance one would do <code>iv.Dataset</code> instead of the regular approach of just doing <code>Dataset</code>, same for any other icevision object (eg: <code>iv.tfms.A.Adapter</code> instead of <code>tfms.A.Adapter</code> etc).</p>
 <h2 id="model">Model</h2>
 <p>To create a model, we need to:</p>
 <ul>
@@ -1490,7 +1520,7 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_21_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_22_0.png" /></p>
 <h2 id="dataloader">DataLoader</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># DataLoaders</span>
 <span class="n">train_dl</span> <span class="o">=</span> <span class="n">model_type</span><span class="o">.</span><span class="n">train_dl</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1504,7 +1534,7 @@ the dataset you will get a slightly different version of it.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># show batch</span>
 <span class="n">model_type</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">first</span><span class="p">(</span><span class="n">valid_dl</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_26_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_27_0.png" /></p>
 <h2 id="model_1">Model</h2>
 <p>Now that we determined the number of classes (<code>num_classes</code>), we can create our <code>model</code> object.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># TODO: Better flow for train_ds</span>
@@ -1526,7 +1556,7 @@ the dataset you will get a slightly different version of it.</p>
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_34_2.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_35_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">learn</span><span class="o">.</span><span class="n">fine_tune</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3e-4</span><span class="p">,</span> <span class="n">freeze_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </code></pre></div>
 <table border="1" class="dataframe">
@@ -1619,7 +1649,7 @@ the dataset you will get a slightly different version of it.</p>
 <h2 id="show-results">Show Results</h2>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_40_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_41_0.png" /></p>
 <h2 id="inference">Inference</h2>
 <h3 id="predicting-a-batch-of-images">Predicting a batch of images</h3>
 <p>Instead of predicting a whole list of images at one, we can process small batches at the time: This option is more memory efficient. </p>
@@ -1638,7 +1668,7 @@ the dataset you will get a slightly different version of it.</p>
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_45_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_instance_segmentation/getting_started_instance_segmentation_46_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 

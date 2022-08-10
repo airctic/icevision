@@ -331,6 +331,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1277,6 +1290,19 @@
     Imports
   </a>
   
+    <nav class="md-nav" aria-label="Imports">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternative-option-of-importing-icevision" class="md-nav__link">
+    Alternative option of importing icevision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1473,6 +1499,10 @@ as the fastai and pytorch lightning engines.</p>
 <div class="highlight"><pre><span></span><code>[1m[1mINFO    [0m[1m[0m - [1mThe mmdet config folder already exists. No need to downloaded it. Path : /home/dnth/.icevision/mmdetection_configs/mmdetection_configs-2.16.0/configs[0m | [36micevision.models.mmdet.download_configs[0m:[36mdownload_mmdet_configs[0m:[36m17[0m
 </code></pre></div>
 </div>
+<h3 id="alternative-option-of-importing-icevision">Alternative option of importing icevision</h3>
+<p>In some environments wildcard imports are not allowed (eg: Kubeflow Pipelines &amp; distributed environment that rely on pickling). </p>
+<p>In that case you can call <code>import icevision.all as iv</code>  instead of <code>from icevision.all import *</code></p>
+<p>In that case you should reference icevision objects with the <code>iv.</code> prefix, so for instance one would do <code>iv.Dataset</code> instead of the regular approach of just doing <code>Dataset</code>, same for any other icevision object (eg: <code>iv.tfms.A.Adapter</code> instead of <code>tfms.A.Adapter</code> etc).</p>
 <h2 id="download-and-prepare-a-dataset">Download and prepare a dataset</h2>
 <p>Now we can start by downloading the Fridge Objects dataset. This tiny dataset contains 134 images of 4 classes:
 - can, 
@@ -1520,7 +1550,7 @@ as the fastai and pytorch lightning engines.</p>
 <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">train_ds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
 <span class="n">show_samples</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_20_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_21_0.png" /></p>
 <h2 id="select-a-library-model-and-backbone">Select a library, model, and backbone</h2>
 <p>In order to create a model, we need to:
 * Choose one of the <strong>libraries</strong> supported by IceVision
@@ -1838,7 +1868,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 <p>The first step in reviewing the model is to show results from the validation dataset. This is easy to do with the <code>show_results</code> function.</p>
 <div class="highlight"><pre><span></span><code><span class="n">model_type</span><span class="o">.</span><span class="n">show_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">valid_ds</span><span class="p">,</span> <span class="n">detection_threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_43_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_44_0.png" /></p>
 <h3 id="prediction">Prediction</h3>
 <p>Sometimes you want to have more control than <code>show_results</code> provides. You can construct an inference dataloader using <code>infer_dl</code> from any IceVision dataset and pass this to <code>predict_dl</code> and use <code>show_preds</code> to look at the predictions.</p>
 <p>A prediction is returned as a dict with keys: <code>scores</code>, <code>labels</code>, <code>bboxes</code>, and possibly <code>masks</code>. </p>
@@ -1857,7 +1887,7 @@ As pretrained models are used by default, we typically leave this out of the bac
 </code></pre></div>
 </div>
 
-<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_47_0.png" /></p>
+<p><img alt="png" src="../images/getting_started_object_detection/getting_started_object_detection_48_0.png" /></p>
 <h2 id="happy-learning">Happy Learning!</h2>
 <p>If you need any assistance, feel free to join our <a href="https://discord.gg/JDBeZYK">forum</a>.</p>
                 
