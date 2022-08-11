@@ -22,7 +22,7 @@ import PIL
 
 class NpEncoder(json.JSONEncoder):
     """
-    Makes exporting from IceVision predictions to JSON possible
+    Smooths out datatype conversions for IceVision preds to JSON export
     """
 
     def default(self, obj):
@@ -40,12 +40,13 @@ def export_batch_inferences_as_coco_annotations(
     img_files,
     transforms,
     class_map,
-    output_filepath="new_pseudo_labels_for_further_training.json",
+    output_filepath="./inference_results_as_coco_annotations.json",
+    addl_info=None,
 ):
     """
     For converting object detection predictions to COCO annotation format.
-    Useful for leveraging partly-trained models to help annotate unlabeled
-    data.
+    Useful for e.g. leveraging partly-trained models to help annotate
+    unlabeled data.
 
     Parameters
     ----------
@@ -61,34 +62,49 @@ def export_batch_inferences_as_coco_annotations(
         The filepath (including filename) where you want the json results
         to be serialized, by default
         "new_pseudo_labels_for_further_training.json"
+    addl_info: dict, optional
+        Option to manually create the metadata dict containing 'licenses',
+        'info', and 'categories' that goes at the top of the COCO file
+            For example:
+                "info": {
+                    "year": "2022",
+                    "version": "1",
+                    "description": "Exported from IceVision",
+                    "contributor": "Awesome contributor",
+                    "url": "https://lazyannotator.fun",
+                    "date_created": "2022-08-05T20:13:09+00:00"
+                },
 
     Returns
     -------
     None
         This just spits out a serialized .json file and returns nothing.
     """
-    object_category_list = [
-        {"id": v, "name": k, "supercategory": ""}
-        for k, v in class_map._class2id.items()
-    ]
+    if addl_info is None:
+        # Then automatically generate COCO annotation metadata:
+        object_category_list = [
+            {"id": v, "name": k, "supercategory": ""}
+            for k, v in class_map._class2id.items()
+        ]
 
-    addl_info = {
-        "licenses": [{"name": "", "id": 0, "url": ""}],
-        "info": {
-            "contributor": "",
-            "date_created": "",
-            "description": "",
-            "url": "",
-            "version": "",
-            "year": "",
-        },
-        "categories": object_category_list,
-    }
+        addl_info = {
+            "licenses": [{"name": "", "id": 0, "url": ""}],
+            "info": {
+                "contributor": "",
+                "date_created": "",
+                "description": "",
+                "url": "",
+                "version": "",
+                "year": "",
+            },
+            "categories": object_category_list,
+        }
 
+    # Each entry needs a filepath
     [pred.add_component(FilepathRecordComponent()) for pred in preds]
     [preds[_].set_filepath(img_files[_]) for _ in range(len(preds))]
 
-    # This is an in-place operation, thus no saving to new variable
+    # process_bbox_predictions happens inplace, thus no new variable
     for p in preds:
         process_bbox_predictions(
             p, PIL.Image.open(Path(p.pred.filepath)), transforms.tfms_list
@@ -101,8 +117,8 @@ def export_batch_inferences_as_coco_annotations(
     with open(output_filepath, "w") as jfile:
         json.dump(finalized_pseudo_labels, jfile, cls=NpEncoder)
 
-    path_and_fname_split = output_filepath.rsplit("/", 1)
-    print(f"Saved {path_and_fname_split[1]} to {path_and_fname_split[0]}")
+        # Print confirmation message
+        print(f"New COCO annotation file saved to {output_filepath}")
     return None
 
 
