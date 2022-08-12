@@ -40,8 +40,9 @@ def export_batch_inferences_as_coco_annotations(
     img_files,
     transforms,
     class_map,
-    output_filepath="./inference_results_as_coco_annotations.json",
-    addl_info=None,
+    output_filepath="inference_results_as_coco_annotations.json",
+    info=None,
+    licenses=None,
 ):
     """
     For converting object detection predictions to COCO annotation format.
@@ -62,9 +63,9 @@ def export_batch_inferences_as_coco_annotations(
         The filepath (including filename) where you want the json results
         to be serialized, by default
         "new_pseudo_labels_for_further_training.json"
-    addl_info: dict, optional
-        Option to manually create the metadata dict containing 'licenses',
-        'info', and 'categories' that goes at the top of the COCO file
+    info: dict, optional
+        Option to manually create the info dict containing annotation metadata
+        including year, version, description, contributor, url, and date created
             For example:
                 "info": {
                     "year": "2022",
@@ -73,32 +74,52 @@ def export_batch_inferences_as_coco_annotations(
                     "contributor": "Awesome contributor",
                     "url": "https://lazyannotator.fun",
                     "date_created": "2022-08-05T20:13:09+00:00"
-                },
+                }
+    licenses: list[dict], optional
+        Option to manually create the license metadata for the annotations, e.g.
+        licenses = [
+            {
+                "name": "Creative Commons Attribution 4.0",
+                "id": 0,
+                "url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+            }
+        ]
 
     Returns
     -------
     None
         This just spits out a serialized .json file and returns nothing.
     """
-    if addl_info is None:
+    object_category_list = [
+        {"id": v, "name": k, "supercategory": ""}
+        for k, v in class_map._class2id.items()
+    ]
+
+    if info is None:
         # Then automatically generate COCO annotation metadata:
-        object_category_list = [
-            {"id": v, "name": k, "supercategory": ""}
-            for k, v in class_map._class2id.items()
+        info = {
+            "contributor": "",
+            "date_created": "",
+            "description": "",
+            "url": "",
+            "version": "",
+            "year": "",
+        }
+
+    if licenses is None:
+        licenses = [
+            {
+                "name": "",
+                "id": 0,
+                "url": "",
+            }
         ]
 
-        addl_info = {
-            "licenses": [{"name": "", "id": 0, "url": ""}],
-            "info": {
-                "contributor": "",
-                "date_created": "",
-                "description": "",
-                "url": "",
-                "version": "",
-                "year": "",
-            },
-            "categories": object_category_list,
-        }
+    addl_info = {
+        "licenses": licenses,
+        "info": info,
+        "categories": object_category_list,
+    }
 
     # Each entry needs a filepath
     [pred.add_component(FilepathRecordComponent()) for pred in preds]
