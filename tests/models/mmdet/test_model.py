@@ -64,10 +64,10 @@ class TestBboxModels:
         light_model = LitModel(model)
         trainer = pl.Trainer(
             max_epochs=1,
-            weights_summary=None,
+            enable_model_summary=False,
             num_sanity_val_steps=0,
             logger=False,
-            checkpoint_callback=False,
+            enable_checkpointing=False,
         )
 
         trainer.fit(light_model, train_dl, valid_dl)
@@ -144,10 +144,10 @@ class TestBboxModels:
         light_model = LitModel(model)
         trainer = pl.Trainer(
             max_epochs=1,
-            weights_summary=None,
+            enable_model_summary=False,
             num_sanity_val_steps=0,
             logger=False,
-            checkpoint_callback=False,
+            enable_checkpointing=False,
         )
 
         trainer.validate(light_model, valid_dl)
@@ -225,10 +225,10 @@ class TestBboxModels:
         light_model = LitModel(model)
         trainer = pl.Trainer(
             max_epochs=1,
-            weights_summary=None,
+            enable_model_summary=False,
             num_sanity_val_steps=0,
             logger=False,
-            checkpoint_callback=False,
+            enable_checkpointing=False,
         )
 
         trainer.test(light_model, valid_dl)
@@ -339,9 +339,9 @@ def test_mmdet_mask_models_light(mask_dls_model):
     light_model = LitModel(model)
     trainer = pl.Trainer(
         max_epochs=1,
-        weights_summary=None,
+        enable_model_summary=False,
         num_sanity_val_steps=0,
         logger=False,
-        checkpoint_callback=False,
+        enable_checkpointing=False,
     )
     trainer.fit(light_model, train_dl, valid_dl)
