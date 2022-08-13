@@ -40,25 +40,25 @@ def export_batch_inferences_as_coco_annotations(
     img_files,
     transforms,
     class_map,
-    output_filepath="inference_results_as_coco_annotations.json",
-    info=None,
-    licenses=None,
+    output_filepath = "inference_results_as_coco_annotations.json",
+    info = None,
+    licenses = None,
 ):
     """
     For converting object detection predictions to COCO annotation format.
     Useful for e.g. leveraging partly-trained models to help annotate
-    unlabeled data.
+    unlabeled data and make round trips back into annotation programs.
 
     Parameters
     ----------
-    preds : IceVision predictions
-        the result of predict_from_dl()
-    img_files : list
-        The original array of fullres PIL images
-    transforms : list
-        list of transforms applied to original images (to be reversed)
+    preds : List[Prediction]
+        The result of predict_from_dl()
+    img_files : fastcore.foundation.L (i.e. 'Paths')
+        References to the original image filepaths in array-like form.
+    transforms : Albumentations Adapter
+        Transforms that were applied to the original images (to be reversed)
     class_map : icevision.core.class_map.ClassMap
-        The map of classes your model is training on
+        The map of classes your model is familiar with
     output_filepath : str, optional
         The filepath (including filename) where you want the json results
         to be serialized, by default
@@ -75,7 +75,7 @@ def export_batch_inferences_as_coco_annotations(
                     "url": "https://lazyannotator.fun",
                     "date_created": "2022-08-05T20:13:09+00:00"
                 }
-    licenses: list[dict], optional
+    licenses: List[dict], optional
         Option to manually create the license metadata for the annotations, e.g.
         licenses = [
             {
@@ -140,7 +140,6 @@ def export_batch_inferences_as_coco_annotations(
 
         # Print confirmation message
         print(f"New COCO annotation file saved to {output_filepath}")
-    return None
 
 
 def create_coco_api(coco_records) -> COCO:
