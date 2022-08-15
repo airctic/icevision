@@ -24,10 +24,10 @@ def test_fastai_unet_train(camvid_ds, backbone):
 
     trainer = pl.Trainer(
         max_epochs=1,
-        weights_summary=None,
+        enable_model_summary=False,
         num_sanity_val_steps=0,
         logger=False,
-        checkpoint_callback=False,
+        enable_checkpointing=False,
     )
     trainer.fit(light_model, train_dl, valid_dl)
 

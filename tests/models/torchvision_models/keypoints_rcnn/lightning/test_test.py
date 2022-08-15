@@ -30,10 +30,10 @@ def test_lightining_keypoints_rcnn_test(ochuman_keypoints_dls, light_model_cls):
     light_model = light_model_cls(model)
     trainer = pl.Trainer(
         max_epochs=1,
-        weights_summary=None,
+        enable_model_summary=False,
         num_sanity_val_steps=0,
         logger=False,
-        checkpoint_callback=False,
+        enable_checkpointing=False,
     )
 
     trainer.test(light_model, valid_dl)

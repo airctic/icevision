@@ -32,10 +32,10 @@ def test_lightining_retinanet_test(
     light_model = light_model_cls(fridge_retinanet_model, metrics=metrics)
     trainer = pl.Trainer(
         max_epochs=1,
-        weights_summary=None,
+        enable_model_summary=False,
         num_sanity_val_steps=0,
         logger=False,
-        checkpoint_callback=False,
+        enable_checkpointing=False,
     )
 
     trainer.test(light_model, valid_dl)
