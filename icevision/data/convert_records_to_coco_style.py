@@ -40,9 +40,9 @@ def export_batch_inferences_as_coco_annotations(
     img_files,
     transforms,
     class_map,
-    output_filepath = "inference_results_as_coco_annotations.json",
-    info = None,
-    licenses = None,
+    output_filepath="inference_results_as_coco_annotations.json",
+    info=None,
+    licenses=None,
 ):
     """
     For converting object detection predictions to COCO annotation format.
