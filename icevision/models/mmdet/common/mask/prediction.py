@@ -114,7 +114,8 @@ def convert_raw_prediction(
     scores, labels, bboxes = _unpack_raw_bboxes(raw_bboxes)
 
     # When no prediction was made for a class the mask will be empty which creates problems when using np.vstack. So we fill empty predictions with empty masks
-    empty_mask = np.full((0, sample["img"].shape[-2], sample["img"].shape[-1]), False)
+    img_size = get_img_size_from_data(sample["img"])
+    empty_mask = np.full((0, img_size.height, img_size.width), False)
     filled_raw_masks = [mask if mask != [] else empty_mask for mask in raw_masks]
 
     keep_mask = scores > detection_threshold

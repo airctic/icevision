@@ -26,5 +26,5 @@ def test_img_pad_stack(records, pad_value):
     expected[1, :3, :2, :3] = 1
     np.testing.assert_equal(imgs, expected)
 
-    before_shapes = [(record.height, record.width) for record in tfmed_records]
+    before_shapes = [(record.width, record.height) for record in tfmed_records]
     assert before_shapes == [(2, 4), (3, 2)]

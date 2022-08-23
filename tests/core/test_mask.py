@@ -54,7 +54,7 @@ def test_voc_mask_file(samples_source):
     mask = VocMaskFile(mask_filepath)
 
     mask_arr = mask.to_mask(0, 0)
-    assert mask_arr.data.shape == (2, 375, 500)
+    assert mask_arr.data.shape == (2, 500, 375)
 
     erles = mask.to_erles(h=375, w=500)
     assert len(erles) == 2

@@ -51,14 +51,13 @@ class EncodedRLEs(Mask):
 
     def to_mask(self, h, w) -> "MaskArray":
         mask = mask_utils.decode(self.erles)
-        mask = mask.transpose(2, 0, 1)  # channels first
+        mask = mask.transpose(2, 0, 1)  # (h,w,c) => (c,h,w)
         return MaskArray(mask)
 
     def to_erles(self, h, w) -> "EncodedRLEs":
         return self
 
 
-# TODO: Assert shape? (bs, height, width)
 class MaskArray(Mask):
     """Binary numpy array representation of a mask.
 
@@ -89,12 +88,16 @@ class MaskArray(Mask):
         if len(self.data.shape) == 1:
             return EncodedRLEs(
                 mask_utils.encode(
-                    np.asfortranarray(self.data[:, None, None].transpose(1, 2, 0))
+                    np.asfortranarray(
+                        self.data[:, None, None].transpose(1, 2, 0)
+                    )  # (c,h,w) => (h,w,c)
                 )
             )
         else:
             return EncodedRLEs(
-                mask_utils.encode(np.asfortranarray(self.data.transpose(1, 2, 0)))
+                mask_utils.encode(
+                    np.asfortranarray(self.data.transpose(1, 2, 0))
+                )  # (c,h,w) => (h,w,c)
             )
 
     def to_coco_rle(self, h, w) -> List[dict]:
@@ -143,13 +146,15 @@ class MaskFile(Mask):
 
         if (h is not None) and (w is not None):
             # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
-            (w_org, h_org) = mask_img.size
+            org_img_size = get_img_size_from_data(mask_img)
 
             # TODO: Check NEAREST is always the best option or only for binary?
-            if w_org != w or h_org != h:
-                mask_img = mask_img.resize((w, h), resample=PIL.Image.NEAREST)
+            if org_img_size.width != w or org_img_size.height != h:
+                mask_img = mask_img.resize(
+                    (w, h), resample=PIL.Image.NEAREST
+                )  # TODO bugfix/1135 not always PIL anymore
 
-        mask = np.array(mask_img)
+        mask = image_to_numpy(mask_img).transpose()
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
 
@@ -176,7 +181,7 @@ class VocMaskFile(MaskFile):
         self.drop_void = drop_void
 
     def to_mask(self, h, w) -> MaskArray:
-        mask_arr = np.array(Image.open(self.filepath))
+        mask_arr = image_to_numpy(open_img(self.filepath))
         obj_ids = np.unique(mask_arr)[1:]
         masks = mask_arr == obj_ids[:, None, None]
 
@@ -292,14 +297,13 @@ class SemanticMaskFile(Mask):
         mask = open_img(self.filepath, gray=True)
 
         # If the dimensions provided in h and w do not match the size of the mask, resize the mask accordingly
-        (w_org, h_org) = mask.size
+        org_img_size = get_img_size_from_data(mask)
 
         # TODO: Check NEAREST is always the best option or only for binary?
-        if w_org != w or h_org != h:
+        if org_img_size.width != w or org_img_size.height != h:
             mask = mask.resize((w, h), resample=PIL.Image.NEAREST)
 
-        # HACK: because open_img now return PIL
-        mask = np.array(mask)
+        mask = image_to_numpy(mask)
 
         # convert 255 pixels to 1
         if self.binary:

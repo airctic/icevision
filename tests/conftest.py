@@ -99,7 +99,7 @@ def fridge_ds(samples_source, fridge_class_map) -> Tuple[Dataset, Dataset]:
     data_splitter = RandomSplitter([0.5, 0.5], seed=42)
     train_records, valid_records = parser.parse(data_splitter)
 
-    tfms_ = tfms.A.Adapter([A.Resize(IMG_SIZE, IMG_SIZE), A.Normalize()])
+    tfms_ = tfms.A.Adapter([A.Resize(height=IMG_SIZE, width=IMG_SIZE), A.Normalize()])
 
     train_ds = Dataset(train_records, tfms_)
     valid_ds = Dataset(valid_records, tfms_)

@@ -4,6 +4,8 @@ import albumentations as A
 
 from icevision.imports import *
 from icevision.core import *
+from icevision.utils.imageio import ImgSize
+from icevision.utils.imageio import get_img_size_from_data
 
 
 def resize(size, ratio_resize=A.LongestMaxSize):
@@ -86,37 +88,45 @@ def aug_tfms(
 
 
 def get_size_without_padding(
-    tfms_list: List[Any], before_tfm_img: PIL.Image.Image, height: int, width: int
-) -> Tuple[int, int]:
+    tfms_list: List[Any],
+    before_tfm_img: Union[PIL.Image.Image, np.ndarray],
+    img_size: ImgSize,
+) -> ImgSize:
     """
-    Infer the height and width of the pre-processed image after removing padding.
+    Infer the image size of the pre-processed image after removing padding.
 
     Parameters
     ----------
     tfms_list: list of albumentations transforms applied to the `before_tfm_img` image
                 before passing it to the model for inference.
     before_tfm_img: original image before being pre-processed for inference.
-    height: height of output image from icevision `predict` function.
-    width: width of output image from icevision `predict` function.
+    img_size: Image size of output image from icevision `predict` function.
 
     Returns
     -------
-    height and width of the image coming out of the inference pipeline, after removing padding
+    ImgSize of the image coming out of the inference pipeline, after removing padding
     """
+    print("get_size_without_padding")
     if get_transform(tfms_list, "Pad") is not None:
-        before_pad_h, before_pad_w, _ = np.array(before_tfm_img).shape
+        before_pad_img_size = get_img_size_from_data(before_tfm_img)
+        print(f"get_size_without_padding::before_pad_img_size {before_pad_img_size}")
 
         t = get_transform(tfms_list, "SmallestMaxSize")
         if t is not None:
             presize = t.max_size
-            height, width = func_max_size(before_pad_h, before_pad_w, presize, min)
+            img_size = func_max_size(before_pad_img_size, presize, min)
+            print(
+                f"get_size_without_padding::func_max_size::SmallestMaxSize {img_size}"
+            )
 
         t = get_transform(tfms_list, "LongestMaxSize")
         if t is not None:
             size = t.max_size
-            height, width = func_max_size(before_pad_h, before_pad_w, size, max)
+            img_size = func_max_size(before_pad_img_size, size, max)
+            print(f"get_size_without_padding::func_max_size::LongestMaxSize {img_size}")
 
-    return height, width
+    print(f"get_size_without_padding::img_size {img_size}")
+    return img_size
 
 
 def py3round(number: float) -> int:
@@ -138,27 +148,32 @@ def py3round(number: float) -> int:
 
 
 def func_max_size(
-    height: int, width: int, max_size: int, func: Callable[[int, int], int]
-) -> Tuple[int, int]:
+    img_size: ImgSize, max_size: int, func: Callable[[int, int], int]
+) -> ImgSize:
     """
-    Calculate rescaled height and width of the image in question wrt to a specific size.
+    Calculate rescaled image size of the image in question wrt to a specific size.
 
     Parameters
     ----------
-    height: height of the image in question.
-    width: width of the image in question.
+    img_size: Image size of the image in question.
     max_size: size wrt the image needs to be rescaled (resized).
     func: min/max. Whether to compare max_size to the smallest/longest of the image dims.
 
     Returns
     -------
-    Rescaled height and width
+    Rescaled image size
     """
-    scale = max_size / float(func(width, height))
+    scale = max_size / float(func(img_size.width, img_size.height))
 
     if scale != 1.0:
-        height, width = tuple(py3round(dim * scale) for dim in (height, width))
-    return height, width
+        height, width = tuple(
+            py3round(dim * scale) for dim in (img_size.height, img_size.width)
+        )
+    else:
+        height = img_size.height
+        width = img_size.width
+
+    return ImgSize(width=width, height=height)
 
 
 def get_transform(tfms_list: List[Any], t: str) -> Any:

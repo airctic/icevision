@@ -16,6 +16,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.data import *
 from icevision.core import *
+from icevision.utils.imageio import image_to_numpy
 from icevision.visualize.utils import *
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -356,7 +357,7 @@ def _draw_label(
     if return_as_pil_img:
         return img
     else:
-        return np.array(img)
+        return image_to_numpy(img)
 
 
 def draw_record(
@@ -490,7 +491,7 @@ def draw_bbox(
     if gap == False:
         xyxy = tuple(np.array(bbox.xyxy, dtype=int))
         draw.rectangle(xyxy, fill=None, outline=color, width=bbox_thickness)
-        return np.array(img)
+        return image_to_numpy(img)
 
     xmin, ymin, xmax, ymax = tuple(np.array(bbox.xyxy, dtype=int))
 
@@ -557,7 +558,7 @@ def draw_bbox(
                     joint=None,
                 )
 
-    return np.array(img)
+    return image_to_numpy(img)
 
 
 def draw_mask(
@@ -598,7 +599,7 @@ def draw_mask(
     # Key concept is that alpha for non-mask pixels are 0 (transparent)
     img.putalpha(255)
     img = PIL.Image.alpha_composite(img, mask_pil)
-    return np.array(img)
+    return image_to_numpy(img)
 
 
 def draw_segmentation_mask(
@@ -627,7 +628,7 @@ def draw_segmentation_mask(
         mask_pil = PIL.Image.fromarray(mask_arr)
         img = PIL.Image.blend(img, mask_pil, alpha=alpha)
 
-    return np.array(img)
+    return image_to_numpy(img)
 
 
 def draw_keypoints(
@@ -673,4 +674,4 @@ def draw_keypoints(
             width=0,
         )
 
-    return np.array(img)
+    return image_to_numpy(img)

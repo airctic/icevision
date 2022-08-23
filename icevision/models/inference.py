@@ -59,9 +59,11 @@ def _end2end_detect(
                    Bounding boxes are adjusted to the original image size and aspect ratio
     """
     if isinstance(img, (str, Path)):
-        img = PIL.Image.open(Path(img))
+        img = open_img(Path(img))
 
-    infer_ds = Dataset.from_images([np.array(img)], transforms, class_map=class_map)
+    infer_ds = Dataset.from_images(
+        [image_to_numpy(img)], transforms, class_map=class_map
+    )
     pred = predict_fn(model, infer_ds, detection_threshold=detection_threshold)[0]
     pred = process_bbox_predictions(pred, img, transforms.tfms_list)
     record = pred.pred
@@ -80,6 +82,7 @@ def _end2end_detect(
             return_as_pil_img=return_as_pil_img,
             **kwargs,
         )
+        print(f"pred_img type {type(pred_img)}")
         record.set_img(pred_img)
     else:
         record._unload()
@@ -107,7 +110,7 @@ def _end2end_detect(
 
 def process_bbox_predictions(
     pred: Prediction,
-    img: PIL.Image.Image,
+    img: Union[PIL.Image.Image, np.ndarray],
     transforms: List[Any],
 ) -> List[Dict[str, Any]]:
     """
@@ -136,13 +139,17 @@ def process_bbox_predictions(
         bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
         bboxes.append(bbox)
 
-    pred.pred.img = np.array(img)
+    pred.pred.img = image_to_numpy(img)
     pred.pred.detection.set_bboxes(bboxes)
     return pred
 
 
 def postprocess_bbox(
-    img: PIL.Image.Image, bbox: BBox, transforms: List[Any], h_after: int, w_after: int
+    img: Union[PIL.Image.Image, np.ndarray],
+    bbox: BBox,
+    transforms: List[Any],
+    h_after: int,
+    w_after: int,
 ) -> Tuple[int, int, int, int]:
     """
     Post-process predicted bbox to adjust coordinates to input image size.
@@ -159,11 +166,14 @@ def postprocess_bbox(
     -------
     Tuple with (xmin, ymin, xmax, ymax) rescaled and re-adjusted to match the original image size
     """
-    w_before, h_before = img.size
-    h_after, w_after = get_size_without_padding(transforms, img, h_after, w_after)
+    img_size_before = get_img_size_from_data(img)
+    img_size_after = get_size_without_padding(
+        transforms, img, ImgSize(width=w_after, height=h_after)
+    )
+    h_after, w_after = img_size_after.height, img_size_after.width
     pad = np.abs(h_after - w_after) // 2
 
-    h_scale, w_scale = h_after / h_before, w_after / w_before
+    h_scale, w_scale = h_after / img_size_before.height, w_after / img_size_before.width
     if h_after < w_after:
         xmin, xmax, ymin, ymax = (
             int(bbox.xmin),
@@ -204,14 +214,14 @@ def draw_img_and_boxes(
     label_border_color: Union[np.array, list, tuple, str] = (255, 255, 0),
 ) -> PIL.Image.Image:
 
-    if not isinstance(img, PIL.Image.Image):
-        img = np.array(img)
+    if isinstance(img, PIL.Image.Image):
+        img = image_to_numpy(img)
 
     # convert dict to record
     record = ObjectDetectionRecord()
-    w, h = img.shape
-    record.img = np.array(img)
-    record.set_img_size(ImgSize(width=w, height=h))
+    img_size = get_img_size_from_data(img)
+    record.img = img
+    record.set_img_size(img_size)
     record.detection.set_class_map(class_map)
     for bbox in bboxes:
         record.detection.add_bboxes([BBox.from_xyxy(*bbox["bbox"])])

@@ -399,3 +399,27 @@ def test_image_to_numpy_returns_numpy_array_as_is_when_input_was_already_numpy_a
     array = image_to_numpy(data)
 
     assert (array == data).all()
+
+
+def test_get_number_of_channels_throws_when_image_is_not_pil_or_numpy_array():
+    image = "something"
+
+    with pytest.raises(Exception) as _:
+        get_number_of_channels(image)
+
+
+def test_get_number_of_channels_returns_channels_when_image_has_3_dimensions():
+    expected_channels = random.randint(1, 10)
+    image = np.random.randint(0, 256, (11, 10, expected_channels), dtype=np.uint8)
+
+    channels = get_number_of_channels(image)
+
+    assert channels == expected_channels
+
+
+def test_get_number_of_channels_assumes_there_is_1_channel_when_image_has_only_2_dimensions():
+    image = np.random.randint(0, 256, (11, 10), dtype=np.uint8)
+
+    channels = get_number_of_channels(image)
+
+    assert channels == 1

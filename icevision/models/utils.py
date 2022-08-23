@@ -111,6 +111,9 @@ def _predict_from_dl(
             keep_images=keep_images,
             **predict_kwargs,
         )
+        print(f"_predict_from_dl")
+        print(f"preds : {preds}")
+        print(f"preds len : {len(preds)}")
         all_preds.extend(preds)
 
     return all_preds

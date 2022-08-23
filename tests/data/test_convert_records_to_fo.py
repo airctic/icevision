@@ -1,5 +1,6 @@
 import imp
 from venv import create
+from icevision.utils.imageio import ImgSize
 import pytest
 from PIL import Image
 from fiftyone import list_datasets, load_dataset, Detection, Sample, Dataset
@@ -76,7 +77,7 @@ def test_convert_record_to_fo_sample(object_detection_record):
 
 def test_convert_prediction_to_fo_sample(object_detection_record):
     # Create Prediction
-    object_detection_record.original_img_size = [1000, 1000]
+    object_detection_record.original_img_size = ImgSize(1000, 1000)
     object_detection_prediction = Prediction(
         object_detection_record, object_detection_record
     )
@@ -100,7 +101,7 @@ def test_convert_prediction_to_fo_sample(object_detection_record):
 
 def test_create_fo_dataset(object_detection_record, cleanup_fo_dataset):
     # Create Prediction
-    object_detection_record.original_img_size = [1000, 1000]
+    object_detection_record.original_img_size = ImgSize(1000, 1000)
     object_detection_prediction = Prediction(
         object_detection_record, object_detection_record
     )

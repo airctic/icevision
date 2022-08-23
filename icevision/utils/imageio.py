@@ -5,6 +5,7 @@ __all__ = [
     "get_img_size",
     "get_img_size_from_data",
     "image_to_numpy",
+    "get_number_of_channels",
     "show_img",
     "plot_grid",
 ]
@@ -159,6 +160,17 @@ def get_img_size_from_data(data: Union[PIL.Image.Image, np.ndarray]) -> ImgSize:
         width, height, *_ = data.shape
 
     return ImgSize(width=width, height=height)
+
+
+def get_number_of_channels(image: Union[PIL.Image.Image, np.ndarray]) -> tuple:
+    assert isinstance(image, (PIL.Image.Image, np.ndarray))
+
+    np_img = image_to_numpy(image)
+
+    if len(np_img.shape) == 3:
+        return np_img.shape[-1]
+
+    return 1
 
 
 def show_img(img, ax=None, show: bool = False, **kwargs):

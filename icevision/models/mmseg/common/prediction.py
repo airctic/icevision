@@ -106,10 +106,12 @@ def convert_raw_predictions(
             # We load the record to ensure mask data is available
             if len(record.segmentation.masks):
 
-                (h, w, _) = record.img.shape
+                img_size = get_img_size_from_data(record.img)
 
                 record.segmentation.set_mask_array(
-                    record.segmentation.masks[0].to_mask(h=h, w=w, pad_dim=False)
+                    record.segmentation.masks[0].to_mask(
+                        h=img_size.height, w=img_size.width, pad_dim=False
+                    )
                 )
 
         preds.append(Prediction(pred=pred, ground_truth=record))

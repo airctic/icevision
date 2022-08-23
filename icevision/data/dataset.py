@@ -33,6 +33,8 @@ class Dataset:
 
     def __getitem__(self, i):
         record = self.records[i].load()
+        print(f"__getitem__::record {record}")
+        print(f"__getitem__::tfm {self.tfm}")
         if self.tfm is not None:
             record = self.tfm(record)
         else:

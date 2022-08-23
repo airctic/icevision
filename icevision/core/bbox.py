@@ -49,6 +49,8 @@ class BBox:
         return self.width * self.height
 
     def to_tensor(self):
+        print("bbox::to_tensor")
+
         return tensor(self.xyxy, dtype=torch.float)
 
     def autofix(self, img_w, img_h, record_id: Optional[Any] = None) -> bool:
@@ -60,6 +62,8 @@ class BBox:
         - Raises `InvalidDataError` if unables to automatically fix the data
         """
         # conditions where data can be fixed
+        print("bbox::autofix")
+
         if self.xmin < 0:
             autofix_log(
                 "AUTOFIX-SUCCESS",
@@ -114,17 +118,25 @@ class BBox:
 
     @property
     def xyxy(self):
+        print("bbox::xyxy")
+
         return (self.xmin, self.ymin, self.xmax, self.ymax)
 
     @property
     def yxyx(self):
+        print("bbox::yxyx")
+
         return (self.ymin, self.xmin, self.ymax, self.xmax)
 
     @property
     def xywh(self):
+        print("bbox::xywh")
+
         return (self.xmin, self.ymin, self.width, self.height)
 
     def relative_xcycwh(self, img_width: int, img_height: int):
+        print("bbox::relative_xcycwh")
+
         scale = np.array([img_width, img_height, img_width, img_height])
         x, y, w, h = self.xywh / scale
         xc = x + 0.5 * w
@@ -133,14 +145,20 @@ class BBox:
 
     @classmethod
     def from_xywh(cls, x, y, w, h):
+        print("bbox::from_xywh")
+
         return cls(x, y, x + w, y + h)
 
     @classmethod
     def from_xyxy(cls, xl, yu, xr, yb):
+        print("bbox::from_xyxy")
+
         return cls(xl, yu, xr, yb)
 
     @classmethod
     def from_relative_xcycwh(cls, xc, yc, bw, bh, img_width, img_height):
+        print("bbox::from_relative_xcycwh")
+
         # subtracting 0.5 goes from center to left/upper edge, adding goes to right/bottom
         pnts = [(xc - 0.5 * bw), (yc - 0.5 * bh), (xc + 0.5 * bw), (yc + 0.5 * bh)]
         # convert from relative to absolute coordinates
@@ -150,6 +168,7 @@ class BBox:
 
     @classmethod
     def from_rle(cls, rle, h, w):
+        print("bbox::from_rle")
         a = np.array(rle.counts, dtype=int)
         a = a.reshape((-1, 2))  # an array of (start, length) pairs
         a[:, 0] -= 1  # `start` is 1-indexed
@@ -168,5 +187,5 @@ class BBox:
         x1 = np.max(x1)
         if x1 > w:
             # just went out of the image dimensions
-            raise ValueError(f"invalid RLE or image dimensions: x1={x1} > shape[1]={w}")
+            raise ValueError(f"invalid RLE or image dimensions: x1={x1} > width={w}")
         return cls.from_xyxy(x0, y0, x1, y1)

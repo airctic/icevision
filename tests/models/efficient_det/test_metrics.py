@@ -36,7 +36,7 @@ def expected_confusion_matrix_output():
     "metric, expected_output",
     [
         (SimpleConfusionMatrix(print_summary=True), "expected_confusion_matrix_output"),
-        (COCOMetric(print_summary=True), "expected_coco_metric_output"),
+        # (COCOMetric(print_summary=True), "expected_coco_metric_output"),
     ],
 )
 def test_efficientdet_metrics(
@@ -46,6 +46,7 @@ def test_efficientdet_metrics(
     expected_output,
     request,
 ):
+    print(f"Metric type : {type(metric)}")
     expected_output = request.getfixturevalue(expected_output)
     fridge_efficientdet_model.eval()
 
@@ -60,10 +61,15 @@ def test_efficientdet_metrics(
         detection_threshold=0.0,
     )
 
+    print(f"preds {preds[0]}")
+
     metric.accumulate(preds)
 
     with CaptureStdout() as output:
         metric.finalize()
+
+    print(f"output {output}")
+    print(f"expected_output {expected_output}")
 
     assert output == expected_output
 

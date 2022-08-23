@@ -14,7 +14,7 @@ def record(samples_source):
     )
 
     record.set_record_id(1)
-    record.set_image_size(3, 3)
+    record.set_img_size(ImgSize(3, 3))
     record.set_filepath(samples_source / "voc/JPEGImages/2007_000063.jpg")
     record.detection.set_class_map(ClassMap(["a", "b"]))
     record.detection.add_labels(["a", "b"])
@@ -39,7 +39,7 @@ def gray_scale_record(samples_source):
     )
 
     record.set_record_id(1)
-    record.set_image_size(3, 3)
+    record.set_img_size(ImgSize(3, 3))
     record.set_filepath(samples_source / "gray_scale/gray_scale_h_50_w_50_image.tiff")
     record.detection.set_class_map(ClassMap(["a", "b"]))
     record.detection.add_labels(["a", "b"])
@@ -57,7 +57,7 @@ def record_empty_annotations():
     record = BaseRecord((BBoxesRecordComponent(), InstancesLabelsRecordComponent()))
     record.detection.set_class_map(ClassMap().unlock())
     record.set_record_id(2)
-    record.set_image_size(3, 3)
+    record.set_img_size(ImgSize(3, 3))
     return record
 
 
@@ -66,7 +66,7 @@ def record_invalid_path():
     record = BaseRecord((FilepathRecordComponent(),))
 
     record.set_record_id(2)
-    record.set_image_size(3, 3)
+    record.set_img_size(ImgSize(3, 3))
     record.set_filepath("none.jpg")
     return record
 
@@ -82,7 +82,7 @@ def record_wrong_num_annotations(samples_source):
     )
 
     record.set_record_id(3)
-    record.set_image_size(3, 3)
+    record.set_img_size(ImgSize(3, 3))
     record.detection.set_class_map(ClassMap(["a", "b"]))
     record.detection.add_labels(["a", "b"])
     record.detection.add_bboxes([BBox.from_xyxy(1, 2, 4, 4)])

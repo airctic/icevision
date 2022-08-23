@@ -118,6 +118,7 @@ class ImageRecordComponent(RecordComponent):
 
     def _repr(self) -> List[str]:
 
+        # TODO bugfix/1135 test
         if self.img is None:
             return [f"Img: {self.img}"]
 
@@ -166,6 +167,7 @@ class FilepathRecordComponent(ImageRecordComponent):
         self.filepath = Path(filepath)
 
     def _load(self):
+        print(f"Loading '{self.filepath}'")
         if self.gray:
             img = open_gray_scale_image(self.filepath)
         else:
@@ -195,14 +197,10 @@ class SizeRecordComponent(RecordComponent):
         super().__init__(task=task)
         self.img_size = None
 
-    def set_image_size(self, width: int, height: int):
-        # TODO: use ImgSize
-        self.img_size = ImgSize(width=width, height=height)
-        self.width, self.height = width, height
-
     def set_img_size(self, size: ImgSize, original: bool = False):
         self.img_size = size
-        self.width, self.height = size
+        self.width = self.img_size.width
+        self.height = self.img_size.height
 
         if original:
             self.original_img_size = size
@@ -332,15 +330,20 @@ class ClassificationLabelsRecordComponent(BaseLabelsRecordComponent):
 class BBoxesRecordComponent(RecordComponent):
     def __init__(self, task=tasks.detection):
         super().__init__(task=task)
+        print("BBoxesRecordComponent::__init__")
         self.bboxes: List[BBox] = []
 
     def set_bboxes(self, bboxes: Sequence[BBox]):
+        print("BBoxesRecordComponent::set_bboxes")
         self.bboxes = list(bboxes)
 
     def add_bboxes(self, bboxes: Sequence[BBox]):
+        print("BBoxesRecordComponent::add_bboxes")
         self.bboxes.extend(bboxes)
 
     def _autofix(self) -> Dict[str, bool]:
+        print("BBoxesRecordComponent::_autofix")
+
         success = []
         for bbox in self.bboxes:
             try:
@@ -359,12 +362,18 @@ class BBoxesRecordComponent(RecordComponent):
         return {"bboxes": success}
 
     def _num_annotations(self) -> Dict[str, int]:
+        print("BBoxesRecordComponent::_num_annotations")
+
         return {"bboxes": len(self.bboxes)}
 
     def _remove_annotation(self, i):
+        print("BBoxesRecordComponent::_remove_annotation")
+
         self.bboxes.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
+        print("BBoxesRecordComponent::_aggregate_objects")
+
         objects = []
         for bbox in self.bboxes:
             x, y, w, h = bbox.xywh
@@ -382,15 +391,23 @@ class BBoxesRecordComponent(RecordComponent):
         return {"bboxes": objects}
 
     def _repr(self) -> List[str]:
+        print("BBoxesRecordComponent::_repr")
+
         return [f"BBoxes: {self.bboxes}"]
 
     def as_dict(self) -> dict:
+        print("BBoxesRecordComponent::as_dict")
+
         return {"bboxes": self.bboxes}
 
     def setup_transform(self, tfm) -> None:
+        print("BBoxesRecordComponent::setup_transform")
+
         tfm.setup_bboxes(self)
 
     def _builder_template(self) -> List[str]:
+        print("BBoxesRecordComponent::_builder_template")
+
         return ["record{task}add_bboxes(<Sequence[BBox]>)"]
 
 
