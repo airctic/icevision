@@ -7,10 +7,25 @@ from icevision.models.torchvision import mask_rcnn
 @pytest.fixture
 def sample_dataset(samples_source):
     images_dir = samples_source / "images"
-    images_files = get_image_files(images_dir)[-2:]
+    images_files = list(
+        filter(lambda f: not str(f).endswith("tif"), get_image_files(images_dir))
+    )[-2:]
 
     images = [np.array(open_img(path)) for path in images_files]
     images = [cv2.resize(image, (128, 128)) for image in images]
+
+    return Dataset.from_images(images)
+
+
+@pytest.fixture
+def sample_dataset_tiff(samples_source):
+    images_dir = samples_source / "images"
+    images_files = list(
+        filter(lambda f: str(f).endswith("tif"), get_image_files(images_dir))
+    )
+
+    images = [open_img(path) for path in images_files]
+    images = [np.resize(image, (128, 128, 3)).astype(np.float32) for image in images]
 
     return Dataset.from_images(images)
 
@@ -34,12 +49,31 @@ def _test_preds(preds):
     assert isinstance(pred.detection.scores, np.ndarray)
 
 
+def _test_preds_tiff(preds):
+    assert len(preds) == 4
+
+    pred = preds[0].pred
+    assert isinstance(pred.detection.label_ids, list)
+    assert len(pred.detection.bboxes) == 0
+    assert len(pred.detection.mask_array) == 0
+    assert len(pred.detection.scores) == 0
+
+
 def test_mantis_mask_rcnn_predict(sample_dataset, pretrained_state_dict):
     model = mask_rcnn.model(num_classes=91)
     model.load_state_dict(pretrained_state_dict)
 
     preds = mask_rcnn.predict(model=model, dataset=sample_dataset)
     _test_preds(preds)
+
+
+def test_mantis_mask_rcnn_predict_tiff(sample_dataset_tiff, pretrained_state_dict):
+    model = mask_rcnn.model(num_classes=91)
+    model.load_state_dict(pretrained_state_dict)
+
+    preds = mask_rcnn.predict(model=model, dataset=sample_dataset_tiff)
+
+    _test_preds_tiff(preds)
 
 
 def test_mantis_mask_rcnn_predict_from_dl(sample_dataset, pretrained_state_dict):

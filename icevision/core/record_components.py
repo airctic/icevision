@@ -113,34 +113,38 @@ class ImageRecordComponent(RecordComponent):
         self.img = None
 
     def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
-        assert isinstance(img, (PIL.Image.Image, np.ndarray))
         self.img = img
-        if isinstance(img, PIL.Image.Image):
-            width, height = img.size
-        elif isinstance(img, np.ndarray):
-            # else:
-            height, width, _ = self.img.shape
-        # this should set on SizeRecordComponent
-        self.composite.set_img_size(ImgSize(width=width, height=height), original=True)
+        self.composite.set_img_size(get_img_size_from_data(img), original=True)
 
     def _repr(self) -> List[str]:
-        if self.img is not None:
-            if isinstance(self.img, np.ndarray):
-                ndims = len(self.img.shape)
-                if ndims == 3:  # RGB, RGBA
-                    height, width, channels = self.img.shape
-                elif ndims == 2:  # Grayscale
-                    height, width, channels = [*self.img.shape, 1]
-                else:
-                    raise ValueError(
-                        f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
-                    )
-                return [f"Img: {width}x{height}x{channels} <np.ndarray> Image"]
-            elif isinstance(self.img, PIL.Image.Image):
-                width, height = self.img.size
-                return [f"Img: {width}x{height} <PIL.Image; mode='{self.img.mode}'>"]
-        else:
+
+        if self.img is None:
             return [f"Img: {self.img}"]
+
+        np_img = image_to_numpy(self.img)
+
+        if isinstance(self.img, PIL.Image.Image):
+            img_type_description = f"<PIL.Image; mode='{self.img.mode}'>"
+        else:
+            img_type_description = f"<np.ndarray> Image"
+
+        ndims = len(np_img.shape)
+
+        if ndims == 3:
+
+            width, height, channels = np_img.shape
+
+            return [f"Img: {width}x{height}x{channels} {img_type_description}"]
+
+        elif ndims == 2:
+
+            width, height, channels = [*np_img.shape, 1]
+
+            return [f"Img: {width}x{height} {img_type_description}"]
+        else:
+            raise ValueError(
+                f"Expected image to have 2 or 3 dimensions, got {ndims} instead"
+            )
 
     def _unload(self):
         self.img = None
@@ -162,9 +166,11 @@ class FilepathRecordComponent(ImageRecordComponent):
         self.filepath = Path(filepath)
 
     def _load(self):
-        img = open_img(self.filepath, gray=self.gray)
         if self.gray:
-            img = img.convert("RGB")
+            img = open_gray_scale_image(self.filepath)
+        else:
+            img = open_img(self.filepath, gray=False)
+
         self.set_img(img)
 
     def _autofix(self) -> Dict[str, bool]:
@@ -413,6 +419,7 @@ class BaseMasksRecordComponent(RecordComponent):
         mask_array = MaskArray.from_masks(
             self.masks, self.composite.height, self.composite.width
         )
+        print(f"_load mask_array.shape {mask_array.shape}")
         self.set_mask_array(mask_array)
 
     def _unload(self):

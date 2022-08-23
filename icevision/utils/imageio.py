@@ -3,6 +3,8 @@ __all__ = [
     "open_img",
     "get_image_size",
     "get_img_size",
+    "get_img_size_from_data",
+    "image_to_numpy",
     "show_img",
     "plot_grid",
 ]
@@ -48,23 +50,59 @@ def open_dicom(filename) -> PIL.Image:
     return img
 
 
-# FIXME
-def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
-    "Open an image from disk `fn` as a PIL Image"
-    color = "L" if gray else "RGB"
+def is_tif_extension(filepath: Union[str, Path]) -> bool:
+    return str(filepath).endswith(".tif") or str(filepath).endswith(".tiff")
 
-    image = PIL.Image.open(str(fn))
 
-    if not ignore_exif:
-        image = PIL.ImageOps.exif_transpose(image)
-    image = image.convert(color)
+def swap_from_chw_to_whc(data: np.ndarray):
+
+    if len(data.shape) == 3:
+        data = np.swapaxes(data, 0, 2)
+    else:
+        data = np.swapaxes(data.squeeze(), 0, 1)
+
+    return data
+
+
+def open_img(
+    fn, gray=False, ignore_exif: bool = False
+) -> Union[PIL.Image.Image, np.ndarray]:
+    """
+    Open an image from disk `fn`.
+
+    TIFF:
+        returns a numpy array with dimensions (w,h,c) when gray is false and (w,h) when gray is true.
+    Others:
+        returns a PIL Image.
+    """
+    if is_tif_extension(fn):
+        with rasterio.open(str(fn), "r") as img:
+            raw_data = img.read()
+            image = swap_from_chw_to_whc(raw_data)
+            if gray:
+                image = image[..., 0]
+    else:
+        color = "L" if gray else "RGB"
+
+        image = PIL.Image.open(str(fn))
+
+        if not ignore_exif:
+            image = PIL.ImageOps.exif_transpose(image)
+        image = image.convert(color)
+
     return image
 
 
 def open_gray_scale_image(fn):
-    "Opens an radiographic/gray scale image, stacks the channel to represent a RGB image and returns is as a 32bit float array."
+    """
+    Opens a grayscale image, stacks the channel to represent an RGB image (1 channel duplicated 3 times to form 3 channels) and returns it as a 32 bits float array.
+    """
     if ".dcm" in str(fn).lower():
         img = open_dicom(str(fn))
+    elif is_tif_extension(fn):
+        with rasterio.open(str(fn), "r") as image:
+            raw_data = image.read()
+            img = swap_from_chw_to_whc(raw_data)[..., 0]
     else:
         img = PIL.Image.open(str(fn))
 
@@ -85,15 +123,18 @@ def get_image_size(filepath: Union[str, Path]) -> Tuple[int, int]:
 
 def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
-    Returns image (width, height)
+    Returns image size (width, height)
     """
     if ".dcm" in str(filepath).lower():
         image = open_dicom(str(filepath))
         image_size = image.size
     else:
-        with PIL.Image.open(str(filepath)) as image:
-            image_size = image.size
-
+        if is_tif_extension(filepath):
+            with rasterio.open(str(filepath), "r") as image:
+                image_size = (image.width, image.height)
+        else:
+            with PIL.Image.open(str(filepath)) as image:
+                image_size = image.size
     try:
         exif = image._getexif()
         if exif is not None and exif[_EXIF_ORIENTATION_TAG] in [6, 8]:
@@ -103,6 +144,21 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
         pass
 
     return ImgSize(*image_size)
+
+
+def get_img_size_from_data(data: Union[PIL.Image.Image, np.ndarray]) -> ImgSize:
+    """
+    Returns image size (width, height).
+    If the data is a numpy array, it is expected to be in the format (w, h) or (w, h, c).
+    """
+    assert isinstance(data, (PIL.Image.Image, np.ndarray))
+
+    if isinstance(data, PIL.Image.Image):
+        width, height = data.size
+    else:
+        width, height, *_ = data.shape
+
+    return ImgSize(width=width, height=height)
 
 
 def show_img(img, ax=None, show: bool = False, **kwargs):
@@ -143,3 +199,20 @@ def plot_grid(
     plt.tight_layout()
     if show:
         plt.show()
+
+
+def image_to_numpy(image: Union[PIL.Image.Image, np.ndarray]) -> np.ndarray:
+    """
+    Returns a numpy array in the format (width, height) for a grayscale image and (width, height, channels) otherwise.
+    This function should be used instead of manually converting the PIL image to a numpy array to ensure the dimensions are coherent with the expected shape format used across IceVision.
+    """
+
+    if isinstance(image, np.ndarray):
+        return image
+
+    np_img = np.array(image)
+
+    if len(np_img.shape) == 3:
+        return np_img.transpose(1, 0, 2)
+    else:
+        return np_img.transpose(1, 0)

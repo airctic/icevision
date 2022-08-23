@@ -36,8 +36,7 @@ class Dataset:
         if self.tfm is not None:
             record = self.tfm(record)
         else:
-            # HACK FIXME
-            record.set_img(np.array(record.img))
+            record.set_img(record.img)
         return record
 
     def __repr__(self):
@@ -46,7 +45,7 @@ class Dataset:
     @classmethod
     def from_images(
         cls,
-        images: Sequence[np.array],
+        images: Sequence[np.ndarray],
         tfm: Transform = None,
         class_map: Optional[ClassMap] = None,
     ):

@@ -17,3 +17,4 @@ dependencies:
       - --find-links https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html
       - mmcv-full==1.3.17
       - mmdet==2.17.0
+      - rasterio>=1.3.0, <2
