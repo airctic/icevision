@@ -35,7 +35,6 @@ def voc(
         )
 
 
-# TODO: Rename to VOCBBoxParser?
 class VOCBBoxParser(Parser):
     def __init__(
         self,
@@ -44,6 +43,8 @@ class VOCBBoxParser(Parser):
         class_map: Optional[ClassMap] = None,
         idmap: Optional[IDMap] = None,
     ):
+        print("VOCBBoxParser")
+
         super().__init__(template_record=self.template_record(), idmap=idmap)
         self.class_map = class_map or ClassMap().unlock()
         self.images_dir = Path(images_dir)
@@ -90,6 +91,7 @@ class VOCBBoxParser(Parser):
     def img_size(self, o) -> ImgSize:
         width = int(self._size.find("width").text)
         height = int(self._size.find("height").text)
+        print(f"VOCBBoxParser::img_size width: {width}, height: {height}")
         return ImgSize(width=width, height=height)
 
     def labels(self, o) -> List[Hashable]:
@@ -115,6 +117,7 @@ class VOCBBoxParser(Parser):
             bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
             bboxes.append(bbox)
 
+        print(f"VOCBBoxParser bboxes: {bboxes}")
         return bboxes
 
 

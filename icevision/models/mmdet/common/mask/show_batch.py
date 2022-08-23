@@ -22,6 +22,7 @@ def show_batch(batch_and_records, ncols: int = 1, figsize=None, **show_samples_k
         batch["img"][:], records, batch["gt_masks"]
     ):
         mask = np.stack(gt_mask.masks)
+        print(f"mmdet mask show_batch:: mask.shape {mask.shape}")
         image = mmdet_tensor_to_image(tensor_image)
         record.set_img(image)
         record.detection.set_mask_array(MaskArray(mask))

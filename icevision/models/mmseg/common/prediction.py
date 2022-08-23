@@ -89,12 +89,19 @@ def convert_raw_predictions(
         )
 
         pred.segmentation.set_class_map(record.segmentation.class_map)
+        print(
+            f"mmseg::common::predictions::convert_raw_predictions mask_pred.shape {mask_pred.shape}"
+        )
         pred.segmentation.set_mask_array(MaskArray(mask_pred))
 
         if tensor_gt is not None:
 
             # This is used at train time to have mask available for metric computation
             if torch.is_tensor(tensor_gt):
+
+                print(
+                    f"mmseg::common::predictions::convert_raw_predictions tensor_gt.squeeze().cpu().numpy().shape {tensor_gt.squeeze().cpu().numpy().shape}"
+                )
 
                 record.segmentation.set_mask_array(
                     MaskArray(tensor_gt.squeeze().cpu().numpy())

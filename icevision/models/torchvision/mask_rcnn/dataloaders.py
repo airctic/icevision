@@ -15,6 +15,7 @@ from icevision.models.torchvision.dataloaders import (
     build_infer_batch,
     infer_dl,
 )
+from icevision.utils.imageio import get_img_size_from_data
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -69,8 +70,10 @@ def _build_mask_train_sample(record: RecordType):
     # If no labels and bboxes are present, use as negative samples as described in
     # https://github.com/pytorch/vision/releases/tag/v0.6.0
     if len(record.detection.masks) == 0:
-        height, width = record.img.shape[:-1]
-        target["masks"] = torch.zeros((0, height, width), dtype=torch.uint8)
+        img_size = get_img_size_from_data(record.img)
+        target["masks"] = torch.zeros(
+            (img_size.width, img_size.height, 0), dtype=torch.uint8
+        )
     else:
         target["masks"] = tensor(record.detection.mask_array.data, dtype=torch.uint8)
 

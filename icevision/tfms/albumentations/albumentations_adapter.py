@@ -50,7 +50,9 @@ class AlbumentationsImgComponent(AlbumentationsAdapterComponent):
         print(
             f"self.adapter._albu_in['image'] = recordd.img {image_to_numpy(record.img).shape}"
         )
-        self.adapter._albu_in["image"] = image_to_numpy(record.img)
+        self.adapter._albu_in["image"] = image_to_numpy(record.img).transpose(
+            1, 0, 2
+        )  # w,h,c => h,w,c (for albumentations)
 
         self.adapter._collect_ops.append(CollectOp(self.collect))
 
@@ -115,6 +117,9 @@ class AlbumentationsBBoxesComponent(AlbumentationsAdapterComponent):
 
         self.adapter._compose_kwargs["bbox_params"] = A.BboxParams(
             format="pascal_voc", label_fields=["labels"]
+        )
+        print(
+            f"self.adapter._compose_kwargs['bbox_params']: {self.adapter._compose_kwargs['bbox_params']}"
         )
         # TODO: albumentations has a way of sending information that can be used for tasks
 
@@ -181,6 +186,7 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
                 f"Mismatch at annotations with number of masks. Check or delete {len(checklist)} files below. {checklist}"
             )
 
+        print(f"masks.shape {masks.shape}")
         masks = MaskArray(np.array(masks))
         self._record_component.set_mask_array(masks)
         # # set masks from the modified masks array
@@ -354,7 +360,9 @@ class Adapter(Transform, Composite):
 
         # TODO: composing every time
         tfms = self.create_tfms()
+        print("Created tfms")
         # apply transform
+        print("Applying tfms...")
         self._albu_out = tfms(**self._albu_in)
 
         self._albu_out["image"] = self._albu_out["image"].transpose(

@@ -61,6 +61,7 @@ class Dataset:
         for i, image in enumerate(images):
             record = BaseRecord((ImageRecordComponent(),))
             record.set_record_id(i)
+            print(f"from_images::image.shape {image.shape}")
             record.set_img(image)
             records.append(record)
 

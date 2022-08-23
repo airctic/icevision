@@ -449,7 +449,7 @@ def instance_segmentation_record(object_detection_record):
     record = object_detection_record
     record.add_component(InstanceMasksRecordComponent())
 
-    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+    record.detection.add_masks([MaskArray(np.ones((4, 4, 2), dtype=np.uint8))])
 
     return record
 
@@ -459,7 +459,7 @@ def gray_scale_instance_segmentation_record(gray_scale_object_detection_record):
     record = object_detection_record
     record.add_component(MasksRecordComponent())
 
-    record.detection.add_masks([MaskArray(np.ones((2, 4, 4), dtype=np.uint8))])
+    record.detection.add_masks([MaskArray(np.ones((4, 4, 2), dtype=np.uint8))])
 
     return record
 

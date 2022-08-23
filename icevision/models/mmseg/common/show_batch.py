@@ -20,6 +20,7 @@ def show_batch(batch_and_records, ncols: int = 1, figsize=None, **show_samples_k
         record.set_img(image)
 
         mask = MaskArray(gt_masks.cpu().numpy().squeeze())
+        print(f"mmseg mask show_batch:: mask.shape {mask.shape}")
         record.segmentation.set_mask_array(mask)
 
     return show_samples(records, ncols=ncols, figsize=figsize, **show_samples_kwargs)

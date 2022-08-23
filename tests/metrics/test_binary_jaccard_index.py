@@ -222,7 +222,7 @@ def test_jaccard_index(setup_cases):
         # w, h = imgA.shape[0], imgA.shape[1]
         w, h = case["gt_mask"].shape[0], case["gt_mask"].shape[1]
 
-        gt_record.set_img_size(ImgSize(w, h), original=True)
+        gt_record.set_img_size(ImgSize(width=w, height=h), original=True)
 
         prediction = Prediction(pred=pred_record, ground_truth=gt_record)
 

@@ -133,7 +133,7 @@ def process_bbox_predictions(
         pred.pred.detection.labels,
     ):
         xmin, ymin, xmax, ymax = postprocess_bbox(
-            img, bbox, transforms, pred.pred.height, pred.pred.width
+            img, bbox, transforms, h_after=pred.pred.height, w_after=pred.pred.width
         )
 
         bbox = BBox.from_xyxy(xmin, ymin, xmax, ymax)
@@ -167,9 +167,12 @@ def postprocess_bbox(
     Tuple with (xmin, ymin, xmax, ymax) rescaled and re-adjusted to match the original image size
     """
     img_size_before = get_img_size_from_data(img)
+    print(f"Inference img_size_before.shape {img_size_before.shape}")
     img_size_after = get_size_without_padding(
         transforms, img, ImgSize(width=w_after, height=h_after)
     )
+    print(f"Inference img_size_after.shape {img_size_after.shape}")
+
     h_after, w_after = img_size_after.height, img_size_after.width
     pad = np.abs(h_after - w_after) // 2
 

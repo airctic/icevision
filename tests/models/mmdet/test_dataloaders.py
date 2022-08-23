@@ -19,7 +19,7 @@ def bboxes():
 
 @pytest.fixture()
 def masks():
-    return MaskArray(np.ones((2, 4, 4), dtype=np.uint8))
+    return MaskArray(np.ones((4, 4, 2), dtype=np.uint8))
 
 
 @pytest.fixture()

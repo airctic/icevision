@@ -19,6 +19,7 @@ class COCOBaseParser(Parser):
         img_dir: Union[str, Path],
         idmap: Optional[IDMap] = None,
     ):
+        print("COCOBaseParser")
 
         if isinstance(annotations_filepath, dict):
             self.annotations_dict = annotations_filepath

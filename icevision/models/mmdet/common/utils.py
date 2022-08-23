@@ -26,7 +26,12 @@ def convert_background_from_last_to_zero(label_ids, class_map):
 
 
 def mmdet_tensor_to_image(tensor_image):
-    return tensor_to_image(tensor_image)[:, :, ::-1].copy()
+
+    out = tensor_to_image(tensor_image)[:, :, ::-1].copy()
+    print(
+        f"mmdet_tensor_to_image tensor_image.shape {tensor_image.shape} => out.shape {out.shape}"
+    )
+    return out
 
 
 def build_model(

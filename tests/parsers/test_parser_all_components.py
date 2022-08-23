@@ -26,12 +26,12 @@ def dummy_parser_all_components():
 
         def parse_fields(self, o, record: BaseRecord, is_new) -> None:
             record.set_filepath(__file__)
-            record.set_img_size(ImgSize(480, 420))
+            record.set_img_size(ImgSize(width=480, height=420))
 
             record.detection.set_class_map(ClassMap(["a"]))
             record.detection.add_labels(["a"])
             record.detection.add_bboxes([BBox.from_xyxy(1, 2, 3, 4)])
-            record.detection.add_masks([MaskArray(np.zeros((1, 420, 480)))])
+            record.detection.add_masks([MaskArray(np.zeros((480, 420, 1)))])
             record.detection.add_keypoints([KeyPoints((1, 1, 1), None)])
             record.detection.add_areas([4.2])
             record.detection.add_iscrowds([False])
@@ -51,7 +51,7 @@ def test_parser_parse_fields(dummy_parser_all_components):
 
     assert record.detection.label_ids == [1]
     assert record.detection.bboxes == [BBox.from_xyxy(1, 2, 3, 4)]
-    assert np.array_equal(record.detection.masks[0].data, np.zeros((1, 420, 480)))
+    assert np.array_equal(record.detection.masks[0].data, np.zeros((480, 420, 1)))
     assert record.detection.areas == [4.2]
     assert record.detection.iscrowds == [False]
     assert record.detection.keypoints == [KeyPoints((1, 1, 1), None)]

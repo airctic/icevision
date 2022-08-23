@@ -21,6 +21,7 @@ def show_batch(batch, ncols: int = 1, figsize=None, **show_samples_kwargs):
 
         if label is not None:
             mask = MaskArray(np.array(label["masks"].cpu().numpy()))
+            print(f"torchvision show_batch :: mask.shape {mask.shape}")
             record.detection.set_mask_array(mask)
 
     return show_samples(records, ncols=ncols, figsize=figsize, **show_samples_kwargs)

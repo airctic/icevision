@@ -51,7 +51,7 @@ class EncodedRLEs(Mask):
 
     def to_mask(self, h, w) -> "MaskArray":
         mask = mask_utils.decode(self.erles)
-        mask = mask.transpose(2, 0, 1)  # (h,w,c) => (c,h,w)
+        mask = mask.transpose(1, 0, 2)  # (h,w,c) => (w,h,c)
         return MaskArray(mask)
 
     def to_erles(self, h, w) -> "EncodedRLEs":
@@ -62,7 +62,7 @@ class MaskArray(Mask):
     """Binary numpy array representation of a mask.
 
     # Arguments
-        data: Mask array, with the dimensions: (num_instances, height, width)
+        data: Mask array, with the dimensions: (width, height, num_instances)
         pad_dim: bool
     """
 
@@ -90,19 +90,19 @@ class MaskArray(Mask):
                 mask_utils.encode(
                     np.asfortranarray(
                         self.data[:, None, None].transpose(1, 2, 0)
-                    )  # (c,h,w) => (h,w,c)
+                    )  # (c,w,h) => (w,h,c)
                 )
             )
         else:
             return EncodedRLEs(
                 mask_utils.encode(
                     np.asfortranarray(self.data.transpose(1, 2, 0))
-                )  # (c,h,w) => (h,w,c)
+                )  # (c,w,h) => (w,h,c)
             )
 
     def to_coco_rle(self, h, w) -> List[dict]:
         """From https://stackoverflow.com/a/49547872/6772672"""
-        assert self.data.shape[1:] == (h, w)
+        assert self.data.shape[1:] == (w, h)
         rles = []
         for mask in self.data:
             counts = []
@@ -122,7 +122,7 @@ class MaskArray(Mask):
     def from_masks(cls, masks: Union[EncodedRLEs, Sequence[Mask]], h: int, w: int):
         # HACK: check for backwards compatibility
         if isinstance(masks, EncodedRLEs):
-            return masks.to_mask(h, w)
+            return masks.to_mask(h=h, w=w)
         else:
             masks_arrays = [o.to_mask(h=h, w=w).data for o in masks]
             if len(masks_arrays) == 0:
@@ -154,7 +154,8 @@ class MaskFile(Mask):
                     (w, h), resample=PIL.Image.NEAREST
                 )  # TODO bugfix/1135 not always PIL anymore
 
-        mask = image_to_numpy(mask_img).transpose()
+        mask = image_to_numpy(mask_img)
+        print(f"MaskFile::to_mask mask.shape {mask.shape}")
         obj_ids = np.unique(mask)[1:]
         masks = mask == obj_ids[:, None, None]
 
@@ -164,7 +165,7 @@ class MaskFile(Mask):
         return self.to_mask(h=h, w=w).to_coco_rle(h=h, w=w)
 
     def to_erles(self, h, w) -> EncodedRLEs:
-        return self.to_mask(h, w).to_erles(h, w)
+        return self.to_mask(h=h, w=w).to_erles(h=h, w=w)
 
 
 class VocMaskFile(MaskFile):
@@ -182,11 +183,14 @@ class VocMaskFile(MaskFile):
 
     def to_mask(self, h, w) -> MaskArray:
         mask_arr = image_to_numpy(open_img(self.filepath))
+        print(f"VocMaskFile::to_mask mask_arr.shape {mask_arr.shape}")
         obj_ids = np.unique(mask_arr)[1:]
         masks = mask_arr == obj_ids[:, None, None]
 
         if self.drop_void:
             masks = masks[:-1, ...]
+
+        print(f"VocMaskFile::to_mask masks.shape {masks.shape}")
 
         return MaskArray(masks)
 
@@ -304,6 +308,8 @@ class SemanticMaskFile(Mask):
             mask = mask.resize((w, h), resample=PIL.Image.NEAREST)
 
         mask = image_to_numpy(mask)
+
+        print(f"SemanticMaskFile::to_mask mask.shape {mask.shape}")
 
         # convert 255 pixels to 1
         if self.binary:

@@ -88,7 +88,9 @@ def convert_record_to_coco_annotations(record):
         annotations_dict["image_id"].append(record.record_id)
         annotations_dict["category_id"].append(label)
 
+    print("Create records to coco style")
     for bbox in record.detection.bboxes:
+        print(f"Adding bbox.xywh {bbox.xywh}")
         annotations_dict["bbox"].append(list(bbox.xywh))
 
     if hasattr(record.detection, "areas"):
@@ -100,53 +102,22 @@ def convert_record_to_coco_annotations(record):
 
     # HACK: Because of prepare_record, mask should always be `MaskArray`,
     # maybe the for loop is not required?
+    print("convert_record_to_coco_annotations")
     if hasattr(record.detection, "masks"):
         # HACK: Hacky again!
         mask_array = record.detection.mask_array
         if mask_array is None:
             mask_array = MaskArray.from_masks(
-                record.detection.masks, record.height, record.width
+                record.detection.masks, h=record.height, w=record.width
             )
 
+        print(
+            f"convert_record_to_coco_annotations::mask_array.shape {mask_array.shape}"
+        )
+
         annotations_dict["segmentation"] = mask_array.to_erles(
-            record.height, record.width
+            h=record.height, w=record.width
         ).erles
-
-        # if isinstance(masks, MaskArray):
-        #     masks = masks.to_erles(record.height, record.width)
-
-        # if isinstance(masks, EncodedRLEs):
-        #     annotations_dict["segmentation"] = masks.erles
-
-        # else:
-        #     raise RuntimeError(
-        #         "masks are expected to be EncodedRLEs only, "
-        #         "if you get this error please open an issue on github."
-        #     )
-        # annotations_dict["segmentation"] = []
-        # for mask in record.detection.masks:
-        #     if isinstance(mask, MaskArray):
-        #         # HACK: see previous hack
-        #         assert len(mask.shape) == 2
-        #         mask2 = MaskArray(mask.data[None])
-        #         rles = mask2.to_coco_rle(record.height, record.width)
-        #         annotations_dict["segmentation"].extend(rles)
-        #     elif isinstance(mask, Polygon):
-        #         annotations_dict["segmentation"].append(mask.points)
-        #     elif isinstance(mask, RLE):
-        #         coco_rle = {
-        #             "counts": mask.to_coco(),
-        #             "size": [record.height, record.width],
-        #         }
-        #         annotations_dict["segmentation"].append(coco_rle)
-        #     elif isinstance(mask, MaskFile):
-        #         rles = mask.to_coco_rle(record.height, record.width)
-        #         annotations_dict["segmentation"].extend(rles)
-        #     elif isinstance(mask, EncodedRLEs):
-        #         annotations_dict["segmentation"].append(mask.erles)
-        #     else:
-        #         msg = f"Mask type {type(mask)} unsupported"
-        #         raise ValueError(msg)
 
     # TODO: is auto assigning a value for iscrowds dangerous (may hurt the metric value?)
     if not hasattr(record.detection, "iscrowds"):

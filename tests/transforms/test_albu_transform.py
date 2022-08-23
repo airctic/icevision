@@ -201,8 +201,9 @@ def test_simple_transform(records, check_attributes_on_component):
 
 #     print(f"tfmed.height {tfmed.height}")
 #     print(f"tfmed.width {tfmed.width}")
+#     print(f"tfmed.detection.masks.shape {tfmed.detection.masks.shape}")
 #     tfmed.detection.mask_array = MaskArray.from_masks(
-#         tfmed.detection.masks, tfmed.height, tfmed.width
+#         tfmed.detection.masks, h=tfmed.height, w=tfmed.width
 #     )
 #     print(f"(2) tfmed.detection.mask_array: {tfmed.detection.mask_array.shape}")
 
@@ -238,8 +239,9 @@ def test_simple_transform(records, check_attributes_on_component):
 
 #     assert not tfmed.detection.mask_array
 
+#     print(f"test_empty_mask_transform_with_unload::tfmed.detection.masks shape {tfmed.detection.masks.shape}")
 #     tfmed.detection.mask_array = MaskArray.from_masks(
-#         tfmed.detection.masks, tfmed.height, tfmed.width
+#         tfmed.detection.masks, h=tfmed.height, w=tfmed.width
 #     )
 
 #     assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)

@@ -115,6 +115,7 @@ class ImageRecordComponent(RecordComponent):
     def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
         self.img = img
         self.composite.set_img_size(get_img_size_from_data(img), original=True)
+        print("ImageRecordComponent::set_img")
 
     def _repr(self) -> List[str]:
 
@@ -433,8 +434,13 @@ class BaseMasksRecordComponent(RecordComponent):
         self.mask_array = mask_array
 
     def _load(self):
+        print("BaseMasksRecordComponent::_load")
+        print(f"self.masks len {len(self.masks)}")
+        print(f"self.masks first {self.masks[0]}")
+        print(f"self.composite.height {self.composite.height}")
+        print(f"self.composite.width {self.composite.width}")
         mask_array = MaskArray.from_masks(
-            self.masks, self.composite.height, self.composite.width
+            self.masks, h=self.composite.height, w=self.composite.width
         )
         print(f"_load mask_array.shape {mask_array.shape}")
         self.set_mask_array(mask_array)
@@ -472,91 +478,6 @@ class InstanceMasksRecordComponent(BaseMasksRecordComponent):
 
     def _builder_template(self) -> List[str]:
         return ["record{task}add_masks(<Sequence[Mask]>)"]
-
-
-# class MasksRecordComponent(RecordComponent):
-#     def __init__(self, task=tasks.detection):
-#         super().__init__(task=task)
-#         self.masks = EncodedRLEs()
-
-#     def set_masks(self, masks: Sequence[Mask]):
-#         self.masks = masks
-
-#     def add_masks(self, masks: Sequence[Mask]):
-#         self.masks.extend(self._masks_to_erle(masks))
-
-#     def setup_transform(self, tfm) -> None:
-#         tfm.setup_masks(self)
-
-#     def _masks_to_erle(self, masks: Sequence[Mask]) -> List[Mask]:
-#         width, height = self.composite.img_size
-#         return [mask.to_erles(h=height, w=width) for mask in masks]
-
-#     def _load(self):
-#         self.masks = MaskArray.from_masks(
-#             self.masks, self.composite.height, self.composite.width
-#         )
-
-#     def _unload(self):
-#         # TODO: SLOW: Maybe cause slowdowns?
-#         self.masks = self.masks.to_erles(self.composite.height, self.composite.width)
-
-#     def _num_annotations(self) -> Dict[str, int]:
-#         return {"masks": len(self.masks)}
-
-#     def _remove_annotation(self, i):
-#         self.masks.pop(i)
-
-#     def _repr(self) -> List[str]:
-#         return [f"Masks: {self.masks}"]
-
-#     def as_dict(self) -> dict:
-#         return {"masks": self.masks}
-
-#     def _builder_template(self) -> List[str]:
-#         return ["record{task}add_masks(<Sequence[Mask]>)"]
-
-
-# class SemanticMasksRecordComponent(RecordComponent):
-#     def __init__(self, task=tasks.segmentation):
-#         super().__init__(task=task)
-#         # HACK: unloaded_mask is a hacky solution
-#         self._unloaded_mask: Mask = None
-#         self.masks: Sequence[Mask] = None
-
-#     def set_mask(self, mask: Mask):
-#         self._unloaded_mask = [mask]
-#         # HACK: list here just because is what we need on instance segmentation
-#         self.masks = [mask]
-
-#     # HACK: only here because it's what albumentations call
-#     def set_masks(self, masks: Mask):
-#         self.masks = masks
-#         # assert len(masks) == 1, "can only be a single mask for segmentation"
-#         # self.set_mask(masks[0])
-
-#     def setup_transform(self, tfm) -> None:
-#         tfm.setup_masks(self)
-
-#     def _load(self):
-#         self.masks = MaskArray.from_masks(
-#             self.masks, self.composite.height, self.composite.width
-#         )
-
-#     def _unload(self):
-#         self.masks = None
-
-#     # def _num_annotations(self) -> Dict[str, int]:
-#     #     return {"masks": len(self.masks)}
-
-#     # def _remove_annotation(self, i):
-#     #     self.masks.pop(i)
-
-#     def _repr(self) -> List[str]:
-#         return [f"Masks: {self.masks}"]
-
-#     def _builder_template(self) -> List[str]:
-#         return ["record{task}set_masks(<Sequence[Mask]>)"]
 
 
 class AreasRecordComponent(RecordComponent):
