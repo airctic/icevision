@@ -1,11 +1,12 @@
 __all__ = [
     "ImgSize",
     "open_img",
-    "get_image_size",
     "get_img_size",
     "get_img_size_from_data",
     "image_to_numpy",
     "get_number_of_channels",
+    "numpy_to_mask",
+    "numpy_to_tensor",
     "show_img",
     "plot_grid",
 ]
@@ -114,16 +115,6 @@ def open_gray_scale_image(fn):
     return img
 
 
-# TODO: Deprecated
-def get_image_size(filepath: Union[str, Path]) -> Tuple[int, int]:
-    """
-    Returns image (width, height)
-    """
-    logger.warning("get_image_size is deprecated, use get_img_size instead")
-    image_size = get_img_size(filepath=filepath)
-    return image_size.width, image_size.height
-
-
 def get_img_size(filepath: Union[str, Path]) -> ImgSize:
     """
     Returns image size (width, height)
@@ -218,6 +209,7 @@ def plot_grid(
 def image_to_numpy(image: Union[PIL.Image.Image, np.ndarray]) -> np.ndarray:
     """
     Returns a numpy array in the format (width, height) for a grayscale image and (width, height, channels) otherwise.
+    If the image is already a numpy array, it is returned as-is.
     This function should be used instead of manually converting the PIL image to a numpy array to ensure the dimensions are coherent with the expected shape format used across IceVision.
     """
 
@@ -228,5 +220,24 @@ def image_to_numpy(image: Union[PIL.Image.Image, np.ndarray]) -> np.ndarray:
 
     if len(np_img.shape) == 3:
         return np_img.transpose(1, 0, 2)
-    else:
-        return np_img.transpose(1, 0)
+
+    return np_img.transpose(1, 0)
+
+
+def numpy_to_mask(data: np.ndarray) -> np.ndarray:
+    """
+    Returns a numpy array in the format (height, width) for grayscale mask and (channels, height, width) otherwise.
+    This function should be used to go from a numpy array in the format returned by image_to_numpy to a mask in format (channels, height, width).
+    """
+    if len(data.shape) == 3:
+        return data.transpose(2, 1, 0)
+
+    return data.transpose(1, 0)
+
+
+def numpy_to_tensor(data: np.ndarray) -> torch.Tensor:
+    """
+    Returns a torch tensor from a numpy array (in the format returned by image_to_numpy for instance).
+    """
+    hwc_data = data.transpose(1, 0, 2)
+    return im2tensor(hwc_data)

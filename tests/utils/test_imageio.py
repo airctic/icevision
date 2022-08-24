@@ -224,30 +224,6 @@ def test_open_img_returns_numpy_array_when_image_is_tiff(samples_source, fn):
         ("multi_band/test_6_bands_float32.tif", (101, 100)),
     ],
 )
-def test_get_image_size_returns_size_in_format_w_h(samples_source, fn, expected):
-
-    size = get_image_size(samples_source / fn)
-
-    assert size == (expected)
-
-
-@pytest.mark.parametrize(
-    "fn,expected",
-    [
-        ("voc/JPEGImages/2007_000063.jpg", (500, 375)),
-        ("images2/flies.jpeg", (2592, 3888)),
-        ("gray_scale/grayscale_int8.png", (150, 200)),
-        ("gray_scale/test_1_bands_int8.tif", (101, 100)),
-        ("gray_scale/test_1_bands_int16.tif", (101, 100)),
-        ("gray_scale/test_1_bands_int32.tif", (101, 100)),
-        ("gray_scale/test_1_bands_float32.tif", (101, 100)),
-        ("images/test_3_bands_int8.tif", (101, 100)),
-        ("images/test_3_bands_int16.tif", (101, 100)),
-        ("images/test_3_bands_int32.tif", (101, 100)),
-        ("images/test_3_bands_float32.tif", (101, 100)),
-        ("multi_band/test_6_bands_float32.tif", (101, 100)),
-    ],
-)
 def test_get_img_size_size_returns_size_in_format_w_h(samples_source, fn, expected):
 
     size = get_img_size(samples_source / fn)

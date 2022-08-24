@@ -11,6 +11,8 @@ from icevision.models.mmdet.common.utils import convert_background_from_zero_to_
 from icevision.core import *
 from icevision.imports import *
 from icevision.models.utils import *
+from icevision.utils.imageio import get_number_of_channels
+from icevision.utils.imageio import numpy_to_tensor
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -94,17 +96,15 @@ def build_infer_batch(records):
 def _img_tensor(record):
     # convert from RGB to BGR
     img = record.img[:, :, ::-1].copy()
-    return im2tensor(img)
+    return numpy_to_tensor(img)
 
 
 def _img_meta(record):
-    img_h, img_w, img_c = record.img.shape
+    img_c = get_number_of_channels(record.img)
 
     return {
-        # TODO: height and width from sample should be before padding
-        # "img_shape": (record.img_size.height, record.img_size.width, img_c),
-        "img_shape": (img_h, img_w, img_c),
-        "pad_shape": (img_h, img_w, img_c),
+        "img_shape": (record.img_size.height, record.img_size.width, img_c),
+        "pad_shape": (record.img_size.height, record.img_size.width, img_c),
         "scale_factor": np.ones(4),  # TODO: is scale factor correct?
     }
 

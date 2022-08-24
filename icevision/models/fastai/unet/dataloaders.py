@@ -4,6 +4,7 @@ __all__ = ["train_dl", "valid_dl", "infer_dl", "build_train_batch", "build_infer
 from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
+from icevision.utils.imageio import numpy_to_tensor
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -54,7 +55,7 @@ def build_train_batch(records: Sequence[BaseRecord]):
     tensor_images, tensor_masks = [], []
     for record in records:
         # can be optimzed to be converted to tensor once at the end
-        tensor_images.append(im2tensor(record.img))
+        tensor_images.append(numpy_to_tensor(record.img))
         tensor_masks.append(
             tensor(record.segmentation.mask_array.data).long().squeeze()
         )
@@ -68,7 +69,7 @@ def build_train_batch(records: Sequence[BaseRecord]):
 def build_infer_batch(records: Sequence[BaseRecord]):
     tensor_images = []
     for record in records:
-        tensor_images.append(im2tensor(record.img))
+        tensor_images.append(numpy_to_tensor(record.img))
 
     tensor_images = torch.stack(tensor_images)
     return (tensor_images,), records

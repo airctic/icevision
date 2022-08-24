@@ -113,7 +113,7 @@ class ImageRecordComponent(RecordComponent):
         self.img = None
 
     def set_img(self, img: Union[PIL.Image.Image, np.ndarray]):
-        self.img = img
+        self.img = image_to_numpy(img)
         self.composite.set_img_size(get_img_size_from_data(img), original=True)
         print("ImageRecordComponent::set_img")
 
@@ -132,17 +132,15 @@ class ImageRecordComponent(RecordComponent):
 
         ndims = len(np_img.shape)
 
+        img_size = get_img_size_from_data(np_img)
+        channels = get_number_of_channels(np_img)
+
         if ndims == 3:
-
-            width, height, channels = np_img.shape
-
-            return [f"Img: {width}x{height}x{channels} {img_type_description}"]
-
+            return [
+                f"Img: {img_size.width}x{img_size.height}x{channels} {img_type_description}"
+            ]
         elif ndims == 2:
-
-            width, height, channels = [*np_img.shape, 1]
-
-            return [f"Img: {width}x{height} {img_type_description}"]
+            return [f"Img: {img_size.width}x{img_size.height} {img_type_description}"]
         else:
             raise ValueError(
                 f"Expected image to have 2 or 3 dimensions, got {ndims} instead"

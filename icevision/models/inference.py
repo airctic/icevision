@@ -87,8 +87,8 @@ def _end2end_detect(
     else:
         record._unload()
 
-    w, h = img.shape
-    record.set_img_size(ImgSize(width=w, height=h))
+    img_size = get_img_size_from_data(img)
+    record.set_img_size(img_size)
 
     pred_dict = record.as_dict()
 
@@ -98,8 +98,8 @@ def _end2end_detect(
     else:
         pred_dict["img"] = None
 
-    pred_dict["width"] = w
-    pred_dict["height"] = h
+    pred_dict["width"] = img_size.width
+    pred_dict["height"] = img_size.height
     # delete the `common` key that holds both the `img` and its shape
     del pred_dict["common"]
 
@@ -167,11 +167,11 @@ def postprocess_bbox(
     Tuple with (xmin, ymin, xmax, ymax) rescaled and re-adjusted to match the original image size
     """
     img_size_before = get_img_size_from_data(img)
-    print(f"Inference img_size_before.shape {img_size_before.shape}")
+    print(f"Inference img_size_before {img_size_before}")
     img_size_after = get_size_without_padding(
         transforms, img, ImgSize(width=w_after, height=h_after)
     )
-    print(f"Inference img_size_after.shape {img_size_after.shape}")
+    print(f"Inference img_size_after {img_size_after}")
 
     h_after, w_after = img_size_after.height, img_size_after.width
     pad = np.abs(h_after - w_after) // 2

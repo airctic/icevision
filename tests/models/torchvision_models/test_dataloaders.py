@@ -13,20 +13,6 @@ def mask_rcnn_records(instance_segmentation_record):
     return [instance_segmentation_record.load()] * 2
 
 
-# TODO: Duplication with fasterrcnn records
-# @pytest.fixture()
-# def mask_records(img, labels, bboxes, masks):
-#     record = InstanceSegmentationRecord()
-
-#     record.set_record_id(1)
-#     record.set_img(img)
-#     record.add_labels(labels)
-#     record.add_bboxes(bboxes)
-#     record.add_masks([masks])
-#     sample = record.load()
-#     return [sample] * 2
-
-
 ### Faster RCNN ###
 def _test_common_rcnn_batch(batch):
     (images, targets), records = batch

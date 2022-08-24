@@ -38,6 +38,7 @@ class Dataset:
         if self.tfm is not None:
             record = self.tfm(record)
         else:
+            print(f"type is {type(record.img)}")
             record.set_img(record.img)
         return record
 

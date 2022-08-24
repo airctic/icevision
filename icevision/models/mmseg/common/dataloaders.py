@@ -5,6 +5,7 @@ from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
 from icevision.utils import *
+from icevision.utils.imageio import numpy_to_tensor
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -60,13 +61,12 @@ def _img_meta_mask(record):
 
 
 def _img_meta(record):
-    img_h, img_w, img_c = record.img.shape
+
+    img_c = get_number_of_channels(record.img)
 
     return {
-        # TODO: height and width from sample should be before padding
-        # "img_shape": (record.img_size.height, record.img_size.width, img_c),
-        "img_shape": (img_w, img_h, img_c),
-        "pad_shape": (img_w, img_h, img_c),
+        "img_shape": (record.img_size.width, record.img_size.height, img_c),
+        "pad_shape": (record.img_size.width, record.img_size.height, img_c),
         "flip": False,  # TODO: is this correct?
         "scale_factor": 1.0,  # TODO: is scale factor correct?
     }
@@ -75,7 +75,7 @@ def _img_meta(record):
 def build_train_batch(records: Sequence[BaseRecord]):
     images, masks, img_metas = [], [], []
     for record in records:
-        images.append(im2tensor(record.img))
+        images.append(numpy_to_tensor(record.img))
         img_metas.append(_img_meta_mask(record))
         masks.append(tensor(record.segmentation.mask_array.data).long())
 
@@ -95,7 +95,7 @@ def build_infer_batch(
 
     images = []
     for record in records:
-        images.append(im2tensor(record.img))
+        images.append(numpy_to_tensor(record.img))
 
     data = {
         "img": [torch.stack(images)],

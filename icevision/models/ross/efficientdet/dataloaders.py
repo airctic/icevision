@@ -9,6 +9,7 @@ __all__ = [
 
 from icevision.imports import *
 from icevision.models.utils import *
+from icevision.utils.imageio import numpy_to_tensor
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -165,7 +166,7 @@ def build_infer_batch(records):
 
 def process_train_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet training"""
-    image = im2tensor(record.img)
+    image = numpy_to_tensor(record.img)
     # background and dummy if no label in record
     classes = record.detection.label_ids if record.detection.label_ids else [0]
     bboxes = (
@@ -178,7 +179,7 @@ def process_train_record(record) -> tuple:
 
 def process_infer_record(record) -> tuple:
     """Extracts information from record and prepares a format required by the EffDet inference"""
-    image = im2tensor(record.img)
+    image = numpy_to_tensor(record.img)
     n_channels, image_height, image_width = image.shape
     image_scale = 1.0
     # EffDet expects image size to be passed in W, H notation

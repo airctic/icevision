@@ -22,22 +22,22 @@ def records(coco_mask_records):
     return coco_mask_records
 
 
-# def test_set_on_components(records, check_attributes_on_component):
-#     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
-#     tfm_ds = Dataset(records, tfm=tfm)
+def test_set_on_components(records, check_attributes_on_component):
+    tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
 
-#     tfmed = tfm_ds[0]
-#     check_attributes_on_component(tfmed)
+    tfmed = tfm_ds[0]
+    check_attributes_on_component(tfmed)
 
 
-# def test_inference_transform(records, check_attributes_on_component):
-#     img = image_to_numpy(open_img(records[0].filepath))
-#     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
-#     ds = Dataset.from_images([img], tfm)
+def test_inference_transform(records, check_attributes_on_component):
+    img = image_to_numpy(open_img(records[0].filepath))
+    tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
+    ds = Dataset.from_images([img], tfm)
 
-#     tfmed = ds[0]
-#     assert (tfmed.img == img[:, ::-1, :]).all()
-#     check_attributes_on_component(tfmed)
+    tfmed = ds[0]
+    assert (tfmed.img == img[::-1, :, :]).all()
+    check_attributes_on_component(tfmed)
 
 
 def test_simple_transform(records, check_attributes_on_component):
@@ -46,205 +46,209 @@ def test_simple_transform(records, check_attributes_on_component):
     tfm_ds = Dataset(records, tfm=tfm)
 
     sample, tfmed = ds[0], tfm_ds[0]
-    print(sample)
-    print(tfmed)
+    print(f"type sample : {type(sample.img)}")
+    print(f"type tfmed : {type(tfmed.img)}")
     assert (tfmed.img == sample.img[::-1, :, :]).all()
     check_attributes_on_component(tfmed)
 
 
-# def test_crop_transform(records, check_attributes_on_component):
-#     tfm = tfms.A.Adapter([tfms.A.CenterCrop(100, 100, p=1.0)])
-#     tfm_ds = Dataset(records, tfm=tfm)
+def test_crop_transform(records, check_attributes_on_component):
+    tfm = tfms.A.Adapter([tfms.A.CenterCrop(100, 100, p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
 
-#     tfmed = tfm_ds[0]
+    tfmed = tfm_ds[0]
 
-#     assert len(tfmed.detection.label_ids) == 1
-#     assert len(tfmed.detection.bboxes) == 1
-#     assert len(tfmed.detection.masks) == 1
-#     assert len(tfmed.detection.iscrowds) == 1
-#     assert len(tfmed.detection.areas) == 1
-#     check_attributes_on_component(tfmed)
-
-
-# def test_crop_transform_empty(records, check_attributes_on_component):
-#     tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
-#     tfm_ds = Dataset(records, tfm=tfm)
-
-#     tfmed = tfm_ds[0]
-
-#     assert len(tfmed.detection.label_ids) == 0
-#     assert len(tfmed.detection.bboxes) == 0
-#     assert not tfmed.detection.mask_array.data.any()
-#     assert len(tfmed.detection.iscrowds) == 0
-#     assert len(tfmed.detection.areas) == 0
-#     check_attributes_on_component(tfmed)
-
-#     # assert orignal record was not changed
-#     record = records[0]
-
-#     assert len(record.detection.label_ids) == 1
-#     assert len(record.detection.bboxes) == 1
-#     assert len(record.detection.masks) == 1
-#     assert len(record.detection.iscrowds) == 1
-#     assert len(record.detection.areas) == 1
-#     check_attributes_on_component(record)
+    assert len(tfmed.detection.label_ids) == 1
+    assert len(tfmed.detection.bboxes) == 1
+    assert len(tfmed.detection.masks) == 1
+    assert len(tfmed.detection.iscrowds) == 1
+    assert len(tfmed.detection.areas) == 1
+    check_attributes_on_component(tfmed)
 
 
-# def test_keypoints_transform(coco_keypoints_parser, check_attributes_on_component):
-#     records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
-#     tfm = tfms.A.Adapter([tfms.A.Resize(427 * 2, 640 * 2), tfms.A.Normalize()])
+def test_crop_transform_empty(records, check_attributes_on_component):
+    tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
 
-#     ds = Dataset(records)
-#     tfm_ds = Dataset(records, tfm=tfm)
+    tfmed = tfm_ds[0]
 
-#     record, tfmed = ds[0], tfm_ds[0]
+    assert len(tfmed.detection.label_ids) == 0
+    assert len(tfmed.detection.bboxes) == 0
+    assert not tfmed.detection.mask_array.data.any()
+    assert len(tfmed.detection.iscrowds) == 0
+    assert len(tfmed.detection.areas) == 0
+    check_attributes_on_component(tfmed)
 
-#     assert len(record.detection.keypoints) == 3
-#     assert len(tfmed.detection.keypoints) == 3
-#     assert set([c for c in tfmed.detection.keypoints[0].visible]) == {0.0, 1.0, 2.0}
-#     assert set([c for c in record.detection.keypoints[0].visible]) == {0, 1, 2}
-#     assert (tfmed.detection.keypoints[0].x == record.detection.keypoints[0].x * 2).all()
-#     assert (tfmed.detection.keypoints[0].y == record.detection.keypoints[0].y * 2).all()
-#     check_attributes_on_component(tfmed)
+    # assert orignal record was not changed
+    record = records[0]
 
-
-# def test_keypoints_transform_crop_error(coco_keypoints_parser):
-#     records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
-#     tfm = tfms.A.Adapter([*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()])
-#     tfm_ds = Dataset(records, tfm=tfm)
-
-#     with pytest.raises(RuntimeError):
-#         tfm_ds[0]
+    assert len(record.detection.label_ids) == 1
+    assert len(record.detection.bboxes) == 1
+    assert len(record.detection.masks) == 1
+    assert len(record.detection.iscrowds) == 1
+    assert len(record.detection.areas) == 1
+    check_attributes_on_component(record)
 
 
-# def test_filter_keypoints():
-#     tfms_kps, w, h, v = (
-#         [(0, 0), (60, 119), (-30, 40), (100, 300), (30, 100)],
-#         80,
-#         120,
-#         [0, 1, 1, 1, 2],
-#     )
-#     img_size = ImgSize(width=w, height=h)
-#     tra_n = tfms.A.AlbumentationsKeypointsComponent._remove_albu_outside_keypoints(
-#         tfms_kps, v, img_size
-#     )
+def test_keypoints_transform(coco_keypoints_parser, check_attributes_on_component):
+    records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
+    tfm = tfms.A.Adapter([tfms.A.Resize(427 * 2, 640 * 2), tfms.A.Normalize()])
 
-#     assert len(tfms_kps) == len(tra_n)
-#     assert tra_n == [(0, 0, 0), (60, 119, 1), (0, 0, 0), (0, 0, 0), (30, 100, 2)]
+    ds = Dataset(records)
+    tfm_ds = Dataset(records, tfm=tfm)
 
-#     tfms_kps, w, h, v = (
-#         [(0, 0), (79, 119), (-30, 40), (100, 300), (70, 100)],
-#         120,
-#         120,
-#         [0, 1, 1, 1, 2],
-#     )
-#     tra_n = tfms.A.AlbumentationsKeypointsComponent._remove_albu_outside_keypoints(
-#         tfms_kps, v, img_size
-#     )
+    record, tfmed = ds[0], tfm_ds[0]
 
-#     assert len(tfms_kps) == len(tra_n)
-#     assert tra_n == [(0, 0, 0), (79, 119, 1), (0, 0, 0), (0, 0, 0), (70, 100, 2)]
+    assert len(record.detection.keypoints) == 3
+    assert len(tfmed.detection.keypoints) == 3
+    assert set([c for c in tfmed.detection.keypoints[0].visible]) == {0.0, 1.0, 2.0}
+    assert set([c for c in record.detection.keypoints[0].visible]) == {0, 1, 2}
+    assert (tfmed.detection.keypoints[0].x == record.detection.keypoints[0].x * 2).all()
+    assert (tfmed.detection.keypoints[0].y == record.detection.keypoints[0].y * 2).all()
+    check_attributes_on_component(tfmed)
 
 
-# def test_filter_boxes():
-#     inp = (52.17503641656451, 274.5014178489639, 123.51860681160832, 350.33471836373275)
-#     out = (52.17503641656451, 274.5014178489639, 123.51860681160832, 320)
-#     h, w = 256, 384
+def test_keypoints_transform_crop_error(coco_keypoints_parser):
+    records = coco_keypoints_parser.parse(data_splitter=SingleSplitSplitter())[0]
+    tfm = tfms.A.Adapter([*tfms.A.aug_tfms(size=384, presize=512), tfms.A.Normalize()])
+    tfm_ds = Dataset(records, tfm=tfm)
 
-#     res = tfms.A.AlbumentationsBBoxesComponent._clip_bboxes(inp, h, w)
-#     assert out == res
-
-
-# def test_get_size_without_padding() -> None:
-#     """Test get_size_without_padding."""
-#     img = PIL.Image.fromarray(np.uint8(np.zeros((15, 15, 3))))
-#     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-#     assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(20, 20)
-
-#     img = PIL.Image.fromarray(np.uint8(np.zeros((20, 15, 3))))
-#     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-#     assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(20, 15)
-
-#     img = PIL.Image.fromarray(np.uint8(np.zeros((15, 10, 3))))
-#     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-#     assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(20, 13)
+    with pytest.raises(RuntimeError):
+        tfm_ds[0]
 
 
-# def test_get_transform() -> None:
-#     """Test get_transform."""
-#     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+def test_filter_keypoints():
+    tfms_kps, w, h, v = (
+        [(0, 0), (60, 119), (-30, 40), (100, 300), (30, 100)],
+        80,
+        120,
+        [0, 1, 1, 1, 2],
+    )
+    img_size = ImgSize(width=w, height=h)
+    tra_n = tfms.A.AlbumentationsKeypointsComponent._remove_albu_outside_keypoints(
+        tfms_kps, v, img_size
+    )
 
-#     assert get_transform(transforms, "not there") is None
-#     assert isinstance(get_transform(transforms, "Normalize"), Normalize)
-#     assert isinstance(get_transform(transforms, "Pad"), PadIfNeeded)
-#     assert isinstance(get_transform(transforms, "Longest"), LongestMaxSize)
+    assert len(tfms_kps) == len(tra_n)
+    assert tra_n == [(0, 0, 0), (60, 119, 1), (0, 0, 0), (0, 0, 0), (30, 100, 2)]
 
+    tfms_kps, w, h, v = (
+        [(0, 0), (79, 119), (-30, 40), (100, 300), (70, 100)],
+        120,
+        120,
+        [0, 1, 1, 1, 2],
+    )
+    tra_n = tfms.A.AlbumentationsKeypointsComponent._remove_albu_outside_keypoints(
+        tfms_kps, v, img_size
+    )
 
-# def test_mask_transform_with_unload(records, check_attributes_on_component):
-
-#     tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
-#     tfm_ds = Dataset(records, tfm=tfm)
-
-#     tfmed = tfm_ds[0]
-#     print(f"tfmed.height {tfmed.height}")
-#     print(f"tfmed.width {tfmed.width}")
-#     print(f"tfmed : {tfmed}")
-#     original_mask_array = tfmed.detection.mask_array
-#     print(f"original_mask_array.shape: {original_mask_array.shape}")
-
-#     assert tfmed.detection.mask_array.data.any()
-
-#     tfmed.unload()
-
-#     assert not tfmed.detection.mask_array
-#     print(f"(1) tfmed.detection.mask_array: {tfmed.detection.mask_array}")
-
-#     print(f"tfmed.height {tfmed.height}")
-#     print(f"tfmed.width {tfmed.width}")
-#     print(f"tfmed.detection.masks.shape {tfmed.detection.masks.shape}")
-#     tfmed.detection.mask_array = MaskArray.from_masks(
-#         tfmed.detection.masks, h=tfmed.height, w=tfmed.width
-#     )
-#     print(f"(2) tfmed.detection.mask_array: {tfmed.detection.mask_array.shape}")
-
-#     assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)
-#     check_attributes_on_component(tfmed)
-
-#     # # assert orignal record was not changed
-#     record = records[0]
-#     assert len(record.detection.label_ids) == 1
-#     assert len(record.detection.bboxes) == 1
-#     assert len(record.detection.masks) == 1
-#     assert len(record.detection.iscrowds) == 1
-#     assert len(record.detection.areas) == 1
-#     check_attributes_on_component(record)
+    assert len(tfms_kps) == len(tra_n)
+    assert tra_n == [(0, 0, 0), (79, 119, 1), (0, 0, 0), (0, 0, 0), (70, 100, 2)]
 
 
-# def test_empty_mask_transform_with_unload(records, check_attributes_on_component):
-#     # crop the record to create empty masks
-#     tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
-#     tfm_ds = Dataset(records, tfm=tfm)
-#     tfmed = tfm_ds[0]
-#     # assert record is empty
-#     assert len(tfmed.detection.label_ids) == 0
-#     assert len(tfmed.detection.bboxes) == 0
-#     assert not tfmed.detection.mask_array.data.any()
-#     assert len(tfmed.detection.iscrowds) == 0
-#     assert len(tfmed.detection.areas) == 0
-#     check_attributes_on_component(tfmed)
+def test_filter_boxes():
+    inp = (52.17503641656451, 274.5014178489639, 123.51860681160832, 350.33471836373275)
+    out = (52.17503641656451, 274.5014178489639, 123.51860681160832, 320)
+    h, w = 256, 384
 
-#     original_mask_array = tfmed.detection.mask_array
+    res = tfms.A.AlbumentationsBBoxesComponent._clip_bboxes(inp, h, w)
+    assert out == res
 
-#     tfmed.unload()
 
-#     assert not tfmed.detection.mask_array
+def test_get_size_without_padding() -> None:
+    """Test get_size_without_padding."""
+    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 15, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(
+        height=20, width=20
+    )
 
-#     print(f"test_empty_mask_transform_with_unload::tfmed.detection.masks shape {tfmed.detection.masks.shape}")
-#     tfmed.detection.mask_array = MaskArray.from_masks(
-#         tfmed.detection.masks, h=tfmed.height, w=tfmed.width
-#     )
+    img = PIL.Image.fromarray(np.uint8(np.zeros((20, 15, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(
+        height=20, width=15
+    )
 
-#     assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)
-#     assert not tfmed.detection.mask_array.data.any()
+    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 10, 3))))
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+    assert get_size_without_padding(transforms, img, ImgSize(20, 20)) == ImgSize(
+        height=20, width=13
+    )
 
-#     check_attributes_on_component(tfmed)
+
+def test_get_transform() -> None:
+    """Test get_transform."""
+    transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
+
+    assert get_transform(transforms, "not there") is None
+    assert isinstance(get_transform(transforms, "Normalize"), Normalize)
+    assert isinstance(get_transform(transforms, "Pad"), PadIfNeeded)
+    assert isinstance(get_transform(transforms, "Longest"), LongestMaxSize)
+
+
+def test_mask_transform_with_unload(records, check_attributes_on_component):
+
+    tfm = tfms.A.Adapter([tfms.A.HorizontalFlip(p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
+
+    tfmed = tfm_ds[0]
+    print(f"tfmed.height {tfmed.height}")
+    print(f"tfmed.width {tfmed.width}")
+    print(f"tfmed : {tfmed}")
+    original_mask_array = tfmed.detection.mask_array
+    print(f"original_mask_array.shape: {original_mask_array.shape}")
+
+    assert tfmed.detection.mask_array.data.any()
+
+    tfmed.unload()
+
+    assert not tfmed.detection.mask_array
+    print(f"(1) tfmed.detection.mask_array: {tfmed.detection.mask_array}")
+
+    print(f"tfmed.height {tfmed.height}")
+    print(f"tfmed.width {tfmed.width}")
+    tfmed.detection.mask_array = MaskArray.from_masks(
+        tfmed.detection.masks, h=tfmed.height, w=tfmed.width
+    )
+    print(f"(2) tfmed.detection.mask_array: {tfmed.detection.mask_array.shape}")
+
+    assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)
+    check_attributes_on_component(tfmed)
+
+    # # assert orignal record was not changed
+    record = records[0]
+    assert len(record.detection.label_ids) == 1
+    assert len(record.detection.bboxes) == 1
+    assert len(record.detection.masks) == 1
+    assert len(record.detection.iscrowds) == 1
+    assert len(record.detection.areas) == 1
+    check_attributes_on_component(record)
+
+
+def test_empty_mask_transform_with_unload(records, check_attributes_on_component):
+    # crop the record to create empty masks
+    tfm = tfms.A.Adapter([tfms.A.Crop(0, 0, 100, 100, p=1.0)])
+    tfm_ds = Dataset(records, tfm=tfm)
+    tfmed = tfm_ds[0]
+    # assert record is empty
+    assert len(tfmed.detection.label_ids) == 0
+    assert len(tfmed.detection.bboxes) == 0
+    assert not tfmed.detection.mask_array.data.any()
+    assert len(tfmed.detection.iscrowds) == 0
+    assert len(tfmed.detection.areas) == 0
+    check_attributes_on_component(tfmed)
+
+    original_mask_array = tfmed.detection.mask_array
+
+    tfmed.unload()
+
+    assert not tfmed.detection.mask_array
+
+    tfmed.detection.mask_array = MaskArray.from_masks(
+        tfmed.detection.masks, h=tfmed.height, w=tfmed.width
+    )
+
+    assert np.array_equal(tfmed.detection.mask_array.data, original_mask_array.data)
+    assert not tfmed.detection.mask_array.data.any()
+
+    check_attributes_on_component(tfmed)

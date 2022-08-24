@@ -10,6 +10,7 @@ __all__ = [
 from icevision.imports import *
 from icevision.core import *
 from icevision.models.utils import *
+from icevision.utils.imageio import numpy_to_tensor
 
 
 def train_dl(dataset, batch_tfms=None, **dataloader_kwargs) -> DataLoader:
@@ -37,7 +38,7 @@ def _build_train_sample(
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
     assert len(record.detection.label_ids) == len(record.detection.bboxes)
 
-    image = im2tensor(record.img)
+    image = numpy_to_tensor(record.img)
 
     # If no labels and bboxes are present, use as negative samples
     if len(record.detection.label_ids) == 0:
@@ -175,7 +176,7 @@ def build_infer_batch(records: Sequence[RecordType]):
     outs = model(*batch)
     ```
     """
-    tensor_imgs = [im2tensor(record.img) for record in records]
+    tensor_imgs = [numpy_to_tensor(record.img) for record in records]
     tensor_imgs = torch.stack(tensor_imgs)
 
     return (tensor_imgs,), records

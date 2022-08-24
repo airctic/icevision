@@ -167,6 +167,9 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
 
         self._record_component = record_component
         self.adapter._albu_in["masks"] = list(record_component.mask_array.data)
+        print(
+            f"record_component.mask_array.data.shape {record_component.mask_array.data.shape}"
+        )
         self.adapter._collect_ops.append(CollectOp(self.collect))
 
     def collect(self, record):
@@ -186,8 +189,9 @@ class AlbumentationsMasksComponent(AlbumentationsAdapterComponent):
                 f"Mismatch at annotations with number of masks. Check or delete {len(checklist)} files below. {checklist}"
             )
 
+        masks = np.array(masks)
         print(f"masks.shape {masks.shape}")
-        masks = MaskArray(np.array(masks))
+        masks = MaskArray(masks)
         self._record_component.set_mask_array(masks)
         # # set masks from the modified masks array
         # TODO: Understand whether something special needs to be done here, see comment on Github
@@ -385,18 +389,6 @@ class Adapter(Transform, Composite):
             collect_op.fn(record)
 
         return record
-
-    # def apply(self, record):
-    #     self.prepare(record)
-
-    #     self._albu_out = self.tfms(**self._albu_in)
-
-    #     # store additional info (might be used by components on `collect`)
-    #     self._size_no_padding = self._get_size_without_padding(record)
-
-    #     self.reduce_on_components("collect", record=record)
-
-    #     return record
 
     def _filter_attribute(self, v: list):
         print(f"Adapter::_filter_attribute")
