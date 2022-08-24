@@ -66,7 +66,7 @@ def swap_from_chw_to_whc(data: np.ndarray):
 
 
 def open_img(
-    fn, gray=False, ignore_exif: bool = False
+    fn, gray=False, ignore_exif: bool = False, ensure_no_data_convert: bool = False
 ) -> Union[PIL.Image.Image, np.ndarray]:
     """
     Open an image from disk `fn`.
@@ -89,7 +89,9 @@ def open_img(
 
         if not ignore_exif:
             image = PIL.ImageOps.exif_transpose(image)
-        image = image.convert(color)
+
+        if not ensure_no_data_convert:
+            image = image.convert(color)
 
     return image
 
