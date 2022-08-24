@@ -13,6 +13,7 @@ from icevision.core.bbox import BBox
 from icevision.data.prediction import Prediction
 from icevision.models.inference import postprocess_bbox
 from icevision.soft_dependencies import SoftDependencies
+from icevision.utils.imageio import get_img_size
 
 from typing import Any, Callable, Union, Iterable, List, Tuple
 
@@ -93,29 +94,30 @@ def convert_record_to_fo_sample(
             _internal_filepath = record.common.filepath
 
     # Prepare undo bbox tfms fn
-    img = Image.open(_internal_filepath)
+    img_size = get_img_size(_internal_filepath)
     if undo_bbox_tfms_fn is not None:
         _internal_undo_bbox_tfms = lambda bbox: _convert_bbox_to_fo_bbox(
-            undo_bbox_tfms_fn(bbox), img.width, img.height
+            undo_bbox_tfms_fn(bbox), img_size.width, img_size.height
         )
     elif transformations is not None:
         _internal_undo_bbox_tfms = lambda bbox: _convert_bbox_to_fo_bbox(
             postprocess_bbox(
-                img, bbox, transformations, record.common.width, record.common.height
+                img_size,
+                bbox,
+                transformations,
+                record.common.width,
+                record.common.height,
             ),
-            img.width,
-            img.height,
+            img_size.width,
+            img_size.height,
         )
     else:
         _internal_undo_bbox_tfms = lambda bbox: _convert_bbox_to_fo_bbox(
-            bbox, img.width, img.height
+            bbox, img_size.width, img_size.height
         )
 
     # Get fo.Detections
     detections = record_to_fo_detections(record, _internal_undo_bbox_tfms)
-
-    # Unload image to save RAM
-    img.close()
 
     # Get sample after successful detection
     if sample is None:

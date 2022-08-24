@@ -3,6 +3,7 @@ __all__ = [
     "open_img",
     "get_image_size",
     "get_img_size",
+    "get_img_size_from_data",
     "show_img",
     "plot_grid",
 ]
@@ -48,16 +49,41 @@ def open_dicom(filename) -> PIL.Image:
     return img
 
 
-# FIXME
-def open_img(fn, gray=False, ignore_exif: bool = False) -> PIL.Image.Image:
-    "Open an image from disk `fn` as a PIL Image"
-    color = "L" if gray else "RGB"
+def is_tif_extension(filepath: Union[str, Path]) -> bool:
+    return str(filepath).endswith(".tif") or str(filepath).endswith(".tiff")
 
-    image = PIL.Image.open(str(fn))
 
-    if not ignore_exif:
-        image = PIL.ImageOps.exif_transpose(image)
-    image = image.convert(color)
+def chw_to_hwc(data: np.ndarray):
+    if len(data.shape) == 3:
+        return data.transpose(1, 2, 0)
+    return data
+
+
+def open_img(
+    fn, gray=False, ignore_exif: bool = False, ensure_no_data_convert: bool = False
+) -> Union[PIL.Image.Image, np.ndarray]:
+    """
+    Open an image from disk `fn`.
+    TIFF/TIF: A numpy array with shape (h,w) for grayscale or (h,w,c) for multi bands is returned.
+    Other formats: A PIL image is returned.
+    """
+    if is_tif_extension(fn):
+        with rasterio.open(str(fn), "r") as img:
+            raw_data = img.read()
+            image = chw_to_hwc(raw_data)
+            if gray or image.shape[2] == 1:
+                image = image[..., 0]
+    else:
+        color = "L" if gray else "RGB"
+
+        image = PIL.Image.open(str(fn))
+
+        if not ignore_exif:
+            image = PIL.ImageOps.exif_transpose(image)
+
+        if not ensure_no_data_convert:
+            image = image.convert(color)
+
     return image
 
 
@@ -65,6 +91,10 @@ def open_gray_scale_image(fn):
     "Opens an radiographic/gray scale image, stacks the channel to represent a RGB image and returns is as a 32bit float array."
     if ".dcm" in str(fn).lower():
         img = open_dicom(str(fn))
+    elif is_tif_extension(fn):
+        with rasterio.open(str(fn), "r") as image:
+            raw_data = image.read()
+            img = chw_to_hwc(raw_data)[..., 0]
     else:
         img = PIL.Image.open(str(fn))
 
@@ -91,8 +121,12 @@ def get_img_size(filepath: Union[str, Path]) -> ImgSize:
         image = open_dicom(str(filepath))
         image_size = image.size
     else:
-        with PIL.Image.open(str(filepath)) as image:
-            image_size = image.size
+        if is_tif_extension(filepath):
+            with rasterio.open(str(filepath), "r") as image:
+                image_size = (image.width, image.height)
+        else:
+            with PIL.Image.open(str(filepath)) as image:
+                image_size = image.size
 
     try:
         exif = image._getexif()
@@ -143,3 +177,18 @@ def plot_grid(
     plt.tight_layout()
     if show:
         plt.show()
+
+
+def get_img_size_from_data(data: Union[PIL.Image.Image, np.ndarray]) -> ImgSize:
+    """
+    Returns image size.
+    If the data is a numpy array, it is expected to be in the format (h,w) or (h,w,c).
+    """
+    assert isinstance(data, (PIL.Image.Image, np.ndarray))
+
+    if isinstance(data, PIL.Image.Image):
+        width, height = data.size
+    else:
+        height, width, *_ = data.shape
+
+    return ImgSize(width=width, height=height)

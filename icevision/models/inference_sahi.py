@@ -73,7 +73,7 @@ class IceSahiModel(DetectionModel):
 
     def get_sliced_prediction(
         self,
-        image: Union[PIL.Image.Image, Path, str],
+        image: Union[PIL.Image.Image, np.ndarray, Path, str],
         keep_sahi_format: bool = False,
         display_label: bool = True,
         display_bbox: bool = True,
@@ -117,11 +117,13 @@ class IceSahiModel(DetectionModel):
             record.detection.add_bboxes(bboxes)
             record.detection.set_scores(np.array(scores))
 
+            img_path = str(image)
             if isinstance(image, (str, Path)):
-                image = PIL.Image.open(Path(image))
+                image = open_img(img_path, ensure_no_data_convert=True)
 
             record.set_img(image)
-            w, h = image.shape
+
+            img_size = get_img_size(img_path)
 
             if return_img:
                 pred_img = draw_record(
@@ -144,8 +146,8 @@ class IceSahiModel(DetectionModel):
             else:
                 pred_dict["img"] = None
 
-            pred_dict["width"] = w
-            pred_dict["height"] = h
+            pred_dict["width"] = img_size.width
+            pred_dict["height"] = img_size.height
 
             del pred_dict["common"]
 

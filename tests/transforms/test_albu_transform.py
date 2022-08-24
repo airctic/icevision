@@ -152,17 +152,17 @@ def test_filter_boxes():
 
 def test_get_size_without_padding() -> None:
     """Test get_size_without_padding."""
-    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 15, 3))))
+    img = ImgSize(height=15, width=15)
     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-    assert get_size_without_padding(transforms, img, 20, 20) == (20, 20)
+    assert get_size_without_padding(transforms, img, 20, 20) == ImgSize(20, 20)
 
-    img = PIL.Image.fromarray(np.uint8(np.zeros((20, 15, 3))))
+    img = ImgSize(height=20, width=15)
     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-    assert get_size_without_padding(transforms, img, 20, 20) == (20, 15)
+    assert get_size_without_padding(transforms, img, 20, 20) == ImgSize(20, 15)
 
-    img = PIL.Image.fromarray(np.uint8(np.zeros((15, 10, 3))))
+    img = ImgSize(height=15, width=10)
     transforms = [*tfms.A.resize_and_pad(20), tfms.A.Normalize()]
-    assert get_size_without_padding(transforms, img, 20, 20) == (20, 13)
+    assert get_size_without_padding(transforms, img, 20, 20) == ImgSize(20, 13)
 
 
 def test_get_transform() -> None:
