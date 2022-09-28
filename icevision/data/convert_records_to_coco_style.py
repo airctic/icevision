@@ -132,6 +132,15 @@ def export_batch_inferences_as_coco_annotations(
         )
 
     coco_style_preds = convert_preds_to_coco_style(preds)
+    imgs_array = [PIL.Image.open(Path(fname)) for fname in img_files]
+
+    sizes = [{'x': img._size[0],
+              'y': img._size[1]} for img in imgs_array]
+
+    for idx, image in enumerate(coco_style_preds['images']):
+        coco_style_preds['images'][idx]['width'] = sizes[idx]['x']
+        coco_style_preds['images'][idx]['height'] = sizes[idx]['y']
+
     finalized_pseudo_labels = {**addl_info, **coco_style_preds}
 
     # Serialize
