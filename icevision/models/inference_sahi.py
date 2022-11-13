@@ -11,7 +11,7 @@ from icevision.visualize.utils import *
 from icevision.tfms.albumentations import albumentations_adapter
 
 
-from sahi.model import DetectionModel
+from sahi.models.base import DetectionModel
 from sahi.prediction import ObjectPrediction
 from sahi.predict import get_sliced_prediction as sahi_get_sliced_prediction
 
