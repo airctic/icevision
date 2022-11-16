@@ -21,7 +21,7 @@ Depending on what version of cuda driver you'd like to use, you can install diff
 
 === "cuda-11.1"
     ```
-    pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+    pip install torch==1.10.0+cu113 torchvision==0.11.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html
     ```
 === "cpu"
     ```
@@ -51,7 +51,7 @@ Installing `mmcv-full` is optional, yet it will let you unleash the full potenti
 
 === "cuda-11.1"
     ```
-    pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10.0/index.html
+    pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu113/torch1.10.0/index.html
     pip install mmdet==2.17.0
     ```
 
@@ -88,7 +88,7 @@ Installing `mmcv-full` is optional, yet it will let you unleash the full potenti
     CUDA_HOME: /usr/local/cuda
     NVCC: Build cuda_11.1.TC455_06.29069683_0
     GCC: gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
-    PyTorch: 1.10.0+cu111
+    PyTorch: 1.10.0+cu113
     PyTorch compiling details: PyTorch built with:
         - GCC 7.3
         - C++ Version: 201402
@@ -104,7 +104,7 @@ Installing `mmcv-full` is optional, yet it will let you unleash the full potenti
         - Magma 2.5.2
         - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.1, CUDNN_VERSION=8.0.5, CXX_COMPILER=/opt/rh/devtoolset-7/root/usr/bin/c++, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -fopenmp -DNDEBUG -DUSE_KINETO -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -DEDGE_PROFILER_USE_KINETO -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-unused-local-typedefs -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-psabi -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_VERSION=1.10.0, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, 
     
-    TorchVision: 0.11.1+cu111
+    TorchVision: 0.11.1+cu113
     OpenCV: 4.5.4
     MMCV: 1.3.17
     MMCV Compiler: GCC 7.3
