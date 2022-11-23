@@ -26,7 +26,7 @@ effdet = "~0.2.1"
 omegaconf = "~2"
 dataclasses = "0.6"
 wandb = "^0.12.9"
-sahi = ">0.8.19,<1"
+sahi = ">0.11.1,<0.12.0"
 resnest = ">=0.0.6b20201125,<0.0.7"
 yolov5-icevision = "~6"
 
