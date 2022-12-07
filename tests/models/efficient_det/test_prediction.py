@@ -16,8 +16,8 @@ def test_e2e_detect(samples_source, fridge_efficientdet_model, fridge_class_map)
 
 def test_inference_postprocess_bbox(samples_source, fridge_efficientdet_model):
     img_path = samples_source / "fridge/odFridgeObjects/images/10.jpg"
-    img = PIL.Image.open(img_path)
-    w, h = img.size
+    img = open_img(img_path, ensure_no_data_convert=True)
+    img_size = get_img_size(img_path)
 
     tfms_ = tfms.A.Adapter([*tfms.A.resize_and_pad(384), tfms.A.Normalize()])
     infer_ds = Dataset.from_images([np.array(img)], tfms_)
@@ -28,9 +28,9 @@ def test_inference_postprocess_bbox(samples_source, fridge_efficientdet_model):
             img, bbox, tfms_.tfms_list, pred.pred.height, pred.pred.width
         )
         assert xmin > 0
-        assert xmax < w
+        assert xmax < img_size.width
         assert ymin > 0
-        assert ymax < h
+        assert ymax < img_size.height
 
 
 def _test_preds(preds):

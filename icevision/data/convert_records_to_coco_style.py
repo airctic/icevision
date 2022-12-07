@@ -14,7 +14,6 @@ from icevision.utils import *
 from icevision.core import *
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
-from icevision.models.inference import *
 import json
 import numpy as np
 import PIL

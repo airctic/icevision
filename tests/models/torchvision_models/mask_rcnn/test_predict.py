@@ -7,7 +7,7 @@ from icevision.models.torchvision import mask_rcnn
 @pytest.fixture
 def sample_dataset(samples_source):
     images_dir = samples_source / "images"
-    images_files = get_image_files(images_dir)[-2:]
+    images_files = get_files(images_dir, extensions=".jpg")[-2:]
 
     images = [np.array(open_img(path)) for path in images_files]
     images = [cv2.resize(image, (128, 128)) for image in images]

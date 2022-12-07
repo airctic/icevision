@@ -176,7 +176,7 @@ class VocMaskFile(MaskFile):
         self.drop_void = drop_void
 
     def to_mask(self, h, w) -> MaskArray:
-        mask_arr = np.array(Image.open(self.filepath))
+        mask_arr = np.array(open_img(self.filepath, ensure_no_data_convert=True))
         obj_ids = np.unique(mask_arr)[1:]
         masks = mask_arr == obj_ids[:, None, None]
 

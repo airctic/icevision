@@ -303,9 +303,9 @@ class Adapter(Transform, Composite):
         self._albu_out = tfms(**self._albu_in)
 
         # store additional info (might be used by components on `collect`)
-        height, width, _ = self._albu_out["image"].shape
+        height, width, *_ = self._albu_out["image"].shape
         height, width = get_size_without_padding(
-            self.tfms_list, record.img, height, width
+            self.tfms_list, ImgSize(width=width, height=height), height, width
         )
         self._size_no_padding = ImgSize(width=width, height=height)
 
