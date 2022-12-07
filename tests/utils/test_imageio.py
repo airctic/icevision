@@ -12,7 +12,7 @@ from icevision.utils.imageio import open_gray_scale_image
         ("images/test_3_bands_float32.tif", (100, 101, 3)),
     ],
 )
-def test_open_img_returns_tiff_with_shape_h_w_c_when_when_tiff_has_3_bands_with_gray_is_false(
+def test_open_img_returns_tiff_with_shape_h_w_c_when_tiff_has_3_bands_with_gray_is_false(
     samples_source, fn, expected
 ):
 
@@ -30,7 +30,7 @@ def test_open_img_returns_tiff_with_shape_h_w_c_when_when_tiff_has_3_bands_with_
         ("images/test_3_bands_float32.tif", (100, 101)),
     ],
 )
-def test_open_img_returns_tiff_with_shape_h_w_c_when_when_tiff_has_3_bands_with_gray_is_true(
+def test_open_img_returns_tiff_with_shape_h_w_c_when_tiff_has_3_bands_with_gray_is_true(
     samples_source, fn, expected
 ):
 
