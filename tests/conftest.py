@@ -39,6 +39,12 @@ def fridge_faster_rcnn_model() -> nn.Module:
 
 
 @pytest.fixture()
+def faster_rcnn_model_mmdet_with_num_classes_1() -> nn.Module:
+    backbone = models.mmdet.faster_rcnn.backbones.resnet50_fpn_1x(pretrained=False)
+    return models.mmdet.faster_rcnn.model(num_classes=1, backbone=backbone)
+
+
+@pytest.fixture()
 def camvid_class_map(samples_source) -> ClassMap:
     codes = list(np.loadtxt(samples_source / "camvid/codes.txt", dtype=str))
     return ClassMap(codes, background=None)
