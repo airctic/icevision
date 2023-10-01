@@ -2,6 +2,8 @@ import pytest
 import random
 from icevision.all import *
 
+mmdet = pytest.importorskip("mmdet")
+
 
 @pytest.mark.parametrize(
     "ds, model_type, pretrained, cfg_options",

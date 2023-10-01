@@ -1,5 +1,7 @@
 import pytest
 from icevision.all import *
+
+mmcv = pytest.importorskip("mmcv")
 from icevision.models.mmseg.models.segformer.backbones import *
 from icevision.models.mmseg.models import *
 
