@@ -3,7 +3,8 @@ from venv import create
 import pytest
 from PIL import Image
 import pytest
-fo = pytest.importorskip("fiftyone") #import list_datasets, load_dataset, Detection, Sample, Dataset
+
+fo = pytest.importorskip("fiftyone")
 
 from icevision import tfms
 from icevision import data
@@ -21,6 +22,7 @@ from icevision.data import (
 )
 from tests.conftest import object_detection_record
 
+
 # Fixtures
 @pytest.fixture(scope="function")
 def cleanup_fo_dataset():
@@ -35,7 +37,6 @@ def cleanup_fo_dataset():
 
 # Test from low to high abstraction
 def test_record_to_fo_detections(object_detection_record):
-
     detections = record_to_fo_detections(
         object_detection_record, lambda bbox: _convert_bbox_to_fo_bbox(bbox, 500, 500)
     )
