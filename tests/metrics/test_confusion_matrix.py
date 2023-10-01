@@ -106,7 +106,7 @@ def test_pairwise_iou_matching(target, prediction):
 
 def test_match_prediction(target, prediction):
     result = match_predictions_to_targets(target, prediction, iou_threshold=0.5)
-    with open(Path(__file__).parent / "expected_register.pkl", mode='rb') as infile:
+    with open(Path(__file__).parent / "expected_register.pkl", mode="rb") as infile:
         expected_result = pickle.load(infile)
     assert result == expected_result
 
