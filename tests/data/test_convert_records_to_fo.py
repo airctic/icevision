@@ -2,7 +2,8 @@ import imp
 from venv import create
 import pytest
 from PIL import Image
-from fiftyone import list_datasets, load_dataset, Detection, Sample, Dataset
+import pytest
+fo = pytest.importorskip("fiftyone") #import list_datasets, load_dataset, Detection, Sample, Dataset
 
 from icevision import tfms
 from icevision import data
@@ -26,8 +27,8 @@ def cleanup_fo_dataset():
     dataset_test_names = ["_iv_test", "_iv_test_1"]
     yield
     for dataset_name in dataset_test_names:
-        if dataset_name in list_datasets():
-            ds = load_dataset(dataset_name)
+        if dataset_name in fo.list_datasets():
+            ds = fo.load_dataset(dataset_name)
             ds.delete()
             del ds
 
@@ -40,7 +41,7 @@ def test_record_to_fo_detections(object_detection_record):
     )
 
     for fo_bbox in detections:
-        assert isinstance(fo_bbox, Detection)
+        assert isinstance(fo_bbox, fo.Detection)
 
 
 def test_convert_record_to_fo_sample(object_detection_record):
@@ -48,16 +49,16 @@ def test_convert_record_to_fo_sample(object_detection_record):
     test_sample = convert_record_to_fo_sample(
         object_detection_record, "test", None, False, None, lambda x: x
     )
-    assert isinstance(test_sample, Sample)
+    assert isinstance(test_sample, fo.Sample)
     assert hasattr(test_sample, "test")
     assert len(test_sample["test"]) > 0
 
     # Test add to existing sample  and autosave
-    sample = Sample(object_detection_record.common.filepath)
+    sample = fo.Sample(object_detection_record.common.filepath)
     test_sample = convert_record_to_fo_sample(
         object_detection_record, "test", sample, False, None, lambda x: x
     )
-    assert isinstance(test_sample, Sample)
+    assert isinstance(test_sample, fo.Sample)
     assert hasattr(test_sample, "test")
     assert len(test_sample["test"]) > 0
 
@@ -69,7 +70,7 @@ def test_convert_record_to_fo_sample(object_detection_record):
         object_detection_record, "test", None, False, test_tfms, None
     )
 
-    assert isinstance(test_sample, Sample)
+    assert isinstance(test_sample, fo.Sample)
     assert hasattr(test_sample, "test")
     assert len(test_sample["test"]) > 0
 
@@ -89,7 +90,7 @@ def test_convert_prediction_to_fo_sample(object_detection_record):
         object_detection_record.original_img_size
     )  # Cleanup record, that has scope session
 
-    assert isinstance(test_sample, Sample)
+    assert isinstance(test_sample, fo.Sample)
 
     assert hasattr(test_sample, "ground_truth")
     assert len(test_sample["ground_truth"]) > 0
@@ -106,7 +107,7 @@ def test_create_fo_dataset(object_detection_record, cleanup_fo_dataset):
     )
 
     # Test for record and with existing dataset
-    dataset = Dataset("_iv_test")
+    dataset = fo.Dataset("_iv_test")
     dataset = create_fo_dataset(
         [object_detection_prediction], dataset_name="_iv_test", exist_ok=True
     )
@@ -115,11 +116,11 @@ def test_create_fo_dataset(object_detection_record, cleanup_fo_dataset):
         object_detection_record.original_img_size
     )  # Cleanup record, that has scope session
 
-    assert isinstance(dataset, Dataset)
+    assert isinstance(dataset, fo.Dataset)
     assert len(list(dataset.iter_samples())) > 0
 
     # Test for prediction and create new dataset
     dataset = create_fo_dataset([object_detection_record], "_iv_test_1")
 
-    assert isinstance(dataset, Dataset)
+    assert isinstance(dataset, fo.Dataset)
     assert len(list(dataset.iter_samples())) > 0
