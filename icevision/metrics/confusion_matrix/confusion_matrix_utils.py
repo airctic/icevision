@@ -11,12 +11,6 @@ class ObjectDetectionItem:
     label_id: int
     record_id: int
     item_id: int
-    plate_quality: float
-    plate_exposure: float
-    plate_state: str
-    plate_layout: str
-    plate_special_stacked: str
-    plate_mirrored: str
 
     # def __eq__(self, other):
     #     return (
@@ -155,24 +149,12 @@ def build_target_list(target: BaseRecord) -> List:
             bbox=bbox,
             label=label,
             label_id=label_id,
-            plate_quality=pq,
-            plate_exposure=pe,
-            plate_state=ps,
-            plate_layout=pl,
-            plate_special_stacked=pss,
-            plate_mirrored=pm,
         )
-        for item_id, (bbox, label, label_id, pq, pe, ps, pl, pss, pm) in enumerate(
+        for item_id, (bbox, label, label_id) in enumerate(
             zip(
                 target.detection.bboxes,
                 target.detection.labels,
                 target.detection.label_ids,
-                target.classification.plate_quality,
-                target.classification.plate_exposure,
-                target.classification.plate_state,
-                target.classification.plate_layout,
-                target.classification.plate_special_stacked,
-                target.classification.plate_mirrored,
             )
         )
     ]
@@ -190,25 +172,13 @@ def build_prediction_list(prediction: BaseRecord) -> List:
             label=label,
             label_id=label_id,
             score=score,
-            plate_quality=pq,
-            plate_exposure=pe,
-            plate_state=ps,
-            plate_layout=pl,
-            plate_special_stacked=pss,
-            plate_mirrored=pm,
         )
-        for item_id, (bbox, label, label_id, score, pq, pe, ps, pl, pss, pm) in enumerate(
+        for item_id, (bbox, label, label_id, score) in enumerate(
             zip(
                 prediction.detection.bboxes,
                 prediction.detection.labels,
                 prediction.detection.label_ids,
                 prediction.detection.scores,
-                prediction.classification.plate_quality,
-                prediction.classification.plate_exposure,
-                prediction.classification.plate_state,
-                prediction.classification.plate_layout,
-                prediction.classification.plate_special_stacked,
-                prediction.classification.plate_mirrored,
             )
         )
     ]

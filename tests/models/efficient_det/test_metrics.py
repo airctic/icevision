@@ -33,10 +33,10 @@ def expected_confusion_matrix_output():
 
 
 @pytest.mark.parametrize(
-    "metric, expected_output",
+    "metric, expected_output, detection_threshold",
     [
-        (SimpleConfusionMatrix(print_summary=True), "expected_confusion_matrix_output"),
-        (COCOMetric(print_summary=True), "expected_coco_metric_output"),
+        (SimpleConfusionMatrix(print_summary=True), "expected_confusion_matrix_output", 0.5),
+        (COCOMetric(print_summary=True), "expected_coco_metric_output", 0.0),
     ],
 )
 def test_efficientdet_metrics(
@@ -44,6 +44,7 @@ def test_efficientdet_metrics(
     fridge_efficientdet_records,
     metric,
     expected_output,
+    detection_threshold,
     request,
 ):
     expected_output = request.getfixturevalue(expected_output)
@@ -57,7 +58,7 @@ def test_efficientdet_metrics(
         batch=batch,
         raw_preds=raw_preds["detections"],
         records=fridge_efficientdet_records,
-        detection_threshold=0.0,
+        detection_threshold=detection_threshold,
     )
 
     metric.accumulate(preds)
