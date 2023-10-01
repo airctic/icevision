@@ -157,7 +157,7 @@ def voc_class_map():
 
 @pytest.fixture(scope="session")
 def fridge_class_map():
-    classes = sorted({"milk_bottle", "carton", "can", "water_bottle"})
+    classes = ["carton", "milk_bottle", "can", "water_bottle"]
     return ClassMap(classes)
 
 

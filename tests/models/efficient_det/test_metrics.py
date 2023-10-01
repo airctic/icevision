@@ -6,13 +6,13 @@ from icevision.models.ross import efficientdet
 @pytest.fixture
 def expected_coco_metric_output():
     return [
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.494",
-        " Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.556",
-        " Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.556",
+        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.850",
+        " Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000",
+        " Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000",
         " Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
         " Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000",
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.507",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.450",
+        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.850",
+        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
@@ -25,9 +25,9 @@ def expected_coco_metric_output():
 def expected_confusion_matrix_output():
     return [
         "[[0 0 0 0 0]",
-        " [0 0 0 0 0]",
-        " [0 0 1 0 0]",
         " [0 1 0 0 0]",
+        " [0 0 1 0 0]",
+        " [0 0 0 0 0]",
         " [0 0 0 0 0]]",
     ]
 
