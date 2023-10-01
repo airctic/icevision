@@ -45,7 +45,7 @@ def model(
         weights_path = yolo_dir / f"{model_name}.pt"
 
         with open(Path(yolov5.__file__).parent / "data/hyps/hyp.VOC.yaml") as f:
-            hyp = yaml.load(f, Loader=yaml.SafeLoader)
+            hyp = yaml.safe_load(f)
 
         attempt_download(weights_path)  # download if not found locally
         sys.path.insert(0, str(Path(yolov5.__file__).parent))
@@ -64,7 +64,7 @@ def model(
         model.load_state_dict(state_dict, strict=False)  # load
     else:
         with open(Path(yolov5.__file__).parent / "data/hyps/hyp.scratch-med.yaml") as f:
-            hyp = yaml.load(f, Loader=yaml.SafeLoader)
+            hyp = yaml.safe_load(f)
 
         model = Model(
             cfg_filepath, ch=3, nc=num_classes, anchors=hyp.get("anchors")
