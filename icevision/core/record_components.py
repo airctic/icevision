@@ -269,6 +269,7 @@ class BaseLabelsRecordComponent(ClassMapRecordComponent):
 
     def _remove_annotation(self, i):
         self.label_ids.pop(i)
+        self.labels.pop(i)
 
     def _aggregate_objects(self) -> Dict[str, List[dict]]:
         return {**super()._aggregate_objects(), "labels": self.label_ids}

@@ -24,13 +24,13 @@ class BinaryDiceCoefficient(Metric):
 
         pred = (
             np.stack([x.pred.segmentation.mask_array.data for x in preds])
-            .astype(np.bool)
+            .astype(bool)
             .flatten()
         )
 
         target = (
             np.stack([x.ground_truth.segmentation.mask_array.data for x in preds])
-            .astype(np.bool)
+            .astype(bool)
             .flatten()
         )
 
