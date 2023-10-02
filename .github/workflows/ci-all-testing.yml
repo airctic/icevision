@@ -24,9 +24,9 @@ jobs:
 
       - name: Install package
         run: |
+          sh ./icevision_install.sh cpu
           pip install -e .[dev]
           pip install fiftyone
-#          sh ./icevision_install.sh cpu
 
       - name: Lint with flake8
         run: |
