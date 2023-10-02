@@ -3,7 +3,6 @@ from icevision.all import *
 from icevision.models.torchvision import mask_rcnn
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
@@ -21,7 +20,6 @@ def test_mask_rcnn_fpn_backbones_large(model_name, param_groups_len):
     assert len(model.param_groups()) == param_groups_len
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name,param_groups_len",
     (
