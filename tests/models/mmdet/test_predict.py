@@ -4,8 +4,6 @@ from icevision.models.inference_sahi import IceSahiModel
 from sahi.prediction import PredictionResult
 import albumentations as A
 
-mmdet = pytest.importorskip("mmdet")
-
 
 @pytest.mark.parametrize(
     "ds, model_type",

@@ -1,8 +1,6 @@
 import pytest
 from icevision.all import *
 
-mmdet = pytest.importorskip("mmdet")
-
 
 @pytest.fixture()
 def img():

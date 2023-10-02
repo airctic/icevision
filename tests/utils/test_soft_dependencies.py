@@ -20,7 +20,7 @@ def test_soft_dependencies():
         "wandb": True,
         "resnest": True,
         "sklearn": True,
-        "mmdet": False,
+        "mmdet": True,
         "yolov5": True,
         "mmseg": True,
         "sahi": True,
