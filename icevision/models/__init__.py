@@ -29,7 +29,7 @@ if SoftDependencies.yolov5:
     shell = session.__class__.__module__
     # HACK: yolov5 breaks automatic setting of backend setting by notebook
     if shell in ["google.colab._shell", "ipykernel.zmqshell"]:
-        session.run_line_magic('matplotlib', 'inline')
+        session.run_line_magic("matplotlib", "inline")
 
 if SoftDependencies.mmseg:
     from icevision.models import mmseg
