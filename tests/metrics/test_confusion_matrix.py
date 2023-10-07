@@ -104,9 +104,16 @@ def test_pairwise_iou_matching(target, prediction):
     assert torch.allclose(result, expected_result, atol=1e-4)
 
 
-def test_match_prediction(target, prediction):
+def test_match_prediction_to_target(target, prediction):
     result = match_predictions_to_targets(target, prediction, iou_threshold=0.5)
-    with open(Path(__file__).parent / "expected_register.pkl", mode="rb") as infile:
+    with open(Path(__file__).parent / "expected_register_p2t.pkl", mode="rb") as infile:
+        expected_result = pickle.load(infile)
+    assert result == expected_result
+
+
+def test_match_target_to_prediction(target, prediction):
+    result = match_targets_to_predictions(target, prediction, iou_threshold=0.5)
+    with open(Path(__file__).parent / "expected_register_t2p.pkl", mode="rb") as infile:
         expected_result = pickle.load(infile)
     assert result == expected_result
 
