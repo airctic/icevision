@@ -4,6 +4,7 @@ __all__ = [
     "RandomSplitter",
     "FixedSplitter",
     "FuncSplitter",
+    "FolderSplitter",
 ]
 
 from icevision.imports import *
@@ -132,3 +133,29 @@ class FuncSplitter(DataSplitter):
 
     def split(self, records: Sequence[BaseRecord]):
         return self.func(records)
+
+
+class FolderSplitter(DataSplitter):
+    """
+    Split items into subsets based on provided keywords.
+    Set of items not containing any of the keywords is returned as first.
+    """
+
+    def __init__(self, keywords=Collection[str]):
+        self.keywords = keywords
+
+    def split(self, records: Sequence[BaseRecord]):
+        """
+        Splits records based on the provided keywords by their filepaths.
+        If some records don't match any keywords, they are returned as an additional split.
+        """
+        remainder_set = {record.record_id for record in records}
+        keyword_sets = [set() for _ in self.keywords]
+        for record in records:
+            for keyword, other_set in zip(self.keywords, keyword_sets):
+                if keyword in record.filepath.as_posix():
+                    other_set.add(record.record_id)
+        remainder_set -= set.union(*keyword_sets)
+        if remainder_set:
+            keyword_sets.append(remainder_set)
+        return keyword_sets

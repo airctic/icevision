@@ -19,7 +19,7 @@ def coco_record_id_map():
 
 @pytest.fixture()
 def fridge_efficientdet_model() -> nn.Module:
-    WEIGHTS_URL = "https://github.com/airctic/model_zoo/releases/download/m2/fridge_tf_efficientdet_lite0.pt"
+    WEIGHTS_URL = "https://github.com/potipot/icevision/releases/download/0.13.0/fridge_tf_efficientdet_lite0.pt"
     # TODO: HACK 5+1 in num_classes (becaues of change in model.py)
     backbone = models.ross.efficientdet.backbones.tf_lite0(pretrained=False)
     model = efficientdet.model(backbone=backbone, num_classes=5, img_size=384)
@@ -157,7 +157,7 @@ def voc_class_map():
 
 @pytest.fixture(scope="session")
 def fridge_class_map():
-    classes = sorted({"milk_bottle", "carton", "can", "water_bottle"})
+    classes = ["carton", "milk_bottle", "can", "water_bottle"]
     return ClassMap(classes)
 
 

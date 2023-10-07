@@ -5,11 +5,15 @@ from icevision.all import *
 @pytest.fixture
 def records():
     def create_record_func():
-        return BaseRecord([])
+        return BaseRecord([FilepathRecordComponent()])
 
     records = RecordCollection(create_record_func)
-    for record_id in ["file1", "file2", "file3", "file4"]:
-        records.get_by_record_id(record_id)
+    for record_id, filepath in zip(
+        ["file1", "file2", "file3", "file4"],
+        ["/train/0", "/train/1", "/valid/0", "/test/0"],
+    ):
+        record = records.get_by_record_id(record_id)
+        record.set_filepath(filepath)
     return records
 
 
@@ -30,6 +34,26 @@ def test_fixed_splitter(records):
 
     data_splitter = FixedSplitter(presplits)
     splits = data_splitter(records)
+    assert splits == presplits
+
+
+def test_folder_splitter(records):
+    presplits = [{"file1", "file2"}, {"file3"}, {"file4"}]
+
+    keywords = ["train", "valid", "test"]
+    data_splitter = FolderSplitter(keywords=keywords)
+    splits = data_splitter(records)
+
+    assert splits == presplits
+
+
+def test_folder_splitter_with_remainder(records):
+    presplits = [{"file1", "file2"}, {"file4"}, {"file3"}]
+
+    keywords = ["train", "test"]
+    data_splitter = FolderSplitter(keywords=keywords)
+    splits = data_splitter(records)
+
     assert splits == presplits
 
 

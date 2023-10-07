@@ -3,7 +3,6 @@ from icevision.all import *
 from icevision.models.torchvision import retinanet
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name",
     (
@@ -21,7 +20,6 @@ def test_retinanet_fpn_backbones_large(model_name):
     assert len(model.param_groups()) == 7
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize(
     "model_name",
     (

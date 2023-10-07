@@ -104,57 +104,17 @@ def test_pairwise_iou_matching(target, prediction):
     assert torch.allclose(result, expected_result, atol=1e-4)
 
 
-def test_match_prediction(target, prediction):
-    result = match_records(target, prediction, iou_threshold=0.5)
-    expected_result = [
-        [
-            {
-                "target_bbox": BBox.from_xyxy(100, 100, 400, 400),
-                "target_label": "a",
-                "target_label_id": 1,
-            },
-            [
-                {
-                    "predicted_bbox": BBox.from_xyxy(100, 100, 400, 400),
-                    "predicted_label": "a",
-                    "predicted_label_id": 1,
-                    "score": 0.8,
-                    "iou_score": 1.0,
-                },
-                {
-                    "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
-                    "predicted_label": "b",
-                    "predicted_label_id": 2,
-                    "score": 0.7,
-                    "iou_score": 0.5122,
-                },
-            ],
-        ],
-        [
-            {
-                "target_bbox": BBox.from_xyxy(300, 100, 600, 400),
-                "target_label": "b",
-                "target_label_id": 2,
-            },
-            [
-                {
-                    "predicted_bbox": BBox.from_xyxy(190, 100, 510, 400),
-                    "predicted_label": "b",
-                    "predicted_label_id": 2,
-                    "score": 0.7,
-                    "iou_score": 0.5122,
-                },
-            ],
-        ],
-        [
-            {
-                "target_bbox": BBox.from_xyxy(700, 200, 900, 500),
-                "target_label": "b",
-                "target_label_id": 2,
-            },
-            [],
-        ],
-    ]
+def test_match_prediction_to_target(target, prediction):
+    result = match_predictions_to_targets(target, prediction, iou_threshold=0.5)
+    with open(Path(__file__).parent / "expected_register_p2t.pkl", mode="rb") as infile:
+        expected_result = pickle.load(infile)
+    assert result == expected_result
+
+
+def test_match_target_to_prediction(target, prediction):
+    result = match_targets_to_predictions(target, prediction, iou_threshold=0.5)
+    with open(Path(__file__).parent / "expected_register_t2p.pkl", mode="rb") as infile:
+        expected_result = pickle.load(infile)
     assert result == expected_result
 
 

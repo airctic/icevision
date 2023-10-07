@@ -7,8 +7,7 @@ import yaml
 import yolov5
 from yolov5.models.yolo import Model
 from yolov5.utils.downloads import attempt_download
-from yolov5.utils.torch_utils import intersect_dicts
-from yolov5.utils.general import check_img_size
+from yolov5.utils.general import check_img_size, intersect_dicts
 from icevision.models.ultralytics.yolov5.utils import *
 from icevision.models.ultralytics.yolov5.backbones import *
 
@@ -45,8 +44,8 @@ def model(
     if pretrained:
         weights_path = yolo_dir / f"{model_name}.pt"
 
-        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.finetune.yaml") as f:
-            hyp = yaml.load(f, Loader=yaml.SafeLoader)
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.VOC.yaml") as f:
+            hyp = yaml.safe_load(f)
 
         attempt_download(weights_path)  # download if not found locally
         sys.path.insert(0, str(Path(yolov5.__file__).parent))
@@ -64,8 +63,8 @@ def model(
         )  # intersect
         model.load_state_dict(state_dict, strict=False)  # load
     else:
-        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.scratch.yaml") as f:
-            hyp = yaml.load(f, Loader=yaml.SafeLoader)
+        with open(Path(yolov5.__file__).parent / "data/hyps/hyp.scratch-med.yaml") as f:
+            hyp = yaml.safe_load(f)
 
         model = Model(
             cfg_filepath, ch=3, nc=num_classes, anchors=hyp.get("anchors")

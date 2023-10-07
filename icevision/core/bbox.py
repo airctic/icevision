@@ -36,6 +36,9 @@ class BBox:
             return self.xyxy == other.xyxy
         return False
 
+    def __hash__(self):
+        return hash(self.xyxy)
+
     @property
     def width(self):
         return self.xmax - self.xmin

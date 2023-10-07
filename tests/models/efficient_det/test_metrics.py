@@ -6,13 +6,13 @@ from icevision.models.ross import efficientdet
 @pytest.fixture
 def expected_coco_metric_output():
     return [
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.494",
-        " Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.556",
-        " Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.556",
+        " Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.850",
+        " Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 1.000",
+        " Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 1.000",
         " Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
         " Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000",
-        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.507",
-        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.450",
+        " Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.850",
+        " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.850",
         " Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000",
@@ -25,18 +25,22 @@ def expected_coco_metric_output():
 def expected_confusion_matrix_output():
     return [
         "[[0 0 0 0 0]",
-        " [0 0 0 0 0]",
-        " [0 0 1 0 0]",
         " [0 1 0 0 0]",
+        " [0 0 1 0 0]",
+        " [0 0 0 0 0]",
         " [0 0 0 0 0]]",
     ]
 
 
 @pytest.mark.parametrize(
-    "metric, expected_output",
+    "metric, expected_output, detection_threshold",
     [
-        (SimpleConfusionMatrix(print_summary=True), "expected_confusion_matrix_output"),
-        (COCOMetric(print_summary=True), "expected_coco_metric_output"),
+        (
+            SimpleConfusionMatrix(print_summary=True),
+            "expected_confusion_matrix_output",
+            0.5,
+        ),
+        (COCOMetric(print_summary=True), "expected_coco_metric_output", 0.0),
     ],
 )
 def test_efficientdet_metrics(
@@ -44,6 +48,7 @@ def test_efficientdet_metrics(
     fridge_efficientdet_records,
     metric,
     expected_output,
+    detection_threshold,
     request,
 ):
     expected_output = request.getfixturevalue(expected_output)
@@ -57,7 +62,7 @@ def test_efficientdet_metrics(
         batch=batch,
         raw_preds=raw_preds["detections"],
         records=fridge_efficientdet_records,
-        detection_threshold=0.0,
+        detection_threshold=detection_threshold,
     )
 
     metric.accumulate(preds)

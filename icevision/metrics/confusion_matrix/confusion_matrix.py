@@ -10,6 +10,7 @@ import PIL
 class MatchingPolicy(Enum):
     BEST_SCORE = 1
     BEST_IOU = 2
+    ALL = 3
 
 
 class SimpleConfusionMatrix(Metric):
@@ -41,7 +42,7 @@ class SimpleConfusionMatrix(Metric):
             # if not target_record.detection.bboxes:
             #     continue
             # create matches based on iou
-            matches = match_records(
+            register = match_predictions_to_targets(
                 target=target_record,
                 prediction=prediction_record,
                 iou_threshold=self._iou_threshold,
@@ -49,10 +50,10 @@ class SimpleConfusionMatrix(Metric):
 
             target_labels, predicted_labels = [], []
             # iterate over multiple targets and preds in a record
-            for target_item, prediction_items in matches:
+            for target_item in register:
                 if self._policy == MatchingPolicy.BEST_SCORE:
-                    predicted_item = get_best_score_item(
-                        prediction_items=prediction_items,
+                    match, iou = get_best_score_match(
+                        prediction_items=register[target_item]
                     )
                 elif self._policy == MatchingPolicy.BEST_IOU:
                     raise NotImplementedError
@@ -60,8 +61,8 @@ class SimpleConfusionMatrix(Metric):
                     raise RuntimeError(f"policy must be one of {list(MatchingPolicy)}")
 
                 # using label_id instead of named label to save memory
-                target_label = target_item["target_label_id"]
-                predicted_label = predicted_item["predicted_label_id"]
+                target_label = target_item.label_id
+                predicted_label = match.label_id
                 target_labels.append(target_label)
                 predicted_labels.append(predicted_label)
 
@@ -144,8 +145,8 @@ class SimpleConfusionMatrix(Metric):
 
     def log(self, logger_object) -> None:
         # TODO: Disabled for now, need to design for metric logging for this to work + pl dependency
-        # if isinstance(logger_object, pl_loggers.WandbLogger):
-        #     fig = self.plot()
-        #     image = self._fig2img(fig)
-        #     logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
+        if isinstance(logger_object, pl_loggers.WandbLogger):
+            fig = self.plot()
+            image = self._fig2img(fig)
+            logger_object.experiment.log({"Confusion Matrix": wandb.Image(image)})
         return

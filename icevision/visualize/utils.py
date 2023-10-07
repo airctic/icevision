@@ -44,7 +44,7 @@ def as_rgb_tuple(x: Union[np.ndarray, tuple, list, str]) -> tuple:
         if not len(x) == 3:
             raise ValueError(f"Expected 3 (RGB) numbers, got {len(x)}")
         if isinstance(x, np.ndarray):
-            return tuple(x.astype(np.int))
+            return tuple(x.astype(int))
         elif isinstance(x, tuple):
             return x
         elif isinstance(x, list):

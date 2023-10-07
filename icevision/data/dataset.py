@@ -32,13 +32,16 @@ class Dataset:
         return len(self.records)
 
     def __getitem__(self, i):
-        record = self.records[i].load()
-        if self.tfm is not None:
-            record = self.tfm(record)
+        if isinstance(i, slice):
+            return self.__class__(self.records[i], self.tfm)
         else:
-            # HACK FIXME
-            record.set_img(np.array(record.img))
-        return record
+            record = self.records[i].load()
+            if self.tfm is not None:
+                record = self.tfm(record)
+            else:
+                # HACK FIXME
+                record.set_img(np.array(record.img))
+            return record
 
     def __repr__(self):
         return f"<{self.__class__.__name__} with {len(self.records)} items>"

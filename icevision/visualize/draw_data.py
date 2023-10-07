@@ -186,7 +186,7 @@ def draw_sample(
             # then set color accordingly
             if color_map is not None:
                 color = as_rgb_tuple(color_map[label])
-                color = np.array(color).astype(np.float)
+                color = np.array(color).astype(np.float32)
             if display_mask and mask is not None:
                 img = draw_mask(
                     img=img,
