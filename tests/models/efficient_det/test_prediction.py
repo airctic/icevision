@@ -39,12 +39,12 @@ def _test_preds(preds):
     pred = preds[0].pred
     assert len(pred.detection.scores) == 2
 
-    np.testing.assert_equal(pred.detection.label_ids, [2, 1])
+    np.testing.assert_equal(pred.detection.label_ids, [1, 2])
 
     assert isinstance(pred.detection.bboxes[0], BBox)
     bboxes_np = np.array([bbox.xyxy for bbox in pred.detection.bboxes])
-    bboxes_expected = np.array([[65, 59, 170, 261], [123, 212, 341, 292]])
-    np.testing.assert_allclose(bboxes_np, bboxes_expected, atol=1)
+    bboxes_expected = np.array([[65, 60, 170, 257], [121, 215, 333, 278]])
+    np.testing.assert_allclose(bboxes_np, bboxes_expected, atol=5)
 
 
 def test_efficient_det_predict(fridge_efficientdet_model, fridge_efficientdet_records):

@@ -9,32 +9,23 @@
 # !bash icevision_install.sh cpu 
 
 target="${1}" 
-case ${target} in 
-   cuda10)  
-      echo "Installing icevision + dependencices for ${1}"
-      echo "- Installing torch and its dependencies"
-      pip install torch==1.10.0+cu102 torchvision==0.11.1+cu102 torchtext==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade -q
-
-      echo "- Installing mmcv"
-      pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.10.0/index.html --upgrade -q    
-      ;; 
-
+case ${target} in
    cuda11)  
       echo "Installing icevision + dependencices for ${1}"
       echo "- Installing torch and its dependencies"
-      pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 torchtext==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html --upgrade 
+      pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117 --upgrade
 
       echo "- Installing mmcv"
-      pip install mmcv-full==1.3.17 -f https://download.openmmlab.com/mmcv/dist/cu111/torch1.10.0/index.html --upgrade -q  
-    ;;  
+      pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/cu117/torch1.13/index.html
+    ;;
     
    cpu)  
       echo "Installing icevision + dependencices for ${1}"
       echo "- Installing torch and its dependencies"
-      pip install torch=="1.10.0+cpu" torchvision=="0.11.1+cpu" torchtext==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html  
+      pip install torch==1.13.1+cpu torchvision==0.14.1+cpu --extra-index-url https://download.pytorch.org/whl/cpu --upgrade
 
       echo "- Installing mmcv"
-      pip install mmcv-full=="1.3.17" -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.10.0/index.html --upgrade -q  
+      pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.13/index.html --upgrade -q
     ;;
 
    *)  
@@ -45,10 +36,10 @@ esac
 
 
 echo "- Installing mmdet"
-pip install mmdet==2.17.0 --upgrade -q
+pip install mmdet==2.26.0 --upgrade -q
 
 echo "- Installing mmseg"
-pip install mmsegmentation==0.20.2 --upgrade -q
+pip install mmsegmentation==0.29.1 --upgrade -q
 
 icevision_version="${2}"
 

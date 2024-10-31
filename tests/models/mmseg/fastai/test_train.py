@@ -1,5 +1,6 @@
 import pytest
 from icevision.all import *
+
 from icevision.models.mmseg.models.segformer.backbones import *
 from icevision.models.mmseg.models import *
 

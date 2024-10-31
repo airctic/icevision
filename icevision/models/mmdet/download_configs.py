@@ -3,7 +3,7 @@ __all__ = ["download_mmdet_configs"]
 from icevision.imports import *
 from icevision.utils import *
 
-VERSION = "v2.20.1"
+VERSION = "v2.25.0"
 BASE_URL = "https://github.com/airctic/mmdetection_configs/archive/refs/tags"
 
 
@@ -15,7 +15,7 @@ def download_mmdet_configs() -> Path:
 
     if mmdet_config_path.exists():
         logger.info(
-            f"The mmdet config folder already exists. No need to downloaded it. Path : {mmdet_config_path}"
+            f"The mmdet config folder already exists. No need to download it. Path : {mmdet_config_path}"
         )
     elif download_path.exists():
         # The zip file was downloaded by not extracted yet

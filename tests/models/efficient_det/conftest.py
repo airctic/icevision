@@ -1,5 +1,6 @@
 import pytest
 
+
 # TODO: Hacky approach
 @pytest.fixture
 def fridge_efficientdet_records(fridge_ds):

@@ -18,12 +18,18 @@ if SoftDependencies.mmdet:
 if SoftDependencies.yolov5:
     # HACK: yolov5 changes matplotlib backend here: https://github.com/ultralytics/yolov5/blob/77415a42e5975ea356393c9f1d5cff0ae8acae2c/utils/plots.py#L26
     import matplotlib
+    from IPython import get_ipython
 
     backend = matplotlib.get_backend()
     from icevision.models import ultralytics
 
     matplotlib.use(backend)
     matplotlib.rcdefaults()
+    session = get_ipython()
+    shell = session.__class__.__module__
+    # HACK: yolov5 breaks automatic setting of backend setting by notebook
+    if shell in ["google.colab._shell", "ipykernel.zmqshell"]:
+        session.run_line_magic("matplotlib", "inline")
 
 if SoftDependencies.mmseg:
     from icevision.models import mmseg

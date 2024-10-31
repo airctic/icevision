@@ -79,7 +79,7 @@ class COCOBaseParser(Parser):
     def parse_fields(self, o, record, is_new):
         if is_new:
             record.set_filepath(self.filepath(o))
-            record.set_img_size(self.img_size(o))
+            record.set_img_size(self.img_size(o), original=True)
 
         # TODO: is class_map still a issue here?
         record.detection.set_class_map(self.class_map)
