@@ -1,5 +1,6 @@
+from copy import copy, deepcopy
+
 import pytest
-from icevision.all import *
 
 
 class MockComponent1(Component):

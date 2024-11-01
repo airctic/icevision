@@ -1,10 +1,23 @@
 __all__ = ["ParserInterface", "Parser"]
 
-from icevision.imports import *
-from icevision.utils import *
-from icevision.utils.code_template import *
-from icevision.core import *
-from icevision.data import *
+import pickle
+import re
+from abc import ABC, abstractmethod
+from copy import deepcopy
+from pathlib import Path
+from typing import List, Optional, Any, Dict, Union
+
+from loguru import logger
+
+from icevision.core.class_map import ClassMap
+from icevision.core.exceptions import AbortParseRecord
+from icevision.core.id_map import IDMap
+from icevision.core.record import BaseRecord
+from icevision.data.data_splitter import DataSplitter, RandomSplitter
+from icevision.core.record_type import RecordType
+from icevision.data.record_collection import RecordCollection
+from icevision.utils.code_template import CodeTemplate
+from icevision.utils.utils import pbar
 
 
 def camel_to_snake(name):

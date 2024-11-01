@@ -1,8 +1,14 @@
 __all__ = ["Dataset"]
 
-from icevision.imports import *
-from icevision.core import *
-from icevision.tfms import *
+from typing import List, Optional, Sequence
+
+import numpy as np
+
+from icevision.core.class_map import ClassMap
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import ImageRecordComponent, ClassMapRecordComponent
+from icevision.tfms.transform import Transform
+from icevision.core import tasks
 
 
 class Dataset:

@@ -2,7 +2,7 @@ import sys, os, re, shutil, typing, itertools, operator, math, warnings, json, r
 import functools, io, cv2, mimetypes, torch, torchvision, dataclasses, zipfile, pickle
 import PIL
 import rasterio
-from copy import copy, deepcopy
+
 
 from pdb import set_trace
 from dataclasses import dataclass
@@ -33,7 +33,7 @@ from pathlib import Path
 from collections import defaultdict, OrderedDict, namedtuple
 from enum import Enum
 from tqdm.auto import tqdm
-from pycocotools import mask as mask_utils
+
 from contextlib import contextmanager
 from typing import *
 from operator import itemgetter, attrgetter

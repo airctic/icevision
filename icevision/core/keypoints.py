@@ -1,7 +1,7 @@
 __all__ = ["KeyPoints", "KeypointConnection", "KeypointsMetadata"]
 
-from icevision.imports import *
-from .exceptions import *
+from typing import Tuple, Union, List, Type
+import numpy as np
 
 
 class KeypointConnection:

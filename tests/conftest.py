@@ -1,10 +1,23 @@
+from copy import deepcopy
+from pathlib import Path
+from typing import Tuple
+
 import pytest
-from icevision import *
-from icevision.imports import *
-from icevision.models.torchvision import faster_rcnn, keypoint_rcnn
-from icevision.models.ross import efficientdet
-from icevision.models.ross.efficientdet.backbones import *
+import torch
+from torch import nn
+import numpy as np
+
 import albumentations as A
+from torch.utils.data import DataLoader
+
+from icevision.core.class_map import ClassMap
+from icevision.core.id_map import IDMap
+from icevision.core.keypoints import KeypointsMetadata
+from icevision.core.record_components import RecordIDRecordComponent, ClassMapRecordComponent, FilepathRecordComponent, ImageRecordComponent, SizeRecordComponent, InstancesLabelsRecordComponent, BBoxesRecordComponent, \
+    InstanceMasksRecordComponent, KeyPointsRecordComponent, AreasRecordComponent, IsCrowdsRecordComponent
+from icevision.data.dataset import Dataset
+from icevision.data.record_collection import RecordCollection
+from icevision import parsers
 
 
 @pytest.fixture(scope="session")

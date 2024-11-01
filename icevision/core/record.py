@@ -1,10 +1,15 @@
 __all__ = ["BaseRecord", "autofix_records"]
 
-from icevision.imports import *
-from icevision.utils import *
-from icevision.core.exceptions import *
-from icevision.core.components import *
-from icevision.core.record_components import *
+from copy import deepcopy
+from functools import reduce
+from typing import Dict, List, Sequence
+import numpy as np
+from loguru import logger
+
+from icevision.core.components.composite import TaskComposite
+from icevision.core.exceptions import AutofixAbort
+from icevision.core.record_components import RecordIDRecordComponent, SizeRecordComponent
+from icevision.utils.utils import pbar
 
 
 # TODO: Rename to Record

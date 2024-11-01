@@ -18,7 +18,12 @@ __all__ = [
     "patch_class_to_main",
 ]
 
-from icevision.imports import *
+from collections import defaultdict
+from contextlib import contextmanager
+from typing import Optional
+
+import numpy as np
+from tqdm import tqdm
 
 
 def notnone(x):
@@ -60,6 +65,7 @@ def zipsafe(*its):
 
 
 def pbar(iter, show=True, total: Optional[int] = None):
+    # TODO is this needed?
     return tqdm(iter, total=total) if show else iter
 
 

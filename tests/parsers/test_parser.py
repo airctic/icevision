@@ -1,5 +1,17 @@
+import pickle
+from pathlib import Path
+from typing import Hashable, List
+
 import pytest
-from icevision.all import *
+
+from icevision.core.bbox import BBox
+from icevision.core.class_map import ClassMap
+from icevision.core.exceptions import InvalidDataError
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import FilepathRecordComponent, InstancesLabelsRecordComponent, BBoxesRecordComponent
+from icevision.data.data_splitter import SingleSplitSplitter
+from icevision.parsers.parser import Parser
+from icevision.utils.imageio import ImgSize
 
 
 @pytest.fixture
@@ -16,7 +28,7 @@ def data():
     ]
 
 
-class SimpleParser(parsers.Parser):
+class SimpleParser(Parser):
     def __init__(self, data):
         self.data = data
         super().__init__(

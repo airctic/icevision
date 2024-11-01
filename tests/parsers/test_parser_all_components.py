@@ -1,5 +1,18 @@
+from pathlib import Path
+from typing import Any
+
+import numpy as np
 import pytest
-from icevision.all import *
+
+from icevision.core.bbox import BBox
+from icevision.core.class_map import ClassMap
+from icevision.core.keypoints import KeyPoints
+from icevision.core.mask import MaskArray
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import FilepathRecordComponent, InstancesLabelsRecordComponent, BBoxesRecordComponent, InstanceMasksRecordComponent, KeyPointsRecordComponent, AreasRecordComponent, \
+    IsCrowdsRecordComponent
+from icevision.parsers import Parser
+from icevision.utils.imageio import ImgSize
 
 
 # TODO: This seems to be an uncessary test, maybe not, it tests parse_fields without

@@ -1,10 +1,20 @@
 __all__ = ["voc", "VOCBBoxParser", "VOCMaskParser"]
 
 import xml.etree.ElementTree as ET
-from icevision.imports import *
-from icevision.utils import *
-from icevision.core import *
-from icevision.parsers.parser import *
+from pathlib import Path
+from typing import Union, Optional, Hashable, List
+
+from loguru import logger
+
+from icevision.core.bbox import BBox
+from icevision.core.class_map import ClassMap
+from icevision.core.id_map import IDMap
+from icevision.core.mask import Mask, VocMaskFile
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import FilepathRecordComponent, InstancesLabelsRecordComponent, BBoxesRecordComponent, InstanceMasksRecordComponent
+from icevision.parsers.parser import Parser
+from icevision.utils.get_files import get_files, get_image_files
+from icevision.utils.imageio import ImgSize
 
 
 def voc(

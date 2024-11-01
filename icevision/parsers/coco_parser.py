@@ -6,10 +6,20 @@ __all__ = [
     "COCOKeypointsMetadata",
 ]
 
-from icevision.imports import *
-from icevision.core import *
-from icevision.utils import *
-from icevision.parsers import *
+import json
+from pathlib import Path
+from typing import Union, Optional, Hashable, List
+
+from icevision.core.bbox import BBox
+from icevision.core.class_map import BACKGROUND, ClassMap
+from icevision.core.id_map import IDMap
+from icevision.core.keypoints import KeyPoints, KeypointsMetadata, KeypointConnection
+from icevision.core.mask import MaskArray, Polygon, RLE
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import InstancesLabelsRecordComponent, FilepathRecordComponent, AreasRecordComponent, IsCrowdsRecordComponent, BBoxesRecordComponent, InstanceMasksRecordComponent, \
+    KeyPointsRecordComponent
+from icevision.parsers.parser import Parser
+from icevision.utils.imageio import ImgSize, get_img_size
 
 
 class COCOBaseParser(Parser):

@@ -1,6 +1,7 @@
 __all__ = ["ClassMap", "BACKGROUND"]
 
-from icevision.imports import *
+from copy import copy
+from typing import Optional, Sequence
 
 BACKGROUND = "background"
 

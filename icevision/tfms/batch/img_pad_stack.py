@@ -1,7 +1,6 @@
 __all__ = ["ImgPadStack"]
 
-from icevision.imports import *
-from icevision.core import *
+
 from icevision.tfms.batch.batch_transform import BatchTransform
 
 

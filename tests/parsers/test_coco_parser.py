@@ -1,5 +1,8 @@
+import json
+
 import pytest
-from icevision.all import *
+from icevision import parsers
+from icevision.data.data_splitter import SingleSplitSplitter
 
 
 @pytest.fixture

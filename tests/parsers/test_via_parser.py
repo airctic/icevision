@@ -1,5 +1,10 @@
+import json
+
 import pytest
-from icevision.all import *
+
+from icevision import parsers
+from icevision.parsers.via_parser import VIAParseError
+from icevision.data.data_splitter import SingleSplitSplitter
 
 
 def test_bbox_parser(via_dir, via_bbox_class_map):
@@ -35,7 +40,7 @@ def test_bbox_parser_broken_label(via_dir, via_bbox_class_map):
     parser = parsers.via(
         via_dir / "via_bbox.json", via_dir, via_bbox_class_map, label_field="qualities"
     )
-    with pytest.raises(parsers.VIAParseError, match=r"Non-string.*IMG_4908.*"):
+    with pytest.raises(VIAParseError, match=r"Non-string.*IMG_4908.*"):
         _ = parser.parse(data_splitter=SingleSplitSplitter())[0]
 
 
@@ -43,7 +48,7 @@ def test_bbox_parser_missing_label(via_dir, via_bbox_class_map):
     parser = parsers.via(
         via_dir / "via_bbox.json", via_dir, via_bbox_class_map, label_field="MISSING"
     )
-    with pytest.raises(parsers.VIAParseError, match=r"Could not find.*IMG_4908.*"):
+    with pytest.raises(VIAParseError, match=r"Could not find.*IMG_4908.*"):
         _ = parser.parse(data_splitter=SingleSplitSplitter())[0]
 
 

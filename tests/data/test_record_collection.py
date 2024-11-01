@@ -1,5 +1,7 @@
+from copy import deepcopy
+
 import pytest
-from icevision.all import *
+
 
 
 @pytest.fixture

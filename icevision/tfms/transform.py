@@ -1,7 +1,8 @@
 __all__ = ["Transform"]
 
-from icevision.imports import *
-from icevision.core import *
+from abc import ABC, abstractmethod
+
+from icevision.core.record import BaseRecord
 
 
 class Transform(ABC):

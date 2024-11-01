@@ -1,6 +1,7 @@
 __all__ = ["CodeLine", "CodeTemplate"]
 
-from icevision.imports import *
+from dataclasses import dataclass
+from typing import List, Sequence
 
 
 @dataclass

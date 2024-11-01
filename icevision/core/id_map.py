@@ -1,6 +1,7 @@
 __all__ = ["IDMap"]
 
-from icevision.imports import *
+from collections import OrderedDict
+from typing import Optional, Sequence, Hashable, List
 
 
 class IDMap:

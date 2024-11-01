@@ -1,6 +1,8 @@
 __all__ = ["Component", "Composite", "TaskComponent", "TaskComposite"]
 
-from icevision.imports import *
+from collections import defaultdict, OrderedDict
+from typing import Sequence, Optional, Dict, Any, Union
+
 from icevision.core import tasks
 
 

@@ -18,7 +18,6 @@ class _SoftDependencies:
     def __init__(self):
         self.fastai = soft_import("fastai")
         self.pytorch_lightning = soft_import("pytorch_lightning")
-        self.albumentations = soft_import("albumentations")
         self.effdet = soft_import("effdet")
         self.wandb = soft_import("wandb")
         self.resnest = soft_import("resnest")

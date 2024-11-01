@@ -8,13 +8,18 @@ __all__ = [
     "plot_grid",
 ]
 
-from icevision.imports import *
-from PIL import ExifTags
+from collections import namedtuple
+from pathlib import Path
+from typing import Union, Tuple, List
+
+import PIL.ExifTags, PIL.Image
+import numpy as np
+from loguru import logger
 
 ImgSize = namedtuple("ImgSize", "width,height")
 
 # get exif tag
-for _EXIF_ORIENTATION_TAG in ExifTags.TAGS.keys():
+for _EXIF_ORIENTATION_TAG in PIL.ExifTags.TAGS.keys():
     if PIL.ExifTags.TAGS[_EXIF_ORIENTATION_TAG] == "Orientation":
         break
 

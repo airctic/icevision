@@ -1,9 +1,15 @@
 __all__ = ["via", "VIAParseError", "VIABaseParser", "VIABBoxParser"]
 
-from icevision.imports import *
-from icevision.core import *
-from icevision.utils import *
-from icevision.parsers.parser import *
+import json
+from pathlib import Path
+from typing import Union, Hashable, Tuple, List
+
+from icevision.core.bbox import BBox
+from icevision.core.class_map import ClassMap
+from icevision.core.record import BaseRecord
+from icevision.core.record_components import FilepathRecordComponent, InstancesLabelsRecordComponent, BBoxesRecordComponent
+from icevision.parsers.parser import Parser
+from icevision.utils.imageio import get_img_size
 
 
 def via(

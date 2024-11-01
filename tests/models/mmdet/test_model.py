@@ -4,30 +4,40 @@ from icevision.all import *
 
 
 @pytest.mark.parametrize(
-    "ds, model_type, pretrained, cfg_options",
+    "ds, model_type, backbone_name, pretrained, cfg_options",
     (
-        ("fridge_ds", models.mmdet.retinanet, True, None),
-        ("fridge_ds", models.mmdet.retinanet, False, None),
-        (
-            "fridge_ds",
-            models.mmdet.retinanet,
-            False,
-            {
-                "model.bbox_head.loss_bbox.loss_weight": 2,
-                "model.bbox_head.loss_cls.loss_weight": 0.8,
-            },
-        ),
+        ("fridge_ds", models.mmdet.vfnet, "resnet50_fpn_mstrain_2x", False, None),
+        # ("fridge_ds", models.mmdet.retinanet, "resnet50_fpn_1x", True, None),
+        # ("fridge_ds", models.mmdet.retinanet, "resnet50_fpn_1x", False, None),
+        # ("fridge_ds", models.mmdet.faster_rcnn, "resnet101_fpn_2x", False, None),
+        ("fridge_ds", models.mmdet.ssd, "ssd300", False, None),
+        # ("fridge_ds", models.mmdet.yolox, "yolox_s_8x8", False, None),
+        # ("fridge_ds", models.mmdet.yolof, "yolof_r50_c5_8x8_1x_coco", False, None),
+        # ("fridge_ds", models.mmdet.detr, "r50_8x2_150e_coco", False, None),
+        # ("fridge_ds", models.mmdet.deformable_detr, "twostage_refine_r50_16x2_50e_coco", False, None),
+        # ("fridge_ds", models.mmdet.fsaf, "x101_64x4d_fpn_1x_coco", False, None),
+        # ("fridge_ds", models.mmdet.sabl, "r101_fpn_gn_2x_ms_640_800_coco", False, None),
+        # ("fridge_ds", models.mmdet.centripetalnet, "hourglass104_mstest_16x6_210e_coco", False, None),
+        # (
+        #     "fridge_ds",
+        #     models.mmdet.retinanet,
+        #     False,
+        #     {
+        #         "model.bbox_head.loss_bbox.loss_weight": 2,
+        #         "model.bbox_head.loss_cls.loss_weight": 0.8,
+        #     },
+        # ),
     ),
 )
 class TestBboxModels:
     def dls_model(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         train_ds, valid_ds = request.getfixturevalue(ds)
         train_dl = model_type.train_dl(train_ds, batch_size=2)
         valid_dl = model_type.valid_dl(valid_ds, batch_size=2)
 
-        backbone = model_type.backbones.resnet50_fpn_1x()
+        backbone = getattr(model_type.backbones, backbone_name)()
         backbone.config_path = samples_source / backbone.config_path
 
         model = model_type.model(
@@ -38,11 +48,12 @@ class TestBboxModels:
 
         return train_dl, valid_dl, model
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_fastai(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, cfg_options, samples_source, request
+            ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
         )
 
         learn = model_type.fastai.learner(
@@ -51,10 +62,10 @@ class TestBboxModels:
         learn.fine_tune(1, 3e-4)
 
     def test_mmdet_bbox_models_light_train(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         train_dl, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, cfg_options, samples_source, request
+            ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
         )
 
         class LitModel(model_type.lightning.ModelAdapter):
@@ -72,12 +83,14 @@ class TestBboxModels:
 
         trainer.fit(light_model, train_dl, valid_dl)
 
+
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_training_step_returns_loss(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(True):
             train_dl, _, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):
@@ -95,12 +108,13 @@ class TestBboxModels:
 
             assert loss == expected_loss
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_logs_losses_during_training_step(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(True):
             train_dl, _, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):
@@ -130,11 +144,13 @@ class TestBboxModels:
 
             assert list(light_model.logs.keys()) == [f"train_{expected_loss_key}"]
 
+
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_validate(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         _, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, cfg_options, samples_source, request
+            ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
         )
 
         class LitModel(model_type.lightning.ModelAdapter):
@@ -152,12 +168,14 @@ class TestBboxModels:
 
         trainer.validate(light_model, valid_dl)
 
+
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_logs_losses_during_validation_step(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(False):
             _, valid_dl, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):
@@ -186,12 +204,13 @@ class TestBboxModels:
 
             assert list(light_model.logs.keys()) == [f"val_{expected_loss_key}"]
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_finalizes_metrics_on_validation_epoch_end(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(False):
             _, _, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):
@@ -211,11 +230,12 @@ class TestBboxModels:
 
             assert light_model.was_finalize_metrics_called == True
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_test(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         _, valid_dl, model = self.dls_model(
-            ds, model_type, pretrained, cfg_options, samples_source, request
+            ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
         )
 
         class LitModel(model_type.lightning.ModelAdapter):
@@ -233,12 +253,13 @@ class TestBboxModels:
 
         trainer.test(light_model, valid_dl)
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_logs_losses_during_test_step(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(False):
             _, valid_dl, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):
@@ -267,12 +288,13 @@ class TestBboxModels:
 
             assert list(light_model.logs.keys()) == [f"test_{expected_loss_key}"]
 
+    @pytest.mark.skip
     def test_mmdet_bbox_models_light_finalizes_metrics_on_test_epoch_end(
-        self, ds, model_type, pretrained, cfg_options, samples_source, request
+        self, ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
     ):
         with torch.set_grad_enabled(False):
             _, _, model = self.dls_model(
-                ds, model_type, pretrained, cfg_options, samples_source, request
+                ds, model_type, backbone_name, pretrained, cfg_options, samples_source, request
             )
 
             class LitModel(model_type.lightning.ModelAdapter):

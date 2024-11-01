@@ -1,8 +1,5 @@
 __all__ = ["BatchTransform"]
 
-from icevision.imports import *
-from icevision.core import *
-
 
 class BatchTransform(ABC):
     def __call__(self, records: List[RecordType]) -> List[RecordType]:

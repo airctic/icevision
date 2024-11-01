@@ -1,8 +1,9 @@
 __all__ = ["BBox"]
 
-from icevision.imports import *
-from icevision.utils import *
-from .exceptions import *
+from typing import Optional, Any
+
+import numpy as np
+import torch
 
 
 class BBox:
@@ -52,7 +53,7 @@ class BBox:
         return self.width * self.height
 
     def to_tensor(self):
-        return tensor(self.xyxy, dtype=torch.float)
+        return torch.tensor(self.xyxy, dtype=torch.float32)
 
     def autofix(self, img_w, img_h, record_id: Optional[Any] = None) -> bool:
         """Tries to automatically fix invalid coordinates.

@@ -1,6 +1,6 @@
 __all__ = ["Task", "common", "detection", "classification"]
 
-from icevision.imports import *
+from dataclasses import dataclass
 
 
 @dataclass(eq=True, frozen=True)

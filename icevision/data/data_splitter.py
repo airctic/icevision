@@ -7,9 +7,13 @@ __all__ = [
     "FolderSplitter",
 ]
 
-from icevision.imports import *
-from icevision.utils import *
-from icevision.core import *
+from abc import ABC, abstractmethod
+from typing import Sequence, Collection, Hashable
+
+import numpy as np
+
+from icevision.core.record import BaseRecord
+from icevision.utils.utils import np_local_seed
 
 
 class DataSplitter(ABC):

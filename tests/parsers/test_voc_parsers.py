@@ -1,4 +1,6 @@
-from icevision.all import *
+from icevision import parsers
+from icevision.core.bbox import BBox
+from icevision.data.data_splitter import SingleSplitSplitter
 
 
 def test_voc_annotation_parser(

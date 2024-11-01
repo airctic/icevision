@@ -1,6 +1,12 @@
 __all__ = ["get_files", "get_image_files"]
 
-from icevision.imports import *
+import mimetypes
+import os
+from pathlib import Path
+
+from fastcore.basics import setify
+from fastcore.foundation import L
+
 
 # All copied from fastai
 def _get_files(p, fs, extensions=None):

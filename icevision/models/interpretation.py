@@ -7,13 +7,13 @@ __all__ = [
     "_move_to_device",
 ]
 
-from icevision.imports import *
+
 from icevision.utils import *
-from icevision.core import *
 from icevision.data import *
 from icevision.visualize.show_data import show_preds
 from icevision.core.record_components import LossesRecordComponent
 
+from copy import deepcopy
 
 def get_weighted_sum(sample, weights):
     loss_weighted = 0

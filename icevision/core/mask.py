@@ -9,9 +9,18 @@ __all__ = [
     "SemanticMaskFile",
 ]
 
-from icevision.imports import *
-from icevision.utils import *
-from PIL import Image
+import itertools
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import List, Union, Sequence
+
+import numpy as np
+import torch
+import PIL.Image
+# from pycocotools import mask as mask_utils
+
+from icevision.utils.imageio import open_img
+from icevision.utils.utils import lmap
 
 
 class Mask(ABC):
@@ -79,7 +88,7 @@ class MaskArray(Mask):
         return type(self)(self.data[i])
 
     def to_tensor(self):
-        return tensor(self.data, dtype=torch.uint8)
+        return torch.tensor(self.data, dtype=torch.uint8)
 
     def to_mask(self, h, w):
         return self

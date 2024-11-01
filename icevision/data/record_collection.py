@@ -2,10 +2,11 @@ from __future__ import annotations
 
 __all__ = ["RecordCollection"]
 
-from icevision.imports import *
-from icevision.utils import *
+from typing import Sequence, List, Union
+
 from icevision.core.record import BaseRecord, autofix_records
 from icevision.data.data_splitter import DataSplitter
+from icevision.utils.indexable_dict import IndexableDict
 
 
 class RecordCollection:
