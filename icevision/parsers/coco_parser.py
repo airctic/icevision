@@ -105,10 +105,13 @@ class COCOBBoxParser(COCOBaseParser):
 class COCOMaskParser(COCOBBoxParser):
     def masks(self, o) -> List[MaskArray]:
         seg = o["segmentation"]
-        if o["iscrowd"]:
-            return [RLE.from_coco(seg["counts"])]
-        else:
+        if isinstance(seg, list):
             return [Polygon(seg)]
+        elif isinstance(seg, dict):
+            if isinstance(seg["counts"], list):
+                return [RLE.from_coco(seg["counts"])]
+            elif isinstance(seg["counts"], str):
+                return [EncodedRLEs([seg])]
 
     def template_record(self) -> BaseRecord:
         record = super().template_record()
