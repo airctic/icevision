@@ -28,7 +28,7 @@ git clone https://github.com/username/icevision.git
 cd icevision
 ```
 
-3.  Install icevision as an editable package. As a best practice, it is highly recommended to create either a mini-conda or a conda environment. Please, check out our [Installation Using Conda Guide](https://airctic.com/install/#b-installation-using-conda).
+3.  Install icevision as an editable package. As a best practice, it is highly recommended to create either a mini-conda or a conda environment. Please, check out our [Installation Using Conda Guide](https://airctic.com/0.12.0/install/#installation-using-conda).
 
 First, locally install the package:
 
